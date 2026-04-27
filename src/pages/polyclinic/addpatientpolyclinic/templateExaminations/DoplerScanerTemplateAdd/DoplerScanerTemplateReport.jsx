@@ -1,0 +1,89 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useTranslation } from "react-i18next";
+
+const DoplerScanerTemplateReport = () => {
+  const { t } = useTranslation("DoplerScanerTemplateAdd");
+
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [message, setMessage] = useState("");
+
+  const navigate = useNavigate();
+  const API_BASE = process.env.REACT_APP_API_URL;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await axios.post(
+        `${API_BASE}/clinic/add-templates-examinations/Doplerscaner/report`,
+        { title, content },
+        { withCredentials: true }
+      );
+
+      setMessage(t("DoplerScanerTemplateReport.messages.success"));
+      setTitle("");
+      setContent("");
+
+      setTimeout(() => navigate(-1), 1000);
+    } catch (err) {
+      if (err.response) {
+        setMessage(
+          "❌ " +
+            (err.response.data.message ||
+              t("DoplerScanerTemplateReport.messages.error"))
+        );
+      } else {
+        setMessage(t("DoplerScanerTemplateReport.messages.networkError"));
+      }
+    }
+  };
+
+  return (
+    <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
+      <h2>{t("DoplerScanerTemplateReport.page.title")}</h2>
+
+      <form onSubmit={handleSubmit}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+          <input
+            type="text"
+            placeholder={t("common.title")}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            className="form-control"
+          />
+
+          <textarea
+            placeholder={t("common.content")}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+            className="form-control"
+            style={{ height: "150px" }}
+          />
+
+          <button type="submit" className="btn btn-success">
+            {t("common.save")}
+          </button>
+        </div>
+
+        {message && (
+          <p
+            style={{
+              marginTop: "20px",
+              textAlign: "center",
+              color: message.startsWith("✅") ? "green" : "red",
+            }}
+          >
+            {message}
+          </p>
+        )}
+      </form>
+    </div>
+  );
+};
+
+export default DoplerScanerTemplateReport;

@@ -1,0 +1,38 @@
+
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "https://backend.docpats.com/sitemap.xml"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/robots.txt"
+  to = "https://backend.docpats.com/robots.txt"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  
+[[edge_functions]]
+  path = "/articles/*"
+  function = "seo"
+
+[[edge_functions]]
+  path = "/news/*"
+  function = "seo"
+
+[[edge_functions]]
+  path = "/public/doctor-profile/article-detail-for-all/*"
+  function = "seo"
+
+[[edge_functions]]
+  path = "/public/doctor/article-scientific-detail-for-all/*"
+  function = "seo"
+
+[[edge_functions]]
+  path = "/public/doctor-profile/doctor-details/*"
+  function = "seo"
+

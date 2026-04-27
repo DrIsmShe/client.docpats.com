@@ -1,0 +1,88 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^43.3.1",
+    "@ckeditor/ckeditor5-react": "^9.3.1",
+    "@emoji-mart/data": "^1.2.1",
+    "@emoji-mart/react": "^1.1.1",
+    "@mediapipe/tasks-vision": "^0.10.34",
+    "@reduxjs/toolkit": "^2.5.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.7",
+    "bootstrap": "^5.3.8",
+    "chart.js": "^4.5.1",
+    "chartjs-plugin-datalabels": "^2.2.0",
+    "dayjs": "^1.11.19",
+    "emoji-mart": "^5.6.0",
+    "emoji-picker-react": "^4.18.0",
+    "framer-motion": "^12.29.2",
+    "html-react-parser": "^5.2.0",
+    "html2canvas": "^1.4.1",
+    "i18next": "22.5.0",
+    "i18next-http-backend": "^3.0.2",
+    "jspdf": "^2.5.2",
+    "libphonenumber-js": "^1.12.29",
+    "lucide-react": "^0.484.0",
+    "quill": "^2.0.2",
+    "react": "^18.3.1",
+    "react-bootstrap": "^2.10.10",
+    "react-calendar": "^6.0.0",
+    "react-chartjs-2": "^5.3.0",
+    "react-datepicker": "^7.5.0",
+    "react-dom": "^18.3.1",
+    "react-helmet-async": "^2.0.5",
+    "react-i18next": "12.3.1",
+    "react-icons": "^5.3.0",
+    "react-input-mask": "^2.0.4",
+    "react-markdown": "^6.0.3",
+    "react-modal": "^3.16.3",
+    "react-phone-input-2": "^2.15.1",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^6.27.0",
+    "react-scripts": "5.0.1",
+    "react-toastify": "^11.0.5",
+    "react-virtuoso": "^4.18.3",
+    "react-window": "^2.2.7",
+    "reactstrap": "^9.2.3",
+    "recharts": "^3.8.0",
+    "remark-gfm": "^1.0.0",
+    "socket.io-client": "^4.8.3",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "cross-env NODE_OPTIONS=--max_old_space_size=16384 GENERATE_SOURCEMAP=false CI=false react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "cross-env": "^10.1.0",
+    "react-snap": "^1.23.0",
+    "sass": "^1.94.2",
+    "typescript": "4.9.5",
+    "webpack-dev-server": "^5.2.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -1,0 +1,438 @@
+/* ─── Layout ────────────────────────────────────────────────────────────── */
+.panel {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+  .panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Section ────────────────────────────────────────────────────────────── */
+.section {
+  margin-bottom: 20px;
+}
+
+.sectionTitle {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionHint {
+  font-size: 10px;
+  color: #cbd5e1;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ─── Editor column ──────────────────────────────────────────────────────── */
+.editor {
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 16px;
+  padding: 22px 24px;
+}
+
+/* ─── Photo strip ────────────────────────────────────────────────────────── */
+.photoStrip {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.photoChip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 2px solid #e8edf5;
+  padding: 4px;
+  transition: border-color 0.15s;
+  width: 80px;
+}
+.photoChip:hover {
+  border-color: #94a3b8;
+}
+.photoChipActive {
+  border-color: #6366f1;
+}
+
+.photoChipImg {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 7px;
+  display: block;
+}
+
+.photoChipLbl {
+  font-size: 10px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ─── Toolbar ────────────────────────────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.brushBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.12s;
+}
+.brushBtn:hover {
+  border-color: #94a3b8;
+}
+.brushBtnActive {
+  border-color: #6366f1;
+  background: #eef2ff;
+}
+
+.brushPreview {
+  border-radius: 50%;
+  background: #6366f1;
+  opacity: 0.7;
+  display: block;
+  flex-shrink: 0;
+}
+
+.clearBtn {
+  margin-left: auto;
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 12px;
+  color: #64748b;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.12s;
+}
+.clearBtn:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* ─── Canvas area ────────────────────────────────────────────────────────── */
+.canvasWrap {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e8edf5;
+  user-select: none;
+  touch-action: none;
+}
+
+.canvasImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+  background: #f8fafc;
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.maskHint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6366f1;
+  font-weight: 500;
+}
+
+/* ─── Disclaimer ─────────────────────────────────────────────────────────── */
+.disclaimer {
+  background: #fefce8;
+  border: 1px solid #fef08a;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: #713f12;
+  line-height: 1.5;
+}
+
+/* ─── Generate button ────────────────────────────────────────────────────── */
+.generateBtn {
+  width: 100%;
+  justify-content: center;
+  padding: 12px;
+  font-size: 14px;
+  background: #6366f1;
+  border-radius: 10px;
+  gap: 8px;
+}
+.generateBtn:hover:not(:disabled) {
+  background: #4f46e5;
+}
+.generateBtn:disabled {
+  background: #c7d2fe;
+  cursor: default;
+}
+
+/* ─── Spinner ────────────────────────────────────────────────────────────── */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── Results column ─────────────────────────────────────────────────────── */
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.emptyResults {
+  background: #ffffff;
+  border: 1px dashed #e2e8f0;
+  border-radius: 14px;
+  padding: 40px 20px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 13px;
+}
+.emptyResultsIcon {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #cbd5e1;
+}
+.emptyResultsSub {
+  font-size: 12px;
+  color: #cbd5e1;
+  margin-top: 4px;
+}
+
+/* ─── Sim card ───────────────────────────────────────────────────────────── */
+.simCard {
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.simCardActive {
+  border-color: #6366f1;
+}
+
+.simCardHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+}
+.simCardHead:hover {
+  background: #f8fafc;
+}
+
+.simDate {
+  font-size: 12px;
+  color: #64748b;
+  flex: 1;
+}
+
+.simStatus {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+.simStatus_pending {
+  background: #f1f5f9;
+  color: #64748b;
+}
+.simStatus_processing {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+.simStatus_done {
+  background: #dcfce7;
+  color: #15803d;
+}
+.simStatus_failed {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ─── Processing bar ─────────────────────────────────────────────────────── */
+.processingBar {
+  margin: 0 16px 14px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  height: 6px;
+  overflow: hidden;
+  position: relative;
+}
+.processingFill {
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #6366f1, transparent);
+  animation: progress 1.4s ease-in-out infinite;
+}
+@keyframes progress {
+  to {
+    left: 100%;
+  }
+}
+.processingText {
+  display: block;
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 6px;
+  padding: 0 16px 10px;
+}
+
+/* ─── Result grid ────────────────────────────────────────────────────────── */
+.resultGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 0 12px 12px;
+}
+
+.resultItem {
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition:
+    border-color 0.15s,
+    transform 0.12s;
+  position: relative;
+}
+.resultItem:hover {
+  transform: scale(1.02);
+}
+.resultItemSelected {
+  border-color: #6366f1;
+}
+
+.resultImg {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  display: block;
+}
+
+.resultLabel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 8px;
+  text-align: center;
+}
+
+.failedMsg {
+  font-size: 12px;
+  color: #b91c1c;
+  padding: 0 16px 12px;
+  margin: 0;
+}
+
+/* ─── Result actions ─────────────────────────────────────────────────────── */
+.resultActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.resultSelectBtn {
+  flex: 1;
+  background: none;
+  border: none;
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  text-align: left;
+  padding: 2px 4px;
+  font-family: inherit;
+  transition: color 0.12s;
+}
+.resultSelectBtn:hover {
+  color: #0f172a;
+}
+
+.resultDownloadBtn,
+.resultZoomBtn {
+  background: none;
+  border: 0.5px solid #e2e8f0;
+  border-radius: 6px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: #64748b;
+  transition: all 0.12s;
+  flex-shrink: 0;
+}
+.resultDownloadBtn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+.resultZoomBtn:hover {
+  background: #ede9fe;
+  color: #5b21b6;
+  border-color: #a5b4fc;
+}

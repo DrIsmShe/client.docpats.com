@@ -1,0 +1,234 @@
+/* src/pages/simulation/components/viewer/BeforeAfterViewer.module.css */
+
+.viewerRoot {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 16px;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+}
+
+@media (max-width: 900px) {
+  .viewerRoot {
+    grid-template-columns: 1fr;
+  }
+}
+
+.viewerEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 400px;
+  background: #1a1a1a;
+  color: #cbd5e1;
+  border-radius: 10px;
+  padding: 40px;
+}
+
+.viewerEmptyTitle {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.viewerEmptyHint {
+  font-size: 13px;
+  color: #94a3b8;
+  text-align: center;
+  max-width: 400px;
+}
+
+.viewerRetryButton {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: #3d7fff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Slider
+   ────────────────────────────────────────────────────────────────────── */
+
+.viewerSliderWrap {
+  position: relative;
+  background: #1a1a1a;
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sliderContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  cursor: ew-resize;
+  user-select: none;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sliderCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.sliderEmpty {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.sliderLabel {
+  position: absolute;
+  top: 12px;
+  padding: 4px 10px;
+  background: rgba(20, 20, 20, 0.75);
+  color: #e2e8f0;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-radius: 4px;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+
+.sliderLabelLeft {
+  inset-inline-start: 12px;
+}
+
+.sliderLabelRight {
+  inset-inline-end: 12px;
+}
+
+.sliderDivider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.9);
+  pointer-events: none;
+  transform: translateX(-1px);
+}
+
+.sliderDividerHandle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.sliderDividerArrow {
+  font-size: 14px;
+  color: #1a1a1a;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Export panel
+   ────────────────────────────────────────────────────────────────────── */
+
+.exportPanel {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.exportPanelTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.exportPanelField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exportPanelLabel {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.exportPanelValue {
+  font-family: ui-monospace, "JetBrains Mono", monospace;
+  color: #94a3b8;
+}
+
+.exportPanelRadioRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exportPanelRadio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+
+.exportPanelSlider {
+  width: 100%;
+  accent-color: #3d7fff;
+}
+
+.exportDownloadButton {
+  padding: 10px 16px;
+  background: #3d7fff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 8px;
+}
+
+.exportDownloadButton:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.exportDownloadButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,0 +1,120 @@
+/* src/pages/simulation/components/editor/MeasurementsPanel.module.css */
+/* Стиль consistent с новым LandmarksPanel — backdrop blur, bordered card. */
+
+.panel {
+  background: rgba(20, 24, 38, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 13px;
+  color: #e2e8f0;
+  width: 100%;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 10px;
+  color: #e2e8f0;
+}
+
+.empty {
+  font-size: 12px;
+  color: #64748b;
+  font-style: italic;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  transition:
+    opacity 0.15s,
+    background 0.15s;
+}
+
+.row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.rowHidden {
+  opacity: 0.45;
+}
+
+.rowToggle {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Touch friendly */
+  min-width: 28px;
+  min-height: 28px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rowDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid;
+  display: block;
+  transition: background 0.15s;
+}
+
+.rowMain {
+  flex: 1;
+  min-width: 0;
+}
+
+.rowLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: #e2e8f0;
+  margin-block-end: 2px;
+}
+
+.rowNormal {
+  font-size: 10px;
+  color: #64748b;
+  letter-spacing: 0.02em;
+}
+
+.rowValue {
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #e2e8f0;
+  flex-shrink: 0;
+  text-align: end;
+  min-width: 56px;
+}
+
+.rowValueOut {
+  color: #ef4444;
+}
+
+.calibrationHint {
+  margin-block-start: 12px;
+  padding: 8px 10px;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 6px;
+  font-size: 11px;
+  color: #fbbf24;
+  line-height: 1.45;
+}

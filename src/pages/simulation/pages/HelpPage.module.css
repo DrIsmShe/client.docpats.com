@@ -1,0 +1,315 @@
+/* src/pages/simulation/pages/HelpPage.module.css */
+
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.backBtn {
+  background: transparent;
+  border: none;
+  color: #3d7fff;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0;
+  margin-bottom: 12px;
+}
+
+.backBtn:hover {
+  text-decoration: underline;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* ─── Body layout — sidebar + content ─── */
+
+.body {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 32px;
+  flex: 1;
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+    max-height: 240px;
+    overflow-y: auto;
+  }
+}
+
+/* ─── Sidebar ─── */
+
+.sidebar {
+  position: sticky;
+  top: 24px;
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 20px;
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+
+.sidebarTitle {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.tocList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tocLink {
+  display: block;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #475569;
+  text-decoration: none;
+  border-radius: 6px;
+  border-inline-start: 2px solid transparent;
+  transition: all 0.1s;
+  line-height: 1.4;
+}
+
+.tocLink:hover {
+  background: rgba(61, 127, 255, 0.06);
+  color: #1a1a1a;
+}
+
+.tocLinkActive {
+  background: rgba(61, 127, 255, 0.1);
+  color: #3d7fff;
+  border-inline-start-color: #3d7fff;
+  font-weight: 600;
+}
+
+/* ─── Content ─── */
+
+.content {
+  min-width: 0; /* предотвращает overflow в grid */
+}
+
+.stateBox {
+  padding: 60px 40px;
+  text-align: center;
+  color: #64748b;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+/* ─── Markdown rendering ─── */
+
+.markdown {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 36px 44px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #334155;
+}
+
+@media (max-width: 700px) {
+  .markdown {
+    padding: 24px 20px;
+    font-size: 14px;
+  }
+}
+
+.markdown h1 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+  letter-spacing: -0.01em;
+  scroll-margin-top: 24px;
+}
+
+.markdown h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 36px;
+  margin-bottom: 16px;
+  color: #1a1a1a;
+  letter-spacing: -0.01em;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  scroll-margin-top: 24px;
+}
+
+.markdown h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-top: 24px;
+  margin-bottom: 10px;
+  color: #1a1a1a;
+}
+
+.markdown p {
+  margin: 0 0 14px 0;
+}
+
+.markdown strong {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.markdown em {
+  color: #475569;
+}
+
+.markdown code {
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  color: #0f172a;
+}
+
+.markdown pre {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 16px 20px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 14px 0;
+}
+
+.markdown pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.markdown ul,
+.markdown ol {
+  margin: 12px 0;
+  padding-inline-start: 24px;
+}
+
+.markdown li {
+  margin-bottom: 6px;
+}
+
+.markdown hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 32px 0;
+}
+
+.markdown blockquote {
+  border-inline-start: 4px solid #3d7fff;
+  padding-inline-start: 16px;
+  color: #475569;
+  font-style: italic;
+  margin: 14px 0;
+}
+
+.markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+
+.markdown th,
+.markdown td {
+  text-align: start;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.markdown th {
+  background: #f8fafc;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.markdown a {
+  color: #3d7fff;
+  text-decoration: none;
+}
+
+.markdown a:hover {
+  text-decoration: underline;
+}
+/* ─── Header top row — back button + lang switcher ─── */
+
+.headerTopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ─── Language switcher ─── */
+
+.langSwitcher {
+  display: inline-flex;
+  gap: 4px;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.langBtn {
+  padding: 6px 12px;
+  background: transparent;
+  color: #64748b;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.1s;
+  letter-spacing: 0.04em;
+}
+
+.langBtn:hover {
+  color: #1a1a1a;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.langBtnActive {
+  background: #fff;
+  color: #3d7fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.langBtnActive:hover {
+  color: #3d7fff;
+}
