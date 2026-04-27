@@ -211,18 +211,22 @@
     "calibrationHint": "Measurements in millimeters require calibration against a known distance (available in plan settings).",
     "nasofrontalAngle": {
       "label": "Nasofrontal angle",
-      "description": "Angle between the forehead line and the nasal bridge"
+      "description": "Angle between the forehead line and the nasal bridge",
+      "short": "Nasofrontal"
     },
     "goodeProjection": {
       "label": "Goode's tip projection",
-      "description": "Ratio of nasal tip length to nasal height"
+      "description": "Ratio of nasal tip length to nasal height",
+      "short": "Goode tip"
     },
     "alarBaseWidth": {
       "label": "Alar base width",
-      "description": "Distance between the outermost points of the nostrils"
-    }
-  },
-  "toggleSidePanel": "Toggle side panel",
-  "loadingImageRetry": "Loading photo… (attempt {{attempt}} of {{max}})",
-  "loadingImageRetryHint": "Recently uploaded photos may take a few seconds to become available"
+      "description": "Distance between the outermost points of the nostrils",
+      "short": "Alar base"
+    },
+
+    "toggleSidePanel": "Toggle side panel",
+    "loadingImageRetry": "Loading photo… (attempt {{attempt}} of {{max}})",
+    "loadingImageRetryHint": "Recently uploaded photos may take a few seconds to become available"
+  }
 }
