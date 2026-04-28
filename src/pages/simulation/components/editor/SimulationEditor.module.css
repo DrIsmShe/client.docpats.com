@@ -396,3 +396,186 @@
     padding: 12px;
   }
 }
+/* ════════════════════════════════════════════════════════════════════
+   PointPropertiesPanel
+   ════════════════════════════════════════════════════════════════════ */
+.propsPanel {
+  background: rgba(20, 24, 38, 0.92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: auto;
+  /* Важно: разрешаем touch внутри панели — иначе слайдеры не реагируют
+     на palец из-за touch-action:none на .editorRoot canvas */
+  touch-action: auto;
+}
+
+.propsPanelInline {
+  /* стилизация для bottom-sheet режима (mobile) */
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+.propsPanelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.propsPanelDelete {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  border-radius: 4px;
+  font-size: 18px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.12s;
+  padding: 0;
+  line-height: 1;
+}
+
+.propsPanelDelete:hover {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.propsPanelField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.propsPanelLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.propsPanelValue {
+  font-family: ui-monospace, "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+/* ─── Slider ─── */
+.propsPanelSlider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 24px;
+  background: transparent;
+  cursor: pointer;
+  /* Разрешаем touch для drag */
+  touch-action: pan-x;
+  margin: 0;
+  padding: 0;
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+.propsPanelSlider::-webkit-slider-runnable-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  border: none;
+}
+
+.propsPanelSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3d7fff;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  margin-top: -7px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.1s;
+}
+
+.propsPanelSlider::-webkit-slider-thumb:hover,
+.propsPanelSlider::-webkit-slider-thumb:active {
+  transform: scale(1.15);
+  background: #4d8fff;
+}
+
+/* Firefox */
+.propsPanelSlider::-moz-range-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  border: none;
+}
+
+.propsPanelSlider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3d7fff;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.1s;
+}
+
+.propsPanelSlider::-moz-range-thumb:hover,
+.propsPanelSlider::-moz-range-thumb:active {
+  transform: scale(1.15);
+  background: #4d8fff;
+}
+
+.propsPanelSlider:focus {
+  outline: none;
+}
+
+.propsPanelSlider:focus::-webkit-slider-thumb {
+  box-shadow:
+    0 0 0 3px rgba(61, 127, 255, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.propsPanelSlider:focus::-moz-range-thumb {
+  box-shadow:
+    0 0 0 3px rgba(61, 127, 255, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* ─── Delete button at the bottom ─── */
+.propsPanelDeleteBtn {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  color: rgba(252, 165, 165, 0.9);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 4px;
+}
+
+.propsPanelDeleteBtn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.5);
+}

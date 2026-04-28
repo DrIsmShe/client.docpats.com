@@ -1,33 +1,34 @@
 // src/pages/simulation/components/editor/MeasurementsOverlay.jsx
 //
-// Canvas-слой поверх LandmarksOverlay. Рендерит:
-//   - линии для nasofrontal angle (G→N→P) и дугу с подписью
-//   - две линии для Goode's projection с числовым значением
-//   - линию между крыльями носа для alar base width
+// S.7.7+ — упрощённый рендер:
+//   • На canvas рисуются ТОЛЬКО геометрические элементы измерений:
+//     линии, дуги, тики. БЕЗ лейблов с числовыми значениями.
+//   • Все числовые значения отображаются в правой панели MeasurementsPanel.
+//   • Out-of-range подсвечивается КРАСНЫМ цветом линии (визуальный сигнал
+//     врачу что значение вне нормы), без лейбла на canvas.
 //
-// Использует тот же viewport ({scale, tx, ty}) что и SimulationCanvas.
+// Почему убраны лейблы:
+//   1. Smart-positioning логика выноса лейблов в боковой столбец
+//      пересекалась с UI-панелями слева/справа на desktop.
+//   2. Дублирование цифр (на canvas + в панели) визуально шумит.
+//   3. Чистый canvas = врач сосредоточен на лице, цифры читает в панели.
 
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
 import { useMeasurements } from "../../hooks/useMeasurements.js";
 import { selectVisibleMeasurements } from "../../store/simulationSlice.js";
-import { formatMeasurement } from "../../mediapipe/measurements.js";
 
 const COLOR_NASOFRONTAL = "#3d7fff";
 const COLOR_GOODE = "#22c55e";
 const COLOR_ALAR = "#f59e0b";
 const COLOR_OUT_OF_RANGE = "#ef4444";
 
-const LINE_WIDTH = 1.6;
+const LINE_WIDTH = 1.8;
 const ARC_RADIUS_PX = 28;
-const LABEL_FONT = "600 12px system-ui, -apple-system, sans-serif";
-const LABEL_BG = "rgba(15, 21, 40, 0.85)";
-const LABEL_TEXT = "#e2e8f0";
+const TICK_LEN = 6;
 
 /**
- * Преобразует нормализованную точку в screen-координаты.
- * viewport: { scale, tx, ty } — как в useZoomPan.
+ * Конвертирует normalized point (0..1) в screen-coordinates.
  */
 function toScreen(point, preview, viewport) {
   const scale = viewport?.scale ?? 1;
@@ -39,37 +40,10 @@ function toScreen(point, preview, viewport) {
   };
 }
 
-/**
- * Рисует labeled-плашку с текстом по центру указанной точки.
- */
-function drawLabel(ctx, text, cx, cy) {
-  ctx.font = LABEL_FONT;
-  const metrics = ctx.measureText(text);
-  const padX = 6;
-  const w = metrics.width + padX * 2;
-  const h = 18;
-
-  ctx.fillStyle = LABEL_BG;
-  // roundRect не везде поддержан, fallback на простой rect
-  if (typeof ctx.roundRect === "function") {
-    ctx.beginPath();
-    ctx.roundRect(cx - w / 2, cy - h / 2, w, h, 4);
-    ctx.fill();
-  } else {
-    ctx.fillRect(cx - w / 2, cy - h / 2, w, h);
-  }
-
-  ctx.fillStyle = LABEL_TEXT;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(text, cx, cy);
-}
-
 export default function MeasurementsOverlay({ preview, viewport, canvasSize }) {
-  const { t } = useTranslation("Simulation");
   const canvasRef = useRef(null);
   const visible = useSelector(selectVisibleMeasurements);
-  const { measurements, calibration, imageWidth } = useMeasurements();
+  const { measurements } = useMeasurements();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -91,85 +65,78 @@ export default function MeasurementsOverlay({ preview, viewport, canvasSize }) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, width, height);
 
-    // ─── Nasofrontal angle ─────────────────────────────────────
+    /* ─── Nasofrontal angle ─── */
     if (visible.nasofrontalAngle && measurements.nasofrontalAngle) {
-      const { value, points, inNormalRange } = measurements.nasofrontalAngle;
-      const G = toScreen(points.glabella, preview, viewport);
-      const N = toScreen(points.nasion, preview, viewport);
-      const P = toScreen(points.pronasale, preview, viewport);
-      const color = inNormalRange ? COLOR_NASOFRONTAL : COLOR_OUT_OF_RANGE;
+      const m = measurements.nasofrontalAngle;
+      const G = toScreen(m.points.glabella, preview, viewport);
+      const N = toScreen(m.points.nasion, preview, viewport);
+      const P = toScreen(m.points.pronasale, preview, viewport);
 
+      const color = m.inNormalRange ? COLOR_NASOFRONTAL : COLOR_OUT_OF_RANGE;
       ctx.strokeStyle = color;
       ctx.lineWidth = LINE_WIDTH;
+      ctx.setLineDash([]);
 
-      // Линии G→N и N→P
+      // Two segments: glabella → nasion → pronasale
       ctx.beginPath();
       ctx.moveTo(G.x, G.y);
       ctx.lineTo(N.x, N.y);
       ctx.lineTo(P.x, P.y);
       ctx.stroke();
 
-      // Дуга в вершине N
-      const angleToG = Math.atan2(G.y - N.y, G.x - N.x);
-      const angleToP = Math.atan2(P.y - N.y, P.x - N.x);
+      // Arc at vertex N (визуализация самого угла)
+      const a1 = Math.atan2(G.y - N.y, G.x - N.x);
+      const a2 = Math.atan2(P.y - N.y, P.x - N.x);
       ctx.beginPath();
-      ctx.arc(N.x, N.y, ARC_RADIUS_PX, angleToG, angleToP);
+      ctx.arc(N.x, N.y, ARC_RADIUS_PX, a1, a2);
       ctx.stroke();
-
-      // Подпись по биссектрисе
-      const bisector = (angleToG + angleToP) / 2;
-      const labelX = N.x + Math.cos(bisector) * (ARC_RADIUS_PX + 18);
-      const labelY = N.y + Math.sin(bisector) * (ARC_RADIUS_PX + 18);
-      drawLabel(ctx, formatMeasurement("angle", value).primary, labelX, labelY);
     }
 
-    // ─── Goode's tip projection ────────────────────────────────
+    /* ─── Goode tip projection ─── */
     if (visible.goodeProjection && measurements.goodeProjection) {
-      const { value, tipLine, nasionLine, inNormalRange } =
-        measurements.goodeProjection;
-      const color = inNormalRange ? COLOR_GOODE : COLOR_OUT_OF_RANGE;
+      const m = measurements.goodeProjection;
+      const tipFrom = toScreen(m.tipLine.from, preview, viewport);
+      const tipTo = toScreen(m.tipLine.to, preview, viewport);
+      const nasFrom = toScreen(m.nasionLine.from, preview, viewport);
+      const nasTo = toScreen(m.nasionLine.to, preview, viewport);
 
-      const tipFrom = toScreen(tipLine.from, preview, viewport);
-      const tipTo = toScreen(tipLine.to, preview, viewport);
-      const nasFrom = toScreen(nasionLine.from, preview, viewport);
-      const nasTo = toScreen(nasionLine.to, preview, viewport);
-
+      const color = m.inNormalRange ? COLOR_GOODE : COLOR_OUT_OF_RANGE;
       ctx.strokeStyle = color;
       ctx.lineWidth = LINE_WIDTH;
 
+      // Tip line (solid)
       ctx.setLineDash([]);
       ctx.beginPath();
       ctx.moveTo(tipFrom.x, tipFrom.y);
       ctx.lineTo(tipTo.x, tipTo.y);
       ctx.stroke();
 
+      // Nasion line (dashed — это «эталонная» линия для сравнения)
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
       ctx.moveTo(nasFrom.x, nasFrom.y);
       ctx.lineTo(nasTo.x, nasTo.y);
       ctx.stroke();
       ctx.setLineDash([]);
-
-      const cx = (tipFrom.x + tipTo.x) / 2;
-      const cy = (tipFrom.y + tipTo.y) / 2;
-      drawLabel(ctx, formatMeasurement("ratio", value).primary, cx, cy);
     }
 
-    // ─── Alar base width ───────────────────────────────────────
+    /* ─── Alar base width ─── */
     if (visible.alarBaseWidth && measurements.alarBaseWidth) {
-      const { value, points } = measurements.alarBaseWidth;
-      const L = toScreen(points.left, preview, viewport);
-      const R = toScreen(points.right, preview, viewport);
+      const m = measurements.alarBaseWidth;
+      const L = toScreen(m.points.left, preview, viewport);
+      const R = toScreen(m.points.right, preview, viewport);
 
       ctx.strokeStyle = COLOR_ALAR;
       ctx.lineWidth = LINE_WIDTH;
+      ctx.setLineDash([]);
 
+      // Main horizontal line
       ctx.beginPath();
       ctx.moveTo(L.x, L.y);
       ctx.lineTo(R.x, R.y);
       ctx.stroke();
 
-      const tickLen = 6;
+      // Perpendicular ticks at both ends
       const dx = R.x - L.x;
       const dy = R.y - L.y;
       const len = Math.hypot(dx, dy) || 1;
@@ -177,32 +144,13 @@ export default function MeasurementsOverlay({ preview, viewport, canvasSize }) {
       const ny = dx / len;
 
       ctx.beginPath();
-      ctx.moveTo(L.x + nx * tickLen, L.y + ny * tickLen);
-      ctx.lineTo(L.x - nx * tickLen, L.y - ny * tickLen);
-      ctx.moveTo(R.x + nx * tickLen, R.y + ny * tickLen);
-      ctx.lineTo(R.x - nx * tickLen, R.y - ny * tickLen);
+      ctx.moveTo(L.x + nx * TICK_LEN, L.y + ny * TICK_LEN);
+      ctx.lineTo(L.x - nx * TICK_LEN, L.y - ny * TICK_LEN);
+      ctx.moveTo(R.x + nx * TICK_LEN, R.y + ny * TICK_LEN);
+      ctx.lineTo(R.x - nx * TICK_LEN, R.y - ny * TICK_LEN);
       ctx.stroke();
-
-      const cx = (L.x + R.x) / 2;
-      const cy = (L.y + R.y) / 2 - 12;
-      const formatted = formatMeasurement(
-        "distance",
-        value,
-        calibration,
-        imageWidth,
-      );
-      drawLabel(ctx, formatted.primary, cx, cy);
     }
-  }, [
-    measurements,
-    visible,
-    preview,
-    viewport,
-    canvasSize,
-    calibration,
-    imageWidth,
-    t,
-  ]);
+  }, [measurements, visible, preview, viewport, canvasSize]);
 
   return (
     <canvas

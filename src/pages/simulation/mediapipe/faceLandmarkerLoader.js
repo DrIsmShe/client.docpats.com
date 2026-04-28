@@ -17,6 +17,22 @@ let landmarkerPromise = null;
  * Ленивая инициализация FaceLandmarker.
  * Возвращает один и тот же промис при повторных вызовах.
  *
+ * Тонкости конфига:
+ *  • minFaceDetectionConfidence: 0.2 — низкий порог для поддержки
+ *    профильных и ¾-ракурсов. На frontal модель всё равно даёт >0.95,
+ *    а на профиле часто 0.2–0.4. Если ставить 0.5 (default) — половина
+ *    профильных фото детектируется как «лица нет».
+ *
+ *  • minFacePresenceConfidence: 0.2 — тот же принцип, но для tracking
+ *    качества внутренней геометрии. На статичных фото влияет минимально.
+ *
+ *  • numFaces: 2 — для случаев когда на фото два лица (before/after
+ *    в одном кадре). MediaPipe выберет наиболее уверенное, которое
+ *    уже в useFaceDetection берётся как face[0].
+ *
+ *  • delegate: "GPU" — MediaPipe сам fallback'нется на CPU если WebGL
+ *    недоступен, не нужно явно обрабатывать.
+ *
  * @returns {Promise<FaceLandmarker>}
  */
 export function loadFaceLandmarker() {
@@ -31,14 +47,14 @@ export function loadFaceLandmarker() {
         {
           baseOptions: {
             modelAssetPath: MODEL_CDN,
-            delegate: "GPU", // fallback на CPU происходит автоматически
+            delegate: "GPU",
           },
-          runningMode: "IMAGE", // для editor'а — одиночные снимки
-          numFaces: 1, // в ринопластике всегда одно лицо
+          runningMode: "IMAGE",
+          numFaces: 2,
           outputFaceBlendshapes: false,
           outputFacialTransformationMatrixes: false,
-          minFaceDetectionConfidence: 0.5,
-          minFacePresenceConfidence: 0.5,
+          minFaceDetectionConfidence: 0.2,
+          minFacePresenceConfidence: 0.2,
           minTrackingConfidence: 0.5,
         },
       );

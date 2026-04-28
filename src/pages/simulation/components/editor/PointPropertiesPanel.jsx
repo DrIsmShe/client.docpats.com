@@ -1,38 +1,46 @@
 // src/pages/simulation/components/editor/PointPropertiesPanel.jsx
+//
+// S.7.7+ — рендерится внутри правой колонки под MeasurementsPanel.
+// Стили перенесены в SimulationEditor.module.css → .propsPanel*
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./SimulationEditor.module.css";
 
-/* ──────────────────────────────────────────────────────────────────────────
-   Panel справа снизу с настройками выделенной точки.
-   Скрыт если нет selected.
-   ────────────────────────────────────────────────────────────────────────── */
-
-export default function PointPropertiesPanel({ point, onChange, onDelete }) {
+export default function PointPropertiesPanel({
+  point,
+  onChange,
+  onDelete,
+  inline = false,
+}) {
   const { t } = useTranslation("Simulation");
 
   if (!point) return null;
 
   const handleRadius = (e) => {
     const v = parseFloat(e.target.value);
-    onChange?.({ radius: v });
+    if (!Number.isNaN(v)) onChange?.({ radius: v });
   };
 
   const handleStrength = (e) => {
     const v = parseFloat(e.target.value);
-    onChange?.({ strength: v });
+    if (!Number.isNaN(v)) onChange?.({ strength: v });
   };
 
   return (
-    <div className={styles.propsPanel}>
+    <div
+      className={`${styles.propsPanel} ${inline ? styles.propsPanelInline : ""}`}
+    >
       <div className={styles.propsPanelHeader}>
-        <span>{t("points.propsTitle")}</span>
+        <span>
+          {t("points.propsTitle", { defaultValue: "Точка деформации" })}
+        </span>
         <button
           type="button"
           className={styles.propsPanelDelete}
           onClick={onDelete}
-          title={t("points.delete")}
-          aria-label={t("points.delete")}
+          title={t("points.delete", { defaultValue: "Удалить" })}
+          aria-label={t("points.delete", { defaultValue: "Удалить" })}
         >
           ×
         </button>
@@ -40,7 +48,7 @@ export default function PointPropertiesPanel({ point, onChange, onDelete }) {
 
       <label className={styles.propsPanelField}>
         <div className={styles.propsPanelLabel}>
-          <span>{t("points.radius")}</span>
+          <span>{t("points.radius", { defaultValue: "Радиус влияния" })}</span>
           <span className={styles.propsPanelValue}>
             {(point.radius * 100).toFixed(1)}%
           </span>
@@ -58,7 +66,7 @@ export default function PointPropertiesPanel({ point, onChange, onDelete }) {
 
       <label className={styles.propsPanelField}>
         <div className={styles.propsPanelLabel}>
-          <span>{t("points.strength")}</span>
+          <span>{t("points.strength", { defaultValue: "Сила" })}</span>
           <span className={styles.propsPanelValue}>
             {point.strength.toFixed(2)}
           </span>
@@ -74,7 +82,13 @@ export default function PointPropertiesPanel({ point, onChange, onDelete }) {
         />
       </label>
 
-      <div className={styles.propsPanelHint}>{t("points.hint")}</div>
+      <button
+        type="button"
+        className={styles.propsPanelDeleteBtn}
+        onClick={onDelete}
+      >
+        {t("points.delete", { defaultValue: "Удалить точку" })}
+      </button>
     </div>
   );
 }

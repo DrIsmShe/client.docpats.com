@@ -1,4 +1,11 @@
 // src/pages/simulation/components/editor/SimulationEditor.jsx
+//
+// S.7.7+ финальная версия:
+//   • Multi-face: switchFace, handleSwitchFace
+//   • Manual Landmark Wizard: useManualLandmarkWizard, ManualLandmarkWizard
+//   • Properties panel в правой колонке под Measurements
+//   • Rotation retry: rotationUsed проброшен в LandmarksPanel для бэджа
+
 import React, {
   useCallback,
   useRef,
@@ -18,6 +25,7 @@ import LandmarksOverlay from "./LandmarksOverlay.jsx";
 import LandmarksPanel from "./LandmarksPanel.jsx";
 import MeasurementsOverlay from "./MeasurementsOverlay.jsx";
 import MeasurementsPanel from "./MeasurementsPanel.jsx";
+import ManualLandmarkWizard from "./ManualLandmarkWizard.jsx";
 
 import { useZoomPan } from "../../hooks/useZoomPan.js";
 import { useCanvasImage } from "../../hooks/useCanvasImage.js";
@@ -26,6 +34,7 @@ import { useControlPoints } from "../../hooks/useControlPoints.js";
 import { useUndoRedo } from "../../hooks/useUndoRedo.js";
 import { useAutosave } from "../../hooks/useAutosave.js";
 import { useLandmarksDetection } from "../../hooks/useLandmarksDetection.js";
+import { useManualLandmarkWizard } from "../../hooks/useManualLandmarkWizard.js";
 
 import {
   computeFitViewport,
@@ -36,8 +45,6 @@ import {
 import {
   updatePlan,
   setCurrentControlPoints,
-  removeLandmark,
-  addManualLandmark,
 } from "../../store/simulationSlice.js";
 
 import styles from "./SimulationEditor.module.css";
@@ -117,7 +124,7 @@ const portalSheetStyle = {
   WebkitOverflowScrolling: "touch",
 };
 
-const mobileFabStyle = (side, color, hasNotification) => ({
+const mobileFabStyle = (side, color) => ({
   position: "absolute",
   bottom: 16,
   [side === "left" ? "insetInlineStart" : "insetInlineEnd"]: 16,
@@ -137,29 +144,11 @@ const mobileFabStyle = (side, color, hasNotification) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  position: "absolute",
 });
-
-const fabBadgeStyle = {
-  position: "absolute",
-  top: -2,
-  insetInlineEnd: -2,
-  background: "#a855f7",
-  color: "white",
-  fontSize: 10,
-  fontWeight: 700,
-  width: 18,
-  height: 18,
-  borderRadius: "50%",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  border: "2px solid #0f1420",
-};
 
 const mobileFab3rdStyle = {
   position: "absolute",
-  bottom: 84, // выше остальных FAB
+  bottom: 84,
   insetInlineEnd: 16,
   width: 48,
   height: 48,
@@ -241,8 +230,6 @@ export default function SimulationEditor({ plan }) {
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
   const [didInitialFit, setDidInitialFit] = useState(false);
 
-  const [landmarkEditMode, setLandmarkEditMode] = useState(null);
-  // mobileOpenPanel: null | 'landmarks' | 'measurements' | 'properties'
   const [mobileOpenPanel, setMobileOpenPanel] = useState(null);
 
   const handleSizeChange = useCallback((size) => {
@@ -332,11 +319,19 @@ export default function SimulationEditor({ plan }) {
   });
   historyRef.current = history;
 
-  const { isLoaderReady: landmarksLoaderReady, detect: redetectLandmarks } =
-    useLandmarksDetection({
-      imageUrl: plan?.photo?.url,
-      autoDetect: !plan?.landmarks || plan.landmarks.length === 0,
-    });
+  // Multi-face support + rotation retry
+  const {
+    isLoaderReady: landmarksLoaderReady,
+    detect: redetectLandmarks,
+    switchFace,
+    rotationUsed,
+  } = useLandmarksDetection({
+    imageUrl: plan?.photo?.url,
+    autoDetect: !plan?.landmarks || plan.landmarks.length === 0,
+  });
+
+  // S.7.7+ — Manual Landmark Wizard
+  const wizard = useManualLandmarkWizard();
 
   const onLandmarkClick = useCallback(
     (normPoint) => {
@@ -346,27 +341,13 @@ export default function SimulationEditor({ plan }) {
     [addPoint, isMobile],
   );
 
-  const onLandmarkRemove = useCallback(
-    (lmId) => {
-      dispatch(removeLandmark(lmId));
-    },
-    [dispatch],
-  );
-
-  const onAddManualLandmark = useCallback(
-    (norm) => {
-      dispatch(addManualLandmark(norm));
-    },
-    [dispatch],
-  );
-
   const prevPlanIdRef = useRef(planId);
   useEffect(() => {
     if (planId !== prevPlanIdRef.current) {
       syncFromExternal(plan?.controlPoints || []);
       history.replace(plan?.controlPoints || []);
       prevPlanIdRef.current = planId;
-      setLandmarkEditMode(null);
+      if (wizard.active) wizard.cancel();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [planId]);
@@ -375,6 +356,7 @@ export default function SimulationEditor({ plan }) {
     if (!preview) return;
     scheduleWarp(points);
   }, [preview, points, scheduleWarp]);
+
   useEffect(() => {
     return () => {
       autosaveRef.current?.forceSave();
@@ -404,6 +386,8 @@ export default function SimulationEditor({ plan }) {
 
   const onPointerDown = useCallback(
     (e) => {
+      if (wizard.active) return;
+
       if (e.button === 2) {
         if (draggingState.current) {
           e.preventDefault();
@@ -428,7 +412,7 @@ export default function SimulationEditor({ plan }) {
       }
       startPan(e);
     },
-    [mode, getPointerNorm, addPoint, startPan, releaseDrag],
+    [wizard.active, mode, getPointerNorm, addPoint, startPan, releaseDrag],
   );
 
   const onPointerMove = useCallback(
@@ -515,6 +499,19 @@ export default function SimulationEditor({ plan }) {
     if (mode === "select") setSelectedKey(null);
   }, [mode, setSelectedKey]);
 
+  const handleSwitchFace = useCallback(
+    (idx) => {
+      switchFace(idx);
+      if (isMobile) setMobileOpenPanel(null);
+    },
+    [switchFace, isMobile],
+  );
+
+  const handleStartManualWizard = useCallback(() => {
+    wizard.start();
+    if (isMobile) setMobileOpenPanel(null);
+  }, [wizard, isMobile]);
+
   useEffect(() => {
     const handler = (e) => {
       const target = e.target;
@@ -523,6 +520,11 @@ export default function SimulationEditor({ plan }) {
         target?.tagName === "TEXTAREA" ||
         target?.isContentEditable
       ) {
+        return;
+      }
+
+      if (e.key === "Escape" && wizard.active) {
+        wizard.cancel();
         return;
       }
 
@@ -551,7 +553,6 @@ export default function SimulationEditor({ plan }) {
         releaseDrag();
         setSelectedKey(null);
         setMode("select");
-        setLandmarkEditMode(null);
         if (isMobile) setMobileOpenPanel(null);
       }
     };
@@ -565,6 +566,7 @@ export default function SimulationEditor({ plan }) {
     setMode,
     releaseDrag,
     isMobile,
+    wizard,
   ]);
 
   const selectedPoint = useMemo(
@@ -572,15 +574,18 @@ export default function SimulationEditor({ plan }) {
     [points, selectedKey],
   );
 
-  /* ─── Когда выбрана точка на mobile — автоматически открываем properties */
   useEffect(() => {
-    if (isMobile && selectedPoint && mobileOpenPanel === null) {
+    if (
+      isMobile &&
+      selectedPoint &&
+      mobileOpenPanel === null &&
+      !wizard.active
+    ) {
       setMobileOpenPanel("properties");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedKey, isMobile]);
 
-  /* ─── Когда точка снимается с выбора — закрываем properties sheet */
   useEffect(() => {
     if (!selectedPoint && mobileOpenPanel === "properties") {
       setMobileOpenPanel(null);
@@ -615,6 +620,7 @@ export default function SimulationEditor({ plan }) {
       </div>
     );
   }
+
   return (
     <div
       className={styles.editorRoot}
@@ -638,10 +644,8 @@ export default function SimulationEditor({ plan }) {
         viewport={viewport}
         canvasSize={canvasSize}
         mode={mode}
-        landmarkEditMode={landmarkEditMode}
         onLandmarkClick={onLandmarkClick}
-        onLandmarkRemove={onLandmarkRemove}
-        onAddManualLandmark={onAddManualLandmark}
+        wizard={wizard}
       />
 
       <MeasurementsOverlay
@@ -678,15 +682,7 @@ export default function SimulationEditor({ plan }) {
         onFit={doFit}
       />
 
-      {/* Properties panel — ТОЛЬКО на desktop. На mobile показывается
-          через bottom sheet чтобы не перекрывал фото */}
-      {!isMobile && (
-        <PointPropertiesPanel
-          point={selectedPoint}
-          onChange={(patch) => selectedKey && updatePoint(selectedKey, patch)}
-          onDelete={() => selectedKey && deletePoint(selectedKey)}
-        />
-      )}
+      <ManualLandmarkWizard wizard={wizard} />
 
       {/* Desktop layout */}
       {!isMobile && (
@@ -695,13 +691,23 @@ export default function SimulationEditor({ plan }) {
             <LandmarksPanel
               onReDetect={redetectLandmarks}
               isLoaderReady={landmarksLoaderReady}
-              landmarkEditMode={landmarkEditMode}
-              onChangeEditMode={setLandmarkEditMode}
+              onSwitchFace={handleSwitchFace}
+              onStartManualWizard={handleStartManualWizard}
+              rotationUsed={rotationUsed}
             />
           </div>
 
           <div style={desktopRightPanelStyle(isTablet)}>
             <MeasurementsPanel />
+            {selectedPoint && (
+              <PointPropertiesPanel
+                point={selectedPoint}
+                onChange={(patch) =>
+                  selectedKey && updatePoint(selectedKey, patch)
+                }
+                onDelete={() => selectedKey && deletePoint(selectedKey)}
+              />
+            )}
           </div>
         </>
       )}
@@ -735,7 +741,6 @@ export default function SimulationEditor({ plan }) {
             {mobileOpenPanel === "measurements" ? "✕" : "📐"}
           </button>
 
-          {/* Третий FAB (фиолетовый) — появляется только когда есть выбранная точка */}
           {selectedPoint && (
             <button
               type="button"
@@ -758,8 +763,9 @@ export default function SimulationEditor({ plan }) {
             <LandmarksPanel
               onReDetect={redetectLandmarks}
               isLoaderReady={landmarksLoaderReady}
-              landmarkEditMode={landmarkEditMode}
-              onChangeEditMode={setLandmarkEditMode}
+              onSwitchFace={handleSwitchFace}
+              onStartManualWizard={handleStartManualWizard}
+              rotationUsed={rotationUsed}
             />
           </MobileBottomSheet>
 

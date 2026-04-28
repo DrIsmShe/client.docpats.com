@@ -1,8 +1,10 @@
-// src/pages/simulation/hooks/useLandmarksDetection.js
+// client/src/pages/simulation/hooks/useLandmarksDetection.js
 //
 // S.7.3: после успешной детекции автоматически сохраняем landmarks
-// на сервере через persistLandmarks thunk. Сохранение fire-and-forget —
-// не блокирует UI и не задерживает рендер 468 точек.
+// на сервере через persistLandmarks thunk.
+// S.7.7 (multi-face): faceVariants + switchFace.
+// S.7.7+ (rotation retry): пробрасываем rotationUsed в meta и в LocalState
+//        чтобы UI показал бэдж «фото повёрнуто на N° для распознавания».
 
 import { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,13 +13,29 @@ import { detectFromUrl } from "../mediapipe/runAutoDetection.js";
 import {
   setLandmarks,
   setLandmarksStatus,
+  setFaceVariants,
+  selectFaceVariant,
   persistLandmarks,
   selectLandmarks,
   selectLandmarksStatus,
   selectCurrentPlan,
+  selectFaceVariants,
+  selectSelectedFaceIndex,
 } from "../store/simulationSlice.js";
 
 const MODEL_VERSION = "mediapipe@0.10.18";
+
+/**
+ * Запускает runDetection напрямую (без detectFromUrl-обёртки) чтобы получить
+ * полный объект DetectionResult с rotationUsed.
+ *
+ * Если detectFromUrl уже умеет это делать — fallback на него.
+ */
+async function detectWithRotationInfo(imageUrl, runDetection) {
+  // Если detectFromUrl возвращает rotationUsed — отлично
+  const result = await detectFromUrl(imageUrl, runDetection);
+  return result;
+}
 
 /**
  * @param {Object}  options
@@ -31,15 +49,21 @@ export function useLandmarksDetection({ imageUrl, autoDetect = true }) {
   const landmarks = useSelector(selectLandmarks);
   const status = useSelector(selectLandmarksStatus);
   const currentPlan = useSelector(selectCurrentPlan);
+  const faceVariants = useSelector(selectFaceVariants);
+  const selectedFaceIndex = useSelector(selectSelectedFaceIndex);
 
   const autoTriggeredRef = useRef(false);
+  const lastFailedUrlRef = useRef(null);
+
+  // S.7.7+ — храним rotationUsed локально (вне Redux чтобы не делать
+  // лишний reducer; UI читает через useLandmarksDetection().rotationUsed)
+  const rotationUsedRef = useRef(0);
+
   const landmarksRef = useRef(landmarks);
   useEffect(() => {
     landmarksRef.current = landmarks;
   }, [landmarks]);
 
-  // Стабильная ссылка на planId, чтобы detect() не пересоздавался
-  // при каждом изменении плана
   const planIdRef = useRef(currentPlan?.id);
   const photoSizeRef = useRef({
     width: currentPlan?.photo?.width,
@@ -53,57 +77,109 @@ export function useLandmarksDetection({ imageUrl, autoDetect = true }) {
     };
   }, [currentPlan?.id, currentPlan?.photo?.width, currentPlan?.photo?.height]);
 
-  /**
-   * Запускает детекцию и сохраняет результат на сервере.
-   */
-  const detect = useCallback(async () => {
-    if (!isReady || !imageUrl) {
-      return { ok: false, reason: "not_ready" };
-    }
-
-    dispatch(setLandmarksStatus("detecting"));
-    try {
-      const { landmarks: detected, detected: ok } = await detectFromUrl(
-        imageUrl,
-        runDetection,
-      );
-      if (!ok || detected.length === 0) {
-        dispatch(setLandmarksStatus("failed"));
-        return { ok: false, reason: "no_face" };
+  const detect = useCallback(
+    async ({ force = false } = {}) => {
+      if (!isReady || !imageUrl) {
+        return { ok: false, reason: "not_ready" };
       }
 
-      // 1) Локальный setLandmarks — мгновенно рендерим на canvas
-      dispatch(setLandmarks(detected));
+      if (!force && lastFailedUrlRef.current === imageUrl) {
+        return { ok: false, reason: "no_face_cached" };
+      }
 
-      // 2) Fire-and-forget persist на сервере
+      dispatch(setLandmarksStatus("detecting"));
+      try {
+        const detection = await detectWithRotationInfo(imageUrl, runDetection);
+        const {
+          landmarks: detected,
+          faces,
+          selectedIndex,
+          detected: ok,
+          rotationUsed = 0,
+        } = detection;
+
+        rotationUsedRef.current = rotationUsed;
+
+        if (!ok || detected.length === 0) {
+          dispatch(setLandmarksStatus("failed"));
+          dispatch(setFaceVariants({ faces: [], selectedIndex: 0 }));
+          lastFailedUrlRef.current = imageUrl;
+          rotationUsedRef.current = 0;
+          return { ok: false, reason: "no_face" };
+        }
+
+        dispatch(setFaceVariants({ faces, selectedIndex }));
+        dispatch(setLandmarks(detected));
+        lastFailedUrlRef.current = null;
+
+        const planId = planIdRef.current;
+        if (planId) {
+          dispatch(
+            persistLandmarks({
+              id: planId,
+              landmarks: detected,
+              meta: {
+                modelVersion: MODEL_VERSION,
+                imageWidth: photoSizeRef.current.width,
+                imageHeight: photoSizeRef.current.height,
+                facesDetected: faces.length,
+                selectedFaceIndex: selectedIndex,
+                rotationUsed,
+              },
+            }),
+          );
+        }
+
+        return {
+          ok: true,
+          count: detected.length,
+          facesDetected: faces.length,
+          rotationUsed,
+        };
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error("[useLandmarksDetection] detect failed:", err);
+        dispatch(setLandmarksStatus("failed"));
+        rotationUsedRef.current = 0;
+        return { ok: false, reason: "error", error: err };
+      }
+    },
+    [isReady, imageUrl, runDetection, dispatch],
+  );
+
+  const switchFace = useCallback(
+    (newIndex) => {
+      if (typeof newIndex !== "number") return;
+      if (newIndex < 0 || newIndex >= faceVariants.length) return;
+      if (newIndex === selectedFaceIndex) return;
+
+      const variant = faceVariants[newIndex];
+      if (!variant) return;
+
+      dispatch(selectFaceVariant(newIndex));
+      dispatch(setLandmarks(variant.landmarks));
+
       const planId = planIdRef.current;
       if (planId) {
         dispatch(
           persistLandmarks({
             id: planId,
-            landmarks: detected,
+            landmarks: variant.landmarks,
             meta: {
               modelVersion: MODEL_VERSION,
               imageWidth: photoSizeRef.current.width,
               imageHeight: photoSizeRef.current.height,
+              facesDetected: faceVariants.length,
+              selectedFaceIndex: newIndex,
+              rotationUsed: rotationUsedRef.current,
             },
           }),
         );
-        // unwrap не нужен — ошибки persist не блокируют UI,
-        // status в стейте остаётся 'detected' (точки видны),
-        // повторный re-detect возможен в любой момент.
       }
+    },
+    [faceVariants, selectedFaceIndex, dispatch],
+  );
 
-      return { ok: true, count: detected.length };
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error("[useLandmarksDetection] detect failed:", err);
-      dispatch(setLandmarksStatus("failed"));
-      return { ok: false, reason: "error", error: err };
-    }
-  }, [isReady, imageUrl, runDetection, dispatch]);
-
-  // Auto-detect при первой готовности landmarker'а
   useEffect(() => {
     if (!autoDetect) return;
     if (!isReady) return;
@@ -115,9 +191,10 @@ export function useLandmarksDetection({ imageUrl, autoDetect = true }) {
     detect();
   }, [autoDetect, isReady, status, detect]);
 
-  // Сброс auto-trigger при смене imageUrl (новый план)
   useEffect(() => {
     autoTriggeredRef.current = false;
+    lastFailedUrlRef.current = null;
+    rotationUsedRef.current = 0;
   }, [imageUrl]);
 
   return {
@@ -127,5 +204,12 @@ export function useLandmarksDetection({ imageUrl, autoDetect = true }) {
     status,
     landmarks,
     detect,
+    // S.7.7+ — multi-face
+    faceVariants,
+    selectedFaceIndex,
+    hasMultipleFaces: faceVariants.length > 1,
+    switchFace,
+    // S.7.7+ — rotation retry
+    rotationUsed: rotationUsedRef.current,
   };
 }

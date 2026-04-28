@@ -1,10 +1,13 @@
 // src/pages/simulation/components/editor/LandmarksOverlay.jsx
 //
-// КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: точки рисуются ВСЕГДА, независимо от group-фильтра.
-// Group-фильтр теперь не скрывает а ПРИГЛУШАЕТ — точки отключённых групп
-// показываются мелким полупрозрачным серым. Это гарантирует что врач
-// видит все 478 точек, может работать с любой, и не теряет точку из-за
-// неудачного дефолта чекбокса.
+// S.7.7+ — добавлен wizard mode (Manual Landmark Wizard).
+// Когда wizardActive=true:
+//   • Все клики ловятся и передаются в wizard.handleClick
+//   • Авто-точки скрываются (рисуем разметку с нуля)
+//   • Уже размеченные wizard'ом точки рендерятся фиолетовыми кружками
+//     с номером (1-6)
+//
+// Когда wizardActive=false — поведение как раньше.
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useSelector } from "react-redux";
@@ -12,6 +15,7 @@ import {
   selectVisibleLandmarks,
   selectVisibleLandmarkGroups,
 } from "../../store/simulationSlice.js";
+import { ANCHOR_POINTS } from "../../mediapipe/canonicalAnchorPoints.js";
 
 const GROUP_COLORS = {
   face_oval: "#94a3b8",
@@ -32,7 +36,6 @@ const GROUP_COLORS = {
   other: "#cbd5e1",
 };
 
-// Цвет для приглушённых (отключённых группой) точек
 const DIMMED_COLOR = "rgba(148, 163, 184, 0.35)";
 
 const POINT_RADIUS = 1.8;
@@ -40,6 +43,11 @@ const POINT_RADIUS_DIMMED = 1.0;
 const POINT_RADIUS_HOVER = 5;
 const POINT_RADIUS_MANUAL = 3;
 const HIT_RADIUS_PX = 12;
+
+// Wizard markers
+const WIZARD_MARKER_RADIUS = 9;
+const WIZARD_MARKER_COLOR = "#a855f7";
+const WIZARD_MARKER_BORDER = "#ffffff";
 
 export default function LandmarksOverlay({
   preview,
@@ -50,15 +58,19 @@ export default function LandmarksOverlay({
   onLandmarkClick,
   onLandmarkRemove,
   onAddManualLandmark,
+  // S.7.7+ wizard
+  wizard,
 }) {
   const canvasRef = useRef(null);
-  const landmarks = useSelector(selectVisibleLandmarks); // все не-hidden
+  const landmarks = useSelector(selectVisibleLandmarks);
   const visibleGroups = useSelector(selectVisibleLandmarkGroups);
   const [hoveredId, setHoveredId] = useState(null);
 
+  const wizardActive = !!wizard?.active;
+
   const effectiveEditMode =
     landmarkEditMode || (mode === "add" ? "pick" : null);
-  const isInteractive = effectiveEditMode !== null;
+  const isInteractive = wizardActive || effectiveEditMode !== null;
 
   const norm2screen = useCallback(
     (lm) => {
@@ -73,8 +85,6 @@ export default function LandmarksOverlay({
     [viewport, preview],
   );
 
-  // Для hit-test тоже учитываем все точки (не только группы из чекбокса).
-  // Иначе клик по приглушённой точке не сработает — некомфортно.
   const hitTest = useCallback(
     (screenX, screenY) => {
       if (!landmarks || landmarks.length === 0) return null;
@@ -133,15 +143,47 @@ export default function LandmarksOverlay({
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, width, height);
 
+    /* ─── WIZARD MODE ─── */
+    if (wizardActive) {
+      // В wizard'е НЕ рисуем 478 авто-точек — только размеченные anchor'ы
+      const marked = wizard?.marked || {};
+      ANCHOR_POINTS.forEach((anchor, idx) => {
+        const point = marked[anchor.key];
+        if (!point) return;
+
+        const scale = viewport?.scale ?? 1;
+        const tx = viewport?.tx ?? 0;
+        const ty = viewport?.ty ?? 0;
+        const sx = point.x * preview.width * scale + tx;
+        const sy = point.y * preview.height * scale + ty;
+
+        // Фиолетовый круг
+        ctx.fillStyle = WIZARD_MARKER_COLOR;
+        ctx.beginPath();
+        ctx.arc(sx, sy, WIZARD_MARKER_RADIUS, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Белая обводка
+        ctx.strokeStyle = WIZARD_MARKER_BORDER;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Номер внутри (1-6)
+        ctx.fillStyle = WIZARD_MARKER_BORDER;
+        ctx.font = "700 11px system-ui, -apple-system, sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(String(idx + 1), sx, sy + 0.5);
+      });
+      return;
+    }
+
+    /* ─── NORMAL MODE ─── */
     if (!landmarks || landmarks.length === 0) return;
 
     const visibleSet = new Set(visibleGroups);
 
-    // ВАЖНО: рисуем ВСЕ точки, но в два прохода —
-    // сначала приглушённые (под слоем), потом яркие (поверх).
-    // Это даёт визуально аккуратный результат когда группы перекрываются.
-
-    // PASS 1: приглушённые (группа отключена в чекбоксе)
+    // PASS 1: приглушённые
     landmarks.forEach((lm) => {
       if (visibleSet.has(lm.group)) return;
       const { x: px, y: py } = norm2screen(lm);
@@ -190,12 +232,15 @@ export default function LandmarksOverlay({
     hoveredId,
     effectiveEditMode,
     norm2screen,
+    wizardActive,
+    wizard?.marked,
   ]);
 
   /* ────── Pointer ────── */
   const onMove = useCallback(
     (e) => {
       if (!isInteractive) return;
+      if (wizardActive) return; // в wizard hover не нужен
       const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -208,7 +253,7 @@ export default function LandmarksOverlay({
       const lm = hitTest(x, y);
       setHoveredId(lm?.id ?? null);
     },
-    [isInteractive, effectiveEditMode, hitTest],
+    [isInteractive, wizardActive, effectiveEditMode, hitTest],
   );
 
   const onLeave = useCallback(() => {
@@ -221,6 +266,13 @@ export default function LandmarksOverlay({
       const rect = e.currentTarget.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
+
+      // S.7.7+ — wizard mode перехватывает все клики
+      if (wizardActive) {
+        const norm = screenToNorm(x, y);
+        wizard.handleClick(norm);
+        return;
+      }
 
       if (effectiveEditMode === "addManual") {
         if (onAddManualLandmark) {
@@ -241,6 +293,8 @@ export default function LandmarksOverlay({
     },
     [
       isInteractive,
+      wizardActive,
+      wizard,
       effectiveEditMode,
       hitTest,
       screenToNorm,
@@ -252,7 +306,8 @@ export default function LandmarksOverlay({
 
   let cursor = "default";
   if (isInteractive) {
-    if (effectiveEditMode === "addManual") cursor = "crosshair";
+    if (wizardActive) cursor = "crosshair";
+    else if (effectiveEditMode === "addManual") cursor = "crosshair";
     else if (effectiveEditMode === "hide" && hoveredId) cursor = "not-allowed";
     else if (hoveredId) cursor = "crosshair";
   }
@@ -269,6 +324,8 @@ export default function LandmarksOverlay({
         top: 0,
         pointerEvents: isInteractive ? "auto" : "none",
         cursor,
+        // В wizard'е overlay поверх всего, чтобы клики не уходили на canvas
+        zIndex: wizardActive ? 15 : "auto",
       }}
       aria-hidden="true"
     />
