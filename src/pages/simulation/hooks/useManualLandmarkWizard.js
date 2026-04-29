@@ -4,7 +4,7 @@
 //
 // Состояние:
 //   • active: boolean — wizard сейчас идёт
-//   • currentStep: 0..ANCHOR_POINTS.length — какой anchor сейчас ставить
+//   • currentStep: 0..MANUAL_POINTS_COUNT — какой anchor сейчас ставить
 //   • marked: { [anchorKey]: { x, y } } — уже размеченные точки
 //
 // Workflow:
@@ -32,6 +32,11 @@ import { ANCHOR_POINTS } from "../mediapipe/canonicalAnchorPoints.js";
 import { fitLandmarksFromManualPoints } from "../mediapipe/manualLandmarkFit.js";
 
 const MODEL_VERSION = "manual_fit@v1";
+
+// S.7.7+ — Сколько точек требуется для завершения ручной разметки.
+// Раньше было ANCHOR_POINTS.length (6). Теперь — 1.
+// Используется первая anchor-точка из ANCHOR_POINTS.
+const MANUAL_POINTS_COUNT = 1;
 
 export function useManualLandmarkWizard() {
   const dispatch = useDispatch();
@@ -135,7 +140,7 @@ export function useManualLandmarkWizard() {
   const handleClick = useCallback(
     ({ x, y }) => {
       if (!active) return;
-      if (currentStep >= ANCHOR_POINTS.length) return;
+      if (currentStep >= MANUAL_POINTS_COUNT) return;
       if (typeof x !== "number" || typeof y !== "number") return;
 
       const anchor = ANCHOR_POINTS[currentStep];
@@ -149,8 +154,8 @@ export function useManualLandmarkWizard() {
       setMarked(next);
 
       const newStep = currentStep + 1;
-      if (newStep >= ANCHOR_POINTS.length) {
-        // Все anchor'ы размечены — финализируем
+      if (newStep >= MANUAL_POINTS_COUNT) {
+        // Все необходимые точки размечены — финализируем
         finishWith(next);
       } else {
         setCurrentStep(newStep);
@@ -161,7 +166,7 @@ export function useManualLandmarkWizard() {
 
   /* ─── Производные значения для UI ─── */
 
-  const totalSteps = ANCHOR_POINTS.length;
+  const totalSteps = MANUAL_POINTS_COUNT;
   const currentAnchor =
     active && currentStep < totalSteps ? ANCHOR_POINTS[currentStep] : null;
   const progressPercent = active
