@@ -5,6 +5,9 @@
 //   • Manual Landmark Wizard: useManualLandmarkWizard, ManualLandmarkWizard
 //   • Properties panel в правой колонке под Measurements
 //   • Rotation retry: rotationUsed проброшен в LandmarksPanel для бэджа
+//   • S.7.7+ FIX: wizard теперь создаёт ОДНОВРЕМЕННО landmark + control point
+//     на каждом клике (через onPointPlaced → addPoint), чтобы лицо реально
+//     деформировалось после ручной разметки.
 
 import React, {
   useCallback,
@@ -330,8 +333,20 @@ export default function SimulationEditor({ plan }) {
     autoDetect: !plan?.landmarks || plan.landmarks.length === 0,
   });
 
+  // S.7.7+ FIX — wizard вызывает addPoint при каждом клике, чтобы
+  // одновременно с landmark создавать control point на тех же координатах.
+  // Это позволяет лицу реально деформироваться после ручной разметки.
+  const handleWizardPointPlaced = useCallback(
+    (normPoint) => {
+      addPoint(normPoint);
+    },
+    [addPoint],
+  );
+
   // S.7.7+ — Manual Landmark Wizard
-  const wizard = useManualLandmarkWizard();
+  const wizard = useManualLandmarkWizard({
+    onPointPlaced: handleWizardPointPlaced,
+  });
 
   const onLandmarkClick = useCallback(
     (normPoint) => {
