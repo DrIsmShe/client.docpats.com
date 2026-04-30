@@ -15,15 +15,32 @@ import { loadPreviewImage } from "./imageLoader.js";
 
    КРИТИЧНО: НЕ используем loadPreviewImage здесь — она даунскейлит.
    Для export нужен full-res (или то, что backend положил в R2).
+
+   S.7.7+ FIX (cross-origin auth):
+   crossOrigin = "use-credentials" (а НЕ "anonymous"), потому что фото
+   обслуживается backend proxy /api/simulation/photos/proxy?key=... и
+   требует сессионную cookie. С "anonymous" cookie не отправляется,
+   backend возвращает 401, img.onerror срабатывает.
+
+   Backend (photoProxyController.js) отдаёт точный
+   Access-Control-Allow-Origin (не "*") и Access-Control-Allow-Credentials,
+   так что серверная сторона готова к use-credentials запросам.
    ────────────────────────────────────────────────────────────────────────── */
 
 async function loadFullResImage(url) {
   // Тот же код что loadPreviewImage но БЕЗ downscale — просто читаем как есть.
   const htmlImg = await new Promise((resolve, reject) => {
     const img = new Image();
-    img.crossOrigin = "anonymous";
+    // S.7.7+ FIX — use-credentials отправляет сессионную cookie,
+    // anonymous — НЕТ. Для backend proxy с auth обязательно первое.
+    img.crossOrigin = "use-credentials";
     img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error(`Failed to load full-res: ${url}`));
+    img.onerror = () =>
+      reject(
+        new Error(
+          `Failed to load full-res: ${url} (check session cookie / CORS)`,
+        ),
+      );
     img.src = url;
   });
 

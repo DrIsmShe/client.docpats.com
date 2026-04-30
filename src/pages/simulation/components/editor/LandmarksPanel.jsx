@@ -1,6 +1,7 @@
 // src/pages/simulation/components/editor/LandmarksPanel.jsx
 //
-// S.7.7+ финальная версия (с fallback'ом на чистый ручной режим):
+// S.7.7+ финальная версия (с fallback'ом на чистый ручной режим
+// и cleanup actions):
 //
 //   • Если auto-detect упал (status === "failed" / "error", либо завершился
 //     без landmarks) → header card с "Перерасчитать" полностью СКРЫВАЕТСЯ,
@@ -15,7 +16,13 @@
 //
 //   • Multi-face switcher и группы точек — без изменений.
 //
-//   • Бэдж rotation retry ("Фото было повёрнуто на N°") — без изменений.
+//   • Бэдж rotation retry — без изменений.
+//
+//   • S.7.7+ Cleanup actions block — три кнопки:
+//       ↶ Шаг назад            — alias для history.undo
+//       🗑 Удалить ручные      — bake current warp + удаление manual_wizard
+//       ⟲ Сбросить всё         — полный reset (bake → null, points → [])
+//     Видим только когда есть что отменять/удалять/сбрасывать.
 
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -206,12 +213,97 @@ const faceTabNumberStyle = {
   flexShrink: 0,
 };
 
+/* ────────────── S.7.7+ Cleanup actions — стиль ────────────── */
+const actionsBlockStyle = {
+  width: "100%",
+  boxSizing: "border-box",
+  background: "rgba(15, 21, 40, 0.5)",
+  border: "1px solid rgba(255, 255, 255, 0.08)",
+  borderRadius: 10,
+  padding: 14,
+  display: "flex",
+  flexDirection: "column",
+  gap: 10,
+};
+
+const actionsLabelStyle = {
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: "0.08em",
+  textTransform: "uppercase",
+  color: "#94a3b8",
+};
+
+const actionsRowStyle = {
+  display: "flex",
+  gap: 8,
+};
+
+const actionBtnBaseStyle = {
+  flex: 1,
+  minWidth: 0,
+  padding: "8px 10px",
+  background: "rgba(30, 41, 59, 0.7)",
+  border: "1px solid rgba(255, 255, 255, 0.1)",
+  color: "#cbd5e1",
+  borderRadius: 6,
+  fontSize: 11,
+  fontWeight: 500,
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: 6,
+  fontFamily: "inherit",
+  transition: "all 0.15s",
+};
+
+const actionBtnDisabledStyle = {
+  ...actionBtnBaseStyle,
+  opacity: 0.4,
+  cursor: "not-allowed",
+};
+
+const dangerBtnStyle = {
+  ...actionBtnBaseStyle,
+  width: "100%",
+  background: "rgba(239, 68, 68, 0.12)",
+  border: "1px solid rgba(239, 68, 68, 0.35)",
+  color: "#fca5a5",
+};
+
+const dangerBtnDisabledStyle = {
+  ...dangerBtnStyle,
+  opacity: 0.4,
+  cursor: "not-allowed",
+};
+
+const deleteManualBtnStyle = {
+  ...actionBtnBaseStyle,
+  background: "rgba(245, 158, 11, 0.12)",
+  border: "1px solid rgba(245, 158, 11, 0.35)",
+  color: "#fcd34d",
+};
+
+const deleteManualBtnDisabledStyle = {
+  ...deleteManualBtnStyle,
+  opacity: 0.4,
+  cursor: "not-allowed",
+};
+
 export default function LandmarksPanel({
   onReDetect,
   isLoaderReady,
   onSwitchFace,
   onStartManualWizard,
   rotationUsed = 0,
+  // S.7.7+ cleanup actions
+  onUndoStep,
+  canUndo = false,
+  onDeleteManualPoints,
+  hasManualWizardPoints = false,
+  onResetAll,
+  canResetAll = false,
 }) {
   const { t } = useTranslation("Simulation");
   const dispatch = useDispatch();
@@ -231,21 +323,10 @@ export default function LandmarksPanel({
   const hasLandmarks = landmarks.length > 0;
   const visibleCount = landmarks.filter((lm) => !lm.hidden).length;
 
-  // S.7.7+ — критерий "разметка ручная":
-  //   • явный source === "manual_fit", ИЛИ
-  //   • статус failed/idle с landmarks (значит автодетект упал, а точки
-  //     появились в результате последующего ручного wizard'а)
   const isManualFit =
     landmarksSource === "manual_fit" ||
     (hasLandmarks && (status === "failed" || status === "error"));
 
-  // Auto-detect упал:
-  //   • status === "failed" / "error" → явная ошибка
-  //   • либо detection прошёл, но не нашёл landmarks
-  //
-  // Условие НЕ требует !hasLandmarks — даже если есть точки от ручного
-  // wizard'а, мы всё равно считаем что auto-detect не удался и должны
-  // скрыть header card.
   const autoFailed =
     isLoaderReady &&
     !isDetecting &&
@@ -253,26 +334,17 @@ export default function LandmarksPanel({
       status === "error" ||
       (status === "detected" && !hasLandmarks));
 
-  // Header card (с "Перерасчитать") показываем только когда:
-  //   • auto-detect не упал
-  //   • разметка не помечена как ручная
-  // Иначе — полностью скрываем.
   const showAutoCard = !autoFailed && !isManualFit;
-
-  // Manual CTA "Разметить вручную" показываем когда:
-  //   • auto упал и landmarks ещё нет
   const showManualCTA = autoFailed && !isManualFit && !hasLandmarks;
-
-  // "Размечено вручную" + кнопка "Разметить заново" показываем когда:
-  //   • landmarks помечены как manual_fit, ИЛИ
-  //   • landmarks есть, но auto упал (значит они от прошлого wizard'а)
   const showManualMarked = isManualFit;
-
   const showRotationBadge = !isManualFit && hasLandmarks && rotationUsed > 0;
+
+  // Actions block виден если есть что-то отменять / удалять / сбрасывать.
+  const showActionsBlock = canUndo || hasManualWizardPoints || canResetAll;
 
   return (
     <div className={styles.panel}>
-      {/* ───── Header card (auto detect) — рендерим только если авто-детект работает ───── */}
+      {/* ───── Header card (auto detect) ───── */}
       {showAutoCard && (
         <div className={styles.headerCard}>
           <div className={styles.headerTop}>
@@ -384,9 +456,9 @@ export default function LandmarksPanel({
                 defaultValue: "Размечено вручную",
               })}
             </span>
-            <span style={sourceBadgeStyle}>
-              {hasLandmarks ? `${visibleCount}` : ""}
-            </span>
+            {hasLandmarks && (
+              <span style={sourceBadgeStyle}>{visibleCount}</span>
+            )}
           </div>
           <div style={manualHintStyle}>
             {t("manualLandmarks.cta.redoHint", {
@@ -406,7 +478,7 @@ export default function LandmarksPanel({
         </div>
       )}
 
-      {/* ───── Multi-face switcher — без изменений ───── */}
+      {/* ───── Multi-face switcher ───── */}
       {hasMultipleFaces && !isManualFit && (
         <div style={faceSwitcherCardStyle}>
           <h5 style={faceSwitcherTitleStyle}>
@@ -454,9 +526,68 @@ export default function LandmarksPanel({
         </div>
       )}
 
-      {/* ───── Groups card — показываем только при auto-mode с landmarks ─────
-              При ручной разметке (1 точка) фильтр групп бесполезен — там
-              всего одна точка, и группа всегда "manual" / "other". */}
+      {/* ───── S.7.7+ Cleanup actions ───── */}
+      {showActionsBlock && (
+        <div style={actionsBlockStyle}>
+          <div style={actionsLabelStyle}>
+            {t("actions.title", { defaultValue: "Действия" })}
+          </div>
+
+          <div style={actionsRowStyle}>
+            <button
+              type="button"
+              style={canUndo ? actionBtnBaseStyle : actionBtnDisabledStyle}
+              onClick={() => canUndo && onUndoStep?.()}
+              disabled={!canUndo}
+              title={t("actions.undoTitle", {
+                defaultValue: "Отменить последнее действие (Ctrl+Z)",
+              })}
+            >
+              <span aria-hidden="true">↶</span>
+              <span>{t("actions.undo", { defaultValue: "Шаг назад" })}</span>
+            </button>
+
+            <button
+              type="button"
+              style={
+                hasManualWizardPoints
+                  ? deleteManualBtnStyle
+                  : deleteManualBtnDisabledStyle
+              }
+              onClick={() => hasManualWizardPoints && onDeleteManualPoints?.()}
+              disabled={!hasManualWizardPoints}
+              title={t("actions.deleteManualTitle", {
+                defaultValue:
+                  "Удалить точки ручной разметки (результат сохранится)",
+              })}
+            >
+              <span aria-hidden="true">🗑</span>
+              <span>
+                {t("actions.deleteManual", {
+                  defaultValue: "Удалить ручные",
+                })}
+              </span>
+            </button>
+          </div>
+
+          <button
+            type="button"
+            style={canResetAll ? dangerBtnStyle : dangerBtnDisabledStyle}
+            onClick={() => canResetAll && onResetAll?.()}
+            disabled={!canResetAll}
+            title={t("actions.resetAllTitle", {
+              defaultValue: "Полный сброс к исходной фотографии",
+            })}
+          >
+            <span aria-hidden="true">⟲</span>
+            <span>
+              {t("actions.resetAll", { defaultValue: "Сбросить всё" })}
+            </span>
+          </button>
+        </div>
+      )}
+
+      {/* ───── Groups card ───── */}
       {hasLandmarks && !isManualFit && showAutoCard && (
         <div className={styles.groupsCard}>
           <div className={styles.cardLabel}>

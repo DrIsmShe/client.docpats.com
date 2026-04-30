@@ -22,6 +22,13 @@ import { useState, useCallback, useRef, useEffect } from "react";
    S.7.5: addPoint принимает второй аргумент с переопределением радиуса
    и силы. Это позволяет landmark-driven workflow создавать точки с
    мягкими дефолтами, не трогая ручной workflow.
+
+   S.7.7+ (cleanup): addPoint принимает options.source — метку источника
+   создания точки (например "manual_wizard"). Хранится на point как
+   поле `source`. Используется для bulk-удаления по типу источника.
+   Также экспонируется commitPoints для внешних массовых мутаций
+   (delete-manual, reset-all) с прохождением через onCommit
+   (history + autosave + redux).
    ────────────────────────────────────────────────────────────────────────── */
 
 let keyCounter = 0;
@@ -69,8 +76,11 @@ export function useControlPoints({ initialPoints, onCommit }) {
 
   /* ────────── ADD ──────────
      Сигнатура: addPoint({x, y}, options?)
-     options = { radius?, strength? } — переопределяют дефолты.
-     Используется landmark-driven workflow: addPoint(landmarkNorm, { radius: 0.04, strength: 0.4 })
+     options = { radius?, strength?, source? }
+       • radius / strength — переопределяют дефолты (landmark-driven workflow)
+       • source            — метка источника создания точки
+                             (например "manual_wizard"), хранится на point
+                             в поле `source`. Используется для bulk-удаления.
   */
   const addPoint = useCallback(
     ({ x, y }, options = {}) => {
@@ -91,6 +101,13 @@ export function useControlPoints({ initialPoints, onCommit }) {
             ? options.strength
             : DEFAULT_POINT_STRENGTH,
       };
+
+      // Только если source явно передан — добавляем поле, иначе
+      // schema у старых точек остаётся такой же (без поля source).
+      if (options.source) {
+        newPoint.source = options.source;
+      }
+
       const next = [...pointsRef.current, newPoint];
       commit(next, { action: "add", key: newPoint.key });
       setSelectedKey(newPoint.key);
@@ -224,6 +241,11 @@ export function useControlPoints({ initialPoints, onCommit }) {
     endDragAnchor,
 
     syncFromExternal,
+
+    // S.7.7+ — массовые мутации с прохождением через onCommit
+    // (history + autosave + redux). Используется в SimulationEditor для
+    // delete-manual-points и reset-all.
+    commitPoints: commit,
   };
 }
 

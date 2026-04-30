@@ -5,9 +5,31 @@
 //   • Manual Landmark Wizard: useManualLandmarkWizard, ManualLandmarkWizard
 //   • Properties panel в правой колонке под Measurements
 //   • Rotation retry: rotationUsed проброшен в LandmarksPanel для бэджа
-//   • S.7.7+ FIX: wizard теперь создаёт ОДНОВРЕМЕННО landmark + control point
-//     на каждом клике (через onPointPlaced → addPoint), чтобы лицо реально
-//     деформировалось после ручной разметки.
+//
+//   • S.7.7+ FIX (manual point deformation): wizard создаёт ОДНОВРЕМЕННО
+//     landmark + control point на каждом клике. Control points от wizard'а
+//     помечаются source: "manual_wizard".
+//
+//   • S.7.7+ Cleanup actions:
+//       1. handleUndoStep            — alias для history.undo
+//       2. handleDeleteManualPoints  — «бейкает» текущий warp + удаляет
+//                                       manual_wizard точки. У оставшихся
+//                                       точек anchor = current (без
+//                                       двойной деформации).
+//       3. handleResetAll            — bake → null, points → [],
+//                                       история очищается.
+//
+//   • S.7.7+ FIX (bake fallback flicker):
+//     Раньше после bake'а через ~1сек картинка возвращалась к оригиналу.
+//     Причина: SimulationCanvas при отсутствии warpedImageData падает
+//     на `preview.bitmap` (оригинал, грузится один раз). Я подменял
+//     только preview.imageData, но не bitmap. Теперь:
+//       • bakedImageData → конвертируется в bakedBitmap через
+//         createImageBitmap (async)
+//       • effectivePreview.bitmap = bakedBitmap (когда готов)
+//       • любой canvas fallback идёт на бакнутую картинку, не оригинал
+//       • warpedImageData копируется перед bake (defensive copy против
+//         мутации буфера в WebWorker'е)
 
 import React, {
   useCallback,
@@ -51,6 +73,22 @@ import {
 } from "../../store/simulationSlice.js";
 
 import styles from "./SimulationEditor.module.css";
+
+const MANUAL_WIZARD_SOURCE = "manual_wizard";
+
+/**
+ * Глубокая копия ImageData. Защищает от ситуации когда warp engine
+ * переиспользует тот же буфер и перезаписывает его на следующем warp'е,
+ * мутируя нашу «зафиксированную» картинку.
+ */
+function cloneImageData(imageData) {
+  if (!imageData) return null;
+  return new ImageData(
+    new Uint8ClampedArray(imageData.data),
+    imageData.width,
+    imageData.height,
+  );
+}
 
 function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
@@ -225,8 +263,88 @@ export default function SimulationEditor({ plan }) {
     plan?.photo?.url,
   );
 
+  // ═══════════════════════════════════════════════════════════════════════
+  // S.7.7+ — Bake state (запечённая база после удаления ручных точек)
+  // ═══════════════════════════════════════════════════════════════════════
+  //
+  // bakedImageData — ImageData, подменяет preview.imageData как source warp'а
+  // bakedBitmap    — ImageBitmap, подменяет preview.bitmap для рендера
+  //                   в SimulationCanvas (когда warpedImageData отсутствует
+  //                   или engine ещё не дал output, canvas делает fallback
+  //                   на bitmap. БЕЗ этой подмены fallback падал на
+  //                   оригинальную фотку, и результат «исчезал».)
+
+  const [bakedImageData, setBakedImageData] = useState(null);
+  const [bakedBitmap, setBakedBitmap] = useState(null);
+
+  // Конвертируем bakedImageData → bakedBitmap асинхронно.
+  // createImageBitmap возвращает Promise<ImageBitmap>.
+  useEffect(() => {
+    if (!bakedImageData) {
+      setBakedBitmap((prev) => {
+        prev?.close?.();
+        return null;
+      });
+      return undefined;
+    }
+
+    let cancelled = false;
+    createImageBitmap(bakedImageData).then(
+      (bmp) => {
+        if (cancelled) {
+          bmp.close?.();
+          return;
+        }
+        setBakedBitmap((prev) => {
+          prev?.close?.();
+          return bmp;
+        });
+      },
+      (err) => {
+        // eslint-disable-next-line no-console
+        console.error("[SimulationEditor] Failed to create baked bitmap:", err);
+      },
+    );
+
+    return () => {
+      cancelled = true;
+    };
+  }, [bakedImageData]);
+
+  // Cleanup ImageBitmap'а при unmount, чтобы не утекала память.
+  useEffect(() => {
+    return () => {
+      bakedBitmap?.close?.();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Эффективный preview — с учётом баки.
+  // ВАЖНО: подменяются ОБА поля — imageData (для warp engine) и bitmap
+  // (для canvas fallback). Без подмены bitmap'а canvas рисовал оригинал
+  // когда warpedImageData отсутствовал → отсюда «исчезновение результата
+  // через секунду».
+  const effectivePreview = useMemo(() => {
+    if (!preview) return null;
+    if (!bakedImageData) return preview;
+    return {
+      ...preview,
+      imageData: bakedImageData,
+      // Пока bakedBitmap ещё не создан (createImageBitmap асинхронный),
+      // оставляем оригинал — это ~10-50мс окно, в котором warpedImageData
+      // обычно ещё не успел измениться.
+      bitmap: bakedBitmap || preview.bitmap,
+    };
+  }, [preview, bakedImageData, bakedBitmap]);
+
+  // Сбрасываем bake при смене плана (новая фотография — старая бака
+  // уже не релевантна).
+  useEffect(() => {
+    setBakedImageData(null);
+  }, [planId]);
+
   const { warpedImageData, isWarping, scheduleWarp } = useWarpEngine({
-    sourceImageData: preview?.imageData,
+    sourceImageData: effectivePreview?.imageData,
   });
 
   const canvasContainerRef = useRef(null);
@@ -302,6 +420,7 @@ export default function SimulationEditor({ plan }) {
     updateDragAnchor,
     endDragAnchor,
     syncFromExternal,
+    commitPoints,
   } = useControlPoints({
     initialPoints: plan?.controlPoints || [],
     onCommit,
@@ -333,17 +452,15 @@ export default function SimulationEditor({ plan }) {
     autoDetect: !plan?.landmarks || plan.landmarks.length === 0,
   });
 
-  // S.7.7+ FIX — wizard вызывает addPoint при каждом клике, чтобы
-  // одновременно с landmark создавать control point на тех же координатах.
-  // Это позволяет лицу реально деформироваться после ручной разметки.
+  // S.7.7+ — wizard вызывает addPoint при каждом клике, помечая точку
+  // как manual_wizard для возможности bulk-удаления потом.
   const handleWizardPointPlaced = useCallback(
     (normPoint) => {
-      addPoint(normPoint);
+      addPoint(normPoint, { source: MANUAL_WIZARD_SOURCE });
     },
     [addPoint],
   );
 
-  // S.7.7+ — Manual Landmark Wizard
   const wizard = useManualLandmarkWizard({
     onPointPlaced: handleWizardPointPlaced,
   });
@@ -368,15 +485,87 @@ export default function SimulationEditor({ plan }) {
   }, [planId]);
 
   useEffect(() => {
-    if (!preview) return;
+    if (!effectivePreview) return;
     scheduleWarp(points);
-  }, [preview, points, scheduleWarp]);
+  }, [effectivePreview, points, scheduleWarp]);
 
   useEffect(() => {
     return () => {
       autosaveRef.current?.forceSave();
     };
   }, []);
+
+  /* ════════════════ S.7.7+ Cleanup actions ════════════════ */
+
+  // Step-by-step undo (alias для history.undo, видимая кнопка).
+  const handleUndoStep = useCallback(() => {
+    historyRef.current?.undo();
+  }, []);
+
+  // Удалить только manual_wizard точки.
+  // Чтобы визуальный результат не пропал — берём текущий warpedImageData
+  // и делаем его новой базой (bake). У оставшихся точек anchor = current,
+  // чтобы избежать двойной деформации запечённой картинки.
+  const handleDeleteManualPoints = useCallback(() => {
+    const hasManual = points.some((p) => p.source === MANUAL_WIZARD_SOURCE);
+    if (!hasManual) return;
+
+    if (
+      !window.confirm(
+        t("manualLandmarks.confirmDelete", {
+          defaultValue:
+            "Удалить все точки ручной разметки?\n\nТекущий результат редактирования будет зафиксирован — изображение не изменится визуально.",
+        }),
+      )
+    ) {
+      return;
+    }
+
+    // 1. Бейкаем текущий warp как новую базу.
+    //    КРИТИЧНО — делаем глубокую копию ImageData, потому что warp engine
+    //    может переиспользовать тот же буфер (transferable WebWorker
+    //    или общий ArrayBuffer). Без копии следующий warp перезапишет
+    //    нашу зафиксированную картинку → визуально она «исчезнет».
+    if (warpedImageData) {
+      setBakedImageData(cloneImageData(warpedImageData));
+    }
+
+    // 2. Фильтруем manual точки. У оставшихся anchor = current, чтобы
+    //    они не пытались повторно деформировать уже запечённую картинку.
+    const remaining = points
+      .filter((p) => p.source !== MANUAL_WIZARD_SOURCE)
+      .map((p) => ({
+        ...p,
+        anchor: { ...p.current },
+      }));
+
+    // 3. Коммитим (history.push + autosave + redux)
+    commitPoints(remaining, { action: "delete-manual-points" });
+  }, [points, warpedImageData, commitPoints, t]);
+
+  // Полный сброс: bake → null, points → [], history очищается.
+  const handleResetAll = useCallback(() => {
+    const hasAnything = points.length > 0 || bakedImageData !== null;
+    if (!hasAnything) return;
+
+    if (
+      !window.confirm(
+        t("manualLandmarks.confirmResetAll", {
+          defaultValue:
+            "Сбросить ВСЕ правки и вернуться к исходной фотографии?\n\nЭто действие нельзя отменить.",
+        }),
+      )
+    ) {
+      return;
+    }
+
+    setBakedImageData(null);
+    commitPoints([], { action: "reset-all" });
+    historyRef.current?.replace([]);
+    setSelectedKey(null);
+  }, [points, bakedImageData, commitPoints, setSelectedKey, t]);
+
+  /* ════════════════ End cleanup actions ════════════════ */
 
   const draggingState = useRef(null);
 
@@ -392,11 +581,16 @@ export default function SimulationEditor({ plan }) {
 
   const getPointerNorm = useCallback(
     (evt, el) => {
-      if (!preview || !el) return null;
+      if (!effectivePreview || !el) return null;
       const imgPt = pointerToImage(evt, el, viewport);
-      return imageToNormalized(imgPt.x, imgPt.y, preview.width, preview.height);
+      return imageToNormalized(
+        imgPt.x,
+        imgPt.y,
+        effectivePreview.width,
+        effectivePreview.height,
+      );
     },
-    [preview, viewport],
+    [effectivePreview, viewport],
   );
 
   const onPointerDown = useCallback(
@@ -589,6 +783,15 @@ export default function SimulationEditor({ plan }) {
     [points, selectedKey],
   );
 
+  const hasManualWizardPoints = useMemo(
+    () => points.some((p) => p.source === MANUAL_WIZARD_SOURCE),
+    [points],
+  );
+  const canResetAll = useMemo(
+    () => points.length > 0 || bakedImageData !== null,
+    [points.length, bakedImageData],
+  );
+
   useEffect(() => {
     if (
       isMobile &&
@@ -644,7 +847,7 @@ export default function SimulationEditor({ plan }) {
       onContextMenu={onContextMenu}
     >
       <SimulationCanvas
-        preview={preview}
+        preview={effectivePreview}
         viewport={viewport}
         warpedImageData={warpedImageData}
         onWheel={handleWheel}
@@ -655,7 +858,7 @@ export default function SimulationEditor({ plan }) {
       />
 
       <LandmarksOverlay
-        preview={preview}
+        preview={effectivePreview}
         viewport={viewport}
         canvasSize={canvasSize}
         mode={mode}
@@ -664,14 +867,14 @@ export default function SimulationEditor({ plan }) {
       />
 
       <MeasurementsOverlay
-        preview={preview}
+        preview={effectivePreview}
         viewport={viewport}
         canvasSize={canvasSize}
       />
 
       <ControlPointLayer
         points={points}
-        preview={preview}
+        preview={effectivePreview}
         viewport={viewport}
         canvasSize={canvasSize}
         selectedKey={selectedKey}
@@ -709,6 +912,12 @@ export default function SimulationEditor({ plan }) {
               onSwitchFace={handleSwitchFace}
               onStartManualWizard={handleStartManualWizard}
               rotationUsed={rotationUsed}
+              onUndoStep={handleUndoStep}
+              canUndo={history.canUndo}
+              onDeleteManualPoints={handleDeleteManualPoints}
+              hasManualWizardPoints={hasManualWizardPoints}
+              onResetAll={handleResetAll}
+              canResetAll={canResetAll}
             />
           </div>
 
@@ -781,6 +990,12 @@ export default function SimulationEditor({ plan }) {
               onSwitchFace={handleSwitchFace}
               onStartManualWizard={handleStartManualWizard}
               rotationUsed={rotationUsed}
+              onUndoStep={handleUndoStep}
+              canUndo={history.canUndo}
+              onDeleteManualPoints={handleDeleteManualPoints}
+              hasManualWizardPoints={hasManualWizardPoints}
+              onResetAll={handleResetAll}
+              canResetAll={canResetAll}
             />
           </MobileBottomSheet>
 
@@ -813,10 +1028,11 @@ export default function SimulationEditor({ plan }) {
       )}
 
       <div className={styles.editorMeta}>
-        {preview.width}×{preview.height}
+        {effectivePreview.width}×{effectivePreview.height}
         {" · "}
         {t("list.controlPointsCount", { count: points.length })}
         {isWarping && " · ◌"}
+        {bakedImageData && " · ●"}
       </div>
     </div>
   );
