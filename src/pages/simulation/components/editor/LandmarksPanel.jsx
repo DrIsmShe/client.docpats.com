@@ -1,10 +1,21 @@
 // src/pages/simulation/components/editor/LandmarksPanel.jsx
 //
-// S.7.7+ финальная версия:
-//   • Корректно отрисованный multi-face switcher (inline styles, ничего
-//     не зависит от LandmarksPanel.module.css → не «съезжает»)
-//   • Краткий и понятный текст в CTA «Разметить вручную»
-//   • Бэдж rotation retry («Фото было повёрнуто на N°»)
+// S.7.7+ финальная версия (с fallback'ом на чистый ручной режим):
+//
+//   • Если auto-detect упал (status === "failed" / "error", либо завершился
+//     без landmarks) → header card с "Перерасчитать" полностью СКРЫВАЕТСЯ,
+//     остаётся только блок "Разметить вручную".
+//
+//   • Если landmarks помечены вручную (isManualFit) ИЛИ просто есть
+//     landmarks без явного auto-source → показывается блок "Размечено
+//     вручную" с кнопкой "Разметить заново" (повторный wizard).
+//
+//   • Если auto-detect работает корректно → ничего не меняется,
+//     показывается обычный auto card.
+//
+//   • Multi-face switcher и группы точек — без изменений.
+//
+//   • Бэдж rotation retry ("Фото было повёрнуто на N°") — без изменений.
 
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -219,114 +230,134 @@ export default function LandmarksPanel({
   const hasMultipleFaces = faceVariants.length > 1;
   const hasLandmarks = landmarks.length > 0;
   const visibleCount = landmarks.filter((lm) => !lm.hidden).length;
-  const isManualFit = landmarksSource === "manual_fit";
 
+  // S.7.7+ — критерий "разметка ручная":
+  //   • явный source === "manual_fit", ИЛИ
+  //   • статус failed/idle с landmarks (значит автодетект упал, а точки
+  //     появились в результате последующего ручного wizard'а)
+  const isManualFit =
+    landmarksSource === "manual_fit" ||
+    (hasLandmarks && (status === "failed" || status === "error"));
+
+  // Auto-detect упал:
+  //   • status === "failed" / "error" → явная ошибка
+  //   • либо detection прошёл, но не нашёл landmarks
+  //
+  // Условие НЕ требует !hasLandmarks — даже если есть точки от ручного
+  // wizard'а, мы всё равно считаем что auto-detect не удался и должны
+  // скрыть header card.
   const autoFailed =
-    !isDetecting &&
-    !hasLandmarks &&
     isLoaderReady &&
+    !isDetecting &&
     (status === "failed" ||
       status === "error" ||
-      status === "idle" ||
-      status === "detected");
+      (status === "detected" && !hasLandmarks));
+
+  // Header card (с "Перерасчитать") показываем только когда:
+  //   • auto-detect не упал
+  //   • разметка не помечена как ручная
+  // Иначе — полностью скрываем.
+  const showAutoCard = !autoFailed && !isManualFit;
+
+  // Manual CTA "Разметить вручную" показываем когда:
+  //   • auto упал и landmarks ещё нет
+  const showManualCTA = autoFailed && !isManualFit && !hasLandmarks;
+
+  // "Размечено вручную" + кнопка "Разметить заново" показываем когда:
+  //   • landmarks помечены как manual_fit, ИЛИ
+  //   • landmarks есть, но auto упал (значит они от прошлого wizard'а)
+  const showManualMarked = isManualFit;
 
   const showRotationBadge = !isManualFit && hasLandmarks && rotationUsed > 0;
 
   return (
     <div className={styles.panel}>
-      {/* ───── Header card ───── */}
-      <div className={styles.headerCard}>
-        <div className={styles.headerTop}>
-          <h4 className={styles.title}>
-            {t("landmarks.title", { defaultValue: "Анатомическая разметка" })}
-          </h4>
-          <span
-            className={`${styles.statusPill} ${styles[`status_${status}`]}`}
-            aria-live="polite"
-          >
-            <span className={styles.statusDot} />
-            {t(`landmarks.status.${status}`)}
-          </span>
-        </div>
+      {/* ───── Header card (auto detect) — рендерим только если авто-детект работает ───── */}
+      {showAutoCard && (
+        <div className={styles.headerCard}>
+          <div className={styles.headerTop}>
+            <h4 className={styles.title}>
+              {t("landmarks.title", { defaultValue: "Анатомическая разметка" })}
+            </h4>
+            <span
+              className={`${styles.statusPill} ${styles[`status_${status}`]}`}
+              aria-live="polite"
+            >
+              <span className={styles.statusDot} />
+              {t(`landmarks.status.${status}`)}
+            </span>
+          </div>
 
-        {hasLandmarks && (
-          <div className={styles.statsRow}>
-            <div className={styles.stat}>
-              <span className={styles.statValue}>{visibleCount}</span>
-              <span className={styles.statLabel}>
-                {t("landmarks.statsVisible", { defaultValue: "точек" })}
-              </span>
-            </div>
-            {isManualFit && (
-              <div style={{ alignSelf: "center" }}>
-                <span style={sourceBadgeStyle}>
-                  {t("landmarks.sourceManual", {
-                    defaultValue: "Ручной режим",
-                  })}
+          {hasLandmarks && (
+            <div className={styles.statsRow}>
+              <div className={styles.stat}>
+                <span className={styles.statValue}>{visibleCount}</span>
+                <span className={styles.statLabel}>
+                  {t("landmarks.statsVisible", { defaultValue: "точек" })}
                 </span>
               </div>
-            )}
-          </div>
-        )}
+            </div>
+          )}
 
-        {showRotationBadge && (
-          <div style={rotationBadgeStyle} role="status">
-            <span style={{ fontSize: 14, flexShrink: 0 }} aria-hidden="true">
-              🔄
-            </span>
-            <span>
-              {t("landmarks.rotationApplied", {
-                degrees: rotationUsed,
-                defaultValue: `Фото было автоматически повёрнуто на ${rotationUsed}° для распознавания`,
+          {showRotationBadge && (
+            <div style={rotationBadgeStyle} role="status">
+              <span style={{ fontSize: 14, flexShrink: 0 }} aria-hidden="true">
+                🔄
+              </span>
+              <span>
+                {t("landmarks.rotationApplied", {
+                  degrees: rotationUsed,
+                  defaultValue: `Фото было автоматически повёрнуто на ${rotationUsed}° для распознавания`,
+                })}
+              </span>
+            </div>
+          )}
+
+          {detectedAt && (
+            <div className={styles.subtleInfo}>
+              {t("landmarks.detectedAt", {
+                time: new Date(detectedAt).toLocaleTimeString(),
               })}
-            </span>
-          </div>
-        )}
+            </div>
+          )}
+          {!isLoaderReady && (
+            <div className={styles.subtleInfo}>
+              {t("landmarks.loaderLoading", {
+                defaultValue: "Загрузка модели…",
+              })}
+            </div>
+          )}
 
-        {detectedAt && (
-          <div className={styles.subtleInfo}>
-            {t("landmarks.detectedAt", {
-              time: new Date(detectedAt).toLocaleTimeString(),
-            })}
-          </div>
-        )}
-        {!isLoaderReady && (
-          <div className={styles.subtleInfo}>
-            {t("landmarks.loaderLoading", {
-              defaultValue: "Загрузка модели…",
-            })}
-          </div>
-        )}
+          <button
+            type="button"
+            className={styles.primaryBtn}
+            onClick={() => onReDetect?.({ force: true })}
+            disabled={!canRedetect}
+          >
+            {isDetecting
+              ? t("landmarks.detecting", { defaultValue: "Распознавание…" })
+              : t("landmarks.redetect", { defaultValue: "Перерасчитать" })}
+          </button>
+        </div>
+      )}
 
-        <button
-          type="button"
-          className={styles.primaryBtn}
-          onClick={() => onReDetect?.({ force: true })}
-          disabled={!canRedetect}
-        >
-          {isDetecting
-            ? t("landmarks.detecting", { defaultValue: "Распознавание…" })
-            : t("landmarks.redetect", { defaultValue: "Перерасчитать" })}
-        </button>
-      </div>
-
-      {/* ───── Manual wizard CTA — переписан с нуля для ясности ───── */}
-      {autoFailed && !isManualFit && (
+      {/* ───── Manual wizard CTA — авто упал, точек нет ───── */}
+      {showManualCTA && (
         <div style={manualBlockStyle}>
           <div style={manualHeaderStyle}>
             <span style={manualIconStyle} aria-hidden="true">
-              ⚠
+              ✏
             </span>
             <span>
               {t("manualLandmarks.cta.titleShort", {
-                defaultValue: "Автоматически не получается",
+                defaultValue: "Ручная разметка",
               })}
             </span>
           </div>
           <div style={manualHintStyle}>
             {t("manualLandmarks.cta.hintShort", {
               defaultValue:
-                "Не удалось определить точки автоматически. Разметьте лицо вручную — это займёт меньше минуты.",
+                "Расставьте точки на лице вручную — это займёт меньше минуты.",
             })}
           </div>
           <button
@@ -341,8 +372,8 @@ export default function LandmarksPanel({
         </div>
       )}
 
-      {/* Manual wizard: уже размечено — предложение перезапуска */}
-      {isManualFit && (
+      {/* ───── "Размечено вручную" — кнопка перезапуска wizard'а ───── */}
+      {showManualMarked && (
         <div style={manualBlockStyle}>
           <div style={manualHeaderStyle}>
             <span style={manualIconStyle} aria-hidden="true">
@@ -352,6 +383,9 @@ export default function LandmarksPanel({
               {t("manualLandmarks.cta.markedTitle", {
                 defaultValue: "Размечено вручную",
               })}
+            </span>
+            <span style={sourceBadgeStyle}>
+              {hasLandmarks ? `${visibleCount}` : ""}
             </span>
           </div>
           <div style={manualHintStyle}>
@@ -372,8 +406,8 @@ export default function LandmarksPanel({
         </div>
       )}
 
-      {/* ───── Multi-face switcher — переписан с inline стилями ───── */}
-      {hasMultipleFaces && (
+      {/* ───── Multi-face switcher — без изменений ───── */}
+      {hasMultipleFaces && !isManualFit && (
         <div style={faceSwitcherCardStyle}>
           <h5 style={faceSwitcherTitleStyle}>
             {t("landmarks.multiFace.title", {
@@ -420,8 +454,10 @@ export default function LandmarksPanel({
         </div>
       )}
 
-      {/* ───── Groups card ───── */}
-      {hasLandmarks && (
+      {/* ───── Groups card — показываем только при auto-mode с landmarks ─────
+              При ручной разметке (1 точка) фильтр групп бесполезен — там
+              всего одна точка, и группа всегда "manual" / "other". */}
+      {hasLandmarks && !isManualFit && showAutoCard && (
         <div className={styles.groupsCard}>
           <div className={styles.cardLabel}>
             {t("landmarks.groups.title", { defaultValue: "Группы точек" })}
