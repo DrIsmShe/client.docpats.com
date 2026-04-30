@@ -494,6 +494,8 @@ import PhotoAnnotationPage from "./pages/anthropometry/pages/PhotoAnnotationPage
 import ComparePage from "./pages/anthropometry/pages/ComparePage.jsx";
 import { PlanListPage, PlanEditorPage } from "./pages/simulation";
 import HelpPage from "./pages/simulation/pages/HelpPage.jsx";
+import SimulationHubPage from "./pages/simulation/pages/SimulationHubPage.jsx";
+import { BreastListPage, BreastEditorPage } from "./pages/simulation";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -543,9 +545,23 @@ function App() {
             </Route>
             {/* Здесь перечислены все маршруты для раздела ПОЛИКЛИНИКА */}
             <Route path="/dp" element={<MainPolyclinicLayout />}>
-              <Route path="simulation" element={<PlanListPage />} />
+              <Route path="simulation" element={<SimulationHubPage />} />
               <Route path="simulation/help" element={<HelpPage />} />
+              {/* Face — старый список и editor под /face */}
+              <Route path="simulation/face" element={<PlanListPage />} />
+              <Route
+                path="simulation/face/plans/:id"
+                element={<PlanEditorPage />}
+              />
+              {/* Backwards compat — старый URL /simulation/plans/:id */}
               <Route path="simulation/plans/:id" element={<PlanEditorPage />} />
+              {/* Breast — placeholder, реализуем в Phase 3B */}
+              <Route path="simulation/breast" element={<BreastListPage />} />
+              <Route
+                path="simulation/breast/plans/:id"
+                element={<BreastEditorPage />}
+              />
+
               <Route path="surgery" element={<SurgeryPage />} />
               <Route path="surgery/new" element={<SurgeryNewCase />} />
               <Route path="surgery/:id" element={<SurgeryCasePage />} />
