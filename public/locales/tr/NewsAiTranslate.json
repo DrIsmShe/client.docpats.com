@@ -212,22 +212,32 @@
     "category": "Kategori",
     "sorting": "Sıralama"
   },
-  "brand": "DocPats · Tıbbi İstihbarat",
   "articles_plural": "makale",
   "news_ai_news": "Tıbbi Bülten",
   "research_ai_news": "Doktor Makaleleri",
   "publications_ai_news": "Doktor Bakışı",
+
+  "brand": "DocPats · Medical Intelligence",
+  "welcome": "Hoş geldiniz",
   "nav": {
+    "becomeMember": "Giriş yap",
+    "dashboard": "Kişisel hesap",
+    "myProfile": "Profilim",
+    "signOut": "Çıkış yap",
     "newsLink": "Tıbbi haberler ve araştırmalar · güncel veriler",
     "back": "Haberler",
     "source": "Kaynak",
-    "becomeMember": "Üye Ol",
-    "dashboard": "Hesabım",
     "filters": {
       "all": "Tümü",
       "news": "Haberler",
       "research": "Araştırma"
     }
+  },
+  "role": {
+    "doctor": "Doktor",
+    "patient": "Hasta",
+    "admin": "Yönetici",
+    "radiologist": "Radyolog"
   },
   "types": {
     "research": "Araştırma",

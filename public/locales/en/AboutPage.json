@@ -1,0 +1,91 @@
+{
+  "topbar": {
+    "left": "DocPats · Medical Intelligence",
+    "right": "About the editorial team"
+  },
+  "nav": {
+    "back": "Home",
+    "tag": "About"
+  },
+  "hero": {
+    "label": "DocPats · Medical editorial team",
+    "headline": "About us",
+    "deck": "An independent medical editorial team led by a practising physician. All materials are based exclusively on peer-reviewed scientific sources."
+  },
+  "editor": {
+    "sectionTitle": "Editor-in-chief",
+    "avatar": "II",
+    "name": "Dr. Ismail Ismailov",
+    "title": "Editor-in-chief of DocPats · Otolaryngologist",
+    "bio": "Practising otolaryngologist and founder of the DocPats medical platform. Under his editorial leadership, all analytical materials on the platform are reviewed for compliance with current clinical data and evidence-based medicine standards.",
+    "profileLink": "Profile on DocPats →"
+  },
+  "mission": {
+    "sectionTitle": "Our mission",
+    "p1": "DocPats was created to give doctors and patients access to in-depth analysis of current medical and scientific data. We do not replace medical journals — we make their content accessible and applicable in practice.",
+    "p2": "Every DocPats analytical piece synthesises data from multiple peer-reviewed sources, giving the reader a comprehensive picture of current issues in medicine and the biological sciences."
+  },
+  "sources": {
+    "sectionTitle": "Sources we trust",
+    "items": [
+      {
+        "name": "PubMed / MEDLINE",
+        "desc": "U.S. National Library of Medicine"
+      },
+      {
+        "name": "The Lancet",
+        "desc": "One of the oldest medical journals in the world"
+      },
+      { "name": "NEJM", "desc": "New England Journal of Medicine" },
+      { "name": "PLOS Medicine", "desc": "Open peer-reviewed journal" },
+      { "name": "WHO", "desc": "World Health Organization" },
+      {
+        "name": "CDC",
+        "desc": "U.S. Centers for Disease Control and Prevention"
+      },
+      {
+        "name": "Frontiers in Medicine",
+        "desc": "International peer-reviewed journal"
+      },
+      { "name": "PeerJ", "desc": "Open scientific journal" }
+    ]
+  },
+  "policy": {
+    "sectionTitle": "Editorial policy",
+    "items": [
+      {
+        "num": "01",
+        "title": "Peer-reviewed sources only",
+        "text": "All materials are based on publications in peer-reviewed scientific journals. We do not use unverified sources, social media, or non-professional publications."
+      },
+      {
+        "num": "02",
+        "title": "Up-to-date data",
+        "text": "Priority is given to publications from the last 2-3 years. The publication date of each source is indicated for every topic."
+      },
+      {
+        "num": "03",
+        "title": "Editorial review",
+        "text": "All materials are reviewed by the editor-in-chief for compliance with clinical practice and current treatment standards."
+      },
+      {
+        "num": "04",
+        "title": "Transparency",
+        "text": "Every article ends with a list of all sources used, including direct links to the original publications."
+      },
+      {
+        "num": "05",
+        "title": "Independence",
+        "text": "DocPats does not accept funding from pharmaceutical companies and does not publish promotional content disguised as editorial material."
+      }
+    ]
+  },
+  "disclaimer": {
+    "title": "Medical disclaimer",
+    "text": "All DocPats materials are for informational and educational purposes only. They do not constitute medical advice, diagnosis, or treatment recommendations. For medical care, please consult a qualified specialist. Do not ignore professional medical advice or delay seeking care based on information read on this site."
+  },
+  "footer": {
+    "tag": "Medical Intelligence Platform",
+    "link": "Analytics →"
+  }
+}

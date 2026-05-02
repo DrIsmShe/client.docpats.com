@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "../../LanguageSwitcher";
 
 export default function Header({
@@ -13,9 +14,10 @@ export default function Header({
   setMenuOpen,
   locale,
   filters,
-  t,
-  i18n,
 }) {
+  // Header now owns its own translation namespace — no more t/i18n props
+  const { t, i18n } = useTranslation("NewsAiTranslate");
+
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
 
@@ -34,14 +36,16 @@ export default function Header({
     i18n.changeLanguage(e.target.value);
   };
 
+  const currentLocale = locale || i18n.language;
+
   const today = new Date().toLocaleDateString(
-    locale === "ar"
+    currentLocale === "ar"
       ? "ar-SA"
-      : locale === "tr"
+      : currentLocale === "tr"
         ? "tr-TR"
-        : locale === "az"
+        : currentLocale === "az"
           ? "az-AZ"
-          : locale === "ru"
+          : currentLocale === "ru"
             ? "ru-RU"
             : "en-GB",
     { day: "numeric", month: "long", year: "numeric" },
@@ -60,6 +64,10 @@ export default function Header({
       : `/patient/patient-profile/${user.userId}`
     : "#";
 
+  const roleLabel = userRole
+    ? t(`role.${userRole}`, { defaultValue: userRole })
+    : "";
+
   return (
     <>
       <style>{`
@@ -69,7 +77,9 @@ export default function Header({
 
       {/* TOP BAR */}
       <div className="nl-topbar">
-        <span className="nl-topbar-left">{t("brand")}</span>
+        <span className="nl-topbar-left">
+          {t("brand", { defaultValue: "DocPats · Medical Intelligence" })}
+        </span>
         <span className="nl-topbar-date">{today}</span>
       </div>
 
@@ -82,7 +92,7 @@ export default function Header({
               href="/public/news"
               style={{ color: "white" }}
             >
-              {t("nav.newsLink") || "Medical News"}
+              {t("nav.newsLink", { defaultValue: "Medical News" })}
             </a>
           </div>
 
@@ -152,7 +162,8 @@ export default function Header({
                     {(user.firstName || "?").charAt(0)}
                   </span>
                   <span style={{ textTransform: "none", letterSpacing: 0 }}>
-                    {t("welcome")}, {user.firstName}
+                    {t("welcome", { defaultValue: "Welcome" })},{" "}
+                    {user.firstName}
                   </span>
                   <i
                     className="bi bi-chevron-down"
@@ -205,7 +216,7 @@ export default function Header({
                           {user.email}
                         </div>
                       )}
-                      {userRole && (
+                      {roleLabel && (
                         <div
                           style={{
                             marginTop: 6,
@@ -216,7 +227,7 @@ export default function Header({
                             color: "#0f766e",
                           }}
                         >
-                          {userRole}
+                          {roleLabel}
                         </div>
                       )}
                     </div>
@@ -231,7 +242,7 @@ export default function Header({
                         className="bi bi-grid"
                         style={{ marginInlineEnd: 8 }}
                       />
-                      {t("nav.dashboard") || "Личный кабинет"}
+                      {t("nav.dashboard", { defaultValue: "Dashboard" })}
                     </a>
 
                     <a
@@ -244,7 +255,7 @@ export default function Header({
                         className="bi bi-person"
                         style={{ marginInlineEnd: 8 }}
                       />
-                      {t("my_profile") || "Мой профиль"}
+                      {t("nav.myProfile", { defaultValue: "My profile" })}
                     </a>
 
                     <button
@@ -268,14 +279,14 @@ export default function Header({
                         className="bi bi-box-arrow-right"
                         style={{ marginInlineEnd: 8 }}
                       />
-                      {t("sign_out") || "Выйти"}
+                      {t("nav.signOut", { defaultValue: "Sign out" })}
                     </button>
                   </div>
                 )}
               </div>
             ) : (
               <a href="/login" className="nl-btn-member">
-                {t("nav.becomeMember")}
+                {t("nav.becomeMember", { defaultValue: "Sign in" })}
               </a>
             )}
           </div>

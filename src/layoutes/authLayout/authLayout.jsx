@@ -1789,7 +1789,7 @@ export default function AuthLayout() {
                 <a className="dp-footer-link" href="#">
                   {t("footer.contact") || "Contact"}
                 </a>
-                <a className="dp-footer-link" href="/about">
+                <a className="dp-footer-link" href="/public/about">
                   О редакции|| "О редакции"
                 </a>
               </div>

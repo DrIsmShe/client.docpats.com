@@ -1,20 +1,37 @@
 import { Link } from "react-router-dom";
+import LanguageSwitcher from "../components/LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export default function AboutPage() {
+  const { t, i18n } = useTranslation("AboutPage");
+  const isRTL = i18n.language === "ar";
+
+  // Arrays from translation file (returnObjects required for nested arrays)
+  const sourcesRaw = t("sources.items", { returnObjects: true });
+  const policiesRaw = t("policy.items", { returnObjects: true });
+  const sources = Array.isArray(sourcesRaw) ? sourcesRaw : [];
+  const policies = Array.isArray(policiesRaw) ? policiesRaw : [];
+
   return (
     <>
       <style>{CSS}</style>
-      <div className="ab-page">
+      <div className="ab-page" dir={isRTL ? "rtl" : "ltr"}>
         {/* TOP BAR */}
         <div className="ab-topbar">
-          <span>DocPats · Medical Intelligence</span>
-          <span>О редакции</span>
+          <span>{t("topbar.left")}</span>
+          <span>{t("topbar.right")}</span>
         </div>
 
         {/* NAV */}
         <nav className="ab-nav">
           <Link to="/public/news" className="ab-nav-back">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
+              style={{ transform: isRTL ? "scaleX(-1)" : "none" }}
+            >
               <path
                 d="M10 3L5 8l5 5"
                 stroke="currentColor"
@@ -23,25 +40,24 @@ export default function AboutPage() {
                 strokeLinejoin="round"
               />
             </svg>
-            На главную
+            {t("nav.back")}
           </Link>
           <Link to="/public/news" className="ab-nav-logo">
             Doc<span>Pats</span>
           </Link>
-          <span className="ab-nav-tag">О редакции</span>
+          <div className="ab-nav-right">
+            <LanguageSwitcher />
+            <span className="ab-nav-tag">{t("nav.tag")}</span>
+          </div>
         </nav>
 
         {/* HERO */}
         <header className="ab-header">
           <div className="ab-header-inner">
-            <div className="ab-label">DocPats · Медицинская редакция</div>
-            <h1 className="ab-headline">О нас</h1>
+            <div className="ab-label">{t("hero.label")}</div>
+            <h1 className="ab-headline">{t("hero.headline")}</h1>
             <div className="ab-rule" />
-            <p className="ab-deck">
-              Независимая медицинская редакция под руководством практикующего
-              врача. Все материалы основаны исключительно на рецензируемых
-              научных источниках.
-            </p>
+            <p className="ab-deck">{t("hero.deck")}</p>
           </div>
         </header>
 
@@ -50,23 +66,15 @@ export default function AboutPage() {
           <div className="ab-main-inner">
             {/* EDITOR BLOCK */}
             <section className="ab-section">
-              <h2 className="ab-section-title">Главный редактор</h2>
+              <h2 className="ab-section-title">{t("editor.sectionTitle")}</h2>
               <div className="ab-editor-card">
-                <div className="ab-editor-avatar">ИИ</div>
+                <div className="ab-editor-avatar">{t("editor.avatar")}</div>
                 <div className="ab-editor-info">
-                  <div className="ab-editor-name">Д-р Исмаил Исмаилов</div>
-                  <div className="ab-editor-title">
-                    Главный редактор DocPats · Оториноларинголог
-                  </div>
-                  <p className="ab-editor-bio">
-                    Практикующий врач-оториноларинголог и основатель медицинской
-                    платформы DocPats. Под его редакторским руководством все
-                    аналитические материалы платформы проходят проверку на
-                    соответствие актуальным клиническим данным и стандартам
-                    доказательной медицины.
-                  </p>
+                  <div className="ab-editor-name">{t("editor.name")}</div>
+                  <div className="ab-editor-title">{t("editor.title")}</div>
+                  <p className="ab-editor-bio">{t("editor.bio")}</p>
                   <Link to="/public/news" className="ab-editor-profile">
-                    Профиль на DocPats →
+                    {t("editor.profileLink")}
                   </Link>
                 </div>
               </div>
@@ -74,53 +82,17 @@ export default function AboutPage() {
 
             {/* MISSION */}
             <section className="ab-section">
-              <h2 className="ab-section-title">Наша миссия</h2>
-              <p className="ab-text">
-                DocPats создан для того чтобы врачи и пациенты имели доступ к
-                глубокому анализу актуальных медицинских и научных данных. Мы не
-                заменяем медицинские журналы — мы делаем их содержание доступным
-                и применимым на практике.
-              </p>
-              <p className="ab-text">
-                Каждый аналитический материал DocPats синтезирует данные из
-                нескольких рецензируемых источников, предоставляя читателю
-                целостную картину по актуальным вопросам медицины и
-                биологических наук.
-              </p>
+              <h2 className="ab-section-title">{t("mission.sectionTitle")}</h2>
+              <p className="ab-text">{t("mission.p1")}</p>
+              <p className="ab-text">{t("mission.p2")}</p>
             </section>
 
             {/* SOURCES */}
             <section className="ab-section">
-              <h2 className="ab-section-title">
-                Источники которым мы доверяем
-              </h2>
+              <h2 className="ab-section-title">{t("sources.sectionTitle")}</h2>
               <div className="ab-sources-grid">
-                {[
-                  {
-                    name: "PubMed / MEDLINE",
-                    desc: "Национальная медицинская библиотека США",
-                  },
-                  {
-                    name: "The Lancet",
-                    desc: "Один из старейших медицинских журналов мира",
-                  },
-                  { name: "NEJM", desc: "New England Journal of Medicine" },
-                  {
-                    name: "PLOS Medicine",
-                    desc: "Открытый рецензируемый журнал",
-                  },
-                  {
-                    name: "WHO",
-                    desc: "Всемирная организация здравоохранения",
-                  },
-                  { name: "CDC", desc: "Центры по контролю заболеваний США" },
-                  {
-                    name: "Frontiers in Medicine",
-                    desc: "Международный рецензируемый журнал",
-                  },
-                  { name: "PeerJ", desc: "Открытый научный журнал" },
-                ].map((s) => (
-                  <div key={s.name} className="ab-source-item">
+                {sources.map((s, i) => (
+                  <div key={s.name || i} className="ab-source-item">
                     <div className="ab-source-name">{s.name}</div>
                     <div className="ab-source-desc">{s.desc}</div>
                   </div>
@@ -130,35 +102,9 @@ export default function AboutPage() {
 
             {/* EDITORIAL POLICY */}
             <section className="ab-section">
-              <h2 className="ab-section-title">Редакционная политика</h2>
+              <h2 className="ab-section-title">{t("policy.sectionTitle")}</h2>
               <div className="ab-policy-list">
-                {[
-                  {
-                    num: "01",
-                    title: "Только рецензируемые источники",
-                    text: "Все материалы основаны на публикациях в рецензируемых научных журналах. Мы не используем непроверенные источники, социальные сети или непрофессиональные издания.",
-                  },
-                  {
-                    num: "02",
-                    title: "Актуальность данных",
-                    text: "Приоритет отдаётся публикациям последних 2-3 лет. Для каждой темы указывается дата публикации источников.",
-                  },
-                  {
-                    num: "03",
-                    title: "Редакционная проверка",
-                    text: "Все материалы проходят проверку главным редактором на соответствие клинической практике и действующим стандартам лечения.",
-                  },
-                  {
-                    num: "04",
-                    title: "Прозрачность",
-                    text: "В конце каждой статьи указаны все использованные источники с прямыми ссылками на оригинальные публикации.",
-                  },
-                  {
-                    num: "05",
-                    title: "Независимость",
-                    text: "DocPats не принимает финансирование от фармацевтических компаний и не публикует рекламный контент под видом редакционных материалов.",
-                  },
-                ].map((p) => (
+                {policies.map((p) => (
                   <div key={p.num} className="ab-policy-item">
                     <div className="ab-policy-num">{p.num}</div>
                     <div className="ab-policy-body">
@@ -175,17 +121,9 @@ export default function AboutPage() {
               <div className="ab-disclaimer-icon">⚕</div>
               <div>
                 <div className="ab-disclaimer-title">
-                  Медицинский дисклеймер
+                  {t("disclaimer.title")}
                 </div>
-                <p className="ab-disclaimer-text">
-                  Все материалы DocPats носят исключительно информационный и
-                  образовательный характер. Они не являются медицинским советом,
-                  диагнозом или назначением лечения. Для получения медицинской
-                  помощи обратитесь к квалифицированному специалисту. Не
-                  игнорируйте профессиональный медицинский совет и не
-                  откладывайте обращение к врачу на основании информации,
-                  прочитанной на этом сайте.
-                </p>
+                <p className="ab-disclaimer-text">{t("disclaimer.text")}</p>
               </div>
             </section>
           </div>
@@ -197,9 +135,9 @@ export default function AboutPage() {
             <span className="ab-footer-logo">
               Doc<span>Pats</span>
             </span>
-            <span className="ab-footer-tag">Medical Intelligence Platform</span>
+            <span className="ab-footer-tag">{t("footer.tag")}</span>
             <Link to="/public/articles" className="ab-footer-link">
-              Аналитика →
+              {t("footer.link")}
             </Link>
           </div>
         </footer>
@@ -209,9 +147,9 @@ export default function AboutPage() {
 }
 
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&family=Noto+Naskh+Arabic:wght@400;500;700&family=Noto+Sans+Arabic:wght@300;400;500;600&display=swap');
 
-.ab-page*,.ab-page *::before,.ab-page *::after{box-sizing:border-box}
+.ab-page,.ab-page *,.ab-page *::before,.ab-page *::after{box-sizing:border-box}
 .ab-page{
   --paper:#f7f4ee;--paper2:#ede9e0;--ink:#1c1a16;--ink2:#3a3830;
   --muted:#7a7668;--rule:#cdc9bc;
@@ -221,6 +159,17 @@ const CSS = `
   background:var(--paper);min-height:100vh;color:var(--ink);
   font-family:var(--sans);-webkit-font-smoothing:antialiased;
 }
+
+/* RTL: switch fonts to Arabic-supporting families */
+.ab-page[dir="rtl"]{
+  --serif:'Noto Naskh Arabic','Amiri',Georgia,serif;
+  --sans:'Noto Sans Arabic','IBM Plex Sans',-apple-system,sans-serif;
+}
+.ab-page[dir="rtl"] .ab-nav-logo,
+.ab-page[dir="rtl"] .ab-footer-logo{
+  font-family:'Playfair Display',Georgia,serif!important;
+}
+
 .ab-topbar{
   background:var(--ink);color:#6a6660;padding:0 40px;height:32px;
   display:flex;align-items:center;justify-content:space-between;
@@ -230,7 +179,7 @@ const CSS = `
   position:sticky;top:0;z-index:200;background:var(--paper);
   border-bottom:3px double var(--ink);
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 40px;height:52px;
+  padding:0 40px;height:52px;gap:16px;
 }
 .ab-nav-back{
   display:flex;align-items:center;gap:6px;text-decoration:none;
@@ -244,6 +193,9 @@ const CSS = `
   color:var(--ink);text-decoration:none;
 }
 .ab-nav-logo span{color:#b83030}
+.ab-nav-right{
+  display:flex;align-items:center;gap:12px;
+}
 .ab-nav-tag{
   font-family:var(--mono);font-size:10px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--muted);
@@ -264,6 +216,9 @@ const CSS = `
   font-family:var(--serif);font-size:18px;font-style:italic;
   color:var(--ink2);line-height:1.65;margin:0;
 }
+/* Italic doesn't render well in Arabic — disable it */
+.ab-page[dir="rtl"] .ab-deck{font-style:normal;font-weight:400}
+
 .ab-main{padding:0}
 .ab-main-inner{max-width:860px;margin:0 auto;padding:56px 40px 80px}
 .ab-section{margin-bottom:56px;padding-bottom:56px;border-bottom:1px solid var(--rule)}
@@ -276,6 +231,8 @@ const CSS = `
   font-family:var(--sans);font-size:17px;font-weight:300;
   line-height:1.85;color:var(--ink2);margin:0 0 18px;
 }
+.ab-page[dir="rtl"] .ab-text{font-weight:400}
+
 .ab-editor-card{
   display:flex;gap:24px;align-items:flex-start;
   background:var(--paper2);border:1px solid var(--rule);
@@ -295,10 +252,27 @@ const CSS = `
   font-family:var(--mono);font-size:11px;letter-spacing:.06em;
   text-transform:uppercase;color:var(--muted);margin-bottom:14px;
 }
+/* Mono fonts don't include Arabic glyphs — fall back to sans */
+.ab-page[dir="rtl"] .ab-editor-title,
+.ab-page[dir="rtl"] .ab-nav-back,
+.ab-page[dir="rtl"] .ab-nav-tag,
+.ab-page[dir="rtl"] .ab-label,
+.ab-page[dir="rtl"] .ab-footer-tag,
+.ab-page[dir="rtl"] .ab-footer-link,
+.ab-page[dir="rtl"] .ab-editor-profile,
+.ab-page[dir="rtl"] .ab-topbar{
+  font-family:var(--sans);text-transform:none;letter-spacing:0;
+}
+
 .ab-editor-bio{
   font-family:var(--sans);font-size:15px;font-weight:300;
   line-height:1.75;color:var(--ink2);margin:0 0 16px;
 }
+.ab-page[dir="rtl"] .ab-editor-bio,
+.ab-page[dir="rtl"] .ab-policy-text,
+.ab-page[dir="rtl"] .ab-source-desc,
+.ab-page[dir="rtl"] .ab-disclaimer-text{font-weight:400}
+
 .ab-editor-profile{
   font-family:var(--mono);font-size:11px;letter-spacing:.08em;
   text-transform:uppercase;color:#b83030;text-decoration:none;
@@ -328,7 +302,8 @@ const CSS = `
 }
 .ab-policy-item:last-child{border-bottom:none}
 .ab-policy-num{
-  font-family:var(--mono);font-size:13px;font-weight:500;
+  font-family:'IBM Plex Mono','Courier New',monospace;
+  font-size:13px;font-weight:500;
   color:var(--muted);flex-shrink:0;width:32px;padding-top:2px;
 }
 .ab-policy-title{
@@ -343,6 +318,10 @@ const CSS = `
   display:flex;gap:20px;align-items:flex-start;
   background:var(--paper2);border:1px solid var(--rule);
   border-left:4px solid #b83030;padding:24px 28px;
+}
+.ab-page[dir="rtl"] .ab-disclaimer{
+  border-left:1px solid var(--rule);
+  border-right:4px solid #b83030;
 }
 .ab-disclaimer-icon{font-size:24px;flex-shrink:0;margin-top:2px}
 .ab-disclaimer-title{

@@ -1,0 +1,162 @@
+/* src/pages/simulation/standards/wizard/StandardsLandmarkWizardOverlay.module.css */
+
+/* Полупрозрачный layer для перехвата кликов поверх canvas */
+.clickLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  cursor: crosshair;
+  background: transparent;
+  /* Без backdrop-filter — врач должен видеть фото чётко */
+}
+
+/* SVG слой для уже поставленных точек — поверх clickLayer */
+.pointsLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 51;
+  pointer-events: none;
+}
+
+/* Floating instruction panel — bottom-center */
+.instructionPanel {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  min-width: 360px;
+  max-width: 480px;
+  background: rgba(15, 20, 32, 0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 16px 20px;
+  color: #e2e8f0;
+  font-size: 13px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.instructionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.stepBadge {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: monospace;
+  letter-spacing: 0.06em;
+  color: #93c5fd;
+  background: rgba(61, 127, 255, 0.15);
+  border: 1px solid rgba(61, 127, 255, 0.3);
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+.cancelBtn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.cancelBtn:hover {
+  color: #ef4444;
+}
+
+.promptText {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.progressBar {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+.progressDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s;
+}
+
+.progressDotDone {
+  border-color: #fff;
+}
+
+.progressDotActive {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #fff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.05);
+  }
+}
+
+.actionsRow {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.undoBtn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.undoBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.hintText {
+  font-size: 10px;
+  color: #64748b;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .instructionPanel {
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    transform: none;
+    min-width: auto;
+    max-width: none;
+  }
+}

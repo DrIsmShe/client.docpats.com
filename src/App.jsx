@@ -508,8 +508,6 @@ function App() {
           }}
         >
           <Routes>
-            <Route path="/about" element={<AboutPage />} />
-
             <Route path="/consultation" element={<ConsultationPage />} />
             <Route path="/user-synthesis" element={<UserSynthesisPage />} />
             <Route
@@ -521,6 +519,7 @@ function App() {
               element={<UserSynthesisResultPage />}
             />
             <Route path="/public" element={<DashboardLayout />}>
+              <Route path="about" element={<AboutPage />} />
               <Route path="articles" element={<SynthesisPage />} />
               <Route path="news/:slug" element={<NewsArticle />} />
               <Route path="articles/:id" element={<SynthesisArticlePage />} />

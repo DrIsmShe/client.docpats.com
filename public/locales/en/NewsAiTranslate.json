@@ -193,7 +193,17 @@
       "all": "All",
       "news": "News",
       "research": "Research"
-    }
+    },
+    "myProfile": "My profile",
+    "signOut": "Sign out"
+  },
+  "welcome": "Welcome",
+
+  "role": {
+    "doctor": "Doctor",
+    "patient": "Patient",
+    "admin": "Administrator",
+    "radiologist": "Radiologist"
   },
   "types": {
     "research": "Research",

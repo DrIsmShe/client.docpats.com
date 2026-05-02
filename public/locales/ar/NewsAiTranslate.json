@@ -1,4 +1,29 @@
 {
+  "welcome": "مرحباً",
+  "nav": {
+    "becomeMember": "تسجيل الدخول",
+    "dashboard": "لوحة التحكم",
+    "myProfile": "ملفي الشخصي",
+    "signOut": "تسجيل الخروج",
+    "all_articles": "جميع المقالات",
+    "analytics": "AI · التحليلات",
+    "newsLink": "الأخبار الطبية والأبحاث · أحدث البيانات",
+    "back": "الأخبار",
+    "source": "المصدر",
+    "filters": {
+      "all": "الكل",
+      "news": "أخبار",
+      "research": "بحوث"
+    }
+  },
+
+  "role": {
+    "doctor": "طبيب",
+    "patient": "مريض",
+    "admin": "مدير",
+    "radiologist": "أخصائي أشعة"
+  },
+
   "specialties": {
     "therapist": "الطب العام",
     "family_doctor": "طب الأسرة",
@@ -129,10 +154,7 @@
   "topbar": {
     "title": "DocPats · التحليل الذكي"
   },
-  "nav_ai": {
-    "all_articles": "جميع المقالات",
-    "analytics": "AI · التحليلات"
-  },
+
   "loading_ai": {
     "article": "جارٍ تحميل المقال…"
   },
@@ -222,18 +244,6 @@
   "news_ai_news": "ملخص طبي",
   "research_ai_news": "مقالات الأطباء",
   "publications_ai_news": "نظرة الطبيب",
-  "nav": {
-    "newsLink": "الأخبار الطبية والأبحاث · أحدث البيانات",
-    "back": "الأخبار",
-    "source": "المصدر",
-    "dashboard": "لوحة التحكم",
-    "becomeMember": "تسجيل الدخول",
-    "filters": {
-      "all": "الكل",
-      "news": "أخبار",
-      "research": "بحوث"
-    }
-  },
 
   "types": {
     "research": "بحث علمي",

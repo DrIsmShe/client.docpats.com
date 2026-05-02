@@ -1,0 +1,85 @@
+{
+  "topbar": {
+    "left": "DocPats · Medical Intelligence",
+    "right": "Redaksiya haqqında"
+  },
+  "nav": {
+    "back": "Ana səhifə",
+    "tag": "Haqqımızda"
+  },
+  "hero": {
+    "label": "DocPats · Tibbi redaksiya",
+    "headline": "Haqqımızda",
+    "deck": "Praktik bir həkimin rəhbərliyi altında müstəqil tibbi redaksiya. Bütün materiallar yalnız resenziyalı elmi mənbələrə əsaslanır."
+  },
+  "editor": {
+    "sectionTitle": "Baş redaktor",
+    "avatar": "İİ",
+    "name": "Dr. İsmayıl İsmayılov",
+    "title": "DocPats baş redaktoru · Otorinolarinqoloq",
+    "bio": "Praktik otorinolarinqoloq və DocPats tibbi platformasının təsisçisi. Onun redaktor rəhbərliyi altında platformanın bütün analitik materialları aktual klinik məlumatlara və sübuta əsaslanan tibb standartlarına uyğunluq baxımından yoxlanılır.",
+    "profileLink": "DocPats-dakı profil →"
+  },
+  "mission": {
+    "sectionTitle": "Missiyamız",
+    "p1": "DocPats, həkimlərin və xəstələrin aktual tibbi və elmi məlumatların dərin analizinə çıxış əldə etməsi üçün yaradılıb. Biz tibbi jurnalları əvəz etmirik — biz onların məzmununu əlçatan və praktikada tətbiq oluna bilən hala gətiririk.",
+    "p2": "Hər bir DocPats analitik materialı bir neçə resenziyalı mənbədən alınan məlumatları sintez edərək, oxucuya tibb və biologiya elmlərinin aktual məsələləri haqqında bütöv mənzərə təqdim edir."
+  },
+  "sources": {
+    "sectionTitle": "Etibar etdiyimiz mənbələr",
+    "items": [
+      { "name": "PubMed / MEDLINE", "desc": "ABŞ Milli Tibb Kitabxanası" },
+      {
+        "name": "The Lancet",
+        "desc": "Dünyanın ən qədim tibb jurnallarından biri"
+      },
+      { "name": "NEJM", "desc": "New England Journal of Medicine" },
+      { "name": "PLOS Medicine", "desc": "Açıq resenziyalı jurnal" },
+      { "name": "WHO", "desc": "Ümumdünya Səhiyyə Təşkilatı" },
+      { "name": "CDC", "desc": "ABŞ Xəstəliklərə Nəzarət Mərkəzləri" },
+      {
+        "name": "Frontiers in Medicine",
+        "desc": "Beynəlxalq resenziyalı jurnal"
+      },
+      { "name": "PeerJ", "desc": "Açıq elmi jurnal" }
+    ]
+  },
+  "policy": {
+    "sectionTitle": "Redaksiya siyasəti",
+    "items": [
+      {
+        "num": "01",
+        "title": "Yalnız resenziyalı mənbələr",
+        "text": "Bütün materiallar resenziyalı elmi jurnallarda dərc olunan nəşrlərə əsaslanır. Biz yoxlanılmamış mənbələrdən, sosial şəbəkələrdən və qeyri-peşəkar nəşrlərdən istifadə etmirik."
+      },
+      {
+        "num": "02",
+        "title": "Məlumatların aktuallığı",
+        "text": "Son 2-3 ilə aid nəşrlərə üstünlük verilir. Hər mövzu üçün mənbələrin nəşr tarixi göstərilir."
+      },
+      {
+        "num": "03",
+        "title": "Redaksiya yoxlanışı",
+        "text": "Bütün materiallar baş redaktor tərəfindən klinik təcrübəyə və qüvvədə olan müalicə standartlarına uyğunluq baxımından yoxlanılır."
+      },
+      {
+        "num": "04",
+        "title": "Şəffaflıq",
+        "text": "Hər məqalənin sonunda istifadə olunan bütün mənbələr orijinal nəşrlərə birbaşa keçidlərlə birlikdə göstərilir."
+      },
+      {
+        "num": "05",
+        "title": "Müstəqillik",
+        "text": "DocPats farmasevtik şirkətlərdən maliyyələşmə qəbul etmir və redaksiya materialları adı altında reklam məzmunu yayımlamır."
+      }
+    ]
+  },
+  "disclaimer": {
+    "title": "Tibbi məsuliyyətdən imtina",
+    "text": "DocPats-ın bütün materialları yalnız məlumat və təhsil xarakteri daşıyır. Onlar tibbi məsləhət, diaqnoz və ya müalicə təyinatı deyil. Tibbi yardım almaq üçün ixtisaslı mütəxəssisə müraciət edin. Peşəkar tibbi məsləhəti nəzərə almamaq və bu saytda oxuduğunuz məlumata əsaslanaraq həkimə müraciəti təxirə salmamaq vacibdir."
+  },
+  "footer": {
+    "tag": "Medical Intelligence Platform",
+    "link": "Analitika →"
+  }
+}

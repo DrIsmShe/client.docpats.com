@@ -1,4 +1,26 @@
 {
+  "welcome": "Xoş gəlmisiniz",
+  "nav": {
+    "becomeMember": "Daxil ol",
+    "dashboard": "Şəxsi kabinet",
+    "myProfile": "Profilim",
+    "signOut": "Çıxış",
+    "newsLink": "Tibbi xəbərlər və tədqiqatlar · son məlumatlar",
+    "back": "Xəbərlər",
+    "source": "Mənbə",
+    "filters": {
+      "all": "Hamısı",
+      "news": "Xəbərlər",
+      "research": "Tədqiqat"
+    }
+  },
+
+  "role": {
+    "doctor": "Həkim",
+    "patient": "Xəstə",
+    "admin": "Administrator",
+    "radiologist": "Radioloq"
+  },
   "specialties": {
     "therapist": "Terapiya",
     "family_doctor": "Ailə həkimi",
@@ -217,23 +239,12 @@
     "category": "Kateqoriya",
     "sorting": "Sıralama"
   },
-  "brand": "DocPats · Tibbi Kəşfiyyat",
+  "brand": "DocPats · Tibbi Kəşfiyyat · Medical Intelligence",
   "articles_plural": "məqalə",
   "news_ai_news": "Tibbi icmal",
   "research_ai_news": "Həkim məqalələri",
   "publications_ai_news": "Həkim baxışı ",
-  "nav": {
-    "newsLink": "Tibbi xəbərlər və tədqiqatlar · son məlumatlar",
-    "back": "Xəbərlər",
-    "source": "Mənbə",
-    "dashboard": "Şəxsi kabinet",
-    "becomeMember": "Daxil ol",
-    "filters": {
-      "all": "Hamısı",
-      "news": "Xəbərlər",
-      "research": "Tədqiqat"
-    }
-  },
+
   "types": {
     "research": "Tədqiqat",
     "news": "Xəbər",

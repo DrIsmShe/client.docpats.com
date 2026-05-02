@@ -1,0 +1,82 @@
+{
+  "topbar": {
+    "left": "DocPats · Medical Intelligence",
+    "right": "Editör ekibi hakkında"
+  },
+  "nav": {
+    "back": "Ana sayfa",
+    "tag": "Hakkımızda"
+  },
+  "hero": {
+    "label": "DocPats · Tıbbi yayın kurulu",
+    "headline": "Hakkımızda",
+    "deck": "Pratisyen bir hekim tarafından yönetilen bağımsız bir tıbbi yayın kurulu. Tüm içerikler yalnızca hakemli bilimsel kaynaklara dayanmaktadır."
+  },
+  "editor": {
+    "sectionTitle": "Genel yayın yönetmeni",
+    "avatar": "İİ",
+    "name": "Dr. İsmail İsmailov",
+    "title": "DocPats Genel Yayın Yönetmeni · Kulak Burun Boğaz Uzmanı",
+    "bio": "Pratisyen kulak burun boğaz uzmanı ve DocPats tıbbi platformunun kurucusu. Onun editöryal liderliği altında, platformdaki tüm analitik materyaller güncel klinik verilere ve kanıta dayalı tıp standartlarına uygunluk açısından incelenmektedir.",
+    "profileLink": "DocPats üzerindeki profil →"
+  },
+  "mission": {
+    "sectionTitle": "Misyonumuz",
+    "p1": "DocPats, hekimlerin ve hastaların güncel tıbbi ve bilimsel verilerin derinlemesine analizine erişmesini sağlamak için oluşturuldu. Tıbbi dergilerin yerini almıyoruz — onların içeriğini erişilebilir ve pratikte uygulanabilir hale getiriyoruz.",
+    "p2": "Her DocPats analitik materyali, birden fazla hakemli kaynaktan elde edilen verileri sentezleyerek, okuyucuya tıp ve biyolojik bilimlerdeki güncel konular hakkında bütünsel bir tablo sunar."
+  },
+  "sources": {
+    "sectionTitle": "Güvendiğimiz kaynaklar",
+    "items": [
+      { "name": "PubMed / MEDLINE", "desc": "ABD Ulusal Tıp Kütüphanesi" },
+      {
+        "name": "The Lancet",
+        "desc": "Dünyanın en eski tıp dergilerinden biri"
+      },
+      { "name": "NEJM", "desc": "New England Journal of Medicine" },
+      { "name": "PLOS Medicine", "desc": "Açık erişimli hakemli dergi" },
+      { "name": "WHO", "desc": "Dünya Sağlık Örgütü" },
+      { "name": "CDC", "desc": "ABD Hastalık Kontrol Merkezleri" },
+      { "name": "Frontiers in Medicine", "desc": "Uluslararası hakemli dergi" },
+      { "name": "PeerJ", "desc": "Açık erişimli bilimsel dergi" }
+    ]
+  },
+  "policy": {
+    "sectionTitle": "Yayın politikası",
+    "items": [
+      {
+        "num": "01",
+        "title": "Yalnızca hakemli kaynaklar",
+        "text": "Tüm içerikler hakemli bilimsel dergilerdeki yayınlara dayanmaktadır. Doğrulanmamış kaynakları, sosyal medyayı veya profesyonel olmayan yayınları kullanmıyoruz."
+      },
+      {
+        "num": "02",
+        "title": "Güncel veriler",
+        "text": "Son 2-3 yıla ait yayınlara öncelik verilmektedir. Her konu için kaynakların yayın tarihi belirtilir."
+      },
+      {
+        "num": "03",
+        "title": "Editöryal inceleme",
+        "text": "Tüm içerikler, klinik uygulamaya ve güncel tedavi standartlarına uygunluk açısından genel yayın yönetmeni tarafından incelenir."
+      },
+      {
+        "num": "04",
+        "title": "Şeffaflık",
+        "text": "Her makalenin sonunda, kullanılan tüm kaynaklar orijinal yayınlara doğrudan bağlantılarla birlikte belirtilir."
+      },
+      {
+        "num": "05",
+        "title": "Bağımsızlık",
+        "text": "DocPats ilaç şirketlerinden finansman kabul etmez ve editöryal içerik kılığında reklam içeriği yayınlamaz."
+      }
+    ]
+  },
+  "disclaimer": {
+    "title": "Tıbbi sorumluluk reddi",
+    "text": "DocPats'taki tüm içerikler yalnızca bilgilendirme ve eğitim amaçlıdır. Tıbbi tavsiye, tanı veya tedavi reçetesi niteliği taşımaz. Tıbbi yardım için lütfen kalifiye bir uzmana başvurun. Profesyonel tıbbi tavsiyeleri göz ardı etmeyin ve bu sitede okuduğunuz bilgilere dayanarak hekime başvurmayı ertelemeyin."
+  },
+  "footer": {
+    "tag": "Medical Intelligence Platform",
+    "link": "Analiz →"
+  }
+}
