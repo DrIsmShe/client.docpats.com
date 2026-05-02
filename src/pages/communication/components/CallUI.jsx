@@ -1,5 +1,22 @@
 import React, { useEffect, useRef } from "react";
 
+// ============================================================================
+// CallUI v5 — фикс невидимого видео
+// Изменения:
+//   • [v5-FIX 1] Добавлен `isolation: isolate` на .call-overlay — создаём
+//     чистый stacking context, чтобы z-index'ы не конфликтовали с внешним DOM.
+//   • [v5-FIX 2] Явные z-index'ы на ВСЕ слои (backdrop / video / dim / card / buttons / pip).
+//     Раньше backdrop с z-index:auto иногда перекрывал видео в зависимости от
+//     порядка в DOM — теперь порядок жёсткий.
+//   • [v5-FIX 3] GPU compositing для <video> (translateZ + will-change +
+//     backface-visibility) — форсит видео на отдельный compositor-слой,
+//     обходит баги CPU-рендера в некоторых сборках Chrome.
+//   • [v5-FIX 4] Замена `display: none` на `visibility: hidden + opacity: 0`
+//     для remote/local <video>. display:none ОСТАНАВЛИВАЕТ декодирование
+//     видео — после переключения в block нужно ждать новый I-frame, что
+//     приводит к чёрному экрану. visibility:hidden оставляет декодер активным.
+// ============================================================================
+
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
 
@@ -12,6 +29,8 @@ const styles = `
     justify-content: center;
     font-family: 'Nunito', sans-serif;
     animation: callFadeIn 0.3s ease;
+    /* [v5-FIX 1] чистый stacking context — z-index дочерних не утечёт наружу */
+    isolation: isolate;
   }
   @keyframes callFadeIn {
     from { opacity: 0; transform: scale(0.96); }
@@ -21,6 +40,8 @@ const styles = `
     position: absolute;
     inset: 0;
     background: linear-gradient(160deg, #0f2c3f 0%, #1a6b8a 50%, #0a1f2e 100%);
+    /* [v5-FIX 2] явный z-index самого нижнего слоя */
+    z-index: 0;
   }
   .call-remote-video {
     position: absolute;
@@ -28,8 +49,14 @@ const styles = `
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: 0;
     background: #000;
+    /* [v5-FIX 2] над backdrop, но под dim */
+    z-index: 1;
+    /* [v5-FIX 3] GPU compositing — обход багов рендера видео */
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transition: opacity 0.25s ease;
   }
   .call-video-dim {
     position: absolute;
@@ -41,14 +68,16 @@ const styles = `
       transparent 60%,
       rgba(0,0,0,0.55) 100%
     );
-    z-index: 1;
+    /* [v5-FIX 2] над видео */
+    z-index: 2;
     pointer-events: none;
   }
   .call-local-video-wrap {
     position: absolute;
     bottom: 130px;
     right: 20px;
-    z-index: 10;
+    /* [v5-FIX 2] picture-in-picture над всем медиа-слоем */
+    z-index: 4;
     border-radius: 14px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0,0,0,0.5);
@@ -57,14 +86,16 @@ const styles = `
     height: 160px;
     background: #111;
     cursor: pointer;
-    transition: transform 0.15s;
+    transition: transform 0.15s, opacity 0.25s;
   }
   .call-local-video-wrap:hover { transform: scale(1.04); }
   .call-local-video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transform: scaleX(-1);
+    transform: scaleX(-1) translateZ(0); /* [v5-FIX 3] GPU + зеркало */
+    will-change: transform;
+    backface-visibility: hidden;
   }
   .call-local-video-off {
     width: 100%;
@@ -78,7 +109,8 @@ const styles = `
   }
   .call-card {
     position: relative;
-    z-index: 2;
+    /* [v5-FIX 2] карточка с информацией — над видео и dim */
+    z-index: 3;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -179,7 +211,8 @@ const styles = `
     left: 50%;
     transform: translateX(-50%);
     margin-top: 0;
-    z-index: 11;
+    /* [v5-FIX 2] кнопки управления — самый верхний слой */
+    z-index: 5;
     background: rgba(0,0,0,0.35);
     backdrop-filter: blur(12px);
     padding: 14px 24px;
@@ -256,7 +289,7 @@ const styles = `
     bottom: 110px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 12;
+    z-index: 6;
     font-size: 12px;
     color: rgba(255,255,255,0.5);
     background: rgba(0,0,0,0.3);
@@ -363,6 +396,15 @@ export default function CallUI({
   const showLocalVideo =
     isVideoCall && callState === "active" && isVideoEnabled;
 
+  // [v5-FIX 4] вспомогательный объект — управляем видимостью через
+  // visibility/opacity, НЕ через display. display:none останавливает
+  // декодирование видео; visibility:hidden оставляет декодер активным.
+  const videoVisibilityStyle = (visible) => ({
+    visibility: visible ? "visible" : "hidden",
+    opacity: visible ? 1 : 0,
+    pointerEvents: visible ? "auto" : "none",
+  });
+
   return (
     <>
       <style>{styles}</style>
@@ -379,14 +421,15 @@ export default function CallUI({
       <div className={`call-overlay${showRemoteVideo ? " has-video" : ""}`}>
         <div className="call-backdrop" />
 
-        {/* remoteVideo: ВСЕГДА в DOM, muted — autoplay работает на мобиле */}
+        {/* [v5-FIX 4] remoteVideo: ВСЕГДА в DOM и ВСЕГДА декодирует. 
+            Скрываем через visibility/opacity, не через display:none */}
         <video
           ref={remoteVideoRef}
           autoPlay
           playsInline
           muted
           className="call-remote-video"
-          style={{ display: showRemoteVideo ? "block" : "none" }}
+          style={videoVisibilityStyle(showRemoteVideo)}
         />
         {showRemoteVideo && <div className="call-video-dim" />}
 
@@ -486,15 +529,15 @@ export default function CallUI({
           </div>
         </div>
 
-        {/* localVideo: ВСЕГДА в DOM при isVideoCall, скрыт до active */}
+        {/* [v5-FIX 4] localVideo: ВСЕГДА в DOM при isVideoCall.
+            Wrapper и видео скрываются visibility/opacity, не display */}
         {isVideoCall && (
           <div
             className="call-local-video-wrap"
             style={{
-              display:
-                callState === "active" || callState === "ringing_out"
-                  ? "block"
-                  : "none",
+              ...videoVisibilityStyle(
+                callState === "active" || callState === "ringing_out",
+              ),
             }}
           >
             <video
@@ -503,7 +546,7 @@ export default function CallUI({
               muted
               playsInline
               className="call-local-video"
-              style={{ display: showLocalVideo ? "block" : "none" }}
+              style={videoVisibilityStyle(showLocalVideo)}
             />
             {!showLocalVideo && <div className="call-local-video-off">📷</div>}
           </div>
