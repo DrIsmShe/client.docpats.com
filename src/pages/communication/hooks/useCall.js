@@ -1,7 +1,16 @@
 // client/src/pages/communication/hooks/useCall.js
 //
-// WebRTC Audio/Video Call Hook — FIXED v4
-// Исправления v4:
+// WebRTC Audio/Video Call Hook — FIXED v5
+// Изменения v5 (для фикса невидимого видео):
+//   • [v5-FIX A] Убраны legacy флаги offerToReceiveAudio/Video из createOffer().
+//     Они создавали лишние recvonly transceivers ("3 sections" в SDP)
+//     и провоцировали renegotiation → задержку answer ~30 секунд.
+//   • [v5-FIX B] Убрана прямая мутация el.style.display из applyVideo —
+//     теперь видимостью управляет ТОЛЬКО React (через visibility/opacity).
+//     Это устраняет конфликт inline-style vs JSX-style и не останавливает
+//     декодирование видео, когда трек ещё ожидается.
+//
+// Предыдущие исправления v4:
 //   1. [FIX] callTypeRef синхронизируется при onIncoming (видеозвонок не деградирует в аудио)
 //   2. [FIX] durationSecRef — handleEnd читает актуальную длительность, не stale closure
 //   3. [FIX] handleEnd убран из deps useCallback → нет пересоздания каждую секунду
@@ -294,8 +303,11 @@ export function useCall(currentUserId) {
               // iOS Safari требует setAttribute для playsInline
               el.setAttribute("playsinline", "");
               el.setAttribute("webkit-playsinline", "");
-              // Принудительно показываем элемент — CSS display:none блокирует play() на мобиле
-              el.style.display = "block";
+              // [v5-FIX B] УБРАНО: el.style.display = "block";
+              // Видимостью теперь управляет ТОЛЬКО React через visibility/opacity.
+              // visibility:hidden (в отличие от display:none) не останавливает
+              // декодирование видео, поэтому prinuditelno показывать элемент
+              // отсюда больше не требуется.
 
               el.play()
                 .then(() => {
@@ -646,10 +658,12 @@ export function useCall(currentUserId) {
         }
         stream.getTracks().forEach((t) => pc.addTrack(t, stream));
         console.log("📤 Creating offer...");
-        const offer = await pc.createOffer({
-          offerToReceiveAudio: true,
-          offerToReceiveVideo: true,
-        });
+        // [v5-FIX A] createOffer() БЕЗ legacy флагов offerToReceiveAudio/Video.
+        // Эти флаги — pre-unified-plan API (Chrome <72), они создают лишние
+        // recvonly transceivers ("3 m=sections" вместо нужных 2),
+        // что провоцирует Chrome на munged renegotiation и задержку answer.
+        // Bidirectional передача обеспечивается уже добавленными pc.addTrack().
+        const offer = await pc.createOffer();
         await pc.setLocalDescription(offer);
         socket.emit("call:offer", { callId: cId, offer });
         console.log("📤 Offer sent");
