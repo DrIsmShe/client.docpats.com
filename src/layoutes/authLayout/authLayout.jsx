@@ -1124,7 +1124,7 @@ export default function AuthLayout() {
                   </motion.div>
                   <motion.div variants={item} style={{ marginBottom: 12 }}>
                     <Link
-                      to="/user-synthesis"
+                      to="/public/user-synthesis"
                       className="dp-news-card"
                       style={{ textDecoration: "none" }}
                     >

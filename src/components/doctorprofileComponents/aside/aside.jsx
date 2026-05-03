@@ -1,15 +1,25 @@
 import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { RiHomeOfficeFill } from "react-icons/ri";
-import { GrArticle, GrSchedule } from "react-icons/gr";
-import { PiArticleFill } from "react-icons/pi";
 import axios from "axios";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Modal } from "react-bootstrap";
-import { IoCreate, IoNewspaper } from "react-icons/io5";
-import { ImProfile } from "react-icons/im";
-import { FaComments, FaHospital, FaUserDoctor } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
+import { HiOutlineSparkles } from "react-icons/hi2";
+import {
+  LuSquareUserRound,
+  LuNewspaper,
+  LuPencilLine,
+  LuFlaskConical,
+  LuFileText,
+  LuGraduationCap,
+  LuUsers,
+  LuUserCheck,
+  LuHospital,
+  LuCalendarClock,
+  LuMessagesSquare,
+  LuLogOut,
+} from "react-icons/lu";
+import { TbStethoscope } from "react-icons/tb";
 
 const S = `
   @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap');
@@ -180,9 +190,10 @@ const S = `
     width: 32px; height: 32px; border-radius: 9px;
     background: rgba(255,255,255,0.05);
     display: flex; align-items: center; justify-content: center;
-    font-size: 25px; color: var(--c-muted); flex-shrink:0;
-    transition: all 0.15s;
+    font-size: 19px; color: var(--c-muted); flex-shrink:0;
+    transition: all 0.18s ease;
   }
+  .dp2-icon svg { width: 1em; height: 1em; }
 
   .dp2-item.is-chat .dp2-icon { background: rgba(45,212,191,0.1); color: var(--c-teal); }
   .dp2-item.is-chat { color: var(--c-teal); }
@@ -407,35 +418,46 @@ export default function Aside() {
             to={`/doctor/doctor-profile/${userId}`}
           >
             <span className="dp2-icon">
-              <ImProfile />
+              <LuSquareUserRound />
             </span>
             {t("profile")}
           </Link>
 
-          <div className="dp2-group">Digest</div>
+          <div className="dp2-group">{t("digestAi")}</div>
+          <Link
+            className="dp2-item is-chat"
+            to="/public/user-synthesis"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="dp2-icon">
+              <HiOutlineSparkles />
+            </span>
+            {t("aiSynthesis")}
+          </Link>
           <Link className="dp2-item is-chat" to="/doctor/news">
             <span className="dp2-icon">
-              <IoNewspaper />
+              <LuNewspaper />
             </span>
             {t("medical_feed")}
           </Link>
 
           <Link className="dp2-item is-chat" to="/doctor/consultation-ai">
             <span className="dp2-icon">
-              <IoNewspaper />
+              <TbStethoscope />
             </span>
             {t("ai_medical_consultation")}
           </Link>
           <div className="dp2-group">{t("articles") || "Статьи"}</div>
           <Link className="dp2-item is-chat" to="/doctor/create-my-articles">
             <span className="dp2-icon">
-              <IoCreate />
+              <LuPencilLine />
             </span>
             {t("create_article")}
           </Link>
           <Link className="dp2-item is-chat" to="/doctor/my-articles">
             <span className="dp2-icon">
-              <PiArticleFill />
+              <LuFileText />
             </span>
             {t("my_articles")}
           </Link>
@@ -453,7 +475,7 @@ export default function Aside() {
             to="/doctor/create-my-articles-scientific"
           >
             <span className="dp2-icon">
-              <IoCreate />
+              <LuFlaskConical />
             </span>
             {t("create_scientific_article")}
           </Link>
@@ -463,7 +485,7 @@ export default function Aside() {
             to="/doctor/my-articles-scientific"
           >
             <span className="dp2-icon">
-              <PiArticleFill />
+              <LuGraduationCap />
             </span>
             {t("my_scientific_articles")}
           </Link>
@@ -481,13 +503,13 @@ export default function Aside() {
           <div className="dp2-group">{t("colleagues") || "Коллеги"}</div>
           <Link className="dp2-item is-chat" to="/doctor/all-doctors">
             <span className="dp2-icon">
-              <FaUserDoctor />
+              <LuUsers />
             </span>
             {t("colleagues")}
           </Link>
           <Link className="dp2-item is-chat" to="/doctor/my-friends-doctors">
             <span className="dp2-icon">
-              <FaUserDoctor />
+              <LuUserCheck />
             </span>
             {t("my_friends_colleagues")}
           </Link>
@@ -495,7 +517,7 @@ export default function Aside() {
           <div className="dp2-group">{t("my_clinic") || "Клиника"}</div>
           <Link className="dp2-item is-chat" to="/dp/polyclinic">
             <span className="dp2-icon">
-              <FaHospital />
+              <LuHospital />
             </span>
             {t("my_clinic")}
           </Link>
@@ -504,20 +526,20 @@ export default function Aside() {
             onClick={() => navigate("doctor-dashboard-main")}
           >
             <span className="dp2-icon">
-              <GrSchedule />
+              <LuCalendarClock />
             </span>
             {t("appointments_dashboard")}
           </div>
           <Link className="dp2-item is-chat" to="/doctor/communication">
             <span className="dp2-icon">
-              <FaComments />
+              <LuMessagesSquare />
             </span>
             {t("chat")}
           </Link>
 
           <div className="dp2-item is-logout" onClick={handleLogout}>
             <span className="dp2-icon">
-              <i className="bi bi-box-arrow-right" />
+              <LuLogOut />
             </span>
             {t("logout")}
           </div>

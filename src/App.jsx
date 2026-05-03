@@ -509,7 +509,7 @@ function App() {
         >
           <Routes>
             <Route path="/consultation" element={<ConsultationPage />} />
-            <Route path="/user-synthesis" element={<UserSynthesisPage />} />
+
             <Route
               path="/user-synthesis/result"
               element={<UserSynthesisResultPage />}
@@ -519,6 +519,7 @@ function App() {
               element={<UserSynthesisResultPage />}
             />
             <Route path="/public" element={<DashboardLayout />}>
+              <Route path="user-synthesis" element={<UserSynthesisPage />} />
               <Route path="about" element={<AboutPage />} />
               <Route path="articles" element={<SynthesisPage />} />
               <Route path="news/:slug" element={<NewsArticle />} />

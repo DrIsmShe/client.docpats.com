@@ -104,6 +104,19 @@ const inputStyle = {
   outline: "none",
 };
 
+// ─── helper: определяем залогинен ли юзер по ответу лимита ───
+// Сервер возвращает plan: "guest" для неавторизованных,
+// и "free"/"registered"/"standard"/"doctor_pro"/etc — для залогиненных.
+// Если plan приходит "guest" ИЛИ limit равен 1 — считаем гостем.
+function detectLoggedIn(limit) {
+  if (!limit) return false;
+  if (limit.plan === "guest") return false;
+  // На случай если бэкенд не возвращает plan="guest", ориентируемся на лимит:
+  // у гостя 1 статья, у любого залогиненного — минимум 3.
+  if (limit.limit <= 1 && (!limit.plan || limit.plan === "free")) return false;
+  return true;
+}
+
 export default function UserSynthesisPage() {
   const navigate = useNavigate();
   const [topic, setTopic] = useState("");
@@ -117,17 +130,21 @@ export default function UserSynthesisPage() {
   const [status, setStatus] = useState("idle"); // idle | loading | error
   const [error, setError] = useState("");
 
-  const isLoggedIn = !!localStorage.getItem("user");
+  // ─── isLoggedIn выводится из ответа лимита, а не из localStorage ───
+  const isLoggedIn = detectLoggedIn(limit);
 
   useEffect(() => {
+    // Грузим лимит и историю параллельно. История вернёт 401 если не авторизован —
+    // молча игнорируем, это нормально для гостя.
     getMyLimit()
       .then((r) => setLimit(r.data))
       .catch(() => {});
-    if (isLoggedIn) {
-      getMyArticles({ limit: 5 })
-        .then((r) => setMyArticles(r.data.articles || []))
-        .catch(() => {});
-    }
+
+    getMyArticles({ limit: 5 })
+      .then((r) => setMyArticles(r.data.articles || []))
+      .catch(() => {
+        // 401 для гостя — это ожидаемо, ничего не делаем
+      });
   }, []);
 
   const addSource = () =>
@@ -171,6 +188,21 @@ export default function UserSynthesisPage() {
       setStatus("error");
     }
   };
+
+  // ─── Кнопка генерации: текст и состояние ───
+  const limitReached = limit && !limit.allowed;
+  const isDisabled = status === "loading" || limitReached;
+
+  let buttonText;
+  if (status === "loading") {
+    buttonText = "⏳ Генерация статьи... (~60 сек)";
+  } else if (limitReached && !isLoggedIn) {
+    buttonText = "Зарегистрируйтесь чтобы продолжить →";
+  } else if (limitReached && isLoggedIn) {
+    buttonText = "Лимит на месяц исчерпан";
+  } else {
+    buttonText = "Создать статью →";
+  }
 
   return (
     <>
@@ -219,9 +251,20 @@ export default function UserSynthesisPage() {
                   Использовано: <strong>{limit.used}</strong> / {limit.limit} в
                   месяц
                 </span>
-                {!limit.allowed && (
+                {limitReached && (
                   <span className="us-limit-warn">
-                    Лимит исчерпан · <Link to="/pricing">Обновить план</Link>
+                    {!isLoggedIn ? (
+                      <>
+                        Лимит гостя исчерпан ·{" "}
+                        <Link to="/register">Зарегистрируйтесь</Link> — 3 статьи
+                        в месяц бесплатно
+                      </>
+                    ) : (
+                      <>
+                        Лимит исчерпан ·{" "}
+                        <Link to="/pricing">Обновить план</Link>
+                      </>
+                    )}
                   </span>
                 )}
               </div>
@@ -317,17 +360,33 @@ export default function UserSynthesisPage() {
 
                 {error && <div className="us-error">{error}</div>}
 
-                <button
-                  onClick={handleGenerate}
-                  disabled={status === "loading" || (limit && !limit.allowed)}
-                  className="us-generate-btn"
-                >
-                  {status === "loading"
-                    ? "⏳ Генерация статьи... (~60 сек)"
-                    : "Создать статью →"}
-                </button>
+                {/* Если лимит исчерпан и гость — основное действие отправляет на регистрацию */}
+                {limitReached && !isLoggedIn ? (
+                  <Link
+                    to="/register"
+                    className="us-generate-btn us-generate-btn-link"
+                  >
+                    Зарегистрируйтесь чтобы продолжить →
+                  </Link>
+                ) : (
+                  <button
+                    onClick={handleGenerate}
+                    disabled={isDisabled}
+                    className="us-generate-btn"
+                  >
+                    {buttonText}
+                  </button>
+                )}
 
-                {!isLoggedIn && (
+                {/* Дополнительный CTA для залогиненного пользователя с исчерпанным лимитом */}
+                {limitReached && isLoggedIn && (
+                  <div className="us-login-hint">
+                    <Link to="/pricing">Обновить план</Link> чтобы получить
+                    больше генераций
+                  </div>
+                )}
+
+                {!isLoggedIn && !limitReached && (
                   <div className="us-login-hint">
                     <Link to="/login">Войдите</Link> чтобы сохранять статьи и
                     получить больше генераций
@@ -459,7 +518,7 @@ const CSS = `
 .us-limit-plan,.us-limit-count{color:var(--muted)}
 .us-limit-plan strong,.us-limit-count strong{color:var(--ink)}
 .us-limit-warn{color:#b83030}
-.us-limit-warn a{color:#b83030}
+.us-limit-warn a{color:#b83030;font-weight:500}
 .us-main{padding:0}
 .us-main-inner{max-width:1000px;margin:0 auto;padding:40px 40px 80px}
 .us-grid{display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start}
@@ -479,9 +538,12 @@ const CSS = `
   width:100%;padding:14px;font-family:var(--mono);font-size:12px;
   font-weight:500;letter-spacing:.1em;text-transform:uppercase;
   background:var(--ink);color:var(--paper);border:none;cursor:pointer;
-  transition:background .15s}
+  transition:background .15s;display:block;text-align:center;text-decoration:none;
+  box-sizing:border-box}
 .us-generate-btn:hover:not(:disabled){background:#3a3830}
 .us-generate-btn:disabled{opacity:.4;cursor:not-allowed}
+.us-generate-btn-link{background:#b83030;color:#fff}
+.us-generate-btn-link:hover{background:#9a2828}
 .us-login-hint{text-align:center;font-family:var(--mono);font-size:11px;
   color:var(--muted);margin-top:12px}
 .us-login-hint a{color:#b83030}
