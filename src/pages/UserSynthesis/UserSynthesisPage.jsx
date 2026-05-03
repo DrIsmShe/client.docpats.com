@@ -105,16 +105,18 @@ const inputStyle = {
 };
 
 // ─── helper: определяем залогинен ли юзер по ответу лимита ───
-// Сервер возвращает plan: "guest" для неавторизованных,
-// и "free"/"registered"/"standard"/"doctor_pro"/etc — для залогиненных.
-// Если plan приходит "guest" ИЛИ limit равен 1 — считаем гостем.
+// Сервер возвращает plan: "guest" / role: "guest" для неавторизованных
+// и plan: "free|patient_pro|doctor_free|..." / role: "patient|doctor|admin"
+// для залогиненных. Для совместимости со старым бэком оставлен fallback.
 function detectLoggedIn(limit) {
   if (!limit) return false;
-  if (limit.plan === "guest") return false;
-  // На случай если бэкенд не возвращает plan="guest", ориентируемся на лимит:
-  // у гостя 1 статья, у любого залогиненного — минимум 3.
-  if (limit.limit <= 1 && (!limit.plan || limit.plan === "free")) return false;
-  return true;
+  if (limit.role && limit.role !== "guest") return true;
+  if (limit.plan && limit.plan !== "guest") {
+    // Доп. защита от старого бэка где гость возвращался с plan="free" limit=1
+    if (limit.limit <= 1 && limit.plan === "free") return false;
+    return true;
+  }
+  return false;
 }
 
 export default function UserSynthesisPage() {
@@ -132,6 +134,8 @@ export default function UserSynthesisPage() {
 
   // ─── isLoggedIn выводится из ответа лимита, а не из localStorage ───
   const isLoggedIn = detectLoggedIn(limit);
+  // Является ли юзер пациентом (для подсказки и проверки персональных тем)
+  const isPatient = limit?.role === "patient" || limit?.role === "user";
 
   useEffect(() => {
     // Грузим лимит и историю параллельно. История вернёт 401 если не авторизован —
@@ -182,9 +186,32 @@ export default function UserSynthesisPage() {
       });
       navigate("/user-synthesis/result", { state: { article: res.data } });
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Ошибка генерации. Попробуйте ещё раз.",
-      );
+      const msg =
+        err.response?.data?.message || "Ошибка генерации. Попробуйте ещё раз.";
+      // Особый случай: бэк блокирует личный мед.запрос для пациента —
+      // показываем дружелюбное сообщение со ссылкой на AI-консультацию
+      const isPersonalBlock =
+        msg.includes("Этот генератор пишет") ||
+        msg.includes("educational articles");
+      if (isPersonalBlock) {
+        setError(
+          <span>
+            {msg}{" "}
+            <Link
+              to="/consultation"
+              style={{
+                color: "#b83030",
+                fontWeight: 500,
+                textDecoration: "underline",
+              }}
+            >
+              → Открыть AI-консультацию
+            </Link>
+          </span>,
+        );
+      } else {
+        setError(msg);
+      }
       setStatus("error");
     }
   };
@@ -294,6 +321,48 @@ export default function UserSynthesisPage() {
                     Чем конкретнее тема — тем глубже статья
                   </div>
                 </div>
+
+                {/* ─── Подсказка для пациентов: какие темы допустимы ─── */}
+                {isLoggedIn && isPatient && (
+                  <div className="us-patient-hint">
+                    <div className="us-patient-hint-title">
+                      Какие темы можно запросить
+                    </div>
+                    <div className="us-patient-hint-grid">
+                      <div className="us-patient-hint-col us-patient-hint-ok">
+                        <div className="us-patient-hint-label">
+                          Можно — общие темы
+                        </div>
+                        <ul>
+                          <li>Мигрень: причины и современные методы лечения</li>
+                          <li>Что такое диабет 2 типа</li>
+                          <li>Витамин D: дефицит, нормы, восполнение</li>
+                          <li>Кето-диета: за и против</li>
+                          <li>Антибиотикорезистентность</li>
+                          <li>Психосоматика хронической боли</li>
+                        </ul>
+                      </div>
+                      <div className="us-patient-hint-col us-patient-hint-no">
+                        <div className="us-patient-hint-label">
+                          Нельзя — личные вопросы
+                        </div>
+                        <ul>
+                          <li>«У меня болит голова»</li>
+                          <li>«Мой диагноз — гастрит»</li>
+                          <li>«У ребёнка температура»</li>
+                          <li>«Можно ли мне есть мёд при диабете»</li>
+                        </ul>
+                        <Link
+                          to="/consultation"
+                          className="us-patient-hint-cta"
+                        >
+                          → Для личных вопросов: AI-консультация
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {/* ─────────────────────────────────────────────────── */}
 
                 <div className="us-form-row">
                   <div className="us-form-section" style={{ flex: 1 }}>
@@ -423,6 +492,11 @@ export default function UserSynthesisPage() {
                       price: "Бесплатно",
                     },
                     {
+                      plan: "Patient Pro",
+                      limit: "20 статей/мес",
+                      price: "Платно",
+                    },
+                    {
                       plan: "Doctor Free",
                       limit: "3 статьи/мес",
                       price: "Бесплатно",
@@ -534,6 +608,46 @@ const CSS = `
 .us-add-btn:hover{color:var(--ink);border-color:var(--ink2)}
 .us-error{padding:10px 14px;background:#fdf0ee;border:1px solid #f0c0bc;
   color:#b83030;font-size:13px;margin-bottom:16px;line-height:1.5}
+.us-error a{color:#b83030}
+
+/* ─── Подсказка для пациентов ─── */
+.us-patient-hint{
+  margin: 4px 0 24px;
+  padding: 16px 18px;
+  background: var(--paper2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+.us-patient-hint-title{
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 14px;
+}
+.us-patient-hint-grid{
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+.us-patient-hint-col ul{
+  margin: 0; padding-inline-start: 18px;
+  font-size: 13px; line-height: 1.7; color: var(--ink2);
+}
+.us-patient-hint-col ul li{ margin-bottom: 2px; }
+.us-patient-hint-label{
+  font-family: var(--serif); font-size: 14px; font-weight: 700;
+  margin-bottom: 8px;
+}
+.us-patient-hint-ok .us-patient-hint-label{ color: #1a6b3c; }
+.us-patient-hint-no .us-patient-hint-label{ color: #b83030; }
+.us-patient-hint-cta{
+  display: inline-block; margin-top: 12px;
+  font-family: var(--mono); font-size: 11px;
+  color: #b83030; text-decoration: none;
+  border-bottom: 1px dashed #b83030;
+  padding-bottom: 1px;
+}
+.us-patient-hint-cta:hover{ border-bottom-style: solid; }
+/* ───────────────────────────── */
+
 .us-generate-btn{
   width:100%;padding:14px;font-family:var(--mono);font-size:12px;
   font-weight:500;letter-spacing:.1em;text-transform:uppercase;
@@ -575,6 +689,7 @@ const CSS = `
   .us-grid{grid-template-columns:1fr}
   .us-nav-tag{display:none}
   .us-form-row{flex-direction:column}
+  .us-patient-hint-grid{grid-template-columns:1fr;gap:14px}
 }
 @media(max-width:480px){
   .us-topbar{display:none}

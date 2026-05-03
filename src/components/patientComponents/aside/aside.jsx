@@ -17,6 +17,7 @@ import axios from "axios";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FaUserFriends, FaUserMd } from "react-icons/fa";
+import { HiOutlineSparkles } from "react-icons/hi2";
 
 /* ─────────────── STYLES ─────────────── */
 const S = `
@@ -159,6 +160,16 @@ const S = `
     border-radius: 0 2px 2px 0;
   }
 
+  /* AI Digest — особый акцент чтобы не потерялся */
+  .ap-link.is-ai {
+    color: #0d9488;
+  }
+  .ap-link.is-ai .ap-icon { color: #0d9488; }
+  .ap-link.is-ai:hover {
+    background: rgba(13,148,136,.08);
+    color: #0d9488;
+  }
+
   .ap-icon {
     font-size: 16px;
     color: #94a3b8;
@@ -295,6 +306,20 @@ export default function AsidePatient() {
         },
       ],
     },
+    // ─── Digest AI ────────────────────────────────────────────
+    {
+      section: t("digestAi"),
+      items: [
+        {
+          to: "/public/user-synthesis",
+          icon: <HiOutlineSparkles />,
+          label: t("aiSynthesis"),
+          external: true, // открывает в новой вкладке
+          accent: "ai", // подсвечивает teal-цветом
+        },
+      ],
+    },
+    // ──────────────────────────────────────────────────────────
     {
       section: t("AsidePatient.sections.medicine"), // ✅ было: "Медицина"
       items: [
@@ -397,16 +422,24 @@ export default function AsidePatient() {
               {group.section && (
                 <div className="ap-section-label">{group.section}</div>
               )}
-              {group.items.map((item, ii) => (
-                <Link
-                  key={ii}
-                  to={item.to}
-                  className={`ap-link${isActive(item.to) ? " active" : ""}`}
-                >
-                  <span className="ap-icon">{item.icon}</span>
-                  {item.label}
-                </Link>
-              ))}
+              {group.items.map((item, ii) => {
+                const cls =
+                  `ap-link` +
+                  (isActive(item.to) ? " active" : "") +
+                  (item.accent === "ai" ? " is-ai" : "");
+                return (
+                  <Link
+                    key={ii}
+                    to={item.to}
+                    target={item.external ? "_blank" : undefined}
+                    rel={item.external ? "noopener noreferrer" : undefined}
+                    className={cls}
+                  >
+                    <span className="ap-icon">{item.icon}</span>
+                    {item.label}
+                  </Link>
+                );
+              })}
             </React.Fragment>
           ))}
         </nav>
