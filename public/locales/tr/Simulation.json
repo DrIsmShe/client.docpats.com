@@ -1,81 +1,147 @@
 {
   "menuItem": "Simülasyon",
   "pageTitle": "Cerrahi simülasyon",
+  "workflowHint": "Şekli değiştirmek için: ekleme moduna geçin (+•), bir anatomik noktaya tıklayın ve sürükleyin.",
+  "toggleSidePanel": "Yan paneli aç/kapat",
+  "loadingImageRetry": "Görüntü yükleniyor… (deneme {{attempt}} / {{max}})",
+  "loadingImageRetryHint": "Yeni yüklenen görüntülerin kullanılabilir hale gelmesi birkaç saniye sürebilir",
+
+  "simulation": {
+    "hub": {
+      "title": "Simülasyon",
+      "subtitle": "Simülasyon türünü seçin",
+      "comingSoon": "Yakında",
+      "new": "Yeni",
+      "face": {
+        "title": "Yüz simülasyonu",
+        "description": "Rinoplasti, mentoplasti, simetri — yüz operasyonlarının analizi ve simülasyonu"
+      },
+      "breast": {
+        "title": "Göğüs simülasyonu",
+        "description": "Augmentasyon, redüksiyon, mastopeksi — göğüs operasyonlarının simülasyonu"
+      },
+      "abdomen": {
+        "title": "Bel simülasyonu",
+        "description": "Abdominoplasti, liposuction — yakında"
+      },
+      "arms": {
+        "title": "Kol simülasyonu",
+        "description": "Brakiyoplasti — yakında"
+      }
+    }
+  },
+
+  "breast": {
+    "backToHub": "Tür seçimine dön",
+    "title": "Göğüs simülasyonu",
+    "summary": "Hasta: {{patients}} · Plan: {{plans}}",
+    "newButton": "Yeni plan",
+    "searchPlaceholder": "Hasta veya plan adı ile ara...",
+    "loading": "Yükleniyor...",
+    "empty": "Henüz göğüs simülasyon planı yok",
+    "emptyHint": "İlk planı oluştur — hasta fotoğrafını yükle ve açıyı seç",
+    "noMatch": "\"{{query}}\" için sonuç bulunamadı",
+    "noPatient": "Hasta belirtilmedi",
+    "viewsCount_one": "{{count}} açı",
+    "viewsCount_other": "{{count}} açı",
+    "deleteConfirm": "\"{{label}}\" planı silinsin mi?",
+    "deleteFailed": "Silinemedi",
+    "viewLabel": {
+      "front": "Önden",
+      "side_left": "Sol",
+      "side_right": "Sağ",
+      "oblique_left": "3/4 Sol",
+      "oblique_right": "3/4 Sağ",
+      "bottom_up": "Alttan"
+    },
+    "status": {
+      "anatomy": "İşaretlenmiş",
+      "noAnatomy": "İşaretlenmemiş"
+    },
+    "operation": {
+      "augmentation": "Augmentasyon",
+      "reduction": "Redüksiyon",
+      "mastopexy": "Mastopeksi"
+    },
+    "newModal": {
+      "title": "Yeni plan — göğüs simülasyonu",
+      "step1Subtitle": "Adım 1/3 — fotoğraf yükleme",
+      "step2Subtitle": "Adım 2/3 — fotoğraf açısı seçimi",
+      "step3Subtitle": "Adım 3/3 — plan detayları",
+      "uploading": "Yükleniyor... %{{progress}}",
+      "dropZoneHint": "Fotoğrafı buraya sürükleyin veya seçmek için tıklayın",
+      "dropZoneFormats": "JPEG, PNG, WebP — 20 MB'a kadar",
+      "uploadSuccess": "Yüklendi",
+      "labelField": "Plan etiketi",
+      "labelPlaceholder": "Örn.: Augmentasyon — preop değerlendirme",
+      "patientRefField": "Hasta (isteğe bağlı)",
+      "patientRefPlaceholder": "Yılmaz A., dosya #12345",
+      "summaryView": "Açı",
+      "summaryPhoto": "Fotoğraf",
+      "back": "Geri",
+      "cancel": "İptal",
+      "next": "İleri",
+      "create": "Plan oluştur",
+      "creating": "Oluşturuluyor..."
+    },
+    "viewDesc": {
+      "front": "Düz önden görünüm. Çoğu ölçüm için kullanılır.",
+      "side_left": "Sol profil (90°). Projeksiyon ve pitoz değerlendirmesi için.",
+      "side_right": "Sağ profil (90°).",
+      "oblique_left": "Yarı yan sol görünüm (45°).",
+      "oblique_right": "Yarı yan sağ görünüm (45°).",
+      "bottom_up": "Alttan görünüm. İnframammarian katlanma değerlendirmesi için."
+    }
+  },
 
   "list": {
     "title": "Simülasyon planlarım",
-    "empty": "Henüz simülasyon planınız yok",
-    "emptyHint": "Hastanıza ameliyat sonucunu göstermek için ilk planı oluşturun",
+    "empty": "Henüz hiç simülasyon planınız yok",
+    "emptyHint": "Hastaya operasyon sonucunun önizlemesini göstermek için ilk planı oluşturun",
     "newButton": "Yeni plan",
     "loadMore": "Daha fazla yükle",
     "loading": "Yükleniyor…",
-    "controlPointsCount_one": "{{count}} kontrol noktası",
-    "controlPointsCount_other": "{{count}} kontrol noktası",
+    "controlPointsCount_zero": "Deformasyon noktası yok",
+    "controlPointsCount_one": "{{count}} deformasyon noktası",
+    "controlPointsCount_other": "{{count}} deformasyon noktası",
     "createdAt": "{{date}} tarihinde oluşturuldu",
     "updatedAt": "{{date}} tarihinde güncellendi",
-    "searchPlaceholder": "İsim veya hastaya göre ara…",
-    "noMatch": "\"{{query}}\" ile eşleşen sonuç yok",
+    "searchPlaceholder": "İsim veya hasta ile ara…",
+    "noMatch": "«{{query}}» için sonuç bulunamadı",
     "sort": {
-      "newest": "En yeniler",
-      "oldest": "En eskiler",
+      "newest": "Önce en yeni",
+      "oldest": "Önce en eski",
       "label": "İsme göre"
     }
   },
 
-  "dates": {
-    "todayAt": "Bugün {{time}}",
-    "yesterdayAt": "Dün {{time}}",
-    "daysAgo_one": "{{count}} gün önce",
-    "daysAgo_other": "{{count}} gün önce"
-  },
   "editor": {
-    "title": "Plan düzenleyici",
-    "placeholderTitle": "Düzenleyici geliştirme aşamasında",
-    "placeholderBody": "Fotoğraf, kontrol noktaları ve canlı deformasyon önizlemesi içeren tuval burada olacak. Şu anda yalnızca meta veriler API üzerinden düzenlenebilir.",
-    "backToList": "Planlara dön",
+    "title": "Plan editörü",
+    "placeholderTitle": "Editör geliştiriliyor",
+    "placeholderBody": "Görüntü, kontrol noktaları ve deformasyon önizlemesinin bulunduğu tuval burada görünecek. Şu anda yalnızca API üzerinden plan verilerinin işlenmesi mevcut.",
+    "backToList": "Plan listesine dön",
     "saveStatus": {
       "idle": "Tüm değişiklikler kaydedildi",
       "saving": "Kaydediliyor…",
       "saved": "Kaydedildi",
-      "error": "Kaydetme başarısız"
+      "error": "Kaydetme hatası"
     },
-    "loadingImage": "Fotoğraf yükleniyor…",
-    "imageLoadError": "Fotoğraf yüklenemedi"
+    "loadingImage": "Görüntü yükleniyor…",
+    "imageLoadError": "Görüntü yüklenemedi"
   },
 
-  "toolbar": {
-    "zoomIn": "Yakınlaştır",
-    "zoomOut": "Uzaklaştır",
-    "zoomLevel": "Geçerli yakınlaştırma",
-    "fit": "Görünüme sığdır",
-    "fitShort": "Sığdır",
-    "reset": "Sıfırla (100%)",
-    "modeSelect": "Seçim modu (Esc)",
-    "modeAdd": "Nokta ekleme modu",
-    "undo": "Geri al (Ctrl+Z)",
-    "redo": "Yinele (Ctrl+Shift+Z)"
-  },
-
-  "points": {
-    "propsTitle": "Deformasyon noktası",
-    "radius": "Etki yarıçapı",
-    "strength": "Şiddet",
-    "delete": "Noktayı sil",
-    "hint": "Merkezi taşımak için Alt+sürükleme. Silmek için Del."
-  },
-  "editor.saveStatus.dirty": "Kaydedilmemiş değişiklikler",
   "newPlanModal": {
     "title": "Yeni simülasyon planı",
-    "stepUpload": "Adım 1 / 2 — hasta fotoğrafını yükleyin",
-    "stepDetails": "Adım 2 / 2 — plan detayları",
+    "stepUpload": "Adım 1/2 — hasta fotoğrafını yükle",
+    "stepDetails": "Adım 2/2 — plan detaylarını gir",
     "dropZoneHint": "Fotoğrafı buraya sürükleyin veya seçmek için tıklayın",
     "dropZoneFormats": "JPG, PNG, WebP · 20 MB'a kadar",
-    "uploading": "Yükleniyor: {{progress}}%",
-    "uploadSuccess": "Fotoğraf yüklendi",
+    "uploading": "Görüntü yükleniyor: %{{progress}}",
+    "uploadSuccess": "Görüntü yüklendi",
     "labelField": "Plan adı",
-    "labelPlaceholder": "Örn.: Rinoplasti — varyant 1",
+    "labelPlaceholder": "Örn.: Rinoplasti — seçenek 1",
     "patientRefField": "Hasta referansı (isteğe bağlı)",
-    "patientRefPlaceholder": "Örn.: A. Yılmaz veya kart no.",
+    "patientRefPlaceholder": "Örn.: A. Yılmaz veya dosya numarası",
     "cancel": "İptal",
     "back": "Geri",
     "create": "Plan oluştur",
@@ -83,8 +149,8 @@
   },
 
   "deleteModal": {
-    "title": "Planı sil?",
-    "body": "Plan arşivlenecek ve fotoğraf kalıcı olarak silinecek. Bu işlem geri alınamaz.",
+    "title": "Plan silinsin mi?",
+    "body": "Plan arşive taşınacak, görüntü kalıcı olarak silinecek. Bu işlem geri alınamaz.",
     "cancel": "İptal",
     "confirm": "Sil",
     "deleting": "Siliniyor…"
@@ -98,33 +164,64 @@
 
   "errors": {
     "network_error": "Ağ hatası. Bağlantınızı kontrol edin.",
-    "validation_error": "Form alanlarını kontrol edin",
+    "validation_error": "Girilen verileri kontrol edin",
     "unauthorized": "Kimlik doğrulama gerekli",
     "not_found": "Plan bulunamadı",
     "file_too_large": "Dosya çok büyük (maks. 20 MB)",
     "invalid_mime": "Desteklenmeyen format. JPG, PNG veya WebP kullanın",
-    "invalid_image": "Görsel okunamadı",
-    "mime_mismatch": "Dosya türü içerikle eşleşmiyor",
-    "unknown": "Bir şeyler ters gitti"
+    "invalid_image": "Görüntü okunamadı",
+    "mime_mismatch": "Dosya türü içeriğiyle eşleşmiyor",
+    "unknown": "Bir hata oluştu"
   },
+
+  "toolbar": {
+    "zoomIn": "Yakınlaştır",
+    "zoomOut": "Uzaklaştır",
+    "zoomLevel": "Mevcut yakınlaştırma seviyesi",
+    "fit": "Pencereye sığdır",
+    "fitShort": "Sığdır",
+    "reset": "Sıfırla (%100)",
+    "modeSelect": "Seçim modu (Esc)",
+    "modeAdd": "Nokta ekleme modu",
+    "undo": "Geri al (Ctrl+Z)",
+    "redo": "Yinele (Ctrl+Shift+Z)"
+  },
+
   "saveStatus": {
     "idle": "Kaydedildi",
-    "dirty": "Kaydedilmemiş değişiklikler",
+    "dirty": "Kaydedilmemiş değişiklikler var",
     "saving": "Kaydediliyor…",
     "saved": "Kaydedildi",
-    "error": "Kaydetme başarısız"
+    "error": "Kaydetme hatası"
   },
+
+  "points": {
+    "propsTitle": "Deformasyon noktası",
+    "radius": "Etki yarıçapı",
+    "strength": "Güç",
+    "delete": "Noktayı sil",
+    "hint": "Alt + kare sürükleme — merkezi taşı. Del — sil."
+  },
+
+  "dates": {
+    "todayAt": "bugün {{time}}",
+    "yesterdayAt": "dün {{time}}",
+    "daysAgo_zero": "bugün",
+    "daysAgo_one": "{{count}} gün önce",
+    "daysAgo_other": "{{count}} gün önce"
+  },
+
   "tabs": {
-    "editor": "Düzenleyici",
-    "viewer": "Öncesi / Sonrası"
+    "editor": "Editör",
+    "viewer": "Önce / Sonra"
   },
 
   "viewer": {
-    "labelBefore": "Öncesi",
-    "labelAfter": "Sonrası",
+    "labelBefore": "Önce",
+    "labelAfter": "Sonra",
     "preparing": "Tam çözünürlük hazırlanıyor…",
-    "preparingHint": "Orijinal yükleniyor ve deformasyon uygulanıyor. Birkaç saniye sürer.",
-    "exportError": "Dışa aktarma hazırlanamadı",
+    "preparingHint": "Orijinal görüntü yükleniyor ve deformasyon uygulanıyor. Bu işlem birkaç saniye sürer.",
+    "exportError": "Dışa aktarım hazırlanamadı",
     "retry": "Tekrar dene"
   },
 
@@ -132,66 +229,43 @@
     "title": "Dışa aktar",
     "mode": "Ne dışa aktarılacak",
     "modes": {
-      "before": "Öncesi (orijinal)",
-      "after": "Sonrası (deforme)",
-      "sideBySide": "Yan yana: Öncesi ve Sonrası"
+      "before": "Operasyondan önce (orijinal)",
+      "after": "Operasyondan sonra (deformasyonlu)",
+      "sideBySide": "Yan yana: önce ve sonra"
     },
-    "format": "Biçim",
+    "format": "Format",
     "quality": "JPG kalitesi",
     "download": "İndir",
     "downloading": "Oluşturuluyor…"
   },
+
   "help": {
-    "pageTitle": "Kullanım Kılavuzu",
-    "backToList": "Planlara dön",
+    "pageTitle": "Yardım",
+    "backToList": "Plan listesine dön",
     "toc": "İçindekiler",
-    "loading": "Kılavuz yükleniyor...",
-    "loadError": "Kılavuz yüklenemedi",
+    "loading": "Yardım yükleniyor...",
+    "loadError": "Yardım yüklenemedi",
     "headerLink": "Yardım"
   },
-  "simulation": {
-    "landmarks": {
-      "title": "Anatomik noktalar",
-      "status": {
-        "idle": "Tespit edilmedi",
-        "detecting": "Tespit ediliyor…",
-        "detected": "Tespit edildi",
-        "failed": "Hata"
-      },
-      "count_one": "{{count}} nokta",
-      "count_other": "{{count}} nokta",
-      "detectedAt": "güncellendi {{time}}",
-      "detecting": "Tespit ediliyor…",
-      "redetect": "Yeniden tespit et",
-      "groups": {
-        "title": "Nokta grupları",
-        "face_oval": "Yüz hattı",
-        "nose": "Burun",
-        "lips": "Dudaklar",
-        "left_eye": "Sol göz",
-        "right_eye": "Sağ göz",
-        "left_eyebrow": "Sol kaş",
-        "right_eyebrow": "Sağ kaş"
-      }
-    }
-  },
+
   "landmarks": {
     "title": "Anatomik noktalar",
     "status": {
-      "idle": "Tespit edilmedi",
-      "detecting": "Tespit ediliyor",
-      "detected": "Tespit edildi",
+      "idle": "Belirlenmedi",
+      "detecting": "Belirleniyor",
+      "detected": "Belirlendi",
       "failed": "Hata"
     },
+    "count_zero": "Nokta yok",
     "count_one": "{{count}} nokta",
     "count_other": "{{count}} nokta",
-    "detectedAt": "güncellendi: {{time}}",
+    "detectedAt": "{{time}} güncellendi",
     "loaderLoading": "Model yükleniyor…",
-    "detecting": "Tespit ediliyor…",
-    "redetect": "Yeniden tespit et",
+    "detecting": "Belirleniyor…",
+    "redetect": "Yeniden belirle",
     "groups": {
       "title": "Nokta grupları",
-      "face_oval": "Yüz hattı",
+      "face_oval": "Yüz konturu",
       "nose": "Burun",
       "lips": "Dudaklar",
       "left_eye": "Sol göz",
@@ -200,28 +274,137 @@
       "right_eyebrow": "Sağ kaş"
     }
   },
-  "workflowHint": "Şekli değiştirmek için: ekleme moduna (+•) geçin, anatomik bir noktaya tıklayın, ardından sürükleyin.",
+
   "measurements": {
     "title": "Ölçümler",
-    "noLandmarks": "Önce anatomik nokta tespitini çalıştırın",
-    "normal": "normal",
+    "noLandmarks": "Önce anatomik noktaları belirleyin",
+    "normal": "Normal",
     "show": "Ölçümü göster",
     "hide": "Ölçümü gizle",
-    "calibrationHint": "Milimetre cinsinden ölçüm için bilinen bir mesafeye göre kalibrasyon gereklidir (plan ayarlarında mevcut).",
+    "calibrationHint": "Milimetre cinsinden ölçümler, bilinen bir mesafeye dayalı kalibrasyon gerektirir (plan ayarlarında mevcuttur).",
     "nasofrontalAngle": {
       "label": "Nazofrontal açı",
       "description": "Alın çizgisi ile burun sırtı arasındaki açı"
     },
     "goodeProjection": {
-      "label": "Goode burun ucu projeksiyonu",
+      "label": "Burun ucu projeksiyonu (Goode)",
       "description": "Burun ucu uzunluğunun burun yüksekliğine oranı"
     },
     "alarBaseWidth": {
-      "label": "Alar taban genişliği",
+      "label": "Ala tabanı genişliği",
       "description": "Burun kanatlarının en dış noktaları arasındaki mesafe"
     }
   },
-  "toggleSidePanel": "Yan paneli aç/kapat",
-  "loadingImageRetry": "Fotoğraf yükleniyor… ({{attempt}}/{{max}} deneme)",
-  "loadingImageRetryHint": "Yeni yüklenen fotoğraflar erişilebilir olana kadar birkaç saniye sürebilir"
+  "breastEditor": {
+    "backToList": "Listeye dön",
+    "loadingPlan": "Plan yükleniyor...",
+    "loadingPhoto": "Fotoğraf yükleniyor...",
+    "loadingPhotoRetry": "Fotoğraf yükleniyor ({{attempt}}/{{max}})...",
+    "confirmClearPoints": "Tüm deformasyon noktaları silinsin mi?",
+    "manualPointLabel": "Nokta",
+    "compareButton": "Önce / Sonra",
+    "compareTooltipReady": "Karşılaştırmayı aç",
+    "compareTooltipNoPoints": "Önce deformasyon noktası ekleyin",
+    "errors": {
+      "planLoad": "Plan yüklenemedi",
+      "imageLoad": "Fotoğraf yüklenemedi"
+    },
+    "fab": {
+      "deformation": "Deformasyon",
+      "compare": "Karşılaştır"
+    },
+    "photoViewBadge": {
+      "front": "Önden",
+      "side_left": "Profil L",
+      "side_right": "Profil R",
+      "oblique_left": "3/4 L",
+      "oblique_right": "3/4 R",
+      "bottom_up": "Alttan"
+    }
+  },
+  "warpTuning": {
+    "title": "İnce ayar",
+    "resetButton": "Varsayılana sıfırla",
+    "hint": "Her fotoğrafa göre ayarlayın. Doğal görünüm için yoğunluk varsayılan olarak yarıya düşürülmüştür.",
+    "params": {
+      "globalStrength": "Deformasyon gücü",
+      "globalRadius": "Etki yarıçapı",
+      "lateralBias": "Yanal kayma",
+      "verticalBias": "Dikey kayma"
+    }
+  },
+  "controlPointPopover": {
+    "fallbackLabel": "Nokta",
+    "close": "Gizle",
+    "radius": "Yarıçap",
+    "strength": "Güç",
+    "strengthHintNegative": "− ters",
+    "strengthHintPositive": "+ düz",
+    "removeButton": "Noktayı kaldır"
+  },
+  "breastOperationPanel": {
+    "title": "Deformasyon",
+    "addPoint": "Nokta ekle",
+    "cancel": "İptal",
+    "compareButton": "Önce / Sonra",
+    "clearAll": "Tüm noktaları kaldır",
+    "help": {
+      "title": "Nasıl kullanılır:",
+      "addPoint": "Nokta ekle — fotoğrafa tıkla",
+      "dragBlue": "Maviyi sürükle — deformasyon",
+      "dragGreen": "Yeşili sürükle — taşı",
+      "clickPoint": "Noktaya tıkla — ayarlar",
+      "wheelRadius": "Fare tekerleği — yarıçap",
+      "shiftClickRemove": "Shift+tık — sil"
+    }
+  },
+  "beforeAfter": {
+    "before": "ÖNCE",
+    "after": "SONRA",
+    "fallbackLabel": "Plan",
+    "backButton": "Düzenlemeye dön",
+    "downloadButton": "İndir",
+    "sliderHint": "Karşılaştırmak için ayırıcıyı sola/sağa sürükleyin",
+    "toggleHint": "Değiştirmek için tıklayın",
+    "toggleHintAnimation": "Otomatik değiştirme",
+    "exportMenuTitle": "Format seçin:",
+    "exportBusy": "Dosya oluşturuluyor...",
+    "modes": {
+      "slider": "Kaydırıcı",
+      "side": "Yan yana",
+      "toggle": "Değiştirme",
+      "animation": "Animasyon"
+    },
+    "exportOptions": {
+      "sideBySidePng": {
+        "label": "Karşılaştırma (PNG)",
+        "desc": "Yüksek kalite"
+      },
+      "sideBySideJpg": {
+        "label": "Karşılaştırma (JPG)",
+        "desc": "Mesajlaşma için"
+      },
+      "beforePng": {
+        "label": "Sadece ÖNCE (PNG)",
+        "desc": "Orijinal fotoğraf"
+      },
+      "afterPng": {
+        "label": "Sadece SONRA (PNG)",
+        "desc": "Deformasyonlu"
+      },
+      "pdf": {
+        "label": "PDF raporu",
+        "desc": "Meta verili 3 sayfa"
+      }
+    },
+    "errors": {
+      "noData": "Dışa aktarılacak veri yok",
+      "exportFailed": "Dışa aktarma hatası"
+    },
+    "empty": {
+      "title": "Karşılaştıracak deformasyon yok",
+      "hint": "\"Sonra\" sonucunu görmek için en az bir deformasyon noktası ekleyin.",
+      "backButton": "Düzenlemeye dön"
+    }
+  }
 }

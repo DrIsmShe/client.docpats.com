@@ -27,50 +27,50 @@ const PHOTO_VIEWS = [
   {
     key: "front",
     icon: "👤",
-    labelKey: "breast.viewLabel.front",
+    labelKey: "simulation.breast.viewLabel.front",
     labelDefault: "Анфас",
-    descKey: "breast.viewDesc.front",
+    descKey: "simulation.breast.viewDesc.front",
     descDefault:
       "Прямой фронтальный вид. Используется для большинства измерений.",
   },
   {
     key: "side_left",
     icon: "◐",
-    labelKey: "breast.viewLabel.side_left",
+    labelKey: "simulation.breast.viewLabel.side_left",
     labelDefault: "Слева (профиль)",
-    descKey: "breast.viewDesc.side_left",
+    descKey: "simulation.breast.viewDesc.side_left",
     descDefault: "Левый профиль (90°). Для оценки проекции и птоза.",
   },
   {
     key: "side_right",
     icon: "◑",
-    labelKey: "breast.viewLabel.side_right",
+    labelKey: "simulation.breast.viewLabel.side_right",
     labelDefault: "Справа (профиль)",
-    descKey: "breast.viewDesc.side_right",
+    descKey: "simulation.breast.viewDesc.side_right",
     descDefault: "Правый профиль (90°).",
   },
   {
     key: "oblique_left",
     icon: "◖",
-    labelKey: "breast.viewLabel.oblique_left",
+    labelKey: "simulation.breast.viewLabel.oblique_left",
     labelDefault: "3/4 слева",
-    descKey: "breast.viewDesc.oblique_left",
+    descKey: "simulation.breast.viewDesc.oblique_left",
     descDefault: "Полу-боковой левый вид (45°).",
   },
   {
     key: "oblique_right",
     icon: "◗",
-    labelKey: "breast.viewLabel.oblique_right",
+    labelKey: "simulation.breast.viewLabel.oblique_right",
     labelDefault: "3/4 справа",
-    descKey: "breast.viewDesc.oblique_right",
+    descKey: "simulation.breast.viewDesc.oblique_right",
     descDefault: "Полу-боковой правый вид (45°).",
   },
   {
     key: "bottom_up",
     icon: "↑",
-    labelKey: "breast.viewLabel.bottom_up",
+    labelKey: "simulation.breast.viewLabel.bottom_up",
     labelDefault: "Снизу вверх",
-    descKey: "breast.viewDesc.bottom_up",
+    descKey: "simulation.breast.viewDesc.bottom_up",
     descDefault: "Вид снизу. Для оценки субмаммарной складки.",
   },
 ];
@@ -79,7 +79,7 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
   const { t } = useTranslation("Simulation");
 
   const [step, setStep] = useState(1);
-  const [photo, setPhoto] = useState(null); // embedded-photo от backend
+  const [photo, setPhoto] = useState(null);
   const [photoView, setPhotoView] = useState("front");
   const [label, setLabel] = useState("");
   const [patientRef, setPatientRef] = useState("");
@@ -178,7 +178,7 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
     <div style={overlayStyle} onClick={handleClose}>
       <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
         <h2 style={titleStyle}>
-          {t("breast.newModal.title", {
+          {t("simulation.breast.newModal.title", {
             defaultValue: "Новый план — моделирование груди",
           })}
         </h2>
@@ -194,15 +194,15 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
 
         <div style={subtitleStyle}>
           {step === 1 &&
-            t("breast.newModal.step1Subtitle", {
+            t("simulation.breast.newModal.step1Subtitle", {
               defaultValue: "Шаг 1 из 3 — загрузка фотографии",
             })}
           {step === 2 &&
-            t("breast.newModal.step2Subtitle", {
+            t("simulation.breast.newModal.step2Subtitle", {
               defaultValue: "Шаг 2 из 3 — выбор ракурса фотографии",
             })}
           {step === 3 &&
-            t("breast.newModal.step3Subtitle", {
+            t("simulation.breast.newModal.step3Subtitle", {
               defaultValue: "Шаг 3 из 3 — детали плана",
             })}
         </div>
@@ -232,17 +232,17 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
               </div>
               <div style={{ fontSize: 14, marginBottom: 8 }}>
                 {uploading
-                  ? t("breast.newModal.uploading", {
+                  ? t("simulation.breast.newModal.uploading", {
                       defaultValue: "Загрузка... {{progress}}%",
                       progress: uploadProgress,
                     })
-                  : t("breast.newModal.dropZoneHint", {
+                  : t("simulation.breast.newModal.dropZoneHint", {
                       defaultValue:
                         "Перетащите фото сюда или нажмите чтобы выбрать",
                     })}
               </div>
               <div style={{ fontSize: 12, color: "#888" }}>
-                {t("breast.newModal.dropZoneFormats", {
+                {t("simulation.breast.newModal.dropZoneFormats", {
                   defaultValue: "JPEG, PNG, WebP — до 20 МБ",
                 })}
               </div>
@@ -280,7 +280,7 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
                 />
                 <div style={{ fontSize: 12, color: "#888", marginTop: 4 }}>
                   ✓{" "}
-                  {t("breast.newModal.uploadSuccess", {
+                  {t("simulation.breast.newModal.uploadSuccess", {
                     defaultValue: "Загружено",
                   })}{" "}
                   — {photo.width}×{photo.height}
@@ -319,14 +319,14 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
         {step === 3 && (
           <>
             <label style={labelStyle}>
-              {t("breast.newModal.labelField", {
+              {t("simulation.breast.newModal.labelField", {
                 defaultValue: "Метка плана",
               })}
               <input
                 type="text"
                 value={label}
                 onChange={(e) => setLabel(e.target.value)}
-                placeholder={t("breast.newModal.labelPlaceholder", {
+                placeholder={t("simulation.breast.newModal.labelPlaceholder", {
                   defaultValue: "Например: Аугментация — пред. оценка",
                 })}
                 maxLength={200}
@@ -336,16 +336,19 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
             </label>
 
             <label style={labelStyle}>
-              {t("breast.newModal.patientRefField", {
+              {t("simulation.breast.newModal.patientRefField", {
                 defaultValue: "Пациент (опционально)",
               })}
               <input
                 type="text"
                 value={patientRef}
                 onChange={(e) => setPatientRef(e.target.value)}
-                placeholder={t("breast.newModal.patientRefPlaceholder", {
-                  defaultValue: "Иванова И.А., карта №12345",
-                })}
+                placeholder={t(
+                  "simulation.breast.newModal.patientRefPlaceholder",
+                  {
+                    defaultValue: "Иванова И.А., карта №12345",
+                  },
+                )}
                 maxLength={200}
                 style={inputStyle}
               />
@@ -354,13 +357,13 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
             <div style={summaryBoxStyle}>
               <div style={summaryRowStyle}>
                 <span style={summaryLabelStyle}>
-                  {t("breast.newModal.summaryView", {
+                  {t("simulation.breast.newModal.summaryView", {
                     defaultValue: "Ракурс",
                   })}
                   :
                 </span>
                 <span style={summaryValueStyle}>
-                  {t(`breast.viewLabel.${photoView}`, {
+                  {t(`simulation.breast.viewLabel.${photoView}`, {
                     defaultValue:
                       PHOTO_VIEWS.find((v) => v.key === photoView)
                         ?.labelDefault || photoView,
@@ -370,7 +373,7 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
               {photo && (
                 <div style={summaryRowStyle}>
                   <span style={summaryLabelStyle}>
-                    {t("breast.newModal.summaryPhoto", {
+                    {t("simulation.breast.newModal.summaryPhoto", {
                       defaultValue: "Фото",
                     })}
                     :
@@ -396,7 +399,7 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
               disabled={uploading || creating}
             >
               ←{" "}
-              {t("breast.newModal.back", {
+              {t("simulation.breast.newModal.back", {
                 defaultValue: "Назад",
               })}
             </button>
@@ -407,7 +410,9 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
             style={secondaryButtonStyle}
             disabled={creating}
           >
-            {t("breast.newModal.cancel", { defaultValue: "Отмена" })}
+            {t("simulation.breast.newModal.cancel", {
+              defaultValue: "Отмена",
+            })}
           </button>
 
           {step === 2 && (
@@ -416,7 +421,10 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
               style={primaryButtonStyle}
               disabled={!photoView}
             >
-              {t("breast.newModal.next", { defaultValue: "Далее" })} →
+              {t("simulation.breast.newModal.next", {
+                defaultValue: "Далее",
+              })}{" "}
+              →
             </button>
           )}
 
@@ -430,10 +438,10 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
               }}
             >
               {creating
-                ? t("breast.newModal.creating", {
+                ? t("simulation.breast.newModal.creating", {
                     defaultValue: "Создание...",
                   })
-                : t("breast.newModal.create", {
+                : t("simulation.breast.newModal.create", {
                     defaultValue: "Создать план",
                   })}
             </button>

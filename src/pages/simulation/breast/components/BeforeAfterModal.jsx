@@ -6,29 +6,72 @@
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import ReactDOM from "react-dom";
+import { useTranslation } from "react-i18next";
 import { exportBeforeAfter } from "../breastExportUtils.js";
 
 const VIEW_MODES = [
-  { key: "slider", label: "Слайдер", icon: "◐" },
-  { key: "side", label: "Рядом", icon: "▌▌" },
-  { key: "toggle", label: "Переключение", icon: "⇄" },
-  { key: "animation", label: "Анимация", icon: "⟳" },
+  {
+    key: "slider",
+    labelKey: "beforeAfter.modes.slider",
+    labelDefault: "Слайдер",
+    icon: "◐",
+  },
+  {
+    key: "side",
+    labelKey: "beforeAfter.modes.side",
+    labelDefault: "Рядом",
+    icon: "▌▌",
+  },
+  {
+    key: "toggle",
+    labelKey: "beforeAfter.modes.toggle",
+    labelDefault: "Переключение",
+    icon: "⇄",
+  },
+  {
+    key: "animation",
+    labelKey: "beforeAfter.modes.animation",
+    labelDefault: "Анимация",
+    icon: "⟳",
+  },
 ];
 
 const EXPORT_OPTIONS = [
   {
     key: "side-by-side-png",
-    label: "Сравнение (PNG)",
-    desc: "Высокое качество",
+    labelKey: "beforeAfter.exportOptions.sideBySidePng.label",
+    labelDefault: "Сравнение (PNG)",
+    descKey: "beforeAfter.exportOptions.sideBySidePng.desc",
+    descDefault: "Высокое качество",
   },
   {
     key: "side-by-side-jpg",
-    label: "Сравнение (JPG)",
-    desc: "Для мессенджеров",
+    labelKey: "beforeAfter.exportOptions.sideBySideJpg.label",
+    labelDefault: "Сравнение (JPG)",
+    descKey: "beforeAfter.exportOptions.sideBySideJpg.desc",
+    descDefault: "Для мессенджеров",
   },
-  { key: "before-png", label: "Только ДО (PNG)", desc: "Исходное фото" },
-  { key: "after-png", label: "Только ПОСЛЕ (PNG)", desc: "Деформированное" },
-  { key: "pdf", label: "PDF отчёт", desc: "3 страницы с метаданными" },
+  {
+    key: "before-png",
+    labelKey: "beforeAfter.exportOptions.beforePng.label",
+    labelDefault: "Только ДО (PNG)",
+    descKey: "beforeAfter.exportOptions.beforePng.desc",
+    descDefault: "Исходное фото",
+  },
+  {
+    key: "after-png",
+    labelKey: "beforeAfter.exportOptions.afterPng.label",
+    labelDefault: "Только ПОСЛЕ (PNG)",
+    descKey: "beforeAfter.exportOptions.afterPng.desc",
+    descDefault: "Деформированное",
+  },
+  {
+    key: "pdf",
+    labelKey: "beforeAfter.exportOptions.pdf.label",
+    labelDefault: "PDF отчёт",
+    descKey: "beforeAfter.exportOptions.pdf.desc",
+    descDefault: "3 страницы с метаданными",
+  },
 ];
 
 /* ──────────────────────────────────────────────────────────────────────
@@ -59,6 +102,8 @@ export default function BeforeAfterModal({
   patientRef,
   photoView,
 }) {
+  const { t } = useTranslation("Simulation");
+
   const [mode, setMode] = useState("slider");
   const [sliderPos, setSliderPos] = useState(0.5);
   const [toggleShowAfter, setToggleShowAfter] = useState(false);
@@ -141,7 +186,11 @@ export default function BeforeAfterModal({
   const handleExport = useCallback(
     async (format) => {
       if (!beforeImageData || !afterImageData) {
-        setExportError("Нет данных для экспорта");
+        setExportError(
+          t("beforeAfter.errors.noData", {
+            defaultValue: "Нет данных для экспорта",
+          }),
+        );
         return;
       }
       setExporting(format);
@@ -158,12 +207,17 @@ export default function BeforeAfterModal({
       } catch (err) {
         // eslint-disable-next-line no-console
         console.error("[BeforeAfterModal] export failed:", err);
-        setExportError(err?.message || "Ошибка экспорта");
+        setExportError(
+          err?.message ||
+            t("beforeAfter.errors.exportFailed", {
+              defaultValue: "Ошибка экспорта",
+            }),
+        );
       } finally {
         setExporting(null);
       }
     },
-    [beforeImageData, afterImageData, label, patientRef, photoView],
+    [beforeImageData, afterImageData, label, patientRef, photoView, t],
   );
 
   if (!open) return null;
@@ -172,13 +226,22 @@ export default function BeforeAfterModal({
     !beforeImageData || !afterImageData ? (
       <div style={modalStyle}>
         <div style={emptyStyle}>
-          <div style={emptyTitleStyle}>Нет деформации для сравнения</div>
+          <div style={emptyTitleStyle}>
+            {t("beforeAfter.empty.title", {
+              defaultValue: "Нет деформации для сравнения",
+            })}
+          </div>
           <div style={emptyHintStyle}>
-            Добавьте хотя бы одну точку деформации, чтобы увидеть результат
-            "после".
+            {t("beforeAfter.empty.hint", {
+              defaultValue:
+                'Добавьте хотя бы одну точку деформации, чтобы увидеть результат "после".',
+            })}
           </div>
           <button type="button" style={primaryButtonStyle} onClick={onClose}>
-            ← Вернуться к редактированию
+            ←{" "}
+            {t("beforeAfter.empty.backButton", {
+              defaultValue: "Вернуться к редактированию",
+            })}
           </button>
         </div>
       </div>
@@ -187,12 +250,16 @@ export default function BeforeAfterModal({
         {/* Header */}
         <div style={headerStyle}>
           <button type="button" style={backButtonStyle} onClick={onClose}>
-            ← Назад к редактированию
+            ←{" "}
+            {t("beforeAfter.backButton", {
+              defaultValue: "Назад к редактированию",
+            })}
           </button>
 
           <div style={headerCenterStyle}>
             <div style={headerTitleStyle}>
-              {label || "План"}
+              {label ||
+                t("beforeAfter.fallbackLabel", { defaultValue: "План" })}
               {patientRef && (
                 <span style={headerPatientStyle}> · {patientRef}</span>
               )}
@@ -208,10 +275,11 @@ export default function BeforeAfterModal({
               }}
               onClick={() => setExportMenuOpen((v) => !v)}
             >
-              ⬇ Скачать
+              ⬇ {t("beforeAfter.downloadButton", { defaultValue: "Скачать" })}
             </button>
             {exportMenuOpen && (
               <ExportMenu
+                t={t}
                 onSelect={handleExport}
                 onClose={() => setExportMenuOpen(false)}
                 exporting={exporting}
@@ -235,7 +303,9 @@ export default function BeforeAfterModal({
                 onClick={() => setMode(m.key)}
               >
                 <span style={modeTabIconStyle}>{m.icon}</span>
-                <span style={modeTabLabelStyle}>{m.label}</span>
+                <span style={modeTabLabelStyle}>
+                  {t(m.labelKey, { defaultValue: m.labelDefault })}
+                </span>
               </button>
             ))}
           </div>
@@ -245,6 +315,7 @@ export default function BeforeAfterModal({
         <div style={contentStyle}>
           {mode === "side" && (
             <SideMode
+              t={t}
               beforeImageData={beforeImageData}
               afterImageData={afterImageData}
             />
@@ -252,6 +323,7 @@ export default function BeforeAfterModal({
 
           {mode === "slider" && (
             <SliderMode
+              t={t}
               beforeImageData={beforeImageData}
               afterImageData={afterImageData}
               sliderPos={sliderPos}
@@ -262,6 +334,7 @@ export default function BeforeAfterModal({
 
           {mode === "toggle" && (
             <ToggleMode
+              t={t}
               beforeImageData={beforeImageData}
               afterImageData={afterImageData}
               showAfter={toggleShowAfter}
@@ -271,6 +344,7 @@ export default function BeforeAfterModal({
 
           {mode === "animation" && (
             <ToggleMode
+              t={t}
               beforeImageData={beforeImageData}
               afterImageData={afterImageData}
               showAfter={toggleShowAfter}
@@ -288,18 +362,21 @@ export default function BeforeAfterModal({
    View modes — теперь принимают imageData напрямую и используют ImageCanvas
    ────────────────────────────────────────────────────────────────────── */
 
-function SideMode({ beforeImageData, afterImageData }) {
+function SideMode({ t, beforeImageData, afterImageData }) {
+  const beforeLabel = t("beforeAfter.before", { defaultValue: "ДО" });
+  const afterLabel = t("beforeAfter.after", { defaultValue: "ПОСЛЕ" });
+
   return (
     <div style={sideContainerStyle}>
       <div style={sidePanelStyle}>
-        <div style={sideLabelStyle}>ДО</div>
+        <div style={sideLabelStyle}>{beforeLabel}</div>
         <div style={sideImageWrapStyle}>
           <ImageCanvas imageData={beforeImageData} style={canvasStyle} />
         </div>
       </div>
       <div style={sideDividerStyle} />
       <div style={sidePanelStyle}>
-        <div style={{ ...sideLabelStyle, color: "#4ade80" }}>ПОСЛЕ</div>
+        <div style={{ ...sideLabelStyle, color: "#4ade80" }}>{afterLabel}</div>
         <div style={sideImageWrapStyle}>
           <ImageCanvas imageData={afterImageData} style={canvasStyle} />
         </div>
@@ -309,12 +386,16 @@ function SideMode({ beforeImageData, afterImageData }) {
 }
 
 function SliderMode({
+  t,
   beforeImageData,
   afterImageData,
   sliderPos,
   sliderContainerRef,
   onStart,
 }) {
+  const beforeLabel = t("beforeAfter.before", { defaultValue: "ДО" });
+  const afterLabel = t("beforeAfter.after", { defaultValue: "ПОСЛЕ" });
+
   return (
     <div style={sliderModeStyle}>
       <div
@@ -332,9 +413,11 @@ function SliderMode({
           <ImageCanvas imageData={afterImageData} style={sliderCanvasStyle} />
         </div>
 
-        <div style={{ ...sliderLabelStyle, left: 16, color: "#fff" }}>ДО</div>
+        <div style={{ ...sliderLabelStyle, left: 16, color: "#fff" }}>
+          {beforeLabel}
+        </div>
         <div style={{ ...sliderLabelStyle, right: 16, color: "#4ade80" }}>
-          ПОСЛЕ
+          {afterLabel}
         </div>
 
         <div
@@ -349,19 +432,25 @@ function SliderMode({
         </div>
       </div>
       <div style={sliderHintStyle}>
-        Перетаскивайте разделитель влево/вправо для сравнения
+        {t("beforeAfter.sliderHint", {
+          defaultValue: "Перетаскивайте разделитель влево/вправо для сравнения",
+        })}
       </div>
     </div>
   );
 }
 
 function ToggleMode({
+  t,
   beforeImageData,
   afterImageData,
   showAfter,
   onClick,
   isAnimation,
 }) {
+  const beforeLabel = t("beforeAfter.before", { defaultValue: "ДО" });
+  const afterLabel = t("beforeAfter.after", { defaultValue: "ПОСЛЕ" });
+
   return (
     <div
       style={{
@@ -405,10 +494,16 @@ function ToggleMode({
               : "rgba(255,255,255,0.15)",
           }}
         >
-          {showAfter ? "ПОСЛЕ" : "ДО"}
+          {showAfter ? afterLabel : beforeLabel}
         </div>
         <div style={toggleHintStyle}>
-          {isAnimation ? "Авто-переключение" : "Кликните чтобы переключить"}
+          {isAnimation
+            ? t("beforeAfter.toggleHintAnimation", {
+                defaultValue: "Авто-переключение",
+              })
+            : t("beforeAfter.toggleHint", {
+                defaultValue: "Кликните чтобы переключить",
+              })}
         </div>
       </div>
     </div>
@@ -419,12 +514,16 @@ function ToggleMode({
    Export menu
    ────────────────────────────────────────────────────────────────────── */
 
-function ExportMenu({ onSelect, onClose, exporting, error }) {
+function ExportMenu({ t, onSelect, onClose, exporting, error }) {
   return (
     <>
       <div style={exportOverlayStyle} onClick={onClose} />
       <div style={exportMenuStyle}>
-        <div style={exportMenuTitleStyle}>Выберите формат:</div>
+        <div style={exportMenuTitleStyle}>
+          {t("beforeAfter.exportMenuTitle", {
+            defaultValue: "Выберите формат:",
+          })}
+        </div>
         {EXPORT_OPTIONS.map((opt) => (
           <button
             key={opt.key}
@@ -436,9 +535,15 @@ function ExportMenu({ onSelect, onClose, exporting, error }) {
             onClick={() => onSelect(opt.key)}
             disabled={!!exporting}
           >
-            <div style={exportItemLabelStyle}>{opt.label}</div>
+            <div style={exportItemLabelStyle}>
+              {t(opt.labelKey, { defaultValue: opt.labelDefault })}
+            </div>
             <div style={exportItemDescStyle}>
-              {exporting === opt.key ? "Создаём файл..." : opt.desc}
+              {exporting === opt.key
+                ? t("beforeAfter.exportBusy", {
+                    defaultValue: "Создаём файл...",
+                  })
+                : t(opt.descKey, { defaultValue: opt.descDefault })}
             </div>
           </button>
         ))}

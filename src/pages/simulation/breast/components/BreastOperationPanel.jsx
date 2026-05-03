@@ -1,6 +1,7 @@
 // src/pages/simulation/breast/components/BreastOperationPanel.jsx
 
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function BreastOperationPanel({
   controlPointsCount,
@@ -10,10 +11,14 @@ export default function BreastOperationPanel({
   onToggleAddMode,
   onOpenCompare,
 }) {
+  const { t } = useTranslation("Simulation");
+
   return (
     <div style={panelStyle}>
       <div style={panelHeaderStyle}>
-        <div style={titleStyle}>Деформация</div>
+        <div style={titleStyle}>
+          {t("breastOperationPanel.title", { defaultValue: "Деформация" })}
+        </div>
         <span style={countBadgeStyle}>{controlPointsCount}</span>
       </div>
 
@@ -25,7 +30,11 @@ export default function BreastOperationPanel({
         }}
         onClick={onToggleAddMode}
       >
-        {isAddMode ? "✕ Отмена" : "+ Добавить точку"}
+        {isAddMode
+          ? `✕ ${t("breastOperationPanel.cancel", { defaultValue: "Отмена" })}`
+          : `+ ${t("breastOperationPanel.addPoint", {
+              defaultValue: "Добавить точку",
+            })}`}
       </button>
 
       {canCompare && onOpenCompare && (
@@ -34,7 +43,10 @@ export default function BreastOperationPanel({
           style={compareButtonStyle}
           onClick={onOpenCompare}
         >
-          🔍 До / После
+          🔍{" "}
+          {t("breastOperationPanel.compareButton", {
+            defaultValue: "До / После",
+          })}
         </button>
       )}
 
@@ -44,35 +56,66 @@ export default function BreastOperationPanel({
           style={clearAllButtonStyle}
           onClick={onClearPoints}
         >
-          🗑 Удалить все точки
+          🗑{" "}
+          {t("breastOperationPanel.clearAll", {
+            defaultValue: "Удалить все точки",
+          })}
         </button>
       )}
 
       <div style={helpStyle}>
-        <strong style={helpTitleStyle}>Как работать:</strong>
+        <strong style={helpTitleStyle}>
+          {t("breastOperationPanel.help.title", {
+            defaultValue: "Как работать:",
+          })}
+        </strong>
         <div style={helpRowStyle}>
           <span style={kbdStyle}>+</span>
-          <span>Добавить точку — клик на фото</span>
+          <span>
+            {t("breastOperationPanel.help.addPoint", {
+              defaultValue: "Добавить точку — клик на фото",
+            })}
+          </span>
         </div>
         <div style={helpRowStyle}>
           <span style={dotBlueStyle} />
-          <span>Тяни синюю — деформация</span>
+          <span>
+            {t("breastOperationPanel.help.dragBlue", {
+              defaultValue: "Тяни синюю — деформация",
+            })}
+          </span>
         </div>
         <div style={helpRowStyle}>
           <span style={dotGreenStyle} />
-          <span>Тяни зелёную — переместить</span>
+          <span>
+            {t("breastOperationPanel.help.dragGreen", {
+              defaultValue: "Тяни зелёную — переместить",
+            })}
+          </span>
         </div>
         <div style={helpRowStyle}>
           <span style={kbdStyle}>⚙</span>
-          <span>Клик по точке — настройки</span>
+          <span>
+            {t("breastOperationPanel.help.clickPoint", {
+              defaultValue: "Клик по точке — настройки",
+            })}
+          </span>
         </div>
         <div style={helpRowStyle}>
           <span style={kbdStyle}>⊙</span>
-          <span>Колесо мыши — радиус</span>
+          <span>
+            {t("breastOperationPanel.help.wheelRadius", {
+              defaultValue: "Колесо мыши — радиус",
+            })}
+          </span>
         </div>
         <div style={helpRowStyle}>
           <span style={kbdStyle}>⇧</span>
-          <span>Shift+клик — удалить</span>
+          <span>
+            {t("breastOperationPanel.help.shiftClickRemove", {
+              defaultValue: "Shift+клик — удалить",
+            })}
+          </span>
         </div>
       </div>
     </div>

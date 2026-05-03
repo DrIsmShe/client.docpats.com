@@ -1,20 +1,113 @@
 {
   "menuItem": "Simulyasiya",
   "pageTitle": "Cərrahi simulyasiya",
+  "workflowHint": "Formanı dəyişmək üçün: əlavə etmə rejiminə keçin (+•), anatomik nöqtəyə klikləyin və sürüşdürün.",
+  "toggleSidePanel": "Yan paneli aç/bağla",
+  "loadingImageRetry": "Şəkil yüklənir… (cəhd {{attempt}} / {{max}})",
+  "loadingImageRetryHint": "Yeni yüklənmiş şəkillərin əlçatan olması bir neçə saniyə çəkə bilər",
+
+  "simulation": {
+    "hub": {
+      "title": "Modelləşdirmə",
+      "subtitle": "Simulyasiya növünü seçin",
+      "comingSoon": "Tezliklə",
+      "new": "Yeni",
+      "face": {
+        "title": "Üz modelləşdirməsi",
+        "description": "Rinoplastika, mentoplastika, simmetriya — üz əməliyyatlarının analizi və simulyasiyası"
+      },
+      "breast": {
+        "title": "Döş modelləşdirməsi",
+        "description": "Augmentasiya, reduksiya, mastopeksiya — döş əməliyyatlarının simulyasiyası"
+      },
+      "abdomen": {
+        "title": "Bel modelləşdirməsi",
+        "description": "Abdominoplastika, liposaksiya — tezliklə"
+      },
+      "arms": {
+        "title": "Qol modelləşdirməsi",
+        "description": "Braxioplastika — tezliklə"
+      }
+    }
+  },
+
+  "breast": {
+    "backToHub": "Növ seçiminə qayıt",
+    "title": "Döş modelləşdirməsi",
+    "summary": "Pasiyentlər: {{patients}} · Planlar: {{plans}}",
+    "newButton": "Yeni plan",
+    "searchPlaceholder": "Pasiyent və ya plan adı ilə axtar...",
+    "loading": "Yüklənir...",
+    "empty": "Hələ döş modelləşdirməsi planı yoxdur",
+    "emptyHint": "İlk planı yarat — pasiyentin şəklini yüklə və rakursu seç",
+    "noMatch": "\"{{query}}\" sorğusu üzrə nəticə tapılmadı",
+    "noPatient": "Pasiyent göstərilməyib",
+    "viewsCount_one": "{{count}} rakurs",
+    "viewsCount_other": "{{count}} rakurs",
+    "deleteConfirm": "\"{{label}}\" planı silinsin?",
+    "deleteFailed": "Silmək mümkün olmadı",
+    "viewLabel": {
+      "front": "Ön tərəfdən",
+      "side_left": "Soldan",
+      "side_right": "Sağdan",
+      "oblique_left": "3/4 sol",
+      "oblique_right": "3/4 sağ",
+      "bottom_up": "Aşağıdan"
+    },
+    "status": {
+      "anatomy": "İşarələnib",
+      "noAnatomy": "İşarələnməyib"
+    },
+    "operation": {
+      "augmentation": "Augmentasiya",
+      "reduction": "Reduksiya",
+      "mastopexy": "Mastopeksiya"
+    },
+    "newModal": {
+      "title": "Yeni plan — döş modelləşdirməsi",
+      "step1Subtitle": "Addım 1/3 — şəkilin yüklənməsi",
+      "step2Subtitle": "Addım 2/3 — şəkil rakursunun seçimi",
+      "step3Subtitle": "Addım 3/3 — plan təfərrüatları",
+      "uploading": "Yüklənir... {{progress}}%",
+      "dropZoneHint": "Şəkili bura sürüşdürün və ya seçmək üçün klikləyin",
+      "dropZoneFormats": "JPEG, PNG, WebP — 20 MB-a qədər",
+      "uploadSuccess": "Yükləndi",
+      "labelField": "Plan etiketi",
+      "labelPlaceholder": "Məs.: Augmentasiya — əməliyyatönü qiymətləndirmə",
+      "patientRefField": "Pasiyent (məcburi deyil)",
+      "patientRefPlaceholder": "Əliyeva A., kart №12345",
+      "summaryView": "Rakurs",
+      "summaryPhoto": "Şəkil",
+      "back": "Geri",
+      "cancel": "Ləğv et",
+      "next": "İrəli",
+      "create": "Plan yarat",
+      "creating": "Yaradılır..."
+    },
+    "viewDesc": {
+      "front": "Düz ön görünüş. Əksər ölçmələr üçün istifadə olunur.",
+      "side_left": "Sol profil (90°). Proyeksiya və ptoz qiymətləndirməsi üçün.",
+      "side_right": "Sağ profil (90°).",
+      "oblique_left": "Yarım yan sol görünüş (45°).",
+      "oblique_right": "Yarım yan sağ görünüş (45°).",
+      "bottom_up": "Aşağıdan görünüş. Submammar büküşün qiymətləndirilməsi üçün."
+    }
+  },
 
   "list": {
-    "title": "Simulyasiya planlarım",
-    "empty": "Hələ simulyasiya planınız yoxdur",
-    "emptyHint": "Pasiyentə əməliyyatın nəticəsini göstərmək üçün ilk planı yaradın",
+    "title": "Mənim simulyasiya planlarım",
+    "empty": "Hələ heç bir simulyasiya planınız yoxdur",
+    "emptyHint": "Pasiyentə əməliyyat nəticəsinin önbaxışını göstərmək üçün ilk planı yaradın",
     "newButton": "Yeni plan",
     "loadMore": "Daha çox yüklə",
     "loading": "Yüklənir…",
+    "controlPointsCount_zero": "Deformasiya nöqtəsi yoxdur",
     "controlPointsCount_one": "{{count}} deformasiya nöqtəsi",
     "controlPointsCount_other": "{{count}} deformasiya nöqtəsi",
     "createdAt": "{{date}} tarixində yaradılıb",
     "updatedAt": "{{date}} tarixində yenilənib",
-    "searchPlaceholder": "Ad və ya pasiyent üzrə axtar…",
-    "noMatch": "\"{{query}}\" üçün nəticə yoxdur",
+    "searchPlaceholder": "Ad və ya pasiyent ilə axtar…",
+    "noMatch": "«{{query}}» üzrə nəticə tapılmadı",
     "sort": {
       "newest": "Əvvəlcə yenilər",
       "oldest": "Əvvəlcə köhnələr",
@@ -22,31 +115,69 @@
     }
   },
 
-  "dates": {
-    "todayAt": "Bu gün {{time}}",
-    "yesterdayAt": "Dünən {{time}}",
-    "daysAgo_one": "{{count}} gün əvvəl",
-    "daysAgo_other": "{{count}} gün əvvəl"
-  },
   "editor": {
     "title": "Plan redaktoru",
     "placeholderTitle": "Redaktor hazırlanır",
-    "placeholderBody": "Burada foto, idarəetmə nöqtələri və canlı deformasiya önizləməsi olan kanvas görünəcək. Hazırda yalnız meta-məlumatlar API vasitəsilə redaktə edilə bilər.",
-    "backToList": "Planlara qayıt",
+    "placeholderBody": "Şəkil, idarəetmə nöqtələri və deformasiya önbaxışı olan kətan burada görünəcək. Hazırda yalnız API vasitəsilə plan məlumatlarının emalı mümkündür.",
+    "backToList": "Plan siyahısına qayıt",
     "saveStatus": {
-      "idle": "Bütün dəyişikliklər saxlanıldı",
+      "idle": "Bütün dəyişikliklər saxlanılıb",
       "saving": "Saxlanılır…",
       "saved": "Saxlanıldı",
-      "error": "Saxlama uğursuz oldu"
+      "error": "Saxlama xətası"
     },
-    "loadingImage": "Foto yüklənir…",
-    "imageLoadError": "Foto yüklənə bilmədi"
+    "loadingImage": "Şəkil yüklənir…",
+    "imageLoadError": "Şəkili yükləmək mümkün olmadı"
+  },
+
+  "newPlanModal": {
+    "title": "Yeni simulyasiya planı",
+    "stepUpload": "Addım 1/2 — pasiyentin şəklini yüklə",
+    "stepDetails": "Addım 2/2 — plan təfərrüatlarını daxil et",
+    "dropZoneHint": "Şəkili bura sürüşdürün və ya seçmək üçün klikləyin",
+    "dropZoneFormats": "JPG, PNG, WebP · 20 MB-a qədər",
+    "uploading": "Şəkil yüklənir: {{progress}}%",
+    "uploadSuccess": "Şəkil yükləndi",
+    "labelField": "Plan adı",
+    "labelPlaceholder": "Məs.: Rinoplastika — variant 1",
+    "patientRefField": "Pasiyent referansı (məcburi deyil)",
+    "patientRefPlaceholder": "Məs.: A. Əliyev və ya kart nömrəsi",
+    "cancel": "Ləğv et",
+    "back": "Geri",
+    "create": "Plan yarat",
+    "creating": "Yaradılır…"
+  },
+
+  "deleteModal": {
+    "title": "Plan silinsin?",
+    "body": "Plan arxivə köçürüləcək, şəkil həmişəlik silinəcək. Bu əməliyyatı geri qaytarmaq mümkün deyil.",
+    "cancel": "Ləğv et",
+    "confirm": "Sil",
+    "deleting": "Silinir…"
+  },
+
+  "itemMenu": {
+    "open": "Aç",
+    "duplicate": "Kopyala",
+    "delete": "Sil"
+  },
+
+  "errors": {
+    "network_error": "Şəbəkə xətası. Bağlantını yoxlayın.",
+    "validation_error": "Daxil edilən məlumatları yoxlayın",
+    "unauthorized": "Avtorizasiya tələb olunur",
+    "not_found": "Plan tapılmadı",
+    "file_too_large": "Fayl çox böyükdür (maks. 20 MB)",
+    "invalid_mime": "Dəstəklənməyən format. JPG, PNG və ya WebP istifadə edin",
+    "invalid_image": "Şəkili oxumaq mümkün olmadı",
+    "mime_mismatch": "Fayl tipi məzmuna uyğun gəlmir",
+    "unknown": "Xəta baş verdi"
   },
 
   "toolbar": {
-    "zoomIn": "Böyüt",
-    "zoomOut": "Kiçilt",
-    "zoomLevel": "Cari miqyas",
+    "zoomIn": "Yaxınlaşdır",
+    "zoomOut": "Uzaqlaşdır",
+    "zoomLevel": "Cari miqyas səviyyəsi",
     "fit": "Pəncərəyə sığdır",
     "fitShort": "Sığdır",
     "reset": "Sıfırla (100%)",
@@ -56,64 +187,30 @@
     "redo": "Təkrarla (Ctrl+Shift+Z)"
   },
 
+  "saveStatus": {
+    "idle": "Saxlanıldı",
+    "dirty": "Saxlanılmamış dəyişikliklər var",
+    "saving": "Saxlanılır…",
+    "saved": "Saxlanıldı",
+    "error": "Saxlama xətası"
+  },
+
   "points": {
     "propsTitle": "Deformasiya nöqtəsi",
     "radius": "Təsir radiusu",
     "strength": "Güc",
     "delete": "Nöqtəni sil",
-    "hint": "Mərkəzi köçürmək üçün Alt+sürüşdürmə. Silmək üçün Del."
-  },
-  "editor.saveStatus.dirty": "Saxlanılmamış dəyişikliklər",
-  "newPlanModal": {
-    "title": "Yeni simulyasiya planı",
-    "stepUpload": "Addım 1 / 2 — pasiyentin fotosunu yükləyin",
-    "stepDetails": "Addım 2 / 2 — plan təfərrüatları",
-    "dropZoneHint": "Fotonu buraya atın və ya seçmək üçün klikləyin",
-    "dropZoneFormats": "JPG, PNG, WebP · 20 MB-a qədər",
-    "uploading": "Yüklənir: {{progress}}%",
-    "uploadSuccess": "Foto yükləndi",
-    "labelField": "Planın adı",
-    "labelPlaceholder": "Məsələn: Rinoplastika — variant 1",
-    "patientRefField": "Pasiyent istinadı (məcburi deyil)",
-    "patientRefPlaceholder": "Məsələn: Ə. Əliyev və ya kart №",
-    "cancel": "Ləğv et",
-    "back": "Geri",
-    "create": "Plan yarat",
-    "creating": "Yaradılır…"
+    "hint": "Alt + kvadratı sürüşdür — mərkəzi köçür. Del — sil."
   },
 
-  "deleteModal": {
-    "title": "Planı silmək?",
-    "body": "Plan arxivə köçürüləcək, foto həmişəlik silinəcək. Bu əməliyyatı geri qaytarmaq olmaz.",
-    "cancel": "Ləğv et",
-    "confirm": "Sil",
-    "deleting": "Silinir…"
+  "dates": {
+    "todayAt": "bu gün {{time}}",
+    "yesterdayAt": "dünən {{time}}",
+    "daysAgo_zero": "bu gün",
+    "daysAgo_one": "{{count}} gün əvvəl",
+    "daysAgo_other": "{{count}} gün əvvəl"
   },
 
-  "itemMenu": {
-    "open": "",
-    "duplicate": "Dublikat",
-    "delete": "Sil"
-  },
-
-  "errors": {
-    "network_error": "Şəbəkə xətası. Bağlantınızı yoxlayın.",
-    "validation_error": "Doldurduğunuz məlumatları yoxlayın",
-    "unauthorized": "Avtorizasiya tələb olunur",
-    "not_found": "Plan tapılmadı",
-    "file_too_large": "Fayl çox böyükdür (maks. 20 MB)",
-    "invalid_mime": "Dəstəklənməyən format. JPG, PNG və ya WebP istifadə edin",
-    "invalid_image": "Şəkil oxuna bilmədi",
-    "mime_mismatch": "Faylın növü məzmununa uyğun gəlmir",
-    "unknown": "Nəsə səhv getdi"
-  },
-  "saveStatus": {
-    "idle": "Saxlanıldı",
-    "dirty": "Saxlanılmamış dəyişikliklər",
-    "saving": "Saxlanılır…",
-    "saved": "Saxlanıldı",
-    "error": "Saxlama uğursuz oldu"
-  },
   "tabs": {
     "editor": "Redaktor",
     "viewer": "Əvvəl / Sonra"
@@ -122,8 +219,8 @@
   "viewer": {
     "labelBefore": "Əvvəl",
     "labelAfter": "Sonra",
-    "preparing": "Tam ölçü hazırlanır…",
-    "preparingHint": "Orijinal yüklənir və deformasiya tətbiq olunur. Bir neçə saniyə çəkir.",
+    "preparing": "Tam keyfiyyət hazırlanır…",
+    "preparingHint": "Orijinal şəkil yüklənir və deformasiya tətbiq edilir. Bu proses bir neçə saniyə çəkir.",
     "exportError": "İxracı hazırlamaq mümkün olmadı",
     "retry": "Yenidən cəhd et"
   },
@@ -132,49 +229,25 @@
     "title": "İxrac",
     "mode": "Nə ixrac olunacaq",
     "modes": {
-      "before": "Əvvəl (orijinal)",
-      "after": "Sonra (deformasiya ilə)",
-      "sideBySide": "Yan-yana: Əvvəl və Sonra"
+      "before": "Əməliyyatdan əvvəl (orijinal)",
+      "after": "Əməliyyatdan sonra (deformasiyalı)",
+      "sideBySide": "Yan-yana: əvvəl və sonra"
     },
     "format": "Format",
     "quality": "JPG keyfiyyəti",
     "download": "Yüklə",
     "downloading": "Yaradılır…"
   },
+
   "help": {
-    "pageTitle": "İstifadə Təlimatı",
-    "backToList": "Planlara qayıt",
-    "toc": "Mündəricat",
-    "loading": "Təlimat yüklənir...",
-    "loadError": "Təlimat yüklənmədi",
+    "pageTitle": "Kömək",
+    "backToList": "Plan siyahısına qayıt",
+    "toc": "Məzmun",
+    "loading": "Kömək yüklənir...",
+    "loadError": "Köməyi yükləmək mümkün olmadı",
     "headerLink": "Kömək"
   },
-  "simulation": {
-    "landmarks": {
-      "title": "Anatomik nöqtələr",
-      "status": {
-        "idle": "Müəyyən edilməyib",
-        "detecting": "Müəyyən edilir…",
-        "detected": "Müəyyən edildi",
-        "failed": "Xəta"
-      },
-      "count_one": "{{count}} nöqtə",
-      "count_other": "{{count}} nöqtə",
-      "detectedAt": "yeniləndi {{time}}",
-      "detecting": "Müəyyən edilir…",
-      "redetect": "Yenidən müəyyən et",
-      "groups": {
-        "title": "Nöqtə qrupları",
-        "face_oval": "Üz konturu",
-        "nose": "Burun",
-        "lips": "Dodaqlar",
-        "left_eye": "Sol göz",
-        "right_eye": "Sağ göz",
-        "left_eyebrow": "Sol qaş",
-        "right_eyebrow": "Sağ qaş"
-      }
-    }
-  },
+
   "landmarks": {
     "title": "Anatomik nöqtələr",
     "status": {
@@ -183,9 +256,10 @@
       "detected": "Müəyyən edildi",
       "failed": "Xəta"
     },
+    "count_zero": "Nöqtə yoxdur",
     "count_one": "{{count}} nöqtə",
     "count_other": "{{count}} nöqtə",
-    "detectedAt": "yeniləndi: {{time}}",
+    "detectedAt": "yeniləndi {{time}}",
     "loaderLoading": "Model yüklənir…",
     "detecting": "Müəyyən edilir…",
     "redetect": "Yenidən müəyyən et",
@@ -200,28 +274,137 @@
       "right_eyebrow": "Sağ qaş"
     }
   },
-  "workflowHint": "Formanı dəyişmək üçün: əlavə rejiminə (+•) keçin, anatomik nöqtəyə klik edin və onu sürükləyin.",
+
   "measurements": {
     "title": "Ölçmələr",
-    "noLandmarks": "Əvvəlcə anatomik nöqtələrin müəyyən edilməsini başladın",
-    "normal": "norma",
+    "noLandmarks": "Əvvəlcə anatomik nöqtələri müəyyən edin",
+    "normal": "Norma",
     "show": "Ölçməni göstər",
     "hide": "Ölçməni gizlət",
-    "calibrationHint": "Millimetrlə ölçmə üçün məlum məsafəyə görə kalibrasiya tələb olunur (plan parametrlərində mövcuddur).",
+    "calibrationHint": "Millimetrlərlə ölçmələr məlum məsafəyə əsaslanan kalibrlənmə tələb edir (plan parametrlərində mövcuddur).",
     "nasofrontalAngle": {
       "label": "Nazofrontal bucaq",
-      "description": "Alın xətti ilə burun yalı arasındakı bucaq"
+      "description": "Alın xətti və burun arxası arasındakı bucaq"
     },
     "goodeProjection": {
-      "label": "Goode burun ucu proyeksiyası",
+      "label": "Burun ucu proyeksiyası (Goode)",
       "description": "Burun ucu uzunluğunun burun hündürlüyünə nisbəti"
     },
     "alarBaseWidth": {
-      "label": "Alar əsas eni",
+      "label": "Burun qanadı bazasının eni",
       "description": "Burun qanadlarının ən kənar nöqtələri arasındakı məsafə"
     }
   },
-  "toggleSidePanel": "Yan paneli aç/bağla",
-  "loadingImageRetry": "Foto yüklənir… ({{attempt}}/{{max}} cəhd)",
-  "loadingImageRetryHint": "Yeni yüklənmiş foto bir neçə saniyə əlçatan olmaya bilər"
+  "breastEditor": {
+    "backToList": "Siyahıya qayıt",
+    "loadingPlan": "Plan yüklənir...",
+    "loadingPhoto": "Şəkil yüklənir...",
+    "loadingPhotoRetry": "Şəkil yüklənir ({{attempt}}/{{max}})...",
+    "confirmClearPoints": "Bütün deformasiya nöqtələri silinsin?",
+    "manualPointLabel": "Nöqtə",
+    "compareButton": "Əvvəl / Sonra",
+    "compareTooltipReady": "Müqayisəni aç",
+    "compareTooltipNoPoints": "Əvvəlcə deformasiya nöqtələri əlavə edin",
+    "errors": {
+      "planLoad": "Planı yükləmək mümkün olmadı",
+      "imageLoad": "Şəkili yükləmək mümkün olmadı"
+    },
+    "fab": {
+      "deformation": "Deformasiya",
+      "compare": "Müqayisə"
+    },
+    "photoViewBadge": {
+      "front": "Ön tərəfdən",
+      "side_left": "Profil L",
+      "side_right": "Profil R",
+      "oblique_left": "3/4 L",
+      "oblique_right": "3/4 R",
+      "bottom_up": "Aşağıdan"
+    }
+  },
+  "warpTuning": {
+    "title": "Dəqiq tənzimləmə",
+    "resetButton": "Defolt qiymətlərə qaytar",
+    "hint": "Hər şəkilə uyğun seçin. Təbii görünüş üçün intensivlik standart olaraq iki dəfə azaldılmışdır.",
+    "params": {
+      "globalStrength": "Deformasiyanın gücü",
+      "globalRadius": "Təsir radiusu",
+      "lateralBias": "Yanal sürüşmə",
+      "verticalBias": "Şaquli sürüşmə"
+    }
+  },
+  "controlPointPopover": {
+    "fallbackLabel": "Nöqtə",
+    "close": "Gizlət",
+    "radius": "Radius",
+    "strength": "Güc",
+    "strengthHintNegative": "− tərs",
+    "strengthHintPositive": "+ düz",
+    "removeButton": "Nöqtəni sil"
+  },
+  "breastOperationPanel": {
+    "title": "Deformasiya",
+    "addPoint": "Nöqtə əlavə et",
+    "cancel": "Ləğv et",
+    "compareButton": "Əvvəl / Sonra",
+    "clearAll": "Bütün nöqtələri sil",
+    "help": {
+      "title": "Necə işlədilir:",
+      "addPoint": "Nöqtə əlavə et — şəkilə klikləyin",
+      "dragBlue": "Mavini sürüşdür — deformasiya",
+      "dragGreen": "Yaşılı sürüşdür — köçür",
+      "clickPoint": "Nöqtəyə klikləyin — parametrlər",
+      "wheelRadius": "Siçanın çarxı — radius",
+      "shiftClickRemove": "Shift+klik — sil"
+    }
+  },
+  "beforeAfter": {
+    "before": "ƏVVƏL",
+    "after": "SONRA",
+    "fallbackLabel": "Plan",
+    "backButton": "Redaktəyə qayıt",
+    "downloadButton": "Yüklə",
+    "sliderHint": "Müqayisə üçün ayırıcını sola/sağa sürüşdürün",
+    "toggleHint": "Dəyişdirmək üçün klikləyin",
+    "toggleHintAnimation": "Avtomatik dəyişdirmə",
+    "exportMenuTitle": "Format seçin:",
+    "exportBusy": "Fayl yaradılır...",
+    "modes": {
+      "slider": "Sürüşdürücü",
+      "side": "Yan-yana",
+      "toggle": "Dəyişdirmə",
+      "animation": "Animasiya"
+    },
+    "exportOptions": {
+      "sideBySidePng": {
+        "label": "Müqayisə (PNG)",
+        "desc": "Yüksək keyfiyyət"
+      },
+      "sideBySideJpg": {
+        "label": "Müqayisə (JPG)",
+        "desc": "Mesajlaşmalar üçün"
+      },
+      "beforePng": {
+        "label": "Yalnız ƏVVƏL (PNG)",
+        "desc": "Orijinal şəkil"
+      },
+      "afterPng": {
+        "label": "Yalnız SONRA (PNG)",
+        "desc": "Deformasiyalı"
+      },
+      "pdf": {
+        "label": "PDF hesabat",
+        "desc": "Metadata ilə 3 səhifə"
+      }
+    },
+    "errors": {
+      "noData": "İxrac üçün məlumat yoxdur",
+      "exportFailed": "İxrac xətası"
+    },
+    "empty": {
+      "title": "Müqayisə üçün deformasiya yoxdur",
+      "hint": "\"Sonra\" nəticəsini görmək üçün ən azı bir deformasiya nöqtəsi əlavə edin.",
+      "backButton": "Redaktəyə qayıt"
+    }
+  }
 }

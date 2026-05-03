@@ -1,21 +1,113 @@
 {
   "menuItem": "Simulation",
   "pageTitle": "Surgical simulation",
+  "workflowHint": "To change shape: switch to add mode (+•), click an anatomical point, then drag it.",
+  "toggleSidePanel": "Open/close side panel",
+  "loadingImageRetry": "Loading image… (attempt {{attempt}} of {{max}})",
+  "loadingImageRetryHint": "Recently uploaded images may take a few seconds to become available",
+
+  "simulation": {
+    "hub": {
+      "title": "Simulation",
+      "subtitle": "Select simulation type",
+      "comingSoon": "Coming soon",
+      "new": "New",
+      "face": {
+        "title": "Facial simulation",
+        "description": "Rhinoplasty, mentoplasty, symmetry — analysis and simulation of facial procedures"
+      },
+      "breast": {
+        "title": "Breast simulation",
+        "description": "Augmentation, reduction, mastopexy — simulation of breast procedures"
+      },
+      "abdomen": {
+        "title": "Waist simulation",
+        "description": "Abdominoplasty, liposuction — coming soon"
+      },
+      "arms": {
+        "title": "Arm simulation",
+        "description": "Brachioplasty — coming soon"
+      }
+    }
+  },
+
+  "breast": {
+    "backToHub": "Back to type selection",
+    "title": "Breast simulation",
+    "summary": "Patients: {{patients}} · Plans: {{plans}}",
+    "newButton": "New plan",
+    "searchPlaceholder": "Search by patient or plan label...",
+    "loading": "Loading...",
+    "empty": "No breast simulation plans yet",
+    "emptyHint": "Create your first plan — upload a patient photo and select a view",
+    "noMatch": "No results for \"{{query}}\"",
+    "noPatient": "No patient specified",
+    "viewsCount_one": "{{count}} view",
+    "viewsCount_other": "{{count}} views",
+    "deleteConfirm": "Delete plan \"{{label}}\"?",
+    "deleteFailed": "Failed to delete",
+    "viewLabel": {
+      "front": "Front",
+      "side_left": "Left",
+      "side_right": "Right",
+      "oblique_left": "3/4 Left",
+      "oblique_right": "3/4 Right",
+      "bottom_up": "Bottom-up"
+    },
+    "status": {
+      "anatomy": "Marked",
+      "noAnatomy": "Not marked"
+    },
+    "operation": {
+      "augmentation": "Augmentation",
+      "reduction": "Reduction",
+      "mastopexy": "Mastopexy"
+    },
+    "newModal": {
+      "title": "New plan — breast simulation",
+      "step1Subtitle": "Step 1 of 3 — upload photo",
+      "step2Subtitle": "Step 2 of 3 — select photo view",
+      "step3Subtitle": "Step 3 of 3 — plan details",
+      "uploading": "Uploading... {{progress}}%",
+      "dropZoneHint": "Drop a photo here or click to select",
+      "dropZoneFormats": "JPEG, PNG, WebP — up to 20 MB",
+      "uploadSuccess": "Uploaded",
+      "labelField": "Plan label",
+      "labelPlaceholder": "e.g.: Augmentation — preop evaluation",
+      "patientRefField": "Patient (optional)",
+      "patientRefPlaceholder": "Smith J., chart #12345",
+      "summaryView": "View",
+      "summaryPhoto": "Photo",
+      "back": "Back",
+      "cancel": "Cancel",
+      "next": "Next",
+      "create": "Create plan",
+      "creating": "Creating..."
+    },
+    "viewDesc": {
+      "front": "Direct frontal view. Used for most measurements.",
+      "side_left": "Left profile (90°). For projection and ptosis assessment.",
+      "side_right": "Right profile (90°).",
+      "oblique_left": "Semi-lateral left view (45°).",
+      "oblique_right": "Semi-lateral right view (45°).",
+      "bottom_up": "Bottom-up view. For inframammary fold assessment."
+    }
+  },
 
   "list": {
     "title": "My simulation plans",
     "empty": "You don't have any simulation plans yet",
-    "emptyHint": "Create your first plan to preview the surgical result for your patient",
+    "emptyHint": "Create your first plan to show the patient a preview of the surgical result",
     "newButton": "New plan",
     "loadMore": "Load more",
     "loading": "Loading…",
-    "controlPointsCount_zero": "No control points",
-    "controlPointsCount_one": "{{count}} control point",
-    "controlPointsCount_other": "{{count}} control points",
-    "createdAt": "Created {{date}}",
-    "updatedAt": "Updated {{date}}",
+    "controlPointsCount_zero": "No deformation points",
+    "controlPointsCount_one": "{{count}} deformation point",
+    "controlPointsCount_other": "{{count}} deformation points",
+    "createdAt": "Created on {{date}}",
+    "updatedAt": "Updated on {{date}}",
     "searchPlaceholder": "Search by name or patient…",
-    "noMatch": "Nothing matches \"{{query}}\"",
+    "noMatch": "No matches for \"{{query}}\"",
     "sort": {
       "newest": "Newest first",
       "oldest": "Oldest first",
@@ -23,60 +115,33 @@
     }
   },
 
-  "dates": {
-    "todayAt": "Today at {{time}}",
-    "yesterdayAt": "Yesterday at {{time}}",
-    "daysAgo_one": "{{count}} day ago",
-    "daysAgo_other": "{{count}} days ago"
-  },
   "editor": {
     "title": "Plan editor",
     "placeholderTitle": "Editor in development",
-    "placeholderBody": "The canvas with photo, control points, and live warp preview will appear here. For now, only metadata is editable via the API.",
-    "backToList": "Back to plans",
+    "placeholderBody": "The canvas with image, control points, and deformation preview will appear here. Currently only plan data manipulation via API is available.",
+    "backToList": "Back to plan list",
     "saveStatus": {
       "idle": "All changes saved",
       "saving": "Saving…",
       "saved": "Saved",
-      "error": "Save failed"
+      "error": "Save error"
     },
-    "loadingImage": "Loading photo…",
-    "imageLoadError": "Failed to load photo"
+    "loadingImage": "Loading image…",
+    "imageLoadError": "Failed to load image"
   },
 
-  "toolbar": {
-    "zoomIn": "Zoom in",
-    "zoomOut": "Zoom out",
-    "zoomLevel": "Current zoom",
-    "fit": "Fit to view",
-    "fitShort": "Fit",
-    "reset": "Reset (100%)",
-    "modeSelect": "Select mode (Esc)",
-    "modeAdd": "Add point mode",
-    "undo": "Undo (Ctrl+Z)",
-    "redo": "Redo (Ctrl+Shift+Z)"
-  },
-
-  "points": {
-    "propsTitle": "Deformation point",
-    "radius": "Influence radius",
-    "strength": "Strength",
-    "delete": "Delete point",
-    "hint": "Alt+drag the square to move the anchor. Del to remove."
-  },
-  "editor.saveStatus.dirty": "Unsaved changes",
   "newPlanModal": {
     "title": "New simulation plan",
     "stepUpload": "Step 1 of 2 — upload patient photo",
-    "stepDetails": "Step 2 of 2 — plan details",
-    "dropZoneHint": "Drag a photo here or click to select",
+    "stepDetails": "Step 2 of 2 — enter plan details",
+    "dropZoneHint": "Drop a photo here or click to select",
     "dropZoneFormats": "JPG, PNG, WebP · up to 20 MB",
-    "uploading": "Uploading: {{progress}}%",
-    "uploadSuccess": "Photo uploaded",
+    "uploading": "Uploading image: {{progress}}%",
+    "uploadSuccess": "Image uploaded",
     "labelField": "Plan name",
-    "labelPlaceholder": "e.g., Rhinoplasty — variant 1",
+    "labelPlaceholder": "e.g.: Rhinoplasty — option 1",
     "patientRefField": "Patient reference (optional)",
-    "patientRefPlaceholder": "e.g., J. Smith or chart #",
+    "patientRefPlaceholder": "e.g.: J. Smith or chart number",
     "cancel": "Cancel",
     "back": "Back",
     "create": "Create plan",
@@ -85,7 +150,7 @@
 
   "deleteModal": {
     "title": "Delete plan?",
-    "body": "The plan will be archived and the photo deleted permanently. This action cannot be undone.",
+    "body": "The plan will be moved to archive, the image will be permanently deleted. This action cannot be undone.",
     "cancel": "Cancel",
     "confirm": "Delete",
     "deleting": "Deleting…"
@@ -98,23 +163,54 @@
   },
 
   "errors": {
-    "network_error": "Network error. Please check your connection.",
-    "validation_error": "Please check the form fields",
+    "network_error": "Network error. Check your connection.",
+    "validation_error": "Check the input data",
     "unauthorized": "Authentication required",
     "not_found": "Plan not found",
     "file_too_large": "File too large (max 20 MB)",
     "invalid_mime": "Unsupported format. Use JPG, PNG or WebP",
     "invalid_image": "Could not read the image",
     "mime_mismatch": "File type does not match its content",
-    "unknown": "Something went wrong"
+    "unknown": "An error occurred"
   },
+
+  "toolbar": {
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "zoomLevel": "Current zoom level",
+    "fit": "Fit to window",
+    "fitShort": "Fit",
+    "reset": "Reset (100%)",
+    "modeSelect": "Select mode (Esc)",
+    "modeAdd": "Add point mode",
+    "undo": "Undo (Ctrl+Z)",
+    "redo": "Redo (Ctrl+Shift+Z)"
+  },
+
   "saveStatus": {
     "idle": "Saved",
     "dirty": "Unsaved changes",
     "saving": "Saving…",
     "saved": "Saved",
-    "error": "Save failed"
+    "error": "Save error"
   },
+
+  "points": {
+    "propsTitle": "Deformation point",
+    "radius": "Effect radius",
+    "strength": "Strength",
+    "delete": "Delete point",
+    "hint": "Alt + drag the square — move the center. Del — delete."
+  },
+
+  "dates": {
+    "todayAt": "today at {{time}}",
+    "yesterdayAt": "yesterday at {{time}}",
+    "daysAgo_zero": "today",
+    "daysAgo_one": "{{count}} day ago",
+    "daysAgo_other": "{{count}} days ago"
+  },
+
   "tabs": {
     "editor": "Editor",
     "viewer": "Before / After"
@@ -124,75 +220,52 @@
     "labelBefore": "Before",
     "labelAfter": "After",
     "preparing": "Preparing full resolution…",
-    "preparingHint": "Loading the original and applying the warp. Takes a few seconds.",
+    "preparingHint": "Loading the original image and applying deformation. This takes a few seconds.",
     "exportError": "Failed to prepare export",
-    "retry": "Try again"
+    "retry": "Retry"
   },
 
   "export": {
     "title": "Export",
     "mode": "What to export",
     "modes": {
-      "before": "Before (original)",
-      "after": "After (warped)",
-      "sideBySide": "Side by side: Before and After"
+      "before": "Before surgery (original)",
+      "after": "After surgery (with deformation)",
+      "sideBySide": "Side by side: before and after"
     },
     "format": "Format",
     "quality": "JPG quality",
     "download": "Download",
     "downloading": "Generating…"
   },
+
   "help": {
-    "pageTitle": "User Guide",
-    "backToList": "Back to plans",
-    "toc": "Contents",
-    "loading": "Loading guide...",
-    "loadError": "Failed to load guide",
+    "pageTitle": "Help",
+    "backToList": "Back to plan list",
+    "toc": "Table of contents",
+    "loading": "Loading help...",
+    "loadError": "Failed to load help",
     "headerLink": "Help"
   },
-  "simulation": {
-    "landmarks": {
-      "title": "Anatomical landmarks",
-      "status": {
-        "idle": "Not detected",
-        "detecting": "Detecting…",
-        "detected": "Detected",
-        "failed": "Failed"
-      },
-      "count_one": "{{count}} point",
-      "count_other": "{{count}} points",
-      "detectedAt": "updated {{time}}",
-      "detecting": "Detecting…",
-      "redetect": "Re-detect",
-      "groups": {
-        "title": "Point groups",
-        "face_oval": "Face oval",
-        "nose": "Nose",
-        "lips": "Lips",
-        "left_eye": "Left eye",
-        "right_eye": "Right eye",
-        "left_eyebrow": "Left eyebrow",
-        "right_eyebrow": "Right eyebrow"
-      }
-    }
-  },
+
   "landmarks": {
     "title": "Anatomical landmarks",
     "status": {
       "idle": "Not detected",
       "detecting": "Detecting",
       "detected": "Detected",
-      "failed": "Failed"
+      "failed": "Error"
     },
+    "count_zero": "No points",
     "count_one": "{{count}} point",
     "count_other": "{{count}} points",
-    "detectedAt": "updated at {{time}}",
+    "detectedAt": "updated {{time}}",
     "loaderLoading": "Loading model…",
     "detecting": "Detecting…",
     "redetect": "Re-detect",
     "groups": {
       "title": "Point groups",
-      "face_oval": "Face oval",
+      "face_oval": "Face contour",
       "nose": "Nose",
       "lips": "Lips",
       "left_eye": "Left eye",
@@ -201,32 +274,137 @@
       "right_eyebrow": "Right eyebrow"
     }
   },
-  "workflowHint": "To change shape: switch to add mode (+•), click an anatomical point, then drag it.",
+
   "measurements": {
     "title": "Measurements",
-    "noLandmarks": "Run anatomical landmark detection first",
-    "normal": "normal",
+    "noLandmarks": "Detect anatomical landmarks first",
+    "normal": "Normal",
     "show": "Show measurement",
     "hide": "Hide measurement",
-    "calibrationHint": "Measurements in millimeters require calibration against a known distance (available in plan settings).",
+    "calibrationHint": "Measurements in millimeters require calibration based on a known distance (available in plan settings).",
     "nasofrontalAngle": {
       "label": "Nasofrontal angle",
-      "description": "Angle between the forehead line and the nasal bridge",
-      "short": "Nasofrontal"
+      "description": "Angle between the forehead line and the nasal dorsum"
     },
     "goodeProjection": {
-      "label": "Goode's tip projection",
-      "description": "Ratio of nasal tip length to nasal height",
-      "short": "Goode tip"
+      "label": "Nasal tip projection (Goode)",
+      "description": "Ratio of nasal tip length to nasal height"
     },
     "alarBaseWidth": {
       "label": "Alar base width",
-      "description": "Distance between the outermost points of the nostrils",
-      "short": "Alar base"
+      "description": "Distance between the outermost points of the nostril wings"
+    }
+  },
+  "breastEditor": {
+    "backToList": "Back to list",
+    "loadingPlan": "Loading plan...",
+    "loadingPhoto": "Loading photo...",
+    "loadingPhotoRetry": "Loading photo ({{attempt}}/{{max}})...",
+    "confirmClearPoints": "Delete all deformation points?",
+    "manualPointLabel": "Point",
+    "compareButton": "Before / After",
+    "compareTooltipReady": "Open comparison",
+    "compareTooltipNoPoints": "Add deformation points first",
+    "errors": {
+      "planLoad": "Failed to load plan",
+      "imageLoad": "Failed to load photo"
     },
-
-    "toggleSidePanel": "Toggle side panel",
-    "loadingImageRetry": "Loading photo… (attempt {{attempt}} of {{max}})",
-    "loadingImageRetryHint": "Recently uploaded photos may take a few seconds to become available"
+    "fab": {
+      "deformation": "Deformation",
+      "compare": "Compare"
+    },
+    "photoViewBadge": {
+      "front": "Front",
+      "side_left": "Profile L",
+      "side_right": "Profile R",
+      "oblique_left": "3/4 L",
+      "oblique_right": "3/4 R",
+      "bottom_up": "Bottom"
+    }
+  },
+  "warpTuning": {
+    "title": "Fine-tuning",
+    "resetButton": "Reset to defaults",
+    "hint": "Adjust per photo. Default intensity is reduced by half for a natural look.",
+    "params": {
+      "globalStrength": "Deformation strength",
+      "globalRadius": "Effect radius",
+      "lateralBias": "Lateral bias",
+      "verticalBias": "Vertical bias"
+    }
+  },
+  "controlPointPopover": {
+    "fallbackLabel": "Point",
+    "close": "Hide",
+    "radius": "Radius",
+    "strength": "Strength",
+    "strengthHintNegative": "− inverse",
+    "strengthHintPositive": "+ direct",
+    "removeButton": "Remove point"
+  },
+  "breastOperationPanel": {
+    "title": "Deformation",
+    "addPoint": "Add point",
+    "cancel": "Cancel",
+    "compareButton": "Before / After",
+    "clearAll": "Remove all points",
+    "help": {
+      "title": "How to use:",
+      "addPoint": "Add point — click on photo",
+      "dragBlue": "Drag blue — deform",
+      "dragGreen": "Drag green — reposition",
+      "clickPoint": "Click point — settings",
+      "wheelRadius": "Mouse wheel — radius",
+      "shiftClickRemove": "Shift+click — remove"
+    }
+  },
+  "beforeAfter": {
+    "before": "BEFORE",
+    "after": "AFTER",
+    "fallbackLabel": "Plan",
+    "backButton": "Back to editing",
+    "downloadButton": "Download",
+    "sliderHint": "Drag the divider left/right to compare",
+    "toggleHint": "Click to toggle",
+    "toggleHintAnimation": "Auto-toggling",
+    "exportMenuTitle": "Choose format:",
+    "exportBusy": "Creating file...",
+    "modes": {
+      "slider": "Slider",
+      "side": "Side by side",
+      "toggle": "Toggle",
+      "animation": "Animation"
+    },
+    "exportOptions": {
+      "sideBySidePng": {
+        "label": "Comparison (PNG)",
+        "desc": "High quality"
+      },
+      "sideBySideJpg": {
+        "label": "Comparison (JPG)",
+        "desc": "For messengers"
+      },
+      "beforePng": {
+        "label": "Only BEFORE (PNG)",
+        "desc": "Original photo"
+      },
+      "afterPng": {
+        "label": "Only AFTER (PNG)",
+        "desc": "Deformed"
+      },
+      "pdf": {
+        "label": "PDF report",
+        "desc": "3 pages with metadata"
+      }
+    },
+    "errors": {
+      "noData": "No data to export",
+      "exportFailed": "Export error"
+    },
+    "empty": {
+      "title": "No deformation to compare",
+      "hint": "Add at least one deformation point to see the \"after\" result.",
+      "backButton": "Return to editing"
+    }
   }
 }

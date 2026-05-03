@@ -4,12 +4,14 @@
 // Expandable секция в Operation panel.
 
 import React, { useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { DEFAULT_WARP_TUNING } from "../breastWarpGenerator.js";
 
 const TUNING_PARAMS = [
   {
     key: "globalStrength",
-    label: "Сила деформации",
+    labelKey: "warpTuning.params.globalStrength",
+    labelDefault: "Сила деформации",
     min: 0.1,
     max: 2.0,
     step: 0.05,
@@ -17,7 +19,8 @@ const TUNING_PARAMS = [
   },
   {
     key: "globalRadius",
-    label: "Радиус влияния",
+    labelKey: "warpTuning.params.globalRadius",
+    labelDefault: "Радиус влияния",
     min: 0.3,
     max: 1.5,
     step: 0.05,
@@ -25,7 +28,8 @@ const TUNING_PARAMS = [
   },
   {
     key: "lateralBias",
-    label: "Латеральное смещение",
+    labelKey: "warpTuning.params.lateralBias",
+    labelDefault: "Латеральное смещение",
     min: 0,
     max: 2.0,
     step: 0.05,
@@ -33,7 +37,8 @@ const TUNING_PARAMS = [
   },
   {
     key: "verticalBias",
-    label: "Вертикальное смещение",
+    labelKey: "warpTuning.params.verticalBias",
+    labelDefault: "Вертикальное смещение",
     min: 0,
     max: 2.0,
     step: 0.05,
@@ -42,6 +47,7 @@ const TUNING_PARAMS = [
 ];
 
 export default function WarpTuningPanel({ warpTuning, onChange }) {
+  const { t } = useTranslation("Simulation");
   const [isOpen, setIsOpen] = useState(false);
 
   const tuning = {
@@ -73,7 +79,9 @@ export default function WarpTuningPanel({ warpTuning, onChange }) {
         onClick={() => setIsOpen((v) => !v)}
       >
         <span style={iconStyle}>⚙</span>
-        <span style={titleStyle}>Точная настройка</span>
+        <span style={titleStyle}>
+          {t("warpTuning.title", { defaultValue: "Точная настройка" })}
+        </span>
         {isModified && <span style={modifiedDotStyle} />}
         <span style={chevronStyle}>{isOpen ? "▲" : "▼"}</span>
       </button>
@@ -82,10 +90,11 @@ export default function WarpTuningPanel({ warpTuning, onChange }) {
         <div style={bodyStyle}>
           {TUNING_PARAMS.map((p) => {
             const value = tuning[p.key] ?? DEFAULT_WARP_TUNING[p.key];
+            const label = t(p.labelKey, { defaultValue: p.labelDefault });
             return (
               <div key={p.key} style={fieldStyle}>
                 <div style={labelRowStyle}>
-                  <span style={labelStyle}>{p.label}</span>
+                  <span style={labelStyle}>{label}</span>
                   <span style={valueStyle}>
                     {value.toFixed(2)}
                     <span style={suffixStyle}>{p.suffix}</span>
@@ -125,12 +134,17 @@ export default function WarpTuningPanel({ warpTuning, onChange }) {
             onClick={handleReset}
             disabled={!isModified}
           >
-            ↺ Сбросить к defaults
+            ↺{" "}
+            {t("warpTuning.resetButton", {
+              defaultValue: "Сбросить к defaults",
+            })}
           </button>
 
           <div style={hintStyle}>
-            Подбирайте под конкретное фото. По умолчанию интенсивность снижена в
-            2 раза для естественного вида.
+            {t("warpTuning.hint", {
+              defaultValue:
+                "Подбирайте под конкретное фото. По умолчанию интенсивность снижена в 2 раза для естественного вида.",
+            })}
           </div>
         </div>
       )}

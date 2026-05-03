@@ -84,7 +84,7 @@ export default function BreastListPage() {
     async (plan) => {
       const confirmed = window.confirm(
         t("breast.deleteConfirm", {
-          defaultValue: `Удалить план "${plan.label}"?`,
+          defaultValue: 'Удалить план "{{label}}"?',
           label: plan.label,
         }),
       );
@@ -93,7 +93,12 @@ export default function BreastListPage() {
         await deletePlanApi(plan.id);
         await loadGroups();
       } catch (err) {
-        alert(err.message || "Failed to delete");
+        alert(
+          err.message ||
+            t("breast.deleteFailed", {
+              defaultValue: "Не удалось удалить",
+            }),
+        );
       }
     },
     [loadGroups, t],

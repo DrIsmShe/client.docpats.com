@@ -1,7 +1,14 @@
 // src/pages/simulation/breast/BreastEditorPage.jsx
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useMemo,
+} from "react";
 import { useParams, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { useZoomPan } from "../hooks/useZoomPan.js";
 import { useCanvasImage } from "../hooks/useCanvasImage.js";
@@ -37,7 +44,7 @@ function computeFitViewport({
 let manualPointCounter = 0;
 const newManualKey = () => `manual-${Date.now()}-${++manualPointCounter}`;
 
-const PHOTO_VIEW_LABELS = {
+const PHOTO_VIEW_LABELS_DEFAULT = {
   front: "Анфас",
   side_left: "Профиль L",
   side_right: "Профиль R",
@@ -47,6 +54,7 @@ const PHOTO_VIEW_LABELS = {
 };
 
 export default function BreastEditorPage() {
+  const { t } = useTranslation("Simulation");
   const { id: planId } = useParams();
   const isMobile = useIsMobile();
 
@@ -106,7 +114,16 @@ export default function BreastEditorPage() {
   const [compareOpen, setCompareOpen] = useState(false);
 
   const photoView = plan?.photoView || "front";
-  const photoViewLabel = PHOTO_VIEW_LABELS[photoView] || photoView;
+
+  // Локализованные labels ракурсов — вычисляем через t(), а не на модуле
+  const photoViewLabel = useMemo(
+    () =>
+      t(`breastEditor.photoViewBadge.${photoView}`, {
+        defaultValue: PHOTO_VIEW_LABELS_DEFAULT[photoView] || photoView,
+      }),
+    [t, photoView],
+  );
+
   const controlPoints = plan?.controlPoints || [];
 
   const { warpedImageData, isWarping } = useBreastWarp({
@@ -118,9 +135,16 @@ export default function BreastEditorPage() {
   /* ─── Control points handlers ─── */
 
   const handleClearControlPoints = useCallback(() => {
-    if (!window.confirm("Удалить все точки деформации?")) return;
+    if (
+      !window.confirm(
+        t("breastEditor.confirmClearPoints", {
+          defaultValue: "Удалить все точки деформации?",
+        }),
+      )
+    )
+      return;
     patchPlan({ controlPoints: [] });
-  }, [patchPlan]);
+  }, [patchPlan, t]);
 
   const handleToggleAddPointMode = useCallback(() => {
     setIsAddPointMode((v) => !v);
@@ -134,13 +158,13 @@ export default function BreastEditorPage() {
         current: { x: normPoint.x, y: normPoint.y },
         radius: 0.05,
         strength: 1.0,
-        label: "Точка",
+        label: t("breastEditor.manualPointLabel", { defaultValue: "Точка" }),
         auto: false,
       };
       patchPlan({ controlPoints: [...controlPoints, newPoint] });
       setIsAddPointMode(false);
     },
-    [controlPoints, patchPlan],
+    [controlPoints, patchPlan, t],
   );
 
   const handleMoveCpAnchor = useCallback(
@@ -268,10 +292,14 @@ export default function BreastEditorPage() {
   if (error) {
     return (
       <div style={statusStateStyle}>
-        <div style={statusTitleStyle}>Не удалось загрузить план</div>
+        <div style={statusTitleStyle}>
+          {t("breastEditor.errors.planLoad", {
+            defaultValue: "Не удалось загрузить план",
+          })}
+        </div>
         <div style={statusHintStyle}>{error.message}</div>
         <Link to="/dp/simulation/breast" style={backLinkStyle}>
-          ← К списку
+          ← {t("breastEditor.backToList", { defaultValue: "К списку" })}
         </Link>
       </div>
     );
@@ -280,7 +308,11 @@ export default function BreastEditorPage() {
   if (loading || !plan) {
     return (
       <div style={statusStateStyle}>
-        <div style={statusTitleStyle}>Загрузка плана...</div>
+        <div style={statusTitleStyle}>
+          {t("breastEditor.loadingPlan", {
+            defaultValue: "Загрузка плана...",
+          })}
+        </div>
       </div>
     );
   }
@@ -288,10 +320,14 @@ export default function BreastEditorPage() {
   if (imageError) {
     return (
       <div style={statusStateStyle}>
-        <div style={statusTitleStyle}>Не удалось загрузить фото</div>
+        <div style={statusTitleStyle}>
+          {t("breastEditor.errors.imageLoad", {
+            defaultValue: "Не удалось загрузить фото",
+          })}
+        </div>
         <div style={statusHintStyle}>{imageError.message}</div>
         <Link to="/dp/simulation/breast" style={backLinkStyle}>
-          ← К списку
+          ← {t("breastEditor.backToList", { defaultValue: "К списку" })}
         </Link>
       </div>
     );
@@ -303,8 +339,14 @@ export default function BreastEditorPage() {
       <div style={statusStateStyle}>
         <div style={statusTitleStyle}>
           {isRetrying
-            ? `Загрузка фото (${attempt}/${maxAttempts})...`
-            : "Загрузка фото..."}
+            ? t("breastEditor.loadingPhotoRetry", {
+                defaultValue: "Загрузка фото ({{attempt}}/{{max}})...",
+                attempt,
+                max: maxAttempts,
+              })
+            : t("breastEditor.loadingPhoto", {
+                defaultValue: "Загрузка фото...",
+              })}
         </div>
       </div>
     );
@@ -325,7 +367,10 @@ export default function BreastEditorPage() {
     <div style={pageStyle}>
       <div style={topBarStyle}>
         <Link to="/dp/simulation/breast" style={backLinkStyle}>
-          ← {isMobile ? "" : "К списку"}
+          ←{" "}
+          {isMobile
+            ? ""
+            : t("breastEditor.backToList", { defaultValue: "К списку" })}
         </Link>
         <div style={planInfoStyle}>
           <span style={planLabelStyle}>{plan.label || "—"}</span>
@@ -346,10 +391,19 @@ export default function BreastEditorPage() {
             onClick={handleOpenCompare}
             disabled={!canCompare}
             title={
-              canCompare ? "Открыть сравнение" : "Добавьте точки деформации"
+              canCompare
+                ? t("breastEditor.compareTooltipReady", {
+                    defaultValue: "Открыть сравнение",
+                  })
+                : t("breastEditor.compareTooltipNoPoints", {
+                    defaultValue: "Добавьте точки деформации",
+                  })
             }
           >
-            🔍 До / После
+            🔍{" "}
+            {t("breastEditor.compareButton", {
+              defaultValue: "До / После",
+            })}
           </button>
         )}
       </div>
@@ -398,7 +452,9 @@ export default function BreastEditorPage() {
               type="button"
               style={fabOperationStyle}
               onClick={() => setMobileSheetOpen((v) => !v)}
-              aria-label="Деформация"
+              aria-label={t("breastEditor.fab.deformation", {
+                defaultValue: "Деформация",
+              })}
             >
               {mobileSheetOpen ? "✕" : "✂"}
             </button>
@@ -408,7 +464,9 @@ export default function BreastEditorPage() {
                 type="button"
                 style={fabCompareStyle}
                 onClick={handleOpenCompare}
-                aria-label="Сравнение"
+                aria-label={t("breastEditor.fab.compare", {
+                  defaultValue: "Сравнение",
+                })}
               >
                 🔍
               </button>

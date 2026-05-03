@@ -4,6 +4,7 @@
 // control point: радиус и сила. Появляется рядом с выбранной точкой.
 
 import React, { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 const NORM_RADIUS_MIN = 0.005;
 const NORM_RADIUS_MAX = 0.4;
@@ -17,6 +18,7 @@ export default function ControlPointPopover({
   onRemove,
   onClose,
 }) {
+  const { t } = useTranslation("Simulation");
   const popoverRef = useRef(null);
 
   // Закрытие при клике вне
@@ -53,6 +55,10 @@ export default function ControlPointPopover({
   const left = placeRight ? x + OFFSET : x - OFFSET - POPOVER_W;
   const top = placeBelow ? y + OFFSET : y - OFFSET - POPOVER_H;
 
+  const fallbackLabel = t("controlPointPopover.fallbackLabel", {
+    defaultValue: "Точка",
+  });
+
   return (
     <div
       ref={popoverRef}
@@ -66,12 +72,12 @@ export default function ControlPointPopover({
       onMouseDown={(e) => e.stopPropagation()}
     >
       <div style={headerStyle}>
-        <span style={titleStyle}>{point.label || "Точка"}</span>
+        <span style={titleStyle}>{point.label || fallbackLabel}</span>
         <button
           type="button"
           style={closeButtonStyle}
           onClick={onClose}
-          title="Скрыть"
+          title={t("controlPointPopover.close", { defaultValue: "Скрыть" })}
         >
           ✕
         </button>
@@ -79,7 +85,9 @@ export default function ControlPointPopover({
 
       <div style={fieldStyle}>
         <div style={fieldLabelRowStyle}>
-          <span style={fieldLabelStyle}>Радиус</span>
+          <span style={fieldLabelStyle}>
+            {t("controlPointPopover.radius", { defaultValue: "Радиус" })}
+          </span>
           <span style={fieldValueStyle}>{radius.toFixed(3)}</span>
         </div>
         <input
@@ -99,7 +107,9 @@ export default function ControlPointPopover({
 
       <div style={fieldStyle}>
         <div style={fieldLabelRowStyle}>
-          <span style={fieldLabelStyle}>Сила</span>
+          <span style={fieldLabelStyle}>
+            {t("controlPointPopover.strength", { defaultValue: "Сила" })}
+          </span>
           <span style={fieldValueStyle}>{strength.toFixed(2)}</span>
         </div>
         <input
@@ -116,8 +126,16 @@ export default function ControlPointPopover({
           style={sliderStyle}
         />
         <div style={strengthHintRowStyle}>
-          <span style={strengthHintLeftStyle}>− обратное</span>
-          <span style={strengthHintRightStyle}>+ прямое</span>
+          <span style={strengthHintLeftStyle}>
+            {t("controlPointPopover.strengthHintNegative", {
+              defaultValue: "− обратное",
+            })}
+          </span>
+          <span style={strengthHintRightStyle}>
+            {t("controlPointPopover.strengthHintPositive", {
+              defaultValue: "+ прямое",
+            })}
+          </span>
         </div>
       </div>
 
@@ -126,7 +144,10 @@ export default function ControlPointPopover({
         style={removeButtonStyle}
         onClick={() => onRemove?.(point.key)}
       >
-        🗑 Удалить точку
+        🗑{" "}
+        {t("controlPointPopover.removeButton", {
+          defaultValue: "Удалить точку",
+        })}
       </button>
     </div>
   );

@@ -1,6 +1,102 @@
 {
   "menuItem": "المحاكاة",
   "pageTitle": "محاكاة العملية الجراحية",
+  "workflowHint": "لتغيير الشكل: انتقل إلى وضع الإضافة (+•)، انقر على نقطة تشريحية، ثم اسحبها.",
+  "toggleSidePanel": "فتح/إغلاق اللوحة الجانبية",
+  "loadingImageRetry": "تحميل الصورة… (محاولة {{attempt}} من {{max}})",
+  "loadingImageRetryHint": "قد تستغرق الصور المحملة حديثًا بضع ثوانٍ لتصبح متاحة",
+
+  "simulation": {
+    "hub": {
+      "title": "المحاكاة",
+      "subtitle": "اختر نوع المحاكاة",
+      "comingSoon": "قريباً",
+      "new": "جديد",
+      "face": {
+        "title": "محاكاة الوجه",
+        "description": "تجميل الأنف، تجميل الذقن، التماثل — تحليل ومحاكاة عمليات الوجه"
+      },
+      "breast": {
+        "title": "محاكاة الثدي",
+        "description": "التكبير، التصغير، رفع الثدي — محاكاة عمليات الثدي"
+      },
+      "abdomen": {
+        "title": "محاكاة الخصر",
+        "description": "شد البطن، شفط الدهون — قريباً"
+      },
+      "arms": {
+        "title": "محاكاة الذراعين",
+        "description": "تجميل الذراعين — قريباً"
+      }
+    }
+  },
+
+  "breast": {
+    "backToHub": "العودة لاختيار النوع",
+    "title": "محاكاة الثدي",
+    "summary": "المرضى: {{patients}} · الخطط: {{plans}}",
+    "newButton": "خطة جديدة",
+    "searchPlaceholder": "البحث بالمريض أو اسم الخطة...",
+    "loading": "جارٍ التحميل...",
+    "empty": "لا توجد خطط محاكاة للثدي بعد",
+    "emptyHint": "أنشئ خطتك الأولى — ارفع صورة المريض واختر الزاوية",
+    "noMatch": "لا توجد نتائج للبحث \"{{query}}\"",
+    "noPatient": "لم يتم تحديد المريض",
+    "viewsCount_zero": "لا توجد زوايا",
+    "viewsCount_one": "زاوية واحدة",
+    "viewsCount_two": "زاويتان",
+    "viewsCount_few": "{{count}} زوايا",
+    "viewsCount_many": "{{count}} زاوية",
+    "viewsCount_other": "{{count}} زاوية",
+    "deleteConfirm": "هل تريد حذف الخطة \"{{label}}\"؟",
+    "deleteFailed": "تعذر الحذف",
+    "viewLabel": {
+      "front": "أمامي",
+      "side_left": "يسار",
+      "side_right": "يمين",
+      "oblique_left": "3/4 يسار",
+      "oblique_right": "3/4 يمين",
+      "bottom_up": "من الأسفل"
+    },
+    "status": {
+      "anatomy": "تم التحديد",
+      "noAnatomy": "لم يتم التحديد"
+    },
+    "operation": {
+      "augmentation": "تكبير",
+      "reduction": "تصغير",
+      "mastopexy": "رفع الثدي"
+    },
+    "newModal": {
+      "title": "خطة جديدة — محاكاة الثدي",
+      "step1Subtitle": "الخطوة 1 من 3 — رفع الصورة",
+      "step2Subtitle": "الخطوة 2 من 3 — اختيار زاوية الصورة",
+      "step3Subtitle": "الخطوة 3 من 3 — تفاصيل الخطة",
+      "uploading": "جارٍ الرفع... {{progress}}٪",
+      "dropZoneHint": "اسحب الصورة هنا أو انقر للاختيار",
+      "dropZoneFormats": "JPEG، PNG، WebP — حتى 20 ميغابايت",
+      "uploadSuccess": "تم الرفع",
+      "labelField": "اسم الخطة",
+      "labelPlaceholder": "مثال: التكبير — تقييم ما قبل الجراحة",
+      "patientRefField": "المريض (اختياري)",
+      "patientRefPlaceholder": "أحمد م.، ملف رقم 12345",
+      "summaryView": "الزاوية",
+      "summaryPhoto": "الصورة",
+      "back": "رجوع",
+      "cancel": "إلغاء",
+      "next": "التالي",
+      "create": "إنشاء الخطة",
+      "creating": "جارٍ الإنشاء..."
+    },
+    "viewDesc": {
+      "front": "منظر أمامي مباشر. يُستخدم لمعظم القياسات.",
+      "side_left": "الملف الأيسر (90°). لتقييم البروز والترهل.",
+      "side_right": "الملف الأيمن (90°).",
+      "oblique_left": "منظر شبه جانبي أيسر (45°).",
+      "oblique_right": "منظر شبه جانبي أيمن (45°).",
+      "bottom_up": "منظر من الأسفل. لتقييم الطية تحت الثدي."
+    }
+  },
 
   "list": {
     "title": "خطط المحاكاة الخاصة بي",
@@ -37,7 +133,6 @@
       "saved": "تم الحفظ",
       "error": "خطأ في الحفظ"
     },
-
     "loadingImage": "جارٍ تحميل الصورة…",
     "imageLoadError": "تعذّر تحميل الصورة"
   },
@@ -192,7 +287,7 @@
       "right_eyebrow": "الحاجب الأيمن"
     }
   },
-  "workflowHint": "لتغيير الشكل: انتقل إلى وضع الإضافة (+•)، انقر على نقطة تشريحية، ثم اسحبها.",
+
   "measurements": {
     "title": "القياسات",
     "noLandmarks": "ابدأ بتحديد النقاط التشريحية أولاً",
@@ -213,7 +308,116 @@
       "description": "المسافة بين أبعد نقطتين من جناحَي الأنف"
     }
   },
-  "toggleSidePanel": "فتح/إغلاق اللوحة الجانبية",
-  "loadingImageRetry": "تحميل الصورة… (محاولة {{attempt}} من {{max}})",
-  "loadingImageRetryHint": "قد تستغرق الصور المحملة حديثًا بضع ثوانٍ لتصبح متاحة"
+  "breastEditor": {
+    "backToList": "العودة إلى القائمة",
+    "loadingPlan": "جارٍ تحميل الخطة...",
+    "loadingPhoto": "جارٍ تحميل الصورة...",
+    "loadingPhotoRetry": "جارٍ تحميل الصورة ({{attempt}}/{{max}})...",
+    "confirmClearPoints": "حذف جميع نقاط التشويه؟",
+    "manualPointLabel": "نقطة",
+    "compareButton": "قبل / بعد",
+    "compareTooltipReady": "فتح المقارنة",
+    "compareTooltipNoPoints": "أضف نقاط تشويه أولاً",
+    "errors": {
+      "planLoad": "تعذّر تحميل الخطة",
+      "imageLoad": "تعذّر تحميل الصورة"
+    },
+    "fab": {
+      "deformation": "التشويه",
+      "compare": "مقارنة"
+    },
+    "photoViewBadge": {
+      "front": "أمامي",
+      "side_left": "الملف L",
+      "side_right": "الملف R",
+      "oblique_left": "3/4 L",
+      "oblique_right": "3/4 R",
+      "bottom_up": "من الأسفل"
+    }
+  },
+  "warpTuning": {
+    "title": "ضبط دقيق",
+    "resetButton": "إعادة تعيين للقيم الافتراضية",
+    "hint": "اضبط حسب كل صورة. تم تقليل الشدة افتراضياً إلى النصف للحصول على مظهر طبيعي.",
+    "params": {
+      "globalStrength": "قوة التشويه",
+      "globalRadius": "نطاق التأثير",
+      "lateralBias": "الإزاحة الجانبية",
+      "verticalBias": "الإزاحة الرأسية"
+    }
+  },
+  "controlPointPopover": {
+    "fallbackLabel": "نقطة",
+    "close": "إخفاء",
+    "radius": "نصف القطر",
+    "strength": "القوة",
+    "strengthHintNegative": "− عكسي",
+    "strengthHintPositive": "+ مباشر",
+    "removeButton": "حذف النقطة"
+  },
+  "breastOperationPanel": {
+    "title": "التشويه",
+    "addPoint": "إضافة نقطة",
+    "cancel": "إلغاء",
+    "compareButton": "قبل / بعد",
+    "clearAll": "حذف جميع النقاط",
+    "help": {
+      "title": "طريقة الاستخدام:",
+      "addPoint": "إضافة نقطة — انقر على الصورة",
+      "dragBlue": "اسحب الزرقاء — للتشويه",
+      "dragGreen": "اسحب الخضراء — للتحريك",
+      "clickPoint": "انقر على النقطة — للإعدادات",
+      "wheelRadius": "عجلة الفأرة — لنصف القطر",
+      "shiftClickRemove": "Shift+نقر — للحذف"
+    }
+  },
+  "beforeAfter": {
+    "before": "قبل",
+    "after": "بعد",
+    "fallbackLabel": "الخطة",
+    "backButton": "العودة للتحرير",
+    "downloadButton": "تنزيل",
+    "sliderHint": "اسحب الفاصل يمينًا/يسارًا للمقارنة",
+    "toggleHint": "انقر للتبديل",
+    "toggleHintAnimation": "تبديل تلقائي",
+    "exportMenuTitle": "اختر الصيغة:",
+    "exportBusy": "جارٍ إنشاء الملف...",
+    "modes": {
+      "slider": "شريط التمرير",
+      "side": "جنبًا إلى جنب",
+      "toggle": "التبديل",
+      "animation": "الرسوم المتحركة"
+    },
+    "exportOptions": {
+      "sideBySidePng": {
+        "label": "مقارنة (PNG)",
+        "desc": "جودة عالية"
+      },
+      "sideBySideJpg": {
+        "label": "مقارنة (JPG)",
+        "desc": "للمراسلات"
+      },
+      "beforePng": {
+        "label": "قبل فقط (PNG)",
+        "desc": "الصورة الأصلية"
+      },
+      "afterPng": {
+        "label": "بعد فقط (PNG)",
+        "desc": "مع التشويه"
+      },
+      "pdf": {
+        "label": "تقرير PDF",
+        "desc": "3 صفحات مع البيانات الوصفية"
+      }
+    },
+    "errors": {
+      "noData": "لا توجد بيانات للتصدير",
+      "exportFailed": "خطأ في التصدير"
+    },
+    "empty": {
+      "title": "لا يوجد تشويه للمقارنة",
+      "hint": "أضف نقطة تشويه واحدة على الأقل لرؤية نتيجة \"بعد\".",
+      "backButton": "العودة للتحرير"
+    }
+  }
 }

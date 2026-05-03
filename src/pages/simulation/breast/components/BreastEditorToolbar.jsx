@@ -3,6 +3,7 @@
 // Phase A.4 — Toolbar с увеличенными кнопками на мобиле.
 
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 
 export default function BreastEditorToolbar({
@@ -13,6 +14,7 @@ export default function BreastEditorToolbar({
   onFit,
   onReset,
 }) {
+  const { t } = useTranslation("Simulation");
   const isMobile = useIsMobile();
   const zoomPercent = Math.round(viewport.scale * 100);
 
@@ -33,11 +35,13 @@ export default function BreastEditorToolbar({
   }[saveStatus];
 
   const saveTitle = {
-    idle: "Сохранено",
-    dirty: "Несохранённые изменения",
-    saving: "Сохранение...",
-    saved: "Сохранено",
-    error: "Ошибка сохранения",
+    idle: t("saveStatus.idle", { defaultValue: "Сохранено" }),
+    dirty: t("saveStatus.dirty", {
+      defaultValue: "Несохранённые изменения",
+    }),
+    saving: t("saveStatus.saving", { defaultValue: "Сохранение..." }),
+    saved: t("saveStatus.saved", { defaultValue: "Сохранено" }),
+    error: t("saveStatus.error", { defaultValue: "Ошибка сохранения" }),
   }[saveStatus];
 
   const buttonStyle = isMobile ? mobileButtonStyle : desktopButtonStyle;
@@ -52,7 +56,7 @@ export default function BreastEditorToolbar({
         type="button"
         style={buttonStyle}
         onClick={onZoomOut}
-        title="Уменьшить (−)"
+        title={`${t("toolbar.zoomOut", { defaultValue: "Уменьшить" })} (−)`}
       >
         −
       </button>
@@ -61,7 +65,7 @@ export default function BreastEditorToolbar({
         type="button"
         style={buttonStyle}
         onClick={onZoomIn}
-        title="Увеличить (+)"
+        title={`${t("toolbar.zoomIn", { defaultValue: "Увеличить" })} (+)`}
       >
         +
       </button>
@@ -72,11 +76,16 @@ export default function BreastEditorToolbar({
         type="button"
         style={buttonStyle}
         onClick={onFit}
-        title="Подогнать"
+        title={t("toolbar.fit", { defaultValue: "Подогнать" })}
       >
         ⊡
       </button>
-      <button type="button" style={buttonStyle} onClick={onReset} title="1:1">
+      <button
+        type="button"
+        style={buttonStyle}
+        onClick={onReset}
+        title={t("toolbar.reset", { defaultValue: "1:1" })}
+      >
         1:1
       </button>
 

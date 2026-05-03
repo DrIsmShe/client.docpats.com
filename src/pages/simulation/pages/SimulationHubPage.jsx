@@ -157,7 +157,7 @@ const SIMULATION_TYPES = [
 ];
 
 const SimulationHubPage = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("Simulation");
 
   return (
     <div style={styles.page}>
@@ -234,4 +234,5 @@ const SimulationHubPage = () => {
     </div>
   );
 };
+
 export default SimulationHubPage;
