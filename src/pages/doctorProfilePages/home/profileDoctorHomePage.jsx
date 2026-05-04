@@ -761,15 +761,32 @@ export default function ProfileDoctorHomePage() {
       .catch(console.error);
   }, []);
   /* counts */
+  /* counts */
   useEffect(() => {
-    axios
-      .get(`${API_BASE}/doctor-profile/api/count-articles-today`)
-      .then((r) => setArticleCount(r.data?.count || 0))
+    // Статьи СЕГОДНЯ — обычные + научные
+    Promise.all([
+      axios.get(`${API_BASE}/doctor-profile/api/count-articles-today`),
+      axios.get(
+        `${API_BASE}/doctor-profile/api/count-scientific-articles-today`,
+      ),
+    ])
+      .then(([regular, scientific]) => {
+        const total =
+          (regular.data?.count || 0) + (scientific.data?.count || 0);
+        setArticleCount(total);
+      })
       .catch(console.error);
 
-    axios
-      .get(`${API_BASE}/doctor-profile/api/count-all-articles`)
-      .then((r) => setTotalArticles(r.data?.count || 0))
+    // Статьи ВСЕГО — обычные + научные
+    Promise.all([
+      axios.get(`${API_BASE}/doctor-profile/api/count-all-articles`),
+      axios.get(`${API_BASE}/doctor-profile/api/count-scientific-all-articles`),
+    ])
+      .then(([regular, scientific]) => {
+        const total =
+          (regular.data?.count || 0) + (scientific.data?.count || 0);
+        setTotalArticles(total);
+      })
       .catch(console.error);
 
     axios
