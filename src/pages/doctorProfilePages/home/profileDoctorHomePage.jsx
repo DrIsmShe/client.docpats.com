@@ -1232,6 +1232,7 @@ export default function ProfileDoctorHomePage() {
         withCredentials: true,
         signal: ctrl.signal,
         params: { page: 1, perPage: 3, sortBy: "date_desc", previewWords: 30 },
+        headers: { "x-language": i18n.language || "ru" },
       })
       .then((r) =>
         setArticles(Array.isArray(r.data?.articles) ? r.data.articles : []),
@@ -1247,7 +1248,7 @@ export default function ProfileDoctorHomePage() {
       })
       .finally(() => setLoading(false));
     return () => ctrl.abort();
-  }, [API_BASE, t]);
+  }, [API_BASE, t, i18n.language]);
 
   /* ── articles (scientific) ── */
   useEffect(() => {
@@ -1257,6 +1258,7 @@ export default function ProfileDoctorHomePage() {
         withCredentials: true,
         signal: ctrl.signal,
         params: { page: 1, perPage: 3, sortBy: "date_desc", previewWords: 30 },
+        headers: { "x-language": i18n.language || "ru" },
       })
       .then((r) =>
         setScientificArticles(
@@ -1267,7 +1269,7 @@ export default function ProfileDoctorHomePage() {
         if (e.name !== "CanceledError") console.error(e);
       });
     return () => ctrl.abort();
-  }, [API_BASE]);
+  }, [API_BASE, i18n.language]);
 
   /* ── AI dashboard ── */
   useEffect(() => {
@@ -1839,7 +1841,7 @@ export default function ProfileDoctorHomePage() {
               }
             />
             <NavCard
-              onClick={() => navigate("/doctor/doctor-dashboard-main")}
+              onClick={() => navigate("doctor-dashboard-main")}
               icon={LuCalendarClock}
               color="green"
               title={t("appointments_dashboard", {
