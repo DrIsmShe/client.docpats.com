@@ -1,62 +1,149 @@
 {
-  "metaTitle": "الأسعار – DOCPATS MedConnect",
-  "metaDescription": "أسعار شفافة لمنصة DOCPATS MedConnect للرعاية الصحية الرقمية للأطباء والمرضى والعيادات.",
-
-  "back": "العودة إلى الصفحة الرئيسية",
-  "limitReachedTitle": "لقد وصلت إلى الحد الأقصى لخطتك.",
-  "limitReachedSubtitle": "قم بترقية اشتراكك لإضافة المزيد من المرضى.",
-
-  "title": "الأسعار",
-  "subtitle": "أسعار عادلة للأطباء والمرضى",
-
-  "doctorsTitle": "للأطباء",
-  "patientsTitle": "للمرضى",
-
-  "mostPopular": "الأكثر شيوعاً",
-  "choose": "اختر الخطة",
-
-  "doctorFree": {
-    "name": "Doctor Free",
-    "price": "مجاني",
-    "desc": "للأطباء الذين لديهم حتى 10 مرضى.",
-    "f1": "حتى 10 مرضى",
-    "f2": "سجلات طبية أساسية",
-    "f3": "دردشة بين الطبيب والمريض"
+  "meta": {
+    "title": "الأسعار — DocPats",
+    "description": "اختر خطة DocPats المناسبة للأطباء والمرضى والعيادات"
   },
 
-  "doctorPro": {
-    "name": "Doctor Pro",
-    "price": "$7 / شهرياً",
-    "desc": "للأطباء الذين لديهم أكثر من 10 مرضى.",
-    "f1": "عدد غير محدود من المرضى",
-    "f2": "تقارير وقوالب منظمة",
-    "f3": "دعم أولوية"
+  "page": {
+    "back": "← رجوع",
+    "title": "أسعار DocPats",
+    "subtitle": "اختر خطة للمرضى أو الأطباء أو العيادات",
+    "footerSupport": "تشمل جميع الخطط الدعم الأساسي. لديك أسئلة؟"
   },
 
-  "patientFree": {
-    "name": "Patient Free",
-    "price": "مجاني",
-    "desc": "وصول أساسي لتتبع الصحة الشخصية.",
-    "f1": "حفظ التاريخ الطبي",
-    "f2": "التواصل مع الأطباء",
-    "f3": "رفع التقارير الطبية"
+  "period": {
+    "monthly": "شهرياً",
+    "yearly": "سنوياً",
+    "yearlyBadge": "−20%",
+    "perMonth": "/ شهر",
+    "perYear": "/ سنة",
+    "approxPerMonth": "≈ ${{amount}}/شهر"
   },
 
-  "patientPlus": {
-    "name": "Patient Plus",
-    "price": "$3 / شهرياً",
-    "desc": "أدوات متقدمة للمرضى النشطين.",
-    "f1": "سجلات غير محدودة",
-    "f2": "مساعدات ذكية بالذكاء الاصطناع)",
-    "f3": "دعم أولوية"
+  "tabs": {
+    "patients": "للمرضى",
+    "doctors": "للأطباء",
+    "clinics": "للعيادات"
   },
 
-  "family": {
-    "name": "العائلة",
-    "price": "$5 / شهرياً",
-    "desc": "إدارة صحة جميع أفراد الأسرة.",
-    "f1": "حتى 5 أفراد من العائلة",
-    "f2": "تاريخ طبي مشترك",
-    "f3": "رقابة أبوية"
+  "limitBanner": {
+    "title": "تم استنفاد الحد",
+    "subtitle": "اختر خطة للمتابعة"
+  },
+
+  "guestBanner": {
+    "title": "جرّب مجاناً",
+    "text": "بدون تسجيل — مقالة تجريبية واحدة. بعد التسجيل — خطة مجانية للأبد: 7 استشارات AI كل شهر.",
+    "cta": "سجّل الآن"
+  },
+
+  "doctorBanner": {
+    "title": "6 أشهر مجاناً للأطباء الجدد",
+    "text": "بعد التسجيل — جميع ميزات Doctor Super لمدة 6 أشهر. بعدها يمكنك البقاء على المنصة بـ $3.50/شهر أو اختيار خطة مدفوعة تناسب ممارستك.",
+    "cta": "ابدأ الآن"
+  },
+
+  "patientFooter": "💡 الخطة المجانية للأبد. الميزات المدفوعة تُفعّل فور الدفع، يمكن الإلغاء في أي وقت.",
+  "doctorFooter": "💡 كلما ارتفعت الخطة — قلّت العمولة لكل حجز. خطة Doctor Super تغطي تكلفتها بـ 2-3 مرضى شهرياً، وDoctor Pro بـ 4-5.",
+  "clinicFooter": "💡 خطة Medical Center تشمل مديراً شخصياً وإعداداً مخصصاً لاحتياجات عيادتك. تواصل معنا للتفاصيل.",
+
+  "card": {
+    "free": "مجاني",
+    "recommended": "موصى به",
+    "ctaSubscribe": "اشترك",
+    "ctaRegister": "سجّل",
+    "ctaContact": "تواصل معنا"
+  },
+
+  "plans": {
+    "patient_free": {
+      "name": "مجاني",
+      "desc": "وصول أساسي للأبد بعد التسجيل"
+    },
+    "patient_std": {
+      "name": "قياسي",
+      "desc": "للاستخدام النشط للذكاء الاصطناعي"
+    },
+    "patient_pro": {
+      "name": "Pro",
+      "desc": "أقصى إمكانيات الذكاء الاصطناعي والأولوية"
+    },
+    "doctor_basic": {
+      "name": "أساسي",
+      "desc": "حضور أساسي على المنصة بعد الفترة التجريبية",
+      "trialNote": "أول 6 أشهر — مجاناً بمستوى Doctor Super"
+    },
+    "doctor_super": {
+      "name": "سوبر",
+      "desc": "للممارسة الخاصة المتنامية"
+    },
+    "doctor_pro": {
+      "name": "محترف",
+      "desc": "مجموعة أدوات كاملة للممارسة الناضجة"
+    },
+    "clinic_start": {
+      "name": "بداية",
+      "desc": "للعيادات الصغيرة حتى 5 أطباء"
+    },
+    "clinic": {
+      "name": "عيادة",
+      "desc": "للعيادات حتى 10 أطباء"
+    },
+    "clinic_pro": {
+      "name": "مركز طبي",
+      "desc": "للمراكز الطبية الكبيرة"
+    }
+  },
+
+  "features": {
+    "aiConsultations": "{{count}} استشارة AI شهرياً",
+    "aiConsultationsUnlimited": "استشارات AI غير محدودة للمرضى",
+    "aiArticles": "{{count}} مقالات AI شهرياً",
+    "aiArticlesUnlimited": "مقالات AI غير محدودة",
+    "aiArticlesOne": "مقالة AI واحدة شهرياً",
+    "aiAnalyses": "{{count}} تحليل AI للحالات شهرياً",
+    "aiAnalysesUnlimited": "تحليلات AI غير محدودة",
+    "soapEpicrises": "{{count}} ملخص SOAP شهرياً",
+    "soapEpicrisesUnlimited": "ملخصات SOAP غير محدودة",
+
+    "aiPatientConsultations": "{{count}} استشارة AI للمرضى",
+    "patientsInOffice": "{{count}} مريض في المكتب",
+    "patientsInOfficeUnlimited": "مرضى غير محدودين",
+
+    "videoMinutes": "{{count}} دقيقة فيديو/صوت شهرياً",
+    "videoMinutesHours": "{{count}} دقيقة فيديو/صوت ({{hours}} س)",
+    "videoMinutesUnlimited": "مواعيد فيديو غير محدودة",
+
+    "doctorProfile": "ملف الطبيب على DocPats",
+    "doctorProfilePriority": "ملف طبيب ذو أولوية",
+    "directPayments": "مدفوعات مباشرة عبر الإنترنت",
+    "commission": "عمولة DocPats {{percent}}%",
+    "aiPriority": "أولوية في توصيات الذكاء الاصطناعي",
+
+    "viewDocuments": "عرض جميع مستنداتك — بدون حد",
+    "fullHistory": "السجل الكامل للمستندات",
+    "fullHistoryBackup": "السجل الكامل + نسخ احتياطي تلقائي",
+    "bookDoctor": "حجز الأطباء عبر DocPats",
+    "paidConsultations": "استشارات مدفوعة عبر الإنترنت مع الطبيب",
+    "consultationDiscount": "خصم {{percent}}% على الاستشارات الإلكترونية",
+    "consultationDiscountNo": "خصم على الاستشارات الإلكترونية",
+    "exportPdf": "تصدير الملخص إلى PDF",
+    "medReminders": "تذكيرات بالأدوية",
+    "doctorPriorityQueue": "أولوية في قائمة الانتظار للأطباء",
+    "translateDocs2": "ترجمة المستندات إلى لغتين",
+    "translateDocs5": "ترجمة المستندات إلى 5 لغات",
+
+    "doctorsInClinic": "حتى {{count}} طبيب في الحساب",
+    "doctorsInClinicUnlimited": "عدد غير محدود من الأطباء",
+    "allDoctorsProfiles": "ملفات جميع الأطباء على DocPats",
+    "unifiedSchedule": "جدول موحد للعيادة",
+    "unifiedScheduleCrm": "جدول موحد و CRM",
+    "videoMinutesClinic": "{{count}} دقيقة فيديو شهرياً",
+    "videoMinutesClinicHours": "{{count}} دقيقة فيديو شهرياً ({{hours}} س)",
+    "clinicAnalytics": "تحليلات على مستوى العيادة",
+    "extendedAnalytics": "تحليلات وتقارير موسعة",
+    "topInRecommendations": "في قمة توصيات الذكاء الاصطناعي",
+    "personalManager": "مدير شخصي",
+    "allAiUnlimited": "ميزات AI غير محدودة"
   }
 }

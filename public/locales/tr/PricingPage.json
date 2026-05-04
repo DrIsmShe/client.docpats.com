@@ -1,61 +1,149 @@
 {
-  "metaTitle": "Fiyatlandırma – DOCPATS MedConnect",
-  "metaDescription": "DOCPATS MedConnect için şeffaf fiyatlandırma — doktorlar, hastalar ve klinikler için dijital sağlık platformu.",
-
-  "back": "Ana sayfaya dön",
-
-  "title": "Fiyatlandırma",
-  "subtitle": "Doktorlar ve hastalar için adil fiyatlar",
-
-  "doctorsTitle": "Doktorlar için",
-  "patientsTitle": "Hastalar için",
-  "limitReachedTitle": "Tarif limitinize ulaştınız.",
-  "limitReachedSubtitle": "Daha fazla hasta eklemek için aboneliğinizi yükseltin.",
-  "mostPopular": "En popüler",
-  "choose": "Planı seç",
-
-  "doctorFree": {
-    "name": "Doctor Free",
-    "price": "Ücretsiz",
-    "desc": "10 hastaya kadar olan doktorlar için.",
-    "f1": "10 hastaya kadar",
-    "f2": "Temel tıbbi kayıtlar",
-    "f3": "Doktor–hasta sohbeti"
+  "meta": {
+    "title": "Fiyatlar — DocPats",
+    "description": "Doktorlar, hastalar ve klinikler için uygun DocPats planını seçin"
   },
 
-  "doctorPro": {
-    "name": "Doctor Pro",
-    "price": "$7 / ay",
-    "desc": "10’dan fazla hastası olan doktorlar için.",
-    "f1": "Sınırsız hasta",
-    "f2": "Yapılandırılmış raporlar ve şablonlar",
-    "f3": "Öncelikli destek"
+  "page": {
+    "back": "← Geri",
+    "title": "DocPats Fiyatlandırma",
+    "subtitle": "Hastalar, doktorlar veya klinikler için bir plan seçin",
+    "footerSupport": "Tüm planlar temel destek içerir. Sorularınız mı var?"
   },
 
-  "patientFree": {
-    "name": "Patient Free",
-    "price": "Ücretsiz",
-    "desc": "Kişisel sağlık takibi için temel erişim.",
-    "f1": "Tıbbi geçmiş saklama",
-    "f2": "Doktorlarla iletişim",
-    "f3": "Rapor yükleme"
+  "period": {
+    "monthly": "Aylık",
+    "yearly": "Yıllık",
+    "yearlyBadge": "−20%",
+    "perMonth": "/ ay",
+    "perYear": "/ yıl",
+    "approxPerMonth": "≈ ${{amount}}/ay"
   },
 
-  "patientPlus": {
-    "name": "Patient Plus",
-    "price": "$3 / ay",
-    "desc": "Aktif hastalar için gelişmiş araçlar.",
-    "f1": "Sınırsız kayıt",
-    "f2": "Yapay zekâ destekli analizler",
-    "f3": "Öncelikli destek"
+  "tabs": {
+    "patients": "Hastalar için",
+    "doctors": "Doktorlar için",
+    "clinics": "Klinikler için"
   },
 
-  "family": {
-    "name": "Aile",
-    "price": "$5 / ay",
-    "desc": "Tüm ailenizin sağlığını yönetin.",
-    "f1": "5 aile üyesine kadar",
-    "f2": "Paylaşılan tıbbi geçmiş",
-    "f3": "Ebeveyn kontrolü"
+  "limitBanner": {
+    "title": "Limit doldu",
+    "subtitle": "Devam etmek için bir plan seçin"
+  },
+
+  "guestBanner": {
+    "title": "Ücretsiz dene",
+    "text": "Kayıt olmadan — 1 deneme makalesi. Kayıt olduktan sonra — sonsuza dek ücretsiz plan: her ay 7 AI konsültasyonu.",
+    "cta": "Kayıt ol"
+  },
+
+  "doctorBanner": {
+    "title": "Yeni doktorlar için 6 ay ücretsiz",
+    "text": "Kayıt olduktan sonra — 6 ay boyunca tüm Doctor Super özellikleri. Sonrasında platformda $3.50/ay ile kalabilir veya pratiğinize uygun bir ücretli plan seçebilirsiniz.",
+    "cta": "Başla"
+  },
+
+  "patientFooter": "💡 Ücretsiz plan sonsuza dek geçerlidir. Ücretli özellikler ödemeden hemen sonra etkinleşir, istediğiniz zaman iptal edebilirsiniz.",
+  "doctorFooter": "💡 Plan ne kadar yüksekse — randevu başına komisyon o kadar düşük olur. Doctor Super ayda 2-3 hastayla, Doctor Pro 4-5 hastayla kendini amorti eder.",
+  "clinicFooter": "💡 Medical Center planı, kişisel bir yönetici ve kliniğinizin ihtiyaçlarına özel yapılandırma içerir. Detaylar için bizimle iletişime geçin.",
+
+  "card": {
+    "free": "Ücretsiz",
+    "recommended": "Önerilen",
+    "ctaSubscribe": "Abone ol",
+    "ctaRegister": "Kayıt ol",
+    "ctaContact": "İletişime geç"
+  },
+
+  "plans": {
+    "patient_free": {
+      "name": "Ücretsiz",
+      "desc": "Kayıt sonrası kalıcı temel erişim"
+    },
+    "patient_std": {
+      "name": "Standart",
+      "desc": "Aktif AI kullanımı için"
+    },
+    "patient_pro": {
+      "name": "Pro",
+      "desc": "Maksimum AI olanakları ve öncelik"
+    },
+    "doctor_basic": {
+      "name": "Temel",
+      "desc": "Deneme süresi sonrası platformda temel varlık",
+      "trialNote": "İlk 6 ay — Doctor Super seviyesinde ücretsiz"
+    },
+    "doctor_super": {
+      "name": "Süper",
+      "desc": "Büyüyen özel pratik için"
+    },
+    "doctor_pro": {
+      "name": "Profesyonel",
+      "desc": "Olgun pratik için tam araç seti"
+    },
+    "clinic_start": {
+      "name": "Başlangıç",
+      "desc": "5 doktora kadar küçük klinikler için"
+    },
+    "clinic": {
+      "name": "Klinik",
+      "desc": "10 doktora kadar klinikler için"
+    },
+    "clinic_pro": {
+      "name": "Tıp Merkezi",
+      "desc": "Büyük tıp merkezleri için"
+    }
+  },
+
+  "features": {
+    "aiConsultations": "Ayda {{count}} AI konsültasyonu",
+    "aiConsultationsUnlimited": "Sınırsız AI hasta konsültasyonu",
+    "aiArticles": "Ayda {{count}} AI makalesi",
+    "aiArticlesUnlimited": "Sınırsız AI makalesi",
+    "aiArticlesOne": "Ayda 1 AI makalesi",
+    "aiAnalyses": "Ayda {{count}} AI vaka analizi",
+    "aiAnalysesUnlimited": "Sınırsız AI analizi",
+    "soapEpicrises": "Ayda {{count}} SOAP epikrizi",
+    "soapEpicrisesUnlimited": "Sınırsız SOAP epikrizi",
+
+    "aiPatientConsultations": "{{count}} AI hasta konsültasyonu",
+    "patientsInOffice": "Ofiste {{count}} hasta",
+    "patientsInOfficeUnlimited": "Sınırsız hasta",
+
+    "videoMinutes": "Ayda {{count}} dakika video/ses",
+    "videoMinutesHours": "{{count}} dakika video/ses ({{hours}} sa)",
+    "videoMinutesUnlimited": "Sınırsız video randevu",
+
+    "doctorProfile": "DocPats'te doktor profili",
+    "doctorProfilePriority": "Öncelikli doktor profili",
+    "directPayments": "Doğrudan online ödemeler",
+    "commission": "DocPats komisyonu %{{percent}}",
+    "aiPriority": "AI önerilerinde öncelik",
+
+    "viewDocuments": "Kendi belgelerini görüntüleme — sınırsız",
+    "fullHistory": "Tam belge geçmişi",
+    "fullHistoryBackup": "Tam geçmiş + otomatik yedekleme",
+    "bookDoctor": "DocPats üzerinden doktor randevusu",
+    "paidConsultations": "Doktorla ücretli online konsültasyon",
+    "consultationDiscount": "Online konsültasyonlarda %{{percent}} indirim",
+    "consultationDiscountNo": "Online konsültasyonlarda indirim",
+    "exportPdf": "Epikrizi PDF olarak dışa aktar",
+    "medReminders": "İlaç hatırlatıcıları",
+    "doctorPriorityQueue": "Doktorlara öncelikli sıra",
+    "translateDocs2": "2 dile belge çevirisi",
+    "translateDocs5": "5 dile belge çevirisi",
+
+    "doctorsInClinic": "Hesapta {{count}} doktora kadar",
+    "doctorsInClinicUnlimited": "Sınırsız doktor",
+    "allDoctorsProfiles": "DocPats'te tüm doktor profilleri",
+    "unifiedSchedule": "Birleşik klinik takvimi",
+    "unifiedScheduleCrm": "Birleşik takvim ve CRM",
+    "videoMinutesClinic": "Ayda {{count}} dakika video",
+    "videoMinutesClinicHours": "Ayda {{count}} dakika video ({{hours}} sa)",
+    "clinicAnalytics": "Klinik geneli analitik",
+    "extendedAnalytics": "Genişletilmiş analitik ve raporlar",
+    "topInRecommendations": "AI önerilerinde en üstte",
+    "personalManager": "Kişisel yönetici",
+    "allAiUnlimited": "Sınırsız AI özellikleri"
   }
 }

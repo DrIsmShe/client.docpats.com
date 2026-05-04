@@ -1,219 +1,229 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 
-// ─── Тарифы пациентов ─────────────────────────────────────────────
+// ═════════════════════════════════════════════════════════════════════
+//   Цены (USD) — синхронизированы с server/common/config/aiPlanLimits.js
+//   PLAN_PRICES. Если меняешь там — меняй и здесь.
+// ═════════════════════════════════════════════════════════════════════
+const PRICES_USD = {
+  patient_std: { monthly: 5, yearly: 48 },
+  patient_pro: { monthly: 11, yearly: 106 },
+  doctor_basic: { monthly: 3.5, yearly: 34 },
+  doctor_super: { monthly: 13, yearly: 125 },
+  doctor_pro: { monthly: 29, yearly: 278 },
+  clinic_start: { monthly: 59, yearly: 566 },
+  clinic: { monthly: 99, yearly: 950 },
+  clinic_pro: { monthly: 199, yearly: 1910 },
+};
+
+// ═════════════════════════════════════════════════════════════════════
+//   СТРУКТУРЫ ПЛАНОВ
+//   Каждая фича — это объект { i18nKey, vars? } для интерполяции.
+//   Сами тексты приходят из переводов через t().
+// ═════════════════════════════════════════════════════════════════════
+
 const PATIENT_PLANS = [
   {
-    key: "free",
-    name: "Бесплатный",
-    price: "Бесплатно",
-    priceNote: "после регистрации",
-    desc: "Базовый доступ для зарегистрированных пациентов",
+    key: "patient_free",
+    free: true,
     highlight: false,
-    cta: "Зарегистрироваться",
+    cta: "register",
     ctaPath: "/register",
     features: [
-      { text: "5 AI консультаций в месяц", ok: true },
-      { text: "3 эпикриза в формате SOAP", ok: true },
-      { text: "Рекомендации врачей DocPats", ok: true },
-      { text: "20 сообщений AI в день", ok: true },
-      { text: "Запись к врачу через DocPats", ok: true },
-      { text: "История консультаций", ok: false },
-      { text: "Экспорт эпикриза в PDF", ok: false },
-      { text: "Онлайн-консультация с врачом", ok: false },
-      { text: "Напоминания о приёме", ok: false },
+      { i18nKey: "features.aiConsultations", vars: { count: 7 } },
+      { i18nKey: "features.aiArticlesOne" },
+      { i18nKey: "features.soapEpicrises", vars: { count: 7 } },
+      { i18nKey: "features.viewDocuments" },
+      { i18nKey: "features.bookDoctor" },
+      { i18nKey: "features.paidConsultations" },
+      { i18nKey: "features.consultationDiscountNo", off: true },
+      { i18nKey: "features.exportPdf", off: true },
+      { i18nKey: "features.translateDocs5", off: true },
     ],
   },
   {
-    key: "standard",
-    name: "Стандарт",
-    price: "9",
-    priceNote: "AZN / мес",
-    desc: "Полноценное использование AI для здоровья",
+    key: "patient_std",
     highlight: false,
-    cta: "Подключить",
-    ctaPath: "/pricing/checkout?plan=standard",
+    cta: "subscribe",
+    ctaPath: "/pricing/checkout?plan=patient_std",
     features: [
-      { text: "15 AI консультаций в месяц", ok: true },
-      { text: "15 эпикризов в формате SOAP", ok: true },
-      { text: "Рекомендации врачей DocPats", ok: true },
-      { text: "60 сообщений AI в день", ok: true },
-      { text: "Запись к врачу через DocPats", ok: true },
-      { text: "История консультаций (6 мес)", ok: true },
-      { text: "Экспорт эпикриза в PDF", ok: true },
-      { text: "Онлайн-консультация с врачом", ok: true },
-      { text: "Напоминания о приёме", ok: true },
+      { i18nKey: "features.aiConsultations", vars: { count: 20 } },
+      { i18nKey: "features.aiArticles", vars: { count: 3 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 20 } },
+      { i18nKey: "features.fullHistory" },
+      { i18nKey: "features.exportPdf" },
+      { i18nKey: "features.consultationDiscount", vars: { percent: 10 } },
+      { i18nKey: "features.medReminders" },
+      { i18nKey: "features.translateDocs2" },
+      { i18nKey: "features.translateDocs5", off: true },
     ],
   },
   {
-    key: "premium",
-    name: "Премиум",
-    price: "19",
-    priceNote: "AZN / мес",
-    desc: "Безлимитный доступ и приоритет во всём",
+    key: "patient_pro",
     highlight: true,
-    cta: "Подключить",
-    ctaPath: "/pricing/checkout?plan=premium",
+    cta: "subscribe",
+    ctaPath: "/pricing/checkout?plan=patient_pro",
     features: [
-      { text: "Безлимитные AI консультации", ok: true },
-      { text: "Безлимитные эпикризы SOAP", ok: true },
-      { text: "Рекомендации врачей DocPats", ok: true },
-      { text: "150 сообщений AI в день", ok: true },
-      { text: "Запись к врачу через DocPats", ok: true },
-      { text: "Полная история консультаций", ok: true },
-      { text: "Экспорт эпикриза в PDF", ok: true },
-      { text: "Онлайн-консультация с врачом", ok: true },
-      { text: "Приоритетный подбор врача", ok: true },
+      { i18nKey: "features.aiConsultations", vars: { count: 60 } },
+      { i18nKey: "features.aiArticles", vars: { count: 10 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 60 } },
+      { i18nKey: "features.fullHistoryBackup" },
+      { i18nKey: "features.exportPdf" },
+      { i18nKey: "features.consultationDiscount", vars: { percent: 20 } },
+      { i18nKey: "features.medReminders" },
+      { i18nKey: "features.doctorPriorityQueue" },
+      { i18nKey: "features.translateDocs5" },
     ],
   },
 ];
 
-// ─── Тарифы врачей ────────────────────────────────────────────────
 const DOCTOR_PLANS = [
   {
-    key: "doctor_free",
-    name: "Бесплатный",
-    price: "Бесплатно",
-    priceNote: "после регистрации",
-    desc: "Базовое присутствие на платформе",
+    key: "doctor_basic",
     highlight: false,
-    cta: "Зарегистрироваться",
-    ctaPath: "/register",
+    cta: "subscribe",
+    ctaPath: "/pricing/checkout?plan=doctor_basic",
+    showTrialNote: true,
     features: [
-      { text: "Профиль врача на DocPats", ok: true },
-      { text: "До 5 записей в месяц", ok: true },
-      { text: "5 AI анализов в месяц", ok: true },
-      { text: "5 эпикризов в месяц", ok: true },
-      { text: "30 сообщений AI в день", ok: true },
-      { text: "Приоритет в рекомендациях AI", ok: false },
-      { text: "Онлайн-приёмы (видео)", ok: false },
-      { text: "Прямые онлайн-платежи", ok: false },
-      { text: "Комиссия DocPats 15%", ok: true },
+      { i18nKey: "features.doctorProfile" },
+      { i18nKey: "features.aiAnalyses", vars: { count: 7 } },
+      { i18nKey: "features.aiArticles", vars: { count: 3 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 7 } },
+      { i18nKey: "features.aiPatientConsultations", vars: { count: 5 } },
+      { i18nKey: "features.patientsInOffice", vars: { count: 5 } },
+      { i18nKey: "features.videoMinutes", vars: { count: 30 } },
+      { i18nKey: "features.directPayments" },
+      { i18nKey: "features.commission", vars: { percent: 15 } },
     ],
   },
   {
     key: "doctor_super",
-    name: "Супер",
-    price: "23",
-    priceNote: "AZN / мес",
-    desc: "Для врачей которые только начинают",
     highlight: false,
-    cta: "Подключить",
+    cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=doctor_super",
     features: [
-      { text: "Профиль врача на DocPats", ok: true },
-      { text: "До 30 записей в месяц", ok: true },
-      { text: "30 AI анализов в месяц", ok: true },
-      { text: "30 эпикризов в месяц", ok: true },
-      { text: "90 сообщений AI в день", ok: true },
-      { text: "Приоритет в рекомендациях AI", ok: false },
-      { text: "Онлайн-приёмы (видео)", ok: true },
-      { text: "Прямые онлайн-платежи", ok: true },
-      { text: "Комиссия DocPats 12%", ok: true },
+      { i18nKey: "features.doctorProfile" },
+      { i18nKey: "features.aiAnalyses", vars: { count: 30 } },
+      { i18nKey: "features.aiArticles", vars: { count: 10 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 30 } },
+      { i18nKey: "features.aiPatientConsultations", vars: { count: 30 } },
+      { i18nKey: "features.patientsInOffice", vars: { count: 60 } },
+      {
+        i18nKey: "features.videoMinutesHours",
+        vars: { count: 600, hours: 10 },
+      },
+      { i18nKey: "features.directPayments" },
+      { i18nKey: "features.commission", vars: { percent: 12 } },
     ],
   },
   {
     key: "doctor_pro",
-    name: "Профессионал",
-    price: "49",
-    priceNote: "AZN / мес",
-    desc: "Полный инструментарий для частной практики",
     highlight: true,
-    cta: "Подключить",
+    cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=doctor_pro",
     features: [
-      { text: "Приоритетный профиль врача", ok: true },
-      { text: "Безлимитные записи пациентов", ok: true },
-      { text: "100 AI анализов в месяц", ok: true },
-      { text: "100 эпикризов SOAP в месяц", ok: true },
-      { text: "200 сообщений AI в день", ok: true },
-      { text: "Приоритет в рекомендациях AI", ok: true },
-      { text: "Онлайн-приёмы (видео)", ok: true },
-      { text: "Прямые онлайн-платежи", ok: true },
-      { text: "Комиссия DocPats 10%", ok: true },
+      { i18nKey: "features.doctorProfilePriority" },
+      { i18nKey: "features.aiAnalyses", vars: { count: 100 } },
+      { i18nKey: "features.aiArticles", vars: { count: 30 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 100 } },
+      { i18nKey: "features.aiConsultationsUnlimited" },
+      { i18nKey: "features.patientsInOfficeUnlimited" },
+      {
+        i18nKey: "features.videoMinutesHours",
+        vars: { count: 1500, hours: 25 },
+      },
+      { i18nKey: "features.aiPriority" },
+      { i18nKey: "features.commission", vars: { percent: 10 } },
     ],
   },
 ];
 
-// ─── Тарифы клиник ────────────────────────────────────────────────
 const CLINIC_PLANS = [
   {
     key: "clinic_start",
-    name: "Старт",
-    price: "99",
-    priceNote: "AZN / мес",
-    desc: "Для небольших клиник до 5 врачей",
     highlight: false,
-    cta: "Подключить",
+    cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=clinic_start",
     features: [
-      { text: "До 5 врачей в аккаунте", ok: true },
-      { text: "Профили всех врачей на DocPats", ok: true },
-      { text: "Единое расписание клиники", ok: true },
-      { text: "100 AI анализов в месяц", ok: true },
-      { text: "100 эпикризов SOAP в месяц", ok: true },
-      { text: "150 сообщений AI в день", ok: true },
-      { text: "Онлайн-приёмы (видео)", ok: true },
-      { text: "Прямые онлайн-платежи", ok: true },
-      { text: "Аналитика по клинике", ok: false },
-      { text: "Топ в рекомендациях AI", ok: false },
-      { text: "Комиссия DocPats 10%", ok: true },
+      { i18nKey: "features.doctorsInClinic", vars: { count: 5 } },
+      { i18nKey: "features.allDoctorsProfiles" },
+      { i18nKey: "features.unifiedSchedule" },
+      { i18nKey: "features.aiAnalyses", vars: { count: 100 } },
+      { i18nKey: "features.aiArticles", vars: { count: 30 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 100 } },
+      { i18nKey: "features.videoMinutesClinic", vars: { count: 1500 } },
+      { i18nKey: "features.directPayments" },
+      { i18nKey: "features.clinicAnalytics", off: true },
+      { i18nKey: "features.topInRecommendations", off: true },
+      { i18nKey: "features.commission", vars: { percent: 10 } },
     ],
   },
   {
     key: "clinic",
-    name: "Клиника",
-    price: "149",
-    priceNote: "AZN / мес",
-    desc: "Для клиник до 10 врачей",
     highlight: true,
-    cta: "Подключить",
+    cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=clinic",
     features: [
-      { text: "До 10 врачей в аккаунте", ok: true },
-      { text: "Профили всех врачей на DocPats", ok: true },
-      { text: "Единое расписание клиники", ok: true },
-      { text: "Безлимитные AI анализы", ok: true },
-      { text: "Безлимитные эпикризы SOAP", ok: true },
-      { text: "500 сообщений AI в день", ok: true },
-      { text: "Онлайн-приёмы (видео)", ok: true },
-      { text: "Прямые онлайн-платежи", ok: true },
-      { text: "Аналитика по клинике", ok: true },
-      { text: "Топ в рекомендациях AI", ok: true },
-      { text: "Комиссия DocPats 7%", ok: true },
+      { i18nKey: "features.doctorsInClinic", vars: { count: 10 } },
+      { i18nKey: "features.allDoctorsProfiles" },
+      { i18nKey: "features.unifiedSchedule" },
+      { i18nKey: "features.aiAnalysesUnlimited" },
+      { i18nKey: "features.aiArticlesUnlimited" },
+      { i18nKey: "features.soapEpicrisesUnlimited" },
+      {
+        i18nKey: "features.videoMinutesClinicHours",
+        vars: { count: 5000, hours: 83 },
+      },
+      { i18nKey: "features.directPayments" },
+      { i18nKey: "features.clinicAnalytics" },
+      { i18nKey: "features.topInRecommendations" },
+      { i18nKey: "features.commission", vars: { percent: 7 } },
     ],
   },
   {
     key: "clinic_pro",
-    name: "Медцентр",
-    price: "299",
-    priceNote: "AZN / мес",
-    desc: "Для крупных медицинских центров",
     highlight: false,
-    cta: "Связаться",
+    cta: "contact",
     ctaPath: "/contact?subject=clinic_pro",
     features: [
-      { text: "Неограниченное кол-во врачей", ok: true },
-      { text: "Профили всех врачей на DocPats", ok: true },
-      { text: "Единое расписание и CRM", ok: true },
-      { text: "Безлимитные AI анализы", ok: true },
-      { text: "Безлимитные эпикризы SOAP", ok: true },
-      { text: "Безлимитные сообщения AI", ok: true },
-      { text: "Онлайн-приёмы (видео)", ok: true },
-      { text: "Прямые онлайн-платежи", ok: true },
-      { text: "Расширенная аналитика и отчёты", ok: true },
-      { text: "Топ в рекомендациях AI", ok: true },
-      { text: "Комиссия DocPats 5%", ok: true },
+      { i18nKey: "features.doctorsInClinicUnlimited" },
+      { i18nKey: "features.allDoctorsProfiles" },
+      { i18nKey: "features.unifiedScheduleCrm" },
+      { i18nKey: "features.allAiUnlimited" },
+      { i18nKey: "features.videoMinutesUnlimited" },
+      { i18nKey: "features.directPayments" },
+      { i18nKey: "features.extendedAnalytics" },
+      { i18nKey: "features.topInRecommendations" },
+      { i18nKey: "features.personalManager" },
+      { i18nKey: "features.commission", vars: { percent: 5 } },
     ],
   },
 ];
 
-// ─── Карточка тарифа ─────────────────────────────────────────────
-function PlanCard({ plan }) {
+// ═════════════════════════════════════════════════════════════════════
+//                    КАРТОЧКА ТАРИФА
+// ═════════════════════════════════════════════════════════════════════
+function PlanCard({ plan, period, t }) {
   const navigate = useNavigate();
+  const isFree = !!plan.free;
+  const price = isFree ? null : PRICES_USD[plan.key]?.[period];
+
+  // Для годового — посчитаем "≈ X $/мес" (округление до десятых)
+  const approxPerMonth =
+    period === "yearly" && price
+      ? (Math.round((price / 12) * 10) / 10).toFixed(1)
+      : null;
+
+  const ctaLabelKey =
+    plan.cta === "register"
+      ? "card.ctaRegister"
+      : plan.cta === "contact"
+        ? "card.ctaContact"
+        : "card.ctaSubscribe";
 
   return (
     <motion.div
@@ -231,20 +241,49 @@ function PlanCard({ plan }) {
         <div className="card-body d-flex flex-column p-4">
           {plan.highlight && (
             <span className="badge bg-primary mb-3 align-self-center px-3 py-2">
-              Рекомендуется
+              {t("card.recommended")}
             </span>
           )}
 
-          <h4 className="fw-bold mb-1">{plan.name}</h4>
+          <h4 className="fw-bold mb-1">{t(`plans.${plan.key}.name`)}</h4>
 
           <div className="mb-1">
-            <span className="fs-2 fw-bold">{plan.price}</span>
-            {plan.priceNote && (
-              <span className="text-muted fs-6 ms-2">{plan.priceNote}</span>
+            {isFree ? (
+              <>
+                <span className="fs-2 fw-bold">{t("card.free")}</span>
+              </>
+            ) : (
+              <>
+                <span className="fs-2 fw-bold">${price}</span>
+                <span className="text-muted fs-6 ms-2">
+                  {period === "monthly"
+                    ? t("period.perMonth")
+                    : t("period.perYear")}
+                </span>
+              </>
             )}
           </div>
 
-          <p className="text-muted small mb-3">{plan.desc}</p>
+          {approxPerMonth && (
+            <div className="text-success small mb-1">
+              💰 {t("period.approxPerMonth", { amount: approxPerMonth })}
+            </div>
+          )}
+
+          <p className="text-muted small mb-3">{t(`plans.${plan.key}.desc`)}</p>
+
+          {plan.showTrialNote && (
+            <div
+              className="small mb-3 px-3 py-2 rounded-3"
+              style={{
+                background: "rgba(13,110,253,0.07)",
+                color: "#0d6efd",
+                border: "1px solid rgba(13,110,253,0.15)",
+              }}
+            >
+              ⏱ {t(`plans.${plan.key}.trialNote`)}
+            </div>
+          )}
 
           <hr className="my-2" />
 
@@ -252,13 +291,13 @@ function PlanCard({ plan }) {
             {plan.features.map((f, i) => (
               <li key={i} className="mb-2 d-flex align-items-start gap-2">
                 <span style={{ fontSize: 13, marginTop: 2, flexShrink: 0 }}>
-                  {f.ok ? "✅" : "⬜"}
+                  {f.off ? "⬜" : "✅"}
                 </span>
                 <span
-                  className={f.ok ? "" : "text-muted"}
+                  className={f.off ? "text-muted" : ""}
                   style={{ fontSize: 13, lineHeight: 1.45 }}
                 >
-                  {f.text}
+                  {t(f.i18nKey, f.vars || {})}
                 </span>
               </li>
             ))}
@@ -270,7 +309,7 @@ function PlanCard({ plan }) {
             }`}
             onClick={() => navigate(plan.ctaPath)}
           >
-            {plan.cta}
+            {t(ctaLabelKey)}
           </button>
         </div>
       </div>
@@ -278,8 +317,10 @@ function PlanCard({ plan }) {
   );
 }
 
-// ─── Баннер для гостя ─────────────────────────────────────────────
-function GuestBanner() {
+// ═════════════════════════════════════════════════════════════════════
+//                    БАННЕРЫ
+// ═════════════════════════════════════════════════════════════════════
+function GuestBanner({ t }) {
   const navigate = useNavigate();
   return (
     <motion.div
@@ -293,27 +334,59 @@ function GuestBanner() {
     >
       <div style={{ fontSize: 28 }}>💡</div>
       <div className="flex-grow-1">
-        <strong>Попробуй бесплатно</strong>
-        <div className="text-muted small mt-1">
-          Без регистрации — 2 пробные консультации. После регистрации —
-          бесплатный план с 5 консультациями каждый месяц.
-        </div>
+        <strong>{t("guestBanner.title")}</strong>
+        <div className="text-muted small mt-1">{t("guestBanner.text")}</div>
       </div>
       <button
         className="btn btn-primary rounded-3 flex-shrink-0"
         onClick={() => navigate("/register")}
       >
-        Зарегистрироваться
+        {t("guestBanner.cta")}
       </button>
     </motion.div>
   );
 }
 
-// ─── Главная страница ─────────────────────────────────────────────
+function DoctorBanner({ t }) {
+  const navigate = useNavigate();
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="alert rounded-4 border-0 shadow-sm mb-5 d-flex align-items-center gap-3"
+      style={{
+        background: "rgba(45,212,191,0.07)",
+        borderLeft: "4px solid #2dd4bf",
+      }}
+    >
+      <div style={{ fontSize: 28 }}>🎁</div>
+      <div className="flex-grow-1">
+        <strong>{t("doctorBanner.title")}</strong>
+        <div className="text-muted small mt-1">{t("doctorBanner.text")}</div>
+      </div>
+      <button
+        className="btn btn-primary rounded-3 flex-shrink-0"
+        onClick={() => navigate("/register")}
+      >
+        {t("doctorBanner.cta")}
+      </button>
+    </motion.div>
+  );
+}
+
+// ═════════════════════════════════════════════════════════════════════
+//                    ГЛАВНАЯ СТРАНИЦА
+// ═════════════════════════════════════════════════════════════════════
 export default function PricingPage() {
+  // 💎 Namespace = имя файла перевода (PricingPage.json)
+  const { t, i18n } = useTranslation("PricingPage");
+
   const location = useLocation();
   const [showLimitBanner, setShowLimitBanner] = useState(false);
   const [activeTab, setActiveTab] = useState("patients");
+  const [period, setPeriod] = useState("monthly"); // monthly | yearly
+
+  const isRTL = i18n.language === "ar";
 
   useEffect(() => {
     if (location.state?.reason === "PATIENT_LIMIT_REACHED") {
@@ -328,14 +401,18 @@ export default function PricingPage() {
     }
   }, [location.state]);
 
-  const TABS = [
-    { key: "patients", label: "Для пациентов" },
-    { key: "doctors", label: "Для врачей" },
-    { key: "clinics", label: "Для клиник" },
-  ];
+  const TABS = useMemo(
+    () => [
+      { key: "patients", label: t("tabs.patients") },
+      { key: "doctors", label: t("tabs.doctors") },
+      { key: "clinics", label: t("tabs.clinics") },
+    ],
+    [t],
+  );
 
   return (
     <div
+      dir={isRTL ? "rtl" : "ltr"}
       style={{
         minHeight: "100vh",
         background: "linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%)",
@@ -343,11 +420,8 @@ export default function PricingPage() {
       }}
     >
       <Helmet>
-        <title>Тарифы — DocPats</title>
-        <meta
-          name="description"
-          content="Выберите подходящий тариф DocPats для врачей, пациентов и клиник"
-        />
+        <title>{t("meta.title")}</title>
+        <meta name="description" content={t("meta.description")} />
       </Helmet>
 
       <LanguageSwitcher />
@@ -361,9 +435,9 @@ export default function PricingPage() {
             transition={{ duration: 0.4 }}
             className="alert alert-warning text-center shadow-sm rounded-4 mb-4"
           >
-            <strong>Лимит консультаций исчерпан</strong>
+            <strong>{t("limitBanner.title")}</strong>
             <div className="mt-1 text-muted small">
-              Выберите тариф чтобы продолжить
+              {t("limitBanner.subtitle")}
             </div>
           </motion.div>
         )}
@@ -379,22 +453,58 @@ export default function PricingPage() {
               border: "1px solid rgba(0,0,0,0.05)",
             }}
           >
-            ← Назад
+            {t("page.back")}
           </Link>
         </div>
 
         {/* HEADER */}
         <motion.div
-          className="text-center mb-5"
+          className="text-center mb-4"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="fw-bold mb-2">Тарифы DocPats</h1>
-          <p className="text-muted">
-            Выберите план для пациентов, врачей или клиник
-          </p>
+          <h1 className="fw-bold mb-2">{t("page.title")}</h1>
+          <p className="text-muted">{t("page.subtitle")}</p>
         </motion.div>
+
+        {/* PERIOD TOGGLE */}
+        <div className="d-flex justify-content-center mb-4">
+          <div
+            className="d-flex rounded-pill p-1 gap-1"
+            style={{
+              background: "rgba(255,255,255,0.9)",
+              border: "1px solid rgba(0,0,0,0.08)",
+              backdropFilter: "blur(8px)",
+            }}
+          >
+            <button
+              onClick={() => setPeriod("monthly")}
+              className={`btn rounded-pill px-4 py-2 fw-semibold ${
+                period === "monthly"
+                  ? "btn-dark shadow-sm"
+                  : "btn-link text-muted text-decoration-none"
+              }`}
+              style={{ fontSize: 14 }}
+            >
+              {t("period.monthly")}
+            </button>
+            <button
+              onClick={() => setPeriod("yearly")}
+              className={`btn rounded-pill px-4 py-2 fw-semibold position-relative ${
+                period === "yearly"
+                  ? "btn-dark shadow-sm"
+                  : "btn-link text-muted text-decoration-none"
+              }`}
+              style={{ fontSize: 14 }}
+            >
+              {t("period.yearly")}
+              <span className="badge bg-success ms-2" style={{ fontSize: 10 }}>
+                {t("period.yearlyBadge")}
+              </span>
+            </button>
+          </div>
+        </div>
 
         {/* TABS */}
         <div className="d-flex justify-content-center mb-5">
@@ -431,19 +541,16 @@ export default function PricingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <GuestBanner />
+            <GuestBanner t={t} />
             <div className="row g-4 justify-content-center">
               {PATIENT_PLANS.map((plan) => (
                 <div key={plan.key} className="col-md-4">
-                  <PlanCard plan={plan} />
+                  <PlanCard plan={plan} period={period} t={t} />
                 </div>
               ))}
             </div>
             <div className="text-center mt-5">
-              <p className="text-muted small">
-                💡 Регистрация бесплатна и занимает 1 минуту. После регистрации
-                лимиты привязываются к аккаунту.
-              </p>
+              <p className="text-muted small">{t("patientFooter")}</p>
             </div>
           </motion.div>
         )}
@@ -456,18 +563,16 @@ export default function PricingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
+            <DoctorBanner t={t} />
             <div className="row g-4 justify-content-center">
               {DOCTOR_PLANS.map((plan) => (
                 <div key={plan.key} className="col-md-4">
-                  <PlanCard plan={plan} />
+                  <PlanCard plan={plan} period={period} t={t} />
                 </div>
               ))}
             </div>
             <div className="text-center mt-5">
-              <p className="text-muted small">
-                💡 Чем выше тариф — тем ниже комиссия DocPats с каждой записи.
-                Врач окупает подписку уже с 2-3 пациентов в месяц.
-              </p>
+              <p className="text-muted small">{t("doctorFooter")}</p>
             </div>
           </motion.div>
         )}
@@ -483,16 +588,12 @@ export default function PricingPage() {
             <div className="row g-4 justify-content-center">
               {CLINIC_PLANS.map((plan) => (
                 <div key={plan.key} className="col-md-4">
-                  <PlanCard plan={plan} />
+                  <PlanCard plan={plan} period={period} t={t} />
                 </div>
               ))}
             </div>
             <div className="text-center mt-5">
-              <p className="text-muted small">
-                💡 Тариф Медцентр включает персонального менеджера и
-                индивидуальную настройку под нужды вашей клиники. Свяжитесь с
-                нами для обсуждения деталей.
-              </p>
+              <p className="text-muted small">{t("clinicFooter")}</p>
             </div>
           </motion.div>
         )}
@@ -500,7 +601,7 @@ export default function PricingPage() {
         {/* FOOTER */}
         <div className="text-center mt-5">
           <p className="text-muted small">
-            Все тарифы включают базовую поддержку. Вопросы?{" "}
+            {t("page.footerSupport")}{" "}
             <a href="mailto:support@docpats.com" className="text-primary">
               support@docpats.com
             </a>

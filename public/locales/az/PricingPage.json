@@ -1,61 +1,149 @@
 {
-  "metaTitle": "Qiymətlər – DOCPATS MedConnect",
-  "metaDescription": "DOCPATS MedConnect üçün şəffaf qiymət siyasəti — həkimlər, pasiyentlər və klinikalar üçün rəqəmsal platforma.",
-
-  "back": "Ana səhifəyə qayıt",
-
-  "title": "Qiymət Planları",
-  "subtitle": "Həkimlər və pasiyentlər üçün ədalətli qiymətlər",
-  "limitReachedTitle": "Sizin tarif limitinizə çatmısınız.",
-  "limitReachedSubtitle": "Daha çox pasiyent əlavə etmək üçün abunəliyinizi yeniləyin.",
-  "doctorsTitle": "Həkimlər üçün",
-  "patientsTitle": "Pasiyentlər üçün",
-
-  "mostPopular": "Ən populyar",
-  "choose": "Planı seç",
-
-  "doctorFree": {
-    "name": "Doctor Free",
-    "price": "Pulsuz",
-    "desc": "10-a qədər pasiyenti olan həkimlər üçün.",
-    "f1": "10 pasiyentə qədər",
-    "f2": "Əsas tibbi qeydlər",
-    "f3": "Həkim–pasiyent çat"
+  "meta": {
+    "title": "Tariflər — DocPats",
+    "description": "Həkimlər, xəstələr və klinikalar üçün uyğun DocPats planını seçin"
   },
 
-  "doctorPro": {
-    "name": "Doctor Pro",
-    "price": "$7 / ay",
-    "desc": "10-dan çox pasiyenti olan həkimlər üçün.",
-    "f1": "Limitsiz pasiyent",
-    "f2": "Strukturlaşdırılmış hesabatlar və şablonlar",
-    "f3": "Prioritet dəstək"
+  "page": {
+    "back": "← Geri",
+    "title": "DocPats Tariflər",
+    "subtitle": "Xəstələr, həkimlər və ya klinikalar üçün plan seçin",
+    "footerSupport": "Bütün tariflərə əsas dəstək daxildir. Sualınız var?"
   },
 
-  "patientFree": {
-    "name": "Patient Free",
-    "price": "Pulsuz",
-    "desc": "Şəxsi sağlamlıq izlənməsi üçün əsas giriş.",
-    "f1": "Tibbi tarixçənin saxlanması",
-    "f2": "Həkimlərlə ünsiyyət",
-    "f3": "Hesabatların yüklənməsi"
+  "period": {
+    "monthly": "Aylıq",
+    "yearly": "İllik",
+    "yearlyBadge": "−20%",
+    "perMonth": "/ ay",
+    "perYear": "/ il",
+    "approxPerMonth": "≈ ${{amount}}/ay"
   },
 
-  "patientPlus": {
-    "name": "Patient Plus",
-    "price": "$3 / ay",
-    "desc": "Aktiv pasiyentlər üçün inkişaf etmiş alətlər.",
-    "f1": "Limitsiz qeydlər",
-    "f2": "AI dəstəyi",
-    "f3": "Prioritet dəstək"
+  "tabs": {
+    "patients": "Xəstələr üçün",
+    "doctors": "Həkimlər üçün",
+    "clinics": "Klinikalar üçün"
   },
 
-  "family": {
-    "name": "Ailə",
-    "price": "$5 / ay",
-    "desc": "Bütün ailənin sağlamlığını idarə edin.",
-    "f1": "5 ailə üzvünə qədər",
-    "f2": "Paylaşılan tibbi tarixçə",
-    "f3": "Valideyn nəzarəti"
+  "limitBanner": {
+    "title": "Limit dolub",
+    "subtitle": "Davam etmək üçün tarif seçin"
+  },
+
+  "guestBanner": {
+    "title": "Pulsuz sınayın",
+    "text": "Qeydiyyatsız — 1 sınaq məqaləsi. Qeydiyyatdan sonra — daimi pulsuz plan: hər ay 7 AI konsultasiyası.",
+    "cta": "Qeydiyyatdan keç"
+  },
+
+  "doctorBanner": {
+    "title": "Yeni həkimlər üçün 6 ay pulsuz",
+    "text": "Qeydiyyatdan sonra — 6 ay ərzində bütün Doctor Super imkanları. Sonra platformada $3.50/ay ilə qala bilər və ya təcrübənizə uyğun ödənişli plan seçə bilərsiniz.",
+    "cta": "Başla"
+  },
+
+  "patientFooter": "💡 Pulsuz plan həmişəlikdir. Ödənişli funksiyalar ödənişdən dərhal sonra aktivləşir, istənilən vaxt ləğv edə bilərsiniz.",
+  "doctorFooter": "💡 Tarif nə qədər yüksəkdirsə — qeydiyyat üçün komissiya o qədər aşağıdır. Doctor Super ayda 2-3 xəstə ilə, Doctor Pro 4-5 xəstə ilə özünü ödəyir.",
+  "clinicFooter": "💡 Tibb Mərkəzi tarifinə şəxsi menecer və klinikanızın ehtiyaclarına uyğun fərdi konfiqurasiya daxildir. Detallar üçün bizimlə əlaqə saxlayın.",
+
+  "card": {
+    "free": "Pulsuz",
+    "recommended": "Tövsiyə olunur",
+    "ctaSubscribe": "Abunə ol",
+    "ctaRegister": "Qeydiyyatdan keç",
+    "ctaContact": "Əlaqə saxla"
+  },
+
+  "plans": {
+    "patient_free": {
+      "name": "Pulsuz",
+      "desc": "Qeydiyyatdan sonra daimi əsas giriş"
+    },
+    "patient_std": {
+      "name": "Standart",
+      "desc": "Aktiv AI istifadəsi üçün"
+    },
+    "patient_pro": {
+      "name": "Pro",
+      "desc": "Maksimum AI imkanları və prioritet"
+    },
+    "doctor_basic": {
+      "name": "Əsas",
+      "desc": "Sınaq müddətindən sonra platformada əsas mövcudluq",
+      "trialNote": "İlk 6 ay — Doctor Super səviyyəsində pulsuz"
+    },
+    "doctor_super": {
+      "name": "Super",
+      "desc": "Böyüyən fərdi təcrübə üçün"
+    },
+    "doctor_pro": {
+      "name": "Professional",
+      "desc": "Yetkin təcrübə üçün tam alət dəsti"
+    },
+    "clinic_start": {
+      "name": "Start",
+      "desc": "5 həkimə qədər kiçik klinikalar üçün"
+    },
+    "clinic": {
+      "name": "Klinika",
+      "desc": "10 həkimə qədər klinikalar üçün"
+    },
+    "clinic_pro": {
+      "name": "Tibb Mərkəzi",
+      "desc": "Böyük tibbi mərkəzlər üçün"
+    }
+  },
+
+  "features": {
+    "aiConsultations": "Ayda {{count}} AI konsultasiyası",
+    "aiConsultationsUnlimited": "Limitsiz AI xəstə konsultasiyası",
+    "aiArticles": "Ayda {{count}} AI məqaləsi",
+    "aiArticlesUnlimited": "Limitsiz AI məqalələri",
+    "aiArticlesOne": "Ayda 1 AI məqaləsi",
+    "aiAnalyses": "Ayda {{count}} AI hadisə təhlili",
+    "aiAnalysesUnlimited": "Limitsiz AI təhlilləri",
+    "soapEpicrises": "Ayda {{count}} SOAP epikrizi",
+    "soapEpicrisesUnlimited": "Limitsiz SOAP epikrizləri",
+
+    "aiPatientConsultations": "{{count}} AI xəstə konsultasiyası",
+    "patientsInOffice": "Ofisdə {{count}} xəstə",
+    "patientsInOfficeUnlimited": "Limitsiz xəstə",
+
+    "videoMinutes": "Ayda {{count}} dəqiqə video/audio",
+    "videoMinutesHours": "{{count}} dəqiqə video/audio ({{hours}} saat)",
+    "videoMinutesUnlimited": "Limitsiz video qəbulu",
+
+    "doctorProfile": "DocPats-da həkim profili",
+    "doctorProfilePriority": "Prioritet həkim profili",
+    "directPayments": "Birbaşa onlayn ödənişlər",
+    "commission": "DocPats komissiyası {{percent}}%",
+    "aiPriority": "AI tövsiyələrində prioritet",
+
+    "viewDocuments": "Bütün öz sənədlərinə baxış — limitsiz",
+    "fullHistory": "Tam sənəd tarixçəsi",
+    "fullHistoryBackup": "Tam tarixçə + avtomatik ehtiyat",
+    "bookDoctor": "DocPats vasitəsilə həkimə qeydiyyat",
+    "paidConsultations": "Həkimlə ödənişli onlayn konsultasiya",
+    "consultationDiscount": "Onlayn konsultasiyalara {{percent}}% endirim",
+    "consultationDiscountNo": "Onlayn konsultasiyalara endirim",
+    "exportPdf": "Epikrizi PDF kimi ixrac",
+    "medReminders": "Dərman xatırlatmaları",
+    "doctorPriorityQueue": "Həkimlərə prioritet növbə",
+    "translateDocs2": "Sənədləri 2 dilə tərcümə",
+    "translateDocs5": "Sənədləri 5 dilə tərcümə",
+
+    "doctorsInClinic": "Hesabda {{count}} həkimə qədər",
+    "doctorsInClinicUnlimited": "Limitsiz sayda həkim",
+    "allDoctorsProfiles": "DocPats-da bütün həkimlərin profilləri",
+    "unifiedSchedule": "Vahid klinika cədvəli",
+    "unifiedScheduleCrm": "Vahid cədvəl və CRM",
+    "videoMinutesClinic": "Ayda {{count}} dəqiqə video",
+    "videoMinutesClinicHours": "Ayda {{count}} dəqiqə video ({{hours}} saat)",
+    "clinicAnalytics": "Klinika üzrə analitika",
+    "extendedAnalytics": "Genişləndirilmiş analitika və hesabatlar",
+    "topInRecommendations": "AI tövsiyələrində ən yuxarıda",
+    "personalManager": "Şəxsi menecer",
+    "allAiUnlimited": "Limitsiz AI funksiyalar"
   }
 }
