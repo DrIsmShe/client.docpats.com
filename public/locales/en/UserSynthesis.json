@@ -1,0 +1,167 @@
+{
+  "topbar": {
+    "brand": "DocPats · AI Article Generator",
+    "createArticle": "Create article",
+    "yourArticle": "DocPats · Your article",
+    "wordCount": "{{count}} words"
+  },
+  "nav": {
+    "back": "Back",
+    "newArticle": "New article",
+    "tag": "AI Synthesis",
+    "copy": "Copy",
+    "print": "Print"
+  },
+  "header": {
+    "label": "DocPats · Personal generator",
+    "headline": "Create your scientific article",
+    "deck": "Enter a topic and sources — AI will generate a deep analytical article of 3000+ words with academic references"
+  },
+  "limit": {
+    "plan": "Plan",
+    "used": "Used",
+    "perMonth": "this month",
+    "guestLimitReached": "Guest limit reached",
+    "guestRegisterCta": "Sign up",
+    "guestBenefit": "— free access forever",
+    "userLimitReached": "Limit reached",
+    "upgradePlanCta": "Upgrade plan"
+  },
+  "form": {
+    "topic": "Article topic",
+    "topicPlaceholder": "Example: The role of microbiome in type 2 diabetes development",
+    "topicHint": "The more specific the topic — the deeper the article",
+    "style": "Style",
+    "language": "Language",
+    "sources": "Sources (optional)",
+    "addSource": "+ Add",
+    "sourceN": "Source {{n}}",
+    "sourceTitle": "Source title *",
+    "sourceUrl": "URL (optional)",
+    "sourceExcerpt": "Abstract / excerpt (improves quality)",
+    "sourcesHint": "Without sources, AI uses current data from open databases",
+    "topicRequired": "Please enter article topic",
+    "errorGeneric": "Generation failed. Please try again.",
+    "openAiConsultation": "→ Open AI consultation"
+  },
+  "styles": {
+    "analytical": "Analytical",
+    "clinical": "Clinical",
+    "popular": "Science-popular",
+    "review": "Literature review",
+    "education": "Educational"
+  },
+  "languages": {
+    "ru": "Русский",
+    "en": "English",
+    "az": "Azərbaycan",
+    "ar": "العربية",
+    "tr": "Türkçe"
+  },
+  "patientHint": {
+    "title": "What topics you can request",
+    "okLabel": "OK — general topics",
+    "noLabel": "Not allowed — personal questions",
+    "ok1": "Migraine: causes and modern treatment methods",
+    "ok2": "What is type 2 diabetes",
+    "ok3": "Vitamin D: deficiency, norms, supplementation",
+    "ok4": "Keto diet: pros and cons",
+    "ok5": "Antibiotic resistance",
+    "ok6": "Psychosomatics of chronic pain",
+    "no1": "\"My head hurts\"",
+    "no2": "\"My diagnosis is gastritis\"",
+    "no3": "\"My child has a fever\"",
+    "no4": "\"Can I eat honey with diabetes\"",
+    "ctaLink": "→ For personal questions: AI consultation"
+  },
+  "buttons": {
+    "generating": "⏳ Generating article... (~60 sec)",
+    "registerToContinue": "Sign up to continue →",
+    "limitMonthly": "Monthly limit reached",
+    "create": "Create article →",
+    "loginHintBefore": "Log in",
+    "loginHintAfter": "to save articles and get more generations",
+    "upgradeHintBefore": "Upgrade plan",
+    "upgradeHintAfter": "to get more generations"
+  },
+  "info": {
+    "whatYouGet": "What you get",
+    "feature1": "3000+ words of deep analysis",
+    "feature2": "Synthesis of multiple sources",
+    "feature3": "Academic references at the end",
+    "feature4": "\"What it means in practice\" block",
+    "feature5": "5 presentation styles to choose",
+    "feature6": "5 languages",
+    "myArticles": "My articles",
+    "wordsAndDate": "{{words}} words · {{date}}"
+  },
+  "plans": {
+    "title": "Plans",
+    "perMonth": "/mo",
+    "monthlyShort": "{{count}}/mo",
+    "freeForever": "Free",
+    "trialPrice": "Free",
+    "trialDuration": "6 mo",
+    "currentPlan": "Current",
+    "upgradeCta": "View all plans →",
+    "trialBanner": {
+      "title": "🎁 You have Doctor Super free for 6 months",
+      "text": "Limit — 10 articles per month. After trial ends, automatic switch to Doctor Basic.",
+      "cta": "View pricing →"
+    },
+    "guest": {
+      "name": "Guest",
+      "limit": "1 article"
+    },
+    "patient_free": {
+      "name": "Patient Free",
+      "limit": "1 article/mo"
+    },
+    "patient_std": {
+      "name": "Patient Standard",
+      "limit": "3 articles/mo"
+    },
+    "patient_pro": {
+      "name": "Patient Pro",
+      "limit": "10 articles/mo"
+    },
+    "doctor_trial": {
+      "name": "Doctor Trial",
+      "limit": "10 articles/mo"
+    },
+    "doctor_basic": {
+      "name": "Doctor Basic",
+      "limit": "3 articles/mo"
+    },
+    "doctor_super": {
+      "name": "Doctor Super",
+      "limit": "10 articles/mo"
+    },
+    "doctor_pro": {
+      "name": "Doctor Pro",
+      "limit": "30 articles/mo"
+    },
+    "sectionPatients": "For patients",
+    "sectionDoctors": "For doctors",
+    "guestTrialBanner": {
+      "title": "🎁 Doctors — 6 months of Doctor Super free",
+      "text": "When you register as a doctor — full platform access for 6 months at no cost.",
+      "cta": "Register as a doctor →"
+    }
+  },
+  "result": {
+    "abstract": "Abstract",
+    "tags": "Tags:",
+    "keywords": "Keywords:",
+    "metaDescription": "Meta Description (SEO)",
+    "metaCharsOf": "{{current}} / 160 characters",
+    "createdOn": "Created on platform",
+    "editorName": "Dr. Ismail Ismailov",
+    "editorRole": "Editor-in-Chief at DocPats · Otolaryngologist",
+    "editorialNote": "This material was created using DocPats AI system based on peer-reviewed scientific sources. It passed the platform's editorial review.",
+    "disclaimer": "⚕ This material is informational and does not replace specialist consultation.",
+    "remainingLeft": "Generations left this month:",
+    "upgradePlan": "Upgrade plan",
+    "copiedAlert": "Copied to clipboard"
+  }
+}

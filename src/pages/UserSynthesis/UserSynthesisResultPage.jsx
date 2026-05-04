@@ -1,4 +1,5 @@
 import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function renderBody(text) {
   if (!text) return null;
@@ -90,6 +91,8 @@ export default function UserSynthesisResultPage() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const article = state?.article;
+  const { t, i18n } = useTranslation("UserSynthesis");
+  const isRTL = i18n.language === "ar";
 
   if (!article) {
     navigate("/user-synthesis");
@@ -98,7 +101,7 @@ export default function UserSynthesisResultPage() {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(article.body);
-    alert("Скопировано в буфер обмена");
+    alert(t("result.copiedAlert"));
   };
 
   const handlePrint = () => window.print();
@@ -106,10 +109,14 @@ export default function UserSynthesisResultPage() {
   return (
     <>
       <style>{CSS}</style>
-      <div className="ur-page">
+      <div className="ur-page" dir={isRTL ? "rtl" : "ltr"}>
         <div className="ur-topbar">
-          <span>DocPats · Ваша статья</span>
-          <span>{article.wordCount?.toLocaleString()} слов</span>
+          <span>{t("topbar.yourArticle")}</span>
+          <span>
+            {t("topbar.wordCount", {
+              count: article.wordCount?.toLocaleString() || 0,
+            })}
+          </span>
         </div>
 
         <nav className="ur-nav">
@@ -123,30 +130,31 @@ export default function UserSynthesisResultPage() {
                 strokeLinejoin="round"
               />
             </svg>
-            Новая статья
+            {t("nav.newArticle")}
           </Link>
           <Link to="/public/news" className="ur-nav-logo">
             Doc<span>Pats</span>
           </Link>
           <div style={{ display: "flex", gap: 8 }}>
             <button onClick={handleCopy} className="ur-action-btn">
-              Копировать
+              {t("nav.copy")}
             </button>
             <button onClick={handlePrint} className="ur-action-btn">
-              Печать
+              {t("nav.print")}
             </button>
           </div>
         </nav>
 
         <article className="ur-article">
           <div className="ur-body">{renderBody(article.body)}</div>
+
           {/* ── АННОТАЦИЯ ── */}
           {article.abstract && (
             <div
               style={{
                 background: "var(--paper2)",
                 border: "1px solid var(--rule)",
-                borderLeft: "4px solid #b83030",
+                borderInlineStart: "4px solid #b83030",
                 padding: "20px 24px",
                 marginBottom: 28,
                 borderRadius: 2,
@@ -162,7 +170,7 @@ export default function UserSynthesisResultPage() {
                   marginBottom: 10,
                 }}
               >
-                Аннотация
+                {t("result.abstract")}
               </div>
               <p
                 style={{
@@ -202,10 +210,10 @@ export default function UserSynthesisResultPage() {
                       letterSpacing: ".12em",
                       textTransform: "uppercase",
                       color: "var(--muted)",
-                      marginRight: 10,
+                      marginInlineEnd: 10,
                     }}
                   >
-                    Теги:
+                    {t("result.tags")}
                   </span>
                   {article.tags.map((tag, i) => (
                     <span
@@ -218,7 +226,7 @@ export default function UserSynthesisResultPage() {
                         background: "rgba(184,48,48,.08)",
                         border: "1px solid rgba(184,48,48,.2)",
                         padding: "2px 10px",
-                        marginRight: 6,
+                        marginInlineEnd: 6,
                         marginBottom: 4,
                         borderRadius: 2,
                       }}
@@ -237,10 +245,10 @@ export default function UserSynthesisResultPage() {
                       letterSpacing: ".12em",
                       textTransform: "uppercase",
                       color: "var(--muted)",
-                      marginRight: 10,
+                      marginInlineEnd: 10,
                     }}
                   >
-                    Ключевые слова:
+                    {t("result.keywords")}
                   </span>
                   {article.keywords.map((kw, i) => (
                     <span
@@ -253,7 +261,7 @@ export default function UserSynthesisResultPage() {
                         background: "var(--paper2)",
                         border: "1px solid var(--rule)",
                         padding: "2px 10px",
-                        marginRight: 6,
+                        marginInlineEnd: 6,
                         marginBottom: 4,
                         borderRadius: 2,
                       }}
@@ -266,7 +274,7 @@ export default function UserSynthesisResultPage() {
             </div>
           )}
 
-          {/* ── META DESCRIPTION (для SEO, скрыт визуально но виден разработчику) ── */}
+          {/* ── META DESCRIPTION ── */}
           {article.metaDescription && (
             <div
               style={{
@@ -287,7 +295,7 @@ export default function UserSynthesisResultPage() {
                   marginBottom: 6,
                 }}
               >
-                Meta Description (SEO)
+                {t("result.metaDescription")}
               </div>
               <p
                 style={{
@@ -311,13 +319,16 @@ export default function UserSynthesisResultPage() {
                   marginTop: 4,
                 }}
               >
-                {article.metaDescription.length} / 160 символов
+                {t("result.metaCharsOf", {
+                  current: article.metaDescription.length,
+                })}
               </div>
             </div>
           )}
-          {/* Редакционный блок */}
+
+          {/* ── Редакционный блок ── */}
           <div className="ur-editorial">
-            <div className="ur-editorial-label">Создано на платформе</div>
+            <div className="ur-editorial-label">{t("result.createdOn")}</div>
             <div
               style={{
                 display: "flex",
@@ -342,7 +353,8 @@ export default function UserSynthesisResultPage() {
                   flexShrink: 0,
                 }}
               >
-                И
+                {/* Берём первую букву имени из локали */}
+                {t("result.editorName").charAt(0)}
               </div>
               <div>
                 <div
@@ -353,7 +365,7 @@ export default function UserSynthesisResultPage() {
                     color: "var(--ink)",
                   }}
                 >
-                  Д-р Исмаил Исмаилов
+                  {t("result.editorName")}
                 </div>
                 <div
                   style={{
@@ -363,7 +375,7 @@ export default function UserSynthesisResultPage() {
                     letterSpacing: ".06em",
                   }}
                 >
-                  Главный редактор DocPats · Оториноларинголог
+                  {t("result.editorRole")}
                 </div>
               </div>
             </div>
@@ -377,9 +389,7 @@ export default function UserSynthesisResultPage() {
                 margin: "0 0 10px",
               }}
             >
-              Материал создан с использованием AI-системы DocPats на основе
-              рецензируемых научных источников. Прошёл редакционную проверку
-              платформы.
+              {t("result.editorialNote")}
             </p>
             <p
               style={{
@@ -391,19 +401,17 @@ export default function UserSynthesisResultPage() {
                 margin: 0,
               }}
             >
-              ⚕ Материал носит информационный характер и не заменяет
-              консультацию специалиста.
+              {t("result.disclaimer")}
             </p>
           </div>
 
           {article.remaining !== undefined && (
             <div className="ur-remaining">
-              Осталось генераций в этом месяце:{" "}
-              <strong>{article.remaining}</strong>
+              {t("result.remainingLeft")} <strong>{article.remaining}</strong>
               {article.remaining === 0 && (
                 <>
                   {" "}
-                  · <Link to="/pricing">Обновить план</Link>
+                  · <Link to="/pricing">{t("result.upgradePlan")}</Link>
                 </>
               )}
             </div>

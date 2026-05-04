@@ -1,0 +1,167 @@
+{
+  "topbar": {
+    "brand": "DocPats · AI Məqalə Generatoru",
+    "createArticle": "Məqalə yarat",
+    "yourArticle": "DocPats · Məqaləniz",
+    "wordCount": "{{count}} söz"
+  },
+  "nav": {
+    "back": "Geri",
+    "newArticle": "Yeni məqalə",
+    "tag": "AI Synthesis",
+    "copy": "Köçür",
+    "print": "Çap"
+  },
+  "header": {
+    "label": "DocPats · Şəxsi generator",
+    "headline": "Öz elmi məqalənizi yaradın",
+    "deck": "Mövzu və mənbələri daxil edin — AI 3000+ sözlük akademik istinadlarla dərin analitik məqalə yaradacaq"
+  },
+  "limit": {
+    "plan": "Plan",
+    "used": "İstifadə",
+    "perMonth": "bu ay",
+    "guestLimitReached": "Qonaq limiti dolub",
+    "guestRegisterCta": "Qeydiyyatdan keçin",
+    "guestBenefit": "— daimi pulsuz giriş",
+    "userLimitReached": "Limit dolub",
+    "upgradePlanCta": "Planı yenilə"
+  },
+  "form": {
+    "topic": "Məqalə mövzusu",
+    "topicPlaceholder": "Məsələn: Tip 2 diabetin inkişafında mikrobiomun rolu",
+    "topicHint": "Mövzu nə qədər konkretdirsə — məqalə bir o qədər dərindir",
+    "style": "Stil",
+    "language": "Dil",
+    "sources": "Mənbələr (məcburi deyil)",
+    "addSource": "+ Əlavə et",
+    "sourceN": "Mənbə {{n}}",
+    "sourceTitle": "Mənbə adı *",
+    "sourceUrl": "URL (məcburi deyil)",
+    "sourceExcerpt": "Annotasiya / çıxarış (keyfiyyəti artırır)",
+    "sourcesHint": "Mənbə olmadan AI açıq bazaların aktual məlumatlarından istifadə edir",
+    "topicRequired": "Məqalə mövzusunu daxil edin",
+    "errorGeneric": "Yaratma xətası. Yenidən cəhd edin.",
+    "openAiConsultation": "→ AI konsultasiyasını aç"
+  },
+  "styles": {
+    "analytical": "Analitik",
+    "clinical": "Klinik",
+    "popular": "Elmi-populyar",
+    "review": "Ədəbiyyat icmalı",
+    "education": "Təhsil"
+  },
+  "languages": {
+    "ru": "Русский",
+    "en": "English",
+    "az": "Azərbaycan",
+    "ar": "العربية",
+    "tr": "Türkçe"
+  },
+  "patientHint": {
+    "title": "Hansı mövzuları soruşmaq olar",
+    "okLabel": "Olur — ümumi mövzular",
+    "noLabel": "Olmaz — şəxsi suallar",
+    "ok1": "Miqren: səbəblər və müasir müalicə üsulları",
+    "ok2": "Tip 2 diabet nədir",
+    "ok3": "D vitamini: çatışmazlıq, normalar, doldurulması",
+    "ok4": "Keto-pəhriz: lehinə və əleyhinə",
+    "ok5": "Antibiotik müqaviməti",
+    "ok6": "Xroniki ağrının psixosomatikası",
+    "no1": "«Başım ağrıyır»",
+    "no2": "«Mənim diaqnozum qastritdir»",
+    "no3": "«Uşağın hərarəti var»",
+    "no4": "«Diabetdə bal yeyə bilərəmmi»",
+    "ctaLink": "→ Şəxsi suallar üçün: AI konsultasiyası"
+  },
+  "buttons": {
+    "generating": "⏳ Məqalə yaradılır... (~60 san)",
+    "registerToContinue": "Davam etmək üçün qeydiyyatdan keçin →",
+    "limitMonthly": "Aylıq limit dolub",
+    "create": "Məqalə yarat →",
+    "loginHintBefore": "Daxil olun",
+    "loginHintAfter": "məqalələri saxlamaq və daha çox yaratma almaq üçün",
+    "upgradeHintBefore": "Planı yeniləyin",
+    "upgradeHintAfter": "daha çox yaratma almaq üçün"
+  },
+  "info": {
+    "whatYouGet": "Nə əldə edəcəksiniz",
+    "feature1": "3000+ söz dərin analiz",
+    "feature2": "Bir neçə mənbənin sintezi",
+    "feature3": "Sonda akademik istinadlar",
+    "feature4": "«Praktikada nə deməkdir» bloku",
+    "feature5": "Seçim üçün 5 təqdimat stili",
+    "feature6": "5 dil",
+    "myArticles": "Mənim məqalələrim",
+    "wordsAndDate": "{{words}} söz · {{date}}"
+  },
+  "plans": {
+    "title": "Planlar",
+    "perMonth": "/ay",
+    "monthlyShort": "{{count}}/ay",
+    "freeForever": "Pulsuz",
+    "trialPrice": "Pulsuz",
+    "trialDuration": "6 ay",
+    "currentPlan": "Cari",
+    "upgradeCta": "Bütün tariflər →",
+    "trialBanner": {
+      "title": "🎁 6 ay boyunca pulsuz Doctor Super",
+      "text": "Limit — ayda 10 məqalə. Sınaq müddətindən sonra avtomatik olaraq Doctor Basic-ə keçir.",
+      "cta": "Tarifləri gör →"
+    },
+    "guest": {
+      "name": "Qonaq",
+      "limit": "1 məqalə"
+    },
+    "patient_free": {
+      "name": "Patient Free",
+      "limit": "Ayda 1 məqalə"
+    },
+    "patient_std": {
+      "name": "Patient Standard",
+      "limit": "Ayda 3 məqalə"
+    },
+    "patient_pro": {
+      "name": "Patient Pro",
+      "limit": "Ayda 10 məqalə"
+    },
+    "doctor_trial": {
+      "name": "Doctor Trial",
+      "limit": "Ayda 10 məqalə"
+    },
+    "doctor_basic": {
+      "name": "Doctor Basic",
+      "limit": "Ayda 3 məqalə"
+    },
+    "doctor_super": {
+      "name": "Doctor Super",
+      "limit": "Ayda 10 məqalə"
+    },
+    "doctor_pro": {
+      "name": "Doctor Pro",
+      "limit": "Ayda 30 məqalə"
+    },
+    "sectionPatients": "Pasientlər üçün",
+    "sectionDoctors": "Həkimlər üçün",
+    "guestTrialBanner": {
+      "title": "🎁 Həkimlərə — 6 ay pulsuz Doctor Super",
+      "text": "Həkim kimi qeydiyyatdan keçdikdə — 6 ay ərzində platformaya tam giriş pulsuz.",
+      "cta": "Həkim kimi qeydiyyatdan keç →"
+    }
+  },
+  "result": {
+    "abstract": "Annotasiya",
+    "tags": "Teqlər:",
+    "keywords": "Açar sözlər:",
+    "metaDescription": "Meta Description (SEO)",
+    "metaCharsOf": "{{current}} / 160 simvol",
+    "createdOn": "Platformada yaradıldı",
+    "editorName": "Dr. İsmail İsmailov",
+    "editorRole": "DocPats Baş Redaktoru · LOR mütəxəssisi",
+    "editorialNote": "Bu material rəyləşdirilmiş elmi mənbələrə əsaslanan DocPats AI sistemindən istifadə etməklə yaradılıb. Platformanın redaksiya yoxlamasından keçib.",
+    "disclaimer": "⚕ Material məlumat xarakteri daşıyır və mütəxəssis məsləhəti əvəz etmir.",
+    "remainingLeft": "Bu ay qalan yaratmalar:",
+    "upgradePlan": "Planı yenilə",
+    "copiedAlert": "Mübadilə buferinə köçürüldü"
+  }
+}

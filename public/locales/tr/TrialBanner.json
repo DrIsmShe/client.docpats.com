@@ -1,0 +1,7 @@
+{
+  "title": "Ücretsiz dönem: {{days}} gün",
+  "compact": "Deneme: {{days}} gün",
+  "text": "Tüm Doctor Super özellikleri açık. Deneme bitmeden plan seçin.",
+  "urgentText": "Yakında bitiyor! Özelliklerinizi kaybetmemek için plan seçin.",
+  "cta": "Plan seç"
+}

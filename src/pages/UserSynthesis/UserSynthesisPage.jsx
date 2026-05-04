@@ -1,28 +1,25 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   generateArticle,
   getMyLimit,
   getMyArticles,
 } from "../../api/userSynthesis";
 
-const STYLES = [
-  { value: "analytical", label: "Аналитический" },
-  { value: "clinical", label: "Клинический" },
-  { value: "popular", label: "Научно-популярный" },
-  { value: "review", label: "Обзор литературы" },
-  { value: "education", label: "Образовательный" },
-];
+// ─── Стили статей (значения для бэка не меняем — переводим только labels) ───
+const STYLE_KEYS = ["analytical", "clinical", "popular", "review", "education"];
 
+// ─── Языки контента — labels на родных языках, не локализуем ─────
 const LANGUAGES = [
-  { value: "ru", label: "Русский" },
-  { value: "en", label: "English" },
-  { value: "az", label: "Azərbaycan" },
-  { value: "ar", label: "العربية" },
-  { value: "tr", label: "Türkçe" },
+  { value: "ru", labelKey: "ru" },
+  { value: "en", labelKey: "en" },
+  { value: "az", labelKey: "az" },
+  { value: "ar", labelKey: "ar" },
+  { value: "tr", labelKey: "tr" },
 ];
 
-function SourceCard({ source, index, onChange, onRemove, canRemove }) {
+function SourceCard({ source, index, onChange, onRemove, canRemove, t }) {
   return (
     <div
       style={{
@@ -49,7 +46,7 @@ function SourceCard({ source, index, onChange, onRemove, canRemove }) {
             color: "var(--muted)",
           }}
         >
-          Источник {index + 1}
+          {t("form.sourceN", { n: index + 1 })}
         </span>
         {canRemove && (
           <button
@@ -69,20 +66,20 @@ function SourceCard({ source, index, onChange, onRemove, canRemove }) {
       </div>
       <input
         type="text"
-        placeholder="Название источника *"
+        placeholder={t("form.sourceTitle")}
         value={source.title}
         onChange={(e) => onChange("title", e.target.value)}
         style={inputStyle}
       />
       <input
         type="url"
-        placeholder="URL (необязательно)"
+        placeholder={t("form.sourceUrl")}
         value={source.url}
         onChange={(e) => onChange("url", e.target.value)}
         style={{ ...inputStyle, marginTop: 6 }}
       />
       <textarea
-        placeholder="Аннотация / выдержка (улучшает качество)"
+        placeholder={t("form.sourceExcerpt")}
         value={source.excerpt}
         onChange={(e) => onChange("excerpt", e.target.value)}
         rows={2}
@@ -105,50 +102,194 @@ const inputStyle = {
 };
 
 // ─── helper: определяем залогинен ли юзер по ответу лимита ───
-// Сервер возвращает plan: "guest" / role: "guest" для неавторизованных
-// и plan: "free|patient_pro|doctor_free|..." / role: "patient|doctor|admin"
-// для залогиненных. Для совместимости со старым бэком оставлен fallback.
 function detectLoggedIn(limit) {
   if (!limit) return false;
   if (limit.role && limit.role !== "guest") return true;
   if (limit.plan && limit.plan !== "guest") {
-    // Доп. защита от старого бэка где гость возвращался с plan="free" limit=1
     if (limit.limit <= 1 && limit.plan === "free") return false;
     return true;
   }
   return false;
 }
 
+// ─── Цены в USD синхронизированы с aiPlanLimits.js → PLAN_PRICES.monthly ───
+const PRICES = {
+  patient_std: 5,
+  patient_pro: 11,
+  doctor_basic: 3.5,
+  doctor_super: 13,
+  doctor_pro: 29,
+};
+
+// ─── Адаптивный список секций для отображения ───
+//
+// Возвращает массив секций { title?, items: [...] } сверху вниз.
+// title?: "patients" | "doctors" | undefined — undefined = без заголовка
+// items: [{ key, isCurrent, isFree?, price?, isTrial? }]
+//
+// Для гостя — обе секции (Для пациентов + Для врачей) с trial-баннером сверху
+// Для пациента — только секция Для пациентов (без заголовка)
+// Для врача — только секция Для врачей (без заголовка)
+function getPlanSections({ isLoggedIn, role, plan }) {
+  // Гость — обе секции
+  if (!isLoggedIn) {
+    return {
+      showGuestTrialBanner: true,
+      sections: [
+        {
+          title: "patients",
+          items: [
+            { key: "guest", isCurrent: true, isFree: true },
+            { key: "patient_free", isCurrent: false, isFree: true },
+            { key: "patient_std", isCurrent: false, price: PRICES.patient_std },
+            { key: "patient_pro", isCurrent: false, price: PRICES.patient_pro },
+          ],
+        },
+        {
+          title: "doctors",
+          items: [
+            {
+              key: "doctor_basic",
+              isCurrent: false,
+              price: PRICES.doctor_basic,
+            },
+            {
+              key: "doctor_super",
+              isCurrent: false,
+              price: PRICES.doctor_super,
+            },
+            { key: "doctor_pro", isCurrent: false, price: PRICES.doctor_pro },
+          ],
+        },
+      ],
+    };
+  }
+
+  // Пациент — только секция пациентов, без заголовка
+  const isPatient = role === "patient" || role === "user";
+  if (isPatient) {
+    return {
+      showGuestTrialBanner: false,
+      sections: [
+        {
+          title: null,
+          items: [
+            {
+              key: "patient_free",
+              isCurrent: plan === "patient_free",
+              isFree: true,
+            },
+            {
+              key: "patient_std",
+              isCurrent: plan === "patient_std",
+              price: PRICES.patient_std,
+            },
+            {
+              key: "patient_pro",
+              isCurrent: plan === "patient_pro",
+              price: PRICES.patient_pro,
+            },
+          ],
+        },
+      ],
+    };
+  }
+
+  // Врач
+  if (role === "doctor") {
+    // В trial — показываем trial-баннер + платные планы
+    if (plan === "doctor_trial") {
+      return {
+        showGuestTrialBanner: false,
+        sections: [
+          {
+            title: null,
+            items: [
+              { key: "doctor_trial", isCurrent: true, isTrial: true },
+              {
+                key: "doctor_basic",
+                isCurrent: false,
+                price: PRICES.doctor_basic,
+              },
+              {
+                key: "doctor_super",
+                isCurrent: false,
+                price: PRICES.doctor_super,
+              },
+              { key: "doctor_pro", isCurrent: false, price: PRICES.doctor_pro },
+            ],
+          },
+        ],
+      };
+    }
+    return {
+      showGuestTrialBanner: false,
+      sections: [
+        {
+          title: null,
+          items: [
+            {
+              key: "doctor_basic",
+              isCurrent: plan === "doctor_basic",
+              price: PRICES.doctor_basic,
+            },
+            {
+              key: "doctor_super",
+              isCurrent: plan === "doctor_super",
+              price: PRICES.doctor_super,
+            },
+            {
+              key: "doctor_pro",
+              isCurrent: plan === "doctor_pro",
+              price: PRICES.doctor_pro,
+            },
+          ],
+        },
+      ],
+    };
+  }
+
+  // Admin / прочие — fallback
+  return {
+    showGuestTrialBanner: false,
+    sections: [
+      {
+        title: null,
+        items: [
+          { key: "doctor_basic", isCurrent: false, price: PRICES.doctor_basic },
+          { key: "doctor_super", isCurrent: false, price: PRICES.doctor_super },
+          { key: "doctor_pro", isCurrent: false, price: PRICES.doctor_pro },
+        ],
+      },
+    ],
+  };
+}
+
 export default function UserSynthesisPage() {
+  const { t, i18n } = useTranslation("UserSynthesis");
   const navigate = useNavigate();
   const [topic, setTopic] = useState("");
   const [style, setStyle] = useState("analytical");
-  const [language, setLanguage] = useState("ru");
+  const [language, setLanguage] = useState(i18n.language || "ru");
   const [sources, setSources] = useState([
     { id: 1, title: "", url: "", excerpt: "" },
   ]);
   const [limit, setLimit] = useState(null);
   const [myArticles, setMyArticles] = useState([]);
-  const [status, setStatus] = useState("idle"); // idle | loading | error
+  const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
 
-  // ─── isLoggedIn выводится из ответа лимита, а не из localStorage ───
   const isLoggedIn = detectLoggedIn(limit);
-  // Является ли юзер пациентом (для подсказки и проверки персональных тем)
   const isPatient = limit?.role === "patient" || limit?.role === "user";
+  const isRTL = i18n.language === "ar";
 
   useEffect(() => {
-    // Грузим лимит и историю параллельно. История вернёт 401 если не авторизован —
-    // молча игнорируем, это нормально для гостя.
     getMyLimit()
       .then((r) => setLimit(r.data))
       .catch(() => {});
-
     getMyArticles({ limit: 5 })
       .then((r) => setMyArticles(r.data.articles || []))
-      .catch(() => {
-        // 401 для гостя — это ожидаемо, ничего не делаем
-      });
+      .catch(() => {});
   }, []);
 
   const addSource = () =>
@@ -166,7 +307,7 @@ export default function UserSynthesisPage() {
 
   const handleGenerate = async () => {
     if (!topic.trim()) {
-      setError("Введите тему статьи");
+      setError(t("form.topicRequired"));
       return;
     }
     setStatus("loading");
@@ -186,10 +327,7 @@ export default function UserSynthesisPage() {
       });
       navigate("/user-synthesis/result", { state: { article: res.data } });
     } catch (err) {
-      const msg =
-        err.response?.data?.message || "Ошибка генерации. Попробуйте ещё раз.";
-      // Особый случай: бэк блокирует личный мед.запрос для пациента —
-      // показываем дружелюбное сообщение со ссылкой на AI-консультацию
+      const msg = err.response?.data?.message || t("form.errorGeneric");
       const isPersonalBlock =
         msg.includes("Этот генератор пишет") ||
         msg.includes("educational articles");
@@ -205,7 +343,7 @@ export default function UserSynthesisPage() {
                 textDecoration: "underline",
               }}
             >
-              → Открыть AI-консультацию
+              {t("form.openAiConsultation")}
             </Link>
           </span>,
         );
@@ -216,28 +354,86 @@ export default function UserSynthesisPage() {
     }
   };
 
-  // ─── Кнопка генерации: текст и состояние ───
   const limitReached = limit && !limit.allowed;
   const isDisabled = status === "loading" || limitReached;
 
   let buttonText;
   if (status === "loading") {
-    buttonText = "⏳ Генерация статьи... (~60 сек)";
+    buttonText = t("buttons.generating");
   } else if (limitReached && !isLoggedIn) {
-    buttonText = "Зарегистрируйтесь чтобы продолжить →";
+    buttonText = t("buttons.registerToContinue");
   } else if (limitReached && isLoggedIn) {
-    buttonText = "Лимит на месяц исчерпан";
+    buttonText = t("buttons.limitMonthly");
   } else {
-    buttonText = "Создать статью →";
+    buttonText = t("buttons.create");
   }
+
+  // ─── Адаптивные секции планов ───
+  const { showGuestTrialBanner, sections } = getPlanSections({
+    isLoggedIn,
+    role: limit?.role,
+    plan: limit?.plan,
+  });
+
+  // Локаль для форматирования даты
+  const dateLocaleMap = {
+    ru: "ru-RU",
+    en: "en-GB",
+    az: "az-AZ",
+    tr: "tr-TR",
+    ar: "ar-AE",
+  };
+  const dateLocale = dateLocaleMap[i18n.language] || "ru-RU";
+
+  // ─── Render-функция для одного пункта плана ───
+  const renderPlanItem = (p) => {
+    // Trial-баннер врача (для залогиненного врача в trial)
+    if (p.isTrial) {
+      return (
+        <div key={p.key} className="us-trial-banner">
+          <div className="us-trial-banner-title">
+            {t("plans.trialBanner.title")}
+          </div>
+          <div className="us-trial-banner-text">
+            {t("plans.trialBanner.text")}
+          </div>
+          <Link to="/pricing" className="us-trial-banner-cta">
+            {t("plans.trialBanner.cta")}
+          </Link>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        key={p.key}
+        className={`us-plan-item ${p.isCurrent ? "us-plan-item-current" : ""}`}
+      >
+        <span className="us-plan-name">
+          {t(`plans.${p.key}.name`)}
+          {p.isCurrent && (
+            <span className="us-plan-current-badge">
+              {t("plans.currentPlan")}
+            </span>
+          )}
+        </span>
+        <span className="us-plan-limit">{t(`plans.${p.key}.limit`)}</span>
+        <span className="us-plan-price">
+          {p.isFree
+            ? t("plans.freeForever")
+            : `$${p.price}${t("plans.perMonth")}`}
+        </span>
+      </div>
+    );
+  };
 
   return (
     <>
       <style>{CSS}</style>
-      <div className="us-page">
+      <div className="us-page" dir={isRTL ? "rtl" : "ltr"}>
         <div className="us-topbar">
-          <span>DocPats · AI Article Generator</span>
-          <span>Создать статью</span>
+          <span>{t("topbar.brand")}</span>
+          <span>{t("topbar.createArticle")}</span>
         </div>
 
         <nav className="us-nav">
@@ -251,45 +447,50 @@ export default function UserSynthesisPage() {
                 strokeLinejoin="round"
               />
             </svg>
-            Назад
+            {t("nav.back")}
           </Link>
           <Link to="/public/news" className="us-nav-logo">
             Doc<span>Pats</span>
           </Link>
-          <span className="us-nav-tag">AI Synthesis</span>
+          <span className="us-nav-tag">{t("nav.tag")}</span>
         </nav>
 
         <header className="us-header">
           <div className="us-header-inner">
-            <div className="us-label">DocPats · Персональный генератор</div>
-            <h1 className="us-headline">Создайте свою научную статью</h1>
+            <div className="us-label">{t("header.label")}</div>
+            <h1 className="us-headline">{t("header.headline")}</h1>
             <div className="us-rule" />
-            <p className="us-deck">
-              Введите тему и источники — AI создаст глубокую аналитическую
-              статью от 3000 слов с академическими ссылками
-            </p>
+            <p className="us-deck">{t("header.deck")}</p>
 
             {limit && (
               <div className="us-limit-bar">
                 <span className="us-limit-plan">
-                  План: <strong>{limit.plan || "free"}</strong>
+                  {t("limit.plan")}:{" "}
+                  <strong>
+                    {t(`plans.${limit.plan}.name`, limit.plan || "free")}
+                  </strong>
                 </span>
                 <span className="us-limit-count">
-                  Использовано: <strong>{limit.used}</strong> / {limit.limit} в
-                  месяц
+                  {t("limit.used")}: <strong>{limit.used}</strong> /{" "}
+                  {limit.limit === Infinity || limit.limit === -1
+                    ? "∞"
+                    : limit.limit}{" "}
+                  {t("limit.perMonth")}
                 </span>
                 {limitReached && (
                   <span className="us-limit-warn">
                     {!isLoggedIn ? (
                       <>
-                        Лимит гостя исчерпан ·{" "}
-                        <Link to="/register">Зарегистрируйтесь</Link> — 3 статьи
-                        в месяц бесплатно
+                        {t("limit.guestLimitReached")} ·{" "}
+                        <Link to="/register">
+                          {t("limit.guestRegisterCta")}
+                        </Link>{" "}
+                        {t("limit.guestBenefit")}
                       </>
                     ) : (
                       <>
-                        Лимит исчерпан ·{" "}
-                        <Link to="/pricing">Обновить план</Link>
+                        {t("limit.userLimitReached")} ·{" "}
+                        <Link to="/pricing">{t("limit.upgradePlanCta")}</Link>
                       </>
                     )}
                   </span>
@@ -305,10 +506,10 @@ export default function UserSynthesisPage() {
               {/* LEFT — форма */}
               <div className="us-form-col">
                 <div className="us-form-section">
-                  <label className="us-form-label">Тема статьи *</label>
+                  <label className="us-form-label">{t("form.topic")} *</label>
                   <input
                     type="text"
-                    placeholder="Например: Роль микробиома в развитии сахарного диабета 2 типа"
+                    placeholder={t("form.topicPlaceholder")}
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
                     style={{
@@ -317,70 +518,69 @@ export default function UserSynthesisPage() {
                       padding: "12px 14px",
                     }}
                   />
-                  <div className="us-form-hint">
-                    Чем конкретнее тема — тем глубже статья
-                  </div>
+                  <div className="us-form-hint">{t("form.topicHint")}</div>
                 </div>
 
-                {/* ─── Подсказка для пациентов: какие темы допустимы ─── */}
+                {/* ─── Подсказка для пациентов ─── */}
                 {isLoggedIn && isPatient && (
                   <div className="us-patient-hint">
                     <div className="us-patient-hint-title">
-                      Какие темы можно запросить
+                      {t("patientHint.title")}
                     </div>
                     <div className="us-patient-hint-grid">
                       <div className="us-patient-hint-col us-patient-hint-ok">
                         <div className="us-patient-hint-label">
-                          Можно — общие темы
+                          {t("patientHint.okLabel")}
                         </div>
                         <ul>
-                          <li>Мигрень: причины и современные методы лечения</li>
-                          <li>Что такое диабет 2 типа</li>
-                          <li>Витамин D: дефицит, нормы, восполнение</li>
-                          <li>Кето-диета: за и против</li>
-                          <li>Антибиотикорезистентность</li>
-                          <li>Психосоматика хронической боли</li>
+                          <li>{t("patientHint.ok1")}</li>
+                          <li>{t("patientHint.ok2")}</li>
+                          <li>{t("patientHint.ok3")}</li>
+                          <li>{t("patientHint.ok4")}</li>
+                          <li>{t("patientHint.ok5")}</li>
+                          <li>{t("patientHint.ok6")}</li>
                         </ul>
                       </div>
                       <div className="us-patient-hint-col us-patient-hint-no">
                         <div className="us-patient-hint-label">
-                          Нельзя — личные вопросы
+                          {t("patientHint.noLabel")}
                         </div>
                         <ul>
-                          <li>«У меня болит голова»</li>
-                          <li>«Мой диагноз — гастрит»</li>
-                          <li>«У ребёнка температура»</li>
-                          <li>«Можно ли мне есть мёд при диабете»</li>
+                          <li>{t("patientHint.no1")}</li>
+                          <li>{t("patientHint.no2")}</li>
+                          <li>{t("patientHint.no3")}</li>
+                          <li>{t("patientHint.no4")}</li>
                         </ul>
                         <Link
                           to="/consultation"
                           className="us-patient-hint-cta"
                         >
-                          → Для личных вопросов: AI-консультация
+                          {t("patientHint.ctaLink")}
                         </Link>
                       </div>
                     </div>
                   </div>
                 )}
-                {/* ─────────────────────────────────────────────────── */}
 
                 <div className="us-form-row">
                   <div className="us-form-section" style={{ flex: 1 }}>
-                    <label className="us-form-label">Стиль</label>
+                    <label className="us-form-label">{t("form.style")}</label>
                     <select
                       value={style}
                       onChange={(e) => setStyle(e.target.value)}
                       style={{ ...inputStyle, cursor: "pointer" }}
                     >
-                      {STYLES.map((s) => (
-                        <option key={s.value} value={s.value}>
-                          {s.label}
+                      {STYLE_KEYS.map((s) => (
+                        <option key={s} value={s}>
+                          {t(`styles.${s}`)}
                         </option>
                       ))}
                     </select>
                   </div>
                   <div className="us-form-section" style={{ flex: 1 }}>
-                    <label className="us-form-label">Язык</label>
+                    <label className="us-form-label">
+                      {t("form.language")}
+                    </label>
                     <select
                       value={language}
                       onChange={(e) => setLanguage(e.target.value)}
@@ -388,7 +588,7 @@ export default function UserSynthesisPage() {
                     >
                       {LANGUAGES.map((l) => (
                         <option key={l.value} value={l.value}>
-                          {l.label}
+                          {t(`languages.${l.labelKey}`)}
                         </option>
                       ))}
                     </select>
@@ -405,10 +605,10 @@ export default function UserSynthesisPage() {
                     }}
                   >
                     <label className="us-form-label" style={{ margin: 0 }}>
-                      Источники (необязательно)
+                      {t("form.sources")}
                     </label>
                     <button onClick={addSource} className="us-add-btn">
-                      + Добавить
+                      {t("form.addSource")}
                     </button>
                   </div>
                   {sources.map((s, i) => (
@@ -419,23 +619,20 @@ export default function UserSynthesisPage() {
                       onChange={(f, v) => updateSource(s.id, f, v)}
                       onRemove={() => removeSource(s.id)}
                       canRemove={sources.length > 1}
+                      t={t}
                     />
                   ))}
-                  <div className="us-form-hint">
-                    Без источников AI использует актуальные данные из открытых
-                    баз
-                  </div>
+                  <div className="us-form-hint">{t("form.sourcesHint")}</div>
                 </div>
 
                 {error && <div className="us-error">{error}</div>}
 
-                {/* Если лимит исчерпан и гость — основное действие отправляет на регистрацию */}
                 {limitReached && !isLoggedIn ? (
                   <Link
                     to="/register"
                     className="us-generate-btn us-generate-btn-link"
                   >
-                    Зарегистрируйтесь чтобы продолжить →
+                    {t("buttons.registerToContinue")}
                   </Link>
                 ) : (
                   <button
@@ -447,18 +644,17 @@ export default function UserSynthesisPage() {
                   </button>
                 )}
 
-                {/* Дополнительный CTA для залогиненного пользователя с исчерпанным лимитом */}
                 {limitReached && isLoggedIn && (
                   <div className="us-login-hint">
-                    <Link to="/pricing">Обновить план</Link> чтобы получить
-                    больше генераций
+                    <Link to="/pricing">{t("buttons.upgradeHintBefore")}</Link>{" "}
+                    {t("buttons.upgradeHintAfter")}
                   </div>
                 )}
 
                 {!isLoggedIn && !limitReached && (
                   <div className="us-login-hint">
-                    <Link to="/login">Войдите</Link> чтобы сохранять статьи и
-                    получить больше генераций
+                    <Link to="/login">{t("buttons.loginHintBefore")}</Link>{" "}
+                    {t("buttons.loginHintAfter")}
                   </div>
                 )}
               </div>
@@ -466,66 +662,55 @@ export default function UserSynthesisPage() {
               {/* RIGHT — история и инфо */}
               <div className="us-info-col">
                 <div className="us-info-card">
-                  <div className="us-info-title">Что вы получите</div>
-                  {[
-                    "От 3000 слов глубокого анализа",
-                    "Синтез нескольких источников",
-                    "Академические ссылки в конце",
-                    "Блок «Что это значит на практике»",
-                    "5 стилей подачи на выбор",
-                    "5 языков",
-                  ].map((item) => (
-                    <div key={item} className="us-info-item">
+                  <div className="us-info-title">{t("info.whatYouGet")}</div>
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <div key={i} className="us-info-item">
                       <span className="us-info-check">✓</span>
-                      <span>{item}</span>
+                      <span>{t(`info.feature${i}`)}</span>
                     </div>
                   ))}
                 </div>
 
+                {/* ─── ОТДЕЛЬНАЯ КАРТОЧКА: Trial-баннер для гостя ─── */}
+                {showGuestTrialBanner && (
+                  <Link to="/register" className="us-guest-trial-card">
+                    <div className="us-guest-trial-title">
+                      {t("plans.guestTrialBanner.title")}
+                    </div>
+                    <div className="us-guest-trial-text">
+                      {t("plans.guestTrialBanner.text")}
+                    </div>
+                    <div className="us-guest-trial-cta">
+                      {t("plans.guestTrialBanner.cta")}
+                    </div>
+                  </Link>
+                )}
+
+                {/* ─── ПЛАНЫ — адаптивные секции ─── */}
                 <div className="us-info-card">
-                  <div className="us-info-title">Планы</div>
-                  {[
-                    { plan: "Гость", limit: "1 статья", price: "Бесплатно" },
-                    {
-                      plan: "Зарегистрирован",
-                      limit: "3 статьи/мес",
-                      price: "Бесплатно",
-                    },
-                    {
-                      plan: "Patient Pro",
-                      limit: "20 статей/мес",
-                      price: "Платно",
-                    },
-                    {
-                      plan: "Doctor Free",
-                      limit: "3 статьи/мес",
-                      price: "Бесплатно",
-                    },
-                    {
-                      plan: "Standard",
-                      limit: "5 статей/мес",
-                      price: "Платно",
-                    },
-                    {
-                      plan: "Doctor Pro",
-                      limit: "50 статей/мес",
-                      price: "Платно",
-                    },
-                  ].map((p) => (
-                    <div key={p.plan} className="us-plan-item">
-                      <span className="us-plan-name">{p.plan}</span>
-                      <span className="us-plan-limit">{p.limit}</span>
-                      <span className="us-plan-price">{p.price}</span>
+                  <div className="us-info-title">{t("plans.title")}</div>
+
+                  {sections.map((section, sectionIdx) => (
+                    <div key={sectionIdx} className="us-plan-section">
+                      {section.title && (
+                        <div className="us-plan-section-title">
+                          {section.title === "patients"
+                            ? t("plans.sectionPatients")
+                            : t("plans.sectionDoctors")}
+                        </div>
+                      )}
+                      {section.items.map(renderPlanItem)}
                     </div>
                   ))}
+
                   <Link to="/pricing" className="us-upgrade-link">
-                    Обновить план →
+                    {t("plans.upgradeCta")}
                   </Link>
                 </div>
 
                 {isLoggedIn && myArticles.length > 0 && (
                   <div className="us-info-card">
-                    <div className="us-info-title">Мои статьи</div>
+                    <div className="us-info-title">{t("info.myArticles")}</div>
                     {myArticles.map((a) => (
                       <Link
                         key={a._id}
@@ -534,8 +719,12 @@ export default function UserSynthesisPage() {
                       >
                         <div className="us-my-title">{a.title}</div>
                         <div className="us-my-meta">
-                          {a.wordCount?.toLocaleString()} слов ·{" "}
-                          {new Date(a.createdAt).toLocaleDateString("ru-RU")}
+                          {t("info.wordsAndDate", {
+                            words: a.wordCount?.toLocaleString() || 0,
+                            date: new Date(a.createdAt).toLocaleDateString(
+                              dateLocale,
+                            ),
+                          })}
                         </div>
                       </Link>
                     ))}
@@ -623,30 +812,18 @@ const CSS = `
   letter-spacing: .12em; text-transform: uppercase;
   color: var(--muted); margin-bottom: 14px;
 }
-.us-patient-hint-grid{
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 22px;
-}
-.us-patient-hint-col ul{
-  margin: 0; padding-inline-start: 18px;
-  font-size: 13px; line-height: 1.7; color: var(--ink2);
-}
-.us-patient-hint-col ul li{ margin-bottom: 2px; }
-.us-patient-hint-label{
-  font-family: var(--serif); font-size: 14px; font-weight: 700;
-  margin-bottom: 8px;
-}
-.us-patient-hint-ok .us-patient-hint-label{ color: #1a6b3c; }
-.us-patient-hint-no .us-patient-hint-label{ color: #b83030; }
-.us-patient-hint-cta{
-  display: inline-block; margin-top: 12px;
-  font-family: var(--mono); font-size: 11px;
-  color: #b83030; text-decoration: none;
-  border-bottom: 1px dashed #b83030;
-  padding-bottom: 1px;
-}
-.us-patient-hint-cta:hover{ border-bottom-style: solid; }
-/* ───────────────────────────── */
+.us-patient-hint-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.us-patient-hint-col ul{margin:0;padding-inline-start:18px;
+  font-size:13px;line-height:1.7;color:var(--ink2)}
+.us-patient-hint-col ul li{margin-bottom:2px}
+.us-patient-hint-label{font-family:var(--serif);font-size:14px;font-weight:700;
+  margin-bottom:8px}
+.us-patient-hint-ok .us-patient-hint-label{color:#1a6b3c}
+.us-patient-hint-no .us-patient-hint-label{color:#b83030}
+.us-patient-hint-cta{display:inline-block;margin-top:12px;
+  font-family:var(--mono);font-size:11px;color:#b83030;
+  text-decoration:none;border-bottom:1px dashed #b83030;padding-bottom:1px}
+.us-patient-hint-cta:hover{border-bottom-style:solid}
 
 .us-generate-btn{
   width:100%;padding:14px;font-family:var(--mono);font-size:12px;
@@ -667,13 +844,109 @@ const CSS = `
   color:var(--ink);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
 .us-info-item{display:flex;gap:10px;margin-bottom:8px;font-size:13px;color:var(--ink2)}
 .us-info-check{color:#b83030;font-weight:700;flex-shrink:0}
-.us-plan-item{display:flex;align-items:center;gap:8px;padding:7px 0;
-  border-bottom:1px solid var(--rule);font-size:12px}
-.us-plan-item:last-of-type{border-bottom:none}
-.us-plan-name{font-weight:500;color:var(--ink);flex:1}
+
+/* ─── ОТДЕЛЬНАЯ КАРТОЧКА: Guest Trial Banner ─── */
+.us-guest-trial-card{
+  display:block;text-decoration:none;
+  background:linear-gradient(135deg, rgba(45,212,191,.18) 0%, rgba(13,110,253,.08) 100%);
+  border:2px solid #2dd4bf;
+  border-radius:6px;
+  padding:18px 20px;
+  margin-bottom:16px;
+  transition:transform .15s, box-shadow .15s;
+}
+.us-guest-trial-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(45,212,191,.2);
+}
+.us-guest-trial-title{
+  font-family:var(--serif);
+  font-size:16px;
+  font-weight:700;
+  color:#0d9488;
+  line-height:1.3;
+  margin-bottom:8px;
+}
+.us-guest-trial-text{
+  font-family:var(--sans);
+  font-size:12px;
+  color:var(--ink2);
+  line-height:1.5;
+  margin-bottom:12px;
+}
+.us-guest-trial-cta{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:#0d9488;
+  font-weight:700;
+}
+
+/* ─── Секции и тарифы ─── */
+.us-plan-section{margin-bottom:8px}
+.us-plan-section:last-of-type{margin-bottom:0}
+.us-plan-section-title{
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:600;
+  padding:10px 0 8px;
+  border-bottom:1px dashed var(--rule);
+  margin-bottom:4px;
+}
+.us-plan-section:first-of-type .us-plan-section-title{padding-top:0}
+
+.us-plan-item{
+  display:flex;align-items:center;gap:8px;padding:9px 0;
+  border-bottom:1px solid var(--rule);font-size:12px;
+}
+.us-plan-section .us-plan-item:last-child{border-bottom:none}
+.us-plan-item-current{
+  background:rgba(45,212,191,.08);
+  margin:0 -20px;padding-inline:20px;
+  border-bottom:1px solid rgba(45,212,191,.2);
+}
+.us-plan-name{
+  font-weight:500;color:var(--ink);flex:1;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.us-plan-current-badge{
+  font-family:var(--mono);font-size:9px;letter-spacing:.08em;
+  text-transform:uppercase;background:#1a6b3c;color:white;
+  padding:2px 6px;border-radius:2px;font-weight:600;
+}
 .us-plan-limit{color:var(--muted);font-family:var(--mono);font-size:10px}
-.us-plan-price{color:var(--muted);font-family:var(--mono);font-size:10px;margin-left:auto}
-.us-upgrade-link{display:block;text-align:center;margin-top:12px;
+.us-plan-price{color:var(--muted);font-family:var(--mono);font-size:10px;
+  margin-inline-start:auto;font-weight:500}
+
+/* ─── Trial banner внутри карточки планов (для залогиненного врача) ─── */
+.us-trial-banner{
+  background:linear-gradient(135deg, rgba(45,212,191,.12) 0%, rgba(13,110,253,.06) 100%);
+  border:1px solid rgba(45,212,191,.3);
+  border-radius:4px;
+  padding:14px 16px;
+  margin-bottom:14px;
+}
+.us-trial-banner-title{
+  font-family:var(--serif);font-size:14px;font-weight:700;
+  color:#0d9488;line-height:1.3;margin-bottom:6px;
+}
+.us-trial-banner-text{
+  font-family:var(--sans);font-size:12px;
+  color:var(--ink2);line-height:1.5;margin-bottom:10px;
+}
+.us-trial-banner-cta{
+  display:inline-block;font-family:var(--mono);font-size:10px;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:#0d9488;text-decoration:none;font-weight:600;
+}
+.us-trial-banner-cta:hover{text-decoration:underline}
+
+.us-upgrade-link{display:block;text-align:center;margin-top:14px;
+  padding-top:12px;border-top:1px solid var(--rule);
   font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
   color:#b83030;text-decoration:none}
 .us-my-article{display:block;padding:10px 0;border-bottom:1px solid var(--rule);

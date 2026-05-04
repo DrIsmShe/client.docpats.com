@@ -1,0 +1,7 @@
+{
+  "title": "Free trial: {{days}} days left",
+  "compact": "Trial: {{days}} d.",
+  "text": "All Doctor Super features available. Choose a plan before trial ends.",
+  "urgentText": "Ending soon! Choose a plan to keep your features.",
+  "cta": "Choose a plan"
+}

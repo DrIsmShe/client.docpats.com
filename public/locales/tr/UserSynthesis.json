@@ -1,0 +1,167 @@
+{
+  "topbar": {
+    "brand": "DocPats · AI Makale Üreticisi",
+    "createArticle": "Makale oluştur",
+    "yourArticle": "DocPats · Makaleniz",
+    "wordCount": "{{count}} kelime"
+  },
+  "nav": {
+    "back": "Geri",
+    "newArticle": "Yeni makale",
+    "tag": "AI Synthesis",
+    "copy": "Kopyala",
+    "print": "Yazdır"
+  },
+  "header": {
+    "label": "DocPats · Kişisel üretici",
+    "headline": "Kendi bilimsel makalenizi oluşturun",
+    "deck": "Konu ve kaynakları girin — AI 3000+ kelimelik akademik referanslı derin analitik makale oluşturur"
+  },
+  "limit": {
+    "plan": "Plan",
+    "used": "Kullanılan",
+    "perMonth": "bu ay",
+    "guestLimitReached": "Misafir limiti doldu",
+    "guestRegisterCta": "Kayıt olun",
+    "guestBenefit": "— sonsuza dek ücretsiz erişim",
+    "userLimitReached": "Limit doldu",
+    "upgradePlanCta": "Planı yükselt"
+  },
+  "form": {
+    "topic": "Makale konusu",
+    "topicPlaceholder": "Örnek: Tip 2 diyabet gelişiminde mikrobiyomun rolü",
+    "topicHint": "Konu ne kadar spesifikse — makale o kadar derin olur",
+    "style": "Stil",
+    "language": "Dil",
+    "sources": "Kaynaklar (isteğe bağlı)",
+    "addSource": "+ Ekle",
+    "sourceN": "Kaynak {{n}}",
+    "sourceTitle": "Kaynak başlığı *",
+    "sourceUrl": "URL (isteğe bağlı)",
+    "sourceExcerpt": "Özet / alıntı (kaliteyi artırır)",
+    "sourcesHint": "Kaynak olmadan AI açık veritabanlarındaki güncel verileri kullanır",
+    "topicRequired": "Lütfen makale konusunu girin",
+    "errorGeneric": "Oluşturma başarısız. Lütfen tekrar deneyin.",
+    "openAiConsultation": "→ AI konsültasyonu aç"
+  },
+  "styles": {
+    "analytical": "Analitik",
+    "clinical": "Klinik",
+    "popular": "Popüler bilim",
+    "review": "Literatür incelemesi",
+    "education": "Eğitici"
+  },
+  "languages": {
+    "ru": "Русский",
+    "en": "English",
+    "az": "Azərbaycan",
+    "ar": "العربية",
+    "tr": "Türkçe"
+  },
+  "patientHint": {
+    "title": "Hangi konuları sorabilirsiniz",
+    "okLabel": "Olur — genel konular",
+    "noLabel": "Olmaz — kişisel sorular",
+    "ok1": "Migren: nedenler ve modern tedavi yöntemleri",
+    "ok2": "Tip 2 diyabet nedir",
+    "ok3": "D Vitamini: eksiklik, normaller, takviye",
+    "ok4": "Keto diyeti: artıları ve eksileri",
+    "ok5": "Antibiyotik direnci",
+    "ok6": "Kronik ağrının psikosomatiği",
+    "no1": "\"Başım ağrıyor\"",
+    "no2": "\"Tanım gastrit\"",
+    "no3": "\"Çocuğumun ateşi var\"",
+    "no4": "\"Diyabetle bal yiyebilir miyim\"",
+    "ctaLink": "→ Kişisel sorular için: AI konsültasyonu"
+  },
+  "buttons": {
+    "generating": "⏳ Makale oluşturuluyor... (~60 sn)",
+    "registerToContinue": "Devam etmek için kayıt olun →",
+    "limitMonthly": "Aylık limit doldu",
+    "create": "Makale oluştur →",
+    "loginHintBefore": "Giriş yapın",
+    "loginHintAfter": "makaleleri kaydetmek ve daha fazla üretim almak için",
+    "upgradeHintBefore": "Planı yükseltin",
+    "upgradeHintAfter": "daha fazla üretim almak için"
+  },
+  "info": {
+    "whatYouGet": "Ne alacaksınız",
+    "feature1": "3000+ kelime derin analiz",
+    "feature2": "Birden fazla kaynak sentezi",
+    "feature3": "Sonda akademik referanslar",
+    "feature4": "\"Pratikte ne anlama geliyor\" bloğu",
+    "feature5": "Seçilebilir 5 sunum stili",
+    "feature6": "5 dil",
+    "myArticles": "Makalelerim",
+    "wordsAndDate": "{{words}} kelime · {{date}}"
+  },
+  "plans": {
+    "title": "Planlar",
+    "perMonth": "/ay",
+    "monthlyShort": "{{count}}/ay",
+    "freeForever": "Ücretsiz",
+    "trialPrice": "Ücretsiz",
+    "trialDuration": "6 ay",
+    "currentPlan": "Mevcut",
+    "upgradeCta": "Tüm planlar →",
+    "trialBanner": {
+      "title": "🎁 6 ay boyunca ücretsiz Doctor Super",
+      "text": "Limit — ayda 10 makale. Deneme süresinden sonra otomatik olarak Doctor Basic'e geçer.",
+      "cta": "Fiyatlandırmayı görüntüle →"
+    },
+    "guest": {
+      "name": "Misafir",
+      "limit": "1 makale"
+    },
+    "patient_free": {
+      "name": "Patient Free",
+      "limit": "Ayda 1 makale"
+    },
+    "patient_std": {
+      "name": "Patient Standard",
+      "limit": "Ayda 3 makale"
+    },
+    "patient_pro": {
+      "name": "Patient Pro",
+      "limit": "Ayda 10 makale"
+    },
+    "doctor_trial": {
+      "name": "Doctor Trial",
+      "limit": "Ayda 10 makale"
+    },
+    "doctor_basic": {
+      "name": "Doctor Basic",
+      "limit": "Ayda 3 makale"
+    },
+    "doctor_super": {
+      "name": "Doctor Super",
+      "limit": "Ayda 10 makale"
+    },
+    "doctor_pro": {
+      "name": "Doctor Pro",
+      "limit": "Ayda 30 makale"
+    },
+    "sectionPatients": "Hastalar için",
+    "sectionDoctors": "Doktorlar için",
+    "guestTrialBanner": {
+      "title": "🎁 Doktorlar — 6 ay ücretsiz Doctor Super",
+      "text": "Doktor olarak kayıt olduğunuzda — 6 ay boyunca platforma tam erişim ücretsiz.",
+      "cta": "Doktor olarak kayıt ol →"
+    }
+  },
+  "result": {
+    "abstract": "Özet",
+    "tags": "Etiketler:",
+    "keywords": "Anahtar kelimeler:",
+    "metaDescription": "Meta Description (SEO)",
+    "metaCharsOf": "{{current}} / 160 karakter",
+    "createdOn": "Platformda oluşturuldu",
+    "editorName": "Dr. İsmail İsmailov",
+    "editorRole": "DocPats Genel Yayın Yönetmeni · KBB Uzmanı",
+    "editorialNote": "Bu materyal hakemli bilimsel kaynaklara dayalı DocPats AI sistemi kullanılarak oluşturuldu. Platformun editöryal incelemesinden geçti.",
+    "disclaimer": "⚕ Bu materyal bilgilendirme amaçlıdır ve uzman konsültasyonunun yerine geçmez.",
+    "remainingLeft": "Bu ay kalan üretim:",
+    "upgradePlan": "Planı yükselt",
+    "copiedAlert": "Panoya kopyalandı"
+  }
+}

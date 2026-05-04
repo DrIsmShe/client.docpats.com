@@ -5,6 +5,7 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { HiOutlineSparkles } from "react-icons/hi2";
+import TrialBanner from "../../TrialBanner";
 import {
   LuSquareUserRound,
   LuNewspaper,
@@ -410,7 +411,7 @@ export default function Aside() {
           </div>
           <span className="dp2-chevron">›</span>
         </Link>
-
+        <TrialBanner />
         <div className="dp2-scroll">
           <div className="dp2-group">{t("profile") || "Личное"}</div>
           <Link

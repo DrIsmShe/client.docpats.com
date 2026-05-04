@@ -1,0 +1,167 @@
+{
+  "topbar": {
+    "brand": "DocPats · مولّد المقالات بالذكاء الاصطناعي",
+    "createArticle": "إنشاء مقالة",
+    "yourArticle": "DocPats · مقالتك",
+    "wordCount": "{{count}} كلمة"
+  },
+  "nav": {
+    "back": "رجوع",
+    "newArticle": "مقالة جديدة",
+    "tag": "AI Synthesis",
+    "copy": "نسخ",
+    "print": "طباعة"
+  },
+  "header": {
+    "label": "DocPats · المولّد الشخصي",
+    "headline": "أنشئ مقالتك العلمية",
+    "deck": "أدخل الموضوع والمصادر — سينشئ الذكاء الاصطناعي مقالة تحليلية معمّقة بـ 3000+ كلمة مع مراجع أكاديمية"
+  },
+  "limit": {
+    "plan": "الخطة",
+    "used": "المستخدم",
+    "perMonth": "هذا الشهر",
+    "guestLimitReached": "تم استنفاد حد الضيف",
+    "guestRegisterCta": "سجّل",
+    "guestBenefit": "— وصول مجاني للأبد",
+    "userLimitReached": "تم استنفاد الحد",
+    "upgradePlanCta": "ترقية الخطة"
+  },
+  "form": {
+    "topic": "موضوع المقالة",
+    "topicPlaceholder": "مثال: دور الميكروبيوم في تطوّر داء السكري من النوع 2",
+    "topicHint": "كلما كان الموضوع أكثر تحديداً — كانت المقالة أعمق",
+    "style": "الأسلوب",
+    "language": "اللغة",
+    "sources": "المصادر (اختياري)",
+    "addSource": "+ إضافة",
+    "sourceN": "المصدر {{n}}",
+    "sourceTitle": "عنوان المصدر *",
+    "sourceUrl": "URL (اختياري)",
+    "sourceExcerpt": "ملخّص / مقتطف (يحسّن الجودة)",
+    "sourcesHint": "بدون مصادر، يستخدم الذكاء الاصطناعي بيانات حديثة من قواعد البيانات المفتوحة",
+    "topicRequired": "يرجى إدخال موضوع المقالة",
+    "errorGeneric": "فشل الإنشاء. يرجى المحاولة مرة أخرى.",
+    "openAiConsultation": "→ افتح الاستشارة بالذكاء الاصطناعي"
+  },
+  "styles": {
+    "analytical": "تحليلي",
+    "clinical": "سريري",
+    "popular": "علمي شعبي",
+    "review": "مراجعة الأدبيات",
+    "education": "تعليمي"
+  },
+  "languages": {
+    "ru": "Русский",
+    "en": "English",
+    "az": "Azərbaycan",
+    "ar": "العربية",
+    "tr": "Türkçe"
+  },
+  "patientHint": {
+    "title": "ما المواضيع التي يمكن طلبها",
+    "okLabel": "مسموح — مواضيع عامة",
+    "noLabel": "غير مسموح — أسئلة شخصية",
+    "ok1": "الصداع النصفي: الأسباب وطرق العلاج الحديثة",
+    "ok2": "ما هو داء السكري من النوع 2",
+    "ok3": "فيتامين D: النقص، المعايير، التعويض",
+    "ok4": "حمية الكيتو: المؤيد والمعارض",
+    "ok5": "مقاومة المضادات الحيوية",
+    "ok6": "السيكوسوماتية للألم المزمن",
+    "no1": "«رأسي يؤلمني»",
+    "no2": "«تشخيصي هو التهاب المعدة»",
+    "no3": "«طفلي مصاب بالحمى»",
+    "no4": "«هل يمكنني تناول العسل مع داء السكري»",
+    "ctaLink": "→ للأسئلة الشخصية: استشارة الذكاء الاصطناعي"
+  },
+  "buttons": {
+    "generating": "⏳ جاري إنشاء المقالة... (~60 ثانية)",
+    "registerToContinue": "سجّل للمتابعة →",
+    "limitMonthly": "تم استنفاد الحد الشهري",
+    "create": "إنشاء المقالة →",
+    "loginHintBefore": "سجّل الدخول",
+    "loginHintAfter": "لحفظ المقالات والحصول على إنشاءات أكثر",
+    "upgradeHintBefore": "ترقية الخطة",
+    "upgradeHintAfter": "للحصول على إنشاءات أكثر"
+  },
+  "info": {
+    "whatYouGet": "ما ستحصل عليه",
+    "feature1": "3000+ كلمة من التحليل المعمّق",
+    "feature2": "تركيب من عدة مصادر",
+    "feature3": "مراجع أكاديمية في النهاية",
+    "feature4": "كتلة «ماذا يعني هذا في الممارسة»",
+    "feature5": "5 أساليب عرض للاختيار",
+    "feature6": "5 لغات",
+    "myArticles": "مقالاتي",
+    "wordsAndDate": "{{words}} كلمة · {{date}}"
+  },
+  "plans": {
+    "title": "الخطط",
+    "perMonth": "/شهر",
+    "monthlyShort": "{{count}}/شهر",
+    "freeForever": "مجاني",
+    "trialPrice": "مجاني",
+    "trialDuration": "6 أشهر",
+    "currentPlan": "الحالي",
+    "upgradeCta": "كل الخطط →",
+    "trialBanner": {
+      "title": "🎁 لديك Doctor Super مجاناً لـ 6 أشهر",
+      "text": "الحد — 10 مقالات شهرياً. بعد انتهاء الفترة التجريبية يتم التحويل تلقائياً إلى Doctor Basic.",
+      "cta": "عرض الأسعار →"
+    },
+    "guest": {
+      "name": "ضيف",
+      "limit": "مقالة واحدة"
+    },
+    "patient_free": {
+      "name": "Patient Free",
+      "limit": "مقالة واحدة/شهر"
+    },
+    "patient_std": {
+      "name": "Patient Standard",
+      "limit": "3 مقالات/شهر"
+    },
+    "patient_pro": {
+      "name": "Patient Pro",
+      "limit": "10 مقالات/شهر"
+    },
+    "doctor_trial": {
+      "name": "Doctor Trial",
+      "limit": "10 مقالات/شهر"
+    },
+    "doctor_basic": {
+      "name": "Doctor Basic",
+      "limit": "3 مقالات/شهر"
+    },
+    "doctor_super": {
+      "name": "Doctor Super",
+      "limit": "10 مقالات/شهر"
+    },
+    "doctor_pro": {
+      "name": "Doctor Pro",
+      "limit": "30 مقالة/شهر"
+    },
+    "sectionPatients": "للمرضى",
+    "sectionDoctors": "للأطباء",
+    "guestTrialBanner": {
+      "title": "🎁 للأطباء — 6 أشهر Doctor Super مجاناً",
+      "text": "عند التسجيل كطبيب — وصول كامل إلى المنصة لمدة 6 أشهر مجاناً.",
+      "cta": "سجّل كطبيب →"
+    }
+  },
+  "result": {
+    "abstract": "الملخص",
+    "tags": "الوسوم:",
+    "keywords": "الكلمات المفتاحية:",
+    "metaDescription": "Meta Description (SEO)",
+    "metaCharsOf": "{{current}} / 160 حرف",
+    "createdOn": "تم الإنشاء على المنصة",
+    "editorName": "د. إسماعيل إسماعيلوف",
+    "editorRole": "رئيس تحرير DocPats · أخصائي أنف وأذن وحنجرة",
+    "editorialNote": "تم إنشاء هذه المادة باستخدام نظام DocPats AI استناداً إلى مصادر علمية محكّمة. اجتازت المراجعة التحريرية للمنصة.",
+    "disclaimer": "⚕ هذه المادة معلوماتية ولا تحلّ محل استشارة المختص.",
+    "remainingLeft": "الإنشاءات المتبقية هذا الشهر:",
+    "upgradePlan": "ترقية الخطة",
+    "copiedAlert": "تم النسخ إلى الحافظة"
+  }
+}
