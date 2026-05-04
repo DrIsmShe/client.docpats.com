@@ -1,0 +1,111 @@
+{
+  "doctor_home": {
+    "greeting": {
+      "night": "Good night",
+      "morning": "Good morning",
+      "day": "Good afternoon",
+      "evening": "Good evening",
+      "dr": "Dr."
+    },
+    "time": {
+      "now": "just now",
+      "min": "min ago",
+      "hour": "h ago",
+      "day": "d ago"
+    },
+    "errors": {
+      "load_articles": "Failed to load articles"
+    },
+    "alerts": {
+      "unknown_patient": "Patient",
+      "no_reason": "Alert signal",
+      "title": "Patient alerts",
+      "subtitle": "Patients requiring attention",
+      "view_all": "View all alerts",
+      "empty": "No active alerts",
+      "empty_sub": "All patients under control"
+    },
+    "title": "Home",
+    "hipaa_compliant": "HIPAA Compliant",
+    "online": "Online",
+    "doctors_online": "doctors on platform",
+    "insights": {
+      "label": "Needs your attention today",
+      "unread": "unread messages",
+      "alerts": "patients with alerts",
+      "appointments": "appointments scheduled"
+    },
+    "stats": {
+      "active": "active",
+      "total_doctors": "Total doctors",
+      "today_short": "today",
+      "total_articles": "Total articles",
+      "today_articles": "Articles today",
+      "growth": "growth",
+      "total_patients": "Total patients"
+    },
+    "ai": {
+      "title": "AI Practice Analytics",
+      "subtitle": "Clinical intelligence for your patients",
+      "high_risk": "High-risk patients",
+      "active_alerts": "Active alerts",
+      "open": "Open dashboard"
+    },
+    "sections": {
+      "clinic_sub": "Daily patient work",
+      "ai_sub": "Intelligent tools",
+      "publications": "Publications",
+      "publications_sub": "Articles and research",
+      "total": "total",
+      "colleagues_sub": "Doctor community",
+      "doctors": "doctors",
+      "feed": "Today's feed",
+      "feed_sub": "Latest platform content"
+    },
+    "nav": {
+      "chat_sub": "Messages with patients",
+      "appointments_today": "Today: {{count}}",
+      "appointments_sub": "Patient appointments",
+      "clinic_sub": "Clinic management",
+      "profile_sub": "My office",
+      "ai_synthesis_sub": "Patient data synthesis",
+      "feed_sub": "Medical publications",
+      "consult_sub": "Diagnostic assistant",
+      "ai_analytics": "AI Analytics",
+      "ai_analytics_sub": "Clinical summaries",
+      "create_sub": "Publish new content",
+      "my_articles_sub": "My publications",
+      "create_sci_sub": "Create research paper",
+      "my_sci_sub": "Scientific publications",
+      "colleagues_sub": "All platform doctors",
+      "friends_sub": "Friends and colleagues"
+    },
+    "news": {
+      "title": "News",
+      "today": "Today",
+      "view_all": "View all",
+      "no_articles": "No articles yet",
+      "item": {
+        "no_title": "Untitled",
+        "no_preview": "No description",
+        "unknown_author": "Unknown author"
+      },
+      "scientific_articles": "Scientific articles"
+    }
+  },
+  "my_clinic": "My clinic",
+  "chat": "Chat",
+  "appointments_dashboard": "Schedule",
+  "profile": "Profile",
+  "digestAi": "AI Digest",
+  "aiSynthesis": "AI Synthesis",
+  "medical_feed": "News feed",
+  "ai_medical_consultation": "AI Consultation",
+  "create_article": "New article",
+  "my_articles": "My articles",
+  "create_scientific_article": "Research paper",
+  "my_scientific_articles": "My research",
+  "colleagues": "All colleagues",
+  "my_friends_colleagues": "My contacts",
+  "close": "Close"
+}

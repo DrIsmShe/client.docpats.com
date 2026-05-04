@@ -1,0 +1,111 @@
+{
+  "doctor_home": {
+    "greeting": {
+      "night": "تصبح على خير",
+      "morning": "صباح الخير",
+      "day": "نهارك سعيد",
+      "evening": "مساء الخير",
+      "dr": "د."
+    },
+    "time": {
+      "now": "الآن",
+      "min": "دقيقة مضت",
+      "hour": "ساعة مضت",
+      "day": "يوم مضى"
+    },
+    "errors": {
+      "load_articles": "تعذر تحميل المقالات"
+    },
+    "alerts": {
+      "unknown_patient": "المريض",
+      "no_reason": "إشارة تنبيه",
+      "title": "تنبيهات المرضى",
+      "subtitle": "المرضى الذين يحتاجون إلى اهتمام",
+      "view_all": "عرض جميع التنبيهات",
+      "empty": "لا توجد تنبيهات نشطة",
+      "empty_sub": "جميع المرضى تحت السيطرة"
+    },
+    "title": "الرئيسية",
+    "hipaa_compliant": "متوافق مع HIPAA",
+    "online": "متصل",
+    "doctors_online": "طبيب على المنصة",
+    "insights": {
+      "label": "يتطلب اهتمامك اليوم",
+      "unread": "رسائل غير مقروءة",
+      "alerts": "مرضى لديهم تنبيهات",
+      "appointments": "مواعيد مجدولة"
+    },
+    "stats": {
+      "active": "نشط",
+      "total_doctors": "إجمالي الأطباء",
+      "today_short": "اليوم",
+      "total_articles": "إجمالي المقالات",
+      "today_articles": "مقالات اليوم",
+      "growth": "نمو",
+      "total_patients": "إجمالي المرضى"
+    },
+    "ai": {
+      "title": "تحليلات الممارسة بالذكاء الاصطناعي",
+      "subtitle": "ذكاء سريري لمرضاك",
+      "high_risk": "مرضى عالي الخطورة",
+      "active_alerts": "التنبيهات النشطة",
+      "open": "فتح لوحة التحكم"
+    },
+    "sections": {
+      "clinic_sub": "العمل اليومي مع المرضى",
+      "ai_sub": "أدوات ذكية",
+      "publications": "المنشورات",
+      "publications_sub": "المقالات والأبحاث",
+      "total": "المجموع",
+      "colleagues_sub": "مجتمع الأطباء",
+      "doctors": "طبيب",
+      "feed": "تغذية اليوم",
+      "feed_sub": "أحدث محتوى المنصة"
+    },
+    "nav": {
+      "chat_sub": "رسائل مع المرضى",
+      "appointments_today": "اليوم: {{count}}",
+      "appointments_sub": "مواعيد المرضى",
+      "clinic_sub": "إدارة العيادة",
+      "profile_sub": "مكتبي",
+      "ai_synthesis_sub": "تركيب بيانات المريض",
+      "feed_sub": "المنشورات الطبية",
+      "consult_sub": "مساعد التشخيص",
+      "ai_analytics": "تحليلات الذكاء الاصطناعي",
+      "ai_analytics_sub": "ملخصات سريرية",
+      "create_sub": "نشر محتوى جديد",
+      "my_articles_sub": "منشوراتي",
+      "create_sci_sub": "إنشاء بحث علمي",
+      "my_sci_sub": "المنشورات العلمية",
+      "colleagues_sub": "جميع أطباء المنصة",
+      "friends_sub": "الأصدقاء والزملاء"
+    },
+    "news": {
+      "title": "الأخبار",
+      "today": "اليوم",
+      "view_all": "عرض الكل",
+      "no_articles": "لا توجد مقالات بعد",
+      "item": {
+        "no_title": "بدون عنوان",
+        "no_preview": "لا يوجد وصف",
+        "unknown_author": "المؤلف غير معروف"
+      },
+      "scientific_articles": "المقالات العلمية"
+    }
+  },
+  "my_clinic": "عيادتي",
+  "chat": "الدردشة",
+  "appointments_dashboard": "الجدول",
+  "profile": "الملف الشخصي",
+  "digestAi": "موجز الذكاء الاصطناعي",
+  "aiSynthesis": "تركيب الذكاء الاصطناعي",
+  "medical_feed": "تغذية الأخبار",
+  "ai_medical_consultation": "استشارة بالذكاء الاصطناعي",
+  "create_article": "مقال جديد",
+  "my_articles": "مقالاتي",
+  "create_scientific_article": "بحث علمي",
+  "my_scientific_articles": "أبحاثي",
+  "colleagues": "جميع الزملاء",
+  "my_friends_colleagues": "جهات اتصالي",
+  "close": "إغلاق"
+}

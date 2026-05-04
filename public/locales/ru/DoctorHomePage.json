@@ -1,0 +1,111 @@
+{
+  "doctor_home": {
+    "greeting": {
+      "night": "Доброй ночи",
+      "morning": "Доброе утро",
+      "day": "Добрый день",
+      "evening": "Добрый вечер",
+      "dr": "д-р"
+    },
+    "time": {
+      "now": "только что",
+      "min": "мин назад",
+      "hour": "ч назад",
+      "day": "дн назад"
+    },
+    "errors": {
+      "load_articles": "Не удалось загрузить статьи"
+    },
+    "alerts": {
+      "unknown_patient": "Пациент",
+      "no_reason": "Тревожный сигнал",
+      "title": "Тревожные сигналы",
+      "subtitle": "Пациенты, требующие внимания",
+      "view_all": "Все сигналы",
+      "empty": "Нет активных тревожных сигналов",
+      "empty_sub": "Все пациенты под контролем"
+    },
+    "title": "Главная",
+    "hipaa_compliant": "HIPAA Compliant",
+    "online": "Онлайн",
+    "doctors_online": "врачей на платформе",
+    "insights": {
+      "label": "Сегодня требует внимания",
+      "unread": "непрочитанных сообщений",
+      "alerts": "пациентов с алертами",
+      "appointments": "приёмов запланировано"
+    },
+    "stats": {
+      "active": "активно",
+      "total_doctors": "Всего врачей",
+      "today_short": "сегодня",
+      "total_articles": "Всего статей",
+      "today_articles": "Статей сегодня",
+      "growth": "рост",
+      "total_patients": "Всего пациентов"
+    },
+    "ai": {
+      "title": "AI Practice Analytics",
+      "subtitle": "Клинический интеллект для ваших пациентов",
+      "high_risk": "Пациенты высокого риска",
+      "active_alerts": "Активные алерты",
+      "open": "Открыть дашборд"
+    },
+    "sections": {
+      "clinic_sub": "Ежедневная работа с пациентами",
+      "ai_sub": "Интеллектуальные инструменты",
+      "publications": "Публикации",
+      "publications_sub": "Статьи и научные работы",
+      "total": "всего",
+      "colleagues_sub": "Сообщество врачей",
+      "doctors": "врачей",
+      "feed": "Лента дня",
+      "feed_sub": "Свежие материалы платформы"
+    },
+    "nav": {
+      "chat_sub": "Сообщения с пациентами",
+      "appointments_today": "Сегодня: {{count}}",
+      "appointments_sub": "Записи на приём",
+      "clinic_sub": "Управление клиникой",
+      "profile_sub": "Мой кабинет",
+      "ai_synthesis_sub": "Синтез данных пациента",
+      "feed_sub": "Медицинские публикации",
+      "consult_sub": "Диагностический помощник",
+      "ai_analytics": "AI-аналитика",
+      "ai_analytics_sub": "Клинические сводки",
+      "create_sub": "Опубликовать материал",
+      "my_articles_sub": "Мои публикации",
+      "create_sci_sub": "Создать научную статью",
+      "my_sci_sub": "Научные публикации",
+      "colleagues_sub": "Все врачи платформы",
+      "friends_sub": "Друзья и коллеги"
+    },
+    "news": {
+      "title": "Новости",
+      "today": "Сегодня",
+      "view_all": "Все",
+      "no_articles": "Пока нет статей",
+      "item": {
+        "no_title": "Без названия",
+        "no_preview": "Нет описания",
+        "unknown_author": "Автор неизвестен"
+      },
+      "scientific_articles": "Научные статьи"
+    }
+  },
+  "my_clinic": "Поликлиника",
+  "chat": "Чат",
+  "appointments_dashboard": "Расписание",
+  "profile": "Профиль",
+  "digestAi": "AI Дайджест",
+  "aiSynthesis": "AI Синтез",
+  "medical_feed": "Лента новостей",
+  "ai_medical_consultation": "AI Консультация",
+  "create_article": "Новая статья",
+  "my_articles": "Мои статьи",
+  "create_scientific_article": "Научная работа",
+  "my_scientific_articles": "Мои научные",
+  "colleagues": "Все коллеги",
+  "my_friends_colleagues": "Мои контакты",
+  "close": "Закрыть"
+}

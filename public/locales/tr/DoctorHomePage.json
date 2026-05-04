@@ -1,0 +1,111 @@
+{
+  "doctor_home": {
+    "greeting": {
+      "night": "İyi geceler",
+      "morning": "Günaydın",
+      "day": "İyi günler",
+      "evening": "İyi akşamlar",
+      "dr": "Dr."
+    },
+    "time": {
+      "now": "az önce",
+      "min": "dk önce",
+      "hour": "sa önce",
+      "day": "gün önce"
+    },
+    "errors": {
+      "load_articles": "Makaleler yüklenemedi"
+    },
+    "alerts": {
+      "unknown_patient": "Hasta",
+      "no_reason": "Uyarı sinyali",
+      "title": "Hasta uyarıları",
+      "subtitle": "Dikkat gerektiren hastalar",
+      "view_all": "Tüm uyarılar",
+      "empty": "Aktif uyarı yok",
+      "empty_sub": "Tüm hastalar kontrol altında"
+    },
+    "title": "Ana sayfa",
+    "hipaa_compliant": "HIPAA Uyumlu",
+    "online": "Çevrimiçi",
+    "doctors_online": "platformdaki doktorlar",
+    "insights": {
+      "label": "Bugün dikkatinizi gerektiriyor",
+      "unread": "okunmamış mesaj",
+      "alerts": "uyarılı hasta",
+      "appointments": "randevu planlandı"
+    },
+    "stats": {
+      "active": "aktif",
+      "total_doctors": "Toplam doktor",
+      "today_short": "bugün",
+      "total_articles": "Toplam makale",
+      "today_articles": "Bugünkü makaleler",
+      "growth": "büyüme",
+      "total_patients": "Toplam hasta"
+    },
+    "ai": {
+      "title": "AI Pratik Analitiği",
+      "subtitle": "Hastalarınız için klinik zeka",
+      "high_risk": "Yüksek riskli hastalar",
+      "active_alerts": "Aktif uyarılar",
+      "open": "Panoyu aç"
+    },
+    "sections": {
+      "clinic_sub": "Günlük hasta çalışması",
+      "ai_sub": "Akıllı araçlar",
+      "publications": "Yayınlar",
+      "publications_sub": "Makaleler ve araştırmalar",
+      "total": "toplam",
+      "colleagues_sub": "Doktor topluluğu",
+      "doctors": "doktor",
+      "feed": "Günün akışı",
+      "feed_sub": "En yeni platform içeriği"
+    },
+    "nav": {
+      "chat_sub": "Hastalarla mesajlaşma",
+      "appointments_today": "Bugün: {{count}}",
+      "appointments_sub": "Hasta randevuları",
+      "clinic_sub": "Klinik yönetimi",
+      "profile_sub": "Ofisim",
+      "ai_synthesis_sub": "Hasta veri sentezi",
+      "feed_sub": "Tıbbi yayınlar",
+      "consult_sub": "Tanı asistanı",
+      "ai_analytics": "AI Analitiği",
+      "ai_analytics_sub": "Klinik özetler",
+      "create_sub": "Yeni içerik yayınla",
+      "my_articles_sub": "Yayınlarım",
+      "create_sci_sub": "Bilimsel makale oluştur",
+      "my_sci_sub": "Bilimsel yayınlar",
+      "colleagues_sub": "Platformdaki tüm doktorlar",
+      "friends_sub": "Arkadaşlar ve meslektaşlar"
+    },
+    "news": {
+      "title": "Haberler",
+      "today": "Bugün",
+      "view_all": "Tümü",
+      "no_articles": "Henüz makale yok",
+      "item": {
+        "no_title": "Başlıksız",
+        "no_preview": "Açıklama yok",
+        "unknown_author": "Yazar bilinmiyor"
+      },
+      "scientific_articles": "Bilimsel makaleler"
+    }
+  },
+  "my_clinic": "Kliniğim",
+  "chat": "Sohbet",
+  "appointments_dashboard": "Takvim",
+  "profile": "Profil",
+  "digestAi": "AI Özet",
+  "aiSynthesis": "AI Sentez",
+  "medical_feed": "Haber akışı",
+  "ai_medical_consultation": "AI Konsültasyon",
+  "create_article": "Yeni makale",
+  "my_articles": "Makalelerim",
+  "create_scientific_article": "Araştırma makalesi",
+  "my_scientific_articles": "Araştırmalarım",
+  "colleagues": "Tüm meslektaşlar",
+  "my_friends_colleagues": "Kişilerim",
+  "close": "Kapat"
+}

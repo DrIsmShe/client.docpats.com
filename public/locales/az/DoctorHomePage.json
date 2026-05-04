@@ -1,0 +1,111 @@
+{
+  "doctor_home": {
+    "greeting": {
+      "night": "Gecəniz xeyir",
+      "morning": "Sabahınız xeyir",
+      "day": "Günortanız xeyir",
+      "evening": "Axşamınız xeyir",
+      "dr": "Dr."
+    },
+    "time": {
+      "now": "indicə",
+      "min": "dəq əvvəl",
+      "hour": "saat əvvəl",
+      "day": "gün əvvəl"
+    },
+    "errors": {
+      "load_articles": "Məqalələri yükləmək mümkün olmadı"
+    },
+    "alerts": {
+      "unknown_patient": "Xəstə",
+      "no_reason": "Xəbərdarlıq siqnalı",
+      "title": "Xəstə xəbərdarlıqları",
+      "subtitle": "Diqqət tələb edən xəstələr",
+      "view_all": "Bütün xəbərdarlıqlar",
+      "empty": "Aktiv xəbərdarlıq yoxdur",
+      "empty_sub": "Bütün xəstələr nəzarət altındadır"
+    },
+    "title": "Əsas səhifə",
+    "hipaa_compliant": "HIPAA Uyğun",
+    "online": "Onlayn",
+    "doctors_online": "platformada həkim",
+    "insights": {
+      "label": "Bu gün diqqətinizi tələb edir",
+      "unread": "oxunmamış mesaj",
+      "alerts": "xəbərdarlıqlı xəstə",
+      "appointments": "qəbul planlaşdırılıb"
+    },
+    "stats": {
+      "active": "aktiv",
+      "total_doctors": "Cəmi həkim",
+      "today_short": "bu gün",
+      "total_articles": "Cəmi məqalə",
+      "today_articles": "Bugünkü məqalələr",
+      "growth": "artım",
+      "total_patients": "Cəmi xəstə"
+    },
+    "ai": {
+      "title": "AI Praktika Analitikası",
+      "subtitle": "Xəstələriniz üçün klinik intellekt",
+      "high_risk": "Yüksək riskli xəstələr",
+      "active_alerts": "Aktiv xəbərdarlıqlar",
+      "open": "Paneli aç"
+    },
+    "sections": {
+      "clinic_sub": "Xəstələrlə gündəlik iş",
+      "ai_sub": "İntellektual alətlər",
+      "publications": "Nəşrlər",
+      "publications_sub": "Məqalələr və elmi işlər",
+      "total": "cəmi",
+      "colleagues_sub": "Həkim icması",
+      "doctors": "həkim",
+      "feed": "Günün lenti",
+      "feed_sub": "Platformanın ən yeni materialları"
+    },
+    "nav": {
+      "chat_sub": "Xəstələrlə mesajlaşma",
+      "appointments_today": "Bu gün: {{count}}",
+      "appointments_sub": "Xəstə qəbulları",
+      "clinic_sub": "Klinika idarəetməsi",
+      "profile_sub": "Ofisim",
+      "ai_synthesis_sub": "Xəstə məlumatlarının sintezi",
+      "feed_sub": "Tibbi nəşrlər",
+      "consult_sub": "Diaqnostik köməkçi",
+      "ai_analytics": "AI Analitika",
+      "ai_analytics_sub": "Klinik xülasələr",
+      "create_sub": "Yeni material dərc et",
+      "my_articles_sub": "Nəşrlərim",
+      "create_sci_sub": "Elmi məqalə yarat",
+      "my_sci_sub": "Elmi nəşrlər",
+      "colleagues_sub": "Platformadakı bütün həkimlər",
+      "friends_sub": "Dostlar və həmkarlar"
+    },
+    "news": {
+      "title": "Xəbərlər",
+      "today": "Bu gün",
+      "view_all": "Hamısı",
+      "no_articles": "Hələ məqalə yoxdur",
+      "item": {
+        "no_title": "Adsız",
+        "no_preview": "Təsvir yoxdur",
+        "unknown_author": "Müəllif bilinmir"
+      },
+      "scientific_articles": "Elmi məqalələr"
+    }
+  },
+  "my_clinic": "Klinikam",
+  "chat": "Söhbət",
+  "appointments_dashboard": "Cədvəl",
+  "profile": "Profil",
+  "digestAi": "AI Xülasə",
+  "aiSynthesis": "AI Sintez",
+  "medical_feed": "Xəbər lenti",
+  "ai_medical_consultation": "AI Konsultasiya",
+  "create_article": "Yeni məqalə",
+  "my_articles": "Məqalələrim",
+  "create_scientific_article": "Elmi iş",
+  "my_scientific_articles": "Elmi işlərim",
+  "colleagues": "Bütün həmkarlar",
+  "my_friends_colleagues": "Əlaqələrim",
+  "close": "Bağla"
+}
