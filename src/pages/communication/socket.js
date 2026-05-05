@@ -46,6 +46,16 @@ export function getSocket() {
     );
   });
 
+  // ─── Глобальный handler rate-limit ────────────────────────────
+  // Сервер шлёт error:ratelimit при превышении лимита на любом
+  // socket-событии (message:send, typing:start, message:react, dialog:join).
+  // Любой компонент может слушать window event "ratelimit" и реагировать.
+  // payload: { type, secsLeft, message, violation }
+  socket.on("error:ratelimit", (payload) => {
+    console.warn("⏱ Rate limit:", payload);
+    window.dispatchEvent(new CustomEvent("ratelimit", { detail: payload }));
+  });
+
   socket.on("disconnect", (reason) => {
     console.log("🔴 SOCKET DISCONNECTED:", reason);
     // Не обнуляем socket — он сам переподключится
