@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { loadArticles } from "../../slices/synthesisSlice";
+import { loadArticles, resetSynthesis } from "../../slices/synthesisSlice";
 import { useTranslation } from "react-i18next";
 import FooterAI from "../../components/newsAI/footer/footer";
+
+const PAGE_SIZE = 25;
 
 const SPECIALTY_COLORS = {
   "Инфекционные болезни": "#b7290e",
@@ -272,26 +274,62 @@ function getColor(specialty) {
 export default function SynthesisPage() {
   const { t, i18n } = useTranslation("NewsAiTranslate");
   const dispatch = useDispatch();
-  const { articles = [], status = "idle" } = useSelector(
-    (s) => s.synthesis ?? {},
-  );
+  const {
+    articles = [],
+    status = "idle",
+    loadMoreStatus = "idle",
+    hasMore = false,
+    page = 1,
+    total = 0,
+  } = useSelector((s) => s.synthesis ?? {});
 
-  // ── locale синхронизируется с i18n.language (как в NewsList) ──
   const [locale, setLocale] = useState(i18n.language || "ru");
+  const sentinelRef = useRef(null);
 
   useEffect(() => {
     setLocale(i18n.language);
   }, [i18n.language]);
-  // ─────────────────────────────────────────────────────────────
 
+  // Первая загрузка / смена локали → сброс + загрузка page 1
   useEffect(() => {
+    dispatch(resetSynthesis());
     dispatch(
       loadArticles({
-        limit: 20,
+        page: 1,
+        limit: PAGE_SIZE,
         locale: locale !== "ru" ? locale : undefined,
       }),
     );
   }, [dispatch, locale]);
+
+  // Догрузка следующей страницы — вызывается при пересечении sentinel
+  const loadMore = useCallback(() => {
+    if (!hasMore || loadMoreStatus === "loading" || status === "loading")
+      return;
+    dispatch(
+      loadArticles({
+        page: page + 1,
+        limit: PAGE_SIZE,
+        locale: locale !== "ru" ? locale : undefined,
+      }),
+    );
+  }, [dispatch, hasMore, loadMoreStatus, status, page, locale]);
+
+  // IntersectionObserver — следит за невидимым "маяком" в конце списка
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || !hasMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) loadMore();
+      },
+      { rootMargin: "400px" }, // подгружаем заранее, до того как юзер доскроллил
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [loadMore, hasMore]);
 
   return (
     <>
@@ -331,7 +369,7 @@ export default function SynthesisPage() {
             {!["idle", "loading"].includes(status) && (
               <div className="sy-byline">
                 <span className="sy-count">
-                  {t("materials_count", { count: articles.length })}
+                  {t("materials_count", { count: total || articles.length })}
                 </span>
               </div>
             )}
@@ -434,6 +472,35 @@ export default function SynthesisPage() {
                         </Link>
                       ))}
                     </div>
+
+                    {/* ── LAZY LOAD SENTINEL + индикатор ── */}
+                    {hasMore && (
+                      <div ref={sentinelRef} className="sy-sentinel">
+                        {loadMoreStatus === "loading" && (
+                          <>
+                            <div className="sy-spinner sy-spinner-sm" />
+                            <span className="sy-loadmore-text">
+                              {t("loading_more", "Загружаем ещё...")}
+                            </span>
+                          </>
+                        )}
+                        {loadMoreStatus === "error" && (
+                          <button
+                            onClick={loadMore}
+                            className="sy-loadmore-retry"
+                          >
+                            {t("retry", "Повторить")}
+                          </button>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Все статьи показаны */}
+                    {!hasMore && articles.length >= PAGE_SIZE && (
+                      <div className="sy-end-marker">
+                        <span>{t("all_loaded", "Все материалы показаны")}</span>
+                      </div>
+                    )}
                   </>
                 )}
               </>
@@ -495,6 +562,7 @@ const CSS = `
 .sy-main-inner{max-width:1260px;margin:0 auto;padding:52px 40px 72px}
 .sy-state{display:flex;flex-direction:column;align-items:center;padding:80px 0;gap:16px;text-align:center;}
 .sy-spinner{width:28px;height:28px;border:2px solid var(--rule);border-top-color:var(--ink);border-radius:50%;animation:sy-spin .7s linear infinite;}
+.sy-spinner-sm{width:20px;height:20px;border-width:2px}
 @keyframes sy-spin{to{transform:rotate(360deg)}}
 .sy-state-text{font-family:var(--serif);font-size:17px;font-style:italic;color:var(--muted)}
 .sy-hero-link{display:block;text-decoration:none;margin-bottom:40px}
@@ -515,6 +583,32 @@ const CSS = `
 .sy-card-accent{width:100%;height:3px}
 .sy-card-body{padding:20px 22px 20px;height:75%;}
 .sy-card-title{font-family:var(--serif);font-size:18px;font-weight:700;letter-spacing:-.01em;line-height:1.3;color:var(--ink);margin:10px 0 16px;}
+
+/* ── LAZY LOAD ── */
+.sy-sentinel{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  padding:48px 0 16px;min-height:80px;
+}
+.sy-loadmore-text{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+}
+.sy-loadmore-retry{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink);
+  background:transparent;border:1px solid var(--rule);
+  padding:8px 18px;cursor:pointer;transition:all .15s;
+}
+.sy-loadmore-retry:hover{border-color:var(--ink);background:var(--paper2)}
+.sy-end-marker{
+  display:flex;justify-content:center;padding:48px 0 16px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);
+}
+.sy-end-marker span{
+  padding:8px 20px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+}
+
 .sy-footer{border-top:2px solid var(--ink);background:var(--paper2);padding:28px 0}
 .sy-footer-inner{max-width:860px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .sy-footer-brand{display:flex;align-items:baseline;gap:12px}
