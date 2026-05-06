@@ -1,0 +1,143 @@
+{
+  "aiSynthesis": "AI Sintez",
+  "AsidePatient": {
+    "menu": {
+      "myOffice": "Mənim ofisim",
+      "articles": "Məqalələr",
+      "myDoctors": "Həkimlərim"
+    }
+  },
+  "ProfileHomePage": {
+    "eyebrow": "Pasiyent portalı",
+    "titleItalic": "İdarəetmə panelinə",
+    "titleBold": "xoş gəlmisiniz",
+    "statusOnline": "Onlayn",
+
+    "greeting": {
+      "morning": "Sabahınız xeyir",
+      "afternoon": "Günortanız xeyir",
+      "evening": "Axşamınız xeyir",
+      "night": "Gecəniz xeyir"
+    },
+
+    "search": {
+      "placeholder": "Həkim, məqalə, fayl axtar…"
+    },
+
+    "hero": {
+      "nextVisit": "Növbəti qəbul",
+      "openChat": "Həkimlə söhbət",
+      "manage": "İdarə et",
+      "noVisits": "Yaxın görüş yoxdur",
+      "findDoctor": "Mütəxəssis tap",
+      "findDoctorSub": "İxtisasa görə həkim seçin və onlayn qeydiyyatdan keçin.",
+      "browseDoctors": "Bütün həkimlər",
+      "aiTag": "AI konsultasiya",
+      "aiTitle": "Simptomlarınızı təsvir edin — mütəxəssis təklif edək",
+      "aiSub": "AI hansı həkimə müraciət edəcəyinizi anlamağa kömək edir. Müayinəni əvəz etmir.",
+      "aiPlaceholder": "Məsələn: bir həftədir boğazım ağrıyır…",
+      "doctor": "Həkim"
+    },
+
+    "profile": {
+      "text": "Profil dolduruldu",
+      "hint": "tam məlumatlar AI tövsiyələrinin dəqiqliyini artırır",
+      "cta": "Doldur"
+    },
+
+    "stats": {
+      "todayArticles": "Bu günkü məqalələr",
+      "allArticles": "Ümumi məqalələr",
+      "today": "bu gün",
+      "doctors": "Həkimlər",
+      "new": "yeni"
+    },
+
+    "docs": {
+      "title": "Həkimlərim",
+      "all": "Hamısı →",
+      "add": "Əlavə et",
+      "findFirst": "Həkim tap"
+    },
+
+    "panels": {
+      "myHealth": "Sağlamlığım",
+      "section": "Bölmə",
+      "myDoctor": "Həkimim",
+      "contacts": "Kontaktlar"
+    },
+
+    "health": {
+      "tests": "Analizlər",
+      "testsSub": "Laborator tədqiqatlar",
+      "exams": "Müayinələr",
+      "examsSub": "MRT, KT, USM, rentgen",
+      "prescriptions": "Təyinatlar",
+      "prescSub": "Dərmanlar və müalicə planları",
+      "history": "Xəstəlik tarixi",
+      "historySub": "Ziyarətlərinizin xronologiyası",
+      "articlesSub": "Yeni tibbi nəşrlər",
+      "aiSynthesisSub": "Tibbi məlumatlarınızın AI təhlili"
+    },
+
+    "doctor": {
+      "chat": "Həkimlə söhbət",
+      "chatSub": "Həkiminizlə birbaşa əlaqə",
+      "visits": "Qeydiyyatlar",
+      "visitsSub": "Planlaşdırılmış ziyarətlər",
+      "find": "Həkim tap",
+      "findSub": "İxtisas və ya şəhərə görə",
+      "upload": "Yüklə",
+      "uploadSub": "Həkim üçün sənədlər",
+      "myDoctorsSub": "Müalicə edən həkimləriniz"
+    },
+
+    "files": {
+      "title": "Son tibbi fayllar",
+      "all": "Hamısı",
+      "untitled": "Adsız",
+      "empty": "Fayllar hələ yüklənməyib"
+    },
+
+    "ai": {
+      "title": "AI tövsiyələr",
+      "vitD": "D vitamini",
+      "vitDSub": "Analiz tövsiyə olunur",
+      "pressure": "Təzyiq",
+      "pressureSub": "Gündəlik nəzarət",
+      "activity": "Fəaliyyət",
+      "activitySub": "Gündə 30 dəqiqə"
+    },
+
+    "wellness": {
+      "question": "Bu gün özünüzü necə hiss edirsiniz?",
+      "sub": "Bir toxunuş — məlumat AI profilinizə əlavə olunacaq",
+      "saved": "Təşəkkürlər, bu gün üçün saxlanıldı"
+    },
+
+    "news": {
+      "title": "Tibbi xəbərlər",
+      "badge": "Bu gün",
+      "noTitle": "Başlıqsız",
+      "noPreview": "Təsvir yoxdur",
+      "empty": "Məqalələr tezliklə",
+      "sectionLabel": "Məqalə axını"
+    },
+
+    "share": {
+      "title": "Tibbi kartı paylaş",
+      "sub": "İkinci rəy və ya həkiminiz üçün məlumatlarınızın təhlükəsiz ixracı.",
+      "cta": "İxrac et"
+    },
+
+    "dates": {
+      "today": "Bu gün",
+      "tomorrow": "Sabah",
+      "inDays": "{{count}} gün sonra",
+      "justNow": "İndicə",
+      "hoursAgo": "{{count}} saat əvvəl",
+      "yesterday": "Dünən",
+      "daysAgo": "{{count}} gün əvvəl"
+    }
+  }
+}

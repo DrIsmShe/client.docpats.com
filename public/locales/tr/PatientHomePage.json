@@ -1,0 +1,143 @@
+{
+  "aiSynthesis": "AI Sentezi",
+  "AsidePatient": {
+    "menu": {
+      "myOffice": "Ofisim",
+      "articles": "Makaleler",
+      "myDoctors": "Doktorlarım"
+    }
+  },
+  "ProfileHomePage": {
+    "eyebrow": "Hasta Portalı",
+    "titleItalic": "Kontrol panelinize",
+    "titleBold": "hoş geldiniz",
+    "statusOnline": "Çevrimiçi",
+
+    "greeting": {
+      "morning": "Günaydın",
+      "afternoon": "İyi günler",
+      "evening": "İyi akşamlar",
+      "night": "İyi geceler"
+    },
+
+    "search": {
+      "placeholder": "Doktor, makale, dosya ara…"
+    },
+
+    "hero": {
+      "nextVisit": "Yaklaşan randevu",
+      "openChat": "Doktorla sohbet",
+      "manage": "Yönet",
+      "noVisits": "Yaklaşan ziyaret yok",
+      "findDoctor": "Uzman bul",
+      "findDoctorSub": "Uzmanlık alanına göre doktor seçin ve online randevu alın.",
+      "browseDoctors": "Tüm doktorlar",
+      "aiTag": "AI danışmanlık",
+      "aiTitle": "Belirtilerinizi anlatın — uzman önerelim",
+      "aiSub": "AI, hangi doktora başvuracağınızı anlamanıza yardımcı olur. Muayenenin yerini tutmaz.",
+      "aiPlaceholder": "Örneğin: bir haftadır boğazım ağrıyor…",
+      "doctor": "Doktor"
+    },
+
+    "profile": {
+      "text": "Profil tamamlanma oranı",
+      "hint": "tam veriler AI önerilerinin doğruluğunu artırır",
+      "cta": "Tamamla"
+    },
+
+    "stats": {
+      "todayArticles": "Bugünkü makaleler",
+      "allArticles": "Toplam makale",
+      "today": "bugün",
+      "doctors": "Doktorlar",
+      "new": "yeni"
+    },
+
+    "docs": {
+      "title": "Doktorlarım",
+      "all": "Tümü →",
+      "add": "Ekle",
+      "findFirst": "Doktor bul"
+    },
+
+    "panels": {
+      "myHealth": "Sağlığım",
+      "section": "Bölüm",
+      "myDoctor": "Doktorum",
+      "contacts": "Kişiler"
+    },
+
+    "health": {
+      "tests": "Tahliller",
+      "testsSub": "Laboratuvar testleri",
+      "exams": "Görüntüleme",
+      "examsSub": "MR, BT, ultrason, röntgen",
+      "prescriptions": "Reçeteler",
+      "prescSub": "İlaçlar ve tedavi planları",
+      "history": "Tıbbi geçmiş",
+      "historySub": "Ziyaretlerinizin zaman çizelgesi",
+      "articlesSub": "Güncel tıbbi yayınlar",
+      "aiSynthesisSub": "Tıbbi verilerinizin AI analizi"
+    },
+
+    "doctor": {
+      "chat": "Doktorla sohbet",
+      "chatSub": "Doktorunuzla doğrudan iletişim",
+      "visits": "Randevular",
+      "visitsSub": "Planlanmış ziyaretler",
+      "find": "Doktor bul",
+      "findSub": "Uzmanlık veya şehre göre",
+      "upload": "Yükle",
+      "uploadSub": "Doktor için belgeler",
+      "myDoctorsSub": "Tedavi eden doktorlarınız"
+    },
+
+    "files": {
+      "title": "Son tıbbi dosyalar",
+      "all": "Tümü",
+      "untitled": "Adsız",
+      "empty": "Henüz dosya yüklenmedi"
+    },
+
+    "ai": {
+      "title": "AI önerileri",
+      "vitD": "D Vitamini",
+      "vitDSub": "Test önerilir",
+      "pressure": "Tansiyon",
+      "pressureSub": "Günlük kontrol",
+      "activity": "Aktivite",
+      "activitySub": "Günde 30 dakika"
+    },
+
+    "wellness": {
+      "question": "Bugün nasıl hissediyorsunuz?",
+      "sub": "Bir dokunuş — veri AI profilinize eklenir",
+      "saved": "Teşekkürler, bugün için kaydedildi"
+    },
+
+    "news": {
+      "title": "Tıbbi haberler",
+      "badge": "Bugün",
+      "noTitle": "Başlıksız",
+      "noPreview": "Açıklama yok",
+      "empty": "Makaleler yakında",
+      "sectionLabel": "Makale akışı"
+    },
+
+    "share": {
+      "title": "Tıbbi kayıt paylaş",
+      "sub": "İkinci bir görüş veya doktorunuz için verilerinizin güvenli dışa aktarımı.",
+      "cta": "Dışa aktar"
+    },
+
+    "dates": {
+      "today": "Bugün",
+      "tomorrow": "Yarın",
+      "inDays": "{{count}} gün sonra",
+      "justNow": "Az önce",
+      "hoursAgo": "{{count}} saat önce",
+      "yesterday": "Dün",
+      "daysAgo": "{{count}} gün önce"
+    }
+  }
+}

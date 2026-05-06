@@ -1,0 +1,143 @@
+{
+  "aiSynthesis": "AI Synthesis",
+  "AsidePatient": {
+    "menu": {
+      "myOffice": "My Office",
+      "articles": "Articles",
+      "myDoctors": "My Doctors"
+    }
+  },
+  "ProfileHomePage": {
+    "eyebrow": "Patient Portal",
+    "titleItalic": "Welcome to your",
+    "titleBold": "dashboard",
+    "statusOnline": "Online",
+
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening",
+      "night": "Good night"
+    },
+
+    "search": {
+      "placeholder": "Search doctors, articles, files…"
+    },
+
+    "hero": {
+      "nextVisit": "Next appointment",
+      "openChat": "Chat with doctor",
+      "manage": "Manage",
+      "noVisits": "No upcoming visits",
+      "findDoctor": "Find a specialist",
+      "findDoctorSub": "Choose a doctor by specialty and book online.",
+      "browseDoctors": "All doctors",
+      "aiTag": "AI consultation",
+      "aiTitle": "Describe symptoms — we'll suggest a specialist",
+      "aiSub": "AI helps you decide which doctor to see. Not a replacement for an appointment.",
+      "aiPlaceholder": "e.g.: sore throat for a week…",
+      "doctor": "Doctor"
+    },
+
+    "profile": {
+      "text": "Profile complete:",
+      "hint": "complete data improves AI recommendation accuracy",
+      "cta": "Complete"
+    },
+
+    "stats": {
+      "todayArticles": "Articles today",
+      "allArticles": "Total articles",
+      "today": "today",
+      "doctors": "Doctors",
+      "new": "new"
+    },
+
+    "docs": {
+      "title": "My doctors",
+      "all": "All →",
+      "add": "Add",
+      "findFirst": "Find a doctor"
+    },
+
+    "panels": {
+      "myHealth": "My health",
+      "section": "Section",
+      "myDoctor": "My doctor",
+      "contacts": "Contacts"
+    },
+
+    "health": {
+      "tests": "Tests",
+      "testsSub": "Laboratory tests",
+      "exams": "Examinations",
+      "examsSub": "MRI, CT, ultrasound, X-ray",
+      "prescriptions": "Prescriptions",
+      "prescSub": "Medications and treatment plans",
+      "history": "Medical history",
+      "historySub": "Timeline of your visits",
+      "articlesSub": "Latest medical publications",
+      "aiSynthesisSub": "AI analysis of your medical data"
+    },
+
+    "doctor": {
+      "chat": "Chat with doctor",
+      "chatSub": "Direct line to your doctor",
+      "visits": "Appointments",
+      "visitsSub": "Scheduled visits",
+      "find": "Find a doctor",
+      "findSub": "By specialty or city",
+      "upload": "Upload",
+      "uploadSub": "Documents for your doctor",
+      "myDoctorsSub": "Your treating physicians"
+    },
+
+    "files": {
+      "title": "Recent medical files",
+      "all": "All",
+      "untitled": "Untitled",
+      "empty": "No files uploaded yet"
+    },
+
+    "ai": {
+      "title": "AI recommendations",
+      "vitD": "Vitamin D",
+      "vitDSub": "Test recommended",
+      "pressure": "Blood pressure",
+      "pressureSub": "Check daily",
+      "activity": "Activity",
+      "activitySub": "30 minutes per day"
+    },
+
+    "wellness": {
+      "question": "How are you feeling today?",
+      "sub": "One tap — data goes into your AI profile",
+      "saved": "Thanks, saved for today"
+    },
+
+    "news": {
+      "title": "Medical news",
+      "badge": "Today",
+      "noTitle": "Untitled",
+      "noPreview": "No description",
+      "empty": "Articles coming soon",
+      "sectionLabel": "Article feed"
+    },
+
+    "share": {
+      "title": "Share medical record",
+      "sub": "Secure export of your data for a second opinion or for your doctor.",
+      "cta": "Export"
+    },
+
+    "dates": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "inDays": "In {{count}} days",
+      "justNow": "Just now",
+      "hoursAgo": "{{count}}h ago",
+      "yesterday": "Yesterday",
+      "daysAgo": "{{count}}d ago"
+    }
+  }
+}
