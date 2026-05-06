@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-/* ─────────────────────────── STYLES ─────────────────────────── */
 const S = `
   @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
@@ -700,6 +699,27 @@ const S = `
     from { opacity: 0; transform: translateY(16px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+
+ .hp-search-kbd {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--sub);
+    background: var(--ice);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0;
+    transition: background .15s, color .15s, border-color .15s, transform .15s;
+  }
+  .hp-search-kbd:hover {
+    background: var(--gold);
+    color: white;
+    border-color: var(--gold);
+    transform: scale(1.05);
+  }
+  .hp-search-kbd:active {
+    transform: scale(0.95);
+  }
 `;
 
 const greetingKeyByHour = (hour) => {
@@ -1029,23 +1049,25 @@ export default function ProfilePatientHomePage() {
     "";
 
   /* ── Search ── */
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const q = searchQ.trim();
-    if (!q) return;
-    navigate(`/patient/news?q=${encodeURIComponent(q)}`);
-  };
 
   /* ── AI quick-prompt ── */
   const handleAiSubmit = (e) => {
     e.preventDefault();
     const q = aiQ.trim();
-    const url = q
-      ? `/patient/consultation-ai?prompt=${encodeURIComponent(q)}`
-      : `/patient/consultation-ai`;
-    navigate(url);
+    const url = `/patient/consultation-ai`;
+    window.open(url, "_blank", "noopener,noreferrer");
   };
-
+  /* ── Search ── */
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const q = searchQ.trim();
+    if (!q) return;
+    window.open(
+      `/patient/news?q=${encodeURIComponent(q)}`,
+      "_blank",
+      "noopener,noreferrer",
+    );
+  };
   /* ── Wellness ── */
   const handleMood = (m) => {
     setMood(m);
@@ -1316,7 +1338,6 @@ export default function ProfilePatientHomePage() {
 
         {/* ── Global Search ── */}
         <form className="hp-search-wrap" onSubmit={handleSearch}>
-          <span className="hp-search-icon">🔍</span>
           <input
             className="hp-search-input"
             type="text"
@@ -1326,7 +1347,21 @@ export default function ProfilePatientHomePage() {
               defaultValue: "Поиск врачей, статей, файлов…",
             })}
           />
-          <span className="hp-search-kbd">⏎</span>
+          <button type="submit" className="hp-search-kbd" aria-label="Search">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+          </button>
         </form>
 
         {/* ── Hero ── */}
@@ -1753,44 +1788,6 @@ export default function ProfilePatientHomePage() {
                   <div className="hp-ai-sub">{item.sub}</div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ── Wellness ── */}
-        <div className="hp-wellness">
-          <div className="hp-wellness-text">
-            <div className="hp-wellness-q">
-              {t("ProfileHomePage.wellness.question", {
-                defaultValue: "Как ваше самочувствие сегодня?",
-              })}
-            </div>
-            <div className="hp-wellness-sub">
-              {mood ? (
-                <span className="hp-wellness-thanks">
-                  ✓{" "}
-                  {t("ProfileHomePage.wellness.saved", {
-                    defaultValue: "Спасибо, отметка сохранена на сегодня",
-                  })}
-                </span>
-              ) : (
-                t("ProfileHomePage.wellness.sub", {
-                  defaultValue: "Один тап — данные пойдут в ваш AI-профиль",
-                })
-              )}
-            </div>
-          </div>
-          <div className="hp-wellness-moods">
-            {moods.map((m) => (
-              <button
-                key={m.key}
-                type="button"
-                className={`hp-mood ${mood === m.key ? "active" : ""}`}
-                onClick={() => handleMood(m.key)}
-                aria-label={m.key}
-              >
-                {m.emoji}
-              </button>
             ))}
           </div>
         </div>

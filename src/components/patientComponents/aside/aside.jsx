@@ -345,16 +345,16 @@ export default function AsidePatient() {
         },
       ],
     },
-    // {
-    //   section: t("AsidePatient.sections.content"), // ✅ было: "Контент"
-    //   items: [
-    //     {
-    //       to: "/patient/consultation-ai",
-    //       icon: <GrArticle />,
-    //       label: t("ai_medical_consultation"), // ✅ было: "Medical Feed"
-    //     },
-    //   ],
-    // },
+    {
+      section: t("AsidePatient.sections.content"), // ✅ было: "Контент"
+      items: [
+        {
+          to: "/patient/consultation-ai",
+          icon: <GrArticle />,
+          label: t("ai_medical_consultation"), // ✅ было: "Medical Feed"
+        },
+      ],
+    },
     {
       section: t("AsidePatient.sections.doctors"), // ✅ было: "Врачи"
       items: [

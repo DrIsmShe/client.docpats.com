@@ -2040,6 +2040,7 @@ function App() {
             {/* Здесь перечислены все маршруты для раздела ПРОФИЛЬ ПАЦИЕНТА */}
             <Route path="/patient" element={<PatientLayout />}>
               <Route path="news" element={<NewsList />} />
+              <Route path="consultation-ai" element={<ConsultationPage />} />
               <Route
                 path="articles-ai-for-patients"
                 element={<SynthesisPage />}
