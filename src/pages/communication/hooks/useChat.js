@@ -161,9 +161,13 @@ export function useChat(dialogId) {
 
   // =====================================================
   // SEND MESSAGE (HTTP)
+  //
+  // При ошибке 429 (rate limit) диспатчим window event "ratelimit",
+  // тот же что и для socket-уровня. ChatWindow слушает оба источника
+  // через один обработчик и блокирует input.
   // =====================================================
   const sendMessage = useCallback(
-    async ({ text, replyToId = null, attachment = null }) => {
+    async ({ text, replyToId = null, attachment = null, onError = null }) => {
       if (!dialogId) return;
       if (!text?.trim() && !attachment) return;
 
@@ -184,6 +188,45 @@ export function useChat(dialogId) {
         });
       } catch (err) {
         console.error("❌ sendMessageHttp error:", err);
+
+        // ── HTTP 429: rate limit от backend ─────────────────────
+        // Парсим сообщение из тела ответа и диспатчим тот же event
+        // что и socket-уровень. Если в ответе есть число секунд — берём его.
+        if (err?.response?.status === 429) {
+          const errorMsg =
+            err.response.data?.error || "Слишком много сообщений";
+          // Пытаемся извлечь число секунд из сообщения "Подождите ещё N сек."
+          const secsMatch = errorMsg.match(/(\d+)\s*(сек|sec)/i);
+          // Или из "на N мин" → конвертируем в секунды
+          const minsMatch = errorMsg.match(/(\d+)\s*(мин|min)/i);
+          const secsLeft = secsMatch
+            ? Number(secsMatch[1])
+            : minsMatch
+              ? Number(minsMatch[1]) * 60
+              : 60;
+
+          window.dispatchEvent(
+            new CustomEvent("ratelimit", {
+              detail: {
+                type: "message:send (HTTP)",
+                secsLeft,
+                message: errorMsg,
+              },
+            }),
+          );
+
+          if (onError) onError(errorMsg);
+          return;
+        }
+
+        // Остальные ошибки — отдаём в callback если есть
+        if (onError) {
+          const msg =
+            err?.response?.data?.error ||
+            err?.message ||
+            "Ошибка отправки сообщения";
+          onError(msg);
+        }
       }
     },
     [dialogId],
