@@ -122,14 +122,6 @@ const PRICES = {
 };
 
 // ─── Адаптивный список секций для отображения ───
-//
-// Возвращает массив секций { title?, items: [...] } сверху вниз.
-// title?: "patients" | "doctors" | undefined — undefined = без заголовка
-// items: [{ key, isCurrent, isFree?, price?, isTrial? }]
-//
-// Для гостя — обе секции (Для пациентов + Для врачей) с trial-баннером сверху
-// Для пациента — только секция Для пациентов (без заголовка)
-// Для врача — только секция Для врачей (без заголовка)
 function getPlanSections({ isLoggedIn, role, plan }) {
   // Гость — обе секции
   if (!isLoggedIn) {
@@ -281,6 +273,7 @@ export default function UserSynthesisPage() {
 
   const isLoggedIn = detectLoggedIn(limit);
   const isPatient = limit?.role === "patient" || limit?.role === "user";
+  const isTrial = limit?.plan === "doctor_trial";
   const isRTL = i18n.language === "ar";
 
   useEffect(() => {
@@ -467,8 +460,15 @@ export default function UserSynthesisPage() {
                 <span className="us-limit-plan">
                   {t("limit.plan")}:{" "}
                   <strong>
-                    {t(`plans.${limit.plan}.name`, limit.plan || "free")}
+                    {isTrial
+                      ? t("plans.doctor_super.name")
+                      : t(`plans.${limit.plan}.name`, limit.plan || "free")}
                   </strong>
+                  {isTrial && (
+                    <span className="us-trial-pill">
+                      {t("limit.trialBadge")}
+                    </span>
+                  )}
                 </span>
                 <span className="us-limit-count">
                   {t("limit.used")}: <strong>{limit.used}</strong> /{" "}
@@ -714,7 +714,7 @@ export default function UserSynthesisPage() {
                     {myArticles.map((a) => (
                       <Link
                         key={a._id}
-                        to={`/user-synthesis/my/${a._id}`}
+                        to={`/public/user-synthesis/my/${a._id}`}
                         className="us-my-article"
                       >
                         <div className="us-my-title">{a.title}</div>
@@ -778,10 +778,26 @@ const CSS = `
 .us-limit-bar{display:flex;align-items:center;gap:20px;flex-wrap:wrap;
   padding:10px 14px;background:var(--paper);border:1px solid var(--rule);
   font-family:var(--mono);font-size:11px;color:var(--muted)}
-.us-limit-plan,.us-limit-count{color:var(--muted)}
+.us-limit-plan,.us-limit-count{color:var(--muted);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .us-limit-plan strong,.us-limit-count strong{color:var(--ink)}
 .us-limit-warn{color:#b83030}
 .us-limit-warn a{color:#b83030;font-weight:500}
+
+/* ─── Trial pill в баннере лимитов ─── */
+.us-trial-pill{
+  display:inline-block;
+  padding:2px 8px;
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  background:#0d9488;
+  color:#fff;
+  border-radius:2px;
+  font-weight:600;
+  white-space:nowrap;
+}
+
 .us-main{padding:0}
 .us-main-inner{max-width:1000px;margin:0 auto;padding:40px 40px 80px}
 .us-grid{display:grid;grid-template-columns:1fr 320px;gap:32px;align-items:start}

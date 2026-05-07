@@ -25,7 +25,8 @@
     "guestRegisterCta": "Sign up",
     "guestBenefit": "— free access forever",
     "userLimitReached": "Limit reached",
-    "upgradePlanCta": "Upgrade plan"
+    "upgradePlanCta": "Upgrade plan",
+    "trialBadge": "Trial · 6 mo free"
   },
   "form": {
     "topic": "Article topic",
@@ -163,5 +164,23 @@
     "remainingLeft": "Generations left this month:",
     "upgradePlan": "Upgrade plan",
     "copiedAlert": "Copied to clipboard"
+  },
+  "article": {
+    "topbarTag": "My article",
+    "newArticleCta": "New article",
+    "loading": "Loading article...",
+    "notFoundTitle": "Article not found",
+    "notFoundText": "It may have been deleted or you don't have access.",
+    "errorTitle": "Loading error",
+    "loadError": "Failed to load the article. Please try again later.",
+    "notAuthorized": "Sign in to view your articles.",
+    "backToCreate": "Create new article",
+    "wordsCount_one": "{{words}} word",
+    "wordsCount_other": "{{words}} words",
+    "copy": "Copy",
+    "print": "Print",
+    "copied": "Text copied",
+    "copyFailed": "Failed to copy",
+    "sourcesUsed": "Sources used"
   }
 }

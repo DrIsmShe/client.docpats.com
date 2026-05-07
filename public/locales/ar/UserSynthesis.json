@@ -25,7 +25,8 @@
     "guestRegisterCta": "سجّل",
     "guestBenefit": "— وصول مجاني للأبد",
     "userLimitReached": "تم استنفاد الحد",
-    "upgradePlanCta": "ترقية الخطة"
+    "upgradePlanCta": "ترقية الخطة",
+    "trialBadge": "تجريبي · 6 أشهر مجاناً"
   },
   "form": {
     "topic": "موضوع المقالة",
@@ -163,5 +164,27 @@
     "remainingLeft": "الإنشاءات المتبقية هذا الشهر:",
     "upgradePlan": "ترقية الخطة",
     "copiedAlert": "تم النسخ إلى الحافظة"
+  },
+  "article": {
+    "topbarTag": "مقالتي",
+    "newArticleCta": "مقالة جديدة",
+    "loading": "جارٍ تحميل المقالة...",
+    "notFoundTitle": "المقالة غير موجودة",
+    "notFoundText": "ربما تم حذفها أو ليس لديك إذن للوصول إليها.",
+    "errorTitle": "خطأ في التحميل",
+    "loadError": "فشل تحميل المقالة. حاول لاحقاً.",
+    "notAuthorized": "سجّل الدخول لعرض مقالاتك.",
+    "backToCreate": "إنشاء مقالة جديدة",
+    "wordsCount_zero": "لا توجد كلمات",
+    "wordsCount_one": "كلمة واحدة",
+    "wordsCount_two": "كلمتان",
+    "wordsCount_few": "{{words}} كلمات",
+    "wordsCount_many": "{{words}} كلمة",
+    "wordsCount_other": "{{words}} كلمة",
+    "copy": "نسخ",
+    "print": "طباعة",
+    "copied": "تم النسخ",
+    "copyFailed": "فشل النسخ",
+    "sourcesUsed": "المصادر المستخدمة"
   }
 }

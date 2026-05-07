@@ -25,7 +25,8 @@
     "guestRegisterCta": "Qeydiyyatdan keçin",
     "guestBenefit": "— daimi pulsuz giriş",
     "userLimitReached": "Limit dolub",
-    "upgradePlanCta": "Planı yenilə"
+    "upgradePlanCta": "Planı yenilə",
+    "trialBadge": "Sınaq · 6 ay pulsuz"
   },
   "form": {
     "topic": "Məqalə mövzusu",
@@ -163,5 +164,23 @@
     "remainingLeft": "Bu ay qalan yaratmalar:",
     "upgradePlan": "Planı yenilə",
     "copiedAlert": "Mübadilə buferinə köçürüldü"
+  },
+  "article": {
+    "topbarTag": "Məqaləm",
+    "newArticleCta": "Yeni məqalə",
+    "loading": "Məqalə yüklənir...",
+    "notFoundTitle": "Məqalə tapılmadı",
+    "notFoundText": "Silinmiş ola bilər və ya giriş icazəniz yoxdur.",
+    "errorTitle": "Yükləmə xətası",
+    "loadError": "Məqalə yüklənə bilmədi. Sonra yenidən cəhd edin.",
+    "notAuthorized": "Məqalələrinizi görmək üçün daxil olun.",
+    "backToCreate": "Yeni məqalə yaratmaq",
+    "wordsCount_one": "{{words}} söz",
+    "wordsCount_other": "{{words}} söz",
+    "copy": "Kopyala",
+    "print": "Çap et",
+    "copied": "Mətn kopyalandı",
+    "copyFailed": "Kopyalanmadı",
+    "sourcesUsed": "İstifadə edilən mənbələr"
   }
 }

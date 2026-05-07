@@ -25,7 +25,8 @@
     "guestRegisterCta": "Kayıt olun",
     "guestBenefit": "— sonsuza dek ücretsiz erişim",
     "userLimitReached": "Limit doldu",
-    "upgradePlanCta": "Planı yükselt"
+    "upgradePlanCta": "Planı yükselt",
+    "trialBadge": "Deneme · 6 ay ücretsiz"
   },
   "form": {
     "topic": "Makale konusu",
@@ -163,5 +164,23 @@
     "remainingLeft": "Bu ay kalan üretim:",
     "upgradePlan": "Planı yükselt",
     "copiedAlert": "Panoya kopyalandı"
+  },
+  "article": {
+    "topbarTag": "Makalem",
+    "newArticleCta": "Yeni makale",
+    "loading": "Makale yükleniyor...",
+    "notFoundTitle": "Makale bulunamadı",
+    "notFoundText": "Silinmiş olabilir veya erişiminiz yok.",
+    "errorTitle": "Yükleme hatası",
+    "loadError": "Makale yüklenemedi. Lütfen daha sonra tekrar deneyin.",
+    "notAuthorized": "Makalelerinizi görmek için giriş yapın.",
+    "backToCreate": "Yeni makale oluştur",
+    "wordsCount_one": "{{words}} kelime",
+    "wordsCount_other": "{{words}} kelime",
+    "copy": "Kopyala",
+    "print": "Yazdır",
+    "copied": "Metin kopyalandı",
+    "copyFailed": "Kopyalanamadı",
+    "sourcesUsed": "Kullanılan kaynaklar"
   }
 }

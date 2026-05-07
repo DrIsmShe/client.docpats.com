@@ -496,6 +496,7 @@ import { PlanListPage, PlanEditorPage } from "./pages/simulation";
 import HelpPage from "./pages/simulation/pages/HelpPage.jsx";
 import SimulationHubPage from "./pages/simulation/pages/SimulationHubPage.jsx";
 import { BreastListPage, BreastEditorPage } from "./pages/simulation";
+import UserSynthesisArticlePage from "./pages/UserSynthesis/UserSynthesisArticlePage";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -520,6 +521,10 @@ function App() {
             />
             <Route path="/public" element={<DashboardLayout />}>
               <Route path="user-synthesis" element={<UserSynthesisPage />} />
+              <Route
+                path="user-synthesis/my/:id"
+                element={<UserSynthesisArticlePage />}
+              />
               <Route path="about" element={<AboutPage />} />
               <Route path="articles" element={<SynthesisPage />} />
               <Route path="news/:slug" element={<NewsArticle />} />

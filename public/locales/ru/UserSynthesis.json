@@ -25,7 +25,8 @@
     "guestRegisterCta": "Зарегистрируйтесь",
     "guestBenefit": "— бесплатный доступ навсегда",
     "userLimitReached": "Лимит исчерпан",
-    "upgradePlanCta": "Обновить план"
+    "upgradePlanCta": "Обновить план",
+    "trialBadge": "Trial · 6 мес бесплатно"
   },
   "form": {
     "topic": "Тема статьи",
@@ -163,5 +164,25 @@
     "remainingLeft": "Осталось генераций в этом месяце:",
     "upgradePlan": "Обновить план",
     "copiedAlert": "Скопировано в буфер обмена"
+  },
+  "article": {
+    "topbarTag": "Моя статья",
+    "newArticleCta": "Новая статья",
+    "loading": "Загружаем статью...",
+    "notFoundTitle": "Статья не найдена",
+    "notFoundText": "Возможно, она была удалена или у вас нет доступа.",
+    "errorTitle": "Ошибка загрузки",
+    "loadError": "Не удалось загрузить статью. Попробуйте позже.",
+    "notAuthorized": "Войдите в аккаунт, чтобы посмотреть свои статьи.",
+    "backToCreate": "Создать новую статью",
+    "wordsCount_one": "{{words}} слово",
+    "wordsCount_few": "{{words}} слова",
+    "wordsCount_many": "{{words}} слов",
+    "wordsCount_other": "{{words}} слов",
+    "copy": "Копировать",
+    "print": "Печать",
+    "copied": "Текст скопирован",
+    "copyFailed": "Не удалось скопировать",
+    "sourcesUsed": "Использованные источники"
   }
 }
