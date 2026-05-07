@@ -274,7 +274,10 @@
         "date": "Yayın tarixi",
         "comments": "Şərhlər",
         "likes": "Bəyənmələr"
-      }
+      },
+      "tabs": { "all": "Hamısı", "regular": "Rəylər", "scientific": "Elmi" },
+      "scientificBadge": "Elmi",
+      "scientificBadgeTitle": "Elmi məqalə"
     }
   },
   "myDoctors": {

@@ -274,7 +274,14 @@
         "date": "Publication date",
         "comments": "Comments",
         "likes": "Likes"
-      }
+      },
+      "tabs": {
+        "all": "Hepsi",
+        "regular": "Görüşler",
+        "scientific": "Bilimsel"
+      },
+      "scientificBadge": "Bilimsel",
+      "scientificBadgeTitle": "Bilimsel makale"
     }
   },
   "myDoctors": {

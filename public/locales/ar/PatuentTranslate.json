@@ -215,6 +215,7 @@
     "speciality": {
       "unknown": "غير معروف"
     },
+
     "errors": {
       "noProfileId": "خطأ: لم يتم العثور على معرّف الطبيب.",
       "loadFailed": "فشل في تحميل بيانات الطبيب.",
@@ -274,7 +275,10 @@
         "date": "تاريخ النشر",
         "comments": "التعليقات",
         "likes": "الإعجابات"
-      }
+      },
+      "tabs": { "all": "الكل", "regular": "آراء", "scientific": "علمية" },
+      "scientificBadge": "علمية",
+      "scientificBadgeTitle": "مقالة علمية"
     }
   },
   "myDoctors": {

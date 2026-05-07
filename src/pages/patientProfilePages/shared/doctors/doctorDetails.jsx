@@ -725,6 +725,64 @@ const DDStyles = () => (
       flex-shrink: 0;
     }
 
+    /* ===== Tabs внутри сайдбара (Все / Обычные / Научные) ===== */
+    .dd-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 6px;
+      background: #f1f5f9;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .dd-tab {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 8px 10px;
+      border: none;
+      background: transparent;
+      border-radius: 7px;
+      font-size: clamp(11px, 1.3vw, 12px);
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .dd-tab:hover:not(.active) { color: #0f172a; background: rgba(255,255,255,0.5); }
+    .dd-tab.active {
+      background: white;
+      color: #0891b2;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+    .dd-tab-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.08);
+      font-size: 10px;
+      font-weight: 700;
+      color: #475569;
+      flex-shrink: 0;
+    }
+    .dd-tab.active .dd-tab-count {
+      background: #ecfeff;
+      color: #0891b2;
+    }
+
     .dd-article-card {
       width: 100%;
       max-width: 100%;
@@ -741,6 +799,14 @@ const DDStyles = () => (
       transform: translateY(-1px);
       box-shadow: 0 6px 16px -8px rgba(8, 145, 178, 0.2);
     }
+    .dd-article-card.scientific {
+      border-color: #fde68a;
+      background: linear-gradient(135deg, #fffbeb 0%, #ffffff 60%);
+    }
+    .dd-article-card.scientific:hover {
+      border-color: #f59e0b;
+      box-shadow: 0 6px 16px -8px rgba(245, 158, 11, 0.25);
+    }
     .dd-article-link { text-decoration: none; color: inherit; }
     .dd-article-title {
       font-size: clamp(13px, 1.6vw, 15px);
@@ -751,8 +817,30 @@ const DDStyles = () => (
       transition: color 0.15s ease;
       word-wrap: break-word;
       overflow-wrap: anywhere;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      flex-wrap: wrap;
     }
     .dd-article-card:hover .dd-article-title { color: #0891b2; }
+    .dd-article-card.scientific:hover .dd-article-title { color: #b45309; }
+    .dd-article-badge-sci {
+      display: inline-flex;
+      align-items: center;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #b45309;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      padding: 2px 7px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      white-space: nowrap;
+      vertical-align: middle;
+      line-height: 1.4;
+    }
     .dd-article-preview {
       font-size: clamp(11px, 1.4vw, 13px);
       color: #64748b;
@@ -901,6 +989,9 @@ export default function DoctorDetail() {
   const [recommendCount, setRecommendCount] = useSafeState(0);
   const [recPending, setRecPending] = useSafeState(false);
 
+  // вкладка статей: "all" | "regular" | "scientific"
+  const [articlesTab, setArticlesTab] = useState("all");
+
   const fullName = useMemo(() => {
     const fn = doctorProfile?.user?.firstName || doctorProfile?.firstName || "";
     const ln = doctorProfile?.user?.lastName || doctorProfile?.lastName || "";
@@ -909,6 +1000,27 @@ export default function DoctorDetail() {
 
   // Отображаемая специализация: raw → fallback через t()
   const specialityDisplay = speciality || t("doctorDetail.speciality.unknown");
+
+  /* ---------- Подсчёты по типам статей ---------- */
+  const regularCount = useMemo(
+    () => articles.filter((a) => a.articleType !== "scientific").length,
+    [articles],
+  );
+  const scientificCount = useMemo(
+    () => articles.filter((a) => a.articleType === "scientific").length,
+    [articles],
+  );
+
+  /* ---------- Отфильтрованный список под текущую вкладку ---------- */
+  const visibleArticles = useMemo(() => {
+    if (articlesTab === "regular") {
+      return articles.filter((a) => a.articleType !== "scientific");
+    }
+    if (articlesTab === "scientific") {
+      return articles.filter((a) => a.articleType === "scientific");
+    }
+    return articles;
+  }, [articles, articlesTab]);
 
   /* ---------- Проверка: есть ли доктор в «моих докторах» ---------- */
   const checkDoctorStatus = useCallback(
@@ -1001,12 +1113,65 @@ export default function DoctorDetail() {
       setRecommendedByMe(Boolean(doctorData?.recommendedByMe));
       setRecommendCount(Number(doctorData?.recommendCount || 0));
 
-      // 2) Статьи
-      const { data: articlesData } = await axios.get(
-        `${API}/patient-profile/doctor-articles/${profileId}`,
-        { withCredentials: true, params: { t: Date.now() } },
-      );
-      setArticles(articlesData?.success ? articlesData?.articles || [] : []);
+      // 2) Статьи — обычные + научные параллельно через Promise.allSettled,
+      //    чтобы один отвалившийся endpoint не уронил всю загрузку.
+      //    Обычные:  GET /patient-profile/doctor-articles/:profileId   (как было)
+      //    Научные:  GET /doctor-scientific-articles/:profileId        (новый роут)
+      const [regularRes, scientificRes] = await Promise.allSettled([
+        axios.get(`${API}/patient-profile/doctor-articles/${profileId}`, {
+          withCredentials: true,
+          params: { t: Date.now() },
+        }),
+        axios.get(
+          `${API}/patient-profile/doctor-scientific-articles/${profileId}`,
+          {
+            withCredentials: true,
+            params: { t: Date.now() },
+          },
+        ),
+      ]);
+
+      // Универсальный извлекатель списка из разных форм ответа:
+      //   { success, articles } | { data } | { items } | { articles } | плоский массив
+      const extractList = (res) => {
+        if (!res || res.status !== "fulfilled") return [];
+        const body = res.value?.data;
+        if (!body) return [];
+        if (Array.isArray(body)) return body;
+        if (Array.isArray(body.data)) return body.data;
+        if (Array.isArray(body.articles)) return body.articles;
+        if (Array.isArray(body.items)) return body.items;
+        if (body.success && Array.isArray(body.articles)) return body.articles;
+        return [];
+      };
+
+      const regularList = extractList(regularRes).map((a) => ({
+        ...a,
+        articleType: a.articleType || "regular",
+      }));
+      const scientificList = extractList(scientificRes).map((a) => ({
+        ...a,
+        articleType: "scientific",
+      }));
+
+      // Дедупликация на случай если один и тот же документ вернулся в обоих списках
+      const seen = new Set();
+      const merged = [...regularList, ...scientificList].filter((a) => {
+        const key = String(a._id || a.id || "");
+        if (!key) return true;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+
+      // Сортировка: сначала свежие (createdAt fallback на updatedAt)
+      merged.sort((a, b) => {
+        const da = new Date(a.createdAt || a.updatedAt || 0).getTime();
+        const db = new Date(b.createdAt || b.updatedAt || 0).getTime();
+        return db - da;
+      });
+
+      setArticles(merged);
 
       // 3) Статус «в моих докторах»
       await checkDoctorStatus(uid, profileId);
@@ -1413,20 +1578,93 @@ export default function DoctorDetail() {
             <span className="dd-sidebar-count">{articles.length}</span>
           </div>
 
-          {articles.length === 0 ? (
+          {/* Tabs: Все / Обычные / Научные — показываем только если есть оба типа */}
+          {regularCount > 0 && scientificCount > 0 && (
+            <div
+              className="dd-tabs"
+              role="tablist"
+              aria-label={t("doctorDetail.articles.title")}
+            >
+              <button
+                type="button"
+                role="tab"
+                aria-selected={articlesTab === "all"}
+                className={`dd-tab ${articlesTab === "all" ? "active" : ""}`}
+                onClick={() => setArticlesTab("all")}
+              >
+                <span>
+                  {t("doctorDetail.articles.tabs.all", {
+                    defaultValue: "Все",
+                  })}
+                </span>
+                <span className="dd-tab-count">{articles.length}</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={articlesTab === "regular"}
+                className={`dd-tab ${articlesTab === "regular" ? "active" : ""}`}
+                onClick={() => setArticlesTab("regular")}
+              >
+                <span>
+                  {t("doctorDetail.articles.tabs.regular", {
+                    defaultValue: "Обычные",
+                  })}
+                </span>
+                <span className="dd-tab-count">{regularCount}</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={articlesTab === "scientific"}
+                className={`dd-tab ${articlesTab === "scientific" ? "active" : ""}`}
+                onClick={() => setArticlesTab("scientific")}
+              >
+                <span>
+                  {t("doctorDetail.articles.tabs.scientific", {
+                    defaultValue: "Научные",
+                  })}
+                </span>
+                <span className="dd-tab-count">{scientificCount}</span>
+              </button>
+            </div>
+          )}
+
+          {visibleArticles.length === 0 ? (
             <div className="dd-empty-articles">
               {t("doctorDetail.articles.empty")}
             </div>
           ) : (
-            articles.map((article) => {
+            visibleArticles.map((article) => {
+              const isScientific = article.articleType === "scientific";
               const preview = stripHtml(article.content).slice(0, 120);
+              const linkTo = isScientific
+                ? `/patient/article-scientific-detail/${article._id}`
+                : `/patient/article-detail/${article._id}`;
               return (
-                <div key={article._id} className="dd-article-card">
-                  <Link
-                    to={`/patient/article-detail/${article._id}`}
-                    className="dd-article-link"
-                  >
-                    <h5 className="dd-article-title">{article.title}</h5>
+                <div
+                  key={article._id}
+                  className={`dd-article-card ${isScientific ? "scientific" : ""}`}
+                >
+                  <Link to={linkTo} className="dd-article-link">
+                    <h5 className="dd-article-title">
+                      <span style={{ flex: "1 1 auto", minWidth: 0 }}>
+                        {article.title}
+                      </span>
+                      {isScientific && (
+                        <span
+                          className="dd-article-badge-sci"
+                          title={t(
+                            "doctorDetail.articles.scientificBadgeTitle",
+                            { defaultValue: "Научная статья" },
+                          )}
+                        >
+                          {t("doctorDetail.articles.scientificBadge", {
+                            defaultValue: "Научная",
+                          })}
+                        </span>
+                      )}
+                    </h5>
                   </Link>
                   <p className="dd-article-preview">{preview}...</p>
                   <div className="dd-article-stats">

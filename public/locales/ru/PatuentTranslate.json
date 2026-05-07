@@ -374,7 +374,10 @@
         "date": "Дата публикации",
         "comments": "Комментарии",
         "likes": "Лайки"
-      }
+      },
+      "tabs": { "all": "Все", "regular": "Мнения", "scientific": "Научные" },
+      "scientificBadge": "Научная",
+      "scientificBadgeTitle": "Научная статья"
     }
   },
   "myDoctors": {

@@ -274,7 +274,14 @@
         "date": "Yayın tarihi",
         "comments": "Yorumlar",
         "likes": "Beğeniler"
-      }
+      },
+      "tabs": {
+        "all": "Hepsi",
+        "regular": "Görüşler",
+        "scientific": "Bilimsel"
+      },
+      "scientificBadge": "Bilimsel",
+      "scientificBadgeTitle": "Bilimsel makale"
     }
   },
   "myDoctors": {
