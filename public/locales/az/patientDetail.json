@@ -1,4 +1,7 @@
 {
+  "titles": {
+    "patientCard": "Xəstə Kartı"
+  },
   "tabs": {
     "generalInfo": "Ümumi məlumat",
     "clinicalInfo": "Klinik məlumat",

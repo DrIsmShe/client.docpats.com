@@ -1,6 +1,7 @@
 {
   "titles": {
-    "moreAboutPatient": "Подробнее о пациенте {{firstName}} {{lastName}}"
+    "moreAboutPatient": "Подробнее о пациенте {{firstName}} {{lastName}}",
+    "patientCard": "Карта пациента"
   },
 
   "buttons": {

@@ -1,6 +1,7 @@
 {
   "titles": {
-    "moreAboutPatient": "{{firstName}} {{lastName}} hakkında daha fazla bilgi"
+    "moreAboutPatient": "{{firstName}} {{lastName}} hakkında daha fazla bilgi",
+    "patientCard": "Hasta Kartı"
   },
 
   "buttons": {

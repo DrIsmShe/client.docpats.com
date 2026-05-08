@@ -1759,7 +1759,9 @@ export default function ProfileDoctorHomePage() {
                   <div
                     key={a.id || `${a.name}-${a.time}`}
                     className="hp-alert-item"
-                    onClick={() => a.id && navigate(`/doctor/patient/${a.id}`)}
+                    onClick={() =>
+                      a.id && navigate(`/dp/patient-detail/${a.id}`)
+                    }
                   >
                     <div
                       className={`hp-alert-dot ${a.severity === "high" ? "high" : "med"}`}

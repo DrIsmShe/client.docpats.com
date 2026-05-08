@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Modal from "react-modal";
-import ICD10 from "../ICD10";
+import ICD10Autocomplete from "../../../components/ICD10Autocomplete";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
@@ -72,6 +72,9 @@ const CSS = `
   background:var(--surface); border:1px solid var(--border);
   border-radius:16px; box-shadow:var(--sh); margin-bottom:14px;
   overflow:hidden; transition:var(--tr);
+}
+  .amh-section.has-overflow {
+  overflow:visible;
 }
 .amh-section:focus-within { border-color:var(--teal-border); box-shadow:0 0 0 3px var(--teal-glow),var(--sh); }
 .amh-section-head {
@@ -213,8 +216,8 @@ const CSS = `
 
 /* ─────────────────────── SUB-COMPONENTS ─────────────────────── */
 
-const SectionBlock = ({ icon, label, required, children }) => (
-  <div className="amh-section">
+const SectionBlock = ({ icon, label, required, children, allowOverflow }) => (
+  <div className={`amh-section${allowOverflow ? " has-overflow" : ""}`}>
     <div className="amh-section-head">
       <div className="amh-section-icon">{icon}</div>
       <span className="amh-section-label">{label}</span>
@@ -240,7 +243,12 @@ export default function AddPatientMedicalHistory() {
     anamnesisVitae: "",
     statusPreasens: "",
     statusLocalis: "",
-    diagnosis: [],
+    // ── Структурированный диагноз: МКБ-10 + текст на родном языке ──
+    mainDiagnosis: {
+      code: "",
+      codeTitle: "",
+      text: "",
+    },
     additionalDiagnosis: "",
     recommendations: "",
     ctScanResults: "",
@@ -356,9 +364,36 @@ export default function AddPatientMedicalHistory() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-  const handleDiagnosisChange = (e) => {
-    setFormData((prev) => ({ ...prev, diagnosis: e.target.value }));
+
+  // Когда врач выбирает код МКБ-10 из автокомплита (или сбрасывает)
+  const handleICD10Select = (selected) => {
+    if (!selected) {
+      setFormData((prev) => ({
+        ...prev,
+        mainDiagnosis: { code: "", codeTitle: "", text: "" },
+      }));
+      return;
+    }
+    setFormData((prev) => ({
+      ...prev,
+      mainDiagnosis: {
+        code: selected.code,
+        codeTitle: selected.title,
+        // Автозаполняем text англ. названием ТОЛЬКО если поле пустое.
+        // Если врач уже что-то написал — не затираем его текст.
+        text: prev.mainDiagnosis.text || selected.title,
+      },
+    }));
   };
+
+  // Когда врач редактирует текст диагноза на своём языке
+  const handleDiagnosisTextChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      mainDiagnosis: { ...prev.mainDiagnosis, text: e.target.value },
+    }));
+  };
+
   const handleTemplateSelect = (field, templateId) => {
     if (!templateId) return;
     const category = Object.keys(templates).find((key) =>
@@ -397,16 +432,15 @@ export default function AddPatientMedicalHistory() {
   /* ── Validation ── */
   const validateFields = () => {
     const newErrors = {};
-    const requiredFields = [
+    const requiredTextFields = [
       "complaints",
       "anamnesisMorbi",
       "anamnesisVitae",
       "statusPreasens",
       "statusLocalis",
-      "diagnosis",
       "recommendations",
     ];
-    requiredFields.forEach((field) => {
+    requiredTextFields.forEach((field) => {
       const value = formData[field];
       if (typeof value !== "string" || value.trim() === "") {
         const fieldLabel =
@@ -416,6 +450,21 @@ export default function AddPatientMedicalHistory() {
         });
       }
     });
+
+    // Диагноз — отдельная проверка: и код, и текст должны быть заполнены
+    if (!formData.mainDiagnosis.code) {
+      newErrors.mainDiagnosisCode = t(
+        "medicalHistoryForm.validation.icdRequired",
+        "Please select an ICD-10 code",
+      );
+    }
+    if (!formData.mainDiagnosis.text?.trim()) {
+      newErrors.mainDiagnosisText = t(
+        "medicalHistoryForm.validation.diagnosisTextRequired",
+        "Please enter the diagnosis text in your language",
+      );
+    }
+
     if (Object.keys(newErrors).length > 0) {
       const messageList = Object.values(newErrors)
         .map((msg) => `• ${msg}`)
@@ -449,9 +498,14 @@ export default function AddPatientMedicalHistory() {
     }
     try {
       const formDataToSend = new FormData();
-      Object.keys(formData).forEach((key) =>
-        formDataToSend.append(key, formData[key]),
-      );
+      Object.keys(formData).forEach((key) => {
+        if (key === "mainDiagnosis") {
+          // Объект отправляем как JSON-строку — на бэке распарсим
+          formDataToSend.append(key, JSON.stringify(formData[key]));
+        } else {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
       if (photo) formDataToSend.append("image", photo);
       const response = await axios.post(
         `${API_BASE}/clinic/patients-polyclinic-medical-history/${id}`,
@@ -541,17 +595,19 @@ export default function AddPatientMedicalHistory() {
     "anamnesisVitae",
     "statusPreasens",
     "statusLocalis",
-    "diagnosis",
+    "mainDiagnosis",
     "recommendations",
   ];
-  const filledCount = requiredFields.filter((f) => {
+  const isFieldFilled = (f) => {
     const v = formData[f];
-    return typeof v === "string"
-      ? v.trim().length > 0
-      : Array.isArray(v)
-        ? v.length > 0
-        : !!v;
-  }).length;
+    if (f === "mainDiagnosis") {
+      return !!(v.code && v.text?.trim());
+    }
+    if (typeof v === "string") return v.trim().length > 0;
+    if (Array.isArray(v)) return v.length > 0;
+    return !!v;
+  };
+  const filledCount = requiredFields.filter(isFieldFilled).length;
 
   if (!isAuthenticated) {
     return (
@@ -587,13 +643,7 @@ export default function AddPatientMedicalHistory() {
         {/* ── Progress bar ── */}
         <div className="amh-progress">
           {requiredFields.map((f, i) => {
-            const v = formData[f];
-            const filled =
-              typeof v === "string"
-                ? v.trim().length > 0
-                : Array.isArray(v)
-                  ? v.length > 0
-                  : !!v;
+            const filled = isFieldFilled(f);
             return (
               <div
                 key={f}
@@ -609,6 +659,7 @@ export default function AddPatientMedicalHistory() {
             icon="💬"
             label={t("medicalHistoryForm.labels.complaints", "Complaints")}
             required
+            allowOverflow
           >
             <textarea
               className="amh-textarea"
@@ -858,34 +909,58 @@ export default function AddPatientMedicalHistory() {
             />
           </SectionBlock>
 
-          {/* ── Diagnosis ── */}
+          {/* ── Diagnosis (ICD-10 + текст на родном языке) ── */}
           <SectionBlock
             icon="🏥"
-            label={t("medicalHistoryForm.labels.diagnosis", "Diagnosis")}
+            label={t(
+              "medicalHistoryForm.labels.diagnosis",
+              "Diagnosis (ICD-10)",
+            )}
             required
           >
-            <div className="amh-diagnosis-wrap">
-              <input
-                className="amh-input"
-                type="text"
-                name="diagnosis"
-                value={formData.diagnosis}
-                onChange={handleDiagnosisChange}
-                list="icd10-codes"
-                placeholder={t(
-                  "medicalHistoryForm.placeholders.diagnosisInput",
-                  "Choose a diagnosis from the list (ICD-10)...",
-                )}
-              />
-              <datalist id="icd10-codes">
-                <ICD10 />
-              </datalist>
-              <div className="amh-diagnosis-hint">🔍 ICD-10 autocomplete</div>
-            </div>
-            <FieldError msg={errors.diagnosis} />
+            <ICD10Autocomplete
+              value={
+                formData.mainDiagnosis.code
+                  ? {
+                      code: formData.mainDiagnosis.code,
+                      title: formData.mainDiagnosis.codeTitle,
+                    }
+                  : null
+              }
+              onChange={handleICD10Select}
+              placeholder={t(
+                "medicalHistoryForm.placeholders.diagnosisInput",
+                "Search ICD-10 by code (e.g. J45) or English name (e.g. asthma)...",
+              )}
+            />
+            <FieldError msg={errors.mainDiagnosisCode} />
+
+            {formData.mainDiagnosis.code && (
+              <>
+                <textarea
+                  className="amh-textarea"
+                  style={{ marginTop: 12, minHeight: 90 }}
+                  value={formData.mainDiagnosis.text}
+                  onChange={handleDiagnosisTextChange}
+                  rows="3"
+                  placeholder={t(
+                    "medicalHistoryForm.placeholders.diagnosisText",
+                    "Diagnosis text in your language (auto-filled from ICD-10, you can edit)...",
+                  )}
+                />
+                <div className="amh-diagnosis-hint">
+                  💡{" "}
+                  {t(
+                    "medicalHistoryForm.hints.diagnosisText",
+                    "Auto-filled from ICD-10. Feel free to translate or rephrase in your language.",
+                  )}
+                </div>
+                <FieldError msg={errors.mainDiagnosisText} />
+              </>
+            )}
           </SectionBlock>
 
-          {/* ── Additional Diagnosis ── */}
+          {/* ── Additional Diagnosis (без изменений) ── */}
           <SectionBlock
             icon="➕"
             label={t(

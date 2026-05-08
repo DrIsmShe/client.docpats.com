@@ -1,6 +1,7 @@
 {
   "titles": {
-    "moreAboutPatient": "More about {{firstName}} {{lastName}}"
+    "moreAboutPatient": "More about {{firstName}} {{lastName}}",
+    "patientCard": "Patient Card"
   },
   "examAddedSuccess": "✅ Examination successfully added",
   "tabs": {
