@@ -1,79 +1,322 @@
 // client/src/pages/clinic/ClinicDashboardPage/ClinicDashboardPage.jsx
 //
-// Stub for Day 2. Will be implemented properly in Day 3.
+// Main authenticated dashboard for clinic owners/admins.
+// Shows stats, team preview, pending invitations, and quick actions.
 
-import React from "react";
-import { useOutletContext, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, Link, useOutletContext } from "react-router-dom";
+import { getClinicMe, listStaff, listInvitations } from "../../../api/clinic";
+import "./clinicDashboardPage.css";
 
 export default function ClinicDashboardPage() {
-  const context = useOutletContext();
-  const clinic = context?.clinic;
+  const navigate = useNavigate();
+  const layoutContext = useOutletContext();
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [clinic, setClinic] = useState(null);
+  const [permissions, setPermissions] = useState({});
+  const [features, setFeatures] = useState({});
+  const [staff, setStaff] = useState([]);
+  const [invitations, setInvitations] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      try {
+        // Parallel fetches to prevent race conditions
+        const [meRes, staffRes, invitationsRes] = await Promise.all([
+          getClinicMe(),
+          listStaff().catch((err) => {
+            console.warn("Failed to load staff:", err);
+            return { items: [] };
+          }),
+          listInvitations("pending").catch((err) => {
+            console.warn("Failed to load invitations:", err);
+            return { items: [] };
+          }),
+        ]);
+
+        if (cancelled) return;
+
+        // If no clinic — redirect to hub
+        if (!meRes.hasClinic) {
+          navigate("/clinic", { replace: true });
+          return;
+        }
+
+        setClinic(meRes.clinic || null);
+        setPermissions(meRes.permissions || {});
+        setFeatures(meRes.features || {});
+        setStaff(staffRes.items || []);
+        setInvitations(invitationsRes.items || []);
+        setLoading(false);
+      } catch (err) {
+        if (cancelled) return;
+        console.error("Dashboard load failed:", err);
+        setError(err.message || "Failed to load dashboard");
+        setLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [navigate]);
+
+  if (loading) {
+    return (
+      <div className="clinic-dashboard-loading">
+        <div className="clinic-dashboard-spinner" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="clinic-dashboard-error">
+        <h2>Couldn't load your dashboard</h2>
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>Retry</button>
+      </div>
+    );
+  }
+
+  const tier = clinic?.tier || "starter";
+  const myRole = layoutContext?.role || "member";
+  const canInvite =
+    !!permissions.canInviteStaff || myRole === "owner" || myRole === "admin";
 
   return (
-    <div style={{ padding: "24px 0", textAlign: "center" }}>
-      <h1 style={{ margin: "0 0 12px", fontSize: 28, color: "#1a1f2e" }}>
-        🎉 Clinic created!
-      </h1>
-      <p style={{ color: "#6b7280", fontSize: 16, marginBottom: 24 }}>
-        {clinic?.name ? `Welcome to ${clinic.name}.` : "Your clinic is ready."}
-      </p>
-
-      {clinic && (
-        <div
-          style={{
-            background: "#fff",
-            border: "1px solid #e6eaf0",
-            borderRadius: 12,
-            padding: 24,
-            maxWidth: 480,
-            margin: "0 auto",
-            textAlign: "left",
-          }}
-        >
-          <h3 style={{ margin: "0 0 16px", fontSize: 16, color: "#1a1f2e" }}>
-            Clinic details
-          </h3>
-          <dl
-            style={{
-              margin: 0,
-              display: "grid",
-              gridTemplateColumns: "auto 1fr",
-              gap: "8px 16px",
-              fontSize: 14,
-            }}
-          >
-            <dt style={{ color: "#6b7280" }}>Name:</dt>
-            <dd style={{ margin: 0, color: "#1a1f2e" }}>{clinic.name}</dd>
-
-            <dt style={{ color: "#6b7280" }}>Slug:</dt>
-            <dd style={{ margin: 0, color: "#1a1f2e" }}>
-              {clinic.slug || "—"}
-            </dd>
-
-            <dt style={{ color: "#6b7280" }}>Timezone:</dt>
-            <dd style={{ margin: 0, color: "#1a1f2e" }}>
-              {clinic.timezone || "—"}
-            </dd>
-
-            <dt style={{ color: "#6b7280" }}>Currency:</dt>
-            <dd style={{ margin: 0, color: "#1a1f2e" }}>
-              {clinic.defaultCurrency || "—"}
-            </dd>
-
-            <dt style={{ color: "#6b7280" }}>Tier:</dt>
-            <dd style={{ margin: 0, color: "#1a1f2e" }}>
-              {clinic.tier || "free"}
-            </dd>
-          </dl>
+    <div className="clinic-dashboard">
+      {/* Header */}
+      <header className="clinic-dashboard-header">
+        <div>
+          <h1 className="clinic-dashboard-title">{clinic.name}</h1>
+          <div className="clinic-dashboard-meta">
+            <span className={`clinic-dashboard-tier-badge tier-${tier}`}>
+              {tier}
+            </span>
+            {clinic.slug && (
+              <span className="clinic-dashboard-slug">/{clinic.slug}</span>
+            )}
+            <span className="clinic-dashboard-role">
+              Your role: <strong>{myRole}</strong>
+            </span>
+          </div>
         </div>
+      </header>
+
+      {/* Stats */}
+      <section className="clinic-dashboard-stats">
+        <StatCard
+          icon="👥"
+          label="Team members"
+          value={staff.length}
+          link="/clinic/staff"
+        />
+        <StatCard
+          icon="✉️"
+          label="Pending invitations"
+          value={invitations.length}
+          link={canInvite ? "/clinic/staff" : null}
+        />
+        <StatCard icon="📅" label="Subscription" value={tier} isText />
+      </section>
+
+      {/* Quick actions */}
+      <section className="clinic-dashboard-section">
+        <h2>Quick actions</h2>
+        <div className="clinic-dashboard-actions">
+          {canInvite && (
+            <Link to="/clinic/staff" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">✉️</span>
+              <span className="clinic-dashboard-action-label">
+                Invite team member
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
+          <Link to="/clinic/staff" className="clinic-dashboard-action">
+            <span className="clinic-dashboard-action-icon">👥</span>
+            <span className="clinic-dashboard-action-label">View team</span>
+            <span className="clinic-dashboard-action-arrow">→</span>
+          </Link>
+          <button
+            className="clinic-dashboard-action clinic-dashboard-action-disabled"
+            disabled
+            title="Coming in Week 3"
+          >
+            <span className="clinic-dashboard-action-icon">📋</span>
+            <span className="clinic-dashboard-action-label">
+              Schedule (soon)
+            </span>
+          </button>
+        </div>
+      </section>
+
+      {/* Team preview */}
+      <section className="clinic-dashboard-section">
+        <div className="clinic-dashboard-section-header">
+          <h2>Team</h2>
+          {staff.length > 5 && (
+            <Link to="/clinic/staff" className="clinic-dashboard-section-link">
+              View all ({staff.length}) →
+            </Link>
+          )}
+        </div>
+        {staff.length === 0 ? (
+          <div className="clinic-dashboard-empty">
+            <p>No team members yet.</p>
+            {canInvite && (
+              <Link to="/clinic/staff" className="clinic-dashboard-empty-cta">
+                Invite your first team member →
+              </Link>
+            )}
+          </div>
+        ) : (
+          <div className="clinic-dashboard-team-list">
+            {staff.slice(0, 5).map((m) => (
+              <TeamRow key={m._id || m.id} member={m} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Pending invitations */}
+      {invitations.length > 0 && canInvite && (
+        <section className="clinic-dashboard-section">
+          <div className="clinic-dashboard-section-header">
+            <h2>Pending invitations</h2>
+            <Link to="/clinic/staff" className="clinic-dashboard-section-link">
+              Manage →
+            </Link>
+          </div>
+          <div className="clinic-dashboard-invitations-list">
+            {invitations.slice(0, 5).map((inv) => (
+              <InvitationRow key={inv._id || inv.id} invitation={inv} />
+            ))}
+          </div>
+        </section>
       )}
 
-      <p style={{ marginTop: 24, color: "#6b7280", fontSize: 13 }}>
-        Full dashboard coming in Day 3 ·{" "}
-        <Link to="/clinic" style={{ color: "#2563eb" }}>
-          Back to hub
-        </Link>
-      </p>
+      {/* Clinic details */}
+      <section className="clinic-dashboard-section">
+        <h2>Clinic details</h2>
+        <div className="clinic-dashboard-details">
+          <DetailRow label="Name" value={clinic.name} />
+          <DetailRow label="Slug" value={clinic.slug || "—"} />
+          <DetailRow label="Timezone" value={clinic.timezone || "—"} />
+          <DetailRow
+            label="Default currency"
+            value={clinic.defaultCurrency || "—"}
+          />
+          <DetailRow
+            label="Default language"
+            value={clinic.defaultLanguage || "—"}
+          />
+          <DetailRow label="Tier" value={tier} />
+          {clinic.contacts?.phone && (
+            <DetailRow label="Phone" value={clinic.contacts.phone} />
+          )}
+          {clinic.contacts?.email && (
+            <DetailRow label="Email" value={clinic.contacts.email} />
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+// ─── Sub-components ───
+
+function StatCard({ icon, label, value, link, isText }) {
+  const content = (
+    <>
+      <div className="clinic-dashboard-stat-icon">{icon}</div>
+      <div className="clinic-dashboard-stat-body">
+        <div
+          className={`clinic-dashboard-stat-value ${isText ? "is-text" : ""}`}
+        >
+          {value}
+        </div>
+        <div className="clinic-dashboard-stat-label">{label}</div>
+      </div>
+    </>
+  );
+
+  if (link) {
+    return (
+      <Link
+        to={link}
+        className="clinic-dashboard-stat clinic-dashboard-stat-clickable"
+      >
+        {content}
+      </Link>
+    );
+  }
+  return <div className="clinic-dashboard-stat">{content}</div>;
+}
+
+function TeamRow({ member }) {
+  const name =
+    [member.firstName, member.lastName].filter(Boolean).join(" ") ||
+    member.email ||
+    "Unnamed member";
+
+  return (
+    <div className="clinic-dashboard-team-row">
+      <div className="clinic-dashboard-team-avatar">
+        {(name[0] || "?").toUpperCase()}
+      </div>
+      <div className="clinic-dashboard-team-info">
+        <div className="clinic-dashboard-team-name">{name}</div>
+        {member.email && (
+          <div className="clinic-dashboard-team-email">{member.email}</div>
+        )}
+      </div>
+      <div className="clinic-dashboard-team-role">
+        <span className={`clinic-dashboard-role-badge role-${member.role}`}>
+          {member.role}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function InvitationRow({ invitation }) {
+  const formatDate = (d) => {
+    if (!d) return "";
+    try {
+      return new Date(d).toLocaleDateString();
+    } catch {
+      return "";
+    }
+  };
+
+  return (
+    <div className="clinic-dashboard-invitation-row">
+      <div className="clinic-dashboard-invitation-info">
+        <div className="clinic-dashboard-invitation-email">
+          {invitation.email}
+        </div>
+        <div className="clinic-dashboard-invitation-role">
+          Invited as {invitation.role} · expires{" "}
+          {formatDate(invitation.expiresAt)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DetailRow({ label, value }) {
+  return (
+    <div className="clinic-dashboard-detail-row">
+      <span className="clinic-dashboard-detail-label">{label}</span>
+      <span className="clinic-dashboard-detail-value">{value}</span>
     </div>
   );
 }
