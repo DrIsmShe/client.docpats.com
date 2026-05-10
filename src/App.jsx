@@ -503,6 +503,8 @@ import CreateClinicPage from "./pages/clinic/CreateClinicPage/CreateClinicPage.j
 import ClinicDashboardPage from "./pages/clinic/ClinicDashboardPage/ClinicDashboardPage.jsx";
 import ClinicStaffPage from "./pages/clinic/ClinicStaffPage/ClinicStaffPage.jsx";
 import InvitationAcceptPage from "./pages/clinic/InvitationAcceptPage/InvitationAcceptPage";
+import EmployeeLoginPage from "./pages/clinic/EmployeeLoginPage/EmployeeLoginPage";
+import EmployeeDashboardPage from "./pages/clinic/EmployeeDashboardPage/EmployeeDashboardPage";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -559,12 +561,22 @@ function App() {
               />
             </Route>
             {/* ─── CLINIC MODULE — Public routes ─── */}
+            {/* ─── CLINIC MODULE — Public routes ─── */}
             <Route
               path="/clinic/invitations/accept"
               element={<InvitationAcceptPage />}
             />
+            <Route path="/clinic/staff-login" element={<EmployeeLoginPage />} />
 
-            {/* ─── CLINIC MODULE — Authenticated routes ─── */}
+            {/* ─── CLINIC MODULE — Employee authenticated zone ─── */}
+            <Route
+              path="/clinic/employee"
+              element={<ClinicLayout employeeMode={true} />}
+            >
+              <Route index element={<EmployeeDashboardPage />} />
+            </Route>
+
+            {/* ─── CLINIC MODULE — DocPats user authenticated zone ─── */}
             <Route path="/clinic" element={<ClinicLayout />}>
               <Route index element={<ClinicHubPage />} />
               <Route path="create" element={<CreateClinicPage />} />

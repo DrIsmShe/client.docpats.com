@@ -277,5 +277,43 @@
       "subtitle": "{{clinicName}} klinikasına xoş gəlmisiniz.",
       "redirecting": "Giriş səhifəsinə yönləndirilir..."
     }
+  },
+  "employeeLogin": {
+    "title": "Klinikaya giriş",
+    "subtitle": "İş sahənizə daxil olmaq üçün məlumatlarınızı daxil edin.",
+    "submit": "Daxil ol",
+    "submitting": "Daxil olunur...",
+    "justRegistered": "Hesab yaradıldı. İndi daxil ola bilərsiniz.",
+    "fields": {
+      "email": "E-poçt",
+      "emailPlaceholder": "siz@nümunə.com",
+      "password": "Şifrə"
+    },
+    "errors": {
+      "emailRequired": "E-poçt tələb olunur",
+      "emailInvalid": "Yanlış e-poçt",
+      "passwordRequired": "Şifrə tələb olunur",
+      "invalidCredentials": "E-poçt və ya şifrə yanlışdır",
+      "notActive": "Bu hesab aktiv deyil. Klinika administratoru ilə əlaqə saxlayın.",
+      "fixErrors": "Aşağıdakı səhvləri düzəldin",
+      "generic": "Daxil olmaq mümkün olmadı. Yenidən cəhd edin."
+    }
+  },
+  "employeeDashboard": {
+    "welcome": "Xoş gəlmisiniz, {{name}}!",
+    "subtitle": "{{clinicName}} klinikasına daxil oldunuz.",
+    "profile": {
+      "fullName": "Tam ad",
+      "clinic": "Klinika",
+      "role": "Rol",
+      "joinedAt": "Qoşulma tarixi"
+    },
+    "quickActions": "Sürətli əməliyyatlar",
+    "actions": {
+      "scheduleSoon": "Qrafik (tezliklə)",
+      "patientsSoon": "Xəstələr (tezliklə)",
+      "pharmacySoon": "Aptek (tezliklə)"
+    },
+    "comingSoon": "Növbəti versiyalarda yeni xüsusiyyətlər əlavə olunacaq."
   }
 }

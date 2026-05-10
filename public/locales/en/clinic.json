@@ -277,5 +277,43 @@
       "subtitle": "Welcome to {{clinicName}}.",
       "redirecting": "Redirecting to login..."
     }
+  },
+  "employeeLogin": {
+    "title": "Sign in to your clinic",
+    "subtitle": "Enter your credentials to access your workspace.",
+    "submit": "Sign in",
+    "submitting": "Signing in...",
+    "justRegistered": "Account created. You can sign in now.",
+    "fields": {
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password"
+    },
+    "errors": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email",
+      "passwordRequired": "Password is required",
+      "invalidCredentials": "Wrong email or password",
+      "notActive": "This account is not active. Please contact your clinic admin.",
+      "fixErrors": "Please fix the errors below",
+      "generic": "Couldn't sign in. Please try again."
+    }
+  },
+  "employeeDashboard": {
+    "welcome": "Welcome, {{name}}!",
+    "subtitle": "You are signed in to {{clinicName}}.",
+    "profile": {
+      "fullName": "Full name",
+      "clinic": "Clinic",
+      "role": "Role",
+      "joinedAt": "Joined"
+    },
+    "quickActions": "Quick actions",
+    "actions": {
+      "scheduleSoon": "Schedule (soon)",
+      "patientsSoon": "Patients (soon)",
+      "pharmacySoon": "Pharmacy (soon)"
+    },
+    "comingSoon": "More features will become available in upcoming releases."
   }
 }

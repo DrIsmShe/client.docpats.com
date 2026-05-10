@@ -277,5 +277,43 @@
       "subtitle": "{{clinicName}} kliniğine hoş geldiniz.",
       "redirecting": "Giriş sayfasına yönlendiriliyor..."
     }
+  },
+  "employeeLogin": {
+    "title": "Kliniğinize giriş yapın",
+    "subtitle": "Çalışma alanınıza erişmek için kimlik bilgilerinizi girin.",
+    "submit": "Giriş yap",
+    "submitting": "Giriş yapılıyor...",
+    "justRegistered": "Hesap oluşturuldu. Şimdi giriş yapabilirsiniz.",
+    "fields": {
+      "email": "E-posta",
+      "emailPlaceholder": "siz@ornek.com",
+      "password": "Şifre"
+    },
+    "errors": {
+      "emailRequired": "E-posta gereklidir",
+      "emailInvalid": "Geçersiz e-posta",
+      "passwordRequired": "Şifre gereklidir",
+      "invalidCredentials": "E-posta veya şifre yanlış",
+      "notActive": "Bu hesap aktif değil. Lütfen klinik yöneticisiyle iletişime geçin.",
+      "fixErrors": "Lütfen aşağıdaki hataları düzeltin",
+      "generic": "Giriş yapılamadı. Tekrar deneyin."
+    }
+  },
+  "employeeDashboard": {
+    "welcome": "Hoş geldin, {{name}}!",
+    "subtitle": "{{clinicName}} kliniğine giriş yaptınız.",
+    "profile": {
+      "fullName": "Tam ad",
+      "clinic": "Klinik",
+      "role": "Rol",
+      "joinedAt": "Katılım tarihi"
+    },
+    "quickActions": "Hızlı işlemler",
+    "actions": {
+      "scheduleSoon": "Takvim (yakında)",
+      "patientsSoon": "Hastalar (yakında)",
+      "pharmacySoon": "Eczane (yakında)"
+    },
+    "comingSoon": "Daha fazla özellik gelecek sürümlerde kullanıma sunulacak."
   }
 }

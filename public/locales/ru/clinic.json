@@ -276,6 +276,44 @@
       "title": "Регистрация завершена!",
       "subtitle": "Добро пожаловать в {{clinicName}}.",
       "redirecting": "Перенаправляем на страницу входа..."
+    },
+    "employeeLogin": {
+      "title": "Вход в клинику",
+      "subtitle": "Введите данные для доступа к рабочему пространству.",
+      "submit": "Войти",
+      "submitting": "Вход...",
+      "justRegistered": "Аккаунт создан. Теперь вы можете войти.",
+      "fields": {
+        "email": "Email",
+        "emailPlaceholder": "you@example.com",
+        "password": "Пароль"
+      },
+      "errors": {
+        "emailRequired": "Введите email",
+        "emailInvalid": "Неверный email",
+        "passwordRequired": "Введите пароль",
+        "invalidCredentials": "Неверный email или пароль",
+        "notActive": "Аккаунт неактивен. Свяжитесь с администратором клиники.",
+        "fixErrors": "Исправьте ошибки ниже",
+        "generic": "Не удалось войти. Попробуйте ещё раз."
+      }
+    },
+    "employeeDashboard": {
+      "welcome": "Добро пожаловать, {{name}}!",
+      "subtitle": "Вы вошли в клинику {{clinicName}}.",
+      "profile": {
+        "fullName": "Полное имя",
+        "clinic": "Клиника",
+        "role": "Роль",
+        "joinedAt": "Дата начала работы"
+      },
+      "quickActions": "Быстрые действия",
+      "actions": {
+        "scheduleSoon": "Расписание (скоро)",
+        "patientsSoon": "Пациенты (скоро)",
+        "pharmacySoon": "Аптека (скоро)"
+      },
+      "comingSoon": "Дополнительные возможности появятся в следующих релизах."
     }
   }
 }
