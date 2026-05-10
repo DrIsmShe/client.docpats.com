@@ -497,6 +497,8 @@ import HelpPage from "./pages/simulation/pages/HelpPage.jsx";
 import SimulationHubPage from "./pages/simulation/pages/SimulationHubPage.jsx";
 import { BreastListPage, BreastEditorPage } from "./pages/simulation";
 import UserSynthesisArticlePage from "./pages/UserSynthesis/UserSynthesisArticlePage";
+import ClinicLayout from "./layoutes/clinicLayout/ClinicLayout.jsx";
+import ClinicHubPage from "./pages/clinic/ClinicHubPage/ClinicHubPage.jsx";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -510,7 +512,6 @@ function App() {
         >
           <Routes>
             <Route path="/consultation" element={<ConsultationPage />} />
-
             <Route
               path="/user-synthesis/result"
               element={<UserSynthesisResultPage />}
@@ -520,6 +521,11 @@ function App() {
               element={<UserSynthesisResultPage />}
             />
             <Route path="/public" element={<DashboardLayout />}>
+              {/* <Route path="/clinic/accept" element={<InvitationAcceptPage />} />
+              <Route
+                path="/clinic/staff-login"
+                element={<EmployeeLoginPage />}
+              /> */}
               <Route path="user-synthesis" element={<UserSynthesisPage />} />
               <Route
                 path="user-synthesis/my/:id"
@@ -547,6 +553,20 @@ function App() {
                 path="doctor-profile/doctor-details/:id"
                 element={<DoctorDetailsForAll />}
               />
+            </Route>
+
+            <Route path="/clinic" element={<ClinicLayout />}>
+              <Route index element={<ClinicHubPage />} />
+              {/* <Route path="create" element={<CreateClinicPage />} />
+              <Route path="dashboard" element={<ClinicDashboardPage />} />
+              <Route path="staff" element={<ClinicStaffPage />} /> */}
+            </Route>
+
+            <Route
+              path="/clinic/employee"
+              element={<ClinicLayout employeeMode />}
+            >
+              {/* <Route index element={<EmployeeDashboardPage />} /> */}
             </Route>
             {/* Здесь перечислены все маршруты для раздела ПОЛИКЛИНИКА */}
             <Route path="/dp" element={<MainPolyclinicLayout />}>
@@ -2019,7 +2039,6 @@ function App() {
                 element={<TempLaboratoryTestResults />}
               />
             </Route>
-
             <Route path="/demo" element={<DemoPage />} />
             <Route path="/terms-consent-page" element={<TermsConsentPage />} />
             <Route path="/pricing" element={<PricingPage />} />
@@ -2041,7 +2060,6 @@ function App() {
                 element={<Otpresetpasswordchange />}
               />
             </Route>
-
             {/* Здесь перечислены все маршруты для раздела ПРОФИЛЬ ПАЦИЕНТА */}
             <Route path="/patient" element={<PatientLayout />}>
               <Route path="news" element={<NewsList />} />
@@ -2201,7 +2219,6 @@ function App() {
                 element={<SingleArticleScientificPage />}
               />
             </Route>
-
             <Route
               path="/doctor/anthropometry/photos/:photoId/annotate"
               element={<PhotoAnnotationPage />}
@@ -2381,7 +2398,11 @@ function App() {
                 element={<PolyclinicPatientDelete />}
               />
             </Route>
+            <Route path="/clinic" element={<ClinicLayout />}>
+              <Route index element={<ClinicHubPage />} />
+            </Route>
             {/* Здесь перечислены все маршруты для раздела СТРАНИЦА НЕ НАЙДЕНА */}
+
             <Route path="*" element={<Pagenotfound />} />
           </Routes>
           <ToastContainer position="bottom-right" autoClose={5000} />

@@ -1,0 +1,169 @@
+/* client/src/layouts/clinicLayout/clinicLayout.css */
+
+.clinic-layout {
+  min-height: 100vh;
+  background: #f7f9fc;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Header ─── */
+
+.clinic-layout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  background: #fff;
+  border-bottom: 1px solid #e6eaf0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.clinic-layout-header-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.clinic-layout-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.clinic-layout-brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+}
+
+.clinic-layout-brand-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1f2e;
+}
+
+.clinic-layout-context {
+  padding-left: 16px;
+  border-left: 1px solid #e6eaf0;
+  color: #4a5568;
+  font-size: 14px;
+}
+
+.clinic-layout-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.clinic-layout-logout {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid #d4dae2;
+  border-radius: 6px;
+  color: #4a5568;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.clinic-layout-logout:hover {
+  background: #f0f4f8;
+  border-color: #b4bdc7;
+}
+
+/* ─── Main ─── */
+
+.clinic-layout-main {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+/* ─── Loading state ─── */
+
+.clinic-layout-loading {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f9fc;
+}
+
+.clinic-layout-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e6eaf0;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: clinic-spin 0.8s linear infinite;
+}
+
+@keyframes clinic-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── Error state ─── */
+
+.clinic-layout-error {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px;
+  text-align: center;
+}
+
+.clinic-layout-error h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #1a1f2e;
+}
+
+.clinic-layout-error p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.clinic-layout-error button {
+  padding: 10px 20px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ─── Responsive ─── */
+
+@media (max-width: 768px) {
+  .clinic-layout-header {
+    padding: 12px 16px;
+  }
+  .clinic-layout-brand-name {
+    display: none;
+  }
+  .clinic-layout-context {
+    font-size: 13px;
+  }
+  .clinic-layout-main {
+    padding: 16px;
+  }
+}

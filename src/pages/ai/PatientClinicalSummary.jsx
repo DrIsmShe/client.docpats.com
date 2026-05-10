@@ -159,11 +159,41 @@ export default function PatientClinicalSummary() {
       try {
         setLoading(true);
 
-        const [patientRes, summaryRes] = await Promise.allSettled([
-          axios.get(`${API_BASE}/clinic/patient-details/${id}`, {
-            withCredentials: true,
-          }),
+        // ✅ Загружаем пациента — пробуем сначала обычный эндпоинт,
+        // если 404 — пробуем приватный. Так покрываем оба типа пациентов.
+        const loadPatient = async () => {
+          try {
+            const r = await axios.get(
+              `${API_BASE}/clinic/patient-details/${id}`,
+              { withCredentials: true },
+            );
+            return { ...r.data, _resolvedType: "registered" };
+          } catch (err) {
+            if (err?.response?.status !== 404) {
+              // не 404 — это другая ошибка, пробрасываем
+              throw err;
+            }
+            // 404 на обычном — пробуем приватного
+            try {
+              const r2 = await axios.get(
+                `${API_BASE}/clinic/private-patient-details/${id}`,
+                { withCredentials: true },
+              );
+              return {
+                ...r2.data,
+                _resolvedType: "private",
+                isPrivate: true,
+              };
+            } catch (err2) {
+              // Оба 404 — пациент действительно не найден
+              if (err2?.response?.status === 404) return null;
+              throw err2;
+            }
+          }
+        };
 
+        const [patientResult, summaryRes] = await Promise.allSettled([
+          loadPatient(),
           axios.post(
             `${API_BASE}/ai/generate-clinical-summary/${id}`,
             { language: i18n.language },
@@ -171,8 +201,8 @@ export default function PatientClinicalSummary() {
           ),
         ]);
 
-        if (patientRes.status === "fulfilled") {
-          setPatient(patientRes.value.data);
+        if (patientResult.status === "fulfilled" && patientResult.value) {
+          setPatient(patientResult.value);
         }
 
         if (summaryRes.status === "fulfilled") {
@@ -270,8 +300,13 @@ export default function PatientClinicalSummary() {
 
   if (authLoading) return <div>{t("auth.checking")}...</div>;
 
+  // ✅ Определение типа пациента — учитываем все возможные источники.
+  // _resolvedType ставится при загрузке выше, isPrivate/patientType/type
+  // могут прийти с бэка, linkedUserId === null — fallback для старых ответов.
   const isPrivatePatient =
-    patient?.isPrivate ||
+    patient?._resolvedType === "private" ||
+    patient?.isPrivate === true ||
+    patient?.patientType === "private" ||
     patient?.type === "private" ||
     patient?.linkedUserId === null;
 
