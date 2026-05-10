@@ -502,6 +502,7 @@ import ClinicHubPage from "./pages/clinic/ClinicHubPage/ClinicHubPage.jsx";
 import CreateClinicPage from "./pages/clinic/CreateClinicPage/CreateClinicPage.jsx";
 import ClinicDashboardPage from "./pages/clinic/ClinicDashboardPage/ClinicDashboardPage.jsx";
 import ClinicStaffPage from "./pages/clinic/ClinicStaffPage/ClinicStaffPage.jsx";
+import InvitationAcceptPage from "./pages/clinic/InvitationAcceptPage/InvitationAcceptPage";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -557,7 +558,13 @@ function App() {
                 element={<DoctorDetailsForAll />}
               />
             </Route>
+            {/* ─── CLINIC MODULE — Public routes ─── */}
+            <Route
+              path="/clinic/invitations/accept"
+              element={<InvitationAcceptPage />}
+            />
 
+            {/* ─── CLINIC MODULE — Authenticated routes ─── */}
             <Route path="/clinic" element={<ClinicLayout />}>
               <Route index element={<ClinicHubPage />} />
               <Route path="create" element={<CreateClinicPage />} />

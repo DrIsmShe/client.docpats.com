@@ -208,5 +208,74 @@
     "Europe/Berlin": "Berlin (UTC+1/+2)",
     "Asia/Dubai": "Dubai (UTC+4)",
     "America/New_York": "New York (UTC-5/-4)"
+  },
+  "acceptInvitation": {
+    "backToHome": "Ana sayfa",
+    "preview": {
+      "title": "Davet edildiniz",
+      "subtitle": "{{clinicName}} ekibine katılın.",
+      "clinic": "Klinik",
+      "role": "Rol",
+      "email": "E-posta",
+      "continueHint": "E-postanıza 6 haneli doğrulama kodu göndereceğiz.",
+      "continue": "Doğrulama kodu gönder",
+      "sending": "Gönderiliyor..."
+    },
+    "accept": {
+      "title": "Kaydı tamamlayın",
+      "subtitle": "{{email}} adresine gönderilen 6 haneli kodu girin ve hesabınızı oluşturun.",
+      "submit": "Kaydı tamamla",
+      "submitting": "Hesap oluşturuluyor...",
+      "resend": "Kodu yeniden gönder",
+      "resendIn": "{{seconds}}s sonra"
+    },
+    "fields": {
+      "otp": "Doğrulama kodu",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "phoneNumber": "Telefon",
+      "password": "Şifre",
+      "passwordHint": "En az 8 karakter.",
+      "passwordConfirm": "Şifreyi doğrulayın"
+    },
+    "errors": {
+      "otpRequired": "Kod gereklidir",
+      "otpFormat": "Kod 6 haneli olmalıdır",
+      "otpWrong": "Yanlış kod, tekrar deneyin",
+      "otpExpired": "Kodun süresi doldu. Yenisini isteyin.",
+      "otpGeneric": "Kod gönderilemedi. Tekrar deneyin.",
+      "firstNameRequired": "Ad gereklidir",
+      "lastNameRequired": "Soyad gereklidir",
+      "passwordRequired": "Şifre gereklidir",
+      "passwordMinLength": "Şifre en az 8 karakter olmalı",
+      "passwordMismatch": "Şifreler eşleşmiyor",
+      "tooManyRequests": "Çok fazla istek. Lütfen bir dakika bekleyin.",
+      "tooManyAttempts": "Çok fazla başarısız deneme. Yeni kod isteyin.",
+      "fixErrors": "Lütfen aşağıdaki hataları düzeltin",
+      "generic": "Kayıt tamamlanamadı. Tekrar deneyin."
+    },
+    "errorStates": {
+      "expired": {
+        "title": "Davetin süresi doldu",
+        "description": "Bu davet bağlantısının süresi doldu. Klinikten yeni bir davet isteyin."
+      },
+      "used": {
+        "title": "Davet zaten kullanıldı",
+        "description": "Bu davet zaten kabul edilmiş. Siz değilseniz klinikle iletişime geçin."
+      },
+      "invalid": {
+        "title": "Geçersiz davet",
+        "description": "Bu davet bağlantısı geçersiz veya mevcut değil."
+      },
+      "generic": {
+        "title": "Bir hata oluştu",
+        "description": "Davet yüklenemedi. Lütfen daha sonra tekrar deneyin."
+      }
+    },
+    "success": {
+      "title": "Kayıt tamamlandı!",
+      "subtitle": "{{clinicName}} kliniğine hoş geldiniz.",
+      "redirecting": "Giriş sayfasına yönlendiriliyor..."
+    }
   }
 }

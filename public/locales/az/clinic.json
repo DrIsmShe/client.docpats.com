@@ -208,5 +208,74 @@
     "Europe/Berlin": "Berlin (UTC+1/+2)",
     "Asia/Dubai": "Dubay (UTC+4)",
     "America/New_York": "Nyu-York (UTC-5/-4)"
+  },
+  "acceptInvitation": {
+    "backToHome": "Ana səhifə",
+    "preview": {
+      "title": "Sizi dəvət etdilər",
+      "subtitle": "{{clinicName}} komandasına qoşulun.",
+      "clinic": "Klinika",
+      "role": "Rol",
+      "email": "E-poçt",
+      "continueHint": "E-poçtunuza 6 rəqəmli təsdiq kodu göndərəcəyik.",
+      "continue": "Təsdiq kodu göndər",
+      "sending": "Göndərilir..."
+    },
+    "accept": {
+      "title": "Qeydiyyatı tamamlayın",
+      "subtitle": "{{email}} ünvanına göndərilən 6 rəqəmli kodu daxil edin və hesabınızı yaradın.",
+      "submit": "Qeydiyyatı tamamla",
+      "submitting": "Hesab yaradılır...",
+      "resend": "Kodu yenidən göndər",
+      "resendIn": "{{seconds}}s sonra"
+    },
+    "fields": {
+      "otp": "Təsdiq kodu",
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "phoneNumber": "Telefon",
+      "password": "Şifrə",
+      "passwordHint": "Ən azı 8 simvol.",
+      "passwordConfirm": "Şifrəni təsdiqləyin"
+    },
+    "errors": {
+      "otpRequired": "Kod tələb olunur",
+      "otpFormat": "Kod 6 rəqəmdən ibarət olmalıdır",
+      "otpWrong": "Yanlış kod, yenidən cəhd edin",
+      "otpExpired": "Kodun müddəti bitdi. Yenisini sorğu edin.",
+      "otpGeneric": "Kod göndərilə bilmədi. Yenidən cəhd edin.",
+      "firstNameRequired": "Ad tələb olunur",
+      "lastNameRequired": "Soyad tələb olunur",
+      "passwordRequired": "Şifrə tələb olunur",
+      "passwordMinLength": "Şifrə ən azı 8 simvol olmalıdır",
+      "passwordMismatch": "Şifrələr uyğun deyil",
+      "tooManyRequests": "Çox sayda sorğu. Bir dəqiqə gözləyin.",
+      "tooManyAttempts": "Çox sayda uğursuz cəhd. Yeni kod sorğu edin.",
+      "fixErrors": "Aşağıdakı səhvləri düzəldin",
+      "generic": "Qeydiyyat tamamlana bilmədi. Yenidən cəhd edin."
+    },
+    "errorStates": {
+      "expired": {
+        "title": "Dəvətin müddəti bitdi",
+        "description": "Bu dəvət linkinin müddəti bitib. Klinikadan yeni dəvət göndərməsini xahiş edin."
+      },
+      "used": {
+        "title": "Dəvət artıq istifadə olunub",
+        "description": "Bu dəvət artıq qəbul edilib. Bu siz deyildinizsə, klinika ilə əlaqə saxlayın."
+      },
+      "invalid": {
+        "title": "Yanlış dəvət",
+        "description": "Bu dəvət linki yanlışdır və ya mövcud deyil."
+      },
+      "generic": {
+        "title": "Nəsə səhv getdi",
+        "description": "Dəvət yüklənə bilmədi. Sonra yenidən cəhd edin."
+      }
+    },
+    "success": {
+      "title": "Qeydiyyat tamamlandı!",
+      "subtitle": "{{clinicName}} klinikasına xoş gəlmisiniz.",
+      "redirecting": "Giriş səhifəsinə yönləndirilir..."
+    }
   }
 }
