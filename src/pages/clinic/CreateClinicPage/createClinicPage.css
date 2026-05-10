@@ -1,0 +1,234 @@
+/* client/src/pages/clinic/CreateClinicPage/createClinicPage.css */
+
+.create-clinic {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 0;
+}
+
+/* ─── Header ─── */
+
+.create-clinic-header {
+  margin-bottom: 32px;
+}
+
+.create-clinic-back {
+  display: inline-block;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 12px;
+  transition: color 0.15s;
+}
+
+.create-clinic-back:hover {
+  color: #2563eb;
+}
+
+.create-clinic-header h1 {
+  margin: 0 0 6px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1f2e;
+}
+
+.create-clinic-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* ─── Form ─── */
+
+.create-clinic-form {
+  background: #fff;
+  border: 1px solid #e6eaf0;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.create-clinic-server-error {
+  padding: 12px 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  color: #b91c1c;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+/* ─── Fields ─── */
+
+.create-clinic-field {
+  margin-bottom: 20px;
+}
+
+.create-clinic-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1f2e;
+}
+
+.create-clinic-field .required {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.create-clinic-field .optional {
+  color: #9ca3af;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.create-clinic-field input,
+.create-clinic-field select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d4dae2;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1a1f2e;
+  background: #fff;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.create-clinic-field input:focus,
+.create-clinic-field select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.create-clinic-field input.has-error,
+.create-clinic-field select.has-error {
+  border-color: #dc2626;
+}
+
+.create-clinic-field input:disabled,
+.create-clinic-field select:disabled {
+  background: #f7f9fc;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.create-clinic-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.create-clinic-error {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #dc2626;
+}
+
+/* ─── Two-column row ─── */
+
+.create-clinic-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.create-clinic-row .create-clinic-field {
+  margin-bottom: 20px;
+}
+
+/* ─── Section divider ─── */
+
+.create-clinic-section {
+  margin: 28px 0 16px;
+  padding-top: 24px;
+  border-top: 1px solid #e6eaf0;
+}
+
+.create-clinic-section h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1f2e;
+}
+
+.create-clinic-section-hint {
+  margin: 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* ─── Actions ─── */
+
+.create-clinic-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #e6eaf0;
+}
+
+.create-clinic-cancel {
+  padding: 10px 20px;
+  background: transparent;
+  color: #6b7280;
+  border: 1px solid #d4dae2;
+  border-radius: 6px;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.15s;
+}
+
+.create-clinic-cancel:hover {
+  background: #f7f9fc;
+}
+
+.create-clinic-submit {
+  padding: 10px 24px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.create-clinic-submit:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.create-clinic-submit:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* ─── Responsive ─── */
+
+@media (max-width: 640px) {
+  .create-clinic-form {
+    padding: 24px 20px;
+  }
+  .create-clinic-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .create-clinic-actions {
+    flex-direction: column-reverse;
+  }
+  .create-clinic-cancel,
+  .create-clinic-submit {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
