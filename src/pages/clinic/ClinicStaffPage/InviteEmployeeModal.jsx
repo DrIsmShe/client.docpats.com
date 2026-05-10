@@ -1,32 +1,31 @@
 // client/src/pages/clinic/ClinicStaffPage/InviteEmployeeModal.jsx
 
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { createInvitation } from "../../../api/clinic";
 import "./inviteEmployeeModal.css";
 
 const ROLES = [
-  { value: "receptionist", label: "Receptionist" },
-  { value: "nurse", label: "Nurse" },
-  { value: "accountant", label: "Accountant" },
-  { value: "pharmacist", label: "Pharmacist" },
-  { value: "marketer", label: "Marketer" },
-  { value: "manager", label: "Manager" },
-  { value: "admin", label: "Admin" },
+  "receptionist",
+  "nurse",
+  "accountant",
+  "pharmacist",
+  "marketer",
+  "manager",
+  "admin",
 ];
 
-const LANGUAGES = [
-  { value: "ru", label: "Русский" },
-  { value: "en", label: "English" },
-  { value: "tr", label: "Türkçe" },
-  { value: "az", label: "Azərbaycanca" },
-  { value: "ar", label: "العربية" },
-];
+const LANGUAGE_CODES = ["ru", "en", "tr", "az", "ar"];
 
 export default function InviteEmployeeModal({ onClose, onSuccess }) {
+  const { t, i18n } = useTranslation("clinic");
+
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("receptionist");
   const [customTitle, setCustomTitle] = useState("");
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState(
+    (i18n.language || "en").split("-")[0],
+  );
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -38,11 +37,11 @@ export default function InviteEmployeeModal({ onClose, onSuccess }) {
     setFieldErrors({});
 
     if (!email.trim()) {
-      setFieldErrors({ email: "Email is required" });
+      setFieldErrors({ email: t("inviteModal.errors.emailRequired") });
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setFieldErrors({ email: "Invalid email" });
+      setFieldErrors({ email: t("inviteModal.errors.emailInvalid") });
       return;
     }
 
@@ -65,11 +64,11 @@ export default function InviteEmployeeModal({ onClose, onSuccess }) {
           if (field) fe[field] = issue.message;
         }
         setFieldErrors(fe);
-        setError("Please fix the errors below");
+        setError(t("inviteModal.errors.fixErrors"));
       } else if (status === 409) {
-        setError("This email is already invited or a member.");
+        setError(t("inviteModal.errors.alreadyMember"));
       } else {
-        setError(data?.error || "Failed to send invitation");
+        setError(data?.error || t("inviteModal.errors.generic"));
       }
     } finally {
       setSubmitting(false);
@@ -80,30 +79,33 @@ export default function InviteEmployeeModal({ onClose, onSuccess }) {
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-window" onClick={(e) => e.stopPropagation()}>
         <header className="modal-header">
-          <h2>Invite employee</h2>
-          <button className="modal-close" onClick={onClose} aria-label="Close">
+          <h2>{t("inviteModal.title")}</h2>
+          <button
+            className="modal-close"
+            onClick={onClose}
+            aria-label={t("common.cancel")}
+            type="button"
+          >
             ×
           </button>
         </header>
 
         <form onSubmit={handleSubmit} className="modal-body" noValidate>
-          <p className="modal-intro">
-            We'll email an invitation link. The recipient will set up a password
-            and join your clinic as a staff member (no public DocPats profile).
-          </p>
+          <p className="modal-intro">{t("inviteModal.intro")}</p>
 
           {error && <div className="modal-error">{error}</div>}
 
           <div className="modal-field">
             <label htmlFor="invite-email">
-              Email <span className="required">*</span>
+              {t("inviteModal.fields.email")}{" "}
+              <span className="required">*</span>
             </label>
             <input
               id="invite-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="anna.smith@example.com"
+              placeholder={t("inviteModal.fields.emailPlaceholder")}
               disabled={submitting}
               className={fieldErrors.email ? "has-error" : ""}
               autoFocus
@@ -115,7 +117,7 @@ export default function InviteEmployeeModal({ onClose, onSuccess }) {
 
           <div className="modal-field">
             <label htmlFor="invite-role">
-              Role <span className="required">*</span>
+              {t("inviteModal.fields.role")} <span className="required">*</span>
             </label>
             <select
               id="invite-role"
@@ -124,42 +126,43 @@ export default function InviteEmployeeModal({ onClose, onSuccess }) {
               disabled={submitting}
             >
               {ROLES.map((r) => (
-                <option key={r.value} value={r.value}>
-                  {r.label}
+                <option key={r} value={r}>
+                  {t(`roles.${r}`, { defaultValue: r })}
                 </option>
               ))}
             </select>
-            <div className="modal-hint">
-              Defines what they can see and do in the clinic.
-            </div>
+            <div className="modal-hint">{t("inviteModal.fields.roleHint")}</div>
           </div>
 
           <div className="modal-field">
             <label htmlFor="invite-title">
-              Custom title <span className="optional">(optional)</span>
+              {t("inviteModal.fields.customTitle")}{" "}
+              <span className="optional">{t("common.optional")}</span>
             </label>
             <input
               id="invite-title"
               type="text"
               value={customTitle}
               onChange={(e) => setCustomTitle(e.target.value)}
-              placeholder="Senior Receptionist"
+              placeholder={t("inviteModal.fields.customTitlePlaceholder")}
               disabled={submitting}
               maxLength={100}
             />
           </div>
 
           <div className="modal-field">
-            <label htmlFor="invite-lang">Email language</label>
+            <label htmlFor="invite-lang">
+              {t("inviteModal.fields.language")}
+            </label>
             <select
               id="invite-lang"
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
               disabled={submitting}
             >
-              {LANGUAGES.map((l) => (
-                <option key={l.value} value={l.value}>
-                  {l.label}
+              {LANGUAGE_CODES.map((code) => (
+                <option key={code} value={code}>
+                  {t(`languages.${code}`)}
                 </option>
               ))}
             </select>
@@ -172,14 +175,14 @@ export default function InviteEmployeeModal({ onClose, onSuccess }) {
               onClick={onClose}
               disabled={submitting}
             >
-              Cancel
+              {t("common.cancel")}
             </button>
             <button
               type="submit"
               className="modal-btn-submit"
               disabled={submitting}
             >
-              {submitting ? "Sending..." : "Send invitation"}
+              {submitting ? t("inviteModal.sending") : t("inviteModal.submit")}
             </button>
           </footer>
         </form>

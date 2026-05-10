@@ -1,0 +1,212 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "submitting": "Submitting...",
+    "retry": "Retry",
+    "required": "Required",
+    "optional": "(optional)",
+    "yes": "Yes",
+    "no": "No",
+    "logout": "Logout",
+    "settings": "Settings",
+    "error": "Something went wrong",
+    "errorReload": "Reload"
+  },
+  "layout": {
+    "brandName": "DocPats Clinic",
+    "logoutFailed": "Logout failed"
+  },
+  "hub": {
+    "title": "Welcome to DocPats Clinic",
+    "subtitle": "You don't have a clinic yet. Create one to start managing your team, appointments, and patients in a single workspace.",
+    "createClinic": "Create a clinic",
+    "or": "or",
+    "alreadyInvited": "Already invited as a staff member?",
+    "signInAsEmployee": "Sign in as employee",
+    "features": {
+      "team": {
+        "title": "Manage your team",
+        "description": "Invite doctors, nurses, receptionists with role-based access"
+      },
+      "scheduling": {
+        "title": "Smart scheduling",
+        "description": "Book appointments, manage shifts, prevent conflicts"
+      },
+      "hipaa": {
+        "title": "HIPAA-ready",
+        "description": "Encrypted patient data, audit logs, secure communication"
+      }
+    }
+  },
+  "createClinic": {
+    "back": "Back",
+    "title": "Create a clinic",
+    "subtitle": "Set up your clinic workspace. You'll be the owner.",
+    "fields": {
+      "name": "Clinic name",
+      "namePlaceholder": "My Medical Center",
+      "slug": "URL slug",
+      "slugPlaceholder": "my-medical-center",
+      "slugHint": "Used for your public clinic page. Auto-generated from name if left blank.",
+      "defaultLanguage": "Default language",
+      "defaultCurrency": "Default currency",
+      "timezone": "Timezone",
+      "contactsSection": "Contact information",
+      "contactsHint": "Optional. You can change these later in settings.",
+      "phone": "Phone",
+      "phonePlaceholder": "+994 50 123 45 67",
+      "email": "Email",
+      "emailPlaceholder": "info@myclinic.com"
+    },
+    "errors": {
+      "nameRequired": "Clinic name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "nameMaxLength": "Name must be 200 characters or less",
+      "slugFormat": "Slug can only contain lowercase letters, numbers, and hyphens",
+      "slugTaken": "This slug is already taken",
+      "emailFormat": "Invalid email address",
+      "fixErrors": "Please fix the errors below",
+      "duplicate": "A clinic with this slug already exists",
+      "generic": "Failed to create clinic. Please try again."
+    },
+    "creating": "Creating...",
+    "submit": "Create clinic"
+  },
+  "dashboard": {
+    "yourRole": "Your role:",
+    "stats": {
+      "teamMembers": "Team members",
+      "pendingInvitations": "Pending invitations",
+      "subscription": "Subscription"
+    },
+    "quickActions": "Quick actions",
+    "actions": {
+      "inviteTeamMember": "Invite team member",
+      "viewTeam": "View team",
+      "scheduleSoon": "Schedule (soon)"
+    },
+    "team": "Team",
+    "viewAll": "View all ({{count}}) →",
+    "noTeamMembers": "No team members yet.",
+    "inviteFirstMember": "Invite your first team member →",
+    "pendingInvitations": "Pending invitations",
+    "manage": "Manage →",
+    "clinicDetails": "Clinic details",
+    "details": {
+      "name": "Name",
+      "slug": "Slug",
+      "timezone": "Timezone",
+      "defaultCurrency": "Default currency",
+      "defaultLanguage": "Default language",
+      "tier": "Tier",
+      "phone": "Phone",
+      "email": "Email"
+    },
+    "errorTitle": "Couldn't load your dashboard",
+    "invitedAsRoleExpires": "Invited as {{role}} · expires {{date}}"
+  },
+  "staff": {
+    "back": "← Dashboard",
+    "title": "Team",
+    "subtitle": "Manage your clinic's team members and invitations",
+    "addDoctor": "+ Add doctor",
+    "inviteEmployee": "+ Invite employee",
+    "pendingInvitations": "Pending invitations",
+    "teamMembers": "Team members",
+    "noTeamMembers": "No team members yet.",
+    "inviteFirstMember": "Invite your first team member",
+    "remove": "Remove",
+    "revoke": "Revoke",
+    "pending": "Pending",
+    "unnamed": "Team member",
+    "invitedAsRoleExpires": "Invited as {{role}} · expires {{date}}",
+    "errorTitle": "Couldn't load team",
+    "confirmRevoke": "Revoke this invitation? The recipient won't be able to use it.",
+    "confirmRemove": "Remove {{name}} from the clinic? This cannot be undone.",
+    "removeFailed": "Failed to remove member",
+    "revokeFailed": "Failed to revoke invitation",
+    "changeRoleFailed": "Failed to change role"
+  },
+  "inviteModal": {
+    "title": "Invite employee",
+    "intro": "We'll email an invitation link. The recipient will set up a password and join your clinic as a staff member (no public DocPats profile).",
+    "fields": {
+      "email": "Email",
+      "emailPlaceholder": "anna.smith@example.com",
+      "role": "Role",
+      "roleHint": "Defines what they can see and do in the clinic.",
+      "customTitle": "Custom title",
+      "customTitlePlaceholder": "Senior Receptionist",
+      "language": "Email language"
+    },
+    "errors": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email",
+      "alreadyMember": "This email is already invited or a member.",
+      "generic": "Failed to send invitation",
+      "fixErrors": "Please fix the errors below"
+    },
+    "sending": "Sending...",
+    "submit": "Send invitation"
+  },
+  "addDoctorModal": {
+    "title": "Add doctor to your clinic",
+    "intro": "Search for an existing DocPats doctor and add them to your clinic. They'll keep their public DocPats profile.",
+    "searchLabel": "Search doctors",
+    "searchPlaceholder": "Type at least 2 characters...",
+    "searching": "Searching...",
+    "noResults": "No doctors found",
+    "adding": "Adding...",
+    "submit": "Add as doctor",
+    "errors": {
+      "generic": "Failed to add doctor"
+    }
+  },
+  "roles": {
+    "owner": "Owner",
+    "admin": "Admin",
+    "manager": "Manager",
+    "doctor": "Doctor",
+    "receptionist": "Receptionist",
+    "nurse": "Nurse",
+    "accountant": "Accountant",
+    "pharmacist": "Pharmacist",
+    "marketer": "Marketer",
+    "member": "Member"
+  },
+  "tiers": {
+    "starter": "Starter",
+    "professional": "Professional",
+    "enterprise": "Enterprise",
+    "free": "Free"
+  },
+  "languages": {
+    "ru": "Русский",
+    "en": "English",
+    "tr": "Türkçe",
+    "az": "Azərbaycanca",
+    "ar": "العربية"
+  },
+  "currencies": {
+    "AZN": "Azerbaijani Manat (₼)",
+    "USD": "US Dollar ($)",
+    "EUR": "Euro (€)",
+    "RUB": "Russian Ruble (₽)",
+    "TRY": "Turkish Lira (₺)"
+  },
+  "timezones": {
+    "Asia/Baku": "Baku (UTC+4)",
+    "Europe/Moscow": "Moscow (UTC+3)",
+    "Europe/Istanbul": "Istanbul (UTC+3)",
+    "Europe/London": "London (UTC+0/+1)",
+    "Europe/Berlin": "Berlin (UTC+1/+2)",
+    "Asia/Dubai": "Dubai (UTC+4)",
+    "America/New_York": "New York (UTC-5/-4)"
+  }
+}

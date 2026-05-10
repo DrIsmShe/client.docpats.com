@@ -1,13 +1,12 @@
 // client/src/pages/clinic/ClinicHubPage/ClinicHubPage.jsx
-//
-// Entry point for /clinic. Decides where the user goes based on whether
-// they already have a clinic membership.
 
 import React from "react";
 import { useOutletContext, useNavigate, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./clinicHubPage.css";
 
 export default function ClinicHubPage() {
+  const { t } = useTranslation("clinic");
   const context = useOutletContext();
   const navigate = useNavigate();
 
@@ -19,7 +18,6 @@ export default function ClinicHubPage() {
   }, [context, navigate]);
 
   if (context?.kind === "user" && context.hasClinic) {
-    // Will redirect — render nothing during the brief redirect frame
     return null;
   }
 
@@ -27,26 +25,23 @@ export default function ClinicHubPage() {
     <div className="clinic-hub">
       <div className="clinic-hub-card">
         <div className="clinic-hub-icon">🏥</div>
-        <h1 className="clinic-hub-title">Welcome to DocPats Clinic</h1>
-        <p className="clinic-hub-subtitle">
-          You don't have a clinic yet. Create one to start managing your team,
-          appointments, and patients in a single workspace.
-        </p>
+        <h1 className="clinic-hub-title">{t("hub.title")}</h1>
+        <p className="clinic-hub-subtitle">{t("hub.subtitle")}</p>
 
         <div className="clinic-hub-actions">
           <Link to="/clinic/create" className="clinic-hub-btn-primary">
-            Create a clinic
+            {t("hub.createClinic")}
           </Link>
         </div>
 
         <div className="clinic-hub-divider">
-          <span>or</span>
+          <span>{t("hub.or")}</span>
         </div>
 
         <div className="clinic-hub-secondary">
-          <p>Already invited as a staff member?</p>
+          <p>{t("hub.alreadyInvited")}</p>
           <Link to="/clinic/staff-login" className="clinic-hub-btn-secondary">
-            Sign in as employee
+            {t("hub.signInAsEmployee")}
           </Link>
         </div>
       </div>
@@ -54,18 +49,18 @@ export default function ClinicHubPage() {
       <div className="clinic-hub-features">
         <div className="clinic-hub-feature">
           <span className="clinic-hub-feature-icon">👥</span>
-          <h3>Manage your team</h3>
-          <p>Invite doctors, nurses, receptionists with role-based access</p>
+          <h3>{t("hub.features.team.title")}</h3>
+          <p>{t("hub.features.team.description")}</p>
         </div>
         <div className="clinic-hub-feature">
           <span className="clinic-hub-feature-icon">📅</span>
-          <h3>Smart scheduling</h3>
-          <p>Book appointments, manage shifts, prevent conflicts</p>
+          <h3>{t("hub.features.scheduling.title")}</h3>
+          <p>{t("hub.features.scheduling.description")}</p>
         </div>
         <div className="clinic-hub-feature">
           <span className="clinic-hub-feature-icon">🔒</span>
-          <h3>HIPAA-ready</h3>
-          <p>Encrypted patient data, audit logs, secure communication</p>
+          <h3>{t("hub.features.hipaa.title")}</h3>
+          <p>{t("hub.features.hipaa.description")}</p>
         </div>
       </div>
     </div>

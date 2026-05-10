@@ -1,0 +1,212 @@
+{
+  "common": {
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "back": "Geri",
+    "loading": "Yükleniyor...",
+    "saving": "Kaydediliyor...",
+    "submitting": "Gönderiliyor...",
+    "retry": "Tekrar dene",
+    "required": "Zorunlu",
+    "optional": "(isteğe bağlı)",
+    "yes": "Evet",
+    "no": "Hayır",
+    "logout": "Çıkış",
+    "settings": "Ayarlar",
+    "error": "Bir hata oluştu",
+    "errorReload": "Yeniden yükle"
+  },
+  "layout": {
+    "brandName": "DocPats Clinic",
+    "logoutFailed": "Çıkış başarısız"
+  },
+  "hub": {
+    "title": "DocPats Clinic'e hoş geldiniz",
+    "subtitle": "Henüz bir kliniğiniz yok. Ekibinizi, randevularınızı ve hastalarınızı tek bir çalışma alanında yönetmek için bir klinik oluşturun.",
+    "createClinic": "Klinik oluştur",
+    "or": "veya",
+    "alreadyInvited": "Personel olarak zaten davet edildiniz mi?",
+    "signInAsEmployee": "Personel olarak giriş yap",
+    "features": {
+      "team": {
+        "title": "Ekibinizi yönetin",
+        "description": "Doktorları, hemşireleri, resepsiyonistleri rol tabanlı erişimle davet edin"
+      },
+      "scheduling": {
+        "title": "Akıllı planlama",
+        "description": "Randevu oluşturun, vardiya yönetin, çakışmaları önleyin"
+      },
+      "hipaa": {
+        "title": "HIPAA uyumlu",
+        "description": "Şifreli hasta verileri, denetim günlükleri, güvenli iletişim"
+      }
+    }
+  },
+  "createClinic": {
+    "back": "Geri",
+    "title": "Klinik oluştur",
+    "subtitle": "Klinik çalışma alanınızı kurun. Sahibi siz olacaksınız.",
+    "fields": {
+      "name": "Klinik adı",
+      "namePlaceholder": "Tıp Merkezim",
+      "slug": "URL kısa adı",
+      "slugPlaceholder": "tip-merkezim",
+      "slugHint": "Genel klinik sayfanız için kullanılır. Boş bırakılırsa addan otomatik oluşturulur.",
+      "defaultLanguage": "Varsayılan dil",
+      "defaultCurrency": "Varsayılan para birimi",
+      "timezone": "Saat dilimi",
+      "contactsSection": "İletişim bilgileri",
+      "contactsHint": "İsteğe bağlı. Daha sonra ayarlardan değiştirebilirsiniz.",
+      "phone": "Telefon",
+      "phonePlaceholder": "+994 50 123 45 67",
+      "email": "E-posta",
+      "emailPlaceholder": "info@klinigim.com"
+    },
+    "errors": {
+      "nameRequired": "Klinik adı gereklidir",
+      "nameMinLength": "En az 2 karakter olmalıdır",
+      "nameMaxLength": "En fazla 200 karakter olmalıdır",
+      "slugFormat": "Yalnızca küçük harfler, rakamlar ve tire kullanılabilir",
+      "slugTaken": "Bu kısa ad zaten kullanımda",
+      "emailFormat": "Geçersiz e-posta adresi",
+      "fixErrors": "Lütfen aşağıdaki hataları düzeltin",
+      "duplicate": "Bu kısa adla bir klinik zaten var",
+      "generic": "Klinik oluşturulamadı. Lütfen tekrar deneyin."
+    },
+    "creating": "Oluşturuluyor...",
+    "submit": "Klinik oluştur"
+  },
+  "dashboard": {
+    "yourRole": "Rolünüz:",
+    "stats": {
+      "teamMembers": "Ekip üyeleri",
+      "pendingInvitations": "Bekleyen davetler",
+      "subscription": "Abonelik"
+    },
+    "quickActions": "Hızlı işlemler",
+    "actions": {
+      "inviteTeamMember": "Ekip üyesi davet et",
+      "viewTeam": "Ekibi görüntüle",
+      "scheduleSoon": "Takvim (yakında)"
+    },
+    "team": "Ekip",
+    "viewAll": "Tümünü gör ({{count}}) →",
+    "noTeamMembers": "Henüz ekip üyesi yok.",
+    "inviteFirstMember": "İlk ekip üyenizi davet edin →",
+    "pendingInvitations": "Bekleyen davetler",
+    "manage": "Yönet →",
+    "clinicDetails": "Klinik bilgileri",
+    "details": {
+      "name": "Ad",
+      "slug": "Kısa ad",
+      "timezone": "Saat dilimi",
+      "defaultCurrency": "Para birimi",
+      "defaultLanguage": "Dil",
+      "tier": "Plan",
+      "phone": "Telefon",
+      "email": "E-posta"
+    },
+    "errorTitle": "Pano yüklenemedi",
+    "invitedAsRoleExpires": "{{role}} olarak davet edildi · {{date}} tarihinde sona erer"
+  },
+  "staff": {
+    "back": "← Pano",
+    "title": "Ekip",
+    "subtitle": "Klinik ekip üyelerini ve davetleri yönetin",
+    "addDoctor": "+ Doktor ekle",
+    "inviteEmployee": "+ Personel davet et",
+    "pendingInvitations": "Bekleyen davetler",
+    "teamMembers": "Ekip üyeleri",
+    "noTeamMembers": "Henüz ekip üyesi yok.",
+    "inviteFirstMember": "İlk ekip üyenizi davet edin",
+    "remove": "Kaldır",
+    "revoke": "İptal et",
+    "pending": "Beklemede",
+    "unnamed": "Ekip üyesi",
+    "invitedAsRoleExpires": "{{role}} olarak davet edildi · {{date}} tarihinde sona erer",
+    "errorTitle": "Ekip yüklenemedi",
+    "confirmRevoke": "Bu davet iptal edilsin mi? Alıcı kullanamayacak.",
+    "confirmRemove": "{{name}} klinikten çıkarılsın mı? Bu işlem geri alınamaz.",
+    "removeFailed": "Üye kaldırılamadı",
+    "revokeFailed": "Davet iptal edilemedi",
+    "changeRoleFailed": "Rol değiştirilemedi"
+  },
+  "inviteModal": {
+    "title": "Personel davet et",
+    "intro": "Davet bağlantısını e-posta ile göndereceğiz. Alıcı parola belirleyip kliniğinize personel olarak katılacak (genel DocPats profili olmadan).",
+    "fields": {
+      "email": "E-posta",
+      "emailPlaceholder": "ayse.demir@ornek.com",
+      "role": "Rol",
+      "roleHint": "Klinikte ne görüp yapabileceğini belirler.",
+      "customTitle": "Unvan",
+      "customTitlePlaceholder": "Kıdemli Resepsiyonist",
+      "language": "E-posta dili"
+    },
+    "errors": {
+      "emailRequired": "E-posta gereklidir",
+      "emailInvalid": "Geçersiz e-posta",
+      "alreadyMember": "Bu e-posta zaten davet edildi veya üye.",
+      "generic": "Davet gönderilemedi",
+      "fixErrors": "Lütfen aşağıdaki hataları düzeltin"
+    },
+    "sending": "Gönderiliyor...",
+    "submit": "Davet gönder"
+  },
+  "addDoctorModal": {
+    "title": "Kliniğe doktor ekle",
+    "intro": "Mevcut bir DocPats doktoru arayın ve kliniğinize ekleyin. Genel DocPats profilini koruyacaktır.",
+    "searchLabel": "Doktor ara",
+    "searchPlaceholder": "En az 2 karakter girin...",
+    "searching": "Aranıyor...",
+    "noResults": "Doktor bulunamadı",
+    "adding": "Ekleniyor...",
+    "submit": "Doktor olarak ekle",
+    "errors": {
+      "generic": "Doktor eklenemedi"
+    }
+  },
+  "roles": {
+    "owner": "Sahip",
+    "admin": "Yönetici",
+    "manager": "Müdür",
+    "doctor": "Doktor",
+    "receptionist": "Resepsiyonist",
+    "nurse": "Hemşire",
+    "accountant": "Muhasebeci",
+    "pharmacist": "Eczacı",
+    "marketer": "Pazarlama uzmanı",
+    "member": "Üye"
+  },
+  "tiers": {
+    "starter": "Başlangıç",
+    "professional": "Profesyonel",
+    "enterprise": "Kurumsal",
+    "free": "Ücretsiz"
+  },
+  "languages": {
+    "ru": "Русский",
+    "en": "English",
+    "tr": "Türkçe",
+    "az": "Azərbaycanca",
+    "ar": "العربية"
+  },
+  "currencies": {
+    "AZN": "Azerbaycan Manatı (₼)",
+    "USD": "ABD Doları ($)",
+    "EUR": "Euro (€)",
+    "RUB": "Rus Rublesi (₽)",
+    "TRY": "Türk Lirası (₺)"
+  },
+  "timezones": {
+    "Asia/Baku": "Bakü (UTC+4)",
+    "Europe/Moscow": "Moskova (UTC+3)",
+    "Europe/Istanbul": "İstanbul (UTC+3)",
+    "Europe/London": "Londra (UTC+0/+1)",
+    "Europe/Berlin": "Berlin (UTC+1/+2)",
+    "Asia/Dubai": "Dubai (UTC+4)",
+    "America/New_York": "New York (UTC-5/-4)"
+  }
+}

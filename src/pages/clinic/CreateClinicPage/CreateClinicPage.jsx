@@ -1,40 +1,25 @@
 // client/src/pages/clinic/CreateClinicPage/CreateClinicPage.jsx
-//
-// Form to create a new clinic. The current user becomes its owner.
-// On success, redirects to /clinic/dashboard.
 
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { createClinic } from "../../../api/clinic";
 import "./createClinicPage.css";
 
-const LANGUAGES = [
-  { value: "ru", label: "Русский" },
-  { value: "en", label: "English" },
-  { value: "tr", label: "Türkçe" },
-  { value: "az", label: "Azərbaycanca" },
-  { value: "ar", label: "العربية" },
-];
-
-const CURRENCIES = [
-  { value: "AZN", label: "Azerbaijani Manat (₼)" },
-  { value: "USD", label: "US Dollar ($)" },
-  { value: "EUR", label: "Euro (€)" },
-  { value: "RUB", label: "Russian Ruble (₽)" },
-  { value: "TRY", label: "Turkish Lira (₺)" },
-];
-
-const TIMEZONES = [
-  { value: "Asia/Baku", label: "Baku (UTC+4)" },
-  { value: "Europe/Moscow", label: "Moscow (UTC+3)" },
-  { value: "Europe/Istanbul", label: "Istanbul (UTC+3)" },
-  { value: "Europe/London", label: "London (UTC+0/+1)" },
-  { value: "Europe/Berlin", label: "Berlin (UTC+1/+2)" },
-  { value: "Asia/Dubai", label: "Dubai (UTC+4)" },
-  { value: "America/New_York", label: "New York (UTC-5/-4)" },
+const LANGUAGE_CODES = ["ru", "en", "tr", "az", "ar"];
+const CURRENCY_CODES = ["AZN", "USD", "EUR", "RUB", "TRY"];
+const TIMEZONE_CODES = [
+  "Asia/Baku",
+  "Europe/Moscow",
+  "Europe/Istanbul",
+  "Europe/London",
+  "Europe/Berlin",
+  "Asia/Dubai",
+  "America/New_York",
 ];
 
 export default function CreateClinicPage() {
+  const { t } = useTranslation("clinic");
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -63,24 +48,19 @@ export default function CreateClinicPage() {
 
   function validate() {
     const newErrors = {};
-
     if (!form.name.trim()) {
-      newErrors.name = "Clinic name is required";
+      newErrors.name = t("createClinic.errors.nameRequired");
     } else if (form.name.trim().length < 2) {
-      newErrors.name = "Name must be at least 2 characters";
+      newErrors.name = t("createClinic.errors.nameMinLength");
     } else if (form.name.trim().length > 200) {
-      newErrors.name = "Name must be 200 characters or less";
+      newErrors.name = t("createClinic.errors.nameMaxLength");
     }
-
     if (form.slug && !/^[a-z0-9-]+$/.test(form.slug)) {
-      newErrors.slug =
-        "Slug can only contain lowercase letters, numbers, and hyphens";
+      newErrors.slug = t("createClinic.errors.slugFormat");
     }
-
     if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = "Invalid email address";
+      newErrors.email = t("createClinic.errors.emailFormat");
     }
-
     return newErrors;
   }
 
@@ -103,11 +83,9 @@ export default function CreateClinicPage() {
         defaultCurrency: form.defaultCurrency,
         defaultLanguage: form.defaultLanguage,
       };
-
       if (form.slug.trim()) {
         payload.slug = form.slug.trim();
       }
-
       const contacts = {};
       if (form.phone.trim()) contacts.phone = form.phone.trim();
       if (form.email.trim()) contacts.email = form.email.trim();
@@ -123,23 +101,18 @@ export default function CreateClinicPage() {
       const data = err.response?.data;
 
       if (status === 400 && data?.details?.issues) {
-        // Zod validation errors from backend
         const fieldErrors = {};
         for (const issue of data.details.issues) {
           const field = issue.path?.[0];
-          if (field) {
-            fieldErrors[field] = issue.message;
-          }
+          if (field) fieldErrors[field] = issue.message;
         }
         setErrors(fieldErrors);
-        setServerError("Please fix the errors below");
+        setServerError(t("createClinic.errors.fixErrors"));
       } else if (status === 409) {
-        setErrors({ slug: "This slug is already taken" });
-        setServerError("A clinic with this slug already exists");
+        setErrors({ slug: t("createClinic.errors.slugTaken") });
+        setServerError(t("createClinic.errors.duplicate"));
       } else {
-        setServerError(
-          data?.error || "Failed to create clinic. Please try again.",
-        );
+        setServerError(data?.error || t("createClinic.errors.generic"));
       }
     } finally {
       setSubmitting(false);
@@ -150,10 +123,10 @@ export default function CreateClinicPage() {
     <div className="create-clinic">
       <div className="create-clinic-header">
         <Link to="/clinic" className="create-clinic-back">
-          ← Back
+          ← {t("createClinic.back")}
         </Link>
-        <h1>Create a clinic</h1>
-        <p>Set up your clinic workspace. You'll be the owner.</p>
+        <h1>{t("createClinic.title")}</h1>
+        <p>{t("createClinic.subtitle")}</p>
       </div>
 
       <form className="create-clinic-form" onSubmit={handleSubmit} noValidate>
@@ -163,14 +136,14 @@ export default function CreateClinicPage() {
 
         <div className="create-clinic-field">
           <label htmlFor="name">
-            Clinic name <span className="required">*</span>
+            {t("createClinic.fields.name")} <span className="required">*</span>
           </label>
           <input
             id="name"
             type="text"
             value={form.name}
             onChange={handleChange("name")}
-            placeholder="My Medical Center"
+            placeholder={t("createClinic.fields.namePlaceholder")}
             disabled={submitting}
             maxLength={200}
             className={errors.name ? "has-error" : ""}
@@ -182,20 +155,20 @@ export default function CreateClinicPage() {
 
         <div className="create-clinic-field">
           <label htmlFor="slug">
-            URL slug <span className="optional">(optional)</span>
+            {t("createClinic.fields.slug")}{" "}
+            <span className="optional">{t("common.optional")}</span>
           </label>
           <input
             id="slug"
             type="text"
             value={form.slug}
             onChange={handleChange("slug")}
-            placeholder="my-medical-center"
+            placeholder={t("createClinic.fields.slugPlaceholder")}
             disabled={submitting}
             className={errors.slug ? "has-error" : ""}
           />
           <div className="create-clinic-hint">
-            Used for your public clinic page. Auto-generated from name if left
-            blank.
+            {t("createClinic.fields.slugHint")}
           </div>
           {errors.slug && (
             <div className="create-clinic-error">{errors.slug}</div>
@@ -204,32 +177,36 @@ export default function CreateClinicPage() {
 
         <div className="create-clinic-row">
           <div className="create-clinic-field">
-            <label htmlFor="defaultLanguage">Default language</label>
+            <label htmlFor="defaultLanguage">
+              {t("createClinic.fields.defaultLanguage")}
+            </label>
             <select
               id="defaultLanguage"
               value={form.defaultLanguage}
               onChange={handleChange("defaultLanguage")}
               disabled={submitting}
             >
-              {LANGUAGES.map((l) => (
-                <option key={l.value} value={l.value}>
-                  {l.label}
+              {LANGUAGE_CODES.map((code) => (
+                <option key={code} value={code}>
+                  {t(`languages.${code}`)}
                 </option>
               ))}
             </select>
           </div>
 
           <div className="create-clinic-field">
-            <label htmlFor="defaultCurrency">Default currency</label>
+            <label htmlFor="defaultCurrency">
+              {t("createClinic.fields.defaultCurrency")}
+            </label>
             <select
               id="defaultCurrency"
               value={form.defaultCurrency}
               onChange={handleChange("defaultCurrency")}
               disabled={submitting}
             >
-              {CURRENCIES.map((c) => (
-                <option key={c.value} value={c.value}>
-                  {c.label}
+              {CURRENCY_CODES.map((code) => (
+                <option key={code} value={code}>
+                  {t(`currencies.${code}`)}
                 </option>
               ))}
             </select>
@@ -237,49 +214,49 @@ export default function CreateClinicPage() {
         </div>
 
         <div className="create-clinic-field">
-          <label htmlFor="timezone">Timezone</label>
+          <label htmlFor="timezone">{t("createClinic.fields.timezone")}</label>
           <select
             id="timezone"
             value={form.timezone}
             onChange={handleChange("timezone")}
             disabled={submitting}
           >
-            {TIMEZONES.map((tz) => (
-              <option key={tz.value} value={tz.value}>
-                {tz.label}
+            {TIMEZONE_CODES.map((tz) => (
+              <option key={tz} value={tz}>
+                {t(`timezones.${tz}`)}
               </option>
             ))}
           </select>
         </div>
 
         <div className="create-clinic-section">
-          <h3>Contact information</h3>
+          <h3>{t("createClinic.fields.contactsSection")}</h3>
           <p className="create-clinic-section-hint">
-            Optional. You can change these later in settings.
+            {t("createClinic.fields.contactsHint")}
           </p>
         </div>
 
         <div className="create-clinic-row">
           <div className="create-clinic-field">
-            <label htmlFor="phone">Phone</label>
+            <label htmlFor="phone">{t("createClinic.fields.phone")}</label>
             <input
               id="phone"
               type="tel"
               value={form.phone}
               onChange={handleChange("phone")}
-              placeholder="+994 50 123 45 67"
+              placeholder={t("createClinic.fields.phonePlaceholder")}
               disabled={submitting}
             />
           </div>
 
           <div className="create-clinic-field">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">{t("createClinic.fields.email")}</label>
             <input
               id="email"
               type="email"
               value={form.email}
               onChange={handleChange("email")}
-              placeholder="info@myclinic.com"
+              placeholder={t("createClinic.fields.emailPlaceholder")}
               disabled={submitting}
               className={errors.email ? "has-error" : ""}
             />
@@ -291,14 +268,14 @@ export default function CreateClinicPage() {
 
         <div className="create-clinic-actions">
           <Link to="/clinic" className="create-clinic-cancel">
-            Cancel
+            {t("common.cancel")}
           </Link>
           <button
             type="submit"
             className="create-clinic-submit"
             disabled={submitting}
           >
-            {submitting ? "Creating..." : "Create clinic"}
+            {submitting ? t("createClinic.creating") : t("createClinic.submit")}
           </button>
         </div>
       </form>

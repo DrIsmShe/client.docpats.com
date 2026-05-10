@@ -1,11 +1,14 @@
 // client/src/pages/clinic/ClinicStaffPage/AddDoctorModal.jsx
 
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { searchDoctors, addStaff } from "../../../api/clinic";
 import "./inviteEmployeeModal.css";
 import "./addDoctorModal.css";
 
 export default function AddDoctorModal({ onClose, onSuccess }) {
+  const { t } = useTranslation("clinic");
+
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [searching, setSearching] = useState(false);
@@ -13,7 +16,6 @@ export default function AddDoctorModal({ onClose, onSuccess }) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
 
-  // Debounced search
   useEffect(() => {
     if (!query.trim() || query.trim().length < 2) {
       setResults([]);
@@ -23,14 +25,6 @@ export default function AddDoctorModal({ onClose, onSuccess }) {
       setSearching(true);
       try {
         const res = await searchDoctors(query.trim());
-        console.log(
-          "🔍 SEARCH RESULT:",
-          res,
-          "items:",
-          res.items,
-          "length:",
-          res.items?.length,
-        );
         setResults(res.items || []);
       } catch (err) {
         console.error("Search failed:", err);
@@ -42,7 +36,6 @@ export default function AddDoctorModal({ onClose, onSuccess }) {
     return () => clearTimeout(timer);
   }, [query]);
 
-  // Helper — get a stable id from a doctor object
   function getId(d) {
     return d?.userId || d?._id || d?.id || null;
   }
@@ -57,7 +50,7 @@ export default function AddDoctorModal({ onClose, onSuccess }) {
       onSuccess();
     } catch (err) {
       const data = err.response?.data;
-      setError(data?.error || "Failed to add doctor");
+      setError(data?.error || t("addDoctorModal.errors.generic"));
     } finally {
       setSubmitting(false);
     }
@@ -69,22 +62,26 @@ export default function AddDoctorModal({ onClose, onSuccess }) {
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-window" onClick={(e) => e.stopPropagation()}>
         <header className="modal-header">
-          <h2>Add doctor to your clinic</h2>
-          <button className="modal-close" onClick={onClose}>
+          <h2>{t("addDoctorModal.title")}</h2>
+          <button
+            className="modal-close"
+            onClick={onClose}
+            aria-label={t("common.cancel")}
+            type="button"
+          >
             ×
           </button>
         </header>
 
         <div className="modal-body">
-          <p className="modal-intro">
-            Search for an existing DocPats doctor and add them to your clinic.
-            They'll keep their public DocPats profile.
-          </p>
+          <p className="modal-intro">{t("addDoctorModal.intro")}</p>
 
           {error && <div className="modal-error">{error}</div>}
 
           <div className="modal-field">
-            <label htmlFor="doctor-search">Search doctors</label>
+            <label htmlFor="doctor-search">
+              {t("addDoctorModal.searchLabel")}
+            </label>
             <input
               id="doctor-search"
               type="text"
@@ -93,15 +90,21 @@ export default function AddDoctorModal({ onClose, onSuccess }) {
                 setQuery(e.target.value);
                 setSelectedDoctor(null);
               }}
-              placeholder="Type at least 2 characters..."
+              placeholder={t("addDoctorModal.searchPlaceholder")}
               autoFocus
             />
           </div>
 
           <div className="add-doctor-results">
-            {searching && <div className="add-doctor-status">Searching...</div>}
+            {searching && (
+              <div className="add-doctor-status">
+                {t("addDoctorModal.searching")}
+              </div>
+            )}
             {!searching && query.trim().length >= 2 && results.length === 0 && (
-              <div className="add-doctor-status">No doctors found</div>
+              <div className="add-doctor-status">
+                {t("addDoctorModal.noResults")}
+              </div>
             )}
             {!searching && results.length > 0 && (
               <div className="add-doctor-list">
@@ -146,7 +149,7 @@ export default function AddDoctorModal({ onClose, onSuccess }) {
               disabled={submitting}
               type="button"
             >
-              Cancel
+              {t("common.cancel")}
             </button>
             <button
               className="modal-btn-submit"
@@ -154,7 +157,9 @@ export default function AddDoctorModal({ onClose, onSuccess }) {
               disabled={!selectedDoctor || submitting}
               type="button"
             >
-              {submitting ? "Adding..." : "Add as doctor"}
+              {submitting
+                ? t("addDoctorModal.adding")
+                : t("addDoctorModal.submit")}
             </button>
           </footer>
         </div>

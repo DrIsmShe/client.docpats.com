@@ -1,0 +1,212 @@
+{
+  "common": {
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "delete": "Удалить",
+    "edit": "Изменить",
+    "back": "Назад",
+    "loading": "Загрузка...",
+    "saving": "Сохранение...",
+    "submitting": "Отправка...",
+    "retry": "Повторить",
+    "required": "Обязательно",
+    "optional": "(необязательно)",
+    "yes": "Да",
+    "no": "Нет",
+    "logout": "Выйти",
+    "settings": "Настройки",
+    "error": "Что-то пошло не так",
+    "errorReload": "Перезагрузить"
+  },
+  "layout": {
+    "brandName": "DocPats Clinic",
+    "logoutFailed": "Не удалось выйти"
+  },
+  "hub": {
+    "title": "Добро пожаловать в DocPats Clinic",
+    "subtitle": "У вас пока нет клиники. Создайте её, чтобы управлять командой, расписанием и пациентами в одном рабочем пространстве.",
+    "createClinic": "Создать клинику",
+    "or": "или",
+    "alreadyInvited": "Уже получили приглашение как сотрудник?",
+    "signInAsEmployee": "Войти как сотрудник",
+    "features": {
+      "team": {
+        "title": "Управление командой",
+        "description": "Приглашайте врачей, медсестёр, администраторов с ролевым доступом"
+      },
+      "scheduling": {
+        "title": "Умное расписание",
+        "description": "Запись на приём, графики смен, защита от конфликтов"
+      },
+      "hipaa": {
+        "title": "Соответствие HIPAA",
+        "description": "Шифрование данных пациентов, журналы аудита, защищённая связь"
+      }
+    }
+  },
+  "createClinic": {
+    "back": "Назад",
+    "title": "Создание клиники",
+    "subtitle": "Настройте рабочее пространство клиники. Вы станете её владельцем.",
+    "fields": {
+      "name": "Название клиники",
+      "namePlaceholder": "Мой медицинский центр",
+      "slug": "URL-идентификатор",
+      "slugPlaceholder": "my-medical-center",
+      "slugHint": "Используется для публичной страницы клиники. Создаётся автоматически, если оставить пустым.",
+      "defaultLanguage": "Язык по умолчанию",
+      "defaultCurrency": "Валюта по умолчанию",
+      "timezone": "Часовой пояс",
+      "contactsSection": "Контактная информация",
+      "contactsHint": "Необязательно. Можно изменить позже в настройках.",
+      "phone": "Телефон",
+      "phonePlaceholder": "+994 50 123 45 67",
+      "email": "Email",
+      "emailPlaceholder": "info@myclinic.com"
+    },
+    "errors": {
+      "nameRequired": "Название клиники обязательно",
+      "nameMinLength": "Минимум 2 символа",
+      "nameMaxLength": "Не более 200 символов",
+      "slugFormat": "Только строчные буквы, цифры и дефисы",
+      "slugTaken": "Такой идентификатор уже занят",
+      "emailFormat": "Неверный email",
+      "fixErrors": "Исправьте ошибки ниже",
+      "duplicate": "Клиника с таким идентификатором уже существует",
+      "generic": "Не удалось создать клинику. Попробуйте ещё раз."
+    },
+    "creating": "Создание...",
+    "submit": "Создать клинику"
+  },
+  "dashboard": {
+    "yourRole": "Ваша роль:",
+    "stats": {
+      "teamMembers": "Участников команды",
+      "pendingInvitations": "Ожидают приглашения",
+      "subscription": "Подписка"
+    },
+    "quickActions": "Быстрые действия",
+    "actions": {
+      "inviteTeamMember": "Пригласить сотрудника",
+      "viewTeam": "Команда",
+      "scheduleSoon": "Расписание (скоро)"
+    },
+    "team": "Команда",
+    "viewAll": "Все ({{count}}) →",
+    "noTeamMembers": "В команде пока никого нет.",
+    "inviteFirstMember": "Пригласить первого сотрудника →",
+    "pendingInvitations": "Ожидающие приглашения",
+    "manage": "Управление →",
+    "clinicDetails": "Информация о клинике",
+    "details": {
+      "name": "Название",
+      "slug": "Идентификатор",
+      "timezone": "Часовой пояс",
+      "defaultCurrency": "Валюта",
+      "defaultLanguage": "Язык",
+      "tier": "Тариф",
+      "phone": "Телефон",
+      "email": "Email"
+    },
+    "errorTitle": "Не удалось загрузить панель",
+    "invitedAsRoleExpires": "Приглашён(а) как {{role}} · истекает {{date}}"
+  },
+  "staff": {
+    "back": "← Панель",
+    "title": "Команда",
+    "subtitle": "Управляйте сотрудниками и приглашениями клиники",
+    "addDoctor": "+ Добавить врача",
+    "inviteEmployee": "+ Пригласить сотрудника",
+    "pendingInvitations": "Ожидающие приглашения",
+    "teamMembers": "Сотрудники",
+    "noTeamMembers": "В команде пока никого нет.",
+    "inviteFirstMember": "Пригласить первого сотрудника",
+    "remove": "Удалить",
+    "revoke": "Отозвать",
+    "pending": "Ожидает",
+    "unnamed": "Сотрудник",
+    "invitedAsRoleExpires": "Приглашён(а) как {{role}} · истекает {{date}}",
+    "errorTitle": "Не удалось загрузить команду",
+    "confirmRevoke": "Отозвать приглашение? Получатель не сможет им воспользоваться.",
+    "confirmRemove": "Удалить {{name}} из клиники? Это действие нельзя отменить.",
+    "removeFailed": "Не удалось удалить сотрудника",
+    "revokeFailed": "Не удалось отозвать приглашение",
+    "changeRoleFailed": "Не удалось изменить роль"
+  },
+  "inviteModal": {
+    "title": "Пригласить сотрудника",
+    "intro": "Мы отправим ссылку-приглашение на email. Получатель установит пароль и присоединится к клинике как сотрудник (без публичного профиля DocPats).",
+    "fields": {
+      "email": "Email",
+      "emailPlaceholder": "anna.smith@example.com",
+      "role": "Роль",
+      "roleHint": "Определяет, что сотрудник может видеть и делать.",
+      "customTitle": "Должность",
+      "customTitlePlaceholder": "Старший администратор",
+      "language": "Язык письма"
+    },
+    "errors": {
+      "emailRequired": "Введите email",
+      "emailInvalid": "Неверный email",
+      "alreadyMember": "Этот email уже приглашён или сотрудник.",
+      "generic": "Не удалось отправить приглашение",
+      "fixErrors": "Исправьте ошибки ниже"
+    },
+    "sending": "Отправка...",
+    "submit": "Отправить приглашение"
+  },
+  "addDoctorModal": {
+    "title": "Добавить врача в клинику",
+    "intro": "Найдите существующего врача DocPats и добавьте в клинику. Его публичный профиль DocPats сохранится.",
+    "searchLabel": "Поиск врачей",
+    "searchPlaceholder": "Введите минимум 2 символа...",
+    "searching": "Поиск...",
+    "noResults": "Врачи не найдены",
+    "adding": "Добавление...",
+    "submit": "Добавить как врача",
+    "errors": {
+      "generic": "Не удалось добавить врача"
+    }
+  },
+  "roles": {
+    "owner": "Владелец",
+    "admin": "Администратор",
+    "manager": "Менеджер",
+    "doctor": "Врач",
+    "receptionist": "Администратор ресепшн",
+    "nurse": "Медсестра",
+    "accountant": "Бухгалтер",
+    "pharmacist": "Фармацевт",
+    "marketer": "Маркетолог",
+    "member": "Участник"
+  },
+  "tiers": {
+    "starter": "Стартовый",
+    "professional": "Профессиональный",
+    "enterprise": "Корпоративный",
+    "free": "Бесплатный"
+  },
+  "languages": {
+    "ru": "Русский",
+    "en": "English",
+    "tr": "Türkçe",
+    "az": "Azərbaycanca",
+    "ar": "العربية"
+  },
+  "currencies": {
+    "AZN": "Азербайджанский манат (₼)",
+    "USD": "Доллар США ($)",
+    "EUR": "Евро (€)",
+    "RUB": "Российский рубль (₽)",
+    "TRY": "Турецкая лира (₺)"
+  },
+  "timezones": {
+    "Asia/Baku": "Баку (UTC+4)",
+    "Europe/Moscow": "Москва (UTC+3)",
+    "Europe/Istanbul": "Стамбул (UTC+3)",
+    "Europe/London": "Лондон (UTC+0/+1)",
+    "Europe/Berlin": "Берлин (UTC+1/+2)",
+    "Asia/Dubai": "Дубай (UTC+4)",
+    "America/New_York": "Нью-Йорк (UTC-5/-4)"
+  }
+}

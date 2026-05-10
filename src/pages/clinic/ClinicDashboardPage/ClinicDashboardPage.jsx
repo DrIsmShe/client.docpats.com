@@ -1,19 +1,17 @@
 // client/src/pages/clinic/ClinicDashboardPage/ClinicDashboardPage.jsx
-//
-// Main authenticated dashboard for clinic owners/admins.
-// Shows stats, team preview, pending invitations, and quick actions.
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link, useOutletContext } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { getClinicMe, listStaff, listInvitations } from "../../../api/clinic";
 import "./clinicDashboardPage.css";
 
-// Helpers
 const getMembershipId = (m) => m?.membershipId || m?._id || m?.id || null;
 const getInvitationId = (inv) =>
   inv?.invitationId || inv?._id || inv?.id || null;
 
 export default function ClinicDashboardPage() {
+  const { t, i18n } = useTranslation("clinic");
   const navigate = useNavigate();
   const layoutContext = useOutletContext();
 
@@ -22,6 +20,7 @@ export default function ClinicDashboardPage() {
 
   const [clinic, setClinic] = useState(null);
   const [permissions, setPermissions] = useState({});
+  // eslint-disable-next-line no-unused-vars
   const [features, setFeatures] = useState({});
   const [staff, setStaff] = useState([]);
   const [invitations, setInvitations] = useState([]);
@@ -31,7 +30,6 @@ export default function ClinicDashboardPage() {
 
     async function load() {
       try {
-        // Parallel fetches to prevent race conditions
         const [meRes, staffRes, invitationsRes] = await Promise.all([
           getClinicMe(),
           listStaff().catch((err) => {
@@ -46,7 +44,6 @@ export default function ClinicDashboardPage() {
 
         if (cancelled) return;
 
-        // If no clinic — redirect to hub
         if (!meRes.hasClinic) {
           navigate("/clinic", { replace: true });
           return;
@@ -61,7 +58,7 @@ export default function ClinicDashboardPage() {
       } catch (err) {
         if (cancelled) return;
         console.error("Dashboard load failed:", err);
-        setError(err.message || "Failed to load dashboard");
+        setError(err.message || t("common.error"));
         setLoading(false);
       }
     }
@@ -70,7 +67,7 @@ export default function ClinicDashboardPage() {
     return () => {
       cancelled = true;
     };
-  }, [navigate]);
+  }, [navigate, t]);
 
   if (loading) {
     return (
@@ -83,9 +80,11 @@ export default function ClinicDashboardPage() {
   if (error) {
     return (
       <div className="clinic-dashboard-error">
-        <h2>Couldn't load your dashboard</h2>
+        <h2>{t("dashboard.errorTitle")}</h2>
         <p>{error}</p>
-        <button onClick={() => window.location.reload()}>Retry</button>
+        <button onClick={() => window.location.reload()}>
+          {t("common.errorReload")}
+        </button>
       </div>
     );
   }
@@ -95,90 +94,102 @@ export default function ClinicDashboardPage() {
   const canInvite =
     !!permissions.canInviteStaff || myRole === "owner" || myRole === "admin";
 
+  const formatDate = (d) => {
+    if (!d) return "";
+    try {
+      return new Date(d).toLocaleDateString(i18n.language || undefined);
+    } catch {
+      return "";
+    }
+  };
+
   return (
     <div className="clinic-dashboard">
-      {/* Header */}
       <header className="clinic-dashboard-header">
         <div>
           <h1 className="clinic-dashboard-title">{clinic.name}</h1>
           <div className="clinic-dashboard-meta">
             <span className={`clinic-dashboard-tier-badge tier-${tier}`}>
-              {tier}
+              {t(`tiers.${tier}`, { defaultValue: tier })}
             </span>
             {clinic.slug && (
               <span className="clinic-dashboard-slug">/{clinic.slug}</span>
             )}
             <span className="clinic-dashboard-role">
-              Your role: <strong>{myRole}</strong>
+              {t("dashboard.yourRole")}{" "}
+              <strong>{t(`roles.${myRole}`, { defaultValue: myRole })}</strong>
             </span>
           </div>
         </div>
       </header>
 
-      {/* Stats */}
       <section className="clinic-dashboard-stats">
         <StatCard
           icon="👥"
-          label="Team members"
+          label={t("dashboard.stats.teamMembers")}
           value={staff.length}
           link="/clinic/staff"
         />
         <StatCard
           icon="✉️"
-          label="Pending invitations"
+          label={t("dashboard.stats.pendingInvitations")}
           value={invitations.length}
           link={canInvite ? "/clinic/staff" : null}
         />
-        <StatCard icon="📅" label="Subscription" value={tier} isText />
+        <StatCard
+          icon="📅"
+          label={t("dashboard.stats.subscription")}
+          value={t(`tiers.${tier}`, { defaultValue: tier })}
+          isText
+        />
       </section>
 
-      {/* Quick actions */}
       <section className="clinic-dashboard-section">
-        <h2>Quick actions</h2>
+        <h2>{t("dashboard.quickActions")}</h2>
         <div className="clinic-dashboard-actions">
           {canInvite && (
             <Link to="/clinic/staff" className="clinic-dashboard-action">
               <span className="clinic-dashboard-action-icon">✉️</span>
               <span className="clinic-dashboard-action-label">
-                Invite team member
+                {t("dashboard.actions.inviteTeamMember")}
               </span>
               <span className="clinic-dashboard-action-arrow">→</span>
             </Link>
           )}
           <Link to="/clinic/staff" className="clinic-dashboard-action">
             <span className="clinic-dashboard-action-icon">👥</span>
-            <span className="clinic-dashboard-action-label">View team</span>
+            <span className="clinic-dashboard-action-label">
+              {t("dashboard.actions.viewTeam")}
+            </span>
             <span className="clinic-dashboard-action-arrow">→</span>
           </Link>
           <button
             className="clinic-dashboard-action clinic-dashboard-action-disabled"
             disabled
-            title="Coming in Week 3"
           >
             <span className="clinic-dashboard-action-icon">📋</span>
             <span className="clinic-dashboard-action-label">
-              Schedule (soon)
+              {t("dashboard.actions.scheduleSoon")}
             </span>
           </button>
         </div>
       </section>
 
-      {/* Team preview */}
       <section className="clinic-dashboard-section">
         <div className="clinic-dashboard-section-header">
-          <h2>Team</h2>
+          <h2>{t("dashboard.team")}</h2>
           {staff.length > 5 && (
             <Link to="/clinic/staff" className="clinic-dashboard-section-link">
-              View all ({staff.length}) →
+              {t("dashboard.viewAll", { count: staff.length })}
             </Link>
           )}
         </div>
         {staff.length === 0 ? (
           <div className="clinic-dashboard-empty">
-            <p>No team members yet.</p>
+            <p>{t("dashboard.noTeamMembers")}</p>
             {canInvite && (
               <Link to="/clinic/staff" className="clinic-dashboard-empty-cta">
-                Invite your first team member →
+                {t("dashboard.inviteFirstMember")}
               </Link>
             )}
           </div>
@@ -188,19 +199,19 @@ export default function ClinicDashboardPage() {
               <TeamRow
                 key={getMembershipId(m) || `${m.userId}-${m.role}`}
                 member={m}
+                t={t}
               />
             ))}
           </div>
         )}
       </section>
 
-      {/* Pending invitations */}
       {invitations.length > 0 && canInvite && (
         <section className="clinic-dashboard-section">
           <div className="clinic-dashboard-section-header">
-            <h2>Pending invitations</h2>
+            <h2>{t("dashboard.pendingInvitations")}</h2>
             <Link to="/clinic/staff" className="clinic-dashboard-section-link">
-              Manage →
+              {t("dashboard.manage")}
             </Link>
           </div>
           <div className="clinic-dashboard-invitations-list">
@@ -208,33 +219,49 @@ export default function ClinicDashboardPage() {
               <InvitationRow
                 key={getInvitationId(inv) || `${inv.email}-${inv.role}`}
                 invitation={inv}
+                t={t}
+                formatDate={formatDate}
               />
             ))}
           </div>
         </section>
       )}
 
-      {/* Clinic details */}
       <section className="clinic-dashboard-section">
-        <h2>Clinic details</h2>
+        <h2>{t("dashboard.clinicDetails")}</h2>
         <div className="clinic-dashboard-details">
-          <DetailRow label="Name" value={clinic.name} />
-          <DetailRow label="Slug" value={clinic.slug || "—"} />
-          <DetailRow label="Timezone" value={clinic.timezone || "—"} />
+          <DetailRow label={t("dashboard.details.name")} value={clinic.name} />
           <DetailRow
-            label="Default currency"
+            label={t("dashboard.details.slug")}
+            value={clinic.slug || "—"}
+          />
+          <DetailRow
+            label={t("dashboard.details.timezone")}
+            value={clinic.timezone || "—"}
+          />
+          <DetailRow
+            label={t("dashboard.details.defaultCurrency")}
             value={clinic.defaultCurrency || "—"}
           />
           <DetailRow
-            label="Default language"
+            label={t("dashboard.details.defaultLanguage")}
             value={clinic.defaultLanguage || "—"}
           />
-          <DetailRow label="Tier" value={tier} />
+          <DetailRow
+            label={t("dashboard.details.tier")}
+            value={t(`tiers.${tier}`, { defaultValue: tier })}
+          />
           {clinic.contacts?.phone && (
-            <DetailRow label="Phone" value={clinic.contacts.phone} />
+            <DetailRow
+              label={t("dashboard.details.phone")}
+              value={clinic.contacts.phone}
+            />
           )}
           {clinic.contacts?.email && (
-            <DetailRow label="Email" value={clinic.contacts.email} />
+            <DetailRow
+              label={t("dashboard.details.email")}
+              value={clinic.contacts.email}
+            />
           )}
         </div>
       </section>
@@ -272,20 +299,18 @@ function StatCard({ icon, label, value, link, isText }) {
   return <div className="clinic-dashboard-stat">{content}</div>;
 }
 
-function TeamRow({ member }) {
-  // Backend may return: firstName/lastName/email decrypted, OR may return just userId.
-  // Show whatever's available, gracefully degrading.
+function TeamRow({ member, t }) {
   const name =
     [member.firstName, member.lastName].filter(Boolean).join(" ") ||
     member.email ||
     member.username ||
-    "Team member";
-
-  const initial = (name[0] || "?").toUpperCase();
+    t("staff.unnamed");
 
   return (
     <div className="clinic-dashboard-team-row">
-      <div className="clinic-dashboard-team-avatar">{initial}</div>
+      <div className="clinic-dashboard-team-avatar">
+        {(name[0] || "?").toUpperCase()}
+      </div>
       <div className="clinic-dashboard-team-info">
         <div className="clinic-dashboard-team-name">{name}</div>
         {member.email && (
@@ -294,23 +319,17 @@ function TeamRow({ member }) {
       </div>
       <div className="clinic-dashboard-team-role">
         <span className={`clinic-dashboard-role-badge role-${member.role}`}>
-          {member.role}
+          {t(`roles.${member.role}`, { defaultValue: member.role })}
         </span>
       </div>
     </div>
   );
 }
 
-function InvitationRow({ invitation }) {
-  const formatDate = (d) => {
-    if (!d) return "";
-    try {
-      return new Date(d).toLocaleDateString();
-    } catch {
-      return "";
-    }
-  };
-
+function InvitationRow({ invitation, t, formatDate }) {
+  const roleLabel = t(`roles.${invitation.role}`, {
+    defaultValue: invitation.role,
+  });
   return (
     <div className="clinic-dashboard-invitation-row">
       <div className="clinic-dashboard-invitation-info">
@@ -318,8 +337,10 @@ function InvitationRow({ invitation }) {
           {invitation.email}
         </div>
         <div className="clinic-dashboard-invitation-role">
-          Invited as {invitation.role} · expires{" "}
-          {formatDate(invitation.expiresAt)}
+          {t("dashboard.invitedAsRoleExpires", {
+            role: roleLabel,
+            date: formatDate(invitation.expiresAt),
+          })}
         </div>
       </div>
     </div>

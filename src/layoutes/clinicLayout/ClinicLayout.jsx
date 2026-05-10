@@ -2,8 +2,9 @@
 //
 // Layout wrapper for the /clinic/* zone.
 // Provides:
-// - top navigation (logo, language switcher, logout)
+// - top navigation (brand, language switcher, logout)
 // - auth guard: redirects to /login if no session
+// - RTL support for Arabic
 // - shared container styling
 //
 // Used for both DocPats users (owner/admin/manager) and ClinicEmployees,
@@ -11,16 +12,29 @@
 
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate, Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import axios from "../../axios";
 import { getClinicMe, getEmployeeMe, employeeLogout } from "../../api/clinic";
+import LanguageSwitcher from "../../components/LanguageSwitcher";
 import "./clinicLayout.css";
 
 export default function ClinicLayout({ employeeMode = false }) {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation("clinic");
+
   const [loading, setLoading] = useState(true);
   const [context, setContext] = useState(null);
   const [error, setError] = useState(null);
 
+  // ─── RTL support for Arabic ───
+  useEffect(() => {
+    const lang = (i18n.language || "en").split("-")[0];
+    const isRtl = lang === "ar";
+    document.documentElement.setAttribute("dir", isRtl ? "rtl" : "ltr");
+    document.documentElement.setAttribute("lang", lang);
+  }, [i18n.language]);
+
+  // ─── Load auth context ───
   useEffect(() => {
     let cancelled = false;
 
@@ -52,7 +66,7 @@ export default function ClinicLayout({ employeeMode = false }) {
           });
           return;
         }
-        setError(err.message || "Failed to load");
+        setError(err.message || t("common.error"));
         setLoading(false);
       }
     }
@@ -61,7 +75,7 @@ export default function ClinicLayout({ employeeMode = false }) {
     return () => {
       cancelled = true;
     };
-  }, [employeeMode, navigate]);
+  }, [employeeMode, navigate, t]);
 
   async function handleLogout() {
     try {
@@ -78,6 +92,7 @@ export default function ClinicLayout({ employeeMode = false }) {
     }
   }
 
+  // ─── Loading state ───
   if (loading) {
     return (
       <div className="clinic-layout-loading">
@@ -86,22 +101,26 @@ export default function ClinicLayout({ employeeMode = false }) {
     );
   }
 
+  // ─── Error state ───
   if (error) {
     return (
       <div className="clinic-layout-error">
-        <h2>Something went wrong</h2>
+        <h2>{t("common.error")}</h2>
         <p>{error}</p>
-        <button onClick={() => window.location.reload()}>Reload</button>
+        <button onClick={() => window.location.reload()}>
+          {t("common.errorReload")}
+        </button>
       </div>
     );
   }
 
+  // ─── Header label (clinic name or employee name) ───
   const headerLabel = employeeMode
     ? context?.employee
       ? `${context.employee.firstName || ""} ${context.employee.lastName || ""}`.trim() ||
         context.employee.email
-      : "Employee"
-    : context?.clinic?.name || "DocPats Clinic";
+      : t("roles.member")
+    : context?.clinic?.name || t("layout.brandName");
 
   return (
     <div className="clinic-layout">
@@ -112,13 +131,20 @@ export default function ClinicLayout({ employeeMode = false }) {
             className="clinic-layout-brand"
           >
             <span className="clinic-layout-brand-mark">DP</span>
-            <span className="clinic-layout-brand-name">DocPats Clinic</span>
+            <span className="clinic-layout-brand-name">
+              {t("layout.brandName")}
+            </span>
           </Link>
           <span className="clinic-layout-context">{headerLabel}</span>
         </div>
         <div className="clinic-layout-header-right">
-          <button className="clinic-layout-logout" onClick={handleLogout}>
-            Logout
+          <LanguageSwitcher />
+          <button
+            className="clinic-layout-logout"
+            onClick={handleLogout}
+            type="button"
+          >
+            {t("common.logout")}
           </button>
         </div>
       </header>

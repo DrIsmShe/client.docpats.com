@@ -1,0 +1,212 @@
+{
+  "common": {
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "back": "رجوع",
+    "loading": "جارٍ التحميل...",
+    "saving": "جارٍ الحفظ...",
+    "submitting": "جارٍ الإرسال...",
+    "retry": "إعادة المحاولة",
+    "required": "مطلوب",
+    "optional": "(اختياري)",
+    "yes": "نعم",
+    "no": "لا",
+    "logout": "تسجيل الخروج",
+    "settings": "الإعدادات",
+    "error": "حدث خطأ ما",
+    "errorReload": "إعادة التحميل"
+  },
+  "layout": {
+    "brandName": "DocPats Clinic",
+    "logoutFailed": "فشل تسجيل الخروج"
+  },
+  "hub": {
+    "title": "مرحبًا بك في DocPats Clinic",
+    "subtitle": "لا تملك عيادة بعد. أنشئ عيادة لإدارة فريقك ومواعيدك ومرضاك في مساحة عمل واحدة.",
+    "createClinic": "إنشاء عيادة",
+    "or": "أو",
+    "alreadyInvited": "تمت دعوتك بالفعل كعضو في الفريق؟",
+    "signInAsEmployee": "تسجيل الدخول كموظف",
+    "features": {
+      "team": {
+        "title": "إدارة فريقك",
+        "description": "ادعُ الأطباء والممرضين وموظفي الاستقبال بصلاحيات حسب الدور"
+      },
+      "scheduling": {
+        "title": "جدولة ذكية",
+        "description": "احجز المواعيد، أدر النوبات، تجنب التعارضات"
+      },
+      "hipaa": {
+        "title": "متوافق مع HIPAA",
+        "description": "بيانات مرضى مشفرة، سجلات تدقيق، اتصالات آمنة"
+      }
+    }
+  },
+  "createClinic": {
+    "back": "رجوع",
+    "title": "إنشاء عيادة",
+    "subtitle": "أعد مساحة عمل عيادتك. ستكون أنت المالك.",
+    "fields": {
+      "name": "اسم العيادة",
+      "namePlaceholder": "مركزي الطبي",
+      "slug": "معرّف الرابط",
+      "slugPlaceholder": "my-medical-center",
+      "slugHint": "يستخدم لصفحة العيادة العامة. يُنشأ تلقائيًا من الاسم إذا تُرك فارغًا.",
+      "defaultLanguage": "اللغة الافتراضية",
+      "defaultCurrency": "العملة الافتراضية",
+      "timezone": "المنطقة الزمنية",
+      "contactsSection": "معلومات الاتصال",
+      "contactsHint": "اختياري. يمكنك تغييرها لاحقًا في الإعدادات.",
+      "phone": "الهاتف",
+      "phonePlaceholder": "+994 50 123 45 67",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "info@myclinic.com"
+    },
+    "errors": {
+      "nameRequired": "اسم العيادة مطلوب",
+      "nameMinLength": "حرفان كحد أدنى",
+      "nameMaxLength": "200 حرف كحد أقصى",
+      "slugFormat": "أحرف صغيرة وأرقام وشرطات فقط",
+      "slugTaken": "هذا المعرّف مستخدم بالفعل",
+      "emailFormat": "بريد إلكتروني غير صالح",
+      "fixErrors": "يرجى تصحيح الأخطاء أدناه",
+      "duplicate": "توجد عيادة بهذا المعرّف بالفعل",
+      "generic": "تعذر إنشاء العيادة. حاول مرة أخرى."
+    },
+    "creating": "جارٍ الإنشاء...",
+    "submit": "إنشاء عيادة"
+  },
+  "dashboard": {
+    "yourRole": "دورك:",
+    "stats": {
+      "teamMembers": "أعضاء الفريق",
+      "pendingInvitations": "دعوات معلقة",
+      "subscription": "الاشتراك"
+    },
+    "quickActions": "إجراءات سريعة",
+    "actions": {
+      "inviteTeamMember": "دعوة عضو فريق",
+      "viewTeam": "عرض الفريق",
+      "scheduleSoon": "الجدول (قريبًا)"
+    },
+    "team": "الفريق",
+    "viewAll": "عرض الكل ({{count}}) ←",
+    "noTeamMembers": "لا يوجد أعضاء فريق بعد.",
+    "inviteFirstMember": "ادعُ أول عضو في فريقك ←",
+    "pendingInvitations": "دعوات معلقة",
+    "manage": "إدارة ←",
+    "clinicDetails": "تفاصيل العيادة",
+    "details": {
+      "name": "الاسم",
+      "slug": "المعرّف",
+      "timezone": "المنطقة الزمنية",
+      "defaultCurrency": "العملة",
+      "defaultLanguage": "اللغة",
+      "tier": "الباقة",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني"
+    },
+    "errorTitle": "تعذر تحميل لوحة التحكم",
+    "invitedAsRoleExpires": "تمت الدعوة بصفة {{role}} · تنتهي في {{date}}"
+  },
+  "staff": {
+    "back": "← لوحة التحكم",
+    "title": "الفريق",
+    "subtitle": "أدر أعضاء فريق العيادة والدعوات",
+    "addDoctor": "+ إضافة طبيب",
+    "inviteEmployee": "+ دعوة موظف",
+    "pendingInvitations": "دعوات معلقة",
+    "teamMembers": "أعضاء الفريق",
+    "noTeamMembers": "لا يوجد أعضاء فريق بعد.",
+    "inviteFirstMember": "ادعُ أول عضو في فريقك",
+    "remove": "إزالة",
+    "revoke": "إلغاء الدعوة",
+    "pending": "معلق",
+    "unnamed": "عضو الفريق",
+    "invitedAsRoleExpires": "تمت الدعوة بصفة {{role}} · تنتهي في {{date}}",
+    "errorTitle": "تعذر تحميل الفريق",
+    "confirmRevoke": "هل تريد إلغاء هذه الدعوة؟ لن يتمكن المستلم من استخدامها.",
+    "confirmRemove": "هل تريد إزالة {{name}} من العيادة؟ لا يمكن التراجع عن هذا الإجراء.",
+    "removeFailed": "تعذرت إزالة العضو",
+    "revokeFailed": "تعذر إلغاء الدعوة",
+    "changeRoleFailed": "تعذر تغيير الدور"
+  },
+  "inviteModal": {
+    "title": "دعوة موظف",
+    "intro": "سنرسل رابط الدعوة عبر البريد الإلكتروني. سيقوم المستلم بإعداد كلمة مرور والانضمام إلى عيادتك كموظف (دون ملف DocPats عام).",
+    "fields": {
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "name@example.com",
+      "role": "الدور",
+      "roleHint": "يحدد ما يمكنه رؤيته وفعله في العيادة.",
+      "customTitle": "المسمى الوظيفي",
+      "customTitlePlaceholder": "موظف استقبال أول",
+      "language": "لغة البريد الإلكتروني"
+    },
+    "errors": {
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "emailInvalid": "بريد إلكتروني غير صالح",
+      "alreadyMember": "هذا البريد مدعو أو عضو بالفعل.",
+      "generic": "تعذر إرسال الدعوة",
+      "fixErrors": "يرجى تصحيح الأخطاء أدناه"
+    },
+    "sending": "جارٍ الإرسال...",
+    "submit": "إرسال الدعوة"
+  },
+  "addDoctorModal": {
+    "title": "إضافة طبيب إلى عيادتك",
+    "intro": "ابحث عن طبيب موجود في DocPats وأضفه إلى عيادتك. سيحتفظ بملفه العام في DocPats.",
+    "searchLabel": "البحث عن أطباء",
+    "searchPlaceholder": "اكتب حرفين على الأقل...",
+    "searching": "جارٍ البحث...",
+    "noResults": "لم يتم العثور على أطباء",
+    "adding": "جارٍ الإضافة...",
+    "submit": "إضافة كطبيب",
+    "errors": {
+      "generic": "تعذرت إضافة الطبيب"
+    }
+  },
+  "roles": {
+    "owner": "المالك",
+    "admin": "مدير",
+    "manager": "مدير قسم",
+    "doctor": "طبيب",
+    "receptionist": "موظف استقبال",
+    "nurse": "ممرض",
+    "accountant": "محاسب",
+    "pharmacist": "صيدلي",
+    "marketer": "مسوّق",
+    "member": "عضو"
+  },
+  "tiers": {
+    "starter": "مبتدئ",
+    "professional": "احترافي",
+    "enterprise": "مؤسسي",
+    "free": "مجاني"
+  },
+  "languages": {
+    "ru": "Русский",
+    "en": "English",
+    "tr": "Türkçe",
+    "az": "Azərbaycanca",
+    "ar": "العربية"
+  },
+  "currencies": {
+    "AZN": "مانات أذربيجاني (₼)",
+    "USD": "دولار أمريكي ($)",
+    "EUR": "يورو (€)",
+    "RUB": "روبل روسي (₽)",
+    "TRY": "ليرة تركية (₺)"
+  },
+  "timezones": {
+    "Asia/Baku": "باكو (UTC+4)",
+    "Europe/Moscow": "موسكو (UTC+3)",
+    "Europe/Istanbul": "إسطنبول (UTC+3)",
+    "Europe/London": "لندن (UTC+0/+1)",
+    "Europe/Berlin": "برلين (UTC+1/+2)",
+    "Asia/Dubai": "دبي (UTC+4)",
+    "America/New_York": "نيويورك (UTC-5/-4)"
+  }
+}

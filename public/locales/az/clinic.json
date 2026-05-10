@@ -1,0 +1,212 @@
+{
+  "common": {
+    "cancel": "Ləğv et",
+    "save": "Yadda saxla",
+    "delete": "Sil",
+    "edit": "Redaktə et",
+    "back": "Geri",
+    "loading": "Yüklənir...",
+    "saving": "Yadda saxlanır...",
+    "submitting": "Göndərilir...",
+    "retry": "Yenidən cəhd et",
+    "required": "Tələb olunur",
+    "optional": "(istəyə bağlı)",
+    "yes": "Bəli",
+    "no": "Xeyr",
+    "logout": "Çıxış",
+    "settings": "Tənzimləmələr",
+    "error": "Nəsə səhv getdi",
+    "errorReload": "Yenidən yüklə"
+  },
+  "layout": {
+    "brandName": "DocPats Clinic",
+    "logoutFailed": "Çıxış uğursuz oldu"
+  },
+  "hub": {
+    "title": "DocPats Clinic-ə xoş gəlmisiniz",
+    "subtitle": "Hələ klinikanız yoxdur. Komandanı, qəbulları və xəstələri vahid iş sahəsində idarə etmək üçün klinika yaradın.",
+    "createClinic": "Klinika yarat",
+    "or": "və ya",
+    "alreadyInvited": "Artıq işçi kimi dəvət olunmusunuz?",
+    "signInAsEmployee": "İşçi kimi daxil ol",
+    "features": {
+      "team": {
+        "title": "Komandanı idarə edin",
+        "description": "Həkimləri, tibb bacılarını, registratorları rol əsaslı icazə ilə dəvət edin"
+      },
+      "scheduling": {
+        "title": "Ağıllı qrafik",
+        "description": "Qəbullar yaradın, növbələri idarə edin, ziddiyyətlərin qarşısını alın"
+      },
+      "hipaa": {
+        "title": "HIPAA uyğunluğu",
+        "description": "Şifrlənmiş xəstə məlumatları, audit jurnalları, təhlükəsiz əlaqə"
+      }
+    }
+  },
+  "createClinic": {
+    "back": "Geri",
+    "title": "Klinika yarat",
+    "subtitle": "Klinika iş sahənizi qurun. Sahibi siz olacaqsınız.",
+    "fields": {
+      "name": "Klinika adı",
+      "namePlaceholder": "Mənim Tibb Mərkəzim",
+      "slug": "URL identifikatoru",
+      "slugPlaceholder": "menim-tibb-merkezim",
+      "slugHint": "Açıq klinika səhifəsi üçün istifadə olunur. Boş qoyulsa addan avtomatik yaradılır.",
+      "defaultLanguage": "Standart dil",
+      "defaultCurrency": "Standart valyuta",
+      "timezone": "Saat qurşağı",
+      "contactsSection": "Əlaqə məlumatları",
+      "contactsHint": "İstəyə bağlı. Sonradan tənzimləmələrdə dəyişdirə bilərsiniz.",
+      "phone": "Telefon",
+      "phonePlaceholder": "+994 50 123 45 67",
+      "email": "E-poçt",
+      "emailPlaceholder": "info@menimklinika.com"
+    },
+    "errors": {
+      "nameRequired": "Klinika adı tələb olunur",
+      "nameMinLength": "Ən azı 2 simvol olmalıdır",
+      "nameMaxLength": "Ən çoxu 200 simvol",
+      "slugFormat": "Yalnız kiçik hərflər, rəqəmlər və tire",
+      "slugTaken": "Bu identifikator artıq mövcuddur",
+      "emailFormat": "Yanlış e-poçt ünvanı",
+      "fixErrors": "Aşağıdakı səhvləri düzəldin",
+      "duplicate": "Bu identifikatorla klinika artıq var",
+      "generic": "Klinika yaradıla bilmədi. Yenidən cəhd edin."
+    },
+    "creating": "Yaradılır...",
+    "submit": "Klinika yarat"
+  },
+  "dashboard": {
+    "yourRole": "Sizin rolunuz:",
+    "stats": {
+      "teamMembers": "Komanda üzvləri",
+      "pendingInvitations": "Gözləyən dəvətlər",
+      "subscription": "Abunəlik"
+    },
+    "quickActions": "Sürətli əməliyyatlar",
+    "actions": {
+      "inviteTeamMember": "İşçi dəvət et",
+      "viewTeam": "Komandaya bax",
+      "scheduleSoon": "Qrafik (tezliklə)"
+    },
+    "team": "Komanda",
+    "viewAll": "Hamısı ({{count}}) →",
+    "noTeamMembers": "Hələ komanda üzvü yoxdur.",
+    "inviteFirstMember": "İlk işçinizi dəvət edin →",
+    "pendingInvitations": "Gözləyən dəvətlər",
+    "manage": "İdarə et →",
+    "clinicDetails": "Klinika məlumatları",
+    "details": {
+      "name": "Ad",
+      "slug": "Identifikator",
+      "timezone": "Saat qurşağı",
+      "defaultCurrency": "Valyuta",
+      "defaultLanguage": "Dil",
+      "tier": "Plan",
+      "phone": "Telefon",
+      "email": "E-poçt"
+    },
+    "errorTitle": "Panel yüklənə bilmədi",
+    "invitedAsRoleExpires": "{{role}} kimi dəvət olunub · {{date}} tarixində bitir"
+  },
+  "staff": {
+    "back": "← Panel",
+    "title": "Komanda",
+    "subtitle": "Klinika üzvlərini və dəvətləri idarə edin",
+    "addDoctor": "+ Həkim əlavə et",
+    "inviteEmployee": "+ İşçi dəvət et",
+    "pendingInvitations": "Gözləyən dəvətlər",
+    "teamMembers": "Komanda üzvləri",
+    "noTeamMembers": "Hələ komanda üzvü yoxdur.",
+    "inviteFirstMember": "İlk işçinizi dəvət edin",
+    "remove": "Sil",
+    "revoke": "Geri çağır",
+    "pending": "Gözləyir",
+    "unnamed": "Komanda üzvü",
+    "invitedAsRoleExpires": "{{role}} kimi dəvət olunub · {{date}} tarixində bitir",
+    "errorTitle": "Komanda yüklənə bilmədi",
+    "confirmRevoke": "Bu dəvət geri çağırılsın? Alan istifadə edə bilməyəcək.",
+    "confirmRemove": "{{name}} klinikadan çıxarılsın? Bu əməliyyat geri qaytarıla bilməz.",
+    "removeFailed": "Üzv silinə bilmədi",
+    "revokeFailed": "Dəvət geri çağırıla bilmədi",
+    "changeRoleFailed": "Rol dəyişdirilə bilmədi"
+  },
+  "inviteModal": {
+    "title": "İşçi dəvət et",
+    "intro": "Dəvət linkini e-poçtla göndərəcəyik. Qəbul edən parol təyin edib klinikanıza işçi kimi qoşulacaq (açıq DocPats profili olmadan).",
+    "fields": {
+      "email": "E-poçt",
+      "emailPlaceholder": "leyla.aliyeva@nümunə.com",
+      "role": "Rol",
+      "roleHint": "Klinikada nəyi görə və edə bilərini müəyyən edir.",
+      "customTitle": "Vəzifə",
+      "customTitlePlaceholder": "Baş Registrator",
+      "language": "E-poçt dili"
+    },
+    "errors": {
+      "emailRequired": "E-poçt tələb olunur",
+      "emailInvalid": "Yanlış e-poçt",
+      "alreadyMember": "Bu e-poçt artıq dəvət olunub və ya üzvdür.",
+      "generic": "Dəvət göndərilə bilmədi",
+      "fixErrors": "Aşağıdakı səhvləri düzəldin"
+    },
+    "sending": "Göndərilir...",
+    "submit": "Dəvət göndər"
+  },
+  "addDoctorModal": {
+    "title": "Klinikaya həkim əlavə et",
+    "intro": "Mövcud DocPats həkimini axtarın və klinikanıza əlavə edin. Açıq DocPats profili saxlanılacaq.",
+    "searchLabel": "Həkim axtar",
+    "searchPlaceholder": "Ən azı 2 simvol daxil edin...",
+    "searching": "Axtarılır...",
+    "noResults": "Həkim tapılmadı",
+    "adding": "Əlavə edilir...",
+    "submit": "Həkim kimi əlavə et",
+    "errors": {
+      "generic": "Həkim əlavə edilə bilmədi"
+    }
+  },
+  "roles": {
+    "owner": "Sahib",
+    "admin": "Administrator",
+    "manager": "Menecer",
+    "doctor": "Həkim",
+    "receptionist": "Registrator",
+    "nurse": "Tibb bacısı",
+    "accountant": "Mühasib",
+    "pharmacist": "Aptekçi",
+    "marketer": "Marketinq",
+    "member": "Üzv"
+  },
+  "tiers": {
+    "starter": "Başlanğıc",
+    "professional": "Peşəkar",
+    "enterprise": "Korporativ",
+    "free": "Pulsuz"
+  },
+  "languages": {
+    "ru": "Русский",
+    "en": "English",
+    "tr": "Türkçe",
+    "az": "Azərbaycanca",
+    "ar": "العربية"
+  },
+  "currencies": {
+    "AZN": "Azərbaycan manatı (₼)",
+    "USD": "ABŞ dolları ($)",
+    "EUR": "Avro (€)",
+    "RUB": "Rusiya rublu (₽)",
+    "TRY": "Türk lirəsi (₺)"
+  },
+  "timezones": {
+    "Asia/Baku": "Bakı (UTC+4)",
+    "Europe/Moscow": "Moskva (UTC+3)",
+    "Europe/Istanbul": "İstanbul (UTC+3)",
+    "Europe/London": "London (UTC+0/+1)",
+    "Europe/Berlin": "Berlin (UTC+1/+2)",
+    "Asia/Dubai": "Dubay (UTC+4)",
+    "America/New_York": "Nyu-York (UTC-5/-4)"
+  }
+}

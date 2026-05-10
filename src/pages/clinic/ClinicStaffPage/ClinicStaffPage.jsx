@@ -1,11 +1,8 @@
 // client/src/pages/clinic/ClinicStaffPage/ClinicStaffPage.jsx
-//
-// Staff management page for clinic owner/admin.
-// Lists current team and pending invitations,
-// allows inviting new employees and adding existing DocPats doctors.
 
 import React, { useEffect, useState, useCallback } from "react";
 import { Link, useOutletContext, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   listStaff,
   listInvitations,
@@ -16,18 +13,6 @@ import {
 import InviteEmployeeModal from "./InviteEmployeeModal";
 import AddDoctorModal from "./AddDoctorModal";
 import "./clinicStaffPage.css";
-
-const ROLE_LABELS = {
-  owner: "Owner",
-  admin: "Admin",
-  manager: "Manager",
-  doctor: "Doctor",
-  receptionist: "Receptionist",
-  nurse: "Nurse",
-  accountant: "Accountant",
-  pharmacist: "Pharmacist",
-  marketer: "Marketer",
-};
 
 const CHANGEABLE_ROLES = [
   "admin",
@@ -41,6 +26,7 @@ const CHANGEABLE_ROLES = [
 ];
 
 export default function ClinicStaffPage() {
+  const { t, i18n } = useTranslation("clinic");
   const layoutContext = useOutletContext();
   const navigate = useNavigate();
 
@@ -75,29 +61,32 @@ export default function ClinicStaffPage() {
         navigate("/login", { replace: true });
         return;
       }
-      setError(err.message || "Failed to load");
+      setError(err.message || t("common.error"));
       setLoading(false);
     }
-  }, [navigate]);
+  }, [navigate, t]);
 
   useEffect(() => {
     loadAll();
   }, [loadAll]);
 
+  function staffDisplayName(m) {
+    return (
+      [m.firstName, m.lastName].filter(Boolean).join(" ") ||
+      m.email ||
+      m.username ||
+      t("staff.unnamed")
+    );
+  }
+
   async function handleRevokeInvitation(invitationId) {
-    if (
-      !window.confirm(
-        "Revoke this invitation? The recipient won't be able to use it.",
-      )
-    ) {
-      return;
-    }
+    if (!window.confirm(t("staff.confirmRevoke"))) return;
     setActionLoading((p) => ({ ...p, [invitationId]: true }));
     try {
       await revokeInvitation(invitationId);
       await loadAll();
     } catch (err) {
-      alert(err.response?.data?.error || "Failed to revoke invitation");
+      alert(err.response?.data?.error || t("staff.revokeFailed"));
     } finally {
       setActionLoading((p) => ({ ...p, [invitationId]: false }));
     }
@@ -105,18 +94,14 @@ export default function ClinicStaffPage() {
 
   async function handleRemoveStaff(membership) {
     const name = staffDisplayName(membership);
-    if (
-      !window.confirm(`Remove ${name} from the clinic? This cannot be undone.`)
-    ) {
-      return;
-    }
+    if (!window.confirm(t("staff.confirmRemove", { name }))) return;
     const id = membership.membershipId || membership._id;
     setActionLoading((p) => ({ ...p, [id]: true }));
     try {
       await removeStaff(id);
       await loadAll();
     } catch (err) {
-      alert(err.response?.data?.error || "Failed to remove member");
+      alert(err.response?.data?.error || t("staff.removeFailed"));
     } finally {
       setActionLoading((p) => ({ ...p, [id]: false }));
     }
@@ -130,7 +115,7 @@ export default function ClinicStaffPage() {
       await changeStaffRole(id, newRole);
       await loadAll();
     } catch (err) {
-      alert(err.response?.data?.error || "Failed to change role");
+      alert(err.response?.data?.error || t("staff.changeRoleFailed"));
     } finally {
       setActionLoading((p) => ({ ...p, [id]: false }));
     }
@@ -146,6 +131,15 @@ export default function ClinicStaffPage() {
     loadAll();
   }
 
+  const formatDate = (d) => {
+    if (!d) return "—";
+    try {
+      return new Date(d).toLocaleDateString(i18n.language || undefined);
+    } catch {
+      return "—";
+    }
+  };
+
   if (loading) {
     return (
       <div className="staff-page-loading">
@@ -157,49 +151,47 @@ export default function ClinicStaffPage() {
   if (error) {
     return (
       <div className="staff-page-error">
-        <h2>Couldn't load team</h2>
+        <h2>{t("staff.errorTitle")}</h2>
         <p>{error}</p>
-        <button onClick={loadAll}>Retry</button>
+        <button onClick={loadAll}>{t("common.retry")}</button>
       </div>
     );
   }
 
   return (
     <div className="staff-page">
-      {/* Header */}
       <div className="staff-page-header">
         <div className="staff-page-header-left">
           <Link to="/clinic/dashboard" className="staff-page-back">
-            ← Dashboard
+            {t("staff.back")}
           </Link>
-          <h1>Team</h1>
-          <p className="staff-page-subtitle">
-            Manage your clinic's team members and invitations
-          </p>
+          <h1>{t("staff.title")}</h1>
+          <p className="staff-page-subtitle">{t("staff.subtitle")}</p>
         </div>
         {canInvite && (
           <div className="staff-page-header-actions">
             <button
               className="staff-page-btn-secondary"
               onClick={() => setAddDoctorModalOpen(true)}
+              type="button"
             >
-              + Add doctor
+              {t("staff.addDoctor")}
             </button>
             <button
               className="staff-page-btn-primary"
               onClick={() => setInviteModalOpen(true)}
+              type="button"
             >
-              + Invite employee
+              {t("staff.inviteEmployee")}
             </button>
           </div>
         )}
       </div>
 
-      {/* Pending invitations */}
       {invitations.length > 0 && (
         <section className="staff-page-section">
           <h2>
-            Pending invitations
+            {t("staff.pendingInvitations")}
             <span className="staff-page-count">{invitations.length}</span>
           </h2>
           <div className="staff-page-list">
@@ -209,27 +201,29 @@ export default function ClinicStaffPage() {
                 invitation={inv}
                 onRevoke={canInvite ? handleRevokeInvitation : null}
                 isLoading={actionLoading[inv.invitationId || inv._id || inv.id]}
+                t={t}
+                formatDate={formatDate}
               />
             ))}
           </div>
         </section>
       )}
 
-      {/* Team members */}
       <section className="staff-page-section">
         <h2>
-          Team members
+          {t("staff.teamMembers")}
           <span className="staff-page-count">{staff.length}</span>
         </h2>
         {staff.length === 0 ? (
           <div className="staff-page-empty">
-            <p>No team members yet.</p>
+            <p>{t("staff.noTeamMembers")}</p>
             {canInvite && (
               <button
                 className="staff-page-btn-primary"
                 onClick={() => setInviteModalOpen(true)}
+                type="button"
               >
-                Invite your first team member
+                {t("staff.inviteFirstMember")}
               </button>
             )}
           </div>
@@ -244,13 +238,14 @@ export default function ClinicStaffPage() {
                 onChangeRole={handleChangeRole}
                 onRemove={handleRemoveStaff}
                 isLoading={actionLoading[m.membershipId || m._id || m.id]}
+                staffDisplayName={staffDisplayName}
+                t={t}
               />
             ))}
           </div>
         )}
       </section>
 
-      {/* Modals */}
       {inviteModalOpen && (
         <InviteEmployeeModal
           onClose={() => setInviteModalOpen(false)}
@@ -269,15 +264,6 @@ export default function ClinicStaffPage() {
 
 // ─── Sub-components ───
 
-function staffDisplayName(m) {
-  return (
-    [m.firstName, m.lastName].filter(Boolean).join(" ") ||
-    m.email ||
-    m.username ||
-    "Unnamed"
-  );
-}
-
 function StaffRow({
   membership,
   canManageRole,
@@ -285,6 +271,8 @@ function StaffRow({
   onChangeRole,
   onRemove,
   isLoading,
+  staffDisplayName,
+  t,
 }) {
   const name = staffDisplayName(membership);
   const initial = (name[0] || "?").toUpperCase();
@@ -311,7 +299,7 @@ function StaffRow({
           >
             {CHANGEABLE_ROLES.map((r) => (
               <option key={r} value={r}>
-                {ROLE_LABELS[r]}
+                {t(`roles.${r}`, { defaultValue: r })}
               </option>
             ))}
           </select>
@@ -322,8 +310,9 @@ function StaffRow({
             }`}
             onClick={canManageRole ? () => setEditingRole(true) : undefined}
             disabled={!canManageRole || isLoading}
+            type="button"
           >
-            {ROLE_LABELS[membership.role] || membership.role}
+            {t(`roles.${membership.role}`, { defaultValue: membership.role })}
             {canManageRole && <span className="staff-row-role-edit"> ✎</span>}
           </button>
         )}
@@ -334,9 +323,9 @@ function StaffRow({
             className="staff-row-btn-remove"
             onClick={() => onRemove(membership)}
             disabled={isLoading}
-            title="Remove from clinic"
+            type="button"
           >
-            Remove
+            {t("staff.remove")}
           </button>
         )}
       </div>
@@ -344,11 +333,10 @@ function StaffRow({
   );
 }
 
-function InvitationRow({ invitation, onRevoke, isLoading }) {
-  const expiresAt = invitation.expiresAt
-    ? new Date(invitation.expiresAt).toLocaleDateString()
-    : "—";
-
+function InvitationRow({ invitation, onRevoke, isLoading, t, formatDate }) {
+  const roleLabel = t(`roles.${invitation.role}`, {
+    defaultValue: invitation.role,
+  });
   return (
     <div
       className={`staff-row staff-row-invitation ${isLoading ? "is-loading" : ""}`}
@@ -357,13 +345,14 @@ function InvitationRow({ invitation, onRevoke, isLoading }) {
       <div className="staff-row-info">
         <div className="staff-row-name">{invitation.email}</div>
         <div className="staff-row-email">
-          Invited as{" "}
-          <strong>{ROLE_LABELS[invitation.role] || invitation.role}</strong> ·
-          expires {expiresAt}
+          {t("staff.invitedAsRoleExpires", {
+            role: roleLabel,
+            date: formatDate(invitation.expiresAt),
+          })}
         </div>
       </div>
       <div className="staff-row-role">
-        <span className="staff-row-pending-badge">Pending</span>
+        <span className="staff-row-pending-badge">{t("staff.pending")}</span>
       </div>
       <div className="staff-row-actions">
         {onRevoke && (
@@ -375,8 +364,9 @@ function InvitationRow({ invitation, onRevoke, isLoading }) {
               )
             }
             disabled={isLoading}
+            type="button"
           >
-            Revoke
+            {t("staff.revoke")}
           </button>
         )}
       </div>
