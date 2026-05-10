@@ -8,6 +8,11 @@ import { useNavigate, Link, useOutletContext } from "react-router-dom";
 import { getClinicMe, listStaff, listInvitations } from "../../../api/clinic";
 import "./clinicDashboardPage.css";
 
+// Helpers
+const getMembershipId = (m) => m?.membershipId || m?._id || m?.id || null;
+const getInvitationId = (inv) =>
+  inv?.invitationId || inv?._id || inv?.id || null;
+
 export default function ClinicDashboardPage() {
   const navigate = useNavigate();
   const layoutContext = useOutletContext();
@@ -180,7 +185,10 @@ export default function ClinicDashboardPage() {
         ) : (
           <div className="clinic-dashboard-team-list">
             {staff.slice(0, 5).map((m) => (
-              <TeamRow key={m._id || m.id} member={m} />
+              <TeamRow
+                key={getMembershipId(m) || `${m.userId}-${m.role}`}
+                member={m}
+              />
             ))}
           </div>
         )}
@@ -197,7 +205,10 @@ export default function ClinicDashboardPage() {
           </div>
           <div className="clinic-dashboard-invitations-list">
             {invitations.slice(0, 5).map((inv) => (
-              <InvitationRow key={inv._id || inv.id} invitation={inv} />
+              <InvitationRow
+                key={getInvitationId(inv) || `${inv.email}-${inv.role}`}
+                invitation={inv}
+              />
             ))}
           </div>
         </section>
@@ -262,16 +273,19 @@ function StatCard({ icon, label, value, link, isText }) {
 }
 
 function TeamRow({ member }) {
+  // Backend may return: firstName/lastName/email decrypted, OR may return just userId.
+  // Show whatever's available, gracefully degrading.
   const name =
     [member.firstName, member.lastName].filter(Boolean).join(" ") ||
     member.email ||
-    "Unnamed member";
+    member.username ||
+    "Team member";
+
+  const initial = (name[0] || "?").toUpperCase();
 
   return (
     <div className="clinic-dashboard-team-row">
-      <div className="clinic-dashboard-team-avatar">
-        {(name[0] || "?").toUpperCase()}
-      </div>
+      <div className="clinic-dashboard-team-avatar">{initial}</div>
       <div className="clinic-dashboard-team-info">
         <div className="clinic-dashboard-team-name">{name}</div>
         {member.email && (

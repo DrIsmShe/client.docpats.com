@@ -2,8 +2,30 @@
 //
 // All API calls for the clinic module.
 // All requests use the main axios instance with withCredentials: true.
+//
+// Backend response convention: list endpoints wrap arrays in semantic keys
+// like { staff: [...] } / { doctors: [...] } / { invitations: [...] } /
+// { memberships: [...] }. Frontend normalizers convert all of these to a
+// uniform { items: [...] } shape so React components don't need to care.
 
 import axios from "../axios";
+
+// ─── Helpers ──────────────────────────────────────────────────
+
+/**
+ * Normalize a list response to { items: [...] }.
+ * Accepts: raw array, { items: [...] }, or { [knownKey]: [...] }.
+ */
+function normalizeList(data, knownKeys = []) {
+  if (Array.isArray(data)) return { items: data };
+  if (data && Array.isArray(data.items)) return data;
+  if (data && typeof data === "object") {
+    for (const key of knownKeys) {
+      if (Array.isArray(data[key])) return { items: data[key] };
+    }
+  }
+  return { items: [] };
+}
 
 // ─── Authenticated context ────────────────────────────────────
 
@@ -23,7 +45,7 @@ export const getClinicMe = async () => {
  */
 export const getMyMemberships = async () => {
   const res = await axios.get("/api/v1/clinic/me/memberships");
-  return res.data;
+  return normalizeList(res.data, ["memberships"]);
 };
 
 // ─── Clinic CRUD ──────────────────────────────────────────────
@@ -77,7 +99,7 @@ export const getClinicBySlug = async (slug) => {
  */
 export const listStaff = async () => {
   const res = await axios.get("/api/v1/clinic/staff");
-  return res.data;
+  return normalizeList(res.data, ["staff"]);
 };
 
 /**
@@ -121,7 +143,7 @@ export const searchDoctors = async (query) => {
   const res = await axios.get("/api/v1/clinic/staff/search-doctors", {
     params: { q: query },
   });
-  return res.data;
+  return normalizeList(res.data, ["doctors"]);
 };
 
 // ─── Invitations ───────────────────────────────────────────────
@@ -153,7 +175,7 @@ export const listInvitations = async (status = "pending") => {
   const res = await axios.get("/api/v1/clinic/invitations", {
     params: { status },
   });
-  return res.data;
+  return normalizeList(res.data, ["invitations"]);
 };
 
 /**

@@ -501,6 +501,7 @@ import ClinicLayout from "./layoutes/clinicLayout/ClinicLayout.jsx";
 import ClinicHubPage from "./pages/clinic/ClinicHubPage/ClinicHubPage.jsx";
 import CreateClinicPage from "./pages/clinic/CreateClinicPage/CreateClinicPage.jsx";
 import ClinicDashboardPage from "./pages/clinic/ClinicDashboardPage/ClinicDashboardPage.jsx";
+import ClinicStaffPage from "./pages/clinic/ClinicStaffPage/ClinicStaffPage.jsx";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -561,7 +562,7 @@ function App() {
               <Route index element={<ClinicHubPage />} />
               <Route path="create" element={<CreateClinicPage />} />
               <Route path="dashboard" element={<ClinicDashboardPage />} />
-              {/* <Route path="staff" element={<ClinicStaffPage />} /> */}
+              <Route path="staff" element={<ClinicStaffPage />} />
             </Route>
 
             <Route
