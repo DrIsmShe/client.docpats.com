@@ -75,7 +75,7 @@ export default function ClinicLayout({ employeeMode = false }) {
     return () => {
       cancelled = true;
     };
-  }, [employeeMode, navigate, t]);
+  }, [employeeMode, navigate]);
 
   async function handleLogout() {
     try {

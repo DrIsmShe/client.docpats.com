@@ -67,7 +67,7 @@ export default function ClinicDashboardPage() {
     return () => {
       cancelled = true;
     };
-  }, [navigate, t]);
+  }, [navigate]);
 
   if (loading) {
     return (
