@@ -25,6 +25,9 @@ const CHANGEABLE_ROLES = [
   "marketer",
 ];
 
+// Roles that can have a working schedule (real doctors).
+const SCHEDULE_ROLES = ["owner", "admin", "doctor"];
+
 export default function ClinicStaffPage() {
   const { t, i18n } = useTranslation("clinic");
   const layoutContext = useOutletContext();
@@ -120,6 +123,12 @@ export default function ClinicStaffPage() {
     } finally {
       setActionLoading((p) => ({ ...p, [id]: false }));
     }
+  }
+
+  // Navigate to a doctor's schedule page. Used by the "Schedule" button
+  // that StaffRow renders for actorType:"user" doctors.
+  function handleOpenSchedule(doctorId) {
+    navigate(`/clinic/staff/${doctorId}/schedule`);
   }
 
   function handleInviteSuccess() {
@@ -238,6 +247,7 @@ export default function ClinicStaffPage() {
                 canRemove={canRemove && m.role !== "owner"}
                 onChangeRole={handleChangeRole}
                 onRemove={handleRemoveStaff}
+                onOpenSchedule={handleOpenSchedule}
                 isLoading={actionLoading[m.membershipId || m._id || m.id]}
                 staffDisplayName={staffDisplayName}
                 t={t}
@@ -271,6 +281,7 @@ function StaffRow({
   canRemove,
   onChangeRole,
   onRemove,
+  onOpenSchedule,
   isLoading,
   staffDisplayName,
   t,
@@ -278,6 +289,13 @@ function StaffRow({
   const name = staffDisplayName(membership);
   const initial = (name[0] || "?").toUpperCase();
   const [editingRole, setEditingRole] = useState(false);
+
+  // "Schedule" button shows only for real doctors: actorType "user" with
+  // role owner/admin/doctor. Nurses/receptionists (actorType "employee")
+  // don't have a working schedule.
+  const canHaveSchedule =
+    membership.actorType === "user" && SCHEDULE_ROLES.includes(membership.role);
+  const doctorId = membership.userId || membership._id || membership.id;
 
   return (
     <div className={`staff-row ${isLoading ? "is-loading" : ""}`}>
@@ -319,6 +337,16 @@ function StaffRow({
         )}
       </div>
       <div className="staff-row-actions">
+        {canHaveSchedule && (
+          <button
+            className="staff-row-btn-schedule"
+            onClick={() => onOpenSchedule(doctorId)}
+            disabled={isLoading}
+            type="button"
+          >
+            {t("schedule.title", { defaultValue: "Schedule" })}
+          </button>
+        )}
         {canRemove && (
           <button
             className="staff-row-btn-remove"

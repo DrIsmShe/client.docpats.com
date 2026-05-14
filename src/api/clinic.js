@@ -350,6 +350,7 @@ export const unlinkPatientFromUser = async (patientId) => {
   const res = await axios.delete(`/api/v1/clinic/patients/${patientId}/link`);
   return res.data;
 };
+
 /**
  * GET /api/v1/clinic/patients/users/search
  * Search DocPats User accounts to link a patient to. Two modes:
@@ -380,4 +381,124 @@ export const searchUsersForLink = async ({
     },
   });
   return normalizeList(res.data, ["users", "items"]);
+};
+
+// ─── Doctor schedule + exceptions (Sprint 1, day 1-2) ──────────
+//
+// Backend module: server/modules/clinic/clinic-appointments/
+// Full path prefix: /api/v1/clinic/appointments
+//
+// Endpoints:
+//   PUT    /appointments/schedule/:doctorId               weekly pattern upsert
+//   GET    /appointments/schedule/:doctorId               one doctor's weekly pattern
+//   POST   /appointments/exceptions/:doctorId             one date exception
+//   POST   /appointments/exceptions/:doctorId/bulk-day-off   vacation range
+//   GET    /appointments/exceptions/:doctorId?from=&to=   exceptions in window
+//   DELETE /appointments/exceptions/entry/:exceptionId    delete one exception
+
+/**
+ * GET /api/v1/clinic/appointments/schedule/:doctorId
+ * Fetch one doctor's weekly working-hours pattern.
+ * Returns { schedule: {...} | null }. `null` = no schedule set yet.
+ */
+export const getDoctorSchedule = async (doctorId) => {
+  const res = await axios.get(
+    `/api/v1/clinic/appointments/schedule/${doctorId}`,
+  );
+  return res.data; // { schedule: {...} | null }
+};
+
+/**
+ * PUT /api/v1/clinic/appointments/schedule/:doctorId
+ * Create or replace a doctor's weekly working-hours pattern.
+ *
+ * @param {string} doctorId
+ * @param {object} payload
+ *   {
+ *     weeklyHours: [
+ *       { weekday: 0-6, intervals: [{ startMinute, endMinute }, ...] },
+ *       ...
+ *     ],
+ *     slotDurationMinutes?: number,   // default 30
+ *     bufferMinutes?: number,         // default 0
+ *     isActive?: boolean,             // default true
+ *   }
+ * Times are minutes-from-midnight (0-1440) in clinic-local time.
+ * weekday follows JS Date.getDay(): 0 = Sunday ... 6 = Saturday.
+ */
+export const upsertDoctorSchedule = async (doctorId, payload) => {
+  const res = await axios.put(
+    `/api/v1/clinic/appointments/schedule/${doctorId}`,
+    payload,
+  );
+  return res.data; // { schedule: {...} }
+};
+
+/**
+ * GET /api/v1/clinic/appointments/exceptions/:doctorId?from=&to=
+ * List per-date exceptions (day-off / custom hours) for a doctor within an
+ * inclusive date window. Both bounds required, format "YYYY-MM-DD".
+ * Returns { items: [...] } (normalized from { exceptions: [...] }).
+ */
+export const listScheduleExceptions = async (doctorId, { from, to }) => {
+  const res = await axios.get(
+    `/api/v1/clinic/appointments/exceptions/${doctorId}`,
+    { params: { from, to } },
+  );
+  return normalizeList(res.data, ["exceptions"]);
+};
+
+/**
+ * POST /api/v1/clinic/appointments/exceptions/:doctorId
+ * Create (or replace) one schedule exception for one date.
+ *
+ * @param {string} doctorId
+ * @param {object} payload
+ *   {
+ *     date: "YYYY-MM-DD",            // required
+ *     type: "day_off" | "custom",   // required
+ *     intervals?: [{ startMinute, endMinute }, ...],  // required iff custom
+ *     note?: string,                // optional, <= 200 chars
+ *   }
+ */
+export const createScheduleException = async (doctorId, payload) => {
+  const res = await axios.post(
+    `/api/v1/clinic/appointments/exceptions/${doctorId}`,
+    payload,
+  );
+  return res.data; // { exception: {...} }
+};
+
+/**
+ * POST /api/v1/clinic/appointments/exceptions/:doctorId/bulk-day-off
+ * Mark an inclusive date range as day-off (vacation). Expanded server-side
+ * into one "day_off" exception per calendar day. Idempotent per day.
+ *
+ * @param {string} doctorId
+ * @param {object} payload
+ *   {
+ *     startDate: "YYYY-MM-DD",  // required, inclusive
+ *     endDate:   "YYYY-MM-DD",  // required, inclusive
+ *     note?: string,            // optional, applied to every generated day
+ *   }
+ * Returns { created: <count>, days: ["YYYY-MM-DD", ...] }
+ */
+export const bulkCreateDayOff = async (doctorId, payload) => {
+  const res = await axios.post(
+    `/api/v1/clinic/appointments/exceptions/${doctorId}/bulk-day-off`,
+    payload,
+  );
+  return res.data; // { created, days }
+};
+
+/**
+ * DELETE /api/v1/clinic/appointments/exceptions/entry/:exceptionId
+ * Delete one schedule exception by its own id (soft delete).
+ * Note the "/entry/" segment — distinct from the :doctorId routes.
+ */
+export const deleteScheduleException = async (exceptionId) => {
+  const res = await axios.delete(
+    `/api/v1/clinic/appointments/exceptions/entry/${exceptionId}`,
+  );
+  return res.data; // { deleted: true, id }
 };

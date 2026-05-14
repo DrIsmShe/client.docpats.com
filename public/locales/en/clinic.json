@@ -408,5 +408,93 @@
       "pharmacySoon": "Pharmacy (soon)"
     },
     "comingSoon": "More features will become available in upcoming releases."
+  },
+
+  "schedule": {
+    "title": "Doctor schedule",
+    "back": "← Back to team",
+    "loadError": "Failed to load schedule",
+    "retry": "Retry",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "saveError": "Failed to save",
+    "weeklyTab": "Weekly schedule",
+    "exceptionsTab": "Exceptions & time off",
+    "weekly": {
+      "title": "Working hours by weekday",
+      "subtitle": "Set the regular schedule. You can add a break (e.g. lunch) as a separate interval.",
+      "dayOff": "Day off",
+      "working": "Working day",
+      "addInterval": "+ Interval",
+      "removeInterval": "Remove",
+      "from": "From",
+      "to": "To",
+      "noIntervals": "No intervals — treated as a day off",
+      "slotDuration": "Appointment length (min)",
+      "bufferMinutes": "Buffer between appointments (min)",
+      "isActive": "Schedule active",
+      "save": "Save schedule",
+      "emptyHint": "No schedule yet. Enable working days and add intervals.",
+      "overlapError": "Intervals overlap — check the times",
+      "invalidInterval": "Start time must be before end time"
+    },
+    "exceptions": {
+      "title": "Schedule exceptions",
+      "subtitle": "Specific dates that differ from the regular schedule: days off, vacation, custom hours.",
+      "rangeFrom": "Period from",
+      "rangeTo": "to",
+      "loadRange": "Show",
+      "addSingle": "+ Add exception",
+      "addVacation": "+ Vacation (range)",
+      "empty": "No exceptions in the selected period",
+      "typeDayOff": "Day off",
+      "typeCustom": "Custom hours",
+      "delete": "Delete",
+      "confirmDelete": "Delete this exception?",
+      "deleteError": "Failed to delete exception",
+      "note": "Note",
+      "singleModal": {
+        "title": "New exception",
+        "date": "Date",
+        "type": "Type",
+        "typeDayOffLabel": "Day off — doctor not working",
+        "typeCustomLabel": "Custom hours — different working time",
+        "intervals": "Working intervals",
+        "addInterval": "+ Interval",
+        "notePlaceholder": "E.g. Conference, Public holiday",
+        "submit": "Create",
+        "cancel": "Cancel",
+        "createError": "Failed to create exception"
+      },
+      "vacationModal": {
+        "title": "Vacation — date range",
+        "subtitle": "Every day in the range will be marked as a day off.",
+        "startDate": "Start",
+        "endDate": "End",
+        "notePlaceholder": "E.g. Annual leave",
+        "submit": "Mark as days off",
+        "cancel": "Cancel",
+        "createError": "Failed to create vacation",
+        "createdCount": "Days off created: {{count}}"
+      }
+    },
+    "weekdays": {
+      "0": "Sunday",
+      "1": "Monday",
+      "2": "Tuesday",
+      "3": "Wednesday",
+      "4": "Thursday",
+      "5": "Friday",
+      "6": "Saturday"
+    },
+    "weekdaysShort": {
+      "0": "Sun",
+      "1": "Mon",
+      "2": "Tue",
+      "3": "Wed",
+      "4": "Thu",
+      "5": "Fri",
+      "6": "Sat"
+    }
   }
 }

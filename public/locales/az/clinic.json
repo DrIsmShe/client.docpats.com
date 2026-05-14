@@ -408,5 +408,92 @@
       "pharmacySoon": "Aptek (tezliklə)"
     },
     "comingSoon": "Növbəti versiyalarda yeni xüsusiyyətlər əlavə olunacaq."
+  },
+  "schedule": {
+    "title": "Həkim cədvəli",
+    "back": "← Komandaya qayıt",
+    "loadError": "Cədvəl yüklənmədi",
+    "retry": "Yenidən cəhd et",
+    "saving": "Yadda saxlanılır…",
+    "saved": "Yadda saxlanıldı",
+    "saveError": "Yadda saxlanmadı",
+    "weeklyTab": "Həftəlik cədvəl",
+    "exceptionsTab": "İstisnalar və məzuniyyət",
+    "weekly": {
+      "title": "Həftənin günləri üzrə iş saatları",
+      "subtitle": "Adi cədvəli təyin edin. Fasilə (məsələn, nahar) ayrıca interval kimi əlavə edilə bilər.",
+      "dayOff": "İstirahət günü",
+      "working": "İş günü",
+      "addInterval": "+ İnterval",
+      "removeInterval": "Sil",
+      "from": "Başlama",
+      "to": "Bitmə",
+      "noIntervals": "İnterval yoxdur — istirahət günü sayılır",
+      "slotDuration": "Qəbulun müddəti (dəq)",
+      "bufferMinutes": "Qəbullar arası fasilə (dəq)",
+      "isActive": "Cədvəl aktivdir",
+      "save": "Cədvəli yadda saxla",
+      "emptyHint": "Cədvəl hələ təyin edilməyib. İş günlərini aktiv edin və interval əlavə edin.",
+      "overlapError": "İntervallar üst-üstə düşür — vaxtları yoxlayın",
+      "invalidInterval": "Başlama vaxtı bitmə vaxtından əvvəl olmalıdır"
+    },
+    "exceptions": {
+      "title": "Cədvəl istisnaları",
+      "subtitle": "Adi cədvəldən fərqlənən konkret tarixlər: istirahət günləri, məzuniyyət, qeyri-standart saatlar.",
+      "rangeFrom": "Dövr başlanğıcı",
+      "rangeTo": "son",
+      "loadRange": "Göstər",
+      "addSingle": "+ İstisna əlavə et",
+      "addVacation": "+ Məzuniyyət (interval)",
+      "empty": "Seçilmiş dövrdə istisna yoxdur",
+      "typeDayOff": "İstirahət günü",
+      "typeCustom": "Xüsusi saatlar",
+      "delete": "Sil",
+      "confirmDelete": "Bu istisnanı silmək?",
+      "deleteError": "İstisna silinmədi",
+      "note": "Qeyd",
+      "singleModal": {
+        "title": "Yeni istisna",
+        "date": "Tarix",
+        "type": "Növ",
+        "typeDayOffLabel": "İstirahət günü — həkim işləmir",
+        "typeCustomLabel": "Xüsusi saatlar — fərqli iş vaxtı",
+        "intervals": "İş intervalları",
+        "addInterval": "+ İnterval",
+        "notePlaceholder": "Məsələn: Konfrans, Bayram",
+        "submit": "Yarat",
+        "cancel": "Ləğv et",
+        "createError": "İstisna yaradılmadı"
+      },
+      "vacationModal": {
+        "title": "Məzuniyyət — tarix intervalı",
+        "subtitle": "İntervalın hər günü istirahət günü kimi qeyd olunacaq.",
+        "startDate": "Başlanğıc",
+        "endDate": "Son",
+        "notePlaceholder": "Məsələn: İllik məzuniyyət",
+        "submit": "İstirahət günü kimi qeyd et",
+        "cancel": "Ləğv et",
+        "createError": "Məzuniyyət yaradılmadı",
+        "createdCount": "Yaradılan istirahət günləri: {{count}}"
+      }
+    },
+    "weekdays": {
+      "0": "Bazar",
+      "1": "Bazar ertəsi",
+      "2": "Çərşənbə axşamı",
+      "3": "Çərşənbə",
+      "4": "Cümə axşamı",
+      "5": "Cümə",
+      "6": "Şənbə"
+    },
+    "weekdaysShort": {
+      "0": "B.",
+      "1": "B.e.",
+      "2": "Ç.a.",
+      "3": "Ç.",
+      "4": "C.a.",
+      "5": "C.",
+      "6": "Ş."
+    }
   }
 }
