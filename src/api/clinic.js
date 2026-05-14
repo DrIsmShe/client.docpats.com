@@ -265,3 +265,119 @@ export const getEmployeeMe = async () => {
   const res = await axios.get("/api/v1/clinic/employees/me");
   return res.data;
 };
+
+// ─── Patients ──────────────────────────────────────────────────
+
+/**
+ * GET /api/v1/clinic/patients
+ * List patients of the current clinic. Cursor-based pagination.
+ * @param {object} options { limit?, before?, sortBy?, includeLinked? }
+ */
+export const listPatients = async (options = {}) => {
+  const res = await axios.get("/api/v1/clinic/patients", { params: options });
+  return normalizeList(res.data, ["patients"]);
+};
+
+/**
+ * POST /api/v1/clinic/patients
+ * Create a new patient record in the current clinic.
+ */
+export const createPatient = async (data) => {
+  const res = await axios.post("/api/v1/clinic/patients", data);
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/patients/search
+ * Exact-match on phone/email (blind index) + prefix on lastName.
+ * At least one of phone/email/lastName is required.
+ */
+export const searchPatients = async ({ phone, email, lastName, limit }) => {
+  const res = await axios.get("/api/v1/clinic/patients/search", {
+    params: {
+      ...(phone && { phone }),
+      ...(email && { email }),
+      ...(lastName && { lastName }),
+      ...(limit && { limit }),
+    },
+  });
+  return normalizeList(res.data, ["patients"]);
+};
+
+/**
+ * GET /api/v1/clinic/patients/:id
+ */
+export const getPatient = async (patientId) => {
+  const res = await axios.get(`/api/v1/clinic/patients/${patientId}`);
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/patients/:id
+ */
+export const updatePatient = async (patientId, updates) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/patients/${patientId}`,
+    updates,
+  );
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/patients/:id
+ * Soft delete.
+ */
+export const deletePatient = async (patientId) => {
+  const res = await axios.delete(`/api/v1/clinic/patients/${patientId}`);
+  return res.data;
+};
+
+/**
+ * POST /api/v1/clinic/patients/:id/link
+ * Link a patient to an existing DocPats user account.
+ */
+export const linkPatientToUser = async (patientId, userId) => {
+  const res = await axios.post(`/api/v1/clinic/patients/${patientId}/link`, {
+    userId,
+  });
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/patients/:id/link
+ */
+export const unlinkPatientFromUser = async (patientId) => {
+  const res = await axios.delete(`/api/v1/clinic/patients/${patientId}/link`);
+  return res.data;
+};
+/**
+ * GET /api/v1/clinic/patients/users/search
+ * Search DocPats User accounts to link a patient to. Two modes:
+ *   mode="email" — exact email match
+ *   mode="dob"   — date of birth + optional firstName/lastName filter
+ *
+ * @param {object} params
+ * @param {"email"|"dob"} params.mode
+ * @param {string} [params.email]        required when mode="email"
+ * @param {string} [params.dateOfBirth] required when mode="dob" (YYYY-MM-DD)
+ * @param {string} [params.firstName]   optional name filter (mode="dob")
+ * @param {string} [params.lastName]    optional name filter (mode="dob")
+ */
+export const searchUsersForLink = async ({
+  mode,
+  email,
+  dateOfBirth,
+  firstName,
+  lastName,
+}) => {
+  const res = await axios.get("/api/v1/clinic/patients/users/search", {
+    params: {
+      mode,
+      ...(email && { email }),
+      ...(dateOfBirth && { dateOfBirth }),
+      ...(firstName && { firstName }),
+      ...(lastName && { lastName }),
+    },
+  });
+  return normalizeList(res.data, ["users", "items"]);
+};

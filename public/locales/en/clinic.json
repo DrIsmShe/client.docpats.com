@@ -88,7 +88,8 @@
     "quickActions": "Quick actions",
     "actions": {
       "inviteTeamMember": "Invite team member",
-      "viewTeam": "View team",
+      "viewTeam": "Team",
+      "viewPatients": "Patients",
       "scheduleSoon": "Schedule (soon)"
     },
     "team": "Team",
@@ -110,6 +111,98 @@
     },
     "errorTitle": "Couldn't load your dashboard",
     "invitedAsRoleExpires": "Invited as {{role}} · expires {{date}}"
+  },
+  "patients": {
+    "back": "← Dashboard",
+    "backToList": "← Back to list",
+    "title": "Patients",
+    "subtitle": "Manage your clinic's patient records",
+    "addPatient": "+ Add patient",
+    "addFirstPatient": "Add first patient",
+    "allPatients": "All patients",
+    "searchResults": "Search results",
+    "searchPlaceholder": "Search by phone, email, or last name...",
+    "noPatients": "No patients yet.",
+    "noSearchResults": "Nothing found. Try a different query.",
+    "noContact": "No contact info",
+    "dob": "DOB",
+    "linkedBadge": "Linked",
+    "unnamed": "Unnamed",
+    "delete": "Delete",
+    "edit": "Edit",
+    "detailsTitle": "Patient information",
+    "createdAt": "Created",
+    "updatedAt": "Updated",
+    "createdBy": "Created by",
+    "createdByUnknown": "Unknown",
+    "createdByType": {
+      "user": "doctor",
+      "employee": "staff"
+    },
+    "createSubmit": "Create patient",
+    "confirmDelete": "Remove {{name}} from records? An administrator can reverse this.",
+    "confirmUnlink": "Remove link to DocPats user?",
+    "errorTitle": "Failed to load patients",
+    "notFoundTitle": "Patient not found",
+    "notFoundText": "This patient doesn't exist or you don't have access.",
+    "linkSection": {
+      "title": "DocPats user link",
+      "linkedTo": "Linked to user:",
+      "notLinked": "This patient is not linked to a DocPats user account. Link if the patient is registered on the platform — it will give them access to their own records.",
+      "linkButton": "Link to user",
+      "userIdLabel": "DocPats user ID",
+      "userIdHint": "24-character ObjectId. Find it in dialogs or the database.",
+      "linkSubmit": "Link",
+      "unlink": "Unlink",
+      "modeEmail": "By email",
+      "modeDob": "By date of birth",
+      "emailLabel": "User email",
+      "emailHint": "Enter the full email — exact match search",
+      "dobLabel": "Date of birth",
+      "dobHint": "Enter the date of birth, then optionally narrow by first and last name",
+      "searchSubmit": "Search",
+      "resultsTitle": "Search results",
+      "noResults": "No user found. Check the entered details.",
+      "errors": {
+        "emailRequired": "Enter an email to search",
+        "dobRequired": "Enter a date of birth to search",
+        "searchFailed": "Search failed. Please try again."
+      },
+      "role": {
+        "doctor": "doctor",
+        "patient": "patient",
+        "admin": "administrator",
+        "clinic_admin": "clinic admin",
+        "clinic_staff": "clinic staff"
+      }
+    },
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "email": "Email",
+      "dateOfBirth": "Date of birth",
+      "gender": "Gender"
+    },
+    "gender": {
+      "male": "Male",
+      "female": "Female",
+      "other": "Other",
+      "unknown": "Unknown"
+    },
+    "errors": {
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "duplicatePhone": "A patient with this phone already exists",
+      "createFailed": "Failed to create patient",
+      "updateFailed": "Failed to save changes",
+      "deleteFailed": "Failed to delete patient",
+      "linkInvalidId": "Invalid ID format (24-character ObjectId required)",
+      "linkUserNotFound": "User with this ID not found",
+      "linkAlreadyLinked": "Patient is already linked to another user. Unlink first.",
+      "linkFailed": "Failed to link to user",
+      "unlinkFailed": "Failed to unlink"
+    }
   },
   "staff": {
     "back": "← Dashboard",

@@ -83,7 +83,8 @@
     "stats": {
       "teamMembers": "Komanda üzvləri",
       "pendingInvitations": "Gözləyən dəvətlər",
-      "subscription": "Abunəlik"
+      "subscription": "Abunəlik",
+      "viewPatients": "Pasiyentlər"
     },
     "quickActions": "Sürətli əməliyyatlar",
     "actions": {
@@ -110,6 +111,98 @@
     },
     "errorTitle": "Panel yüklənə bilmədi",
     "invitedAsRoleExpires": "{{role}} kimi dəvət olunub · {{date}} tarixində bitir"
+  },
+  "patients": {
+    "back": "← Panel",
+    "backToList": "← Siyahıya qayıt",
+    "title": "Pasiyentlər",
+    "subtitle": "Klinikanın pasiyent qeydlərini idarə edin",
+    "addPatient": "+ Pasiyent əlavə et",
+    "addFirstPatient": "İlk pasiyenti əlavə edin",
+    "allPatients": "Bütün pasiyentlər",
+    "searchResults": "Axtarış nəticələri",
+    "searchPlaceholder": "Telefon, e-poçt və ya soyadla axtarın...",
+    "noPatients": "Hələ pasiyent yoxdur.",
+    "noSearchResults": "Heç nə tapılmadı. Başqa sorğu yoxlayın.",
+    "noContact": "Əlaqə məlumatı yoxdur",
+    "dob": "Doğum tarixi",
+    "linkedBadge": "Bağlı",
+    "unnamed": "Adsız",
+    "delete": "Sil",
+    "edit": "Redaktə et",
+    "detailsTitle": "Pasiyent məlumatları",
+    "createdAt": "Yaradılıb",
+    "updatedAt": "Yenilənib",
+    "createdBy": "Qeyd edən",
+    "createdByUnknown": "Naməlum",
+    "createdByType": {
+      "user": "həkim",
+      "employee": "işçi"
+    },
+    "createSubmit": "Pasiyent yarat",
+    "confirmDelete": "{{name}} qeydlərdən silinsin? Administrator bunu geri qaytara bilər.",
+    "confirmUnlink": "DocPats istifadəçi əlaqəsi silinsin?",
+    "errorTitle": "Pasiyentlər yüklənə bilmədi",
+    "notFoundTitle": "Pasiyent tapılmadı",
+    "notFoundText": "Bu pasiyent mövcud deyil və ya icazəniz yoxdur.",
+    "linkSection": {
+      "title": "DocPats istifadəçi əlaqəsi",
+      "linkedTo": "İstifadəçi ilə bağlı:",
+      "notLinked": "Bu pasiyent DocPats istifadəçi hesabı ilə əlaqələndirilməyib. Əgər pasiyent platformada qeydiyyatdan keçibsə əlaqələndirin — o öz qeydlərinə baxa bilər.",
+      "linkButton": "İstifadəçi ilə əlaqələndir",
+      "userIdLabel": "DocPats istifadəçi ID",
+      "userIdHint": "24 simvollu ObjectId. Dialoqlarda və ya verilənlər bazasında tapın.",
+      "linkSubmit": "Əlaqələndir",
+      "unlink": "Əlaqəni kəs",
+      "modeEmail": "E-poçt ilə",
+      "modeDob": "Doğum tarixi ilə",
+      "emailLabel": "İstifadəçi e-poçtu",
+      "emailHint": "Tam e-poçt ünvanını daxil edin — dəqiq uyğunluq axtarışı",
+      "dobLabel": "Doğum tarixi",
+      "dobHint": "Doğum tarixini daxil edin, sonra istəsəniz ad və soyadla dəqiqləşdirin",
+      "searchSubmit": "Axtar",
+      "resultsTitle": "Axtarış nəticələri",
+      "noResults": "İstifadəçi tapılmadı. Daxil edilən məlumatları yoxlayın.",
+      "errors": {
+        "emailRequired": "Axtarış üçün e-poçt daxil edin",
+        "dobRequired": "Axtarış üçün doğum tarixi daxil edin",
+        "searchFailed": "Axtarış alınmadı. Yenidən cəhd edin."
+      },
+      "role": {
+        "doctor": "həkim",
+        "patient": "xəstə",
+        "admin": "administrator",
+        "clinic_admin": "klinika admini",
+        "clinic_staff": "klinika işçisi"
+      }
+    },
+    "fields": {
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "phone": "Telefon",
+      "email": "E-poçt",
+      "dateOfBirth": "Doğum tarixi",
+      "gender": "Cinsiyyət"
+    },
+    "gender": {
+      "male": "Kişi",
+      "female": "Qadın",
+      "other": "Digər",
+      "unknown": "Göstərilməyib"
+    },
+    "errors": {
+      "firstNameRequired": "Ad tələb olunur",
+      "lastNameRequired": "Soyad tələb olunur",
+      "duplicatePhone": "Bu telefon nömrəsi ilə artıq pasiyent var",
+      "createFailed": "Pasiyent yaradıla bilmədi",
+      "updateFailed": "Dəyişikliklər saxlanıla bilmədi",
+      "deleteFailed": "Pasiyent silinə bilmədi",
+      "linkInvalidId": "Yanlış ID formatı (24 simvollu ObjectId tələb olunur)",
+      "linkUserNotFound": "Bu ID ilə istifadəçi tapılmadı",
+      "linkAlreadyLinked": "Pasiyent artıq başqa istifadəçi ilə əlaqələndirilib. Əvvəlcə əlaqəni kəsin.",
+      "linkFailed": "İstifadəçi ilə əlaqələndirmək mümkün olmadı",
+      "unlinkFailed": "Əlaqəni kəsmək mümkün olmadı"
+    }
   },
   "staff": {
     "back": "← Panel",

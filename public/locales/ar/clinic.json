@@ -83,7 +83,8 @@
     "stats": {
       "teamMembers": "أعضاء الفريق",
       "pendingInvitations": "دعوات معلقة",
-      "subscription": "الاشتراك"
+      "subscription": "الاشتراك",
+      "viewPatients": "المرضى"
     },
     "quickActions": "إجراءات سريعة",
     "actions": {
@@ -110,6 +111,98 @@
     },
     "errorTitle": "تعذر تحميل لوحة التحكم",
     "invitedAsRoleExpires": "تمت الدعوة بصفة {{role}} · تنتهي في {{date}}"
+  },
+  "patients": {
+    "back": "← لوحة التحكم",
+    "backToList": "← العودة إلى القائمة",
+    "title": "المرضى",
+    "subtitle": "إدارة سجلات مرضى العيادة",
+    "addPatient": "+ إضافة مريض",
+    "addFirstPatient": "إضافة أول مريض",
+    "allPatients": "جميع المرضى",
+    "searchResults": "نتائج البحث",
+    "searchPlaceholder": "ابحث بالهاتف أو البريد الإلكتروني أو اللقب...",
+    "noPatients": "لا يوجد مرضى حتى الآن.",
+    "noSearchResults": "لم يتم العثور على نتائج. جرب استعلامًا آخر.",
+    "noContact": "لا توجد معلومات اتصال",
+    "dob": "تاريخ الميلاد",
+    "linkedBadge": "مرتبط",
+    "unnamed": "بدون اسم",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "detailsTitle": "معلومات المريض",
+    "createdAt": "تم الإنشاء",
+    "updatedAt": "آخر تحديث",
+    "createdBy": "أنشأه",
+    "createdByUnknown": "غير معروف",
+    "createdByType": {
+      "user": "طبيب",
+      "employee": "موظف"
+    },
+    "createSubmit": "إنشاء مريض",
+    "confirmDelete": "إزالة {{name}} من السجلات؟ يمكن للمسؤول التراجع عن هذا.",
+    "confirmUnlink": "إزالة الارتباط بحساب مستخدم DocPats؟",
+    "errorTitle": "فشل تحميل المرضى",
+    "notFoundTitle": "المريض غير موجود",
+    "notFoundText": "هذا المريض غير موجود أو ليس لديك حق الوصول.",
+    "linkSection": {
+      "title": "ارتباط مستخدم DocPats",
+      "linkedTo": "مرتبط بالمستخدم:",
+      "notLinked": "هذا المريض غير مرتبط بحساب مستخدم DocPats. اربط إذا كان المريض مسجلاً في المنصة — سيمنحه ذلك حق الوصول إلى سجلاته.",
+      "linkButton": "ربط بالمستخدم",
+      "userIdLabel": "معرف مستخدم DocPats",
+      "userIdHint": "ObjectId مكون من 24 حرفًا. ابحث عنه في المحادثات أو قاعدة البيانات.",
+      "linkSubmit": "ربط",
+      "unlink": "إلغاء الارتباط",
+      "modeEmail": "بالبريد الإلكتروني",
+      "modeDob": "بتاريخ الميلاد",
+      "emailLabel": "البريد الإلكتروني للمستخدم",
+      "emailHint": "أدخل البريد الإلكتروني كاملاً — بحث بمطابقة تامة",
+      "dobLabel": "تاريخ الميلاد",
+      "dobHint": "أدخل تاريخ الميلاد، ثم يمكنك تضييق النتائج بالاسم الأول واسم العائلة",
+      "searchSubmit": "بحث",
+      "resultsTitle": "نتائج البحث",
+      "noResults": "لم يتم العثور على مستخدم. تحقق من البيانات المدخلة.",
+      "errors": {
+        "emailRequired": "أدخل بريداً إلكترونياً للبحث",
+        "dobRequired": "أدخل تاريخ ميلاد للبحث",
+        "searchFailed": "فشل البحث. يرجى المحاولة مرة أخرى."
+      },
+      "role": {
+        "doctor": "طبيب",
+        "patient": "مريض",
+        "admin": "مدير",
+        "clinic_admin": "مدير العيادة",
+        "clinic_staff": "موظف العيادة"
+      }
+    },
+    "fields": {
+      "firstName": "الاسم",
+      "lastName": "اللقب",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "dateOfBirth": "تاريخ الميلاد",
+      "gender": "الجنس"
+    },
+    "gender": {
+      "male": "ذكر",
+      "female": "أنثى",
+      "other": "آخر",
+      "unknown": "غير محدد"
+    },
+    "errors": {
+      "firstNameRequired": "الاسم مطلوب",
+      "lastNameRequired": "اللقب مطلوب",
+      "duplicatePhone": "يوجد مريض بهذا الهاتف بالفعل",
+      "createFailed": "فشل إنشاء المريض",
+      "updateFailed": "فشل حفظ التغييرات",
+      "deleteFailed": "فشل حذف المريض",
+      "linkInvalidId": "صيغة المعرف غير صحيحة (ObjectId مكون من 24 حرفًا مطلوب)",
+      "linkUserNotFound": "المستخدم بهذا المعرف غير موجود",
+      "linkAlreadyLinked": "المريض مرتبط بالفعل بمستخدم آخر. ألغِ الارتباط أولاً.",
+      "linkFailed": "فشل الربط بالمستخدم",
+      "unlinkFailed": "فشل إلغاء الارتباط"
+    }
   },
   "staff": {
     "back": "← لوحة التحكم",

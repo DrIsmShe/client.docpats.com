@@ -61,10 +61,11 @@ export default function ClinicStaffPage() {
         navigate("/login", { replace: true });
         return;
       }
-      setError(err.message || t("common.error"));
+      setError(err.message || "Failed to load staff");
       setLoading(false);
     }
-  }, [navigate, t]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate]);
 
   useEffect(() => {
     loadAll();

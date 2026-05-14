@@ -83,7 +83,8 @@
     "stats": {
       "teamMembers": "Ekip üyeleri",
       "pendingInvitations": "Bekleyen davetler",
-      "subscription": "Abonelik"
+      "subscription": "Abonelik",
+      "viewPatients": "Hastalar"
     },
     "quickActions": "Hızlı işlemler",
     "actions": {
@@ -110,6 +111,98 @@
     },
     "errorTitle": "Pano yüklenemedi",
     "invitedAsRoleExpires": "{{role}} olarak davet edildi · {{date}} tarihinde sona erer"
+  },
+  "patients": {
+    "back": "← Panel",
+    "backToList": "← Listeye dön",
+    "title": "Hastalar",
+    "subtitle": "Klinik hasta kayıtlarınızı yönetin",
+    "addPatient": "+ Hasta ekle",
+    "addFirstPatient": "İlk hastayı ekle",
+    "allPatients": "Tüm hastalar",
+    "searchResults": "Arama sonuçları",
+    "searchPlaceholder": "Telefon, e-posta veya soyadla ara...",
+    "noPatients": "Henüz hasta yok.",
+    "noSearchResults": "Sonuç bulunamadı. Farklı bir sorgu deneyin.",
+    "noContact": "İletişim bilgisi yok",
+    "dob": "Doğum tarihi",
+    "linkedBadge": "Bağlı",
+    "unnamed": "İsimsiz",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "detailsTitle": "Hasta bilgileri",
+    "createdAt": "Oluşturuldu",
+    "updatedAt": "Güncellendi",
+    "createdBy": "Oluşturan",
+    "createdByUnknown": "Bilinmiyor",
+    "createdByType": {
+      "user": "doktor",
+      "employee": "personel"
+    },
+    "createSubmit": "Hasta oluştur",
+    "confirmDelete": "{{name}} kayıtlardan kaldırılsın mı? Bir yönetici bunu geri alabilir.",
+    "confirmUnlink": "DocPats kullanıcı bağlantısı kaldırılsın mı?",
+    "errorTitle": "Hastalar yüklenemedi",
+    "notFoundTitle": "Hasta bulunamadı",
+    "notFoundText": "Bu hasta mevcut değil veya erişim izniniz yok.",
+    "linkSection": {
+      "title": "DocPats kullanıcı bağlantısı",
+      "linkedTo": "Kullanıcıya bağlı:",
+      "notLinked": "Bu hasta bir DocPats kullanıcı hesabına bağlı değil. Hasta platformda kayıtlıysa bağlayın — kendi kayıtlarına erişebilir.",
+      "linkButton": "Kullanıcıya bağla",
+      "userIdLabel": "DocPats kullanıcı ID'si",
+      "userIdHint": "24 karakterli ObjectId. Diyaloglarda veya veritabanında bulabilirsiniz.",
+      "linkSubmit": "Bağla",
+      "unlink": "Bağlantıyı kes",
+      "modeEmail": "E-posta ile",
+      "modeDob": "Doğum tarihi ile",
+      "emailLabel": "Kullanıcı e-postası",
+      "emailHint": "Tam e-posta adresini girin — tam eşleşme araması",
+      "dobLabel": "Doğum tarihi",
+      "dobHint": "Doğum tarihini girin, ardından isteğe bağlı olarak ad ve soyadla daraltın",
+      "searchSubmit": "Ara",
+      "resultsTitle": "Arama sonuçları",
+      "noResults": "Kullanıcı bulunamadı. Girilen bilgileri kontrol edin.",
+      "errors": {
+        "emailRequired": "Aramak için bir e-posta girin",
+        "dobRequired": "Aramak için bir doğum tarihi girin",
+        "searchFailed": "Arama başarısız oldu. Lütfen tekrar deneyin."
+      },
+      "role": {
+        "doctor": "doktor",
+        "patient": "hasta",
+        "admin": "yönetici",
+        "clinic_admin": "klinik yöneticisi",
+        "clinic_staff": "klinik personeli"
+      }
+    },
+    "fields": {
+      "firstName": "Ad",
+      "lastName": "Soyad",
+      "phone": "Telefon",
+      "email": "E-posta",
+      "dateOfBirth": "Doğum tarihi",
+      "gender": "Cinsiyet"
+    },
+    "gender": {
+      "male": "Erkek",
+      "female": "Kadın",
+      "other": "Diğer",
+      "unknown": "Belirtilmemiş"
+    },
+    "errors": {
+      "firstNameRequired": "Ad gerekli",
+      "lastNameRequired": "Soyad gerekli",
+      "duplicatePhone": "Bu telefon numarasıyla zaten bir hasta var",
+      "createFailed": "Hasta oluşturulamadı",
+      "updateFailed": "Değişiklikler kaydedilemedi",
+      "deleteFailed": "Hasta silinemedi",
+      "linkInvalidId": "Geçersiz ID formatı (24 karakterli ObjectId gerekli)",
+      "linkUserNotFound": "Bu ID'ye sahip kullanıcı bulunamadı",
+      "linkAlreadyLinked": "Hasta zaten başka bir kullanıcıya bağlı. Önce bağlantıyı kesin.",
+      "linkFailed": "Kullanıcıya bağlanamadı",
+      "unlinkFailed": "Bağlantı kesilemedi"
+    }
   },
   "staff": {
     "back": "← Pano",

@@ -163,15 +163,13 @@ export default function ClinicDashboardPage() {
             </span>
             <span className="clinic-dashboard-action-arrow">→</span>
           </Link>
-          <button
-            className="clinic-dashboard-action clinic-dashboard-action-disabled"
-            disabled
-          >
-            <span className="clinic-dashboard-action-icon">📋</span>
+          <Link to="/clinic/patients" className="clinic-dashboard-action">
+            <span className="clinic-dashboard-action-icon">🩺</span>
             <span className="clinic-dashboard-action-label">
-              {t("dashboard.actions.scheduleSoon")}
+              {t("dashboard.actions.viewPatients")}
             </span>
-          </button>
+            <span className="clinic-dashboard-action-arrow">→</span>
+          </Link>
         </div>
       </section>
 
