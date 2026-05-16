@@ -495,5 +495,117 @@
       "5": "Cum",
       "6": "Cmt"
     }
+  },
+  "calendar": {
+    "title": "Randevu takvimi",
+    "back": "← Ekibe dön",
+    "loadError": "Takvim yüklenemedi",
+    "actionError": "İşlem başarısız — tekrar deneyin",
+    "emptyDay": "Bu gün için çalışma saati ve randevu yok.",
+    "freeSlot": "Boş slot",
+    "patientPlaceholder": "Hasta",
+    "book": "Randevu al",
+    "today": "Bugün",
+    "prevDay": "Önceki gün",
+    "nextDay": "Sonraki gün",
+    "status": {
+      "scheduled": "Planlandı",
+      "checked_in": "Geldi",
+      "completed": "Tamamlandı",
+      "cancelled": "İptal edildi",
+      "no_show": "Gelmedi"
+    },
+    "action": {
+      "checkIn": "Geldi",
+      "complete": "Tamamla",
+      "cancel": "İptal et",
+      "noShow": "Gelmedi"
+    },
+    "book_modal": {
+      "title": "Yeni randevu",
+      "subtitle": "{{time}} · {{doctor}}",
+      "patient": "Hasta",
+      "patientSearchPlaceholder": "Hasta ara (soyadı, telefon veya e-posta)",
+      "selectedPatient": "Seçildi:",
+      "noPatientFound": "Hasta bulunamadı — daha fazla karakter girin",
+      "searchHint": "En az 2 karakter",
+      "duration": "Süre",
+      "minutes": "dk",
+      "reason": "Ziyaret sebebi",
+      "reasonPlaceholder": "Örneğin: boğaz ağrısı",
+      "submit": "Randevu oluştur",
+      "cancel": "Vazgeç",
+      "createError": "Randevu oluşturulamadı",
+      "conflictError": "Bu zaman başka bir randevu ile dolu"
+    },
+    "detail_modal": {
+      "title": "Randevu",
+      "loadError": "Randevu yüklenemedi",
+      "patient": "Hasta",
+      "doctor": "Doktor",
+      "time": "Zaman",
+      "duration": "Süre",
+      "reason": "Sebep",
+      "reasonEmpty": "belirtilmedi",
+      "status": "Durum",
+      "createdBy": "Oluşturan",
+      "createdAt": "Oluşturulma",
+      "checkedInAt": "Geldi",
+      "completedAt": "Tamamlandı",
+      "cancelledAt": "İptal edildi",
+      "cancelReason": "İptal sebebi",
+      "noShowAt": "Gelmedi olarak işaretlendi",
+      "actions": "İşlemler",
+      "actionReason": "Sebebi düzenle",
+      "actionReschedule": "Ertele",
+      "saveReason": "Sebebi kaydet",
+      "newReason": "Yeni sebep",
+      "reasonSaved": "Sebep kaydedildi",
+      "reasonError": "Sebep kaydedilemedi",
+      "statusError": "Durum değiştirilemedi",
+      "close": "Kapat"
+    },
+    "reschedule_modal": {
+      "title": "Randevuyu ertele",
+      "subtitle": "Şu an: {{time}}",
+      "newDate": "Yeni tarih",
+      "newSlot": "Yeni slot",
+      "loadingSlots": "Boş slotlar yükleniyor…",
+      "noFreeSlots": "Bu tarihte boş slot yok",
+      "submit": "Ertele",
+      "cancel": "Vazgeç",
+      "rescheduleError": "Randevu ertelenemedi",
+      "conflictError": "Seçilen zaman zaten dolu"
+    },
+    "fromPatient": {
+      "openButton": "Randevu al",
+      "modalTitle": "{{patient}} için randevu al",
+      "doctorLabel": "Doktor",
+      "doctorPlaceholder": "Doktor seç",
+      "dateLabel": "Tarih",
+      "slotLabel": "Zaman aralığı",
+      "loadingDoctors": "Doktorlar yükleniyor…",
+      "noDoctors": "Klinikte henüz doktor yok",
+      "loadingSlots": "Slotlar yükleniyor…",
+      "noSlots": "Bu tarihte boş slot yok"
+    },
+    "inlineCreate": {
+      "title": "Yeni hasta oluştur",
+      "lastName": "Soyadı",
+      "firstName": "Adı",
+      "phone": "Telefon",
+      "dateOfBirth": "Doğum tarihi",
+      "openButton": "+ Yeni hasta oluştur",
+      "openButtonWithName": "+ \"{{name}}\" oluştur",
+      "submit": "Oluştur ve seç",
+      "cancel": "Vazgeç",
+      "errors": {
+        "lastNameRequired": "Soyadı gerekli",
+        "firstNameRequired": "Adı gerekli",
+        "duplicatePhone": "Bu telefon başka bir hastaya ait",
+        "forbidden": "Hasta oluşturma yetkiniz yok",
+        "generic": "Hasta oluşturulamadı"
+      }
+    }
   }
 }

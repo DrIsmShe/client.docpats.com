@@ -1,0 +1,611 @@
+/* client/src/pages/clinic/ClinicCalendarPage/clinicCalendarPage.css
+ *
+ * Styles for ClinicCalendarPage and its row sub-components.
+ *
+ * RTL: ClinicLayout sets document dir="rtl" for Arabic. Layout uses
+ * logical properties (margin-inline, padding-inline) and flexbox so
+ * it mirrors automatically.
+ *
+ * Class prefix: ccal-  (avoids collisions with the day-2 csched- styles)
+ *
+ * Color tokens reused from clinicSchedulePage.css:
+ *   accent blue   #2563eb / #1d4ed8 (hover)
+ *   slate 50      #f8fafc  — light surface
+ *   slate 200     #e2e8f0  — border
+ *   slate 500     #64748b  — muted text
+ *   slate 900     #0f172a  — strong text
+ *   green 600     #047857 / bg #ecfdf5 — success
+ *   red 600       #dc2626 / bg #fef2f2 — danger
+ *   amber 700     #b45309 / bg #fef3c7 — warning
+ */
+
+/* ─── Layout shell ─────────────────────────────────────────── */
+
+.ccal-page {
+  max-width: 980px;
+  margin-inline: auto;
+  padding: 24px 20px 60px;
+}
+
+/* ─── Loading / error ──────────────────────────────────────── */
+
+.ccal-loading,
+.ccal-list-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.ccal-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: ccal-spin 0.7s linear infinite;
+}
+
+@keyframes ccal-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── Header ───────────────────────────────────────────────── */
+
+.ccal-header {
+  margin-bottom: 20px;
+}
+
+.ccal-back {
+  display: inline-block;
+  font-size: 13px;
+  color: #2563eb;
+  text-decoration: none;
+  margin-bottom: 12px;
+}
+.ccal-back:hover {
+  text-decoration: underline;
+}
+
+.ccal-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.ccal-doctor-name {
+  font-size: 15px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* ─── Date navigator ───────────────────────────────────────── */
+
+.ccal-datenav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.ccal-datepicker {
+  padding: 7px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1e293b;
+  background: #fff;
+}
+
+.ccal-date-label {
+  flex: 1;
+  text-align: end;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* ─── Messages ─────────────────────────────────────────────── */
+
+.ccal-msg {
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.ccal-msg.is-err {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+.ccal-msg.is-ok {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.ccal-empty {
+  padding: 40px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+/* ─── Timeline ─────────────────────────────────────────────── */
+
+.ccal-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ccal-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.ccal-row.is-loading {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.ccal-row-time {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  font-variant-numeric: tabular-nums;
+  min-width: 110px;
+  flex-shrink: 0;
+}
+
+.ccal-row-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ccal-row-body-clickable {
+  cursor: pointer;
+  border-radius: 6px;
+  padding-inline: 4px;
+  margin-inline: -4px;
+  outline: none;
+}
+.ccal-row-body-clickable:hover {
+  background: #f8fafc;
+}
+.ccal-row-body-clickable:focus-visible {
+  box-shadow: 0 0 0 2px #93c5fd;
+}
+
+.ccal-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.ccal-row-actions-stack {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  max-width: 260px;
+}
+
+/* ─── Free slot row ────────────────────────────────────────── */
+
+.ccal-row-free {
+  background: #f8fafc;
+  border-style: dashed;
+}
+
+.ccal-free-label {
+  font-size: 13px;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* ─── Booked slot row ─────────────────────────────────────── */
+
+.ccal-booked-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ccal-patient-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+.ccal-booked-reason {
+  font-size: 13px;
+  color: #64748b;
+  word-break: break-word;
+  white-space: pre-line;
+}
+
+/* Per-status accent on the left border. The border color is set on the
+ * row itself so colours are visible at a glance even without a badge. */
+.ccal-row-booked.status-scheduled {
+  border-inline-start: 3px solid #2563eb;
+}
+.ccal-row-booked.status-checked_in {
+  border-inline-start: 3px solid #b45309;
+  background: #fffbeb;
+}
+.ccal-row-booked.status-completed {
+  border-inline-start: 3px solid #047857;
+  background: #f0fdf4;
+}
+.ccal-row-booked.status-cancelled {
+  border-inline-start: 3px solid #94a3b8;
+  background: #f8fafc;
+  opacity: 0.7;
+}
+.ccal-row-booked.status-no_show {
+  border-inline-start: 3px solid #dc2626;
+  background: #fef2f2;
+}
+
+/* ─── Status badges ────────────────────────────────────────── */
+
+.ccal-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.ccal-badge-scheduled {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+.ccal-badge-checked_in {
+  background: #fef3c7;
+  color: #b45309;
+}
+.ccal-badge-completed {
+  background: #d1fae5;
+  color: #047857;
+}
+.ccal-badge-cancelled {
+  background: #e2e8f0;
+  color: #475569;
+}
+.ccal-badge-no_show {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* ─── Buttons ──────────────────────────────────────────────── */
+
+.ccal-btn-primary {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ccal-btn-primary:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+.ccal-btn-primary:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+}
+
+.ccal-btn-secondary {
+  padding: 7px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #1e293b;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+}
+.ccal-btn-secondary:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+.ccal-btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Mini lifecycle buttons on a booked card */
+.ccal-btn-mini {
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.ccal-btn-mini:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.ccal-btn-mini-go {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+  color: #047857;
+}
+.ccal-btn-mini-go:hover:not(:disabled) {
+  background: #d1fae5;
+}
+.ccal-btn-mini-warn {
+  background: #fef3c7;
+  border-color: #fde68a;
+  color: #b45309;
+}
+.ccal-btn-mini-warn:hover:not(:disabled) {
+  background: #fde68a;
+}
+.ccal-btn-mini-danger {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #dc2626;
+}
+.ccal-btn-mini-danger:hover:not(:disabled) {
+  background: #fee2e2;
+}
+
+/* ─── Field controls (shared with modals via the same class names) ─── */
+
+.ccal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ccal-field > span {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+.ccal-field input[type="text"],
+.ccal-field input[type="search"],
+.ccal-field input[type="date"],
+.ccal-field input[type="time"],
+.ccal-field input[type="number"],
+.ccal-field select,
+.ccal-field textarea {
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1e293b;
+  background: #fff;
+  font-family: inherit;
+}
+.ccal-field input:disabled,
+.ccal-field select:disabled,
+.ccal-field textarea:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+.ccal-field textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+/* ─── Modal shell (used by all three modals) ────────────────── */
+
+.ccal-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.ccal-modal {
+  background: #fff;
+  border-radius: 14px;
+  padding: 28px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ccal-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.ccal-modal-sub {
+  font-size: 13px;
+  color: #64748b;
+  margin: -6px 0 0;
+}
+
+.ccal-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+/* ─── Patient search dropdown (used by BookAppointmentModal) ──── */
+
+.ccal-search-results {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #fff;
+}
+.ccal-search-row {
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #1e293b;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f5f9;
+}
+.ccal-search-row:last-child {
+  border-bottom: none;
+}
+.ccal-search-row:hover,
+.ccal-search-row.is-active {
+  background: #f8fafc;
+}
+.ccal-search-row-name {
+  font-weight: 600;
+}
+.ccal-search-row-meta {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.ccal-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  font-size: 13px;
+  color: #1d4ed8;
+}
+.ccal-chip-x {
+  border: none;
+  background: transparent;
+  color: #1d4ed8;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+/* Duration pills (15/30/60/90 in BookAppointmentModal) */
+
+.ccal-duration-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ccal-duration-pill {
+  padding: 6px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #fff;
+  color: #1e293b;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ccal-duration-pill.is-active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+/* ─── Detail modal extras ──────────────────────────────────── */
+
+.ccal-detail-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 6px 0;
+  border-bottom: 1px dashed #e2e8f0;
+}
+.ccal-detail-row:last-child {
+  border-bottom: none;
+}
+.ccal-detail-key {
+  color: #64748b;
+  font-weight: 500;
+}
+.ccal-detail-val {
+  color: #1e293b;
+  font-weight: 600;
+  text-align: end;
+  word-break: break-word;
+}
+
+.ccal-detail-section {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+}
+.ccal-detail-section h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.ccal-action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+/* ─── Responsive ───────────────────────────────────────────── */
+
+@media (max-width: 600px) {
+  .ccal-page {
+    padding: 16px 14px 48px;
+  }
+  .ccal-row {
+    flex-wrap: wrap;
+  }
+  .ccal-row-time {
+    min-width: 0;
+    flex-basis: 100%;
+  }
+  .ccal-row-actions-stack {
+    max-width: 100%;
+    justify-content: flex-start;
+  }
+  .ccal-date-label {
+    flex-basis: 100%;
+    text-align: start;
+  }
+}

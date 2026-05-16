@@ -495,5 +495,118 @@
       "5": "جمع",
       "6": "سبت"
     }
+  },
+
+  "calendar": {
+    "title": "تقويم المواعيد",
+    "back": "→ العودة إلى الفريق",
+    "loadError": "تعذّر تحميل التقويم",
+    "actionError": "فشلت العملية — حاول مرة أخرى",
+    "emptyDay": "لا توجد ساعات عمل ولا مواعيد في هذا اليوم.",
+    "freeSlot": "وقت متاح",
+    "patientPlaceholder": "المريض",
+    "book": "احجز",
+    "today": "اليوم",
+    "prevDay": "اليوم السابق",
+    "nextDay": "اليوم التالي",
+    "status": {
+      "scheduled": "مجدول",
+      "checked_in": "حضر",
+      "completed": "منتهٍ",
+      "cancelled": "ملغى",
+      "no_show": "لم يحضر"
+    },
+    "action": {
+      "checkIn": "حضر",
+      "complete": "إنهاء",
+      "cancel": "إلغاء",
+      "noShow": "لم يحضر"
+    },
+    "book_modal": {
+      "title": "موعد جديد",
+      "subtitle": "{{time}} · {{doctor}}",
+      "patient": "المريض",
+      "patientSearchPlaceholder": "ابحث عن مريض (اللقب، الهاتف أو البريد)",
+      "selectedPatient": "مختار:",
+      "noPatientFound": "لا توجد نتائج — أدخل المزيد من الأحرف",
+      "searchHint": "حرفان على الأقل",
+      "duration": "المدة",
+      "minutes": "د",
+      "reason": "سبب الزيارة",
+      "reasonPlaceholder": "مثال: التهاب في الحلق",
+      "submit": "إنشاء الموعد",
+      "cancel": "إلغاء",
+      "createError": "تعذّر إنشاء الموعد",
+      "conflictError": "هذا الوقت محجوز بالفعل بموعد آخر"
+    },
+    "detail_modal": {
+      "title": "الموعد",
+      "loadError": "تعذّر تحميل الموعد",
+      "patient": "المريض",
+      "doctor": "الطبيب",
+      "time": "الوقت",
+      "duration": "المدة",
+      "reason": "السبب",
+      "reasonEmpty": "غير محدد",
+      "status": "الحالة",
+      "createdBy": "أنشأه",
+      "createdAt": "تاريخ الإنشاء",
+      "checkedInAt": "حضر",
+      "completedAt": "انتهى",
+      "cancelledAt": "أُلغي",
+      "cancelReason": "سبب الإلغاء",
+      "noShowAt": "وُسم «لم يحضر»",
+      "actions": "الإجراءات",
+      "actionReason": "تعديل السبب",
+      "actionReschedule": "تأجيل",
+      "saveReason": "حفظ السبب",
+      "newReason": "سبب جديد",
+      "reasonSaved": "تم حفظ السبب",
+      "reasonError": "تعذّر حفظ السبب",
+      "statusError": "تعذّر تغيير الحالة",
+      "close": "إغلاق"
+    },
+    "reschedule_modal": {
+      "title": "تأجيل الموعد",
+      "subtitle": "حاليًا: {{time}}",
+      "newDate": "تاريخ جديد",
+      "newSlot": "موعد جديد",
+      "loadingSlots": "جارٍ تحميل الأوقات المتاحة…",
+      "noFreeSlots": "لا توجد أوقات متاحة في هذا التاريخ",
+      "submit": "تأجيل",
+      "cancel": "إلغاء",
+      "rescheduleError": "تعذّر تأجيل الموعد",
+      "conflictError": "الوقت المختار محجوز بالفعل"
+    },
+    "fromPatient": {
+      "openButton": "احجز موعدًا",
+      "modalTitle": "حجز موعد لـ {{patient}}",
+      "doctorLabel": "الطبيب",
+      "doctorPlaceholder": "اختر طبيبًا",
+      "dateLabel": "التاريخ",
+      "slotLabel": "الوقت",
+      "loadingDoctors": "جارٍ تحميل الأطباء…",
+      "noDoctors": "لا يوجد أطباء في هذه العيادة بعد",
+      "loadingSlots": "جارٍ تحميل الأوقات…",
+      "noSlots": "لا توجد أوقات متاحة في هذا التاريخ"
+    },
+    "inlineCreate": {
+      "title": "إنشاء مريض جديد",
+      "lastName": "اللقب",
+      "firstName": "الاسم",
+      "phone": "الهاتف",
+      "dateOfBirth": "تاريخ الميلاد",
+      "openButton": "+ إنشاء مريض جديد",
+      "openButtonWithName": "+ إنشاء «{{name}}»",
+      "submit": "إنشاء واختيار",
+      "cancel": "إلغاء",
+      "errors": {
+        "lastNameRequired": "اللقب مطلوب",
+        "firstNameRequired": "الاسم مطلوب",
+        "duplicatePhone": "هذا الهاتف يخص مريضًا آخر",
+        "forbidden": "ليست لديك صلاحية إنشاء المرضى",
+        "generic": "تعذّر إنشاء المريض"
+      }
+    }
   }
 }

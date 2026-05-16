@@ -508,6 +508,7 @@ import EmployeeDashboardPage from "./pages/clinic/EmployeeDashboardPage/Employee
 import ClinicPatientsPage from "./pages/clinic/ClinicPatientsPage/ClinicPatientsPage.jsx";
 import ClinicPatientDetailPage from "./pages/clinic/ClinicPatientDetailPage/ClinicPatientDetailPage.jsx";
 import ClinicSchedulePage from "./pages/clinic/ClinicSchedulePage/ClinicSchedulePage.jsx";
+import ClinicCalendarPage from "./pages/clinic/ClinicCalendarPage/ClinicCalendarPage.jsx";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -588,6 +589,10 @@ function App() {
               <Route
                 path="staff/:doctorId/schedule"
                 element={<ClinicSchedulePage />}
+              />
+              <Route
+                path="staff/:doctorId/calendar"
+                element={<ClinicCalendarPage />}
               />
               <Route path="patients" element={<ClinicPatientsPage />} />
               <Route

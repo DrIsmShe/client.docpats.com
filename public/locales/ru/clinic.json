@@ -502,5 +502,117 @@
       "5": "Пт",
       "6": "Сб"
     }
+  },
+  "calendar": {
+    "title": "Календарь приёмов",
+    "back": "← К команде",
+    "loadError": "Не удалось загрузить календарь",
+    "actionError": "Не удалось выполнить действие — попробуйте ещё раз",
+    "emptyDay": "В этот день нет рабочих часов и нет приёмов.",
+    "freeSlot": "Свободный слот",
+    "patientPlaceholder": "Пациент",
+    "book": "Записать",
+    "today": "Сегодня",
+    "prevDay": "Предыдущий день",
+    "nextDay": "Следующий день",
+    "status": {
+      "scheduled": "Запланирован",
+      "checked_in": "Пришёл",
+      "completed": "Завершён",
+      "cancelled": "Отменён",
+      "no_show": "Не явился"
+    },
+    "action": {
+      "checkIn": "Пришёл",
+      "complete": "Завершить",
+      "cancel": "Отменить",
+      "noShow": "Не явился"
+    },
+    "book_modal": {
+      "title": "Новая запись",
+      "subtitle": "{{time}} · {{doctor}}",
+      "patient": "Пациент",
+      "patientSearchPlaceholder": "Найти пациента (фамилия, телефон или email)",
+      "selectedPatient": "Выбран:",
+      "noPatientFound": "Пациенты не найдены — введите больше символов",
+      "searchHint": "Минимум 2 символа",
+      "duration": "Длительность",
+      "minutes": "мин",
+      "reason": "Причина визита",
+      "reasonPlaceholder": "Например: жалобы на боль в горле",
+      "submit": "Создать запись",
+      "cancel": "Отмена",
+      "createError": "Не удалось создать запись",
+      "conflictError": "Это время уже занято другим приёмом"
+    },
+    "detail_modal": {
+      "title": "Приём",
+      "loadError": "Не удалось загрузить приём",
+      "patient": "Пациент",
+      "doctor": "Врач",
+      "time": "Время",
+      "duration": "Длительность",
+      "reason": "Причина",
+      "reasonEmpty": "не указана",
+      "status": "Статус",
+      "createdBy": "Создал",
+      "createdAt": "Создано",
+      "checkedInAt": "Пришёл",
+      "completedAt": "Завершён",
+      "cancelledAt": "Отменён",
+      "cancelReason": "Причина отмены",
+      "noShowAt": "Отмечен «Не явился»",
+      "actions": "Действия",
+      "actionReason": "Изменить причину",
+      "actionReschedule": "Перенести",
+      "saveReason": "Сохранить причину",
+      "newReason": "Новая причина",
+      "reasonSaved": "Причина сохранена",
+      "reasonError": "Не удалось сохранить причину",
+      "statusError": "Не удалось изменить статус",
+      "close": "Закрыть"
+    },
+    "reschedule_modal": {
+      "title": "Перенести приём",
+      "subtitle": "Сейчас: {{time}}",
+      "newDate": "Новая дата",
+      "newSlot": "Новый слот",
+      "loadingSlots": "Загружаю свободные слоты…",
+      "noFreeSlots": "На эту дату нет свободных слотов",
+      "submit": "Перенести",
+      "cancel": "Отмена",
+      "rescheduleError": "Не удалось перенести приём",
+      "conflictError": "Выбранное время уже занято"
+    },
+    "fromPatient": {
+      "openButton": "Записать на приём",
+      "modalTitle": "Записать {{patient}} на приём",
+      "doctorLabel": "Врач",
+      "doctorPlaceholder": "Выберите врача",
+      "dateLabel": "Дата",
+      "slotLabel": "Слот времени",
+      "loadingDoctors": "Загружаю врачей…",
+      "noDoctors": "В клинике пока нет врачей",
+      "loadingSlots": "Загружаю слоты…",
+      "noSlots": "На эту дату нет свободных слотов"
+    },
+    "inlineCreate": {
+      "title": "Создать нового пациента",
+      "lastName": "Фамилия",
+      "firstName": "Имя",
+      "phone": "Телефон",
+      "dateOfBirth": "Дата рождения",
+      "openButton": "+ Создать нового пациента",
+      "openButtonWithName": "+ Создать «{{name}}»",
+      "submit": "Создать и выбрать",
+      "cancel": "Отмена",
+      "errors": {
+        "lastNameRequired": "Укажите фамилию",
+        "firstNameRequired": "Укажите имя",
+        "duplicatePhone": "Этот телефон уже у другого пациента",
+        "forbidden": "Нет прав на создание пациентов",
+        "generic": "Не удалось создать пациента"
+      }
+    }
   }
 }

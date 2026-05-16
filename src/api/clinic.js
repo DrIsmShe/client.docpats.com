@@ -502,3 +502,181 @@ export const deleteScheduleException = async (exceptionId) => {
   );
   return res.data; // { deleted: true, id }
 };
+
+// ─── Appointments (Sprint 1, day 4-5) ─────────────────────────
+//
+// APPEND this block to client/src/api/clinic.js, right after the
+// "Doctor schedule + exceptions" section. Reuses the same axios import
+// and normalizeList helper already at the top of clinic.js.
+//
+// Backend module: server/modules/clinic/clinic-appointments/
+// Path prefix: /api/v1/clinic/appointments
+//
+// Endpoints (full URLs):
+//   POST   /appointments                       create
+//   GET    /appointments?doctorId=&from=&to=   list (doctor mode, day window)
+//   GET    /appointments?patientId=&before=    list (patient mode, cursor)
+//   GET    /appointments/slots-free?...        bookable slots (schedule MINUS booked)
+//   GET    /appointments/:id                   one
+//   PATCH  /appointments/:id/reschedule        move time
+//   PATCH  /appointments/:id/reason            edit reason (any status)
+//   PATCH  /appointments/:id/status            FSM transition
+
+/**
+ * POST /api/v1/clinic/appointments
+ *
+ * Create a new appointment.
+ *
+ * @param {object} payload
+ *   {
+ *     doctorId:  string,
+ *     patientId: string,
+ *     startUTC:  ISO string,         // absolute instant
+ *     endUTC:    ISO string,         // absolute instant
+ *     reason?:   string              // PHI, encrypted server-side
+ *   }
+ * Returns { appointment: {...} }
+ * 409 if doctor already has an overlapping active appointment.
+ */
+export const createAppointment = async (payload) => {
+  const res = await axios.post("/api/v1/clinic/appointments", payload);
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/appointments?doctorId=&from=YYYY-MM-DD&to=YYYY-MM-DD
+ *
+ * List ALL appointments for a doctor in a clinic-local date window.
+ * Ordered by startUTC ascending. The calendar page uses this with
+ * from === to (single day).
+ *
+ * @param {object} params
+ *   { doctorId, from, to, status? }
+ * Returns { items, count } (normalized from { items: [...] }).
+ */
+export const listAppointmentsForDoctor = async ({
+  doctorId,
+  from,
+  to,
+  status,
+}) => {
+  const res = await axios.get("/api/v1/clinic/appointments", {
+    params: {
+      doctorId,
+      from,
+      to,
+      ...(status && { status }),
+    },
+  });
+  return normalizeList(res.data, ["appointments"]);
+};
+
+/**
+ * GET /api/v1/clinic/appointments?patientId=...&before=ISO&limit=N
+ *
+ * Cursor-paginated history for one patient, most-recent first.
+ *
+ * Returns { items, count, nextBefore } — pass nextBefore back as
+ * `before` on the next call.
+ */
+export const listAppointmentsForPatient = async ({
+  patientId,
+  before,
+  limit,
+  status,
+}) => {
+  const res = await axios.get("/api/v1/clinic/appointments", {
+    params: {
+      patientId,
+      ...(before && { before }),
+      ...(limit && { limit }),
+      ...(status && { status }),
+    },
+  });
+  // Don't normalize — patient mode returns nextBefore which would be lost.
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/appointments/slots-free?doctorId=&from=&to=
+ *
+ * Bookable slots = doctor's working schedule MINUS active appointments.
+ * Same response shape as the day-3 /appointments/slots endpoint.
+ *
+ * @returns {{
+ *   doctorId: string,
+ *   slotDurationMinutes: number,
+ *   bufferMinutes: number,
+ *   timezone: string,
+ *   days: Array<{ date: "YYYY-MM-DD",
+ *                 slots: Array<{startMinute,endMinute,startUTC}> }>
+ * }}
+ */
+export const listFreeSlots = async ({ doctorId, from, to }) => {
+  const res = await axios.get("/api/v1/clinic/appointments/slots-free", {
+    params: { doctorId, from, to },
+  });
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/appointments/:id
+ * Returns { appointment: {...} }
+ */
+export const getAppointment = async (appointmentId) => {
+  const res = await axios.get(`/api/v1/clinic/appointments/${appointmentId}`);
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/appointments/:id/reschedule
+ *
+ * Move time. Only legal while status is scheduled or checked_in.
+ *
+ * @param {string} appointmentId
+ * @param {object} payload  { startUTC, endUTC, reason? }
+ */
+export const rescheduleAppointment = async (appointmentId, payload) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/appointments/${appointmentId}/reschedule`,
+    payload,
+  );
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/appointments/:id/reason
+ *
+ * Edit reason/notes regardless of current status. Used to correct
+ * typos on completed appointments without touching their lifecycle.
+ *
+ * @param {string} appointmentId
+ * @param {object} payload  { reason: string | null }
+ */
+export const updateAppointmentReason = async (appointmentId, payload) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/appointments/${appointmentId}/reason`,
+    payload,
+  );
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/appointments/:id/status
+ *
+ * Lifecycle FSM transition.
+ *   scheduled  → checked_in | cancelled | no_show
+ *   checked_in → completed  | cancelled | no_show
+ *   completed / cancelled / no_show → terminal
+ *
+ * @param {string} appointmentId
+ * @param {object} payload  { status, cancelReason? }
+ *   cancelReason only allowed when status === "cancelled".
+ */
+export const changeAppointmentStatus = async (appointmentId, payload) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/appointments/${appointmentId}/status`,
+    payload,
+  );
+  return res.data;
+};

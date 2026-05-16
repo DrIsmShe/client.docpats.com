@@ -25,7 +25,7 @@ const CHANGEABLE_ROLES = [
   "marketer",
 ];
 
-// Roles that can have a working schedule (real doctors).
+// Roles that can have a working schedule + calendar (real doctors).
 const SCHEDULE_ROLES = ["owner", "admin", "doctor"];
 
 export default function ClinicStaffPage() {
@@ -125,10 +125,12 @@ export default function ClinicStaffPage() {
     }
   }
 
-  // Navigate to a doctor's schedule page. Used by the "Schedule" button
-  // that StaffRow renders for actorType:"user" doctors.
   function handleOpenSchedule(doctorId) {
     navigate(`/clinic/staff/${doctorId}/schedule`);
+  }
+
+  function handleOpenCalendar(doctorId) {
+    navigate(`/clinic/staff/${doctorId}/calendar`);
   }
 
   function handleInviteSuccess() {
@@ -248,6 +250,7 @@ export default function ClinicStaffPage() {
                 onChangeRole={handleChangeRole}
                 onRemove={handleRemoveStaff}
                 onOpenSchedule={handleOpenSchedule}
+                onOpenCalendar={handleOpenCalendar}
                 isLoading={actionLoading[m.membershipId || m._id || m.id]}
                 staffDisplayName={staffDisplayName}
                 t={t}
@@ -282,6 +285,7 @@ function StaffRow({
   onChangeRole,
   onRemove,
   onOpenSchedule,
+  onOpenCalendar,
   isLoading,
   staffDisplayName,
   t,
@@ -290,9 +294,8 @@ function StaffRow({
   const initial = (name[0] || "?").toUpperCase();
   const [editingRole, setEditingRole] = useState(false);
 
-  // "Schedule" button shows only for real doctors: actorType "user" with
-  // role owner/admin/doctor. Nurses/receptionists (actorType "employee")
-  // don't have a working schedule.
+  // Schedule + Calendar buttons show only for real doctors:
+  // actorType "user" with role owner/admin/doctor.
   const canHaveSchedule =
     membership.actorType === "user" && SCHEDULE_ROLES.includes(membership.role);
   const doctorId = membership.userId || membership._id || membership.id;
@@ -338,14 +341,24 @@ function StaffRow({
       </div>
       <div className="staff-row-actions">
         {canHaveSchedule && (
-          <button
-            className="staff-row-btn-schedule"
-            onClick={() => onOpenSchedule(doctorId)}
-            disabled={isLoading}
-            type="button"
-          >
-            {t("schedule.title", { defaultValue: "Schedule" })}
-          </button>
+          <>
+            <button
+              className="staff-row-btn-calendar"
+              onClick={() => onOpenCalendar(doctorId)}
+              disabled={isLoading}
+              type="button"
+            >
+              {t("calendar.title", { defaultValue: "Calendar" })}
+            </button>
+            <button
+              className="staff-row-btn-schedule"
+              onClick={() => onOpenSchedule(doctorId)}
+              disabled={isLoading}
+              type="button"
+            >
+              {t("schedule.title", { defaultValue: "Schedule" })}
+            </button>
+          </>
         )}
         {canRemove && (
           <button

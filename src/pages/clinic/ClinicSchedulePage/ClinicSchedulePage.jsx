@@ -1000,13 +1000,17 @@ function SingleExceptionModal({ doctorId, t, onClose, onCreated }) {
   }
 
   return (
-    <div className="csched-modal-overlay" onClick={onClose}>
-      <div
-        className="csched-modal"
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-      >
+    <div
+      className="csched-modal-overlay"
+      onClick={(e) => {
+        // Close ONLY on direct clicks on the backdrop. Without this guard,
+        // a click on a button inside the modal could close it if the
+        // target element was removed from the DOM between click and
+        // bubble (race vs stopPropagation on a re-rendered modal).
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="csched-modal" role="dialog" aria-modal="true">
         <h3 className="csched-modal-title">
           {t("schedule.exceptions.singleModal.title", {
             defaultValue: "New exception",
@@ -1165,13 +1169,17 @@ function VacationModal({ doctorId, t, onClose, onCreated }) {
   }
 
   return (
-    <div className="csched-modal-overlay" onClick={onClose}>
-      <div
-        className="csched-modal"
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-modal="true"
-      >
+    <div
+      className="csched-modal-overlay"
+      onClick={(e) => {
+        // Close ONLY on direct clicks on the backdrop. Without this guard,
+        // a click on a button inside the modal could close it if the
+        // target element was removed from the DOM between click and
+        // bubble (race vs stopPropagation on a re-rendered modal).
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="csched-modal" role="dialog" aria-modal="true">
         <h3 className="csched-modal-title">
           {t("schedule.exceptions.vacationModal.title", {
             defaultValue: "Vacation — date range",

@@ -496,5 +496,118 @@
       "5": "Fri",
       "6": "Sat"
     }
+  },
+
+  "calendar": {
+    "title": "Appointment calendar",
+    "back": "← Back to team",
+    "loadError": "Failed to load the calendar",
+    "actionError": "Action failed — try again",
+    "emptyDay": "No working hours and no appointments on this day.",
+    "freeSlot": "Free slot",
+    "patientPlaceholder": "Patient",
+    "book": "Book",
+    "today": "Today",
+    "prevDay": "Previous day",
+    "nextDay": "Next day",
+    "status": {
+      "scheduled": "Scheduled",
+      "checked_in": "Arrived",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "no_show": "No-show"
+    },
+    "action": {
+      "checkIn": "Arrived",
+      "complete": "Complete",
+      "cancel": "Cancel",
+      "noShow": "No-show"
+    },
+    "book_modal": {
+      "title": "New appointment",
+      "subtitle": "{{time}} · {{doctor}}",
+      "patient": "Patient",
+      "patientSearchPlaceholder": "Find a patient (last name, phone, or email)",
+      "selectedPatient": "Selected:",
+      "noPatientFound": "No patients found — try more characters",
+      "searchHint": "At least 2 characters",
+      "duration": "Duration",
+      "minutes": "min",
+      "reason": "Reason for visit",
+      "reasonPlaceholder": "For example: sore throat",
+      "submit": "Create appointment",
+      "cancel": "Cancel",
+      "createError": "Failed to create the appointment",
+      "conflictError": "That time is already taken by another appointment"
+    },
+    "detail_modal": {
+      "title": "Appointment",
+      "loadError": "Failed to load the appointment",
+      "patient": "Patient",
+      "doctor": "Doctor",
+      "time": "Time",
+      "duration": "Duration",
+      "reason": "Reason",
+      "reasonEmpty": "not specified",
+      "status": "Status",
+      "createdBy": "Created by",
+      "createdAt": "Created",
+      "checkedInAt": "Arrived",
+      "completedAt": "Completed",
+      "cancelledAt": "Cancelled",
+      "cancelReason": "Cancellation reason",
+      "noShowAt": "Marked no-show",
+      "actions": "Actions",
+      "actionReason": "Edit reason",
+      "actionReschedule": "Reschedule",
+      "saveReason": "Save reason",
+      "newReason": "New reason",
+      "reasonSaved": "Reason saved",
+      "reasonError": "Failed to save the reason",
+      "statusError": "Failed to change status",
+      "close": "Close"
+    },
+    "reschedule_modal": {
+      "title": "Reschedule appointment",
+      "subtitle": "Currently: {{time}}",
+      "newDate": "New date",
+      "newSlot": "New slot",
+      "loadingSlots": "Loading free slots…",
+      "noFreeSlots": "No free slots on this date",
+      "submit": "Reschedule",
+      "cancel": "Cancel",
+      "rescheduleError": "Failed to reschedule the appointment",
+      "conflictError": "The chosen time is already taken"
+    },
+    "fromPatient": {
+      "openButton": "Book appointment",
+      "modalTitle": "Book {{patient}} an appointment",
+      "doctorLabel": "Doctor",
+      "doctorPlaceholder": "Choose a doctor",
+      "dateLabel": "Date",
+      "slotLabel": "Time slot",
+      "loadingDoctors": "Loading doctors…",
+      "noDoctors": "No doctors in this clinic yet",
+      "loadingSlots": "Loading slots…",
+      "noSlots": "No free slots on this date"
+    },
+    "inlineCreate": {
+      "title": "Create new patient",
+      "lastName": "Last name",
+      "firstName": "First name",
+      "phone": "Phone",
+      "dateOfBirth": "Date of birth",
+      "openButton": "+ Create new patient",
+      "openButtonWithName": "+ Create \"{{name}}\"",
+      "submit": "Create and select",
+      "cancel": "Cancel",
+      "errors": {
+        "lastNameRequired": "Last name is required",
+        "firstNameRequired": "First name is required",
+        "duplicatePhone": "A patient with this phone already exists",
+        "forbidden": "You don't have permission to create patients",
+        "generic": "Failed to create patient"
+      }
+    }
   }
 }

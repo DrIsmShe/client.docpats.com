@@ -368,3 +368,21 @@
     flex: 1 1 auto;
   }
 }
+.staff-row-btn-calendar {
+  padding: 6px 12px;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-inline-end: 6px;
+}
+.staff-row-btn-calendar:hover:not(:disabled) {
+  background: #dbeafe;
+}
+.staff-row-btn-calendar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -10,9 +10,12 @@
 //   4. Link section — search a DocPats user (by email OR by date of
 //      birth + name) and link the patient to that account
 //   5. Delete button (visible to canDelete)
+//   6. Book-appointment button (Sprint 1, day 5) — opens
+//      BookFromPatientModal with this patient pre-filled
 //
 // Reuses .staff-page-* tokens and .patients-form-* tokens from the list
-// page CSS to keep visual identity consistent.
+// page CSS to keep visual identity consistent. The appointment modal
+// uses .ccal-* tokens from clinicCalendarPage.css — imported below.
 
 import React, { useEffect, useState, useCallback } from "react";
 import {
@@ -32,13 +35,17 @@ import {
 } from "../../../api/clinic";
 import "../ClinicPatientsPage/clinicPatientsPage.css";
 import "./clinicPatientDetailPage.css";
+// Pull in the calendar-modal stylesheet so the .ccal-* classes used
+// inside BookFromPatientModal are styled here too.
+import "../ClinicCalendarPage/clinicCalendarPage.css";
+import BookFromPatientModal from "../ClinicCalendarPage/BookFromPatientModal.jsx";
 
 export default function ClinicPatientDetailPage() {
   const { t, i18n } = useTranslation("clinic");
   const { id } = useParams();
   const navigate = useNavigate();
   const layoutContext = useOutletContext();
-
+  const [bookModalOpen, setBookModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [patient, setPatient] = useState(null);
@@ -73,6 +80,10 @@ export default function ClinicPatientDetailPage() {
     ["owner", "admin", "receptionist"].includes(myRole);
   const canDelete =
     !!permissions?.patient?.delete || ["owner", "admin"].includes(myRole);
+  // Booking permission mirrors backend WRITE_ROLES for appointments
+  // (owner / admin / receptionist). The book modal does the same role
+  // check on the doctor + slot pickers it renders inside.
+  const canBook = ["owner", "admin", "receptionist"].includes(myRole);
 
   // ─── Load patient ───
   const load = useCallback(async () => {
@@ -360,6 +371,17 @@ export default function ClinicPatientDetailPage() {
         </div>
         {!editing && (
           <div className="staff-page-header-actions">
+            {canBook && (
+              <button
+                className="staff-page-btn-primary"
+                onClick={() => setBookModalOpen(true)}
+                type="button"
+              >
+                {t("calendar.fromPatient.openButton", {
+                  defaultValue: "Book appointment",
+                })}
+              </button>
+            )}
             {canWrite && (
               <button
                 className="staff-page-btn-secondary"
@@ -780,6 +802,19 @@ export default function ClinicPatientDetailPage() {
             </div>
           )}
         </section>
+      )}
+
+      {/* ─── Book-appointment modal (day 5 second entry-point) ─── */}
+      {bookModalOpen && patient && (
+        <BookFromPatientModal
+          patient={patient}
+          onClose={() => setBookModalOpen(false)}
+          onCreated={() => {
+            setBookModalOpen(false);
+            // Patient detail itself doesn't show an appointment history
+            // yet (that's a separate widget), so no reload needed.
+          }}
+        />
       )}
     </div>
   );

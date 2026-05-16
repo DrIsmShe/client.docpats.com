@@ -495,5 +495,117 @@
       "5": "C.",
       "6": "Ş."
     }
+  },
+  "calendar": {
+    "title": "Qəbul təqvimi",
+    "back": "← Komandaya qayıt",
+    "loadError": "Təqvimi yükləmək alınmadı",
+    "actionError": "Əməliyyat baş tutmadı — yenidən cəhd edin",
+    "emptyDay": "Bu gün üçün iş saatları və qəbullar yoxdur.",
+    "freeSlot": "Boş slot",
+    "patientPlaceholder": "Pasiyent",
+    "book": "Yaz",
+    "today": "Bu gün",
+    "prevDay": "Əvvəlki gün",
+    "nextDay": "Növbəti gün",
+    "status": {
+      "scheduled": "Planlaşdırılıb",
+      "checked_in": "Gəlib",
+      "completed": "Bitib",
+      "cancelled": "Ləğv edilib",
+      "no_show": "Gəlmədi"
+    },
+    "action": {
+      "checkIn": "Gəlib",
+      "complete": "Bitir",
+      "cancel": "Ləğv et",
+      "noShow": "Gəlmədi"
+    },
+    "book_modal": {
+      "title": "Yeni qəbul",
+      "subtitle": "{{time}} · {{doctor}}",
+      "patient": "Pasiyent",
+      "patientSearchPlaceholder": "Pasiyent tap (soyad, telefon və ya email)",
+      "selectedPatient": "Seçilib:",
+      "noPatientFound": "Pasiyent tapılmadı — daha çox simvol daxil edin",
+      "searchHint": "Ən azı 2 simvol",
+      "duration": "Müddət",
+      "minutes": "dəq",
+      "reason": "Ziyarət səbəbi",
+      "reasonPlaceholder": "Məsələn: boğaz ağrısı",
+      "submit": "Qəbul yarat",
+      "cancel": "Ləğv et",
+      "createError": "Qəbul yaratmaq alınmadı",
+      "conflictError": "Bu vaxt artıq başqa qəbulla doludur"
+    },
+    "detail_modal": {
+      "title": "Qəbul",
+      "loadError": "Qəbulu yükləmək alınmadı",
+      "patient": "Pasiyent",
+      "doctor": "Həkim",
+      "time": "Vaxt",
+      "duration": "Müddət",
+      "reason": "Səbəb",
+      "reasonEmpty": "göstərilməyib",
+      "status": "Status",
+      "createdBy": "Yaradıb",
+      "createdAt": "Yaradılıb",
+      "checkedInAt": "Gəlib",
+      "completedAt": "Bitib",
+      "cancelledAt": "Ləğv edilib",
+      "cancelReason": "Ləğv səbəbi",
+      "noShowAt": "Gəlmədi qeyd olunub",
+      "actions": "Əməliyyatlar",
+      "actionReason": "Səbəbi dəyiş",
+      "actionReschedule": "Köçür",
+      "saveReason": "Səbəbi saxla",
+      "newReason": "Yeni səbəb",
+      "reasonSaved": "Səbəb saxlanıldı",
+      "reasonError": "Səbəbi saxlamaq alınmadı",
+      "statusError": "Statusu dəyişmək alınmadı",
+      "close": "Bağla"
+    },
+    "reschedule_modal": {
+      "title": "Qəbulu köçür",
+      "subtitle": "Hazırda: {{time}}",
+      "newDate": "Yeni tarix",
+      "newSlot": "Yeni slot",
+      "loadingSlots": "Boş slotlar yüklənir…",
+      "noFreeSlots": "Bu tarixdə boş slot yoxdur",
+      "submit": "Köçür",
+      "cancel": "Ləğv et",
+      "rescheduleError": "Qəbulu köçürmək alınmadı",
+      "conflictError": "Seçilmiş vaxt artıq doludur"
+    },
+    "fromPatient": {
+      "openButton": "Qəbula yaz",
+      "modalTitle": "{{patient}} üçün qəbul yarat",
+      "doctorLabel": "Həkim",
+      "doctorPlaceholder": "Həkim seç",
+      "dateLabel": "Tarix",
+      "slotLabel": "Vaxt aralığı",
+      "loadingDoctors": "Həkimlər yüklənir…",
+      "noDoctors": "Klinikada hələ həkim yoxdur",
+      "loadingSlots": "Slotlar yüklənir…",
+      "noSlots": "Bu tarixdə boş slot yoxdur"
+    },
+    "inlineCreate": {
+      "title": "Yeni pasiyent yarat",
+      "lastName": "Soyad",
+      "firstName": "Ad",
+      "phone": "Telefon",
+      "dateOfBirth": "Doğum tarixi",
+      "openButton": "+ Yeni pasiyent yarat",
+      "openButtonWithName": "+ «{{name}}» yarat",
+      "submit": "Yarat və seç",
+      "cancel": "Ləğv et",
+      "errors": {
+        "lastNameRequired": "Soyad tələb olunur",
+        "firstNameRequired": "Ad tələb olunur",
+        "duplicatePhone": "Bu telefon nömrəsi başqa pasiyentdə var",
+        "forbidden": "Pasiyent yaratmaq üçün icazəniz yoxdur",
+        "generic": "Pasiyent yaratmaq alınmadı"
+      }
+    }
   }
 }
