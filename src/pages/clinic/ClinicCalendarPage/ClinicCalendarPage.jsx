@@ -7,24 +7,37 @@
 //   Booking & lifecycle actions are gated by role on the BACKEND; the
 //   frontend just hides buttons when canWrite is false.
 //
-// Layout per day:
-//   - header: doctor name + back link + date navigator (◀ Today ▶ + date picker)
-//   - body: a chronological list of slots for the chosen date, where
-//     each row is either:
-//       (a) a FREE slot   → "Book" button → BookAppointmentModal
-//       (b) a BOOKED slot → patient name + status badge + inline
-//                            lifecycle buttons + click anywhere on the
-//                            card → AppointmentDetailModal
+// Layout per day (two sections):
+//
+//   Main timeline — chronological list of the doctor's working time:
+//     (a) FREE slot    → "Book" button → BookAppointmentModal
+//     (b) ACTIVE appt  (scheduled | checked_in) → patient card + inline
+//                       lifecycle buttons + click → AppointmentDetailModal
+//
+//   Day archive (collapsible, only rendered if non-empty) — terminal
+//   appointments of that same day, separated so they don't visually
+//   intermix with bookable free slots:
+//     completed | cancelled | no_show
+//   Still clickable to open the detail modal (for reason edits etc.),
+//   just no inline action buttons because the FSM is terminal.
+//
+//   Why the split: terminal appointments occupy real wall-clock slots,
+//   but those slots are FREE again for booking (the backend's
+//   listFreeSlots correctly returns them as free). Putting them in
+//   the same chronological list created a confusing "is this taken or
+//   free?" UX — there'd be a 10:00 free slot AND a 10:00 cancelled
+//   card right next to each other. The archive section keeps the
+//   audit trail visible without that confusion.
 //
 // Data sources (composed at render time):
 //   - listFreeSlots({ doctorId, from, to })           — schedule MINUS booked
 //   - listAppointmentsForDoctor({ doctorId, from, to }) — the booked ones
-//   We render free slots from `freeData.days[0].slots` and booked
-//   appointments from `appointments` ordered together by startMinute.
+//   We split appointments by status: ACTIVE_STATUSES go into the main
+//   timeline (merged with free slots and sorted by startMinute),
+//   TERMINAL_STATUSES go into the archive section.
 //
 // Why two queries: the bookable-slots endpoint hides slots that are
-// already taken, but we WANT to render those taken slots — as booked
-// cards. So we fetch both and merge.
+// already taken by ACTIVE appointments. So we fetch both and merge.
 //
 // Time display: all times come from the BACKEND already converted to
 // clinic-local minutes (startMinute = minutes from local midnight in
@@ -35,6 +48,24 @@
 //   - every t() call has a defaultValue
 //   - no <form> tags — buttons + onClick
 //   - no localStorage / sessionStorage
+//
+// CSS NOTE — this file references three classes that are NEW for the
+// archive section:
+//   .ccal-archive          (container)
+//   .ccal-archive-header   (clickable header with chevron + count)
+//   .ccal-archive-body     (collapsed/expanded list)
+//   .ccal-row-terminal     (modifier on .ccal-row for visual dimming)
+// Suggested minimal CSS (add to clinicCalendarPage.css):
+//   .ccal-archive { margin-top: 24px; border-top: 1px solid var(--border, #e5e7eb); padding-top: 16px; }
+//   .ccal-archive-header { display: flex; align-items: center; gap: 8px;
+//     cursor: pointer; user-select: none; padding: 8px 0;
+//     color: var(--muted, #6b7280); font-weight: 500; }
+//   .ccal-archive-header:hover { color: var(--text, #111827); }
+//   .ccal-archive-chevron { transition: transform .15s; }
+//   .ccal-archive.is-open .ccal-archive-chevron { transform: rotate(90deg); }
+//   .ccal-archive-body { display: none; }
+//   .ccal-archive.is-open .ccal-archive-body { display: block; }
+//   .ccal-row-terminal { opacity: .65; }
 
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -62,7 +93,12 @@ import "./clinicCalendarPage.css";
 const WRITE_ROLES = new Set(["owner", "admin", "receptionist"]);
 
 // Statuses that occupy the doctor's time — same as backend's ACTIVE_STATUSES.
+// These appear in the main timeline merged with free slots.
 const ACTIVE_STATUSES = new Set(["scheduled", "checked_in"]);
+
+// Terminal statuses — go to the "Day archive" section, not the main timeline.
+// Order matters for readability inside the archive (most-recent action first).
+const TERMINAL_STATUSES = new Set(["completed", "cancelled", "no_show"]);
 
 // ─── Helpers ───────────────────────────────────────────────────
 
@@ -111,15 +147,31 @@ function formatDateLong(iso, lang) {
   }
 }
 
-// ─── Merge helper ──────────────────────────────────────────────
+// ─── Split + merge helpers ─────────────────────────────────────
 //
-// Given { freeSlots: [{startMinute, endMinute, ...}], appointments: [{startMinute, endMinute, ...}] }
-// produce a single chronological list of items:
-//   { kind: "free" | "booked", startMinute, endMinute, payload }
+// We partition appointments into:
+//   - active   → go into main timeline (merged with free slots)
+//   - terminal → go into archive section
 //
-// Both inputs already in clinic-local minutes — no tz math here.
+// Free slots only ever appear in the main timeline.
 
-function mergeIntoTimeline(freeSlots, appointments) {
+function splitAppointments(appointments) {
+  const active = [];
+  const terminal = [];
+  for (const a of appointments) {
+    if (TERMINAL_STATUSES.has(a.status)) {
+      terminal.push(a);
+    } else {
+      // scheduled / checked_in / any unknown → treat as active so they're
+      // visible (defensive: better to show than to hide if a new status
+      // gets added on the backend).
+      active.push(a);
+    }
+  }
+  return { active, terminal };
+}
+
+function buildMainTimeline(freeSlots, activeAppointments) {
   const items = [];
   for (const slot of freeSlots) {
     items.push({
@@ -129,11 +181,7 @@ function mergeIntoTimeline(freeSlots, appointments) {
       payload: slot,
     });
   }
-  for (const appt of appointments) {
-    // We display ALL appointments in the calendar, including cancelled/
-    // no_show/completed — they happened (or were planned to) that day
-    // and the user often wants to see the trace. The slot-availability
-    // semantics live in `listFreeSlots`; this is just visualization.
+  for (const appt of activeAppointments) {
     items.push({
       kind: "booked",
       startMinute: appt.startMinute,
@@ -143,6 +191,15 @@ function mergeIntoTimeline(freeSlots, appointments) {
   }
   items.sort((a, b) => a.startMinute - b.startMinute);
   return items;
+}
+
+function buildArchive(terminalAppointments) {
+  // Sort by startMinute ascending (mirror the main timeline ordering).
+  // We don't try to reflect "when the status changed" — backend doesn't
+  // expose status-change timestamps in the list payload yet.
+  return [...terminalAppointments].sort(
+    (a, b) => a.startMinute - b.startMinute,
+  );
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -164,6 +221,8 @@ export default function ClinicCalendarPage() {
   const [error, setError] = useState(null);
   const [doctorName, setDoctorName] = useState("");
   const [timeline, setTimeline] = useState([]);
+  const [archive, setArchive] = useState([]);
+  const [archiveOpen, setArchiveOpen] = useState(false);
   const [slotMeta, setSlotMeta] = useState({
     slotDurationMinutes: 30,
     bufferMinutes: 0,
@@ -218,12 +277,16 @@ export default function ClinicCalendarPage() {
         const freeSlots = dayBlock ? dayBlock.slots : [];
         const appointments = apptRes.items || [];
 
+        // Split appointments by status: active → timeline, terminal → archive.
+        const { active, terminal } = splitAppointments(appointments);
+
         setSlotMeta({
           slotDurationMinutes: freeRes?.slotDurationMinutes ?? 30,
           bufferMinutes: freeRes?.bufferMinutes ?? 0,
           timezone: freeRes?.timezone ?? "Asia/Baku",
         });
-        setTimeline(mergeIntoTimeline(freeSlots, appointments));
+        setTimeline(buildMainTimeline(freeSlots, active));
+        setArchive(buildArchive(terminal));
       } catch (err) {
         if (err.response?.status === 401) {
           navigate("/login", { replace: true });
@@ -236,6 +299,7 @@ export default function ClinicCalendarPage() {
             }),
         );
         setTimeline([]);
+        setArchive([]);
       } finally {
         setLoading(false);
       }
@@ -296,7 +360,7 @@ export default function ClinicCalendarPage() {
   }
 
   // ─── Render: loading / error ───
-  if (loading && timeline.length === 0) {
+  if (loading && timeline.length === 0 && archive.length === 0) {
     return (
       <div className="ccal-loading">
         <div className="ccal-spinner" />
@@ -352,7 +416,7 @@ export default function ClinicCalendarPage() {
       {error && <div className="ccal-msg is-err">{error}</div>}
       {actionError && <div className="ccal-msg is-err">{actionError}</div>}
 
-      {/* Timeline */}
+      {/* Main timeline — free slots + active appointments only */}
       {loading ? (
         <div className="ccal-list-loading">
           <div className="ccal-spinner" />
@@ -385,6 +449,44 @@ export default function ClinicCalendarPage() {
         </div>
       )}
 
+      {/* Day archive — terminal appointments (collapsed by default).
+          Only rendered when there's something to show, so a clean day
+          has no extra UI clutter. */}
+      {!loading && archive.length > 0 && (
+        <div className={`ccal-archive ${archiveOpen ? "is-open" : ""}`}>
+          <div
+            className="ccal-archive-header"
+            onClick={() => setArchiveOpen((o) => !o)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setArchiveOpen((o) => !o);
+              }
+            }}
+          >
+            <span className="ccal-archive-chevron">▶</span>
+            <span>
+              {t("calendar.archive.title", {
+                defaultValue: "Day archive",
+              })}
+            </span>
+            <span className="ccal-archive-count">({archive.length})</span>
+          </div>
+          <div className="ccal-archive-body">
+            {archive.map((appt) => (
+              <TerminalRow
+                key={`archive-${appt.id}`}
+                appt={appt}
+                t={t}
+                onOpenDetail={() => handleDetailOpen(appt)}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Modals */}
       {bookSlot && (
         <BookAppointmentModal
@@ -409,7 +511,7 @@ export default function ClinicCalendarPage() {
 }
 
 // ════════════════════════════════════════════════════════════════
-//  TimelineRow — one row in the day timeline
+//  TimelineRow — one row in the main timeline (free or active appt)
 // ════════════════════════════════════════════════════════════════
 
 function TimelineRow({
@@ -445,9 +547,8 @@ function TimelineRow({
     );
   }
 
-  // booked
+  // booked & active (scheduled | checked_in)
   const appt = item.payload;
-  const isActive = ACTIVE_STATUSES.has(appt.status);
   return (
     <div
       className={`ccal-row ccal-row-booked status-${appt.status} ${
@@ -489,6 +590,49 @@ function TimelineRow({
   );
 }
 
+// ════════════════════════════════════════════════════════════════
+//  TerminalRow — one row in the day archive (terminal status only)
+// ════════════════════════════════════════════════════════════════
+//
+// Same visual shape as a booked TimelineRow, but:
+//   - no inline action buttons (FSM is terminal)
+//   - dimmed via .ccal-row-terminal modifier
+//   - click still opens the detail modal so the operator can edit
+//     reason/notes or review what happened.
+
+function TerminalRow({ appt, t, onOpenDetail }) {
+  const timeRange = `${minutesToHHMM(appt.startMinute)}–${minutesToHHMM(
+    appt.endMinute,
+  )}`;
+  return (
+    <div
+      className={`ccal-row ccal-row-booked ccal-row-terminal status-${appt.status}`}
+    >
+      <div className="ccal-row-time">{timeRange}</div>
+      <div
+        className="ccal-row-body ccal-row-body-clickable"
+        onClick={onOpenDetail}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") onOpenDetail();
+        }}
+      >
+        <div className="ccal-booked-main">
+          <span className="ccal-patient-name">
+            {appt.patientName ||
+              t("calendar.patientPlaceholder", {
+                defaultValue: "Patient",
+              })}
+          </span>
+          <StatusBadge status={appt.status} t={t} />
+        </div>
+        {appt.reason && <div className="ccal-booked-reason">{appt.reason}</div>}
+      </div>
+    </div>
+  );
+}
+
 function StatusBadge({ status, t }) {
   return (
     <span className={`ccal-badge ccal-badge-${status}`}>
@@ -502,7 +646,8 @@ function StatusBadge({ status, t }) {
 // Mirrors the backend FSM (ALLOWED_TRANSITIONS):
 //   scheduled   → checked_in, cancelled, no_show
 //   checked_in  → completed, cancelled, no_show
-// Terminal statuses have no inline buttons — open the detail modal.
+// Terminal statuses have no inline buttons — they live in the archive
+// section and only open the detail modal.
 
 function QuickActions({ status, isLoading, t, onAction }) {
   if (status === "scheduled") {
@@ -572,6 +717,6 @@ function QuickActions({ status, isLoading, t, onAction }) {
       </>
     );
   }
-  // terminal — no quick actions; the detail modal still works for reason edits
+  // terminal — never rendered (TerminalRow doesn't include QuickActions)
   return null;
 }

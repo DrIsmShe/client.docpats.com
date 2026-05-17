@@ -502,6 +502,9 @@
     "loadError": "Takvim yüklenemedi",
     "actionError": "İşlem başarısız — tekrar deneyin",
     "emptyDay": "Bu gün için çalışma saati ve randevu yok.",
+    "archive": {
+      "title": "Gün arşivi"
+    },
     "freeSlot": "Boş slot",
     "patientPlaceholder": "Hasta",
     "book": "Randevu al",

@@ -502,6 +502,9 @@
     "loadError": "Təqvimi yükləmək alınmadı",
     "actionError": "Əməliyyat baş tutmadı — yenidən cəhd edin",
     "emptyDay": "Bu gün üçün iş saatları və qəbullar yoxdur.",
+    "archive": {
+      "title": "Günün arxivi"
+    },
     "freeSlot": "Boş slot",
     "patientPlaceholder": "Pasiyent",
     "book": "Yaz",

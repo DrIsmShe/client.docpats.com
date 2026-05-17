@@ -504,6 +504,9 @@
     "loadError": "Failed to load the calendar",
     "actionError": "Action failed — try again",
     "emptyDay": "No working hours and no appointments on this day.",
+    "archive": {
+      "title": "Day archive"
+    },
     "freeSlot": "Free slot",
     "patientPlaceholder": "Patient",
     "book": "Book",

@@ -609,3 +609,57 @@
     text-align: start;
   }
 }
+/* ─── Day archive (терминальные статусы дня) ───
+   Добавить в конец client/src/pages/clinic/ClinicCalendarPage/clinicCalendarPage.css */
+
+.ccal-archive {
+  margin-top: 24px;
+  border-top: 1px solid var(--border, #e5e7eb);
+  padding-top: 16px;
+}
+
+.ccal-archive-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  padding: 8px 0;
+  color: var(--muted, #6b7280);
+  font-weight: 500;
+  transition: color 0.15s;
+}
+
+.ccal-archive-header:hover {
+  color: var(--text, #111827);
+}
+
+.ccal-archive-chevron {
+  display: inline-block;
+  transition: transform 0.15s;
+  font-size: 12px;
+}
+
+.ccal-archive.is-open .ccal-archive-chevron {
+  transform: rotate(90deg);
+}
+
+.ccal-archive-count {
+  color: var(--muted, #9ca3af);
+  font-size: 13px;
+  margin-left: 4px;
+}
+
+.ccal-archive-body {
+  display: none;
+  margin-top: 12px;
+}
+
+.ccal-archive.is-open .ccal-archive-body {
+  display: block;
+}
+
+/* Visual dimming for terminal rows */
+.ccal-row-terminal {
+  opacity: 0.65;
+}
