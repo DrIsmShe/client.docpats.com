@@ -520,11 +520,15 @@
       "cancelled": "Cancelled",
       "no_show": "No-show"
     },
+    "pastSlot": "Past",
+    "overdueLabel": "Overdue",
+    "pastDateBanner": "Past date — booking is disabled. You can still close open appointments.",
     "action": {
       "checkIn": "Arrived",
       "complete": "Complete",
       "cancel": "Cancel",
-      "noShow": "No-show"
+      "noShow": "No-show",
+      "completeOverdueHint": "Close this overdue visit"
     },
     "book_modal": {
       "title": "New appointment",

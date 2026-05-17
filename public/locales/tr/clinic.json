@@ -518,11 +518,15 @@
       "cancelled": "İptal edildi",
       "no_show": "Gelmedi"
     },
+    "pastSlot": "Geçmiş",
+    "overdueLabel": "Gecikmiş",
+    "pastDateBanner": "Geçmiş tarih — randevu alma devre dışı. Açık randevuları kapatabilirsiniz.",
     "action": {
       "checkIn": "Geldi",
       "complete": "Tamamla",
       "cancel": "İptal et",
-      "noShow": "Gelmedi"
+      "noShow": "Gelmedi",
+      "completeOverdueHint": "Bu gecikmiş ziyareti kapat"
     },
     "book_modal": {
       "title": "Yeni randevu",

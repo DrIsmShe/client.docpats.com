@@ -518,11 +518,15 @@
       "cancelled": "Ləğv edilib",
       "no_show": "Gəlmədi"
     },
+    "pastSlot": "Keçmiş",
+    "overdueLabel": "Vaxtı keçmiş",
+    "pastDateBanner": "Keçmiş tarix — qəbul bağlandı. Açıq qəbulları bağlaya bilərsiniz.",
     "action": {
-      "checkIn": "Gəlib",
-      "complete": "Bitir",
+      "checkIn": "Gəldi",
+      "complete": "Tamamla",
       "cancel": "Ləğv et",
-      "noShow": "Gəlmədi"
+      "noShow": "Gəlmədi",
+      "completeOverdueHint": "Bu keçmiş qəbulu bağla"
     },
     "book_modal": {
       "title": "Yeni qəbul",

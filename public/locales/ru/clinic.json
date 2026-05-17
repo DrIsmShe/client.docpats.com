@@ -525,12 +525,17 @@
       "cancelled": "Отменён",
       "no_show": "Не явился"
     },
+    "pastSlot": "Прошедший",
+    "overdueLabel": "Просрочен",
+    "pastDateBanner": "Прошлая дата — запись недоступна. Просроченные приёмы можно закрыть.",
     "action": {
       "checkIn": "Пришёл",
       "complete": "Завершить",
       "cancel": "Отменить",
-      "noShow": "Не явился"
+      "noShow": "Не явился",
+      "completeOverdueHint": "Закрыть просроченный приём"
     },
+
     "book_modal": {
       "title": "Новая запись",
       "subtitle": "{{time}} · {{doctor}}",

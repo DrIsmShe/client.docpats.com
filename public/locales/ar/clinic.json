@@ -519,11 +519,15 @@
       "cancelled": "ملغى",
       "no_show": "لم يحضر"
     },
+    "pastSlot": "سابق",
+    "overdueLabel": "متأخر",
+    "pastDateBanner": "تاريخ سابق — الحجز معطّل. يمكنك إغلاق المواعيد المفتوحة.",
     "action": {
-      "checkIn": "حضر",
+      "checkIn": "وصل",
       "complete": "إنهاء",
       "cancel": "إلغاء",
-      "noShow": "لم يحضر"
+      "noShow": "لم يحضر",
+      "completeOverdueHint": "إغلاق هذه الزيارة المتأخرة"
     },
     "book_modal": {
       "title": "موعد جديد",

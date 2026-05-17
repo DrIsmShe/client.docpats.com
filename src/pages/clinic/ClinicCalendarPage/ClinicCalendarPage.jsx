@@ -3,9 +3,6 @@
 // Doctor's day calendar — the daily booking workbench for the clinic.
 //
 // Route: /clinic/staff/:doctorId/calendar
-//   Visible to all clinic roles (read).
-//   Booking & lifecycle actions are gated by role on the BACKEND; the
-//   frontend just hides buttons when canWrite is false.
 //
 // Layout per day (two sections):
 //
@@ -14,60 +11,58 @@
 //     (b) ACTIVE appt  (scheduled | checked_in) → patient card + inline
 //                       lifecycle buttons + click → AppointmentDetailModal
 //
-//   Day archive (collapsible, only rendered if non-empty) — terminal
-//   appointments of that same day, separated so they don't visually
-//   intermix with bookable free slots:
-//     completed | cancelled | no_show
-//   Still clickable to open the detail modal (for reason edits etc.),
-//   just no inline action buttons because the FSM is terminal.
+//   Day archive (collapsible, only if non-empty) — terminal appts
+//     (completed | cancelled | no_show), separated so they don't
+//     visually intermix with bookable free slots.
 //
-//   Why the split: terminal appointments occupy real wall-clock slots,
-//   but those slots are FREE again for booking (the backend's
-//   listFreeSlots correctly returns them as free). Putting them in
-//   the same chronological list created a confusing "is this taken or
-//   free?" UX — there'd be a 10:00 free slot AND a 10:00 cancelled
-//   card right next to each other. The archive section keeps the
-//   audit trail visible without that confusion.
+// PAST-DATE GUARDS (added 17 May 2026):
+//   The calendar lets you navigate to any past day, but the FSM there
+//   behaves differently:
+//     - Free slot in the past   → no Book button. Shows "Past" label
+//                                  with a dimmed style.
+//     - Active appt in the past → flagged as overdue (doctor never
+//                                  closed it on the day). Only the
+//                                  "closing" lifecycle buttons stay
+//                                  visible:
+//                                    scheduled  → Complete + No-show
+//                                    checked_in → Complete
+//                                  Arrived/Cancel are removed: Arrived
+//                                  doesn't make sense yesterday; Cancel
+//                                  for past visits should go through
+//                                  the detail modal with a written
+//                                  cancel reason (more deliberate).
+//   Backend FSM stays unchanged (ALLOWED_TRANSITIONS already permits
+//   these transitions at any time); this is a UI guard only.
 //
-// Data sources (composed at render time):
-//   - listFreeSlots({ doctorId, from, to })           — schedule MINUS booked
-//   - listAppointmentsForDoctor({ doctorId, from, to }) — the booked ones
-//   We split appointments by status: ACTIVE_STATUSES go into the main
-//   timeline (merged with free slots and sorted by startMinute),
-//   TERMINAL_STATUSES go into the archive section.
+//   Today and the future behave as before — all buttons available.
 //
-// Why two queries: the bookable-slots endpoint hides slots that are
-// already taken by ACTIVE appointments. So we fetch both and merge.
-//
-// Time display: all times come from the BACKEND already converted to
-// clinic-local minutes (startMinute = minutes from local midnight in
-// the clinic's tz). We just format HH:MM. No browser-tz math here.
+// CSS NOTE — three new classes for past-date dimming:
+//   .ccal-row-past         (free .ccal-row in the past — dimmed, no Book)
+//   .ccal-row-overdue      (booked .ccal-row in the past — accent border)
+//   .ccal-past-label       ("Past" text replacing the Book button)
+//   .ccal-overdue-badge    ("Overdue" badge next to patient name)
+//   .ccal-msg-past         (the banner above the timeline on past days)
+// Suggested CSS (append to clinicCalendarPage.css):
+//   .ccal-row-past { opacity: .55; }
+//   .ccal-row-overdue { border-left: 3px solid var(--warn, #f59e0b); }
+//   .ccal-past-label { color: var(--muted, #9ca3af); font-size: 13px;
+//     font-style: italic; padding-right: 16px; }
+//   .ccal-overdue-badge { display: inline-block; margin-left: 8px;
+//     padding: 2px 8px; border-radius: 4px; font-size: 11px;
+//     font-weight: 600; background: rgba(245, 158, 11, .12);
+//     color: var(--warn, #f59e0b); text-transform: uppercase; }
+//   .ccal-msg-past { background: rgba(245, 158, 11, .08);
+//     border-left: 3px solid var(--warn, #f59e0b);
+//     color: var(--text, #111827); padding: 10px 14px;
+//     border-radius: 4px; margin: 12px 0; font-size: 14px; }
 //
 // Conventions followed (project memory):
-//   - never put `t` in useEffect/useCallback deps (it recreates each render)
+//   - never put `t` in useEffect/useCallback deps
 //   - every t() call has a defaultValue
-//   - no <form> tags — buttons + onClick
+//   - no <form> tags
 //   - no localStorage / sessionStorage
-//
-// CSS NOTE — this file references three classes that are NEW for the
-// archive section:
-//   .ccal-archive          (container)
-//   .ccal-archive-header   (clickable header with chevron + count)
-//   .ccal-archive-body     (collapsed/expanded list)
-//   .ccal-row-terminal     (modifier on .ccal-row for visual dimming)
-// Suggested minimal CSS (add to clinicCalendarPage.css):
-//   .ccal-archive { margin-top: 24px; border-top: 1px solid var(--border, #e5e7eb); padding-top: 16px; }
-//   .ccal-archive-header { display: flex; align-items: center; gap: 8px;
-//     cursor: pointer; user-select: none; padding: 8px 0;
-//     color: var(--muted, #6b7280); font-weight: 500; }
-//   .ccal-archive-header:hover { color: var(--text, #111827); }
-//   .ccal-archive-chevron { transition: transform .15s; }
-//   .ccal-archive.is-open .ccal-archive-chevron { transform: rotate(90deg); }
-//   .ccal-archive-body { display: none; }
-//   .ccal-archive.is-open .ccal-archive-body { display: block; }
-//   .ccal-row-terminal { opacity: .65; }
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   useParams,
   useNavigate,
@@ -88,16 +83,8 @@ import "./clinicCalendarPage.css";
 
 // ─── Constants ─────────────────────────────────────────────────
 
-// Roles that can write (create/move/cancel) — mirrors WRITE_ROLES on the
-// backend, used only to hide buttons. Backend enforces the same set.
 const WRITE_ROLES = new Set(["owner", "admin", "receptionist"]);
-
-// Statuses that occupy the doctor's time — same as backend's ACTIVE_STATUSES.
-// These appear in the main timeline merged with free slots.
 const ACTIVE_STATUSES = new Set(["scheduled", "checked_in"]);
-
-// Terminal statuses — go to the "Day archive" section, not the main timeline.
-// Order matters for readability inside the archive (most-recent action first).
 const TERMINAL_STATUSES = new Set(["completed", "cancelled", "no_show"]);
 
 // ─── Helpers ───────────────────────────────────────────────────
@@ -109,13 +96,6 @@ function minutesToHHMM(min) {
   return `${String(h).padStart(2, "0")}:${String(mm).padStart(2, "0")}`;
 }
 
-// Local "YYYY-MM-DD" from a Date in the BROWSER's tz. We use this only
-// for the date-navigator state — the actual day-window passed to the
-// backend is the same string, which the backend re-interprets in the
-// clinic's tz. For the typical case (staff lives where the clinic is)
-// they agree; for cross-tz staff they may differ by ±1 day, which is
-// fine — the user picks the day they care about and the backend gives
-// them that calendar day in clinic-local time.
 function toISODate(d) {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
@@ -131,7 +111,6 @@ function shiftISO(iso, days) {
   return toISODate(d);
 }
 
-// Pretty-print a "YYYY-MM-DD" in the user's locale. Used in the header.
 function formatDateLong(iso, lang) {
   if (!iso) return "—";
   try {
@@ -148,12 +127,6 @@ function formatDateLong(iso, lang) {
 }
 
 // ─── Split + merge helpers ─────────────────────────────────────
-//
-// We partition appointments into:
-//   - active   → go into main timeline (merged with free slots)
-//   - terminal → go into archive section
-//
-// Free slots only ever appear in the main timeline.
 
 function splitAppointments(appointments) {
   const active = [];
@@ -162,9 +135,6 @@ function splitAppointments(appointments) {
     if (TERMINAL_STATUSES.has(a.status)) {
       terminal.push(a);
     } else {
-      // scheduled / checked_in / any unknown → treat as active so they're
-      // visible (defensive: better to show than to hide if a new status
-      // gets added on the backend).
       active.push(a);
     }
   }
@@ -194,9 +164,6 @@ function buildMainTimeline(freeSlots, activeAppointments) {
 }
 
 function buildArchive(terminalAppointments) {
-  // Sort by startMinute ascending (mirror the main timeline ordering).
-  // We don't try to reflect "when the status changed" — backend doesn't
-  // expose status-change timestamps in the list payload yet.
   return [...terminalAppointments].sort(
     (a, b) => a.startMinute - b.startMinute,
   );
@@ -215,7 +182,6 @@ export default function ClinicCalendarPage() {
   const myRole = layoutContext?.role || "member";
   const canWrite = WRITE_ROLES.has(myRole);
 
-  // ─── State ───
   const [date, setDate] = useState(todayISO());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -229,15 +195,17 @@ export default function ClinicCalendarPage() {
     timezone: "Asia/Baku",
   });
 
-  // action loading map (per appointment id) — for inline lifecycle buttons
   const [actionLoading, setActionLoading] = useState({});
   const [actionError, setActionError] = useState(null);
 
-  // modals
-  const [bookSlot, setBookSlot] = useState(null); // a free slot object, opens BookModal
-  const [detailId, setDetailId] = useState(null); // appointment id, opens DetailModal
+  const [bookSlot, setBookSlot] = useState(null);
+  const [detailId, setDetailId] = useState(null);
 
-  // ─── Load doctor name once ───
+  // String compare on YYYY-MM-DD is sound — both sides use toISODate in
+  // the BROWSER's tz. Recompute on every render so a long-lived tab
+  // doesn't get stuck thinking yesterday is "today".
+  const isPast = useMemo(() => date < todayISO(), [date]);
+
   useEffect(() => {
     let cancelled = false;
     listStaff()
@@ -254,15 +222,12 @@ export default function ClinicCalendarPage() {
           setDoctorName(name);
         }
       })
-      .catch(() => {
-        // not fatal — page still works without the name
-      });
+      .catch(() => {});
     return () => {
       cancelled = true;
     };
   }, [doctorId]);
 
-  // ─── Load data for the chosen date ───
   const loadDay = useCallback(
     async (iso) => {
       setLoading(true);
@@ -277,7 +242,6 @@ export default function ClinicCalendarPage() {
         const freeSlots = dayBlock ? dayBlock.slots : [];
         const appointments = apptRes.items || [];
 
-        // Split appointments by status: active → timeline, terminal → archive.
         const { active, terminal } = splitAppointments(appointments);
 
         setSlotMeta({
@@ -312,7 +276,6 @@ export default function ClinicCalendarPage() {
     loadDay(date);
   }, [date, loadDay]);
 
-  // ─── Date navigation ───
   function goPrev() {
     setDate((d) => shiftISO(d, -1));
   }
@@ -323,7 +286,6 @@ export default function ClinicCalendarPage() {
     setDate(todayISO());
   }
 
-  // ─── Quick lifecycle actions (inline on a booked card) ───
   async function handleQuickStatus(appointmentId, status) {
     setActionLoading((p) => ({ ...p, [appointmentId]: true }));
     setActionError(null);
@@ -342,9 +304,9 @@ export default function ClinicCalendarPage() {
     }
   }
 
-  // ─── Modal callbacks ───
   function handleBookOpen(slot) {
     if (!canWrite) return;
+    if (isPast) return; // defensive — the Book button is also hidden
     setBookSlot(slot);
   }
   function handleBookCreated() {
@@ -359,7 +321,6 @@ export default function ClinicCalendarPage() {
     loadDay(date);
   }
 
-  // ─── Render: loading / error ───
   if (loading && timeline.length === 0 && archive.length === 0) {
     return (
       <div className="ccal-loading">
@@ -370,7 +331,6 @@ export default function ClinicCalendarPage() {
 
   return (
     <div className="ccal-page">
-      {/* Header */}
       <div className="ccal-header">
         <Link to="/clinic/staff" className="ccal-back">
           {t("calendar.back", { defaultValue: "← Back to team" })}
@@ -381,7 +341,6 @@ export default function ClinicCalendarPage() {
         {doctorName && <p className="ccal-doctor-name">{doctorName}</p>}
       </div>
 
-      {/* Date navigator */}
       <div className="ccal-datenav">
         <button
           type="button"
@@ -413,10 +372,19 @@ export default function ClinicCalendarPage() {
         </div>
       </div>
 
+      {/* Past-date banner — soft signal that this view is read-mostly */}
+      {isPast && (
+        <div className="ccal-msg ccal-msg-past">
+          {t("calendar.pastDateBanner", {
+            defaultValue:
+              "Past date — booking is disabled. You can still close open appointments.",
+          })}
+        </div>
+      )}
+
       {error && <div className="ccal-msg is-err">{error}</div>}
       {actionError && <div className="ccal-msg is-err">{actionError}</div>}
 
-      {/* Main timeline — free slots + active appointments only */}
       {loading ? (
         <div className="ccal-list-loading">
           <div className="ccal-spinner" />
@@ -434,6 +402,7 @@ export default function ClinicCalendarPage() {
               key={`${item.kind}-${item.startMinute}-${idx}`}
               item={item}
               canWrite={canWrite}
+              isPast={isPast}
               t={t}
               isLoading={
                 item.kind === "booked" &&
@@ -449,9 +418,6 @@ export default function ClinicCalendarPage() {
         </div>
       )}
 
-      {/* Day archive — terminal appointments (collapsed by default).
-          Only rendered when there's something to show, so a clean day
-          has no extra UI clutter. */}
       {!loading && archive.length > 0 && (
         <div className={`ccal-archive ${archiveOpen ? "is-open" : ""}`}>
           <div
@@ -487,7 +453,6 @@ export default function ClinicCalendarPage() {
         </div>
       )}
 
-      {/* Modals */}
       {bookSlot && (
         <BookAppointmentModal
           doctorId={doctorId}
@@ -517,6 +482,7 @@ export default function ClinicCalendarPage() {
 function TimelineRow({
   item,
   canWrite,
+  isPast,
   t,
   isLoading,
   onBook,
@@ -528,6 +494,26 @@ function TimelineRow({
   )}`;
 
   if (item.kind === "free") {
+    // Past free slot → dim + no Book button, just a "past" label.
+    if (isPast) {
+      return (
+        <div className="ccal-row ccal-row-free ccal-row-past">
+          <div className="ccal-row-time">{timeRange}</div>
+          <div className="ccal-row-body">
+            <span className="ccal-free-label">
+              {t("calendar.freeSlot", { defaultValue: "Free slot" })}
+            </span>
+          </div>
+          <div className="ccal-row-actions">
+            <span className="ccal-past-label">
+              {t("calendar.pastSlot", { defaultValue: "Past" })}
+            </span>
+          </div>
+        </div>
+      );
+    }
+
+    // Today / future free slot → Book button (write role only).
     return (
       <div className="ccal-row ccal-row-free">
         <div className="ccal-row-time">{timeRange}</div>
@@ -552,8 +538,8 @@ function TimelineRow({
   return (
     <div
       className={`ccal-row ccal-row-booked status-${appt.status} ${
-        isLoading ? "is-loading" : ""
-      }`}
+        isPast ? "ccal-row-overdue" : ""
+      } ${isLoading ? "is-loading" : ""}`}
     >
       <div className="ccal-row-time">{timeRange}</div>
       <div
@@ -573,6 +559,11 @@ function TimelineRow({
               })}
           </span>
           <StatusBadge status={appt.status} t={t} />
+          {isPast && (
+            <span className="ccal-overdue-badge">
+              {t("calendar.overdueLabel", { defaultValue: "Overdue" })}
+            </span>
+          )}
         </div>
         {appt.reason && <div className="ccal-booked-reason">{appt.reason}</div>}
       </div>
@@ -580,6 +571,7 @@ function TimelineRow({
         <div className="ccal-row-actions ccal-row-actions-stack">
           <QuickActions
             status={appt.status}
+            isPast={isPast}
             isLoading={isLoading}
             t={t}
             onAction={onQuickStatus}
@@ -593,12 +585,6 @@ function TimelineRow({
 // ════════════════════════════════════════════════════════════════
 //  TerminalRow — one row in the day archive (terminal status only)
 // ════════════════════════════════════════════════════════════════
-//
-// Same visual shape as a booked TimelineRow, but:
-//   - no inline action buttons (FSM is terminal)
-//   - dimmed via .ccal-row-terminal modifier
-//   - click still opens the detail modal so the operator can edit
-//     reason/notes or review what happened.
 
 function TerminalRow({ appt, t, onOpenDetail }) {
   const timeRange = `${minutesToHHMM(appt.startMinute)}–${minutesToHHMM(
@@ -646,11 +632,48 @@ function StatusBadge({ status, t }) {
 // Mirrors the backend FSM (ALLOWED_TRANSITIONS):
 //   scheduled   → checked_in, cancelled, no_show
 //   checked_in  → completed, cancelled, no_show
-// Terminal statuses have no inline buttons — they live in the archive
-// section and only open the detail modal.
+// Terminal statuses have no inline buttons.
+//
+// PAST-DATE behaviour (isPast=true):
+//   - scheduled  → only Complete + No-show
+//                  (Arrived doesn't make sense yesterday;
+//                   Cancel goes through detail modal with a reason)
+//   - checked_in → only Complete
+//                  (close-out for a forgotten visit)
 
-function QuickActions({ status, isLoading, t, onAction }) {
+function QuickActions({ status, isPast, isLoading, t, onAction }) {
   if (status === "scheduled") {
+    if (isPast) {
+      return (
+        <>
+          <button
+            type="button"
+            className="ccal-btn-mini ccal-btn-mini-go"
+            onClick={(e) => {
+              e.stopPropagation();
+              onAction("completed");
+            }}
+            disabled={isLoading}
+            title={t("calendar.action.completeOverdueHint", {
+              defaultValue: "Close this overdue visit",
+            })}
+          >
+            {t("calendar.action.complete", { defaultValue: "Complete" })}
+          </button>
+          <button
+            type="button"
+            className="ccal-btn-mini ccal-btn-mini-warn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onAction("no_show");
+            }}
+            disabled={isLoading}
+          >
+            {t("calendar.action.noShow", { defaultValue: "No-show" })}
+          </button>
+        </>
+      );
+    }
     return (
       <>
         <button
@@ -690,6 +713,24 @@ function QuickActions({ status, isLoading, t, onAction }) {
     );
   }
   if (status === "checked_in") {
+    if (isPast) {
+      return (
+        <button
+          type="button"
+          className="ccal-btn-mini ccal-btn-mini-go"
+          onClick={(e) => {
+            e.stopPropagation();
+            onAction("completed");
+          }}
+          disabled={isLoading}
+          title={t("calendar.action.completeOverdueHint", {
+            defaultValue: "Close this overdue visit",
+          })}
+        >
+          {t("calendar.action.complete", { defaultValue: "Complete" })}
+        </button>
+      );
+    }
     return (
       <>
         <button
@@ -717,6 +758,5 @@ function QuickActions({ status, isLoading, t, onAction }) {
       </>
     );
   }
-  // terminal — never rendered (TerminalRow doesn't include QuickActions)
   return null;
 }

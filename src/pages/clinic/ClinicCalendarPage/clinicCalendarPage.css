@@ -663,3 +663,44 @@
 .ccal-row-terminal {
   opacity: 0.65;
 }
+.ccal-row-past {
+  opacity: 0.55;
+}
+
+/* Активный приём в прошлом — оранжевый акцент слева ("просрочен") */
+.ccal-row-overdue {
+  border-left: 3px solid var(--warn, #f59e0b);
+}
+
+/* Текст "Past" вместо кнопки Book для свободных слотов в прошлом */
+.ccal-past-label {
+  color: var(--muted, #9ca3af);
+  font-size: 13px;
+  font-style: italic;
+  padding-right: 16px;
+}
+
+/* Бейдж "Overdue" рядом со статусом для просроченных приёмов */
+.ccal-overdue-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--warn, #f59e0b);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Баннер вверху страницы на прошлых датах */
+.ccal-msg-past {
+  background: rgba(245, 158, 11, 0.08);
+  border-left: 3px solid var(--warn, #f59e0b);
+  color: var(--text, #111827);
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin: 12px 0;
+  font-size: 14px;
+}
