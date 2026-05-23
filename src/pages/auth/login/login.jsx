@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // ─── Inline styles (no external deps beyond what project already uses) ───────
@@ -325,6 +325,15 @@ export default function Login() {
   const { t } = useTranslation("auth");
 
   const [email, setEmail] = useState("");
+  // If we arrived via QR code from a provisional patient card, the URL
+  // looks like /login?provisional=1&email=patient.xxx@docpats.com.
+  // Prefill the email field so the patient doesn't have to type it.
+  const [searchParams] = useSearchParams();
+  React.useEffect(() => {
+    const urlEmail = searchParams.get("email");
+    if (urlEmail) setEmail(urlEmail);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -360,7 +369,17 @@ export default function Login() {
         setError(t("Login.errors.blocked"));
         return;
       }
-
+      // 🔹 PRIORITY: Provisional user (clinic-issued temp account).
+      //    Goes to /complete-registration where they set permanent
+      //    email + password via OTP verification. Must come BEFORE
+      //    the mustChangePassword branch — otherwise legacy mustChangePassword
+      //    (which we no longer set for provisional, but might still
+      //    exist on legacy records) would route them to the wrong page.
+      if (user.isProvisional || user.mustCompleteRegistration) {
+        console.log("🔄 Provisional activation required, redirecting...");
+        window.location.assign("/complete-registration");
+        return;
+      }
       // 🔹 Требуется смена пароля
       if (user.mustChangePassword) {
         console.log("🔄 Password change required, redirecting...");
@@ -449,7 +468,25 @@ export default function Login() {
           <div className="dp-subtitle">
             {t("Login.subtitle") || "// войдите в аккаунт"}
           </div>
-
+          {searchParams.get("provisional") === "1" && (
+            <div
+              style={{
+                background: "rgba(52,211,153,.1)",
+                border: "1px solid rgba(52,211,153,.3)",
+                color: "#34d399",
+                padding: "12px 14px",
+                borderRadius: "8px",
+                marginBottom: "20px",
+                fontSize: "13px",
+                fontFamily: "var(--mono)",
+              }}
+            >
+              {t("Login.provisionalHint", {
+                defaultValue:
+                  "Войдите с временным паролем из карточки клиники — после этого вы сможете задать постоянный пароль.",
+              })}
+            </div>
+          )}
           {/* Error */}
           {error && (
             <div className="dp-alert">

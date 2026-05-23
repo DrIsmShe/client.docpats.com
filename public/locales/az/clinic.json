@@ -113,6 +113,152 @@
     "invitedAsRoleExpires": "{{role}} kimi dəvət olunub · {{date}} tarixində bitir"
   },
   "patients": {
+    "fullRegistration": "Tam qeydiyyat →",
+    "wizardTitle": "Pasiyent qeydiyyatı",
+    "wizardSubtitle": "Əvvəlcə pasiyentin DocPats-də artıq qeydiyyatdan keçib-keçmədiyini yoxlayacağıq. Bu, təkrarların qarşısını alır və pasiyentə tam hesab verir.",
+    "wizard": {
+      "steps": {
+        "search": "Axtarış",
+        "form": "Məlumatlar",
+        "confirm": "Təsdiq"
+      },
+      "card": {
+        "title": "Pasiyent kartı — pasiyentə verin",
+        "subtitle": "Çap edin və pasiyentə verin. Bu pəncərəni bağladıqdan sonra şifrə sistemdə bir daha görünməyəcək — kartı mütləq saxlayın.",
+        "frontType": "Pasiyent kartı",
+        "fullName": "Tam ad",
+        "tmpEmail": "Müvəqqəti e-poçt",
+        "tmpPassword": "Müvəqqəti şifrə",
+        "qrHint": "Giriş üçün skan edin",
+        "registered": "Qeydiyyatdan keçib",
+        "validUntil": "Aktivləşdirmə son tarixi",
+        "backTitle": "Aktivləşdirmədən sonra nə əldə edəcəksiniz",
+        "howToActivate": "Necə aktivləşdirmək olar",
+        "step1": "docpats.com-u açın və ya QR kodu skan edin",
+        "step2": "Bu kartdakı müvəqqəti e-poçt və şifrə ilə daxil olun",
+        "step3": "Daimi e-poçtunuzu daxil edin və şifrə təyin edin",
+        "step4": "Hazırdır — tam tibbi tarixçəyə giriş açıldı",
+        "tagline": "Sağlamlığınız bir yerdə",
+        "copy": "📋 Məlumatları kopyala",
+        "copied": "✓ Kopyalandı",
+        "copyError": "Kopyalamaq mümkün olmadı",
+        "copyEmail": "E-poçt",
+        "copyPassword": "Şifrə",
+        "copyLogin": "Giriş",
+        "print": "🖨️ Çap et",
+        "done": "Hazır",
+        "benefits": {
+          "results": {
+            "title": "Müayinə nəticələri",
+            "text": "Analizlər, şəkillər və həkim rəyləri pasiyentin şəxsi hesabında avtomatik görünəcək — həm bu, həm də digər bütün DocPats klinikalarından."
+          },
+          "online": {
+            "title": "Onlayn konsultasiyalar",
+            "text": "Həkimlərə qorunan çatda suallar verin — qəbula yazılmadan."
+          },
+          "ai": {
+            "title": "AI köməkçi",
+            "text": "Analizlərin izahı, diaqnozun açıqlanması, simptomlarla bağlı suallara cavablar."
+          },
+          "history": {
+            "title": "Tarixçə bir yerdə",
+            "text": "Bütün qəbullar, reseptlər, təyinatlar və həkim rəyləri — vahid xəstəlik tarixçəsində."
+          },
+          "scheduling": {
+            "title": "Qəbula yazılma və xatırlatmalar",
+            "text": "Tətbiq vasitəsilə həkimə yazılın, qəbuldan bir gün əvvəl xatırlatma alın."
+          }
+        }
+      },
+      "search": {
+        "title": "Pasiyentin DocPats-də olub-olmadığını yoxlayaq",
+        "subtitle": "Mövcud DocPats istifadəçilərini axtarmaq — kartı onların hesabına bağlamağa və təkrarların qarşısını almağa kömək edir.",
+        "tabEmail": "E-poçtla",
+        "tabDob": "Doğum tarixilə",
+        "emailLabel": "Pasiyentin e-poçtu",
+        "emailHint": "Tam e-poçtu daxil edin — axtarış avtomatikdir",
+        "dobLabel": "Doğum tarixi",
+        "dobPlaceholder": "GG.AA.İİİİ",
+        "dobHint": "Əvvəlcə doğum tarixini daxil edin. Ad və soyad — dəqiqləşdirmək üçün.",
+        "firstNameLabel": "Ad",
+        "lastNameLabel": "Soyad",
+        "searchButton": "Tap",
+        "foundTitle": "DocPats-də tapıldı",
+        "notFound": "DocPats-də belə məlumatlarla heç kim yoxdur. Yeni pasiyent yarada bilərsiniz.",
+        "linkButton": "Bağla",
+        "createFresh": "Yeni pasiyent yarat →",
+        "errors": {
+          "failed": "Axtarış uğursuz oldu",
+          "dobRequired": "Doğum tarixini daxil edin"
+        }
+      },
+      "form": {
+        "title": "Pasiyent məlumatları",
+        "prefilledFromUser": "Məlumatlar DocPats hesabından əvvəlcədən doldurulub — yoxlayın və lazım gəlsə dəqiqləşdirin.",
+        "notesLabel": "Qeydlər",
+        "next": "Növbəti →",
+        "emailDeliveryHint": "Daxil etsəniz — pasiyent kartını bu ünvana göndərəcəyik. Əks halda sadəcə çap edəcəyik.",
+        "errors": {
+          "nameRequired": "Ad və soyad tələb olunur",
+          "dobInFuture": "Doğum tarixi gələcəkdə ola bilməz",
+          "emailInvalid": "E-poçt formatı yanlışdır"
+        }
+      },
+      "confirm": {
+        "title": "Təsdiq",
+        "subtitle": "Yaratmadan əvvəl məlumatları yoxlayın.",
+        "linkedTo": "DocPats ilə bağlantı",
+        "createProvisionalTitle": "Pasiyent üçün DocPats hesabı yarat",
+        "createProvisionalNote": "Klinika müvəqqəti e-poçt və şifrə yaradacaq. Pasiyent kart alacaq və müayinə nəticələrini, həkimlərlə yazışmaları və tarixçəni görmək üçün DocPats-ə daxil ola biləcək.",
+        "alreadyLinkedNote": "Pasiyent artıq mövcud hesaba bağlıdır — yenisini yaratmağa ehtiyac yoxdur.",
+        "submit": "Pasiyent yarat",
+        "emailDeliveryNotice": "Yaradıldıqdan sonra pasiyent kartı {{email}} ünvanına göndəriləcək",
+        "errors": {
+          "duplicatePhone": "Bu telefon nömrəsi ilə artıq pasiyent var",
+          "dobRequired": "DocPats hesabı yaratmaq üçün doğum tarixini daxil edin",
+          "generic": "Pasiyent yaradıla bilmədi"
+        }
+      },
+      "cardIssued": {
+        "title": "Qeydiyyat tamamlandı",
+        "subtitle": "Bu məlumatları qeyd edin və pasiyentə verin. Bu pəncərəni bağladıqdan sonra şifrə bir daha görünməyəcək.",
+        "tmpEmail": "Müvəqqəti e-poçt",
+        "tmpPassword": "Müvəqqəti şifrə",
+        "validUntil": "Etibarlılıq tarixi",
+        "note": "Növbəti addımda QR kodlu çap olunan kart görünəcək. Hələlik bu məlumatları istifadə edin.",
+        "done": "Hazır"
+      },
+      "consent": {
+        "active": {
+          "title": "Pasiyent artıq DocPats-də qeydiyyatdadır",
+          "intro": "Bu pasiyentin öz e-poçtu və şifrəsi olan aktiv DocPats hesabı var. Davam etsəniz, pasiyentin kartı klinikanıza bağlanacaq — yeni giriş məlumatları verilmir.",
+          "confirm": "Klinikaya bağla"
+        },
+        "provisional": {
+          "title": "Pasiyentin artıq DocPats kartı var",
+          "intro": "Bu pasiyent üçün aktivləşdirilməmiş kart artıq mövcuddur. Davam etsəniz, yeni kart buraxılacaq — köhnə kart işləməyəcək.",
+          "confirm": "Yenidən buraxıb bağla"
+        },
+        "foundUser": "Tapılmış pasiyent",
+        "cardIssuedAt": "Kart verilmə tarixi",
+        "reissueCount": "Kart yenidən buraxılıb",
+        "reissueCountValue_one": "{{count}} dəfə",
+        "reissueCountValue_other": "{{count}} dəfə",
+        "checkbox": "Pasiyentin klinikamıza bağlanmağa razılıq verdiyini təsdiqləyirəm (imzalanmış kağız və ya elektron forma)."
+      },
+      "duplicate": {
+        "linked": {
+          "title": "Pasiyent artıq klinikaya bağlıdır",
+          "body": "Bu DocPats hesabı klinikanızdakı pasiyent kartına artıq bağlıdır. Davam etmək üçün mövcud kartı açın."
+        },
+        "inClinic": {
+          "title": "Pasiyent klinikada artıq mövcuddur",
+          "byEmail": "Bu e-poçtla pasiyent klinikanızda artıq qeydiyyatdadır. Mövcud kartı açın və ya e-poçtu səhvə qarşı yoxlayın.",
+          "byPhone": "Bu telefonla pasiyent klinikanızda artıq qeydiyyatdadır. Mövcud kartı açın və ya telefonu səhvə qarşı yoxlayın."
+        },
+        "openExisting": "Pasiyent kartını aç"
+      }
+    },
     "back": "← Panel",
     "backToList": "← Siyahıya qayıt",
     "title": "Pasiyentlər",

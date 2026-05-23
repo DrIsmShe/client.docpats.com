@@ -1,0 +1,20 @@
+/* client/src/pages/clinic/ClinicPatientsPage/newPatientPage.css */
+
+.new-patient-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 8px 0;
+}
+
+.new-patient-page-header {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e6eaf0;
+}
+
+.new-patient-page-header h1 {
+  margin: 8px 0 4px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1a1f2e;
+}

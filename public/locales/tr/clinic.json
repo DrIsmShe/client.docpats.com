@@ -113,6 +113,152 @@
     "invitedAsRoleExpires": "{{role}} olarak davet edildi · {{date}} tarihinde sona erer"
   },
   "patients": {
+    "fullRegistration": "Tam kayıt →",
+    "wizardTitle": "Hasta kaydı",
+    "wizardSubtitle": "Önce hastanın zaten DocPats'te kayıtlı olup olmadığını kontrol edeceğiz. Bu, çiftleri önler ve hastaya tam bir hesap verir.",
+    "wizard": {
+      "steps": {
+        "search": "Arama",
+        "form": "Bilgiler",
+        "confirm": "Onay"
+      },
+      "card": {
+        "title": "Hasta kartı — hastaya verin",
+        "subtitle": "Yazdırın ve hastaya verin. Bu pencereyi kapattıktan sonra parola sistemde bir daha görünmeyecek — kartı mutlaka saklayın.",
+        "frontType": "Hasta kartı",
+        "fullName": "Tam ad",
+        "tmpEmail": "Geçici e-posta",
+        "tmpPassword": "Geçici parola",
+        "qrHint": "Giriş yapmak için tarayın",
+        "registered": "Kaydedildi",
+        "validUntil": "Aktivasyon son tarihi",
+        "backTitle": "Aktivasyondan sonra neye sahip olacaksınız",
+        "howToActivate": "Nasıl aktive edilir",
+        "step1": "docpats.com'u açın veya QR kodu tarayın",
+        "step2": "Bu karttaki geçici e-posta ve parolayla giriş yapın",
+        "step3": "Kalıcı e-postanızı girin ve bir parola belirleyin",
+        "step4": "Tamamlandı — tam tıbbi geçmişe erişim açıldı",
+        "tagline": "Sağlığınız tek bir yerde",
+        "copy": "📋 Bilgileri kopyala",
+        "copied": "✓ Kopyalandı",
+        "copyError": "Kopyalanamadı",
+        "copyEmail": "E-posta",
+        "copyPassword": "Parola",
+        "copyLogin": "Giriş",
+        "print": "🖨️ Yazdır",
+        "done": "Tamam",
+        "benefits": {
+          "results": {
+            "title": "Tetkik sonuçları",
+            "text": "Laboratuvar, görüntüleme ve doktor notları hastanın hesabında otomatik olarak görünür — bu klinikten ve diğer tüm DocPats kliniklerinden."
+          },
+          "online": {
+            "title": "Online konsültasyon",
+            "text": "Doktorlara güvenli sohbette soru sorun — randevuya gerek yok."
+          },
+          "ai": {
+            "title": "AI asistan",
+            "text": "Tahlil sonuçlarının yorumlanması, tanı açıklamaları, semptom sorularına cevaplar."
+          },
+          "history": {
+            "title": "Tek bir yerde geçmiş",
+            "text": "Tüm ziyaretler, reçeteler, tedaviler ve doktor notları — tek bir tıbbi geçmişte."
+          },
+          "scheduling": {
+            "title": "Randevu ve hatırlatıcılar",
+            "text": "Uygulamadan randevu alın, bir gün önceden hatırlatma alın."
+          }
+        }
+      },
+      "search": {
+        "title": "Hastanın DocPats'te olup olmadığını kontrol edelim",
+        "subtitle": "Mevcut DocPats kullanıcılarını aramak, hastanın kartını hesabına bağlamaya ve çiftleri önlemeye yardımcı olur.",
+        "tabEmail": "E-posta ile",
+        "tabDob": "Doğum tarihi ile",
+        "emailLabel": "Hasta e-postası",
+        "emailHint": "Tam e-postayı girin — arama otomatik",
+        "dobLabel": "Doğum tarihi",
+        "dobPlaceholder": "GG.AA.YYYY",
+        "dobHint": "Önce doğum tarihini girin. Ad ve soyad sonuçları daraltır.",
+        "firstNameLabel": "Ad",
+        "lastNameLabel": "Soyad",
+        "searchButton": "Ara",
+        "foundTitle": "DocPats'te bulundu",
+        "notFound": "DocPats'te bu bilgilere sahip kimse yok. Yeni hasta oluşturabilirsiniz.",
+        "linkButton": "Bağla",
+        "createFresh": "Yeni hasta oluştur →",
+        "errors": {
+          "failed": "Arama başarısız oldu",
+          "dobRequired": "Doğum tarihi gerekli"
+        }
+      },
+      "form": {
+        "title": "Hasta bilgileri",
+        "prefilledFromUser": "Bilgiler DocPats hesabından ön doldurulmuştur — lütfen doğrulayın ve gerekirse düzenleyin.",
+        "notesLabel": "Notlar",
+        "next": "İleri →",
+        "emailDeliveryHint": "Girerseniz — hasta kartını bu e-postaya göndereceğiz. Aksi takdirde sadece yazdıracağız.",
+        "errors": {
+          "nameRequired": "Ad ve soyad gerekli",
+          "dobInFuture": "Doğum tarihi gelecekte olamaz",
+          "emailInvalid": "Geçersiz e-posta biçimi"
+        }
+      },
+      "confirm": {
+        "title": "Onay",
+        "subtitle": "Oluşturmadan önce lütfen kontrol edin.",
+        "linkedTo": "DocPats bağlantısı",
+        "createProvisionalTitle": "Bu hasta için DocPats hesabı oluştur",
+        "createProvisionalNote": "Klinik geçici e-posta ve parola oluşturacak. Hasta bir kart alacak ve test sonuçlarını, doktor sohbetlerini ve geçmişini görmek için DocPats'e giriş yapabilecek.",
+        "alreadyLinkedNote": "Hasta zaten mevcut bir hesaba bağlı — yeni hesap oluşturmaya gerek yok.",
+        "submit": "Hastayı oluştur",
+        "emailDeliveryNotice": "Oluşturmadan sonra hasta kartı {{email}} adresine gönderilecek",
+        "errors": {
+          "duplicatePhone": "Bu telefon numarasıyla zaten bir hasta var",
+          "dobRequired": "DocPats hesabı oluşturmak için doğum tarihi gerekli",
+          "generic": "Hasta oluşturulamadı"
+        }
+      },
+      "cardIssued": {
+        "title": "Kayıt tamamlandı",
+        "subtitle": "Bu bilgileri not edin ve hastaya verin. Bu pencereyi kapattıktan sonra parola bir daha görünmeyecek.",
+        "tmpEmail": "Geçici e-posta",
+        "tmpPassword": "Geçici parola",
+        "validUntil": "Geçerlilik tarihi",
+        "note": "Sonraki adımda QR kodlu yazdırılabilir bir kart görünecek. Şimdilik bu bilgileri kullanın.",
+        "done": "Tamam"
+      },
+      "consent": {
+        "active": {
+          "title": "Hasta DocPats'e zaten kayıtlı",
+          "intro": "Bu hastanın kendi e-postası ve şifresiyle aktif bir DocPats hesabı var. Devam ederseniz, hasta kaydı kliniğinize bağlanacak — yeni giriş bilgileri verilmez.",
+          "confirm": "Kliniğe bağla"
+        },
+        "provisional": {
+          "title": "Hastanın zaten bir DocPats kartı var",
+          "intro": "Bu hasta için aktive edilmemiş bir kart zaten mevcut. Devam ederseniz, yeni bir kart düzenlenecek — eski kart çalışmayı durduracak.",
+          "confirm": "Yeniden düzenle ve bağla"
+        },
+        "foundUser": "Bulunan hasta",
+        "cardIssuedAt": "Kart düzenlenme tarihi",
+        "reissueCount": "Kart yeniden düzenlendi",
+        "reissueCountValue_one": "{{count}} kez",
+        "reissueCountValue_other": "{{count}} kez",
+        "checkbox": "Hastanın kliniğimize bağlanmaya onay verdiğini doğrularım (imzalı kağıt veya elektronik form)."
+      },
+      "duplicate": {
+        "linked": {
+          "title": "Hasta zaten kliniğe bağlı",
+          "body": "Bu DocPats hesabı kliniğinizdeki bir hasta kaydına zaten bağlı. Devam etmek için mevcut kaydı açın."
+        },
+        "inClinic": {
+          "title": "Hasta zaten klinikte mevcut",
+          "byEmail": "Bu e-posta ile bir hasta kliniğinizde zaten kayıtlı. Mevcut kaydı açın veya e-postayı yazım hatasına karşı kontrol edin.",
+          "byPhone": "Bu telefon numarası ile bir hasta kliniğinizde zaten kayıtlı. Mevcut kaydı açın veya telefonu yazım hatasına karşı kontrol edin."
+        },
+        "openExisting": "Hasta kaydını aç"
+      }
+    },
     "back": "← Panel",
     "backToList": "← Listeye dön",
     "title": "Hastalar",

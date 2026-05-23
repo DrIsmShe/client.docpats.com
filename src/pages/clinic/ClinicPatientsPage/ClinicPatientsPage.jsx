@@ -5,7 +5,17 @@
 // Features:
 //   - List patients (paginated, cursor-based)
 //   - Search by phone OR email OR lastName (debounced 400ms)
-//   - Create patient inline via a slide-down form
+//   - "Add patient" button routes to the registration wizard at
+//     /clinic/patients/new — this is the ONLY entry point for creating
+//     patients. The previous inline "quick-create" form was removed
+//     because it bypassed the User-system check (no search for existing
+//     DocPats users, no provisional account, no audit trail of "linked
+//     vs fresh"). The wizard provides:
+//       Step 1 — search User collection (excludes doctors)
+//       Step 2 — confirm / edit form
+//       Step 3 — optional provisional User creation + QR card
+//     This ensures every ClinicPatient has the chance to be linked to
+//     an existing DocPats account instead of becoming a duplicate.
 //   - Delete patient (soft) with confirmation
 //   - Show "created by" line under each patient name
 //   - Clickable rows → patient detail page
@@ -21,7 +31,6 @@ import { Link, useOutletContext, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   listPatients,
-  createPatient,
   searchPatients,
   deletePatient,
 } from "../../../api/clinic";
@@ -44,9 +53,6 @@ export default function ClinicPatientsPage() {
   const searchDebounceRef = useRef(null);
   const searchSeqRef = useRef(0); // race-condition guard for debounced search
 
-  const [createOpen, setCreateOpen] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
   const [actionLoading, setActionLoading] = useState({});
 
   const myRole = layoutContext?.role || "member";
@@ -129,54 +135,7 @@ export default function ClinicPatientsPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 
-  // ─── Create patient submit ───
-  async function handleCreateSubmit(e) {
-    e.preventDefault();
-    const form = e.target;
-    const data = {
-      firstName: form.firstName.value.trim(),
-      lastName: form.lastName.value.trim(),
-      phone: form.phone.value.trim() || null,
-      email: form.email.value.trim() || null,
-      gender: form.gender.value || null,
-      dateOfBirth: form.dateOfBirth.value || null,
-    };
-
-    const errors = {};
-    if (!data.firstName)
-      errors.firstName = t("patients.errors.firstNameRequired");
-    if (!data.lastName) errors.lastName = t("patients.errors.lastNameRequired");
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      return;
-    }
-    setFormErrors({});
-    setSubmitting(true);
-
-    try {
-      await createPatient(data);
-      form.reset();
-      setCreateOpen(false);
-      await loadList();
-    } catch (err) {
-      const msg = err.response?.data?.error || "";
-      if (err.response?.status === 409) {
-        setFormErrors({ phone: t("patients.errors.duplicatePhone") });
-      } else if (err.response?.data?.details?.issues) {
-        const fieldErrors = {};
-        for (const issue of err.response.data.details.issues) {
-          const path = issue.path?.[0];
-          if (path) fieldErrors[path] = issue.message;
-        }
-        setFormErrors(fieldErrors);
-      } else {
-        setFormErrors({ _form: msg || t("patients.errors.createFailed") });
-      }
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
+  // ─── Delete patient ───
   async function handleDelete(patient) {
     const name = patientDisplayName(patient);
     if (!window.confirm(t("patients.confirmDelete", { name }))) return;
@@ -240,152 +199,22 @@ export default function ClinicPatientsPage() {
         </div>
         {canWrite && (
           <div className="staff-page-header-actions">
-            <button
-              className="staff-page-btn-primary"
-              onClick={() => setCreateOpen((v) => !v)}
-              type="button"
-            >
-              {createOpen ? t("common.cancel") : t("patients.addPatient")}
-            </button>
+            {/*
+              "+ Add patient" is now the ONLY way to create a patient
+              and always goes through the full registration wizard at
+              /clinic/patients/new. The old inline quick-create form
+              has been removed — it bypassed User-search and produced
+              orphan ClinicPatient records with no path to becoming a
+              real DocPats account.
+            */}
+            <Link to="/clinic/patients/new" className="staff-page-btn-primary">
+              {t("patients.addPatient", {
+                defaultValue: "+ Добавить пациента",
+              })}
+            </Link>
           </div>
         )}
       </div>
-
-      {/* ─── Inline create form ─── */}
-      {createOpen && (
-        <section className="patients-create-form">
-          <form onSubmit={handleCreateSubmit}>
-            <div className="patients-form-row">
-              <div className="patients-form-field">
-                <label>{t("patients.fields.firstName")} *</label>
-                <input
-                  type="text"
-                  name="firstName"
-                  required
-                  autoFocus
-                  className={formErrors.firstName ? "has-error" : ""}
-                />
-                {formErrors.firstName && (
-                  <span className="patients-form-error">
-                    {formErrors.firstName}
-                  </span>
-                )}
-              </div>
-              <div className="patients-form-field">
-                <label>{t("patients.fields.lastName")} *</label>
-                <input
-                  type="text"
-                  name="lastName"
-                  required
-                  className={formErrors.lastName ? "has-error" : ""}
-                />
-                {formErrors.lastName && (
-                  <span className="patients-form-error">
-                    {formErrors.lastName}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="patients-form-row">
-              <div className="patients-form-field">
-                <label>
-                  {t("patients.fields.phone")}{" "}
-                  <span className="patients-form-optional">
-                    {t("common.optional")}
-                  </span>
-                </label>
-                <input
-                  type="text"
-                  name="phone"
-                  placeholder="+994 50 123 45 67"
-                  className={formErrors.phone ? "has-error" : ""}
-                />
-                {formErrors.phone && (
-                  <span className="patients-form-error">
-                    {formErrors.phone}
-                  </span>
-                )}
-              </div>
-              <div className="patients-form-field">
-                <label>
-                  {t("patients.fields.email")}{" "}
-                  <span className="patients-form-optional">
-                    {t("common.optional")}
-                  </span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="patient@example.com"
-                  className={formErrors.email ? "has-error" : ""}
-                />
-                {formErrors.email && (
-                  <span className="patients-form-error">
-                    {formErrors.email}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="patients-form-row">
-              <div className="patients-form-field">
-                <label>
-                  {t("patients.fields.dateOfBirth")}{" "}
-                  <span className="patients-form-optional">
-                    {t("common.optional")}
-                  </span>
-                </label>
-                <input type="date" name="dateOfBirth" />
-              </div>
-              <div className="patients-form-field">
-                <label>
-                  {t("patients.fields.gender")}{" "}
-                  <span className="patients-form-optional">
-                    {t("common.optional")}
-                  </span>
-                </label>
-                <select name="gender" defaultValue="">
-                  <option value="">—</option>
-                  <option value="male">{t("patients.gender.male")}</option>
-                  <option value="female">{t("patients.gender.female")}</option>
-                  <option value="other">{t("patients.gender.other")}</option>
-                  <option value="unknown">
-                    {t("patients.gender.unknown")}
-                  </option>
-                </select>
-              </div>
-            </div>
-
-            {formErrors._form && (
-              <div className="patients-form-error patients-form-error-banner">
-                {formErrors._form}
-              </div>
-            )}
-
-            <div className="patients-form-actions">
-              <button
-                type="button"
-                className="staff-page-btn-secondary"
-                onClick={() => {
-                  setCreateOpen(false);
-                  setFormErrors({});
-                }}
-                disabled={submitting}
-              >
-                {t("common.cancel")}
-              </button>
-              <button
-                type="submit"
-                className="staff-page-btn-primary"
-                disabled={submitting}
-              >
-                {submitting
-                  ? t("common.submitting")
-                  : t("patients.createSubmit")}
-              </button>
-            </div>
-          </form>
-        </section>
-      )}
 
       {/* ─── Search ─── */}
       <section className="staff-page-section">
@@ -422,13 +251,14 @@ export default function ClinicPatientsPage() {
                 : t("patients.noPatients")}
             </p>
             {canWrite && searchQuery.trim().length === 0 && (
-              <button
+              <Link
+                to="/clinic/patients/new"
                 className="staff-page-btn-primary"
-                onClick={() => setCreateOpen(true)}
-                type="button"
               >
-                {t("patients.addFirstPatient")}
-              </button>
+                {t("patients.addFirstPatient", {
+                  defaultValue: "Добавить первого пациента",
+                })}
+              </Link>
             )}
           </div>
         ) : (

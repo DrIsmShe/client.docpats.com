@@ -1,0 +1,281 @@
+/* client/src/pages/auth/CompleteRegistrationPage/completeRegistrationPage.css */
+
+.cr-root {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  font-family: "Syne", system-ui, sans-serif;
+}
+
+.cr-card {
+  width: 100%;
+  max-width: 520px;
+  background: #fff;
+  border: 1px solid #e6eaf0;
+  border-radius: 16px;
+  padding: 40px 36px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+}
+
+.cr-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.cr-brand-icon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #047857, #059669);
+  color: #fff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+.cr-brand-name {
+  font-weight: 800;
+  font-size: 22px;
+  color: #1a1f2e;
+  letter-spacing: -0.02em;
+}
+.cr-brand-name span {
+  color: #047857;
+}
+
+.cr-title {
+  margin: 0 0 8px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #1a1f2e;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.cr-subtitle {
+  margin: 0 0 24px;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.cr-benefits {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+}
+.cr-benefits-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #047857;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+.cr-benefits ul {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 13px;
+  color: #1a1f2e;
+  line-height: 1.7;
+}
+
+.cr-alert {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.cr-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.cr-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a1f2e;
+}
+.cr-field input {
+  padding: 11px 14px;
+  border: 1px solid #d4dae2;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.cr-field input:focus {
+  border-color: #047857;
+}
+.cr-field input.has-error {
+  border-color: #dc2626;
+}
+.cr-field-error {
+  color: #dc2626;
+  font-size: 12px;
+}
+.cr-field-hint {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.cr-input-wrap {
+  position: relative;
+}
+.cr-input-wrap input {
+  width: 100%;
+  padding-right: 40px;
+  box-sizing: border-box;
+}
+.cr-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #6b7280;
+  padding: 0;
+}
+
+.cr-submit {
+  width: 100%;
+  background: linear-gradient(135deg, #047857, #059669);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+  transition:
+    opacity 0.15s,
+    transform 0.15s;
+}
+.cr-submit:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+.cr-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cr-footer {
+  margin-top: 18px;
+  text-align: center;
+}
+.cr-link {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+  font-family: inherit;
+}
+.cr-link:hover {
+  color: #1a1f2e;
+}
+
+@media (max-width: 520px) {
+  .cr-card {
+    padding: 28px 22px;
+  }
+  .cr-title {
+    font-size: 22px;
+  }
+}
+/* ─── STEP 2: OTP cells ─── */
+.cr-otp-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 20px 0 24px;
+}
+
+.cr-otp-cell {
+  width: 48px;
+  height: 56px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  border: 2px solid #d4dae2;
+  border-radius: 10px;
+  background: #fff;
+  color: #1a1f2e;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.1s;
+  padding: 0;
+}
+
+.cr-otp-cell:focus {
+  border-color: #047857;
+  box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.15);
+  transform: translateY(-1px);
+}
+
+.cr-otp-cell:not(:placeholder-shown),
+.cr-otp-cell[value]:not([value=""]) {
+  border-color: #047857;
+  background: #f0fdf4;
+}
+
+/* ─── Resend block ─── */
+.cr-resend {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.cr-resend-timer {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  color: #9ca3af;
+}
+
+/* ─── Inline link variant (used inside paragraphs) ─── */
+.cr-link-inline {
+  display: inline;
+  padding: 0;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #047857;
+  text-decoration: underline;
+}
+.cr-link-inline:hover {
+  color: #065f46;
+}
+
+/* ─── Mobile responsive ─── */
+@media (max-width: 480px) {
+  .cr-otp-cell {
+    width: 42px;
+    height: 50px;
+    font-size: 20px;
+  }
+  .cr-otp-row {
+    gap: 6px;
+  }
+}

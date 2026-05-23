@@ -8,6 +8,12 @@ import { store } from "./store/store";
 
 import { ThemeProvider } from "./theme/ThemeContext";
 
+// Side-effect import: registers a global axios response interceptor
+// that catches HTTP 403 with code "provisional_must_complete" and
+// redirects to /complete-registration. Must run BEFORE any axios
+// requests fire — hence importing it at the application root.
+import "./api/provisionalInterceptor";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(

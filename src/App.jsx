@@ -509,6 +509,8 @@ import ClinicPatientsPage from "./pages/clinic/ClinicPatientsPage/ClinicPatients
 import ClinicPatientDetailPage from "./pages/clinic/ClinicPatientDetailPage/ClinicPatientDetailPage.jsx";
 import ClinicSchedulePage from "./pages/clinic/ClinicSchedulePage/ClinicSchedulePage.jsx";
 import ClinicCalendarPage from "./pages/clinic/ClinicCalendarPage/ClinicCalendarPage.jsx";
+import NewPatientPage from "./pages/clinic/ClinicPatientsPage/NewPatientPage.jsx";
+import CompleteRegistrationPage from "./pages/auth/CompleteRegistrationPage/CompleteRegistrationPage";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -595,6 +597,7 @@ function App() {
                 element={<ClinicCalendarPage />}
               />
               <Route path="patients" element={<ClinicPatientsPage />} />
+              <Route path="patients/new" element={<NewPatientPage />} />
               <Route
                 path="patients/:id"
                 element={<ClinicPatientDetailPage />}
@@ -2099,6 +2102,10 @@ function App() {
                 element={<Otpresetpasswordchange />}
               />
             </Route>
+            <Route
+              path="/complete-registration"
+              element={<CompleteRegistrationPage />}
+            />
             {/* Здесь перечислены все маршруты для раздела ПРОФИЛЬ ПАЦИЕНТА */}
             <Route path="/patient" element={<PatientLayout />}>
               <Route path="news" element={<NewsList />} />
@@ -2437,9 +2444,7 @@ function App() {
                 element={<PolyclinicPatientDelete />}
               />
             </Route>
-            <Route path="/clinic" element={<ClinicLayout />}>
-              <Route index element={<ClinicHubPage />} />
-            </Route>
+
             {/* Здесь перечислены все маршруты для раздела СТРАНИЦА НЕ НАЙДЕНА */}
 
             <Route path="*" element={<Pagenotfound />} />
