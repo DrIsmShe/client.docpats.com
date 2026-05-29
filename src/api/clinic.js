@@ -680,3 +680,494 @@ export const changeAppointmentStatus = async (appointmentId, payload) => {
   );
   return res.data;
 };
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  MEDICAL HISTORY (UMR) — Sprint 2 Phase 2D.1
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Reuses the same `axios` import and `normalizeList` helper from the top of
+// that file.
+//
+// Backend module: server/modules/clinic/clinic-medical/
+// Path prefix:    /api/v1/clinic/medical
+//
+// 37 endpoints total:
+//   - 7 encounter endpoints     (history of illness)
+//   - 5 allergy endpoints
+//   - 5 chronic disease endpoints
+//   - 5 operation endpoints
+//   - 5 family history endpoints
+//   - 5 immunization endpoints
+//   - 5 imaging study endpoints (multipart upload for create)
+//
+// ─────────────────────────────────────────────────────────────────────────
+//  ACCESS CHAIN — important context for frontend
+// ─────────────────────────────────────────────────────────────────────────
+//
+// Backend filters list/read endpoints by:
+//   1. Ownership      — record belongs to current clinic
+//   2. sharedWith     — patient explicitly shared this record with us
+//   3. Global consent — PatientConsent.scope grants access to all records
+//                       of this scope (allergies / encounters / imaging / ...)
+//
+// Records visible via paths (2) and (3) carry `isCrossClinic: true` in
+// the response. UI should show a small badge on these (e.g. "📋 Другая
+// клиника"). They are READ-ONLY — backend rejects update/delete from a
+// non-owner clinic.
+//
+// For non-doctor/owner/admin roles, free-text PHI fields on cross-clinic
+// records are stripped server-side. The structured mainDiagnosis stays.
+//
+// ─────────────────────────────────────────────────────────────────────────
+//  ENCOUNTER STATUS WORKFLOW
+// ─────────────────────────────────────────────────────────────────────────
+//
+//   draft → signEncounter() → signed → amendEncounter() → amended
+//
+// updateEncounter() works on drafts only. signed/amended are immutable
+// for content — use amend (requires reason ≥ 5 chars, preserves history[]).
+//
+// Only owner role can deleteEncounter (HIPAA: deletion is high-stakes).
+
+// ─── ENCOUNTER (medical history of a visit) ───────────────────────────
+
+/**
+ * POST /api/v1/clinic/medical/patients/:patientId/encounters
+ *
+ * Create an encounter for a patient. Body:
+ *   {
+ *     status: "draft" | "signed",     // default "signed"
+ *     mainDiagnosis?: { code, codeTitle?, text },  // required if status="signed"
+ *     additionalDiagnosis?, recommendations?,
+ *     complaints?, anamnesisMorbi?, anamnesisVitae?,
+ *     statusPreasens?, statusLocalis?,
+ *     ctScanResults?, mriResults?, ultrasoundResults?, laboratoryTestResults?,
+ *     sharedWith?: [clinicId],
+ *   }
+ * Returns { encounter: {...} } on 201.
+ */
+export const createEncounter = async (patientId, payload) => {
+  const res = await axios.post(
+    `/api/v1/clinic/medical/patients/${patientId}/encounters`,
+    payload,
+  );
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/medical/patients/:patientId/encounters
+ *
+ * List encounters for a patient with cursor-based pagination.
+ *
+ * @param {object} options { status?, limit?, before? }
+ * Returns { items, nextCursor, count } (normalized).
+ */
+export const listEncounters = async (patientId, options = {}) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/patients/${patientId}/encounters`,
+    { params: options },
+  );
+  return normalizeList(res.data, ["encounters"]);
+};
+
+/**
+ * GET /api/v1/clinic/medical/encounters/:encounterId
+ * Returns { encounter: {...} }. Carries isCrossClinic flag if not owner.
+ */
+export const getEncounter = async (encounterId) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/encounters/${encounterId}`,
+  );
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/medical/encounters/:encounterId
+ *
+ * Update DRAFT encounter only. signed/amended → use amend instead.
+ * Body: any subset of writable fields (same shape as create).
+ */
+export const updateEncounter = async (encounterId, payload) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/encounters/${encounterId}`,
+    payload,
+  );
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/medical/encounters/:encounterId/sign
+ *
+ * Transition draft → signed. Body fields (all optional, applied at sign-time):
+ *   { mainDiagnosis?, additionalDiagnosis?, recommendations? }
+ * mainDiagnosis must exist (either pre-set in draft or supplied here).
+ */
+export const signEncounter = async (encounterId, payload = {}) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/encounters/${encounterId}/sign`,
+    payload,
+  );
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/medical/encounters/:encounterId/amend
+ *
+ * Transition signed/amended → amended (correction with audit trail).
+ * Body:
+ *   {
+ *     reason: string (min 5 chars, required),
+ *     ...any content fields to change
+ *   }
+ * Old values preserved in history[] on the document.
+ */
+export const amendEncounter = async (encounterId, payload) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/encounters/${encounterId}/amend`,
+    payload,
+  );
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/medical/encounters/:encounterId
+ * Hard delete. Owner role only (RBAC + ROLE_PERMISSIONS).
+ */
+export const deleteEncounter = async (encounterId) => {
+  const res = await axios.delete(
+    `/api/v1/clinic/medical/encounters/${encounterId}`,
+  );
+  return res.data;
+};
+
+// ─── ALLERGY ──────────────────────────────────────────────────────────
+// Sub-record. Body: { content: string }
+// Final URLs:
+//   POST   /medical/patients/:patientId/allergies
+//   GET    /medical/patients/:patientId/allergies
+//   GET    /medical/allergies/:recordId
+//   PATCH  /medical/allergies/:recordId
+//   DELETE /medical/allergies/:recordId   (owner only)
+
+export const createAllergy = async (patientId, payload) => {
+  const res = await axios.post(
+    `/api/v1/clinic/medical/patients/${patientId}/allergies`,
+    payload,
+  );
+  return res.data;
+};
+
+export const listAllergies = async (patientId, options = {}) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/patients/${patientId}/allergies`,
+    { params: options },
+  );
+  return normalizeList(res.data, ["allergies"]);
+};
+
+export const getAllergy = async (recordId) => {
+  const res = await axios.get(`/api/v1/clinic/medical/allergies/${recordId}`);
+  return res.data;
+};
+
+export const updateAllergy = async (recordId, payload) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/allergies/${recordId}`,
+    payload,
+  );
+  return res.data;
+};
+
+export const deleteAllergy = async (recordId) => {
+  const res = await axios.delete(
+    `/api/v1/clinic/medical/allergies/${recordId}`,
+  );
+  return res.data;
+};
+
+// ─── CHRONIC DISEASE ──────────────────────────────────────────────────
+// Body: { content: string }
+// URL segment: chronic-diseases
+
+export const createChronicDisease = async (patientId, payload) => {
+  const res = await axios.post(
+    `/api/v1/clinic/medical/patients/${patientId}/chronic-diseases`,
+    payload,
+  );
+  return res.data;
+};
+
+export const listChronicDiseases = async (patientId, options = {}) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/patients/${patientId}/chronic-diseases`,
+    { params: options },
+  );
+  return normalizeList(res.data, ["chronicDiseases"]);
+};
+
+export const getChronicDisease = async (recordId) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/chronic-diseases/${recordId}`,
+  );
+  return res.data;
+};
+
+export const updateChronicDisease = async (recordId, payload) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/chronic-diseases/${recordId}`,
+    payload,
+  );
+  return res.data;
+};
+
+export const deleteChronicDisease = async (recordId) => {
+  const res = await axios.delete(
+    `/api/v1/clinic/medical/chronic-diseases/${recordId}`,
+  );
+  return res.data;
+};
+
+// ─── OPERATION (past surgery) ─────────────────────────────────────────
+// Body: { content: string }
+// URL segment: operations
+
+export const createOperation = async (patientId, payload) => {
+  const res = await axios.post(
+    `/api/v1/clinic/medical/patients/${patientId}/operations`,
+    payload,
+  );
+  return res.data;
+};
+
+export const listOperations = async (patientId, options = {}) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/patients/${patientId}/operations`,
+    { params: options },
+  );
+  return normalizeList(res.data, ["operations"]);
+};
+
+export const getOperation = async (recordId) => {
+  const res = await axios.get(`/api/v1/clinic/medical/operations/${recordId}`);
+  return res.data;
+};
+
+export const updateOperation = async (recordId, payload) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/operations/${recordId}`,
+    payload,
+  );
+  return res.data;
+};
+
+export const deleteOperation = async (recordId) => {
+  const res = await axios.delete(
+    `/api/v1/clinic/medical/operations/${recordId}`,
+  );
+  return res.data;
+};
+
+// ─── FAMILY HISTORY ───────────────────────────────────────────────────
+// Body: { relative: string, diseaseName: string, content?: string }
+// URL segment: family-history
+
+export const createFamilyHistory = async (patientId, payload) => {
+  const res = await axios.post(
+    `/api/v1/clinic/medical/patients/${patientId}/family-history`,
+    payload,
+  );
+  return res.data;
+};
+
+export const listFamilyHistory = async (patientId, options = {}) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/patients/${patientId}/family-history`,
+    { params: options },
+  );
+  return normalizeList(res.data, ["familyHistory"]);
+};
+
+export const getFamilyHistoryRecord = async (recordId) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/family-history/${recordId}`,
+  );
+  return res.data;
+};
+
+export const updateFamilyHistoryRecord = async (recordId, payload) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/family-history/${recordId}`,
+    payload,
+  );
+  return res.data;
+};
+
+export const deleteFamilyHistoryRecord = async (recordId) => {
+  const res = await axios.delete(
+    `/api/v1/clinic/medical/family-history/${recordId}`,
+  );
+  return res.data;
+};
+
+// ─── IMMUNIZATION ─────────────────────────────────────────────────────
+// Body: { vaccineName: string, dateGiven?: Date|ISO, content?: string }
+// URL segment: immunizations
+
+export const createImmunization = async (patientId, payload) => {
+  const res = await axios.post(
+    `/api/v1/clinic/medical/patients/${patientId}/immunizations`,
+    payload,
+  );
+  return res.data;
+};
+
+export const listImmunizations = async (patientId, options = {}) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/patients/${patientId}/immunizations`,
+    { params: options },
+  );
+  return normalizeList(res.data, ["immunizations"]);
+};
+
+export const getImmunization = async (recordId) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/immunizations/${recordId}`,
+  );
+  return res.data;
+};
+
+export const updateImmunization = async (recordId, payload) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/immunizations/${recordId}`,
+    payload,
+  );
+  return res.data;
+};
+
+export const deleteImmunization = async (recordId) => {
+  const res = await axios.delete(
+    `/api/v1/clinic/medical/immunizations/${recordId}`,
+  );
+  return res.data;
+};
+
+// ─── IMAGING STUDY ────────────────────────────────────────────────────
+//
+// CT / MRI / USG / X-Ray / etc. Stored with attached image files.
+//
+// CREATE uses MULTIPART form-data (different from text sub-records):
+//   - text fields: studyType, date?, report?, diagnosis?,
+//                  contrastUsed?, sharedWith?
+//   - file array under field name "images" (up to 20 files, max 150MB each
+//     per common upload middleware; sharp compresses images → webp server-side)
+//
+// LIST / GET / UPDATE / DELETE use plain JSON.
+//
+// URL segment: imaging
+
+/**
+ * POST /api/v1/clinic/medical/patients/:patientId/imaging
+ *
+ * Multipart upload. Pass a FormData instance (already constructed by caller)
+ * OR an object {body, files} which we'll wrap into FormData here.
+ *
+ * Example (caller-built FormData):
+ *   const fd = new FormData();
+ *   fd.append("studyType", "CT");
+ *   fd.append("report", "...");
+ *   for (const f of fileList) fd.append("images", f);
+ *   await createImagingStudy(patientId, fd);
+ *
+ * Example (object form — convenience):
+ *   await createImagingStudy(patientId, {
+ *     body: { studyType: "MRI", diagnosis: "..." },
+ *     files: [file1, file2],
+ *   });
+ *
+ * Returns { success, imaging: {...} } with images[] populated with R2 URLs.
+ */
+export const createImagingStudy = async (patientId, formDataOrObj) => {
+  let formData;
+
+  if (formDataOrObj instanceof FormData) {
+    formData = formDataOrObj;
+  } else {
+    formData = new FormData();
+    const { body = {}, files = [] } = formDataOrObj || {};
+
+    // Append text fields
+    Object.entries(body).forEach(([key, value]) => {
+      if (value === undefined || value === null) return;
+      if (Array.isArray(value)) {
+        // sharedWith: send as repeated fields — backend's zod preprocessor
+        // accepts both arrays and comma-joined strings.
+        value.forEach((v) => formData.append(key, String(v)));
+      } else if (value instanceof Date) {
+        formData.append(key, value.toISOString());
+      } else {
+        formData.append(key, String(value));
+      }
+    });
+
+    // Append files — multer expects "images" field name (see backend
+    // imaging.routes.js: upload.array("images", 20))
+    files.forEach((f) => formData.append("images", f));
+  }
+
+  const res = await axios.post(
+    `/api/v1/clinic/medical/patients/${patientId}/imaging`,
+    formData,
+    {
+      // Don't set Content-Type manually — let axios set the multipart
+      // boundary automatically. Setting it explicitly breaks the upload.
+      headers: { "Content-Type": "multipart/form-data" },
+    },
+  );
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/medical/patients/:patientId/imaging
+ * Options: { studyType?, limit?, before? }
+ */
+export const listImagingStudies = async (patientId, options = {}) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/patients/${patientId}/imaging`,
+    { params: options },
+  );
+  return normalizeList(res.data, ["imaging"]);
+};
+
+export const getImagingStudy = async (recordId) => {
+  const res = await axios.get(`/api/v1/clinic/medical/imaging/${recordId}`);
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/medical/imaging/:recordId
+ *
+ * Update text fields only — images are immutable post-create (delete the
+ * study and re-create to replace files). Editable fields:
+ *   { report?, diagnosis?, doctorNotes?, contrastUsed?,
+ *     validatedByDoctor?, sharedWith? }
+ */
+export const updateImagingStudy = async (recordId, payload) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/imaging/${recordId}`,
+    payload,
+  );
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/medical/imaging/:recordId
+ *
+ * Returns { deleted: true, orphanedImages: [...urls] }. The image files in
+ * R2 are NOT removed server-side (intentional — orphan cleanup is a
+ * separate task). orphanedImages is informational for now.
+ */
+export const deleteImagingStudy = async (recordId) => {
+  const res = await axios.delete(`/api/v1/clinic/medical/imaging/${recordId}`);
+  return res.data;
+};

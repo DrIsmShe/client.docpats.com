@@ -9,8 +9,13 @@
 //   3. Edit mode — same form as on the list page (inline toggle)
 //   4. Link section — search a DocPats user (by email OR by date of
 //      birth + name) and link the patient to that account
-//   5. Delete button (visible to canDelete)
-//   6. Book-appointment button (Sprint 1, day 5) — opens
+//   5. MEDICAL RECORDS SECTION (UMR) — Sprint 2 Phase 2D.2 — added
+//      between the Link section and the book-appointment modal. Shows
+//      encounter history with create/sign/amend flow (gated by canWrite),
+//      plus tabs for allergies / chronic / operations / family /
+//      immunization / imaging.
+//   6. Delete button (visible to canDelete)
+//   7. Book-appointment button (Sprint 1, day 5) — opens
 //      BookFromPatientModal with this patient pre-filled
 //
 // Reuses .staff-page-* tokens and .patients-form-* tokens from the list
@@ -39,6 +44,8 @@ import "./clinicPatientDetailPage.css";
 // inside BookFromPatientModal are styled here too.
 import "../ClinicCalendarPage/clinicCalendarPage.css";
 import BookFromPatientModal from "../ClinicCalendarPage/BookFromPatientModal.jsx";
+// Sprint 2 Phase 2D.2 — Unified Medical Record (UMR) section
+import MedicalRecordsSection from "./MedicalRecordsSection.jsx";
 
 export default function ClinicPatientDetailPage() {
   const { t, i18n } = useTranslation("clinic");
@@ -84,6 +91,14 @@ export default function ClinicPatientDetailPage() {
   // (owner / admin / receptionist). The book modal does the same role
   // check on the doctor + slot pickers it renders inside.
   const canBook = ["owner", "admin", "receptionist"].includes(myRole);
+
+  // ─── Permission for medical records (UMR) ───
+  // Backend RBAC: owner/admin/doctor can write encounters & sub-records,
+  // nurse can write anamnestic sub-records. We use a wide "canWriteMedical"
+  // for the section header; finer-grained gating happens server-side.
+  const canWriteMedical =
+    !!permissions?.medical_record?.write ||
+    ["owner", "admin", "doctor", "nurse"].includes(myRole);
 
   // ─── Load patient ───
   const load = useCallback(async () => {
@@ -802,6 +817,12 @@ export default function ClinicPatientDetailPage() {
             </div>
           )}
         </section>
+      )}
+
+      {/* ─── Medical Records (UMR) — Sprint 2 Phase 2D.2 ─── */}
+      {/* Visible only in view-mode (not while editing the patient profile). */}
+      {!editing && patient && (
+        <MedicalRecordsSection patient={patient} canWrite={canWriteMedical} />
       )}
 
       {/* ─── Book-appointment modal (day 5 second entry-point) ─── */}
