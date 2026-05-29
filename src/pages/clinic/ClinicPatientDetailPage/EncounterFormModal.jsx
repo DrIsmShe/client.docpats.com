@@ -21,7 +21,11 @@
 //   - status=draft  has no required fields
 //   - update only works on drafts; for signed/amended use Amend modal
 //
-// ICD-10 autocomplete: still deferred — plain text inputs for now.
+// ICD-10: integrated NLM autocomplete (30 May 2026, Sprint 3 task #2).
+// Reuses <ICD10Autocomplete/> from legacy myClinic form. NLM API is
+// public, no key needed. Returns {code, title} → mapped onto our flat
+// state shape (mainDiagnosisCode / CodeTitle / Text) to keep backend
+// payload and validation contracts intact.
 
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,6 +34,7 @@ import {
   updateEncounter,
   signEncounter,
 } from "../../../api/clinic";
+import ICD10Autocomplete from "../../../components/ICD10Autocomplete";
 // Styles come from medicalRecordsSection.css (imported by the parent
 // MedicalRecordsSection). We share the .med-modal-* / .med-fieldset
 // classes — no separate CSS file needed.
@@ -85,6 +90,47 @@ export default function EncounterFormModal({
       setErrors((prev) => {
         const next = { ...prev };
         delete next[name];
+        return next;
+      });
+    }
+  }
+
+  /**
+   * ICD-10 autocomplete handler. Receives {code, title} from NLM or
+   * null when the doctor clears the field.
+   *
+   * Auto-fill behaviour: the English title is dropped into
+   * mainDiagnosisText ONLY if the doctor hasn't typed anything yet —
+   * we never overwrite their wording. They can then translate it.
+   */
+  function handleICD10Select(selected) {
+    if (!selected) {
+      setForm((prev) => ({
+        ...prev,
+        mainDiagnosisCode: "",
+        mainDiagnosisCodeTitle: "",
+        mainDiagnosisText: "",
+      }));
+      if (errors.mainDiagnosisCode || errors.mainDiagnosisText) {
+        setErrors((prev) => {
+          const next = { ...prev };
+          delete next.mainDiagnosisCode;
+          delete next.mainDiagnosisText;
+          return next;
+        });
+      }
+      return;
+    }
+    setForm((prev) => ({
+      ...prev,
+      mainDiagnosisCode: selected.code,
+      mainDiagnosisCodeTitle: selected.title,
+      mainDiagnosisText: prev.mainDiagnosisText || selected.title,
+    }));
+    if (errors.mainDiagnosisCode) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next.mainDiagnosisCode;
         return next;
       });
     }
@@ -279,91 +325,82 @@ export default function EncounterFormModal({
 
         {/* Body */}
         <div className="med-modal-body">
-          {/* Main diagnosis */}
+          {/* Main diagnosis — ICD-10 autocomplete (NLM API) */}
           <fieldset className="med-fieldset">
             <legend>
               {t("medical.encounters.mainDiagnosisTitle", {
-                defaultValue: "Основной диагноз",
+                defaultValue: "Основной диагноз (МКБ-10)",
               })}
             </legend>
 
-            <div className="patients-form-row">
-              <div
-                className="patients-form-field"
-                style={{ flex: "0 0 180px" }}
-              >
-                <label>
-                  {t("medical.encounters.fields.icdCode", {
-                    defaultValue: "Код МКБ-10",
-                  })}
-                </label>
-                <input
-                  type="text"
-                  value={form.mainDiagnosisCode}
-                  onChange={(e) =>
-                    setField("mainDiagnosisCode", e.target.value)
-                  }
-                  placeholder="J45.1"
-                  className={errors.mainDiagnosisCode ? "has-error" : ""}
-                  disabled={submitting}
-                />
-                {errors.mainDiagnosisCode && (
-                  <span className="patients-form-error">
-                    {errors.mainDiagnosisCode}
-                  </span>
-                )}
-              </div>
-              <div className="patients-form-field" style={{ flex: 1 }}>
-                <label>
-                  {t("medical.encounters.fields.icdTitle", {
-                    defaultValue: "Название по МКБ",
-                  })}
-                  <span className="patients-form-optional">
-                    {t("common.optional", { defaultValue: "необязательно" })}
-                  </span>
-                </label>
-                <input
-                  type="text"
-                  value={form.mainDiagnosisCodeTitle}
-                  onChange={(e) =>
-                    setField("mainDiagnosisCodeTitle", e.target.value)
-                  }
-                  placeholder={t("medical.encounters.placeholders.icdTitle", {
-                    defaultValue: "Mild persistent asthma",
-                  })}
-                  disabled={submitting}
-                />
-              </div>
-            </div>
-
             <div className="patients-form-field">
-              <label>
-                {t("medical.encounters.fields.diagnosisText", {
-                  defaultValue: "Диагноз (текст)",
+              <ICD10Autocomplete
+                value={
+                  form.mainDiagnosisCode
+                    ? {
+                        code: form.mainDiagnosisCode,
+                        title: form.mainDiagnosisCodeTitle,
+                      }
+                    : null
+                }
+                onChange={handleICD10Select}
+                placeholder={t("medical.encounters.placeholders.icdSearch", {
+                  defaultValue:
+                    "Поиск МКБ-10 по коду (J45) или англ. названию (asthma)...",
                 })}
-              </label>
-              <input
-                type="text"
-                value={form.mainDiagnosisText}
-                onChange={(e) => setField("mainDiagnosisText", e.target.value)}
-                placeholder={t(
-                  "medical.encounters.placeholders.diagnosisText",
-                  {
-                    defaultValue:
-                      "Бронхиальная астма, лёгкое персистирующее течение",
-                  },
-                )}
-                className={errors.mainDiagnosisText ? "has-error" : ""}
-                disabled={submitting}
               />
-              {errors.mainDiagnosisText && (
+              {errors.mainDiagnosisCode && (
                 <span className="patients-form-error">
-                  {errors.mainDiagnosisText}
+                  {errors.mainDiagnosisCode}
                 </span>
               )}
             </div>
 
-            <div className="patients-form-field">
+            {form.mainDiagnosisCode && (
+              <div className="patients-form-field" style={{ marginTop: 12 }}>
+                <label>
+                  {t("medical.encounters.fields.diagnosisText", {
+                    defaultValue: "Диагноз (текст на родном языке)",
+                  })}
+                </label>
+                <textarea
+                  rows={3}
+                  value={form.mainDiagnosisText}
+                  onChange={(e) =>
+                    setField("mainDiagnosisText", e.target.value)
+                  }
+                  placeholder={t(
+                    "medical.encounters.placeholders.diagnosisText",
+                    {
+                      defaultValue:
+                        "Бронхиальная астма, лёгкое персистирующее течение",
+                    },
+                  )}
+                  className={errors.mainDiagnosisText ? "has-error" : ""}
+                  disabled={submitting}
+                />
+                <div
+                  style={{
+                    fontSize: 11,
+                    color: "#7089a6",
+                    marginTop: 5,
+                  }}
+                >
+                  💡{" "}
+                  {t("medical.encounters.hints.diagnosisText", {
+                    defaultValue:
+                      "Автозаполнено из МКБ-10. Переведите или перефразируйте на своём языке.",
+                  })}
+                </div>
+                {errors.mainDiagnosisText && (
+                  <span className="patients-form-error">
+                    {errors.mainDiagnosisText}
+                  </span>
+                )}
+              </div>
+            )}
+
+            <div className="patients-form-field" style={{ marginTop: 12 }}>
               <label>
                 {t("medical.encounters.fields.additionalDiagnosis", {
                   defaultValue: "Сопутствующий диагноз",
