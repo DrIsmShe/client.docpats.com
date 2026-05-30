@@ -436,6 +436,7 @@ import CoronographyScanerTemplateRecomendationDetails from "./pages/polyclinic/a
 import AddLabTest from "./pages/polyclinic/addpatientpolyclinic/addExaminations/AddLabTest.jsx";
 import DetailsLabTest from "./pages/polyclinic/addpatientpolyclinic/templateExaminations/LabScanerTemplateAdd/LabtestScanerDetails.jsx";
 import MyDoctors from "./pages/patientProfilePages/myDoctors/myDoctors.jsx";
+import MyClinics from "./pages/patientProfilePages/myClinics/MyClinics";
 import MyFriendsDoctors from "./pages/doctorProfilePages/shared/doctors/MyFriendsDoctors.jsx";
 import MyMedicalHistories from "./pages/patientProfilePages/MyMedicalHistories/MyMedicalHistories.jsx";
 import MyMedicalHistoryDetail from "./pages/patientProfilePages/MyMedicalHistories/MyMedicalHistoryDetail.jsx";
@@ -511,6 +512,7 @@ import ClinicSchedulePage from "./pages/clinic/ClinicSchedulePage/ClinicSchedule
 import ClinicCalendarPage from "./pages/clinic/ClinicCalendarPage/ClinicCalendarPage.jsx";
 import NewPatientPage from "./pages/clinic/ClinicPatientsPage/NewPatientPage.jsx";
 import CompleteRegistrationPage from "./pages/auth/CompleteRegistrationPage/CompleteRegistrationPage";
+
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -2238,6 +2240,7 @@ function App() {
               />
               <Route path="doctors" element={<DoctorsAllForPatient />} />
               <Route path="my-doctors" element={<MyDoctors />} />
+              <Route path="/patient/my-clinics" element={<MyClinics />} />
               <Route
                 path="doctors-articles/:id"
                 element={<DoctorArticlesForPatient />}

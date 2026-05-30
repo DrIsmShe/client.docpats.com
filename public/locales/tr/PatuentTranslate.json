@@ -436,5 +436,68 @@
       "completed": "Tamamlandı",
       "unknown": "Bilinmiyor"
     }
+  },
+  "myClinics": {
+    "loading": "Klinikler yükleniyor...",
+    "error": "Kliniklerinizi yüklemek başarısız oldu",
+    "unnamedClinic": "İsimsiz klinik",
+    "confirmRevoke": "Erişimi iptal etmek istediğinizden emin misiniz?",
+    "header": {
+      "eyebrow": "Tıbbi veri erişimim",
+      "title": "Kliniklerim",
+      "subtitle": "Hangi kliniklerin tıbbi kayıtlarınıza erişebileceğini yönetin",
+      "countLabel": "Klinik"
+    },
+    "empty": {
+      "title": "Henüz bağlı klinik yok",
+      "text": "Bir klinik sizin için tıbbi kart oluşturup hesabınıza bağladığında burada görünecek ve verilerinize erişimi kontrol edebileceksiniz."
+    },
+    "status": {
+      "granted": "Tam erişim",
+      "partial": "Kısmi erişim",
+      "none": "Erişim kapalı"
+    },
+    "card": {
+      "grantedAt": "Erişim verildi:",
+      "cardCreatedAt": "Kart oluşturuldu:"
+    },
+    "actions": {
+      "grantFull": "Tam erişim ver",
+      "granular": "Özelleştir",
+      "changeScopes": "Ayarları değiştir",
+      "revoke": "Erişimi iptal et"
+    },
+    "toasts": {
+      "granted": "Erişim verildi",
+      "scopesUpdated": "Ayarlar güncellendi",
+      "revoked": "Erişim iptal edildi",
+      "grantError": "Erişim güncellenemedi",
+      "revokeError": "Erişim iptal edilemedi"
+    },
+    "granular": {
+      "title": "Ayrıntılı erişim ayarları",
+      "intro": "Bu kliniğin erişebileceği veri kategorilerini seçin. Bunu istediğiniz zaman değiştirebilirsiniz.",
+      "close": "Kapat",
+      "cancel": "İptal",
+      "apply": "Uygula",
+      "applying": "Uygulanıyor...",
+      "appointments": {
+        "title": "Randevu geçmişi ve teşhisler",
+        "desc": "Tüm ziyaret kayıtları: şikayetler, teşhisler, öneriler, tedavi."
+      },
+      "healthProfile": {
+        "title": "Sağlık profili",
+        "desc": "Alerjiler, kronik hastalıklar, aile öyküsü, aşılar."
+      },
+      "imaging": {
+        "title": "Görüntüleme ve ameliyatlar",
+        "desc": "BT, MR, ultrason, röntgen taramaları ve ameliyat geçmişi."
+      }
+    }
+  },
+  "AsidePatient": {
+    "menu": {
+      "myClinics": "Kliniklerim"
+    }
   }
 }

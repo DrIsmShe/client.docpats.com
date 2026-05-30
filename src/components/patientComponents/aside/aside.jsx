@@ -369,6 +369,11 @@ export default function AsidePatient() {
           label: t("AsidePatient.menu.myDoctors"),
         },
         {
+          to: "/patient/my-clinics",
+          icon: <GiPostOffice />,
+          label: t("AsidePatient.menu.myClinics"),
+        },
+        {
           to: "/patient/appointments-info",
           icon: <FaCalendarCheck />,
           label: t("AsidePatient.menu.appointments"),

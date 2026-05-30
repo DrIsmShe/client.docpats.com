@@ -452,5 +452,68 @@
       "completed": "Tamamlanıb",
       "unknown": "Naməlum"
     }
+  },
+  "myClinics": {
+    "loading": "Klinikalar yüklənir...",
+    "error": "Klinikaları yükləmək alınmadı",
+    "unnamedClinic": "Adsız klinika",
+    "confirmRevoke": "Girişi geri çəkmək istədiyinizə əminsiniz?",
+    "header": {
+      "eyebrow": "Tibbi məlumatlarıma giriş",
+      "title": "Klinikalarım",
+      "subtitle": "Hansı klinikaların tibbi qeydlərinizə giriş əldə edə biləcəyini idarə edin",
+      "countLabel": "Klinika"
+    },
+    "empty": {
+      "title": "Hələ əlaqəli klinika yoxdur",
+      "text": "Bir klinika sizin üçün tibbi kart yaradıb hesabınıza bağladıqda burada görünəcək və məlumatlarınıza girişi idarə edə biləcəksiniz."
+    },
+    "status": {
+      "granted": "Tam giriş",
+      "partial": "Qismən giriş",
+      "none": "Giriş yoxdur"
+    },
+    "card": {
+      "grantedAt": "Giriş verildi:",
+      "cardCreatedAt": "Kart yaradıldı:"
+    },
+    "actions": {
+      "grantFull": "Tam giriş ver",
+      "granular": "Fərdiləşdir",
+      "changeScopes": "Ayarları dəyiş",
+      "revoke": "Girişi geri çək"
+    },
+    "toasts": {
+      "granted": "Giriş verildi",
+      "scopesUpdated": "Ayarlar yeniləndi",
+      "revoked": "Giriş geri çəkildi",
+      "grantError": "Girişi yeniləmək alınmadı",
+      "revokeError": "Girişi geri çəkmək alınmadı"
+    },
+    "granular": {
+      "title": "Ətraflı giriş ayarları",
+      "intro": "Bu klinikanın giriş əldə edə biləcəyi məlumat kateqoriyalarını seçin. Bunu istənilən vaxt dəyişə bilərsiniz.",
+      "close": "Bağla",
+      "cancel": "Ləğv et",
+      "apply": "Tətbiq et",
+      "applying": "Tətbiq edilir...",
+      "appointments": {
+        "title": "Qəbul tarixçəsi və diaqnozlar",
+        "desc": "Bütün ziyarət qeydləri: şikayətlər, diaqnozlar, tövsiyələr, müalicə."
+      },
+      "healthProfile": {
+        "title": "Sağlamlıq profili",
+        "desc": "Allergiyalar, xroniki xəstəliklər, ailə tarixçəsi, peyvəndlər."
+      },
+      "imaging": {
+        "title": "Görüntüləmə və əməliyyatlar",
+        "desc": "KT, MRT, USM, rentgen şəkilləri və əməliyyat tarixçəsi."
+      }
+    }
+  },
+  "AsidePatient": {
+    "menu": {
+      "myClinics": "Klinikalarım"
+    }
   }
 }

@@ -435,5 +435,68 @@
       "completed": "Completed",
       "unknown": "Unknown"
     }
+  },
+  "myClinics": {
+    "loading": "Loading clinics...",
+    "error": "Failed to load your clinics",
+    "unnamedClinic": "Unnamed clinic",
+    "confirmRevoke": "Are you sure you want to revoke access?",
+    "header": {
+      "eyebrow": "My medical data access",
+      "title": "My Clinics",
+      "subtitle": "Manage which clinics have access to your medical records",
+      "countLabel": "Clinics"
+    },
+    "empty": {
+      "title": "No linked clinics yet",
+      "text": "Once a clinic creates a medical card for you and links it to your account, it will appear here so you can control its access to your data."
+    },
+    "status": {
+      "granted": "Full access",
+      "partial": "Partial access",
+      "none": "No access"
+    },
+    "card": {
+      "grantedAt": "Access granted:",
+      "cardCreatedAt": "Card created:"
+    },
+    "actions": {
+      "grantFull": "Grant full access",
+      "granular": "Customize",
+      "changeScopes": "Change settings",
+      "revoke": "Revoke access"
+    },
+    "toasts": {
+      "granted": "Access granted",
+      "scopesUpdated": "Settings updated",
+      "revoked": "Access revoked",
+      "grantError": "Failed to update access",
+      "revokeError": "Failed to revoke access"
+    },
+    "granular": {
+      "title": "Granular access settings",
+      "intro": "Choose categories of data this clinic can access. You can change this at any time.",
+      "close": "Close",
+      "cancel": "Cancel",
+      "apply": "Apply",
+      "applying": "Applying...",
+      "appointments": {
+        "title": "Appointments & diagnoses",
+        "desc": "All visit records: complaints, diagnoses, recommendations, treatment."
+      },
+      "healthProfile": {
+        "title": "Health profile",
+        "desc": "Allergies, chronic conditions, family history, immunization."
+      },
+      "imaging": {
+        "title": "Imaging & operations",
+        "desc": "CT, MRI, ultrasound, X-ray scans and surgery history."
+      }
+    }
+  },
+  "AsidePatient": {
+    "menu": {
+      "myClinics": "My Clinics"
+    }
   }
 }
