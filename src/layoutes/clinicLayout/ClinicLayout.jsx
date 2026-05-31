@@ -54,6 +54,13 @@ export default function ClinicLayout({ employeeMode = false }) {
               navigate("/login", { replace: true });
               return;
             }
+            // Role guard: only doctors can access /clinic/* zone.
+            // Patients and other roles get redirected to their cabinet.
+            const userRole = data.user?.role || data.role;
+            if (userRole !== "doctor") {
+              navigate("/patient/home-page", { replace: true });
+              return;
+            }
             setContext({ kind: "user", ...data });
             setLoading(false);
           }
