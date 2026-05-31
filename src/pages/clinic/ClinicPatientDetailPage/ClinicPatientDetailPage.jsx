@@ -37,6 +37,7 @@ import {
   linkPatientToUser,
   unlinkPatientFromUser,
   searchUsersForLink,
+  createConsentRequest,
 } from "../../../api/clinic";
 import "../ClinicPatientsPage/clinicPatientsPage.css";
 import "./clinicPatientDetailPage.css";
@@ -44,6 +45,8 @@ import "./clinicPatientDetailPage.css";
 // inside BookFromPatientModal are styled here too.
 import "../ClinicCalendarPage/clinicCalendarPage.css";
 import BookFromPatientModal from "../ClinicCalendarPage/BookFromPatientModal.jsx";
+import ConsentRequestModal from "./ConsentRequestModal.jsx";
+
 // Sprint 2 Phase 2D.2 — Unified Medical Record (UMR) section
 import MedicalRecordsSection from "./MedicalRecordsSection.jsx";
 
@@ -58,6 +61,9 @@ export default function ClinicPatientDetailPage() {
   const [patient, setPatient] = useState(null);
 
   const [editing, setEditing] = useState(false);
+  // Sprint 3.2 — consent request modal
+  const [requestModalOpen, setRequestModalOpen] = useState(false);
+  const [requestSubmitMsg, setRequestSubmitMsg] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [formErrors, setFormErrors] = useState({});
 
@@ -414,6 +420,34 @@ export default function ClinicPatientDetailPage() {
                 type="button"
               >
                 {deleting ? t("common.loading") : t("patients.delete")}
+              </button>
+            )}
+            {/* Sprint 3.2 — Запросить доступ к медданным */}
+            {patient.linkedUserId ? (
+              <button
+                className="staff-page-btn-primary"
+                onClick={() => setRequestModalOpen(true)}
+                type="button"
+                style={{ background: "#6366f1" }}
+                title={t(
+                  "patients.consentRequest.openButton",
+                  "Запросить доступ",
+                )}
+              >
+                {t("patients.consentRequest.openButton", "Запросить доступ")}
+              </button>
+            ) : (
+              <button
+                className="staff-page-btn-primary"
+                disabled
+                type="button"
+                style={{ opacity: 0.5, cursor: "not-allowed" }}
+                title={t(
+                  "patients.consentRequest.notLinkedHint",
+                  "Сначала свяжите карту с аккаунтом DocPats",
+                )}
+              >
+                {t("patients.consentRequest.openButton", "Запросить доступ")}
               </button>
             )}
           </div>
@@ -836,6 +870,43 @@ export default function ClinicPatientDetailPage() {
             // yet (that's a separate widget), so no reload needed.
           }}
         />
+      )}
+      {/* Sprint 3.2 — Consent Request Modal */}
+      <ConsentRequestModal
+        open={requestModalOpen}
+        onClose={() => setRequestModalOpen(false)}
+        patientName={name}
+        onSubmit={async (payload) => {
+          await createConsentRequest(patient._id, payload);
+          setRequestModalOpen(false);
+          setRequestSubmitMsg("success");
+          setTimeout(() => setRequestSubmitMsg(null), 4000);
+        }}
+      />
+
+      {/* Sprint 3.2 — Toast for success */}
+      {requestSubmitMsg === "success" && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 28,
+            right: 28,
+            padding: "14px 20px",
+            background: "#dcfce7",
+            color: "#14532d",
+            border: "1px solid #86efac",
+            borderRadius: 12,
+            fontSize: 14,
+            fontWeight: 500,
+            zIndex: 9999,
+            boxShadow: "0 12px 32px -8px rgba(0,0,0,0.2)",
+          }}
+        >
+          {t(
+            "patients.consentRequest.successToast",
+            "✓ Запрос отправлен пациенту",
+          )}
+        </div>
       )}
     </div>
   );

@@ -437,6 +437,7 @@ import AddLabTest from "./pages/polyclinic/addpatientpolyclinic/addExaminations/
 import DetailsLabTest from "./pages/polyclinic/addpatientpolyclinic/templateExaminations/LabScanerTemplateAdd/LabtestScanerDetails.jsx";
 import MyDoctors from "./pages/patientProfilePages/myDoctors/myDoctors.jsx";
 import MyClinics from "./pages/patientProfilePages/myClinics/MyClinics";
+import ConsentRequests from "./pages/patientProfilePages/consentRequests/ConsentRequests";
 import MyFriendsDoctors from "./pages/doctorProfilePages/shared/doctors/MyFriendsDoctors.jsx";
 import MyMedicalHistories from "./pages/patientProfilePages/MyMedicalHistories/MyMedicalHistories.jsx";
 import MyMedicalHistoryDetail from "./pages/patientProfilePages/MyMedicalHistories/MyMedicalHistoryDetail.jsx";
@@ -2240,6 +2241,10 @@ function App() {
               />
               <Route path="doctors" element={<DoctorsAllForPatient />} />
               <Route path="my-doctors" element={<MyDoctors />} />
+              <Route
+                path="/patient/consent-requests"
+                element={<ConsentRequests />}
+              />
               <Route path="/patient/my-clinics" element={<MyClinics />} />
               <Route
                 path="doctors-articles/:id"

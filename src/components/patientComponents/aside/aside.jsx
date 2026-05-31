@@ -12,12 +12,14 @@ import {
 } from "react-icons/fa6";
 import { GoFileSubmodule } from "react-icons/go";
 import { FaCommentMedical } from "react-icons/fa6";
+import { MdOutlineNotificationsActive } from "react-icons/md";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FaUserFriends, FaUserMd } from "react-icons/fa";
 import { HiOutlineSparkles } from "react-icons/hi2";
+import { getMyConsentRequests } from "../../../api/patient";
 
 /* ─────────────── STYLES ─────────────── */
 const S = `
@@ -180,6 +182,26 @@ const S = `
     justify-content: center;
   }
 
+  /* ── BADGE (Sprint 3.2 pending count) ── */
+  .ap-link-badge {
+    margin-left: auto;
+    background: #ef4444;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 10px;
+    min-width: 20px;
+    text-align: center;
+    line-height: 1.3;
+    box-shadow: 0 1px 2px rgba(239,68,68,.3);
+    animation: ap-badge-pulse 2s ease-in-out infinite;
+  }
+  @keyframes ap-badge-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
   /* ── LOGOUT ── */
   .ap-footer {
     padding: 10px 10px 16px;
@@ -226,6 +248,9 @@ export default function AsidePatient() {
   const [user, setUser] = useState({});
   const [userId, setUserId] = useState(null);
 
+  // Sprint 3.2 — pending consent requests count
+  const [pendingConsentRequests, setPendingConsentRequests] = useState(0);
+
   const handleLogout = async () => {
     try {
       await axios.post(
@@ -271,6 +296,53 @@ export default function AsidePatient() {
       }
     })();
   }, []);
+
+  // Sprint 3.2 — fetch pending consent requests count for badge
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const fetchPendingCount = async () => {
+      try {
+        const data = await getMyConsentRequests();
+        const count =
+          typeof data?.count === "number"
+            ? data.count
+            : Array.isArray(data?.items)
+              ? data.items.length
+              : 0;
+        setPendingConsentRequests(count);
+      } catch (err) {
+        // Silently ignore — badge just won't show if endpoint fails
+        console.warn(
+          "[AsidePatient] Failed to load pending consent count:",
+          err?.message,
+        );
+        setPendingConsentRequests(0);
+      }
+    };
+
+    fetchPendingCount();
+
+    // Refresh on visibility change & focus (e.g. when patient returns from another tab)
+    const onVisible = () => {
+      if (document.visibilityState === "visible") fetchPendingCount();
+    };
+    const onFocus = () => fetchPendingCount();
+
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", onFocus);
+
+    // Poll every 60 seconds while tab is active
+    const intervalId = setInterval(() => {
+      if (document.visibilityState === "visible") fetchPendingCount();
+    }, 60000);
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", onFocus);
+      clearInterval(intervalId);
+    };
+  }, [isAuthenticated]);
 
   const myOfficeHref = `/patient/patient-profile/${userId ?? ""}`;
 
@@ -373,6 +445,13 @@ export default function AsidePatient() {
           icon: <GiPostOffice />,
           label: t("AsidePatient.menu.myClinics"),
         },
+        // Sprint 3.2 — Pull Consent: clinic-initiated access requests
+        {
+          to: "/patient/consent-requests",
+          icon: <MdOutlineNotificationsActive />,
+          label: t("AsidePatient.menu.consentRequests", "Запросы доступа"),
+          badge: pendingConsentRequests,
+        },
         {
           to: "/patient/appointments-info",
           icon: <FaCalendarCheck />,
@@ -442,6 +521,10 @@ export default function AsidePatient() {
                   >
                     <span className="ap-icon">{item.icon}</span>
                     {item.label}
+                    {/* Sprint 3.2 — badge for pending consent requests */}
+                    {typeof item.badge === "number" && item.badge > 0 && (
+                      <span className="ap-link-badge">{item.badge}</span>
+                    )}
                   </Link>
                 );
               })}

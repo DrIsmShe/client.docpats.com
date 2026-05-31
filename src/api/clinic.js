@@ -1171,3 +1171,99 @@ export const deleteImagingStudy = async (recordId) => {
   const res = await axios.delete(`/api/v1/clinic/medical/imaging/${recordId}`);
   return res.data;
 };
+// ═══════════════════════════════════════════════════════════════════════════
+//  CONSENT REQUESTS (Sprint 3.2 — Pull Consent, clinic-side)
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Reuses the same `axios` import and `normalizeList` helper from the top.
+//
+// Backend module: server/modules/clinic/clinic-patients/
+// Endpoints:
+//   POST   /api/v1/clinic/patients/:cardId/consent-requests   create
+//   GET    /api/v1/clinic/patients/:cardId/consent-requests   list history
+//   DELETE /api/v1/clinic/consent-requests/:id                cancel pending
+//
+// ─────────────────────────────────────────────────────────────────────────
+//  FLOW
+// ─────────────────────────────────────────────────────────────────────────
+//
+// 1. Employee opens ClinicPatient card (must have linkedUserId — bridge from
+//    Sprint 1 Day 12).
+// 2. Clicks "Request access" → GranularRequestModal opens with 7 scope toggles.
+// 3. Submit → createConsentRequest(cardId, {requestedScopes, message?}).
+// 4. Patient receives in-app notification + email (HIPAA-safe, no PHI).
+// 5. Patient approves/rejects in their cabinet.
+// 6. Clinic sees status via listConsentRequestsForPatient(cardId).
+// 7. While pending, clinic can cancelConsentRequest(requestId).
+//
+// ─────────────────────────────────────────────────────────────────────────
+//  RATE LIMIT
+// ─────────────────────────────────────────────────────────────────────────
+//
+// Backend enforces max 3 active pending requests per (clinic, patient).
+// 4th call returns 429 RATE_LIMIT_EXCEEDED. UI should disable the button
+// when 3 pending exist and explain why.
+
+/**
+ * POST /api/v1/clinic/patients/:cardId/consent-requests
+ *
+ * Create a new consent request from clinic to patient.
+ *
+ * @param {string} cardId — ClinicPatient _id (must be linked to a User account)
+ * @param {object} payload
+ * @param {object} payload.requestedScopes — {encounters, allergies, chronicDiseases,
+ *                                            operations, familyHistory, immunization, imaging}
+ * @param {string} [payload.message] — optional msg shown to patient (max 500 chars)
+ *
+ * Returns { request: ConsentRequest } on 201.
+ *
+ * Errors:
+ *   400 — invalid cardId / missing requestedScopes
+ *   404 — patient card not found in this clinic
+ *   422 — card not linked to DocPats user / no scopes / validation
+ *   429 RATE_LIMIT_EXCEEDED — already 3 pending for this patient
+ */
+export const createConsentRequest = async (cardId, payload) => {
+  const res = await axios.post(
+    `/api/v1/clinic/patients/${cardId}/consent-requests`,
+    payload,
+  );
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/patients/:cardId/consent-requests
+ *
+ * List all consent requests this clinic has made to this patient (history).
+ * Includes pending + all terminal statuses.
+ *
+ * Returns { items, count } (normalized).
+ */
+export const listConsentRequestsForPatient = async (cardId) => {
+  const res = await axios.get(
+    `/api/v1/clinic/patients/${cardId}/consent-requests`,
+  );
+  return normalizeList(res.data, ["requests", "consentRequests"]);
+};
+
+/**
+ * DELETE /api/v1/clinic/consent-requests/:id
+ *
+ * Cancel a pending request (before the patient responds).
+ *
+ * @param {string} requestId
+ *
+ * Returns { request, action: "cancelled" }.
+ *
+ * Errors:
+ *   404 NOT_FOUND   — request doesn't exist
+ *   403            — request belongs to a different clinic
+ *   409 NOT_PENDING — already in terminal state, cannot cancel
+ */
+export const cancelConsentRequest = async (requestId) => {
+  const res = await axios.delete(
+    `/api/v1/clinic/consent-requests/${requestId}`,
+  );
+  return res.data;
+};
