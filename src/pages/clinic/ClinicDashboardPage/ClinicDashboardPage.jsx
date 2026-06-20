@@ -3,7 +3,17 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link, useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getClinicMe, listStaff, listInvitations } from "../../../api/clinic";
+import {
+  getClinicMe,
+  listStaff,
+  listInvitations,
+  listDepartments,
+  listRooms,
+  listEquipment,
+  listKnowledge,
+  listConsilia,
+  listTelemed,
+} from "../../../api/clinic";
 import "./clinicDashboardPage.css";
 
 const getMembershipId = (m) => m?.membershipId || m?._id || m?.id || null;
@@ -24,13 +34,29 @@ export default function ClinicDashboardPage() {
   const [features, setFeatures] = useState({});
   const [staff, setStaff] = useState([]);
   const [invitations, setInvitations] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [rooms, setRooms] = useState([]);
+  const [equipment, setEquipment] = useState([]);
+  const [knowledge, setKnowledge] = useState([]);
+  const [consilia, setConsilia] = useState([]);
+  const [telemed, setTelemed] = useState([]);
 
   useEffect(() => {
     let cancelled = false;
 
     async function load() {
       try {
-        const [meRes, staffRes, invitationsRes] = await Promise.all([
+        const [
+          meRes,
+          staffRes,
+          invitationsRes,
+          departmentsRes,
+          roomsRes,
+          equipmentRes,
+          knowledgeRes,
+          consiliaRes,
+          telemedRes,
+        ] = await Promise.all([
           getClinicMe(),
           listStaff().catch((err) => {
             console.warn("Failed to load staff:", err);
@@ -38,6 +64,30 @@ export default function ClinicDashboardPage() {
           }),
           listInvitations("pending").catch((err) => {
             console.warn("Failed to load invitations:", err);
+            return { items: [] };
+          }),
+          listDepartments({ status: "active" }).catch((err) => {
+            console.warn("Failed to load departments:", err);
+            return { items: [] };
+          }),
+          listRooms({ status: "active" }).catch((err) => {
+            console.warn("Failed to load rooms:", err);
+            return { items: [] };
+          }),
+          listEquipment({}).catch((err) => {
+            console.warn("Failed to load equipment:", err);
+            return { items: [] };
+          }),
+          listKnowledge({}).catch((err) => {
+            console.warn("Failed to load knowledge:", err);
+            return { items: [] };
+          }),
+          listConsilia({ status: "open" }).catch((err) => {
+            console.warn("Failed to load consilia:", err);
+            return { items: [] };
+          }),
+          listTelemed({}).catch((err) => {
+            console.warn("Failed to load telemed:", err);
             return { items: [] };
           }),
         ]);
@@ -54,6 +104,20 @@ export default function ClinicDashboardPage() {
         setFeatures(meRes.features || {});
         setStaff(staffRes.items || []);
         setInvitations(invitationsRes.items || []);
+        setDepartments(departmentsRes.items || []);
+        setRooms(roomsRes.items || []);
+        setEquipment(
+          (equipmentRes.items || []).filter((e) => e.status !== "archived"),
+        );
+        setKnowledge(
+          (knowledgeRes.items || []).filter((a) => a.status !== "archived"),
+        );
+        setConsilia(consiliaRes.items || []);
+        setTelemed(
+          (telemedRes.items || []).filter(
+            (x) => x.status === "scheduled" || x.status === "live",
+          ),
+        );
         setLoading(false);
       } catch (err) {
         if (cancelled) return;
@@ -131,6 +195,54 @@ export default function ClinicDashboardPage() {
           link="/clinic/staff"
         />
         <StatCard
+          icon="🏥"
+          label={t("dashboard.stats.departments", {
+            defaultValue: "Отделения",
+          })}
+          value={departments.length}
+          link="/clinic/departments"
+        />
+        <StatCard
+          icon="🚪"
+          label={t("dashboard.stats.rooms", {
+            defaultValue: "Кабинеты",
+          })}
+          value={rooms.length}
+          link="/clinic/rooms"
+        />
+        <StatCard
+          icon="🩻"
+          label={t("dashboard.stats.equipment", {
+            defaultValue: "Оборудование",
+          })}
+          value={equipment.length}
+          link="/clinic/equipment"
+        />
+        <StatCard
+          icon="📚"
+          label={t("dashboard.stats.knowledge", {
+            defaultValue: "База знаний",
+          })}
+          value={knowledge.length}
+          link="/clinic/knowledge"
+        />
+        <StatCard
+          icon="🧑‍⚕️"
+          label={t("dashboard.stats.consilia", {
+            defaultValue: "Консилиумы",
+          })}
+          value={consilia.length}
+          link="/clinic/consilia"
+        />
+        <StatCard
+          icon="📹"
+          label={t("dashboard.stats.telemed", {
+            defaultValue: "Телемедицина",
+          })}
+          value={telemed.length}
+          link="/clinic/telemed"
+        />
+        <StatCard
           icon="✉️"
           label={t("dashboard.stats.pendingInvitations")}
           value={invitations.length}
@@ -156,6 +268,15 @@ export default function ClinicDashboardPage() {
               <span className="clinic-dashboard-action-arrow">→</span>
             </Link>
           )}
+          <Link to="/clinic/public-page" className="clinic-dashboard-action">
+            <span className="clinic-dashboard-action-icon">🌐</span>
+            <span className="clinic-dashboard-action-label">
+              {t("dashboard.actions.publicPage", {
+                defaultValue: "Публичная страница",
+              })}
+            </span>
+            <span className="clinic-dashboard-action-arrow">→</span>
+          </Link>
           <Link to="/clinic/staff" className="clinic-dashboard-action">
             <span className="clinic-dashboard-action-icon">👥</span>
             <span className="clinic-dashboard-action-label">
@@ -167,6 +288,65 @@ export default function ClinicDashboardPage() {
             <span className="clinic-dashboard-action-icon">🩺</span>
             <span className="clinic-dashboard-action-label">
               {t("dashboard.actions.viewPatients")}
+            </span>
+            <span className="clinic-dashboard-action-arrow">→</span>
+          </Link>
+          <Link to="/clinic/departments" className="clinic-dashboard-action">
+            <span className="clinic-dashboard-action-icon">🏥</span>
+            <span className="clinic-dashboard-action-label">
+              {t("dashboard.actions.viewDepartments", {
+                defaultValue: "Отделения",
+              })}
+            </span>
+            <span className="clinic-dashboard-action-arrow">→</span>
+          </Link>
+          <Link to="/clinic/rooms" className="clinic-dashboard-action">
+            <span className="clinic-dashboard-action-icon">🚪</span>
+            <span className="clinic-dashboard-action-label">
+              {t("dashboard.actions.viewRooms", {
+                defaultValue: "Кабинеты",
+              })}
+            </span>
+            <span className="clinic-dashboard-action-arrow">→</span>
+          </Link>
+          <Link to="/clinic/equipment" className="clinic-dashboard-action">
+            <span className="clinic-dashboard-action-icon">🩻</span>
+            <span className="clinic-dashboard-action-label">
+              {t("dashboard.actions.viewEquipment", {
+                defaultValue: "Оборудование",
+              })}
+            </span>
+            <span className="clinic-dashboard-action-arrow">→</span>
+          </Link>
+          <Link to="/clinic/knowledge" className="clinic-dashboard-action">
+            <span className="clinic-dashboard-action-icon">📚</span>
+            <span className="clinic-dashboard-action-label">
+              {t("dashboard.actions.viewKnowledge", {
+                defaultValue: "База знаний",
+              })}
+            </span>
+            <span className="clinic-dashboard-action-arrow">→</span>
+          </Link>
+          <Link to="/clinic/announcements" className="clinic-dashboard-action">
+            {t("dashboard.actions.viewAnnouncements", {
+              defaultValue: "Объявления",
+            })}
+          </Link>
+          <Link to="/clinic/consilia" className="clinic-dashboard-action">
+            <span className="clinic-dashboard-action-icon">🧑‍⚕️</span>
+            <span className="clinic-dashboard-action-label">
+              {t("dashboard.actions.viewConsilia", {
+                defaultValue: "Консилиумы",
+              })}
+            </span>
+            <span className="clinic-dashboard-action-arrow">→</span>
+          </Link>
+          <Link to="/clinic/telemed" className="clinic-dashboard-action">
+            <span className="clinic-dashboard-action-icon">📹</span>
+            <span className="clinic-dashboard-action-label">
+              {t("dashboard.actions.viewTelemed", {
+                defaultValue: "Телемедицина",
+              })}
             </span>
             <span className="clinic-dashboard-action-arrow">→</span>
           </Link>

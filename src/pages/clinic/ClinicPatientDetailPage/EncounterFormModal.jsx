@@ -3,29 +3,21 @@
 // Modal for creating OR editing an encounter (medical history record).
 // Sprint 2 Phase 2D.2 — Step 2 (now supports edit-draft).
 //
+// FIELD PARITY (3 Jun 2026): added the 6 clinical fields that
+// EncounterDetailModal + patient-side detail already display but the form
+// couldn't capture: anamnesisVitae, statusLocalis, and the four study
+// results (ctScanResults / mriResults / ultrasoundResults /
+// laboratoryTestResults). The encounter model already had these fields —
+// only the input form was missing them, so they showed empty everywhere.
+//
 // Modes:
 //   - "create"      → POST createEncounter
-//                     "Сохранить как черновик" → status=draft
-//                     "Подписать и сохранить"  → status=signed
-//   - "edit-draft"  → PATCH updateEncounter (works only for draft;
-//                     backend rejects signed/amended via 422)
-//                     Same two buttons:
-//                       "Сохранить" → keeps status=draft
-//                       "Подписать и сохранить" → triggers a separate
-//                         signEncounter call after update (Step 2 picks
-//                         the "update then sign" two-step pattern to
-//                         keep the controller endpoint shape simple).
+//   - "edit-draft"  → PATCH updateEncounter (drafts only)
 //
 // Backend rules recap:
 //   - status=signed requires mainDiagnosis (code + text)
 //   - status=draft  has no required fields
 //   - update only works on drafts; for signed/amended use Amend modal
-//
-// ICD-10: integrated NLM autocomplete (30 May 2026, Sprint 3 task #2).
-// Reuses <ICD10Autocomplete/> from legacy myClinic form. NLM API is
-// public, no key needed. Returns {code, title} → mapped onto our flat
-// state shape (mainDiagnosisCode / CodeTitle / Text) to keep backend
-// payload and validation contracts intact.
 
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -35,9 +27,6 @@ import {
   signEncounter,
 } from "../../../api/clinic";
 import ICD10Autocomplete from "../../../components/ICD10Autocomplete";
-// Styles come from medicalRecordsSection.css (imported by the parent
-// MedicalRecordsSection). We share the .med-modal-* / .med-fieldset
-// classes — no separate CSS file needed.
 
 const EMPTY_FORM = {
   mainDiagnosisCode: "",
@@ -46,8 +35,14 @@ const EMPTY_FORM = {
   additionalDiagnosis: "",
   complaints: "",
   anamnesisMorbi: "",
+  anamnesisVitae: "",
   statusPreasens: "",
+  statusLocalis: "",
   recommendations: "",
+  ctScanResults: "",
+  mriResults: "",
+  ultrasoundResults: "",
+  laboratoryTestResults: "",
 };
 
 /**
@@ -62,8 +57,14 @@ function seedFromEncounter(enc) {
     additionalDiagnosis: enc.additionalDiagnosis || "",
     complaints: enc.complaints || "",
     anamnesisMorbi: enc.anamnesisMorbi || "",
+    anamnesisVitae: enc.anamnesisVitae || "",
     statusPreasens: enc.statusPreasens || "",
+    statusLocalis: enc.statusLocalis || "",
     recommendations: enc.recommendations || "",
+    ctScanResults: enc.ctScanResults || "",
+    mriResults: enc.mriResults || "",
+    ultrasoundResults: enc.ultrasoundResults || "",
+    laboratoryTestResults: enc.laboratoryTestResults || "",
   };
 }
 
@@ -95,14 +96,6 @@ export default function EncounterFormModal({
     }
   }
 
-  /**
-   * ICD-10 autocomplete handler. Receives {code, title} from NLM or
-   * null when the doctor clears the field.
-   *
-   * Auto-fill behaviour: the English title is dropped into
-   * mainDiagnosisText ONLY if the doctor hasn't typed anything yet —
-   * we never overwrite their wording. They can then translate it.
-   */
   function handleICD10Select(selected) {
     if (!selected) {
       setForm((prev) => ({
@@ -136,9 +129,6 @@ export default function EncounterFormModal({
     }
   }
 
-  /**
-   * Validate. `action` is "sign" (need mainDiagnosis) or "save" (no required fields).
-   */
   function validate(action) {
     const errs = {};
     if (action === "sign") {
@@ -156,13 +146,6 @@ export default function EncounterFormModal({
     return errs;
   }
 
-  /**
-   * Build the body the backend expects. Only includes fields that have a
-   * value — let backend defaults handle the rest. mainDiagnosis is only
-   * included if at least code OR text was entered.
-   *
-   * @param {string} status  "draft" | "signed" — included only for CREATE
-   */
   function buildPayload({ includeStatus, status } = {}) {
     const payload = {};
     if (includeStatus) payload.status = status;
@@ -181,25 +164,18 @@ export default function EncounterFormModal({
     payload.additionalDiagnosis = form.additionalDiagnosis.trim();
     payload.complaints = form.complaints.trim();
     payload.anamnesisMorbi = form.anamnesisMorbi.trim();
+    payload.anamnesisVitae = form.anamnesisVitae.trim();
     payload.statusPreasens = form.statusPreasens.trim();
+    payload.statusLocalis = form.statusLocalis.trim();
     payload.recommendations = form.recommendations.trim();
+    payload.ctScanResults = form.ctScanResults.trim();
+    payload.mriResults = form.mriResults.trim();
+    payload.ultrasoundResults = form.ultrasoundResults.trim();
+    payload.laboratoryTestResults = form.laboratoryTestResults.trim();
 
     return payload;
   }
 
-  /**
-   * Unified submit dispatcher. action: "save" | "sign"
-   *
-   * Create mode:
-   *   - save → POST status=draft
-   *   - sign → POST status=signed
-   *
-   * Edit-draft mode:
-   *   - save → PATCH (status stays draft)
-   *   - sign → PATCH then signEncounter (two-step on client; cleaner
-   *            than overloading the update endpoint with a "sign now"
-   *            flag on backend)
-   */
   async function handleSubmit(action) {
     const errs = validate(action);
     if (Object.keys(errs).length > 0) {
@@ -213,18 +189,15 @@ export default function EncounterFormModal({
     try {
       let saved;
       if (isEdit) {
-        // PATCH the draft with current form state
         const patchPayload = buildPayload({ includeStatus: false });
         const patched = await updateEncounter(encounter._id, patchPayload);
         saved = patched.encounter || patched;
 
-        // If user pressed "Подписать и сохранить" — chain a sign call.
         if (action === "sign") {
           const signed = await signEncounter(encounter._id, {});
           saved = signed.encounter || signed;
         }
       } else {
-        // CREATE
         const payload = buildPayload({
           includeStatus: true,
           status: action === "sign" ? "signed" : "draft",
@@ -264,7 +237,6 @@ export default function EncounterFormModal({
     }
 
     if (status === 422 || status === 409) {
-      // E.g. trying to update a non-draft. Show backend message verbatim.
       setErrors({
         _form:
           err.response?.data?.error ||
@@ -458,6 +430,20 @@ export default function EncounterFormModal({
 
             <div className="patients-form-field">
               <label>
+                {t("medical.encounters.fields.anamnesisVitae", {
+                  defaultValue: "Anamnesis vitae",
+                })}
+              </label>
+              <textarea
+                rows={3}
+                value={form.anamnesisVitae}
+                onChange={(e) => setField("anamnesisVitae", e.target.value)}
+                disabled={submitting}
+              />
+            </div>
+
+            <div className="patients-form-field">
+              <label>
                 {t("medical.encounters.fields.statusPreasens", {
                   defaultValue: "Status praesens",
                 })}
@@ -472,6 +458,20 @@ export default function EncounterFormModal({
 
             <div className="patients-form-field">
               <label>
+                {t("medical.encounters.fields.statusLocalis", {
+                  defaultValue: "Status localis",
+                })}
+              </label>
+              <textarea
+                rows={3}
+                value={form.statusLocalis}
+                onChange={(e) => setField("statusLocalis", e.target.value)}
+                disabled={submitting}
+              />
+            </div>
+
+            <div className="patients-form-field">
+              <label>
                 {t("medical.encounters.fields.recommendations", {
                   defaultValue: "Рекомендации",
                 })}
@@ -480,6 +480,76 @@ export default function EncounterFormModal({
                 rows={3}
                 value={form.recommendations}
                 onChange={(e) => setField("recommendations", e.target.value)}
+                disabled={submitting}
+              />
+            </div>
+          </fieldset>
+
+          {/* Study / examination results */}
+          <fieldset className="med-fieldset">
+            <legend>
+              {t("medical.encounters.studyResultsTitle", {
+                defaultValue: "Результаты исследований",
+              })}
+              <span className="patients-form-optional">
+                {t("common.optional", { defaultValue: "необязательно" })}
+              </span>
+            </legend>
+
+            <div className="patients-form-field">
+              <label>
+                {t("medical.encounters.fields.ctScanResults", {
+                  defaultValue: "Результаты КТ",
+                })}
+              </label>
+              <textarea
+                rows={2}
+                value={form.ctScanResults}
+                onChange={(e) => setField("ctScanResults", e.target.value)}
+                disabled={submitting}
+              />
+            </div>
+
+            <div className="patients-form-field">
+              <label>
+                {t("medical.encounters.fields.mriResults", {
+                  defaultValue: "Результаты МРТ",
+                })}
+              </label>
+              <textarea
+                rows={2}
+                value={form.mriResults}
+                onChange={(e) => setField("mriResults", e.target.value)}
+                disabled={submitting}
+              />
+            </div>
+
+            <div className="patients-form-field">
+              <label>
+                {t("medical.encounters.fields.ultrasoundResults", {
+                  defaultValue: "Результаты УЗИ",
+                })}
+              </label>
+              <textarea
+                rows={2}
+                value={form.ultrasoundResults}
+                onChange={(e) => setField("ultrasoundResults", e.target.value)}
+                disabled={submitting}
+              />
+            </div>
+
+            <div className="patients-form-field">
+              <label>
+                {t("medical.encounters.fields.laboratoryTestResults", {
+                  defaultValue: "Лабораторные данные",
+                })}
+              </label>
+              <textarea
+                rows={2}
+                value={form.laboratoryTestResults}
+                onChange={(e) =>
+                  setField("laboratoryTestResults", e.target.value)
+                }
                 disabled={submitting}
               />
             </div>

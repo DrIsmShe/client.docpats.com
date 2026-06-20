@@ -134,7 +134,6 @@
   "my_scientific_articles": "My scientific articles",
   "scientific_articles": "Scientific articles",
   "articles": "Articles",
-
   "edit_article": "Edit Article",
   "delete_article": "Delete Article",
   "article_title": "Article Title",
@@ -147,26 +146,21 @@
   "reply": "Reply",
   "edit": "Edit",
   "delete": "Delete",
-
   "upload_files": "Upload Files",
   "choose_file": "Choose File",
   "upload": "Upload",
-
   "error_occurred": "An error occurred",
   "success": "Success",
   "loading": "Loading...",
   "no_data": "No data available",
-
   "otp_code": "Verification Code",
   "child_otp": "Child OTP",
   "parent_otp": "Parent OTP",
-
   "search": "Search",
   "notifications": "Notifications",
   "settings": "Settings",
   "profile": "Profile",
   "save_changes": "Save Changes",
-
   "welcome": "Welcome",
   "registration_date": "Registration date",
   "view_all_notifications": "View all notifications",
@@ -177,6 +171,7 @@
   "colleagues": "Colleagues",
   "my_friends_colleagues": "My Friends Colleagues",
   "my_clinic": "My Clinic",
+  "my_clinics": "My clinics",
   "appointments_dashboard": "Appointments Dashboard",
   "attention": "Attention",
   "understood": "Understood",
@@ -218,55 +213,39 @@
       "restore": "Restore"
     }
   },
-
   "doctor_dashboard": {
     "title": "Doctor Dashboard",
-
     "stats_confirmed": "Confirmed",
     "stats_pending": "Pending",
     "stats_cancelled": "Cancelled",
     "stats_total_week": "Total for the Week",
-
     "loading": "Loading data...",
     "error_loading": "Failed to load doctor dashboard data.",
-
     "upcoming_title": "Upcoming appointments (within 30 minutes)",
     "no_upcoming": "No upcoming appointments.",
-
     "date_time": "Date & Time",
     "type": "Type",
     "status": "Status",
     "history": "History",
-
     "type_online": "Online",
     "type_offline": "Offline",
     "load_error": "Failed to load dashboard data.",
-
     "stats_total": "Total",
-
     "quick_links": "Quick Links",
-
     "quick_appointments_title": "My Appointments",
     "quick_appointments_desc": "View and manage patient appointments.",
     "go": "Go",
-
     "quick_black_dates_title": "Black Dates",
     "quick_black_dates_desc": "Configure vacation, blocked days, and exceptions.",
-
     "quick_messages_title": "Messages",
     "quick_messages_desc": "Communicate with patients and colleagues.",
-
     "quick_schedule_title": "Create Appointment Schedule",
     "quick_schedule_desc": "Create and manage your appointment calendar.",
-
     "upcoming_empty": "No upcoming appointments.",
-
     "appointment_type": "Type",
     "appointment_status": "Status",
-
     "online": "Online",
     "offline": "Offline",
-
     "status_confirmed": "Confirmed",
     "status_pending": "Pending",
     "status_cancelled": "Cancelled"
@@ -312,59 +291,46 @@
     "confirm_and_open_whatsapp": "Confirm and open WhatsApp",
     "loading": "Loading...",
     "error_loading": "Failed to load appointments.",
-
     "page_title": "My Appointments",
     "update": "Refresh",
     "archive": "Archive",
     "delete_all": "Delete all",
     "delete_all_success": "All appointments were deleted successfully.",
     "confirm_delete_all": "Delete ALL appointments? This action is irreversible!",
-
     "no_appointments": "You have no scheduled appointments yet.",
     "patient": "Patient",
     "time": "Date & Time",
     "type": "Type",
     "status": "Status",
     "actions": "Actions",
-
     "online": "Online",
     "offline": "Offline",
-
     "history": "History",
     "history_title": "Appointment History",
     "no_history": "No history available.",
-
     "delete": "Delete",
     "delete_confirm": "Are you sure you want to delete this appointment?",
     "deleted": "Appointment deleted successfully.",
-
     "status_updated": "Status updated to",
     "status_update_error": "Failed to update status.",
-
     "status_pending": "Pending",
     "status_confirmed": "Confirmed",
     "status_cancelled": "Cancelled",
     "status_completed": "Completed",
-
     "online_consultation": "Online Consultation",
-
     "archive_confirm": "Move this appointment to the archive?",
     "archived": "Appointment archived successfully.",
     "archive_error": "Failed to archive appointment.",
-
     "blocked_day_message": "This day is blocked and unavailable.",
-
     "calendar_title": "Doctor's Calendar",
     "calendar_busy": "Occupied",
     "calendar_free": "Free",
     "calendar_blocked": "Blocked",
     "calendar_blocked_reason": "Blocked because:",
-
     "day_schedule_title": "Schedule for",
     "free_slot": "Free slot",
     "close": "Close"
   },
-
   "article_form": {
     "create_title": "Create a new article",
     "title": "Title",
@@ -432,10 +398,8 @@
     "of": "of",
     "per_page": "Per page",
     "no_articles": "No articles yet.",
-
     "preview_no_title": "No title",
     "preview_no_text": "No description",
-
     "pagination_prev": "Previous",
     "pagination_next": "Next"
   },
@@ -444,48 +408,36 @@
     "error_prefix": "Error",
     "load_error": "Failed to load data.",
     "you": "You",
-
     "no_authors": "— authors not specified —",
     "no_references": "— references not specified —",
     "date_unknown": "Date unknown",
-
     "share": "Share",
     "edit": "Edit",
     "delete": "Delete",
     "confirm_delete_article": "Are you sure you want to delete this article?",
     "delete_article_failed": "Failed to delete the article.",
-
     "comments_title": "Comments",
     "no_comments": "No comments yet",
-
     "comment_placeholder": "Leave a comment...",
     "add_comment": "Add Comment",
     "add_comment_failed": "Failed to add comment.",
-
     "reply_placeholder": "Your reply...",
     "send_reply": "Send Reply",
     "add_reply_failed": "Failed to add reply.",
     "add_reply_to_reply_failed": "Failed to add reply to reply: {{error}}",
-
     "replied_to": "replied to",
     "answered_to": "answered to",
     "reply_nested_placeholder": "Reply to this reply...",
     "answer": "Answer",
-
     "anonymous": "Anonymous",
-
     "confirm_delete_comment": "Are you sure you want to delete this comment?",
     "delete_comment_failed": "Failed to delete comment.",
-
     "confirm_delete_reply": "Are you sure you want to delete this reply?",
     "delete_reply_failed": "Failed to delete reply.",
-
     "like_comment_failed": "Failed to like comment.",
     "like_reply_failed": "Failed to like reply.",
-
     "author_of_publication": "Author of publication:",
     "co_authors": "Co-authors:",
-
     "abstract_title": "Abstract:",
     "references_title": "References:"
   },
@@ -506,7 +458,6 @@
     "openNewTab": "Open in new tab",
     "close": "Close"
   },
-
   "documentTypes": {
     "license": "Medical License",
     "diploma": "Diploma",
@@ -576,7 +527,6 @@
     "newEmail": "New Email",
     "otpCode": "OTP Code"
   },
-
   "days": {
     "monday": "Monday",
     "tuesday": "Tuesday",
@@ -603,7 +553,6 @@
     "specializationNotSpecified": "Specialization not specified",
     "noComment": "(No comment provided)"
   },
-
   "doctors": {
     "title": "Doctors",
     "found": "Found",
@@ -648,7 +597,6 @@
     "noFriends": "You don't have any doctor friends yet.",
     "dateUnknown": "Unknown date",
     "doctor": "Doctor",
-
     "searchPlaceholder": "Search by first and last name…",
     "allSpecialties": "All specialties",
     "allCountries": "All countries",
@@ -656,7 +604,6 @@
     "perPage": "Per page",
     "found": "Found",
     "of": "of",
-
     "added": "Added",
     "remove": "Remove from friends",
     "deleting": "Removing...",
@@ -675,46 +622,38 @@
       "doctor": "Doctor",
       "unknown": "Unknown"
     },
-
     "profile": {
       "specialization": "Specialization",
       "company": "Company",
       "country": "Country",
       "phone": "Phone"
     },
-
     "endorse": {
       "byColleagues": "Recommended by colleagues",
       "count": "{{count}} doctor(s)",
       "none": "None yet",
       "rating": "Endorsement rating",
-
       "add": "Recommend doctor",
       "edit": "Edit comment",
       "remove": "Withdraw recommendation",
-
       "sending": "Sending...",
       "removing": "Removing...",
       "already": "You have already recommended this doctor.",
-
       "blockTitle": "Colleague recommendations",
       "show": "Show recommendations ({{count}})",
       "hide": "Hide recommendations ({{count}})",
       "noEndorsements": "No endorsements yet.",
-
       "modal": {
         "addTitle": "Add recommendation",
         "editTitle": "Edit recommendation comment",
         "description": "You may leave a short comment to accompany your recommendation. This is optional but makes the recommendation more valuable.",
         "placeholder": "For example: 'A very attentive and professional colleague...'",
-
         "cancel": "Cancel",
         "send": "Submit recommendation",
         "saveChanges": "Save changes",
         "saving": "Saving..."
       }
     },
-
     "friends": {
       "add": "Add to My Friends",
       "adding": "Adding...",
@@ -722,22 +661,18 @@
       "remove": "Remove from friends",
       "removing": "Removing..."
     },
-
     "about": {
       "title": "📚 About"
     },
-
     "comments": {
       "show": "Show comments ({{count}})",
       "hide": "Hide comments ({{count}})"
     },
-
     "articles": {
       "title": "📖 Doctor’s articles",
       "none": "This doctor has no published articles yet."
     }
   },
-
   "headerPatient": {
     "search": "Search",
     "welcome": "Welcome",
@@ -754,21 +689,18 @@
   },
   "PatientAppointmentsHistory": {
     "title": "📅 My Appointments",
-
     "labels": {
       "noAppointments": "You have not booked any appointments yet.",
       "unknownDoctor": "Unknown doctor",
       "type": "Type",
       "status": "Status"
     },
-
     "statuses": {
       "cancelled": "Cancelled",
       "confirmed": "Confirmed",
       "pending": "Pending",
       "completed": "Completed"
     },
-
     "actions": {
       "cancel": "Cancel appointment",
       "cancelling": "Cancelling...",
@@ -776,13 +708,55 @@
       "archive": "Archive",
       "restore": "Restore"
     },
-
     "errors": {
       "failedToLoad": "Failed to load appointments list",
       "loadError": "Error loading appointments",
       "noId": "Error: appointment ID not found",
       "cannotCancel": "Failed to cancel appointment"
     }
+  },
+  "myRx": {
+    "eyebrow": "Medical record",
+    "titleA": "My",
+    "titleB": "prescriptions",
+    "records": "records",
+    "empty": "You have no prescriptions yet",
+    "loadError": "Failed to load prescriptions",
+    "noDrugs": "Prescription",
+    "cancelReason": "Cancellation reason",
+    "pdf": "Download PDF",
+    "pdfError": "Failed to open prescription PDF"
+  },
+  "myClinics": {
+    "title": "My clinics",
+    "subtitle": "Clinics you work at",
+    "invitations": "Invitations",
+    "invitedAs": "Invitation",
+    "accept": "Accept",
+    "reject": "Decline",
+    "open": "Open",
+    "empty": "You are not part of any clinic yet",
+    "emptyWithInvites": "Accept an invitation to join a clinic",
+    "error": "Failed to load clinics",
+    "actionError": "Action failed",
+    "primary": "Primary",
+    "unnamed": "Clinic"
+  },
+  "myLab": {
+    "eyebrow": "Patient portal",
+    "titleA": "My",
+    "titleB": "lab results",
+    "records": "Results",
+    "empty": "No lab results yet.",
+    "loadError": "Failed to load lab results",
+    "pdfError": "Failed to generate PDF",
+    "sourceClinic": "Clinic",
+    "sourceLegacy": "Archive",
+    "colParam": "Parameter",
+    "colValue": "Value",
+    "colRef": "Reference",
+    "attached": "Result file",
+    "scan": "Scan"
   },
   "AsidePatient": {
     "brand": {
@@ -801,6 +775,7 @@
       "doctors": "Doctors"
     },
     "menu": {
+      "myPrescriptions": "My prescriptions",
       "home": "Home",
       "myOffice": "My Office",
       "myMedicalFiles": "My Medical Files",
@@ -864,7 +839,6 @@
       "loadError": "Failed to load articles."
     }
   },
-
   "aside": {
     "officeOf": "Office of",
     "doctor": "Dr.",
@@ -895,7 +869,6 @@
       "man": "Man",
       "woman": "Woman"
     },
-
     "columnsMenu": {
       "toggleTitle": "Show/hide columns",
       "phone": "Phone",
@@ -992,13 +965,11 @@
   "titles": {
     "moreAboutPatient": "More about {{firstName}} {{lastName}}"
   },
-
   "tabs": {
     "generalInfo": "General information",
     "clinicalInfo": "Clinical information",
     "caseHistories": "Case histories",
     "conductedExaminations": "Conducted examinations",
-
     "ctScan": "CT Scan",
     "mri": "MRI",
     "ultrasound": "Ultrasound",
@@ -1026,7 +997,6 @@
     "changePassword": "Change Password",
     "changeEmail": "Change Email"
   },
-
   "generalInfo": {
     "firstName": "First name",
     "lastName": "Last name",
@@ -1038,7 +1008,6 @@
     "dpMessengerNumber": "DP messenger number",
     "email": "Email"
   },
-
   "clinicalInfo": {
     "chronicDiseases": "Chronic diseases",
     "operations": "Operations",
@@ -1047,7 +1016,6 @@
     "immunization": "Immunization",
     "badHabits": "Bad habits"
   },
-
   "tables": {
     "date": "Date",
     "diagnosis": "Diagnosis",
@@ -1057,11 +1025,9 @@
     "examName": "Name of examination",
     "examResult": "Result of examination"
   },
-
   "scans": {
     "unknownDoctor": "Unknown doctor"
   },
-
   "labTests": {
     "bloodGeneral": "General blood test",
     "bloodBiochemistry": "Blood biochemistry",
@@ -1075,12 +1041,10 @@
     "other": "Other tests",
     "labName": "Laboratory name"
   },
-
   "states": {
     "loading": "Loading...",
     "patientNotFound": "Patient not found"
   },
-
   "buttons": {
     "choosePhoto": "Choose Photo",
     "save": "Save Changes",
@@ -1093,7 +1057,6 @@
     "addMedicalExamination": "Add medical examination",
     "chooseFile": "Choose file"
   },
-
   "values": {
     "notSpecified": "Not specified",
     "unknown": "Unknown",
@@ -1102,13 +1065,11 @@
     "woman": "Woman",
     "chooseCountry": "Select country"
   },
-
   "messages": {
     "loading": "Loading...",
     "photoNotSelected": "No photo selected",
     "noFileSelected": "No file selected"
   },
-
   "avatar_choose": {
     "chooseAvatar": "Choose Avatar"
   },
@@ -1120,13 +1081,11 @@
     "errorRetrievingPatientInfo": "Error retrieving patient information",
     "errorLoadingData": "Error while loading data"
   },
-
   "gender": {
     "man": "Man",
     "woman": "Woman",
     "unknown": "Unknown"
   },
-
   "exams": {
     "date": "Date of admission",
     "name": "Name of examination",
@@ -1151,7 +1110,6 @@
       "recommendations": "Recommendations",
       "chooseDiagnosis": "Choose a diagnosis from the list..."
     },
-
     "placeholders": {
       "diagnosisInput": "Choose a diagnosis from the list...",
       "additionalDiagnosis": "Write your addition to the diagnosis..."
@@ -1165,7 +1123,6 @@
       "active": "Active",
       "archived": "Archived"
     },
-
     "buttons": {
       "insert": "Insert",
       "preview": "Preview",
@@ -1176,27 +1133,34 @@
       "createTemplate": "Create a new template",
       "chooseFile": "Choose file"
     },
-
     "validation": {
       "fillRequired": "Please fill out the {{field}} field.",
       "requiredList": "Please fill in the following required fields:",
       "loginRequired": "Please log in.",
       "invalidDiagnosis": "Please select a valid diagnosis from the list."
     },
-
     "modal": {
       "title": "Template preview"
     },
-
     "templateNavigation": {
       "toTemplates": "To templates",
       "createNew": "Create a new template"
     },
-
     "profileCard": {
       "speciality": "Speciality"
     },
-
     "loading": "Loading..."
+  },
+  "publicClinic": {
+    "aboutTitle": "About the clinic",
+    "doctorsTitle": "Doctors",
+    "galleryTitle": "Gallery",
+    "contactsTitle": "Contacts",
+    "verified": "Verified",
+    "verifiedDoctor": "Verified doctor",
+    "loading": "Loading…",
+    "notFoundTitle": "Clinic not found",
+    "notFoundText": "The page may not be published yet, or the address is incorrect.",
+    "error": "Failed to load the page. Please try again later."
   }
 }

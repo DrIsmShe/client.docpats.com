@@ -152,10 +152,15 @@ export default function HeaderPatient() {
                   <hr className="dropdown-divider" />
                 </li>
 
-                <li className="px-2">
+                {/* <li className="px-2">
                   <NotificationBell onUnreadChange={setUnreadCount} limit={5} />
+                </li> */}
+                <li className="nav-item d-flex align-items-center">
+                  <NotificationBell
+                    viewAllLink="/patient/notification-for-patient"
+                    limit={8}
+                  />
                 </li>
-
                 <li>
                   <hr className="dropdown-divider" />
                 </li>

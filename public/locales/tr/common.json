@@ -132,7 +132,6 @@
   "education": "Eğitim",
   "chat": "Sohbet",
   "articles": "Makaleler",
-
   "edit_article": "Makaleyi düzenle",
   "delete_article": "Makaleyi sil",
   "article_title": "Makale başlığı",
@@ -147,20 +146,16 @@
   "reply": "Yanıtla",
   "edit": "Düzenle",
   "delete": "Sil",
-
   "upload_files": "Dosya yükle",
   "choose_file": "Dosya seç",
   "upload": "Yükle",
-
   "error_occurred": "Bir hata oluştu",
   "success": "Başarılı",
   "loading": "Yükleniyor...",
   "no_data": "Veri yok",
-
   "otp_code": "Doğrulama kodu",
   "child_otp": "Çocuğun OTP kodu",
   "parent_otp": "Ebeveyn OTP kodu",
-
   "search": "Ara",
   "notifications": "Bildirimler",
   "settings": "Ayarlar",
@@ -176,6 +171,7 @@
   "colleagues": "Meslektaşlar",
   "my_friends_colleagues": "Arkadaş meslektaşlarım",
   "my_clinic": "Kliniklerim",
+  "my_clinics": "Kliniklerim",
   "appointments_dashboard": "Randevu Paneli",
   "attention": "Dikkat",
   "understood": "Anladım",
@@ -236,52 +232,37 @@
   "no": "Hayır",
   "doctor_dashboard": {
     "title": "Doktor Paneli",
-
     "stats_confirmed": "Onaylandı",
     "stats_pending": "Beklemede",
     "stats_cancelled": "İptal edildi",
     "stats_total_week": "Haftalık toplam",
-
     "loading": "Veriler yükleniyor...",
     "error_loading": "Doktor paneli verileri yüklenemedi.",
-
     "upcoming_title": "Yaklaşan randevular (30 dakika içinde)",
     "no_upcoming": "Yaklaşan randevu yok.",
-
     "date_time": "Tarih ve Saat",
     "type": "Tür",
     "status": "Durum",
     "history": "Geçmiş",
-
     "type_online": "Online",
     "type_offline": "Ofline",
     "load_error": "Panel verileri yüklenemedi.",
-
     "stats_total": "Toplam",
-
     "quick_links": "Hızlı bağlantılar",
-
     "quick_appointments_title": "Randevularım",
     "quick_appointments_desc": "Hasta randevularını görüntüleyin ve yönetin.",
     "go": "Git",
-
     "quick_black_dates_title": "Kara Günler",
     "quick_black_dates_desc": "Tatil, engellenmiş günler ve istisnaları yönetin.",
-
     "quick_messages_title": "Mesajlar",
     "quick_messages_desc": "Hastalar ve meslektaşlarla iletişim.",
-
     "quick_schedule_title": "Randevu Takvimi Oluştur",
     "quick_schedule_desc": "Randevu takviminizi oluşturun ve yönetin.",
-
     "upcoming_empty": "Yaklaşan randevu yok.",
-
     "appointment_type": "Randevu türü",
     "appointment_status": "Durum",
-
     "online": "Online",
     "offline": "Offline",
-
     "status_confirmed": "Onaylandı",
     "status_pending": "Beklemede",
     "status_cancelled": "İptal edildi"
@@ -348,59 +329,46 @@
     "confirm_and_open_whatsapp": "Onayla ve WhatsApp’ı aç",
     "loading": "Yükleniyor...",
     "error_loading": "Randevular yüklenemedi.",
-
     "page_title": "Randevularım",
     "update": "Yenile",
     "archive": "Arşivle",
     "delete_all": "Hepsini sil",
     "delete_all_success": "Tüm randevular başarıyla silindi.",
     "confirm_delete_all": "TÜM randevular silinsin mi? Bu işlem geri alınamaz!",
-
     "no_appointments": "Henüz randevunuz yok.",
     "patient": "Hasta",
     "time": "Tarih ve Saat",
     "type": "Tür",
     "status": "Durum",
     "actions": "İşlemler",
-
     "online": "Online",
     "offline": "Ofline",
-
     "history": "Geçmiş",
     "history_title": "Randevu Geçmişi",
     "no_history": "Geçmiş bulunmamaktadır.",
-
     "delete": "Sil",
     "delete_confirm": "Bu randevuyu silmek istediğinizden emin misiniz?",
     "deleted": "Randevu başarıyla silindi.",
-
     "status_updated": "Durum değiştirildi:",
     "status_update_error": "Durum güncellenemedi.",
-
     "status_pending": "Beklemede",
     "status_confirmed": "Onaylandı",
     "status_cancelled": "İptal edildi",
     "status_completed": "Tamamlandı",
-
     "online_consultation": "Online Konsültasyon",
-
     "archive_confirm": "Bu randevu arşivlensin mi?",
     "archived": "Randevu başarıyla arşivlendi.",
     "archive_error": "Arşivleme başarısız oldu.",
-
     "blocked_day_message": "Bu gün engellenmiştir ve kullanılamaz.",
-
     "calendar_title": "Doktor Takvimi",
     "calendar_busy": "Dolu",
     "calendar_free": "Boş",
     "calendar_blocked": "Engelli",
     "calendar_blocked_reason": "Engel nedeni:",
-
     "day_schedule_title": "Gün Programı:",
     "free_slot": "Boş zaman",
     "close": "Kapat"
   },
-
   "article_form": {
     "create_title": "Yeni makale oluştur",
     "title": "Başlık",
@@ -468,10 +436,8 @@
     "of": "/",
     "per_page": "Sayfa başına",
     "no_articles": "Henüz makale yok.",
-
     "preview_no_title": "Başlık yok",
     "preview_no_text": "Açıklama yok",
-
     "pagination_prev": "Önceki",
     "pagination_next": "Sonraki"
   },
@@ -480,52 +446,39 @@
     "error_prefix": "Hata",
     "load_error": "Veriler yüklenemedi.",
     "you": "Siz",
-
     "no_authors": "— yazar belirtilmemiş —",
     "no_references": "— kaynak belirtilmemiş —",
     "date_unknown": "Tarih bilinmiyor",
-
     "share": "Paylaş",
     "edit": "Düzenle",
     "delete": "Sil",
     "confirm_delete_article": "Bu makaleyi silmek istediğinize emin misiniz?",
     "delete_article_failed": "Makale silinemedi.",
-
     "comments_title": "Yorumlar",
     "no_comments": "Henüz yorum yok",
-
     "comment_placeholder": "Yorum bırakın...",
     "add_comment": "Yorum ekle",
     "add_comment_failed": "Yorum eklenemedi.",
-
     "reply_placeholder": "Cevabınız...",
     "send_reply": "Cevabı gönder",
     "add_reply_failed": "Cevap eklenemedi.",
     "add_reply_to_reply_failed": "Cevaba cevap eklenemedi: {{error}}",
-
     "replied_to": "yanıtladı",
     "answered_to": "cevap verdi",
     "reply_nested_placeholder": "Bu cevaba cevap yazın...",
     "answer": "Cevapla",
-
     "anonymous": "Anonim",
-
     "confirm_delete_comment": "Bu yorumu silmek istiyor musunuz?",
     "delete_comment_failed": "Yorum silinemedi.",
-
     "confirm_delete_reply": "Bu cevabı silmek istiyor musunuz?",
     "delete_reply_failed": "Cevap silinemedi.",
-
     "like_comment_failed": "Yorum beğenilemedi.",
     "like_reply_failed": "Cevap beğenilemedi.",
-
     "author_of_publication": "Yayınlayan yazar:",
     "co_authors": "Eş-yazarlar:",
-
     "abstract_title": "Özet:",
     "references_title": "Kaynaklar:"
   },
-
   "verification": {
     "tab": "Doğrulama",
     "documentType": "Belge Türü",
@@ -612,7 +565,6 @@
     "newEmail": "Yeni email",
     "otpCode": "OTP kodu"
   },
-
   "days": {
     "monday": "Pazartesi",
     "tuesday": "Salı",
@@ -683,7 +635,6 @@
     "noFriends": "Henüz doktor arkadaşınız yok.",
     "dateUnknown": "Tarih bilinmiyor",
     "doctor": "Doktor",
-
     "searchPlaceholder": "Ad ve soyada göre ara…",
     "allSpecialties": "Tüm uzmanlıklar",
     "allCountries": "Tüm ülkeler",
@@ -691,7 +642,6 @@
     "perPage": "Sayfada",
     "found": "Bulundu",
     "of": "toplam",
-
     "added": "Eklendi",
     "remove": "Arkadaşlardan çıkar",
     "deleting": "Kaldırılıyor...",
@@ -710,46 +660,38 @@
       "doctor": "Doktor",
       "unknown": "Bilinmiyor"
     },
-
     "profile": {
       "specialization": "Uzmanlık",
       "company": "Kurum",
       "country": "Ülke",
       "phone": "Telefon"
     },
-
     "endorse": {
       "byColleagues": "Meslektaşlar tarafından önerildi",
       "count": "{{count}} doktor",
       "none": "Henüz yok",
       "rating": "Öneri puanı",
-
       "add": "Doktoru öner",
       "edit": "Yorumu düzenle",
       "remove": "Öneriyi geri çek",
-
       "sending": "Gönderiliyor...",
       "removing": "Kaldırılıyor...",
       "already": "Bu doktoru zaten önerdiniz.",
-
       "blockTitle": "Meslektaş önerileri",
       "show": "Önerileri göster ({{count}})",
       "hide": "Önerileri gizle ({{count}})",
       "noEndorsements": "Henüz öneri yok.",
-
       "modal": {
         "addTitle": "Öneri ekle",
         "editTitle": "Öneri yorumunu düzenle",
         "description": "Önerinize kısa bir yorum ekleyebilirsiniz. Zorunlu değildir ancak öneriyi daha değerli yapar.",
         "placeholder": "Örneğin: 'Çok dikkatli ve profesyonel bir meslektaş...'",
-
         "cancel": "İptal",
         "send": "Öneriyi gönder",
         "saveChanges": "Değişiklikleri kaydet",
         "saving": "Kaydediliyor..."
       }
     },
-
     "friends": {
       "add": "Arkadaşlarıma ekle",
       "adding": "Ekleniyor...",
@@ -757,22 +699,18 @@
       "remove": "Arkadaşlıktan çıkar",
       "removing": "Kaldırılıyor..."
     },
-
     "about": {
       "title": "📚 Hakkında"
     },
-
     "comments": {
       "show": "Yorumları göster ({{count}})",
       "hide": "Yorumları gizle ({{count}})"
     },
-
     "articles": {
       "title": "📖 Doktorun makaleleri",
       "none": "Doktorun henüz yayımlanmış makalesi yok."
     }
   },
-
   "headerPatient": {
     "search": "Arama",
     "welcome": "Hoş geldiniz",
@@ -789,33 +727,56 @@
   },
   "PatientAppointmentsHistory": {
     "title": "📅 Randevu Geçmişim",
-
     "labels": {
       "noAppointments": "Henüz herhangi bir randevu almadınız.",
       "unknownDoctor": "Bilinmeyen doktor",
       "type": "Randevu türü",
       "status": "Durum"
     },
-
     "statuses": {
       "cancelled": "İptal edildi",
       "confirmed": "Onaylandı",
       "pending": "Beklemede",
       "completed": "Tamamlandı"
     },
-
     "actions": {
       "cancel": "İptal et",
       "cancelling": "İptal ediliyor...",
       "confirmCancel": "Bu randevuyu iptal etmek istediğinize emin misiniz?"
     },
-
     "errors": {
       "failedToLoad": "Randevu listesi alınamadı",
       "loadError": "Randevu geçmişi yüklenirken hata oluştu",
       "noId": "Hata: randevu ID bulunamadı",
       "cannotCancel": "Randevu iptal edilemedi"
     }
+  },
+  "myRx": {
+    "eyebrow": "Sağlık kaydı",
+    "titleA": "Benim",
+    "titleB": "reçetelerim",
+    "records": "kayıt",
+    "empty": "Henüz reçeteniz yok",
+    "loadError": "Reçeteler yüklenemedi",
+    "noDrugs": "Reçete",
+    "cancelReason": "İptal nedeni",
+    "pdf": "PDF indir",
+    "pdfError": "Reçete PDF'i açılamadı"
+  },
+  "myClinics": {
+    "title": "Kliniklerim",
+    "subtitle": "Çalıştığınız klinikler",
+    "invitations": "Davetler",
+    "invitedAs": "Davet",
+    "accept": "Kabul et",
+    "reject": "Reddet",
+    "open": "Aç",
+    "empty": "Henüz hiçbir kliniğe dahil değilsiniz",
+    "emptyWithInvites": "Bir kliniğe katılmak için daveti kabul edin",
+    "error": "Klinikler yüklenemedi",
+    "actionError": "İşlem başarısız",
+    "primary": "Birincil",
+    "unnamed": "Klinik"
   },
   "AsidePatient": {
     "brand": {
@@ -834,6 +795,7 @@
       "doctors": "Doktorlar"
     },
     "menu": {
+      "myPrescriptions": "Reçetelerim",
       "home": "Ana Sayfa",
       "myOffice": "Ofisim",
       "myMedicalFiles": "Tıbbi Dosyalarım",
@@ -844,6 +806,22 @@
       "appointments": "Randevularım",
       "logout": "Çıkış Yap"
     }
+  },
+  "myLab": {
+    "eyebrow": "Hasta portalı",
+    "titleA": "Tahlil",
+    "titleB": "sonuçlarım",
+    "records": "Sonuç",
+    "empty": "Henüz tahlil sonucu yok.",
+    "loadError": "Tahlil sonuçları yüklenemedi",
+    "pdfError": "PDF oluşturulamadı",
+    "sourceClinic": "Klinik",
+    "sourceLegacy": "Arşiv",
+    "colParam": "Parametre",
+    "colValue": "Değer",
+    "colRef": "Referans",
+    "attached": "Sonuç dosyası",
+    "scan": "Tarama"
   },
   "articles-from-doctor": {
     "header": {
@@ -1034,7 +1012,6 @@
     "hidePassword": "Şifreyi gizle",
     "chooseFile": "Dosya seç"
   },
-
   "tabs": {
     "generalInfo": "Genel bilgiler",
     "clinicalInfo": "Klinik bilgiler",
@@ -1067,7 +1044,6 @@
     "coronography": "Koroner anjiografi",
     "labTests": "Laboratuvar testleri"
   },
-
   "generalInfo": {
     "firstName": "Ad",
     "lastName": "Soyad",
@@ -1079,7 +1055,6 @@
     "dpMessengerNumber": "DP mesaj numarası",
     "email": "E-posta"
   },
-
   "clinicalInfo": {
     "chronicDiseases": "Kronik hastalıklar",
     "operations": "Ameliyatlar",
@@ -1088,7 +1063,6 @@
     "immunization": "Aşılama",
     "badHabits": "Kötü alışkanlıklar"
   },
-
   "tables": {
     "date": "Tarih",
     "diagnosis": "Tanı",
@@ -1098,11 +1072,9 @@
     "examName": "Muayene adı",
     "examResult": "Muayene sonucu"
   },
-
   "scans": {
     "unknownDoctor": "Bilinmeyen doktor"
   },
-
   "labTests": {
     "bloodGeneral": "Tam kan sayımı",
     "bloodBiochemistry": "Biyokimya",
@@ -1116,12 +1088,10 @@
     "other": "Diğer testler",
     "labName": "Laboratuvar adı"
   },
-
   "states": {
     "loading": "Yükleniyor...",
     "patientNotFound": "Hasta bulunamadı"
   },
-
   "errors": {
     "failedToLoad": "Veriler yüklenemedi",
     "errorRetrievingPatientInfo": "Hasta bilgisi alınırken hata oluştu",
@@ -1130,13 +1100,11 @@
     "backToHome": "Ana sayfaya dön",
     "pageNotFoundAlt": "Sayfa bulunamadı"
   },
-
   "gender": {
     "man": "Erkek",
     "woman": "Kadın",
     "unknown": "Bilinmiyor"
   },
-
   "values": {
     "unknown": "Bilinmiyor",
     "notSpecified": "Belirtilmedi",
@@ -1145,7 +1113,6 @@
     "woman": "Kadın",
     "chooseCountry": "Ülke seçiniz"
   },
-
   "exams": {
     "date": "Kabul tarihi",
     "name": "Muayene adı",
@@ -1154,12 +1121,10 @@
     "unknownDoctor": "Bilinmeyen doktor",
     "notSpecified": "Belirtilmedi"
   },
-
   "messages": {
     "loading": "Yükleniyor...",
     "photoNotSelected": "Fotoğraf seçilmedi"
   },
-
   "avatar_choose": {
     "chooseAvatar": "Avatar seç"
   },
@@ -1179,12 +1144,10 @@
       "recommendations": "Öneriler",
       "chooseDiagnosis": "Listeden bir tanı seçin..."
     },
-
     "placeholders": {
       "diagnosisInput": "Listeden bir tanı seçin...",
       "additionalDiagnosis": "Tanın ek bilgisini yazın..."
     },
-
     "buttons": {
       "insert": "Ekle",
       "preview": "Önizleme",
@@ -1194,27 +1157,34 @@
       "toTemplates": "Şablonlara git",
       "createTemplate": "Yeni şablon oluştur"
     },
-
     "validation": {
       "fillRequired": "{{field}} alanını doldurun.",
       "requiredList": "Lütfen aşağıdaki zorunlu alanları doldurun:",
       "loginRequired": "Lütfen giriş yapın.",
       "invalidDiagnosis": "Listeden geçerli bir tanı seçin."
     },
-
     "modal": {
       "title": "Şablon önizlemesi"
     },
-
     "templateNavigation": {
       "toTemplates": "Şablon listesine git",
       "createNew": "Yeni şablon oluştur"
     },
-
     "profileCard": {
       "speciality": "Uzmanlık"
     },
-
     "loading": "Yükleniyor..."
+  },
+  "publicClinic": {
+    "aboutTitle": "Klinik hakkında",
+    "doctorsTitle": "Doktorlar",
+    "galleryTitle": "Galeri",
+    "contactsTitle": "İletişim",
+    "verified": "Doğrulandı",
+    "verifiedDoctor": "Doğrulanmış doktor",
+    "loading": "Yükleniyor…",
+    "notFoundTitle": "Klinik bulunamadı",
+    "notFoundText": "Sayfa henüz yayınlanmamış veya adres yanlış olabilir.",
+    "error": "Sayfa yüklenemedi. Lütfen daha sonra tekrar deneyin."
   }
 }

@@ -3,25 +3,18 @@
 // Second entry-point for booking: opened from ClinicPatientDetailPage.
 //
 // The patient is known up-front, the doctor/date/slot are not. This is
-// the inverse of BookAppointmentModal (which is opened from the calendar
-// where the doctor/date/slot are known and the patient is searched).
+// the inverse of BookAppointmentModal.
 //
 // Flow:
-//   1. DOCTOR — dropdown of all doctors in the clinic (from listStaff,
-//      filtered to actorType==="user" + role in [owner, admin, doctor]).
+//   1. DOCTOR — dropdown of all doctors in the clinic.
 //   2. DATE — date picker, default = today.
-//   3. SLOT — when doctor + date are both set, fetch listFreeSlots() and
-//      render a dropdown. Empty → "no free slots".
-//   4. DURATION — pills 15/30/60/90 (same as BookAppointmentModal).
-//   5. REASON — optional textarea.
+//   3. SLOT — when doctor + date are both set, fetch listFreeSlots().
+//   4. DEPARTMENT — optional dropdown of active clinic departments.
+//   5. DURATION — pills 15/30/60/90.
+//   6. REASON — optional textarea.
 //
 // Submit → POST /appointments with the chosen slot's startUTC + duration.
-// 409 → "this time is taken" (something raced — the slot list is stale).
-//
-// Reuses the .ccal-* CSS classes from clinicCalendarPage.css, so its host
-// page (ClinicPatientDetailPage) needs to import that stylesheet (or we
-// can copy the relevant classes into clinicPatientDetailPage.css —
-// instructions in the integration step).
+// 409 → "this time is taken" (the slot list is stale).
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,14 +23,13 @@ import {
   listStaff,
   listFreeSlots,
   createAppointment,
+  listDepartments,
 } from "../../../api/clinic";
 
 // ─── Constants ──────────────────────────────────────────────────
 
 const DURATION_OPTIONS = [15, 30, 60, 90];
 
-// Roles that can hold a working schedule (mirrors the day-1 backend
-// gate in assertDoctorOfClinic). Used to filter the doctor dropdown.
 const DOCTOR_ROLES = new Set(["owner", "admin", "doctor"]);
 
 // ─── Helpers ────────────────────────────────────────────────────
@@ -94,8 +86,11 @@ export default function BookFromPatientModal({
 
   const [slots, setSlots] = useState([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
-  const [slotMeta, setSlotMeta] = useState({ slotDurationMinutes: 30 });
+  const [, setSlotMeta] = useState({ slotDurationMinutes: 30 });
   const [selectedSlotIdx, setSelectedSlotIdx] = useState("");
+
+  const [departments, setDepartments] = useState([]);
+  const [departmentId, setDepartmentId] = useState("");
 
   const [duration, setDuration] = useState(30);
   const [reason, setReason] = useState("");
@@ -123,6 +118,21 @@ export default function BookFromPatientModal({
         if (cancelled) return;
         setDoctors([]);
         setDoctorsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // ─── Load active departments once (optional field) ───
+  useEffect(() => {
+    let cancelled = false;
+    listDepartments({ status: "active" })
+      .then((res) => {
+        if (!cancelled) setDepartments(res.items || []);
+      })
+      .catch(() => {
+        /* department selection is optional — ignore failures */
       });
     return () => {
       cancelled = true;
@@ -176,6 +186,7 @@ export default function BookFromPatientModal({
         patientId: patient._id,
         startUTC: startUTC.toISOString(),
         endUTC: endUTC.toISOString(),
+        ...(departmentId && { departmentId }),
         ...(reason.trim() && { reason: reason.trim() }),
       });
 
@@ -189,7 +200,6 @@ export default function BookFromPatientModal({
               defaultValue: "That time is already taken by another appointment",
             }),
         );
-        // Refresh the slot list since something raced.
         loadSlots(doctorId, date);
       } else {
         setErrorMsg(
@@ -221,11 +231,6 @@ export default function BookFromPatientModal({
     <div
       className="ccal-modal-overlay"
       onClick={(e) => {
-        // Close ONLY on direct clicks on the backdrop. Without this guard,
-        // a click on a button inside the modal could close the modal if
-        // the button was removed from the DOM between click and bubble
-        // (e.g. our inline-create form unmounts on success). Comparing
-        // target === currentTarget is the standard, race-proof pattern.
         if (e.target === e.currentTarget) onClose();
       }}
     >
@@ -332,6 +337,33 @@ export default function BookFromPatientModal({
             </select>
           )}
         </div>
+
+        {/* Department (optional) */}
+        {departments.length > 0 && (
+          <div className="ccal-field">
+            <span>
+              {t("calendar.book_modal.department", {
+                defaultValue: "Отделение",
+              })}
+            </span>
+            <select
+              value={departmentId}
+              onChange={(e) => setDepartmentId(e.target.value)}
+            >
+              <option value="">
+                {t("calendar.book_modal.departmentNone", {
+                  defaultValue: "— не указано —",
+                })}
+              </option>
+              {departments.map((d) => (
+                <option key={d._id || d.id} value={d._id || d.id}>
+                  {d.name}
+                  {d.code ? ` (${d.code})` : ""}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {/* Duration pills */}
         <div className="ccal-field">

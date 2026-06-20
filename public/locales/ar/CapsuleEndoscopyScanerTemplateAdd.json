@@ -1,4 +1,41 @@
 {
+  "patients": {
+    "consentRequests": {
+      "title": "طلبات الوصول إلى البيانات الطبية",
+      "empty": "لا توجد طلبات وصول لهذا المريض بعد.",
+      "requestedLabel": "المطلوب:",
+      "approvedLabel": "المعتمد:",
+      "patientNote": "رد المريض:",
+      "respondedAt": "الرد: {{date}}",
+      "expiresIn": "ينتهي خلال {{count}} يوم",
+      "expiresSoon": "ينتهي اليوم",
+      "cancel": "إلغاء",
+      "confirmCancel": "إلغاء طلب الوصول؟ لن يراه المريض بعد الآن.",
+      "scopeApproved": "تمت الموافقة من المريض",
+      "scopeDropped": "غير معتمد",
+      "status": {
+        "pending": "بانتظار الرد",
+        "approved": "تمت الموافقة",
+        "rejected": "مرفوض",
+        "cancelled": "ملغى",
+        "expired": "منتهي الصلاحية"
+      },
+      "scopes": {
+        "encounters": "الزيارات والتشخيصات",
+        "allergies": "الحساسية",
+        "chronicDiseases": "الأمراض المزمنة",
+        "operations": "العمليات الجراحية",
+        "familyHistory": "التاريخ العائلي",
+        "immunization": "التطعيمات",
+        "imaging": "الصور والفحوصات"
+      },
+      "errors": {
+        "loadFailed": "فشل تحميل الطلبات",
+        "cancelFailed": "فشل إلغاء الطلب",
+        "notPending": "تغيّرت حالة الطلب — يتم تحديث القائمة."
+      }
+    }
+  },
   "CapsuleEndoscopyScanerTemplateDiagnosisList": {
     "title": "قوالب تشخيص التنظير بالكبسولة",
     "buttons": {

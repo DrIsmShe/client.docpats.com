@@ -19,6 +19,7 @@ import {
   LuCalendarClock,
   LuMessagesSquare,
   LuLogOut,
+  LuBuilding2,
 } from "react-icons/lu";
 import { TbStethoscope } from "react-icons/tb";
 
@@ -521,6 +522,12 @@ export default function Aside() {
               <LuHospital />
             </span>
             {t("my_clinic")}
+          </Link>
+          <Link className="dp2-item is-chat" to="/doctor/my-clinics">
+            <span className="dp2-icon">
+              <LuBuilding2 />
+            </span>
+            {t("my_clinics", { defaultValue: "Мои клиники" })}
           </Link>
           <div
             className="dp2-item is-chat"

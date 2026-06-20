@@ -141,26 +141,21 @@
   "publish": "Dərc et",
   "save": "Yadda saxla",
   "cancel": "Ləğv et",
-
   "comments": "Şərhlər",
   "add_comment": "Şərh əlavə edin...",
   "reply": "Cavab ver",
   "edit": "Redaktə et",
   "delete": "Sil",
-
   "upload_files": "Fayl yükləmə",
   "choose_file": "Fayl seçin",
   "upload": "Yüklə",
-
   "error_occurred": "Xəta baş verdi",
   "success": "Uğurlu",
   "loading": "Yüklənir...",
   "no_data": "Məlumat yoxdur",
-
   "otp_code": "Təsdiq kodu",
   "child_otp": "Uşağın OTP kodu",
   "parent_otp": "Valideynin OTP kodu",
-
   "search": "Axtar",
   "notifications": "Bildirişlər",
   "settings": "Ayarlar",
@@ -176,6 +171,7 @@
   "colleagues": "Həmkarlar",
   "my_friends_colleagues": "Dost həmkarlarım",
   "my_clinic": "Klinikam",
+  "my_clinics": "Klinikalarım",
   "appointments_dashboard": "Qəbul paneli",
   "attention": "Diqqət",
   "understood": "Başa düşdüm",
@@ -236,52 +232,37 @@
   "no": "Xeyr",
   "doctor_dashboard": {
     "title": "Həkim Paneli",
-
     "stats_confirmed": "Təsdiqlənmiş",
     "stats_pending": "Gözləmədə",
     "stats_cancelled": "Ləğv edilib",
     "stats_total_week": "Həftəlik toplam",
-
     "loading": "Məlumat yüklənir...",
     "error_loading": "Həkim panelinin məlumatları yüklənə bilmədi.",
-
     "upcoming_title": "Yaxın görüşlər (30 dəqiqə içində)",
     "no_upcoming": "Yaxın görüşlər yoxdur.",
-
     "date_time": "Tarix və vaxt",
     "type": "Növ",
     "status": "Status",
     "history": "Tarixçə",
-
     "type_online": "Onlayn",
     "type_offline": "Oflayn",
     "load_error": "Panel məlumatları yüklənə bilmədi.",
-
     "stats_total": "Cəmi",
-
     "quick_links": "Sürətli keçidlər",
-
     "quick_appointments_title": "Qəbullarım",
     "quick_appointments_desc": "Pasiyent qəbullarına baxın və idarə edin.",
     "go": "Keçid",
-
     "quick_black_dates_title": "Qara tarixlər",
     "quick_black_dates_desc": "Məzuniyyət, bloklanmış günlər və istisnaları tənzimləyin.",
-
     "quick_messages_title": "Mesajlar",
     "quick_messages_desc": "Pasiyentlər və həmkarlarla ünsiyyət.",
-
     "quick_schedule_title": "Qəbul cədvəli yarat",
     "quick_schedule_desc": "Qəbul cədvəlinizi yaradın və idarə edin.",
-
     "upcoming_empty": "Yaxın zamanda qəbul yoxdur.",
-
     "appointment_type": "Qəbul növü",
     "appointment_status": "Status",
-
     "online": "Onlayn",
     "offline": "Oflayn",
-
     "status_confirmed": "Təsdiqlənib",
     "status_pending": "Gözləmədə",
     "status_cancelled": "Ləğv edilib"
@@ -348,59 +329,46 @@
     "confirm_and_open_whatsapp": "Təsdiqlə və WhatsApp aç",
     "loading": "Yüklənir...",
     "error_loading": "Qəbul məlumatlarını yükləmək mümkün olmadı.",
-
     "page_title": "Mənim qəbul tarixlərim",
     "update": "Yenilə",
     "archive": "Arxivləşdir",
     "delete_all": "Hamısını sil",
     "delete_all_success": "Bütün qəbullar uğurla silindi.",
     "confirm_delete_all": "Bütün qəbulları silmək istəyirsiniz? Bu əməliyyat geri qaytarılmır!",
-
     "no_appointments": "Hələ qəbulunuz yoxdur.",
     "patient": "Pasiyent",
     "time": "Tarix və vaxt",
     "type": "Növ",
     "status": "Status",
     "actions": "Əməliyyatlar",
-
     "online": "Onlayn",
     "offline": "Oflayn",
-
     "history": "Tarixçə",
     "history_title": "Qəbul tarixçəsi",
     "no_history": "Tarixçə mövcud deyil.",
-
     "delete": "Sil",
     "delete_confirm": "Bu qəbulu silmək istədiyinizə əminsiniz?",
     "deleted": "Qəbul uğurla silindi.",
-
     "status_updated": "Status dəyişdirildi:",
     "status_update_error": "Statusu dəyişmək mümkün olmadı.",
-
     "status_pending": "Gözləmədə",
     "status_confirmed": "Təsdiqləndi",
     "status_cancelled": "Ləğv edildi",
     "status_completed": "Başa çatdı",
-
     "online_consultation": "Onlayn konsultasiya",
-
     "archive_confirm": "Bu qəbulu arxivə göndərmək istəyirsiniz?",
     "archived": "Qəbul uğurla arxivləşdirildi.",
     "archive_error": "Arxivləşdirmək mümkün olmadı.",
-
     "blocked_day_message": "Bu gün bloklanıb və əlçatan deyil.",
-
     "calendar_title": "Həkimin təqvimi",
     "calendar_busy": "Dolu",
     "calendar_free": "Boş",
     "calendar_blocked": "Bloklanıb",
     "calendar_blocked_reason": "Bloklanma səbəbi:",
-
     "day_schedule_title": "Günün cədvəli:",
     "free_slot": "Boş vaxt",
     "close": "Bağla"
   },
-
   "article_form": {
     "create_title": "Yeni məqalə yarat",
     "title": "Başlıq",
@@ -468,10 +436,8 @@
     "of": "-dən",
     "per_page": "Səhifədə",
     "no_articles": "Hələ məqalə yoxdur.",
-
     "preview_no_title": "Başlıq yoxdur",
     "preview_no_text": "Təsvir yoxdur",
-
     "pagination_prev": "Əvvəlki",
     "pagination_next": "Növbəti"
   },
@@ -480,54 +446,40 @@
     "error_prefix": "Xəta",
     "load_error": "Məlumat yüklənə bilmədi.",
     "you": "Siz",
-
     "no_authors": "— müəlliflər göstərilməyib —",
     "no_references": "— mənbələr göstərilməyib —",
     "date_unknown": "Tarix məlum deyil",
-
     "share": "Paylaş",
     "edit": "Redaktə et",
     "delete": "Sil",
     "confirm_delete_article": "Məqaləni silmək istədiyinizə əminsiniz?",
     "delete_article_failed": "Məqalə silinmədi.",
-
     "comments_title": "Şərhlər",
     "no_comments": "Hələ şərh yoxdur",
-
     "comment_placeholder": "Şərh yazın...",
     "add_comment": "Şərh əlavə et",
     "add_comment_failed": "Şərh əlavə edilə bilmədi.",
-
     "reply_placeholder": "Cavabınız...",
     "send_reply": "Cavabı göndər",
     "add_reply_failed": "Cavab əlavə edilə bilmədi.",
     "add_reply_to_reply_failed": "Cavaba cavab əlavə edilə bilmədi: {{error}}",
-
     "replied_to": "cavab yazdı",
     "answered_to": "cavabladı",
     "reply_nested_placeholder": "Bu cavaba cavab yazın...",
     "answer": "Cavabla",
-
     "anonymous": "Anonim",
-
     "confirm_delete_comment": "Bu şərhi silmək istəyirsiniz?",
     "delete_comment_failed": "Şərh silinmədi.",
-
     "confirm_delete_reply": "Bu cavabı silmək istəyirsiniz?",
     "delete_reply_failed": "Cavab silinmədi.",
-
     "like_comment_failed": "Şərhi bəyənmək mümkün olmadı.",
     "like_reply_failed": "Cavabı bəyənmək mümkün olmadı.",
-
     "author_of_publication": "Məqalənin müəllifi:",
     "co_authors": "Həm-müəlliflər:",
-
     "abstract": "Xülasə:",
     "references_title": "İstinadlar:",
-
     "abstract_title": "Xülasə:"
   },
-
   "verification": {
     "tab": "Təsdiqləmə",
     "documentType": "Sənəd növü",
@@ -614,7 +566,6 @@
     "newEmail": "Yeni email",
     "otpCode": "OTP kodu"
   },
-
   "days": {
     "monday": "Bazar ertəsi",
     "tuesday": "Çərşənbə axşamı",
@@ -685,7 +636,6 @@
     "noFriends": "Hələ həkim dostunuz yoxdur.",
     "dateUnknown": "Tarix məlum deyil",
     "doctor": "Həkim",
-
     "searchPlaceholder": "Ad və soyad üzrə axtarış…",
     "allSpecialties": "Bütün ixtisaslar",
     "allCountries": "Bütün ölkələr",
@@ -693,7 +643,6 @@
     "perPage": "Səhifədə",
     "found": "Tapıldı",
     "of": "ümumilikdə",
-
     "added": "Əlavə olunub",
     "remove": "Dostlardan sil",
     "deleting": "Silinir...",
@@ -712,46 +661,38 @@
       "doctor": "Həkim",
       "unknown": "Naməlum"
     },
-
     "profile": {
       "specialization": "İxtisas",
       "company": "Şirkət",
       "country": "Ölkə",
       "phone": "Telefon"
     },
-
     "endorse": {
       "byColleagues": "Həmkarlar tərəfindən tövsiyə olunub",
       "count": "{{count}} həkim",
       "none": "Hələ yoxdur",
       "rating": "Tövsiyə reytinqi",
-
       "add": "Həkimi tövsiyə et",
       "edit": "Şərhi dəyiş",
       "remove": "Tövsiyəni geri götür",
-
       "sending": "Göndərilir...",
       "removing": "Silinir...",
       "already": "Siz artıq bu həkimi tövsiyə etmisiniz.",
-
       "blockTitle": "Həmkar tövsiyələri",
       "show": "Tövsiyələri göstər ({{count}})",
       "hide": "Tövsiyələri gizlət ({{count}})",
       "noEndorsements": "Hələ tövsiyə yoxdur.",
-
       "modal": {
         "addTitle": "Tövsiyə əlavə et",
         "editTitle": "Tövsiyə şərhini dəyiş",
         "description": "Tövsiyəyə qısa bir şərh yaza bilərsiniz. Bu məcburi deyil, amma tövsiyəni daha dəyərli edir.",
         "placeholder": "Məsələn: “Çox diqqətli və peşəkar həmkar...”",
-
         "cancel": "Ləğv et",
         "send": "Tövsiyəni göndər",
         "saveChanges": "Dəyişiklikləri saxla",
         "saving": "Yadda saxlanılır..."
       }
     },
-
     "friends": {
       "add": "Dostlarıma əlavə et",
       "adding": "Əlavə olunur...",
@@ -759,22 +700,18 @@
       "remove": "Dostluqdan çıxar",
       "removing": "Silinir..."
     },
-
     "about": {
       "title": "📚 Haqqında"
     },
-
     "comments": {
       "show": "Şərhləri göstər ({{count}})",
       "hide": "Şərhləri gizlət ({{count}})"
     },
-
     "articles": {
       "title": "📖 Həkimin məqalələri",
       "none": "Həkimin hələ heç bir məqaləsi dərc olunmayıb."
     }
   },
-
   "headerPatient": {
     "search": "Axtarış",
     "welcome": "Xoş gəldiniz",
@@ -791,33 +728,56 @@
   },
   "PatientAppointmentsHistory": {
     "title": "📅 Mənim qəbul tarixçəm",
-
     "labels": {
       "noAppointments": "Hələ heç bir qəbula yazılmamısınız.",
       "unknownDoctor": "Naməlum həkim",
       "type": "Qəbul növü",
       "status": "Status"
     },
-
     "statuses": {
       "cancelled": "Ləğv edildi",
       "confirmed": "Təsdiqləndi",
       "pending": "Gözləmədə",
       "completed": "Tamamlandı"
     },
-
     "actions": {
       "cancel": "Ləğv et",
       "cancelling": "Ləğv olunur...",
       "confirmCancel": "Bu qəbulu ləğv etmək istədiyinizə əminsiniz?"
     },
-
     "errors": {
       "failedToLoad": "Qəbul siyahısını yükləmək mümkün olmadı",
       "loadError": "Qəbul tarixçəsinin yüklənməsi zamanı xəta",
       "noId": "Xəta: qəbul ID tapılmadı",
       "cannotCancel": "Qəbulu ləğv etmək mümkün olmadı"
     }
+  },
+  "myRx": {
+    "eyebrow": "Tibbi kart",
+    "titleA": "Mənim",
+    "titleB": "reseptlərim",
+    "records": "qeyd",
+    "empty": "Hələ reseptiniz yoxdur",
+    "loadError": "Reseptləri yükləmək mümkün olmadı",
+    "noDrugs": "Resept",
+    "cancelReason": "Ləğv səbəbi",
+    "pdf": "PDF yüklə",
+    "pdfError": "Resept PDF-ini açmaq mümkün olmadı"
+  },
+  "myClinics": {
+    "title": "Klinikalarım",
+    "subtitle": "İşlədiyiniz klinikalar",
+    "invitations": "Dəvətlər",
+    "invitedAs": "Dəvət",
+    "accept": "Qəbul et",
+    "reject": "İmtina et",
+    "open": "Keç",
+    "empty": "Hələ heç bir klinikaya daxil deyilsiniz",
+    "emptyWithInvites": "Klinikaya qoşulmaq üçün dəvəti qəbul edin",
+    "error": "Klinikalar yüklənmədi",
+    "actionError": "Əməliyyat alınmadı",
+    "primary": "Əsas",
+    "unnamed": "Klinika"
   },
   "AsidePatient": {
     "brand": {
@@ -836,6 +796,7 @@
       "doctors": "Həkimlər"
     },
     "menu": {
+      "myPrescriptions": "Reseptlərim",
       "home": "Ana Səhifə",
       "myOffice": "Mənim Kabinetim",
       "myMedicalFiles": "Tibbi Fayllarım",
@@ -845,6 +806,101 @@
       "myDoctors": "Mənim Həkimlərim",
       "appointments": "Qeydiyyatlar",
       "logout": "Çıxış"
+    }
+  },
+  "myLab": {
+    "eyebrow": "Xəstə portalı",
+    "titleA": "Mənim",
+    "titleB": "analizlərim",
+    "records": "Nəticə",
+    "empty": "Hələ analiz yoxdur.",
+    "loadError": "Analizləri yükləmək mümkün olmadı",
+    "pdfError": "PDF yaratmaq mümkün olmadı",
+    "sourceClinic": "Klinika",
+    "sourceLegacy": "Arxiv",
+    "colParam": "Göstərici",
+    "colValue": "Dəyər",
+    "colRef": "Norma",
+    "attached": "Nəticə faylı",
+    "scan": "Skan"
+  },
+  "medical": {
+    "tabs": {
+      "labResults": "Анализы"
+    },
+    "labResults": {
+      "listTitle": "Анализы",
+      "addButton": "+ Новый анализ",
+      "addFirstButton": "Добавить первый анализ",
+      "emptyText": "Пока нет ни одного анализа.",
+      "loadError": "Не удалось загрузить анализы",
+      "createTitle": "Новый анализ",
+      "saveButton": "Сохранить анализ",
+      "pdfButton": "PDF",
+      "pdfError": "Не удалось сформировать PDF",
+      "confirmDelete": "Удалить анализ безвозвратно?",
+      "markCorrected": "Исправлено",
+      "markAmended": "Дополнено",
+      "hiddenCrossClinic": "Содержимое скрыто (другая клиника)",
+      "attachedFile": "Прикреплённый файл",
+      "panelTitle": "Тип анализа",
+      "parametersTitle": "Показатели",
+      "reportTitle": "Заключение",
+      "fileTitle": "Оригинал (PDF / фото)",
+      "selectPanel": "— выберите панель —",
+      "addParamButton": "+ Добавить показатель",
+      "pickPanelHint": "Выберите панель выше — показатели заполнятся автоматически. Или добавьте показатель вручную.",
+      "fields": {
+        "panel": "Панель",
+        "panelTitle": "Название (отображается)",
+        "effectiveDate": "Дата забора",
+        "labName": "Лаборатория",
+        "paramName": "Показатель",
+        "value": "Значение",
+        "unit": "Ед.",
+        "min": "мин",
+        "max": "макс",
+        "refText": "норма",
+        "ref": "Норма"
+      },
+      "placeholders": {
+        "panelTitle": "Общий анализ крови",
+        "report": "Интерпретация результатов..."
+      },
+      "errors": {
+        "empty": "Заполните хотя бы один показатель, заключение или прикрепите файл",
+        "fileTooBig": "Файл слишком большой (макс. 20 МБ)"
+      },
+      "status": {
+        "preliminary": "Предварительно",
+        "final": "Финальный",
+        "corrected": "Исправлен",
+        "amended": "Дополнен"
+      },
+      "panels": {
+        "BloodTestGeneral": "Общий анализ крови",
+        "BloodTestBiochemistry": "Биохимия крови",
+        "UrineTest": "Анализ мочи",
+        "StoolTest": "Анализ кала",
+        "HormonePanel": "Гормоны",
+        "TumorMarkers": "Онкомаркеры",
+        "PCR": "ПЦР",
+        "Immunology": "Иммунология",
+        "GeneticScreening": "Генетический скрининг",
+        "CoagulationPanel": "Коагулограмма",
+        "LipidProfile": "Липидный профиль",
+        "LiverFunction": "Печёночные пробы",
+        "RenalElectrolytes": "Почки и электролиты",
+        "IronStudies": "Обмен железа",
+        "DiabetesPanel": "Диабет",
+        "ThyroidPanel": "Щитовидная железа",
+        "CardiacMarkers": "Кардиомаркеры",
+        "VitaminsTrace": "Витамины и микроэлементы",
+        "InfectiousSerology": "Инфекционная серология",
+        "UrineAlbuminACR": "Альбумин/креатинин мочи",
+        "StoolInflammation": "Воспаление кишечника",
+        "Other": "Другое"
+      }
     }
   },
   "articles-from-doctor": {
@@ -922,7 +978,6 @@
       "man": "Kişi",
       "woman": "Qadın"
     },
-
     "header": {
       "subTitle": "Pasiyent bazasının idarə olunması"
     },
@@ -1012,7 +1067,6 @@
   "titles": {
     "moreAboutPatient": "Pasiyent haqqında daha ətraflı: {{firstName}} {{lastName}}"
   },
-
   "tabs": {
     "generalInfo": "Ümumi məlumat",
     "clinicalInfo": "Klinik məlumat",
@@ -1045,7 +1099,6 @@
     "coronography": "Koronarqrafiya",
     "labTests": "Laborator analizlər"
   },
-
   "generalInfo": {
     "firstName": "Ad",
     "lastName": "Soyad",
@@ -1057,7 +1110,6 @@
     "dpMessengerNumber": "DP mesenceri nömrəsi",
     "email": "Email"
   },
-
   "clinicalInfo": {
     "chronicDiseases": "Xroniki xəstəliklər",
     "operations": "Keçirilmiş əməliyyatlar",
@@ -1066,7 +1118,6 @@
     "immunization": "İmmunizasiya",
     "badHabits": "Zərərli vərdişlər"
   },
-
   "tables": {
     "date": "Tarix",
     "diagnosis": "Diaqnoz",
@@ -1076,11 +1127,9 @@
     "examName": "Müayinə adı",
     "examResult": "Müayinə nəticəsi"
   },
-
   "scans": {
     "unknownDoctor": "Naməlum həkim"
   },
-
   "labTests": {
     "bloodGeneral": "Ümumi qan analizi",
     "bloodBiochemistry": "Qanın biokimyası",
@@ -1094,12 +1143,10 @@
     "other": "Digər analizlər",
     "labName": "Laboratoriya adı"
   },
-
   "states": {
     "loading": "Yüklənir...",
     "patientNotFound": "Pasiyent tapılmadı"
   },
-
   "errors": {
     "failedToLoad": "Məlumatları yükləmək mümkün olmadı",
     "errorRetrievingPatientInfo": "Pasiyent məlumatı alınarkən xəta baş verdi",
@@ -1108,13 +1155,11 @@
     "backToHome": "Əsas səhifəyə qayıt",
     "pageNotFoundAlt": "Səhifə tapılmadı"
   },
-
   "gender": {
     "man": "Kişi",
     "woman": "Qadın",
     "unknown": "Naməlum"
   },
-
   "exams": {
     "date": "Qəbul tarixi",
     "name": "Müayinə adı",
@@ -1123,7 +1168,6 @@
     "unknownDoctor": "Naməlum həkim",
     "notSpecified": "Göstərilməyib"
   },
-
   "buttons": {
     "choosePhoto": "Şəkil seç",
     "save": "Yadda saxla",
@@ -1136,7 +1180,6 @@
     "addMedicalExamination": "Tibbi müayinə əlavə et",
     "chooseFile": "Fayl seç"
   },
-
   "values": {
     "notSpecified": "Göstərilməyib",
     "unknown": "Naməlum",
@@ -1145,7 +1188,6 @@
     "woman": "Qadın",
     "chooseCountry": "Ölkə seçin"
   },
-
   "messages": {
     "loading": "Yüklənir...",
     "photoNotSelected": "Şəkil seçilməyib",
@@ -1183,12 +1225,10 @@
       "recommendations": "Tövsiyələr",
       "chooseDiagnosis": "Diaqnozu siyahıdan seçin..."
     },
-
     "placeholders": {
       "diagnosisInput": "Diaqnozu siyahıdan seçin...",
       "additionalDiagnosis": "Diaqnoza əlavə qeyd daxil edin..."
     },
-
     "buttons": {
       "insert": "Əlavə et",
       "preview": "Baxış",
@@ -1199,27 +1239,34 @@
       "createTemplate": "Yeni şablon yarat",
       "chooseFile": "Fayl seç"
     },
-
     "validation": {
       "fillRequired": "{{field}} sahəsini doldurun.",
       "requiredList": "Zəhmət olmasa, aşağıdakı məcburi sahələri doldurun:",
       "loginRequired": "Xahiş edirik, sistemə daxil olun.",
       "invalidDiagnosis": "Düzgün diaqnozu siyahıdan seçin."
     },
-
     "modal": {
       "title": "Şablon baxışı"
     },
-
     "templateNavigation": {
       "toTemplates": "Şablonların siyahısı",
       "createNew": "Yeni şablon yarat"
     },
-
     "profileCard": {
       "speciality": "İxtisas"
     },
-
     "loading": "Yüklənir..."
+  },
+  "publicClinic": {
+    "aboutTitle": "Klinika haqqında",
+    "doctorsTitle": "Həkimlər",
+    "galleryTitle": "Qalereya",
+    "contactsTitle": "Əlaqə",
+    "verified": "Təsdiqlənib",
+    "verifiedDoctor": "Təsdiqlənmiş həkim",
+    "loading": "Yüklənir…",
+    "notFoundTitle": "Klinika tapılmadı",
+    "notFoundText": "Səhifə hələ dərc olunmayıb və ya ünvan səhvdir.",
+    "error": "Səhifəni yükləmək mümkün olmadı. Sonra yenidən cəhd edin."
   }
 }

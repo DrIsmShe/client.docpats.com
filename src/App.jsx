@@ -513,7 +513,22 @@ import ClinicSchedulePage from "./pages/clinic/ClinicSchedulePage/ClinicSchedule
 import ClinicCalendarPage from "./pages/clinic/ClinicCalendarPage/ClinicCalendarPage.jsx";
 import NewPatientPage from "./pages/clinic/ClinicPatientsPage/NewPatientPage.jsx";
 import CompleteRegistrationPage from "./pages/auth/CompleteRegistrationPage/CompleteRegistrationPage";
-
+import MyLabResults from "./pages/patientProfilePages/MyMedicalHistories/MyLabResults";
+import MyPrescriptions from "./pages/patientProfilePages/MyMedicalHistories/MyPrescriptions";
+import PatientFileDetailClinic from "./pages/patientProfilePages/MyMedicalHistories/PatientFileDetailClinic"; // путь подгони под свой проект
+import ClinicDepartmentsPage from "./pages/clinic/ClinicDepartmentsPage/ClinicDepartmentsPage.jsx";
+import ClinicRoomsPage from "./pages/clinic/ClinicRoomsPage/ClinicRoomsPage.jsx";
+import ClinicEquipmentPage from "./pages/clinic/ClinicEquipmentPage/ClinicEquipmentPage.jsx";
+import ClinicKnowledgePage from "./pages/clinic/ClinicKnowledgePage/ClinicKnowledgePage.jsx";
+import ClinicKnowledgeArticlePage from "./pages/clinic/ClinicKnowledgePage/ClinicKnowledgeArticlePage.jsx";
+import ClinicAnnouncementsPage from "./pages/clinic/ClinicAnnouncementsPage/ClinicAnnouncementsPage.jsx";
+import ClinicConsiliumPage from "./pages/clinic/ClinicConsiliumPage/ClinicConsiliumPage.jsx";
+import ClinicConsiliumDetailPage from "./pages/clinic/ClinicConsiliumPage/ClinicConsiliumDetailPage.jsx";
+import ClinicTelemedPage from "./pages/clinic/ClinicTelemedPage/ClinicTelemedPage.jsx";
+import PatientTelemedPage from "./pages/patientProfilePages/telemed/PatientTelemedPage.jsx";
+import DoctorMyClinicsPage from "./pages/doctorProfilePages/myClinics/DoctorMyClinicsPage.jsx";
+import PublicClinicPage from "./pages/clinic/PublicClinicPage/PublicClinicPage.jsx";
+import ClinicPublicPageSettings from "./pages/clinic/ClinicPublicPageSettings/ClinicPublicPageSettings.jsx";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -571,6 +586,7 @@ function App() {
             </Route>
             {/* ─── CLINIC MODULE — Public routes ─── */}
             {/* ─── CLINIC MODULE — Public routes ─── */}
+            <Route path="/clinics/:slug" element={<PublicClinicPage />} />
             <Route
               path="/clinic/invitations/accept"
               element={<InvitationAcceptPage />}
@@ -588,9 +604,31 @@ function App() {
             {/* ─── CLINIC MODULE — DocPats user authenticated zone ─── */}
             <Route path="/clinic" element={<ClinicLayout />}>
               <Route index element={<ClinicHubPage />} />
+              <Route
+                path="public-page"
+                element={<ClinicPublicPageSettings />}
+              />
               <Route path="create" element={<CreateClinicPage />} />
               <Route path="dashboard" element={<ClinicDashboardPage />} />
               <Route path="staff" element={<ClinicStaffPage />} />
+              <Route path="departments" element={<ClinicDepartmentsPage />} />
+              <Route path="rooms" element={<ClinicRoomsPage />} />
+              <Route path="equipment" element={<ClinicEquipmentPage />} />
+              <Route path="knowledge" element={<ClinicKnowledgePage />} />
+              <Route
+                path="announcements"
+                element={<ClinicAnnouncementsPage />}
+              />
+              <Route path="consilia" element={<ClinicConsiliumPage />} />
+              <Route path="telemed" element={<ClinicTelemedPage />} />
+              <Route
+                path="consilia/:id"
+                element={<ClinicConsiliumDetailPage />}
+              />
+              <Route
+                path="knowledge/:id"
+                element={<ClinicKnowledgeArticlePage />}
+              />
               <Route
                 path="staff/:doctorId/schedule"
                 element={<ClinicSchedulePage />}
@@ -2117,7 +2155,11 @@ function App() {
                 path="articles-ai-for-patients"
                 element={<SynthesisPage />}
               />
-
+              <Route
+                path="get-patient-file-detail-clinic/:id"
+                element={<PatientFileDetailClinic />}
+              />
+              ;
               <Route path="communication" element={<CommunicationLayout />}>
                 <Route index element={<EmptyChat />} />
 
@@ -2132,6 +2174,8 @@ function App() {
                 path="get-patients-files"
                 element={<PatientFileFilter />}
               />
+              <Route path="my-lab-results" element={<MyLabResults />} />
+              <Route path="my-prescriptions" element={<MyPrescriptions />} />
               {/* Здесь перечислены все маршруты для раздела шаблоны исследований ПАЦИЕНТА */}
               <Route
                 path="get-patient-file-detail-coronography-scan/:id"
@@ -2264,6 +2308,7 @@ function App() {
                 path="my-appointment"
                 element={<PatientsMyAppointment />}
               />
+              <Route path="telemed" element={<PatientTelemedPage />} />
               <Route
                 path="my-appointment-history"
                 element={<PatientAppointmentsHistory />}
@@ -2279,6 +2324,7 @@ function App() {
             />
             {/* Здесь перечислены все маршруты для раздела ПРОФИЛЬ ДОКТОРА */}
             <Route path="/doctor" element={<DoctorpofileLayout />}>
+              <Route path="my-clinics" element={<DoctorMyClinicsPage />} />
               <Route
                 path="anthropometry/cases/:caseId/compare"
                 element={<ComparePage />}

@@ -141,26 +141,21 @@
   "publish": "نشر",
   "save": "حفظ",
   "cancel": "إلغاء",
-
   "comments": "التعليقات",
   "add_comment": "أضف تعليقًا...",
   "reply": "رد",
   "edit": "تعديل",
   "delete": "حذف",
-
   "upload_files": "رفع الملفات",
   "choose_file": "اختر ملفًا",
   "upload": "رفع",
-
   "error_occurred": "حدث خطأ",
   "success": "تم بنجاح",
   "loading": "جارٍ التحميل...",
   "no_data": "لا توجد بيانات",
-
   "otp_code": "رمز التحقق",
   "child_otp": "رمز الطفل",
   "parent_otp": "رمز الوالد",
-
   "search": "بحث",
   "notifications": "الإشعارات",
   "settings": "الإعدادات",
@@ -176,6 +171,7 @@
   "colleagues": "الزملاء",
   "my_friends_colleagues": "أصدقائي الزملاء",
   "my_clinic": "عيادتي",
+  "my_clinics": "عياداتي",
   "appointments_dashboard": "لوحة المواعيد",
   "attention": "تنبيه",
   "understood": "مفهوم",
@@ -267,52 +263,37 @@
   "no": "لا",
   "doctor_dashboard": {
     "title": "لوحة الطبيب",
-
     "stats_confirmed": "تم التأكيد",
     "stats_pending": "قيد الانتظار",
     "stats_cancelled": "ألغيت",
     "stats_total_week": "إجمالي الأسبوع",
-
     "loading": "جاري تحميل البيانات...",
     "error_loading": "فشل تحميل بيانات لوحة الطبيب.",
-
     "upcoming_title": "المواعيد القادمة (خلال 30 دقيقة)",
     "no_upcoming": "لا توجد مواعيد قادمة.",
-
     "date_time": "التاريخ والوقت",
     "type": "النوع",
     "status": "الحالة",
     "history": "السجل",
-
     "type_online": "عن بُعد",
     "type_offline": "حضوري",
     "load_error": "فشل تحميل بيانات لوحة التحكم.",
-
     "stats_total": "الإجمالي",
-
     "quick_links": "روابط سريعة",
-
     "quick_appointments_title": "مواعيدي",
     "quick_appointments_desc": "عرض وإدارة مواعيد المرضى.",
     "go": "انتقال",
-
     "quick_black_dates_title": "الأيام المحجوبة",
     "quick_black_dates_desc": "إدارة الإجازات والأيام المحجوبة والاستثناءات.",
-
     "quick_messages_title": "الرسائل",
     "quick_messages_desc": "تواصل مع المرضى والزملاء.",
-
     "quick_schedule_title": "إنشاء جدول المواعيد",
     "quick_schedule_desc": "إنشاء وإدارة جدول مواعيد المرضى.",
-
     "upcoming_empty": "لا توجد مواعيد قريبة.",
-
     "appointment_type": "نوع الموعد",
     "appointment_status": "الحالة",
-
     "online": "عن بُعد",
     "offline": "حضوري",
-
     "status_confirmed": "مؤكَّد",
     "status_pending": "قيد الانتظار",
     "status_cancelled": "ملغى"
@@ -379,59 +360,46 @@
     "confirm_and_open_whatsapp": "تأكيد وفتح واتساب",
     "loading": "جارٍ التحميل...",
     "error_loading": "فشل تحميل المواعيد.",
-
     "page_title": "مواعيدي",
     "update": "تحديث",
     "archive": "أرشفة",
     "delete_all": "حذف الكل",
     "delete_all_success": "تم حذف جميع المواعيد بنجاح.",
     "confirm_delete_all": "هل تريد حذف جميع المواعيد؟ هذا الإجراء غير قابل للاسترجاع!",
-
     "no_appointments": "لا توجد مواعيد حالياً.",
     "patient": "المريض",
     "time": "الوقت والتاريخ",
     "type": "النوع",
     "status": "الحالة",
     "actions": "الإجراءات",
-
     "online": "عن بُعد",
     "offline": "حضوري",
-
     "history": "السجل",
     "history_title": "سجل الموعد",
     "no_history": "لا يوجد سجل.",
-
     "delete": "حذف",
     "delete_confirm": "هل أنت متأكد أنك تريد حذف هذا الموعد؟",
     "deleted": "تم حذف الموعد بنجاح.",
-
     "status_updated": "تم تغيير الحالة إلى",
     "status_update_error": "فشل تغيير الحالة.",
-
     "status_pending": "قيد الانتظار",
     "status_confirmed": "مؤكَّد",
     "status_cancelled": "ملغى",
     "status_completed": "مكتمل",
-
     "online_consultation": "استشارة عبر الإنترنت",
-
     "archive_confirm": "هل تريد أرشفة هذا الموعد؟",
     "archived": "تمت أرشفة الموعد بنجاح.",
     "archive_error": "فشل في أرشفة الموعد.",
-
     "blocked_day_message": "هذا اليوم محجوب وغير متاح.",
-
     "calendar_title": "تقويم الطبيب",
     "calendar_busy": "محجوز",
     "calendar_free": "متاح",
     "calendar_blocked": "محجوب",
     "calendar_blocked_reason": "السبب:",
-
     "day_schedule_title": "جدول اليوم:",
     "free_slot": "وقت متاح",
     "close": "إغلاق"
   },
-
   "article_form": {
     "create_title": "إنشاء مقالة جديدة",
     "title": "العنوان",
@@ -499,10 +467,8 @@
     "of": "من",
     "per_page": "لكل صفحة",
     "no_articles": "لا توجد مقالات بعد.",
-
     "preview_no_title": "بدون عنوان",
     "preview_no_text": "لا يوجد وصف",
-
     "pagination_prev": "السابق",
     "pagination_next": "التالي"
   },
@@ -511,48 +477,36 @@
     "error_prefix": "خطأ",
     "load_error": "فشل في تحميل البيانات.",
     "you": "أنت",
-
     "no_authors": "— لا يوجد مؤلفون —",
     "no_references": "— لا توجد مراجع —",
     "date_unknown": "التاريخ غير معروف",
-
     "share": "مشاركة",
     "edit": "تعديل",
     "delete": "حذف",
     "confirm_delete_article": "هل أنت متأكد أنك تريد حذف هذه المقالة؟",
     "delete_article_failed": "فشل حذف المقالة.",
-
     "comments_title": "التعليقات",
     "no_comments": "لا توجد تعليقات بعد",
-
     "comment_placeholder": "اكتب تعليقًا...",
     "add_comment": "إضافة تعليق",
     "add_comment_failed": "فشل في إضافة التعليق.",
-
     "reply_placeholder": "ردك...",
     "send_reply": "إرسال الرد",
     "add_reply_failed": "فشل في إضافة الرد.",
     "add_reply_to_reply_failed": "فشل في إضافة رد على الرد: {{error}}",
-
     "replied_to": "رد على",
     "answered_to": "أجاب",
     "reply_nested_placeholder": "اكتب ردًا على هذا الرد...",
     "answer": "إجابة",
-
     "anonymous": "مجهول",
-
     "confirm_delete_comment": "هل أنت متأكد أنك تريد حذف هذا التعليق؟",
     "delete_comment_failed": "فشل حذف التعليق.",
-
     "confirm_delete_reply": "هل أنت متأكد أنك تريد حذف هذا الرد؟",
     "delete_reply_failed": "فشل حذف الرد.",
-
     "like_comment_failed": "فشل في تسجيل الإعجاب بالتعليق.",
     "like_reply_failed": "فشل في تسجيل الإعجاب بالرد.",
-
     "author_of_publication": "كاتب النشر:",
     "co_authors": "المؤلفون المشاركون:",
-
     "abstract_title": "الملخص:",
     "references_title": "المراجع:"
   },
@@ -611,7 +565,6 @@
     "newEmail": "البريد الإلكتروني الجديد",
     "otpCode": "رمز التحقق (OTP)"
   },
-
   "days": {
     "monday": "الإثنين",
     "tuesday": "الثلاثاء",
@@ -682,7 +635,6 @@
     "noFriends": "ليس لديك اصدقاء من الاطباء بعد.",
     "dateUnknown": "تاريخ غير معروف",
     "doctor": "طبيب",
-
     "searchPlaceholder": "بحث بالاسم والكنية…",
     "allSpecialties": "جميع التخصصات",
     "allCountries": "جميع البلدان",
@@ -690,7 +642,6 @@
     "perPage": "في الصفحة",
     "found": "تم العثور على",
     "of": "من اصل",
-
     "added": "تمت الاضافة",
     "remove": "ازالة من الاصدقاء",
     "deleting": "جار الازالة...",
@@ -709,46 +660,38 @@
       "doctor": "الطبيب",
       "unknown": "غير معروف"
     },
-
     "profile": {
       "specialization": "التخصص",
       "company": "الشركة",
       "country": "الدولة",
       "phone": "رقم الهاتف"
     },
-
     "endorse": {
       "byColleagues": "موصى به من قبل الزملاء",
       "count": "{{count}} طبيب",
       "none": "لا يوجد بعد",
       "rating": "تقييم التوصيات",
-
       "add": "توصية بالطبيب",
       "edit": "تعديل التعليق",
       "remove": "إلغاء التوصية",
-
       "sending": "جارٍ الإرسال...",
       "removing": "جارٍ الحذف...",
       "already": "لقد أوصيت بهذا الطبيب مسبقًا.",
-
       "blockTitle": "توصيات الزملاء",
       "show": "عرض التوصيات ({{count}})",
       "hide": "إخفاء التوصيات ({{count}})",
       "noEndorsements": "لا توجد توصيات حتى الآن.",
-
       "modal": {
         "addTitle": "إضافة توصية",
         "editTitle": "تعديل تعليق التوصية",
         "description": "يمكنك إضافة تعليق قصير مع التوصية. هذا الأمر اختياري ولكنه يجعل التوصية أكثر قيمة.",
         "placeholder": "مثال: 'زميل مهني ودقيق للغاية...'",
-
         "cancel": "إلغاء",
         "send": "إرسال التوصية",
         "saveChanges": "حفظ التغييرات",
         "saving": "جارٍ الحفظ..."
       }
     },
-
     "friends": {
       "add": "إضافة إلى أصدقائي",
       "adding": "جارٍ الإضافة...",
@@ -756,22 +699,18 @@
       "remove": "إزالة من الأصدقاء",
       "removing": "جارٍ الحذف..."
     },
-
     "about": {
       "title": "📚 نبذة عنه"
     },
-
     "comments": {
       "show": "عرض التعليقات ({{count}})",
       "hide": "إخفاء التعليقات ({{count}})"
     },
-
     "articles": {
       "title": "📖 مقالات الطبيب",
       "none": "لا توجد مقالات منشورة لهذا الطبيب بعد."
     }
   },
-
   "headerPatient": {
     "search": "بحث",
     "welcome": "مرحباً",
@@ -788,33 +727,56 @@
   },
   "PatientAppointmentsHistory": {
     "title": "📅 مواعيدي",
-
     "labels": {
       "noAppointments": "لم تقم بحجز أي موعد بعد.",
       "unknownDoctor": "طبيب غير معروف",
       "type": "نوع الموعد",
       "status": "الحالة"
     },
-
     "statuses": {
       "cancelled": "أُلغي",
       "confirmed": "مؤكد",
       "pending": "قيد الانتظار",
       "completed": "مكتمل"
     },
-
     "actions": {
       "cancel": "إلغاء الموعد",
       "cancelling": "جارٍ الإلغاء...",
       "confirmCancel": "هل أنت متأكد أنك تريد إلغاء هذا الموعد؟"
     },
-
     "errors": {
       "failedToLoad": "تعذر تحميل قائمة المواعيد",
       "loadError": "حدث خطأ أثناء تحميل تاريخ المواعيد",
       "noId": "خطأ: لم يتم العثور على معرف الموعد",
       "cannotCancel": "تعذر إلغاء الموعد"
     }
+  },
+  "myRx": {
+    "eyebrow": "السجل الطبي",
+    "titleA": "وصفاتي",
+    "titleB": "الطبية",
+    "records": "سجلات",
+    "empty": "ليس لديك وصفات بعد",
+    "loadError": "تعذّر تحميل الوصفات",
+    "noDrugs": "وصفة",
+    "cancelReason": "سبب الإلغاء",
+    "pdf": "تنزيل PDF",
+    "pdfError": "تعذّر فتح ملف الوصفة"
+  },
+  "myClinics": {
+    "title": "عياداتي",
+    "subtitle": "العيادات التي تعمل بها",
+    "invitations": "الدعوات",
+    "invitedAs": "دعوة",
+    "accept": "قبول",
+    "reject": "رفض",
+    "open": "فتح",
+    "empty": "لست عضواً في أي عيادة بعد",
+    "emptyWithInvites": "اقبل الدعوة للانضمام إلى عيادة",
+    "error": "تعذّر تحميل العيادات",
+    "actionError": "فشلت العملية",
+    "primary": "الأساسية",
+    "unnamed": "عيادة"
   },
   "AsidePatient": {
     "brand": {
@@ -833,6 +795,7 @@
       "doctors": "الأطباء"
     },
     "menu": {
+      "myPrescriptions": "وصفاتي",
       "home": "الرئيسية",
       "myOffice": "مكتبي",
       "myMedicalFiles": "ملفاتي الطبية",
@@ -919,7 +882,6 @@
       "man": "رجل",
       "woman": "امرأة"
     },
-
     "header": {
       "subTitle": "إدارة قاعدة بيانات المرضى"
     },
@@ -1034,7 +996,6 @@
     "hidePassword": "إخفاء كلمة المرور",
     "chooseFile": "اختر ملف"
   },
-
   "tabs": {
     "generalInfo": "المعلومات العامة",
     "clinicalInfo": "المعلومات السريرية",
@@ -1067,7 +1028,6 @@
     "coronography": "تصوير الشرايين التاجية",
     "labTests": "التحاليل المخبرية"
   },
-
   "generalInfo": {
     "firstName": "الاسم",
     "lastName": "اللقب",
@@ -1079,7 +1039,6 @@
     "dpMessengerNumber": "رقم DP Messenger",
     "email": "البريد الإلكتروني"
   },
-
   "clinicalInfo": {
     "chronicDiseases": "الأمراض المزمنة",
     "operations": "العمليات الجراحية",
@@ -1088,7 +1047,6 @@
     "immunization": "التطعيمات",
     "badHabits": "العادات السيئة"
   },
-
   "tables": {
     "date": "التاريخ",
     "diagnosis": "التشخيص",
@@ -1098,11 +1056,9 @@
     "examName": "اسم الفحص",
     "examResult": "نتيجة الفحص"
   },
-
   "scans": {
     "unknownDoctor": "طبيب غير معروف"
   },
-
   "labTests": {
     "bloodGeneral": "تحليل دم شامل",
     "bloodBiochemistry": "تحليل كيمياء الدم",
@@ -1116,12 +1072,10 @@
     "other": "فحوصات أخرى",
     "labName": "اسم المختبر"
   },
-
   "states": {
     "loading": "جارٍ التحميل...",
     "patientNotFound": "لم يتم العثور على المريض"
   },
-
   "errors": {
     "failedToLoad": "فشل تحميل البيانات",
     "errorRetrievingPatientInfo": "حدث خطأ أثناء استرجاع معلومات المريض",
@@ -1130,13 +1084,11 @@
     "backToHome": "العودة إلى الصفحة الرئيسية",
     "pageNotFoundAlt": "الصفحة غير موجودة"
   },
-
   "gender": {
     "man": "ذكر",
     "woman": "أنثى",
     "unknown": "غير معروف"
   },
-
   "values": {
     "notSpecified": "غير محدد",
     "unknown": "غير معروف",
@@ -1145,17 +1097,14 @@
     "woman": "أنثى",
     "chooseCountry": "اختر البلد"
   },
-
   "messages": {
     "loading": "جارٍ التحميل...",
     "photoNotSelected": "لم يتم اختيار صورة",
     "noFileSelected": "لم يتم اختيار ملف"
   },
-
   "avatar_choose": {
     "chooseAvatar": "اختر صورة رمزية"
   },
-
   "exams": {
     "date": "تاريخ الاستقبال",
     "name": "اسم الفحص",
@@ -1180,12 +1129,10 @@
       "recommendations": "التوصيات",
       "chooseDiagnosis": "اختر التشخيص من القائمة..."
     },
-
     "placeholders": {
       "diagnosisInput": "اختر التشخيص من القائمة...",
       "additionalDiagnosis": "أضف ملاحظة إضافية حول التشخيص..."
     },
-
     "buttons": {
       "insert": "إدراج",
       "preview": "معاينة",
@@ -1196,27 +1143,34 @@
       "createTemplate": "إنشاء قالب جديد",
       "chooseFile": "اختر ملف"
     },
-
     "validation": {
       "fillRequired": "يرجى تعبئة حقل {{field}}.",
       "requiredList": "يرجى تعبئة الحقول المطلوبة التالية:",
       "loginRequired": "يرجى تسجيل الدخول.",
       "invalidDiagnosis": "يرجى اختيار تشخيص صحيح من القائمة."
     },
-
     "modal": {
       "title": "معاينة القالب"
     },
-
     "templateNavigation": {
       "toTemplates": "عرض قائمة القوالب",
       "createNew": "إنشاء قالب جديد"
     },
-
     "profileCard": {
       "speciality": "التخصص"
     },
-
     "loading": "جارٍ التحميل..."
+  },
+  "publicClinic": {
+    "aboutTitle": "عن العيادة",
+    "doctorsTitle": "الأطباء",
+    "galleryTitle": "المعرض",
+    "contactsTitle": "جهات الاتصال",
+    "verified": "موثّقة",
+    "verifiedDoctor": "طبيب موثّق",
+    "loading": "جارٍ التحميل…",
+    "notFoundTitle": "لم يتم العثور على العيادة",
+    "notFoundText": "قد لا تكون الصفحة منشورة بعد أو أن العنوان غير صحيح.",
+    "error": "تعذّر تحميل الصفحة. حاول مرة أخرى لاحقًا."
   }
 }

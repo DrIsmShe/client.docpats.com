@@ -1,5 +1,604 @@
 {
+  "announcements": {
+    "back": "لوحة التحكم",
+    "title": "الإعلانات",
+    "subtitle": "إعلانات داخلية للعيادة لكامل الفريق",
+    "create": "إعلان جديد",
+    "createFirst": "إنشاء أول إعلان",
+    "empty": "لا توجد إعلانات بعد",
+    "errorTitle": "تعذّر تحميل الإعلانات",
+    "pinned": "مثبّت",
+    "pin": "تثبيت",
+    "unpin": "إلغاء التثبيت",
+    "archive": "أرشفة",
+    "unarchive": "استعادة من الأرشيف",
+    "showArchived": "الأرشيف",
+    "delete": "حذف",
+    "confirmDelete": "حذف هذا الإعلان نهائيًا؟",
+    "readBy": "قرأه {{read}} من {{total}}",
+    "author": "الكاتب",
+    "audienceAll": "كامل العيادة",
+    "audienceDepartment": "القسم",
+    "form": {
+      "createTitle": "إعلان جديد",
+      "titleLabel": "العنوان",
+      "titlePlaceholder": "مثال: اجتماع يوم الاثنين",
+      "bodyLabel": "النص",
+      "bodyPlaceholder": "تفاصيل الإعلان…",
+      "audience": "إلى من",
+      "audienceAll": "كامل العيادة",
+      "audienceDepartment": "القسم فقط",
+      "department": "القسم",
+      "departmentNone": "— اختر قسمًا —",
+      "pin": "تثبيت في الأعلى",
+      "submit": "نشر",
+      "cancel": "إلغاء",
+      "errors": {
+        "titleRequired": "أدخل عنوانًا",
+        "bodyRequired": "أدخل النص",
+        "departmentRequired": "اختر قسمًا",
+        "generic": "تعذّر نشر الإعلان"
+      }
+    }
+  },
+  "patientTelemed": {
+    "eyebrow": "بوابة المريض",
+    "title": "الاستشارات عبر الإنترنت",
+    "subtitle": "زيارات الفيديو والاستشارات الطبية الجماعية المؤكدة والجاهزة للانضمام. اضغط «انضمام» عند بدء الاستشارة. جميع مواعيدك في قسم «مواعيدي».",
+    "loading": "جارٍ التحميل…",
+    "error": "تعذّر التحميل",
+    "empty": "ليس لديك استشارات عبر الإنترنت بعد.",
+    "when": "التاريخ",
+    "doctor": "الطبيب",
+    "clinic": "العيادة",
+    "join": "انضمام",
+    "meName": "المريض",
+    "untitled": "استشارة",
+    "apptTitle": "زيارة فيديو",
+    "consiliumTitle": "استشارة طبية جماعية",
+    "kind": {
+      "telemed": "العيادة",
+      "appointment": "زيارة خاصة",
+      "consilium": "استشارة طبية جماعية"
+    },
+    "status": {
+      "scheduled": "مجدولة",
+      "live": "جارية",
+      "confirmed": "مؤكدة",
+      "pending": "قيد الانتظار",
+      "open": "مفتوحة",
+      "resolved": "منتهية",
+      "completed": "مكتملة",
+      "cancelled": "ملغاة",
+      "no_show": "لم يحضر",
+      "refunded": "مُسترَدّة"
+    }
+  },
+  "calendar": {
+    "title": "تقويم المواعيد",
+    "back": "← العودة إلى الفريق",
+    "loadError": "تعذّر تحميل التقويم",
+    "actionError": "فشل الإجراء — حاول مرة أخرى",
+    "emptyDay": "لا توجد ساعات عمل ولا مواعيد في هذا اليوم.",
+    "archive": {
+      "title": "أرشيف اليوم"
+    },
+    "freeSlot": "موعد متاح",
+    "patientPlaceholder": "المريض",
+    "book": "حجز",
+    "today": "اليوم",
+    "prevDay": "اليوم السابق",
+    "nextDay": "اليوم التالي",
+    "status": {
+      "scheduled": "مجدول",
+      "checked_in": "حضر",
+      "completed": "مكتمل",
+      "cancelled": "ملغى",
+      "no_show": "لم يحضر"
+    },
+    "pastSlot": "منقضٍ",
+    "overdueLabel": "متأخر",
+    "pastDateBanner": "تاريخ منقضٍ — الحجز معطّل. لا يزال بإمكانك إغلاق المواعيد المفتوحة.",
+    "action": {
+      "checkIn": "حضر",
+      "complete": "إكمال",
+      "cancel": "إلغاء",
+      "noShow": "لم يحضر",
+      "completeOverdueHint": "إغلاق هذه الزيارة المتأخرة"
+    },
+    "book_modal": {
+      "department": "القسم",
+      "departmentNone": "— غير محدد —",
+      "title": "موعد جديد",
+      "subtitle": "{{time}} · {{doctor}}",
+      "patient": "المريض",
+      "patientSearchPlaceholder": "ابحث عن مريض (الاسم العائلي أو الهاتف أو البريد الإلكتروني)",
+      "selectedPatient": "المختار:",
+      "noPatientFound": "لم يُعثر على مرضى — جرّب أحرفًا أكثر",
+      "searchHint": "حرفان على الأقل",
+      "duration": "المدة",
+      "minutes": "دقيقة",
+      "reason": "سبب الزيارة",
+      "reasonPlaceholder": "مثال: التهاب الحلق",
+      "submit": "إنشاء الموعد",
+      "cancel": "إلغاء",
+      "createError": "تعذّر إنشاء الموعد",
+      "conflictError": "هذا الوقت محجوز بالفعل بموعد آخر"
+    },
+    "detail_modal": {
+      "department": "القسم",
+      "departmentNone": "غير محدد",
+      "title": "الموعد",
+      "loadError": "تعذّر تحميل الموعد",
+      "patient": "المريض",
+      "doctor": "الطبيب",
+      "time": "الوقت",
+      "duration": "المدة",
+      "reason": "السبب",
+      "reasonEmpty": "غير محدد",
+      "status": "الحالة",
+      "createdBy": "أنشأه",
+      "createdAt": "أُنشئ في",
+      "checkedInAt": "حضر",
+      "completedAt": "اكتمل في",
+      "cancelledAt": "أُلغي في",
+      "cancelReason": "سبب الإلغاء",
+      "noShowAt": "وُسم بعدم الحضور",
+      "actions": "الإجراءات",
+      "actionReason": "تعديل السبب",
+      "actionReschedule": "إعادة جدولة",
+      "saveReason": "حفظ السبب",
+      "newReason": "سبب جديد",
+      "reasonSaved": "تم حفظ السبب",
+      "reasonError": "تعذّر حفظ السبب",
+      "statusError": "تعذّر تغيير الحالة",
+      "close": "إغلاق"
+    },
+    "reschedule_modal": {
+      "title": "إعادة جدولة الموعد",
+      "subtitle": "حاليًا: {{time}}",
+      "newDate": "تاريخ جديد",
+      "newSlot": "موعد جديد",
+      "loadingSlots": "جارٍ تحميل المواعيد المتاحة…",
+      "noFreeSlots": "لا توجد مواعيد متاحة في هذا التاريخ",
+      "submit": "إعادة جدولة",
+      "cancel": "إلغاء",
+      "rescheduleError": "تعذّر إعادة جدولة الموعد",
+      "conflictError": "الوقت المختار محجوز بالفعل"
+    },
+    "fromPatient": {
+      "openButton": "حجز موعد",
+      "modalTitle": "حجز موعد لـ {{patient}}",
+      "doctorLabel": "الطبيب",
+      "doctorPlaceholder": "اختر طبيبًا",
+      "dateLabel": "التاريخ",
+      "slotLabel": "الفترة الزمنية",
+      "loadingDoctors": "جارٍ تحميل الأطباء…",
+      "noDoctors": "لا يوجد أطباء في هذه العيادة بعد",
+      "loadingSlots": "جارٍ تحميل المواعيد…",
+      "noSlots": "لا توجد مواعيد متاحة في هذا التاريخ"
+    },
+    "inlineCreate": {
+      "title": "إنشاء مريض جديد",
+      "lastName": "الاسم العائلي",
+      "firstName": "الاسم الأول",
+      "phone": "الهاتف",
+      "dateOfBirth": "تاريخ الميلاد",
+      "openButton": "+ إنشاء مريض جديد",
+      "openButtonWithName": "+ إنشاء \"{{name}}\"",
+      "submit": "إنشاء واختيار",
+      "cancel": "إلغاء",
+      "errors": {
+        "lastNameRequired": "الاسم العائلي مطلوب",
+        "firstNameRequired": "الاسم الأول مطلوب",
+        "duplicatePhone": "يوجد مريض بهذا الهاتف بالفعل",
+        "forbidden": "ليس لديك صلاحية إنشاء المرضى",
+        "generic": "تعذّر إنشاء المريض"
+      }
+    }
+  },
+  "tabs": {
+    "prescriptions": "الوصفات الطبية"
+  },
+  "prescriptions": {
+    "listTitle": "الوصفات الطبية",
+    "addButton": "+ وصفة جديدة",
+    "addFirstButton": "إصدار أول وصفة",
+    "emptyText": "لا توجد وصفات بعد.",
+    "loadError": "تعذّر تحميل الوصفات",
+    "createTitle": "وصفة جديدة",
+    "issueButton": "إصدار الوصفة",
+    "diagnosisTitle": "التشخيص (ICD-10، اختياري)",
+    "itemsTitle": "الأدوية",
+    "addItemButton": "+ إضافة دواء",
+    "generalNotesTitle": "ملاحظات عامة",
+    "pdfButton": "PDF",
+    "completeButton": "إكمال",
+    "cancelButton": "إلغاء",
+    "confirmCancel": "إلغاء هذه الوصفة؟",
+    "confirmDelete": "حذف الوصفة نهائيًا؟",
+    "cancelledReason": "سبب الإلغاء",
+    "hiddenCrossClinic": "المحتوى مخفي (عيادة أخرى)",
+    "pdfError": "تعذّر إنشاء ملف PDF",
+    "fields": {
+      "inn": "الاسم الدولي غير المسجّل (المادة الفعّالة)",
+      "brandName": "الاسم التجاري",
+      "strength": "التركيز",
+      "form": "الشكل",
+      "route": "طريقة الإعطاء",
+      "dose": "الجرعة",
+      "frequency": "التكرار",
+      "duration": "المدة",
+      "instructions": "التعليمات",
+      "quantity": "الكمية لكل دورة",
+      "prn": "عند الحاجة"
+    },
+    "placeholders": {
+      "inn": "مثال: لوراتادين",
+      "dose": "قرص واحد",
+      "frequency": "مرة واحدة يوميًا",
+      "duration": "14 يومًا",
+      "instructions": "صباحًا بعد الطعام",
+      "generalNotes": "مراجعة بعد أسبوعين"
+    },
+    "forms": {
+      "tablet": "أقراص",
+      "capsule": "كبسولات",
+      "syrup": "شراب",
+      "spray": "بخاخ",
+      "drops": "قطرات",
+      "ointment": "مرهم",
+      "injection": "حقنة",
+      "inhaler": "بخاخ استنشاق",
+      "suppository": "تحميلة",
+      "solution": "محلول",
+      "powder": "مسحوق",
+      "other": "أخرى"
+    },
+    "routes": {
+      "oral": "فموي",
+      "topical": "موضعي",
+      "intramuscular": "عضلي",
+      "intravenous": "وريدي",
+      "subcutaneous": "تحت الجلد",
+      "inhalation": "استنشاقي",
+      "nasal": "أنفي",
+      "otic": "أذني",
+      "ophthalmic": "عيني",
+      "rectal": "شرجي",
+      "sublingual": "تحت اللسان",
+      "other": "أخرى"
+    },
+    "status": {
+      "active": "فعّالة",
+      "cancelled": "ملغاة",
+      "completed": "مكتملة"
+    },
+    "errors": {
+      "innRequired": "الاسم الدولي غير المسجّل مطلوب",
+      "atLeastOne": "أضف دواءً واحدًا على الأقل"
+    }
+  },
+  "patients": {
+    "consents": {
+      "title": "الوصول الممنوح",
+      "empty": "لم يمنح هذا المريض عيادتك بعدُ حق الوصول إلى بياناته.",
+      "error": "تعذّر تحميل أذونات الوصول.",
+      "signedAt": "مُنح في",
+      "expiresAt": "ينتهي في",
+      "revokedAt": "أُلغي في",
+      "revokeButton": "إلغاء الوصول",
+      "confirmRevoke": "إلغاء وصول العيادة إلى بيانات هذا المريض؟ هذا لا رجعة فيه — ستلزم موافقة جديدة.",
+      "status": {
+        "active": "فعّال",
+        "revoked": "مُلغى",
+        "expired": "منتهٍ"
+      },
+      "scopes": {
+        "encounters": "الزيارات والتشخيصات",
+        "allergies": "الحساسيات",
+        "chronicDiseases": "الأمراض المزمنة",
+        "operations": "العمليات",
+        "familyHistory": "التاريخ العائلي",
+        "immunization": "التطعيمات",
+        "imaging": "التصوير والفحوصات"
+      },
+      "purpose": {
+        "treatment": "العلاج",
+        "referral": "الإحالة",
+        "second_opinion": "رأي ثانٍ",
+        "emergency": "طارئ",
+        "research": "بحث"
+      },
+      "toasts": {
+        "revoked": "تم إلغاء الوصول",
+        "forbidden": "هذا الوصول ليس لك",
+        "notFound": "لم يُعثر على الوصول",
+        "revokeError": "تعذّر إلغاء الوصول"
+      }
+    },
+    "consentRequests": {
+      "title": "طلبات الوصول إلى البيانات الطبية",
+      "empty": "لا توجد طلبات وصول لهذا المريض بعد.",
+      "requestedLabel": "طُلب في:",
+      "approvedLabel": "وُوفق عليه في:",
+      "patientNote": "رد المريض:",
+      "respondedAt": "تم الرد: {{date}}",
+      "expiresIn": "ينتهي خلال {{count}} يوم",
+      "expiresIn_one": "ينتهي خلال {{count}} يوم",
+      "expiresIn_other": "ينتهي خلال {{count}} يوم",
+      "expiresSoon": "ينتهي اليوم",
+      "cancel": "إلغاء",
+      "confirmCancel": "إلغاء طلب الوصول هذا؟ لن يراه المريض بعد الآن.",
+      "scopeApproved": "وافق عليه المريض",
+      "scopeDropped": "غير موافق عليه",
+      "status": {
+        "pending": "في انتظار الرد",
+        "approved": "موافق عليه",
+        "rejected": "مرفوض",
+        "cancelled": "ملغى",
+        "expired": "منتهٍ"
+      },
+      "scopes": {
+        "encounters": "الزيارات والتشخيصات",
+        "allergies": "الحساسيات",
+        "chronicDiseases": "الأمراض المزمنة",
+        "operations": "العمليات الجراحية",
+        "familyHistory": "التاريخ العائلي",
+        "immunization": "التطعيمات",
+        "imaging": "التصوير والفحوصات"
+      },
+      "errors": {
+        "loadFailed": "تعذّر تحميل الطلبات",
+        "cancelFailed": "تعذّر إلغاء الطلب",
+        "notPending": "تغيّرت حالة الطلب بالفعل — جارٍ تحديث القائمة."
+      }
+    },
+    "fullRegistration": "التسجيل الكامل →",
+    "wizardTitle": "تسجيل المريض",
+    "wizardSubtitle": "أولًا سنتحقق مما إذا كان المريض مسجلًا بالفعل في DocPats. هذا يمنع التكرار ويمنح المريض حسابًا كاملًا.",
+    "wizard": {
+      "steps": {
+        "search": "بحث",
+        "form": "البيانات",
+        "confirm": "تأكيد"
+      },
+      "card": {
+        "title": "بطاقة المريض — سلّمها للمريض",
+        "subtitle": "اطبعها وسلّمها للمريض. بعد إغلاق هذه النافذة لن تظهر كلمة المرور في النظام بعد الآن — احتفظ بالبطاقة.",
+        "frontType": "بطاقة المريض",
+        "fullName": "الاسم الكامل",
+        "tmpEmail": "بريد إلكتروني مؤقت",
+        "tmpPassword": "كلمة مرور مؤقتة",
+        "qrHint": "امسح للدخول",
+        "registered": "مسجَّل",
+        "validUntil": "فعّل قبل",
+        "backTitle": "ما الذي ستحصل عليه بعد التفعيل",
+        "howToActivate": "كيفية التفعيل",
+        "step1": "افتح docpats.com أو امسح رمز الاستجابة السريعة",
+        "step2": "سجّل الدخول بالبريد الإلكتروني المؤقت وكلمة المرور من هذه البطاقة",
+        "step3": "أدخل بريدك الإلكتروني الدائم واختر كلمة مرور",
+        "step4": "تم — الوصول الكامل إلى سجلك الطبي مفتوح",
+        "tagline": "صحتك في مكان واحد",
+        "copy": "📋 نسخ البيانات",
+        "copied": "✓ تم النسخ",
+        "copyError": "تعذّر النسخ",
+        "copyEmail": "البريد الإلكتروني",
+        "copyPassword": "كلمة المرور",
+        "copyLogin": "تسجيل الدخول",
+        "print": "🖨️ طباعة",
+        "done": "تم",
+        "benefits": {
+          "results": {
+            "title": "نتائج الفحوصات",
+            "text": "تظهر التحاليل والتصوير وملاحظات الأطباء في الحساب الشخصي تلقائيًا — من هذه العيادة ومن أي عيادة DocPats أخرى."
+          },
+          "online": {
+            "title": "استشارات عبر الإنترنت",
+            "text": "اطرح أسئلتك على الأطباء في محادثة آمنة — دون الحاجة إلى موعد."
+          },
+          "ai": {
+            "title": "مساعد الذكاء الاصطناعي",
+            "text": "تفسير نتائج الفحوصات، وشرح التشخيص، والإجابة عن الأسئلة المتعلقة بالأعراض."
+          },
+          "history": {
+            "title": "التاريخ في مكان واحد",
+            "text": "جميع الزيارات والوصفات والعلاجات وملاحظات الأطباء — في سجل طبي واحد."
+          },
+          "scheduling": {
+            "title": "الحجز والتذكيرات",
+            "text": "احجز المواعيد عبر التطبيق، واحصل على تذكير قبل الزيارة بيوم."
+          }
+        }
+      },
+      "search": {
+        "title": "لنتحقق مما إذا كان المريض في DocPats",
+        "subtitle": "يساعد البحث في مستخدمي DocPats الحاليين على ربط البطاقة بحسابهم وتجنّب التكرار.",
+        "tabEmail": "بالبريد الإلكتروني",
+        "tabDob": "بتاريخ الميلاد",
+        "emailLabel": "البريد الإلكتروني للمريض",
+        "emailHint": "أدخل البريد الإلكتروني كاملًا — البحث تلقائي",
+        "dobLabel": "تاريخ الميلاد",
+        "dobPlaceholder": "يوم.شهر.سنة",
+        "dobHint": "أدخل تاريخ الميلاد أولًا. يساعد الاسم الأول والعائلي على تضييق النتائج.",
+        "firstNameLabel": "الاسم الأول",
+        "lastNameLabel": "الاسم العائلي",
+        "searchButton": "بحث",
+        "foundTitle": "وُجد في DocPats",
+        "notFound": "لا أحد بهذه البيانات في DocPats. يمكنك إنشاء مريض جديد.",
+        "linkButton": "ربط",
+        "createFresh": "إنشاء مريض جديد →",
+        "errors": {
+          "failed": "فشل البحث",
+          "dobRequired": "أدخل تاريخ ميلاد"
+        }
+      },
+      "form": {
+        "departmentNone": "— غير محدد —",
+        "title": "بيانات المريض",
+        "prefilledFromUser": "تم ملء البيانات من حساب DocPats — يرجى التحقق والتعديل عند الحاجة.",
+        "notesLabel": "ملاحظات",
+        "next": "التالي →",
+        "emailDeliveryHint": "إذا أدخلته — سنرسل بطاقة المريض إلى هذا البريد. وإلا فسنطبعها فقط.",
+        "errors": {
+          "nameRequired": "الاسم الأول والعائلي مطلوبان",
+          "dobInFuture": "لا يمكن أن يكون تاريخ الميلاد في المستقبل",
+          "emailInvalid": "صيغة بريد إلكتروني غير صحيحة"
+        }
+      },
+      "confirm": {
+        "title": "تأكيد",
+        "subtitle": "يرجى التحقق قبل الإنشاء.",
+        "linkedTo": "مرتبط بـ DocPats",
+        "createProvisionalTitle": "إنشاء حساب DocPats للمريض",
+        "createProvisionalNote": "ستنشئ العيادة بريدًا إلكترونيًا وكلمة مرور مؤقتين. سيحصل المريض على بطاقة وسيتمكن من الدخول إلى DocPats لرؤية نتائج الفحوصات والمحادثات مع الأطباء والتاريخ.",
+        "alreadyLinkedNote": "المريض مرتبط بالفعل بحساب موجود — لا حاجة لإنشاء حساب جديد.",
+        "submit": "إنشاء المريض",
+        "emailDeliveryNotice": "بعد الإنشاء، ستُرسل بطاقة المريض إلى {{email}}",
+        "errors": {
+          "duplicatePhone": "يوجد مريض بهذا الهاتف بالفعل",
+          "dobRequired": "تاريخ الميلاد مطلوب لإنشاء حساب DocPats",
+          "generic": "تعذّر إنشاء المريض"
+        }
+      },
+      "cardIssued": {
+        "title": "اكتمل التسجيل",
+        "subtitle": "دوّن هذه البيانات وسلّمها للمريض. بعد إغلاق هذه النافذة لن تظهر كلمة المرور مرة أخرى.",
+        "tmpEmail": "بريد إلكتروني مؤقت",
+        "tmpPassword": "كلمة مرور مؤقتة",
+        "validUntil": "صالح حتى",
+        "note": "في الخطوة التالية ستظهر بطاقة قابلة للطباعة برمز استجابة سريعة. استخدم هذه البيانات في الوقت الحالي.",
+        "done": "تم"
+      },
+      "consent": {
+        "active": {
+          "title": "المريض مسجَّل بالفعل في DocPats",
+          "intro": "لدى هذا المريض بالفعل حساب DocPats فعّال ببريده الإلكتروني وكلمة مروره الخاصين. إذا تابعت، سيُربط سجل المريض بعيادتك — ولن تُصدر بيانات دخول جديدة.",
+          "confirm": "الربط بالعيادة"
+        },
+        "provisional": {
+          "title": "لدى المريض بطاقة DocPats بالفعل",
+          "intro": "توجد بالفعل بطاقة غير مفعّلة لهذا المريض. إذا تابعت، ستُصدر بطاقة جديدة — وستتوقف القديمة عن العمل.",
+          "confirm": "إعادة الإصدار والربط"
+        },
+        "foundUser": "المريض الموجود",
+        "cardIssuedAt": "تاريخ إصدار البطاقة",
+        "reissueCount": "أُعيد إصدار البطاقة",
+        "reissueCountValue_zero": "صفر مرة",
+        "reissueCountValue_one": "مرة {{count}}",
+        "reissueCountValue_other": "{{count}} مرة",
+        "checkbox": "أؤكّد أن المريض وافق على الربط بعيادتنا (نموذج ورقي أو إلكتروني موقّع)."
+      },
+      "duplicate": {
+        "linked": {
+          "title": "المريض مرتبط بالعيادة بالفعل",
+          "body": "حساب DocPats هذا مرتبط بالفعل بسجل مريض في عيادتك. افتح السجل الموجود للمتابعة."
+        },
+        "inClinic": {
+          "title": "المريض موجود في العيادة بالفعل",
+          "byEmail": "يوجد مريض بهذا البريد الإلكتروني في عيادتك بالفعل. افتح السجل الموجود أو تحقق من البريد بحثًا عن أخطاء إملائية.",
+          "byPhone": "يوجد مريض بهذا الهاتف في عيادتك بالفعل. افتح السجل الموجود أو تحقق من الهاتف بحثًا عن أخطاء."
+        },
+        "openExisting": "فتح سجل المريض"
+      }
+    },
+    "back": "← لوحة التحكم",
+    "backToList": "← العودة إلى القائمة",
+    "title": "المرضى",
+    "subtitle": "إدارة سجلات مرضى العيادة",
+    "addPatient": "+ إضافة مريض",
+    "addFirstPatient": "إضافة أول مريض",
+    "allPatients": "جميع المرضى",
+    "searchResults": "نتائج البحث",
+    "searchPlaceholder": "ابحث بالهاتف أو البريد الإلكتروني أو الاسم العائلي...",
+    "noPatients": "لا يوجد مرضى بعد.",
+    "noSearchResults": "لم يُعثر على شيء. جرّب استعلامًا آخر.",
+    "noContact": "لا توجد بيانات اتصال",
+    "dob": "تاريخ الميلاد",
+    "linkedBadge": "مرتبط",
+    "unnamed": "بلا اسم",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "detailsTitle": "معلومات المريض",
+    "createdAt": "أُنشئ في",
+    "updatedAt": "حُدّث في",
+    "createdBy": "أنشأه",
+    "createdByUnknown": "غير معروف",
+    "createdByType": {
+      "user": "طبيب",
+      "employee": "موظف"
+    },
+    "createSubmit": "إنشاء المريض",
+    "confirmDelete": "إزالة {{name}} من السجلات؟ يمكن للمسؤول التراجع عن ذلك.",
+    "confirmUnlink": "إزالة الارتباط بحساب مستخدم DocPats؟",
+    "errorTitle": "تعذّر تحميل المرضى",
+    "notFoundTitle": "لم يُعثر على المريض",
+    "notFoundText": "هذا المريض غير موجود أو ليس لديك صلاحية الوصول.",
+    "linkSection": {
+      "title": "الربط بمستخدم DocPats",
+      "linkedTo": "مرتبط بالمستخدم:",
+      "notLinked": "هذا المريض غير مرتبط بحساب DocPats. اربطه إذا كان المريض مسجلًا على المنصة — فهذا يمنحه الوصول إلى سجلاته.",
+      "linkButton": "الربط بمستخدم",
+      "userIdLabel": "معرّف مستخدم DocPats",
+      "userIdHint": "ObjectId مكوّن من 24 حرفًا. ابحث عنه في المحادثات أو في قاعدة البيانات.",
+      "linkSubmit": "ربط",
+      "unlink": "إلغاء الربط",
+      "modeEmail": "بالبريد الإلكتروني",
+      "modeDob": "بتاريخ الميلاد",
+      "emailLabel": "البريد الإلكتروني للمستخدم",
+      "emailHint": "أدخل البريد الإلكتروني كاملًا — بحث بمطابقة تامة",
+      "dobLabel": "تاريخ الميلاد",
+      "dobHint": "أدخل تاريخ الميلاد، ثم يمكنك تضييق النتائج بالاسم الأول والعائلي",
+      "searchSubmit": "بحث",
+      "resultsTitle": "نتائج البحث",
+      "noResults": "لم يُعثر على المستخدم. تحقق من البيانات المُدخلة.",
+      "errors": {
+        "emailRequired": "أدخل بريدًا إلكترونيًا للبحث",
+        "dobRequired": "أدخل تاريخ ميلاد للبحث",
+        "searchFailed": "فشل البحث. يرجى المحاولة مرة أخرى."
+      },
+      "role": {
+        "doctor": "طبيب",
+        "patient": "مريض",
+        "admin": "مسؤول",
+        "clinic_admin": "مسؤول العيادة",
+        "clinic_staff": "موظف العيادة"
+      }
+    },
+    "fields": {
+      "department": "القسم",
+      "firstName": "الاسم الأول",
+      "lastName": "الاسم العائلي",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "dateOfBirth": "تاريخ الميلاد",
+      "gender": "الجنس"
+    },
+    "gender": {
+      "male": "ذكر",
+      "female": "أنثى",
+      "other": "آخر",
+      "unknown": "غير محدد"
+    },
+    "errors": {
+      "firstNameRequired": "الاسم الأول مطلوب",
+      "lastNameRequired": "الاسم العائلي مطلوب",
+      "duplicatePhone": "يوجد مريض بهذا الهاتف بالفعل",
+      "createFailed": "تعذّر إنشاء المريض",
+      "updateFailed": "تعذّر حفظ التغييرات",
+      "deleteFailed": "تعذّر حذف المريض",
+      "linkInvalidId": "صيغة معرّف غير صحيحة (ObjectId مكوّن من 24 حرفًا مطلوب)",
+      "linkUserNotFound": "لم يُعثر على مستخدم بهذا المعرّف",
+      "linkAlreadyLinked": "المريض مرتبط بالفعل بمستخدم آخر. ألغِ الربط أولًا.",
+      "linkFailed": "تعذّر الربط بالمستخدم",
+      "unlinkFailed": "تعذّر إلغاء الربط"
+    }
+  },
   "common": {
+    "backToDashboard": "العودة إلى لوحة التحكم",
+    "actionFailed": "فشل الإجراء",
+    "saveFailed": "تعذّر الحفظ",
+    "remove": "إزالة",
     "cancel": "إلغاء",
     "save": "حفظ",
     "delete": "حذف",
@@ -18,42 +617,70 @@
     "error": "حدث خطأ ما",
     "errorReload": "إعادة التحميل"
   },
+  "publicPage": {
+    "title": "الصفحة العامة",
+    "subtitle": "موقع مصغّر للعيادة للمرضى: الوصف، الأطباء، وسائل الاتصال.",
+    "noPermission": "ليست لديك صلاحية التعديل. يرجى التواصل مع مالك العيادة.",
+    "statusTitle": "الحالة",
+    "published": "الصفحة منشورة",
+    "unpublished": "الصفحة مخفية",
+    "publishedHint": "الصفحة مرئية للجميع عبر الرابط أدناه.",
+    "unpublishedHint": "انشر الصفحة عند اكتمال الملف — عندها تصبح مرئية.",
+    "linkLabel": "عنوان الصفحة:",
+    "descTitle": "وصف العيادة",
+    "descPlaceholder": "عرّف بعيادتك: التخصصات، التاريخ، المزايا…",
+    "saved": "تم الحفظ",
+    "saveError": "تعذّر حفظ الوصف",
+    "publishError": "تعذّر تغيير حالة النشر",
+    "moreSoon": "منشورات الأطباء ستُضاف في التحديثات القادمة.",
+    "logoTitle": "الشعار",
+    "logoUpload": "رفع",
+    "logoReplace": "استبدال",
+    "remove": "حذف",
+    "logoError": "تعذّر رفع الشعار",
+    "galleryTitle": "المعرض",
+    "galleryAdd": "إضافة صور",
+    "galleryEmpty": "لا توجد صور بعد",
+    "galleryLimit": "20 صورة كحد أقصى",
+    "galleryError": "تعذّر رفع الصورة",
+    "reviewError": "تعذّر تغيير الحالة"
+  },
   "layout": {
-    "brandName": "DocPats Clinic",
+    "brandName": "عيادة DocPats",
     "logoutFailed": "فشل تسجيل الخروج"
   },
   "hub": {
-    "title": "مرحبًا بك في DocPats Clinic",
-    "subtitle": "لا تملك عيادة بعد. أنشئ عيادة لإدارة فريقك ومواعيدك ومرضاك في مساحة عمل واحدة.",
+    "title": "مرحبًا بك في عيادة DocPats",
+    "subtitle": "ليس لديك عيادة بعد. أنشئ واحدة لتبدأ إدارة فريقك ومواعيدك ومرضاك في مساحة عمل واحدة.",
     "createClinic": "إنشاء عيادة",
     "or": "أو",
-    "alreadyInvited": "تمت دعوتك بالفعل كعضو في الفريق؟",
+    "alreadyInvited": "هل دُعيت بالفعل كموظف؟",
     "signInAsEmployee": "تسجيل الدخول كموظف",
     "features": {
       "team": {
         "title": "إدارة فريقك",
-        "description": "ادعُ الأطباء والممرضين وموظفي الاستقبال بصلاحيات حسب الدور"
+        "description": "ادعُ الأطباء والممرضين وموظفي الاستقبال بصلاحيات قائمة على الأدوار"
       },
       "scheduling": {
         "title": "جدولة ذكية",
-        "description": "احجز المواعيد، أدر النوبات، تجنب التعارضات"
+        "description": "احجز المواعيد، وأدِر الورديات، وامنع التعارضات"
       },
       "hipaa": {
         "title": "متوافق مع HIPAA",
-        "description": "بيانات مرضى مشفرة، سجلات تدقيق، اتصالات آمنة"
+        "description": "بيانات مرضى مشفّرة، وسجلات تدقيق، واتصال آمن"
       }
     }
   },
   "createClinic": {
     "back": "رجوع",
     "title": "إنشاء عيادة",
-    "subtitle": "أعد مساحة عمل عيادتك. ستكون أنت المالك.",
+    "subtitle": "أنشئ مساحة عمل عيادتك. ستكون أنت المالك.",
     "fields": {
       "name": "اسم العيادة",
       "namePlaceholder": "مركزي الطبي",
-      "slug": "معرّف الرابط",
+      "slug": "اللاحقة في الرابط",
       "slugPlaceholder": "my-medical-center",
-      "slugHint": "يستخدم لصفحة العيادة العامة. يُنشأ تلقائيًا من الاسم إذا تُرك فارغًا.",
+      "slugHint": "تُستخدم لصفحة عيادتك العامة. تُنشأ تلقائيًا من الاسم إذا تُركت فارغة.",
       "defaultLanguage": "اللغة الافتراضية",
       "defaultCurrency": "العملة الافتراضية",
       "timezone": "المنطقة الزمنية",
@@ -66,355 +693,360 @@
     },
     "errors": {
       "nameRequired": "اسم العيادة مطلوب",
-      "nameMinLength": "حرفان كحد أدنى",
-      "nameMaxLength": "200 حرف كحد أقصى",
-      "slugFormat": "أحرف صغيرة وأرقام وشرطات فقط",
-      "slugTaken": "هذا المعرّف مستخدم بالفعل",
-      "emailFormat": "بريد إلكتروني غير صالح",
+      "nameMinLength": "يجب ألا يقل الاسم عن حرفين",
+      "nameMaxLength": "يجب ألا يزيد الاسم عن 200 حرف",
+      "slugFormat": "يمكن أن تحتوي اللاحقة على أحرف لاتينية صغيرة وأرقام وشرطات فقط",
+      "slugTaken": "هذه اللاحقة مستخدمة بالفعل",
+      "emailFormat": "عنوان بريد إلكتروني غير صحيح",
       "fixErrors": "يرجى تصحيح الأخطاء أدناه",
-      "duplicate": "توجد عيادة بهذا المعرّف بالفعل",
-      "generic": "تعذر إنشاء العيادة. حاول مرة أخرى."
+      "duplicate": "توجد عيادة بهذه اللاحقة بالفعل",
+      "generic": "تعذّر إنشاء العيادة. يرجى المحاولة مرة أخرى."
     },
     "creating": "جارٍ الإنشاء...",
-    "submit": "إنشاء عيادة"
+    "submit": "إنشاء العيادة"
+  },
+  "medical": {
+    "crossClinicBadge": "عيادة أخرى",
+    "crossClinicHint": "وصفة صادرة عن عيادة أخرى — الوصول عبر موافقة المريض",
+    "encounters": {
+      "placeholders": {
+        "icdSearch": "ابحث في ICD-10 بالرمز (J45) أو الاسم (الربو)...",
+        "diagnosisText": "التشخيص بلغتك"
+      }
+    },
+    "prescriptions": {
+      "listTitle": "الوصفات الطبية",
+      "addButton": "+ وصفة جديدة",
+      "addFirstButton": "إصدار أول وصفة",
+      "emptyText": "لا توجد وصفات بعد.",
+      "loadError": "تعذّر تحميل الوصفات",
+      "createTitle": "وصفة جديدة",
+      "issueButton": "إصدار الوصفة",
+      "diagnosisTitle": "التشخيص (ICD-10، اختياري)",
+      "itemsTitle": "الأدوية",
+      "addItemButton": "+ إضافة دواء",
+      "generalNotesTitle": "تعليمات عامة",
+      "pdfButton": "PDF",
+      "completeButton": "إكمال",
+      "cancelButton": "إلغاء",
+      "confirmCancel": "إلغاء هذه الوصفة؟",
+      "confirmDelete": "حذف الوصفة نهائيًا؟",
+      "cancelledReason": "سبب الإلغاء",
+      "hiddenCrossClinic": "المحتوى مخفي (عيادة أخرى)",
+      "pdfError": "تعذّر إنشاء ملف PDF",
+      "fields": {
+        "inn": "الاسم الدولي غير المسجّل (المادة الفعّالة)",
+        "brandName": "الاسم التجاري",
+        "strength": "التركيز",
+        "form": "الشكل",
+        "route": "طريقة الإعطاء",
+        "dose": "الجرعة المفردة",
+        "frequency": "التكرار",
+        "duration": "المدة",
+        "instructions": "التعليمات",
+        "quantity": "الكمية للدورة",
+        "prn": "عند الحاجة"
+      },
+      "placeholders": {
+        "inn": "مثال: لوراتادين",
+        "dose": "قرص واحد",
+        "frequency": "مرة واحدة يوميًا",
+        "duration": "14 يومًا",
+        "instructions": "صباحًا بعد الطعام",
+        "generalNotes": "مراجعة بعد أسبوعين"
+      },
+      "forms": {
+        "tablet": "أقراص",
+        "capsule": "كبسولات",
+        "syrup": "شراب",
+        "spray": "بخاخ",
+        "drops": "قطرات",
+        "ointment": "مرهم",
+        "injection": "حقنة",
+        "inhaler": "بخاخ استنشاق",
+        "suppository": "تحميلة",
+        "solution": "محلول",
+        "powder": "مسحوق",
+        "other": "أخرى"
+      },
+      "routes": {
+        "oral": "فموي",
+        "topical": "موضعي",
+        "intramuscular": "عضلي",
+        "intravenous": "وريدي",
+        "subcutaneous": "تحت الجلد",
+        "inhalation": "استنشاقي",
+        "nasal": "أنفي",
+        "otic": "أذني",
+        "ophthalmic": "عيني",
+        "rectal": "شرجي",
+        "sublingual": "تحت اللسان",
+        "other": "أخرى"
+      },
+      "status": {
+        "active": "فعّالة",
+        "cancelled": "ملغاة",
+        "completed": "مكتملة"
+      },
+      "errors": {
+        "innRequired": "أدخل الاسم الدولي غير المسجّل للدواء",
+        "atLeastOne": "أضف دواءً واحدًا على الأقل"
+      }
+    },
+    "tabs": {
+      "labResults": "نتائج المختبر"
+    },
+    "labResults": {
+      "listTitle": "نتائج المختبر",
+      "addButton": "+ نتيجة جديدة",
+      "addFirstButton": "إضافة أول نتيجة",
+      "emptyText": "لا توجد نتائج مختبر بعد.",
+      "loadError": "تعذّر تحميل نتائج المختبر",
+      "createTitle": "نتيجة مختبر جديدة",
+      "saveButton": "حفظ النتيجة",
+      "pdfButton": "PDF",
+      "pdfError": "تعذّر إنشاء ملف PDF",
+      "confirmDelete": "حذف نتيجة المختبر هذه نهائيًا؟",
+      "markCorrected": "وسم كمصحّحة",
+      "markAmended": "وسم كمعدّلة",
+      "hiddenCrossClinic": "المحتوى مخفي (عيادة أخرى)",
+      "attachedFile": "ملف مرفق",
+      "panelTitle": "نوع اللوحة",
+      "parametersTitle": "المعايير",
+      "reportTitle": "الخلاصة",
+      "fileTitle": "الأصل (PDF / صورة)",
+      "selectPanel": "— اختر لوحة —",
+      "addParamButton": "+ إضافة معيار",
+      "pickPanelHint": "اختر لوحة أعلاه — تُملأ المعايير تلقائيًا. أو أضف معيارًا يدويًا.",
+      "fields": {
+        "panel": "اللوحة",
+        "panelTitle": "العنوان الظاهر",
+        "effectiveDate": "تاريخ سحب العينة",
+        "labName": "المختبر",
+        "paramName": "المعيار",
+        "value": "القيمة",
+        "unit": "الوحدة",
+        "min": "الأدنى",
+        "max": "الأقصى",
+        "refText": "المرجع",
+        "ref": "المرجع"
+      },
+      "placeholders": {
+        "panelTitle": "تعداد الدم الكامل",
+        "report": "تفسير النتائج..."
+      },
+      "errors": {
+        "empty": "املأ معيارًا واحدًا على الأقل أو خلاصة أو أرفق ملفًا",
+        "fileTooBig": "الملف كبير جدًا (الحد الأقصى 20 ميجابايت)"
+      },
+      "status": {
+        "preliminary": "أولية",
+        "final": "نهائية",
+        "corrected": "مصحّحة",
+        "amended": "معدّلة"
+      },
+      "panels": {
+        "BloodTestGeneral": "تعداد الدم الكامل",
+        "BloodTestBiochemistry": "الكيمياء الحيوية للدم",
+        "UrineTest": "تحليل البول",
+        "StoolTest": "تحليل البراز",
+        "HormonePanel": "الهرمونات",
+        "TumorMarkers": "دلالات الأورام",
+        "PCR": "تفاعل البوليمراز المتسلسل",
+        "Immunology": "المناعة",
+        "GeneticScreening": "الفحص الجيني",
+        "CoagulationPanel": "لوحة التخثر",
+        "LipidProfile": "صورة الدهون",
+        "LiverFunction": "وظائف الكبد",
+        "RenalElectrolytes": "الكلى والكهارل",
+        "IronStudies": "دراسات الحديد",
+        "DiabetesPanel": "لوحة السكري",
+        "ThyroidPanel": "لوحة الغدة الدرقية",
+        "CardiacMarkers": "دلالات القلب",
+        "VitaminsTrace": "الفيتامينات والعناصر النادرة",
+        "InfectiousSerology": "المصلية المعدية",
+        "UrineAlbuminACR": "ألبومين/كرياتينين البول",
+        "StoolInflammation": "التهاب الأمعاء",
+        "Other": "أخرى"
+      }
+    }
+  },
+  "specialty": {
+    "general": "عام",
+    "family_medicine": "طب الأسرة",
+    "internal_medicine": "الباطنية",
+    "therapy": "الباطنية (العلاج)",
+    "pediatrics": "طب الأطفال",
+    "neonatology": "طب حديثي الولادة",
+    "geriatrics": "طب المسنّين",
+    "emergency_medicine": "طب الطوارئ",
+    "intensive_care": "العناية المركزة",
+    "anesthesiology": "التخدير",
+    "cardiology": "أمراض القلب",
+    "cardiac_surgery": "جراحة القلب",
+    "vascular_surgery": "جراحة الأوعية الدموية",
+    "thoracic_surgery": "جراحة الصدر",
+    "phlebology": "طب الأوردة",
+    "neurology": "طب الأعصاب",
+    "neurosurgery": "جراحة الأعصاب",
+    "psychiatry": "الطب النفسي",
+    "psychology": "علم النفس",
+    "psychotherapy": "العلاج النفسي",
+    "addiction_medicine": "طب الإدمان",
+    "gastroenterology": "أمراض الجهاز الهضمي",
+    "hepatology": "أمراض الكبد",
+    "endocrinology": "الغدد الصماء",
+    "nutrition": "التغذية والحمية",
+    "nephrology": "أمراض الكلى",
+    "urology": "المسالك البولية",
+    "andrology": "طب الذكورة",
+    "gynecology": "أمراض النساء",
+    "obstetrics": "التوليد",
+    "reproductive_medicine": "طب الإنجاب",
+    "mammology": "طب الثدي",
+    "pulmonology": "أمراض الصدر",
+    "rheumatology": "أمراض الروماتيزم",
+    "orthopedics": "جراحة العظام",
+    "traumatology": "طب الرضوح",
+    "sports_medicine": "الطب الرياضي",
+    "hematology": "أمراض الدم",
+    "oncology": "الأورام",
+    "radiation_oncology": "الأورام الإشعاعية",
+    "immunology": "المناعة",
+    "allergology": "الحساسية",
+    "transfusion_medicine": "طب نقل الدم",
+    "infectious_diseases": "الأمراض المعدية",
+    "dermatology": "الأمراض الجلدية",
+    "venereology": "الأمراض التناسلية",
+    "cosmetology": "طب التجميل",
+    "plastic_surgery": "الجراحة التجميلية",
+    "ent": "الأنف والأذن والحنجرة",
+    "audiology": "السمعيات",
+    "ophthalmology": "طب العيون",
+    "surgery": "الجراحة العامة",
+    "pediatric_surgery": "جراحة الأطفال",
+    "proctology": "جراحة الشرج والمستقيم",
+    "transplantology": "طب زراعة الأعضاء",
+    "dentistry": "طب الأسنان",
+    "orthodontics": "تقويم الأسنان",
+    "maxillofacial_surgery": "جراحة الوجه والفكين",
+    "radiology": "الأشعة",
+    "nuclear_medicine": "الطب النووي",
+    "pathology": "علم الأمراض",
+    "laboratory_medicine": "طب المختبرات",
+    "microbiology": "علم الأحياء الدقيقة",
+    "genetics": "علم الوراثة",
+    "rehabilitation": "إعادة التأهيل",
+    "physiotherapy": "العلاج الطبيعي",
+    "pain_medicine": "طب الألم",
+    "palliative_care": "الرعاية التلطيفية",
+    "occupational_medicine": "طب العمل",
+    "preventive_medicine": "الطب الوقائي",
+    "forensic_medicine": "الطب الشرعي",
+    "other": "أخرى"
   },
   "dashboard": {
     "yourRole": "دورك:",
     "stats": {
       "teamMembers": "أعضاء الفريق",
-      "pendingInvitations": "دعوات معلقة",
-      "subscription": "الاشتراك",
-      "viewPatients": "المرضى"
+      "pendingInvitations": "الدعوات المعلّقة",
+      "subscription": "الاشتراك"
     },
     "quickActions": "إجراءات سريعة",
     "actions": {
       "inviteTeamMember": "دعوة عضو فريق",
-      "viewTeam": "عرض الفريق",
+      "viewTeam": "الفريق",
+      "viewPatients": "المرضى",
       "scheduleSoon": "الجدول (قريبًا)"
     },
     "team": "الفريق",
-    "viewAll": "عرض الكل ({{count}}) ←",
+    "viewAll": "عرض الكل ({{count}}) →",
     "noTeamMembers": "لا يوجد أعضاء فريق بعد.",
-    "inviteFirstMember": "ادعُ أول عضو في فريقك ←",
-    "pendingInvitations": "دعوات معلقة",
-    "manage": "إدارة ←",
+    "inviteFirstMember": "ادعُ أول عضو في فريقك →",
+    "pendingInvitations": "الدعوات المعلّقة",
+    "manage": "إدارة →",
     "clinicDetails": "تفاصيل العيادة",
     "details": {
       "name": "الاسم",
-      "slug": "المعرّف",
+      "slug": "اللاحقة",
       "timezone": "المنطقة الزمنية",
-      "defaultCurrency": "العملة",
-      "defaultLanguage": "اللغة",
+      "defaultCurrency": "العملة الافتراضية",
+      "defaultLanguage": "اللغة الافتراضية",
       "tier": "الباقة",
       "phone": "الهاتف",
       "email": "البريد الإلكتروني"
     },
-    "errorTitle": "تعذر تحميل لوحة التحكم",
-    "invitedAsRoleExpires": "تمت الدعوة بصفة {{role}} · تنتهي في {{date}}"
-  },
-  "patients": {
-    "fullRegistration": "تسجيل كامل ←",
-    "wizardTitle": "تسجيل المريض",
-    "wizardSubtitle": "أولاً سنتحقق مما إذا كان المريض مسجلاً بالفعل في DocPats. هذا يمنع التكرار ويمنح المريض حساباً كاملاً.",
-    "wizard": {
-      "steps": {
-        "search": "البحث",
-        "form": "البيانات",
-        "confirm": "التأكيد"
-      },
-      "card": {
-        "title": "بطاقة المريض — سلّمها للمريض",
-        "subtitle": "اطبعها وسلّمها للمريض. بعد إغلاق هذه النافذة لن تظهر كلمة المرور في النظام مرة أخرى — احتفظ بالبطاقة.",
-        "frontType": "بطاقة المريض",
-        "fullName": "الاسم الكامل",
-        "tmpEmail": "البريد الإلكتروني المؤقت",
-        "tmpPassword": "كلمة المرور المؤقتة",
-        "qrHint": "امسح ضوئياً لتسجيل الدخول",
-        "registered": "مسجل",
-        "validUntil": "تفعيل قبل",
-        "backTitle": "ما الذي ستحصل عليه بعد التفعيل",
-        "howToActivate": "كيفية التفعيل",
-        "step1": "افتح docpats.com أو امسح رمز QR",
-        "step2": "سجّل الدخول بالبريد الإلكتروني وكلمة المرور المؤقتين من هذه البطاقة",
-        "step3": "أدخل بريدك الإلكتروني الدائم واختر كلمة مرور",
-        "step4": "تم — الوصول إلى السجل الطبي الكامل متاح الآن",
-        "tagline": "صحتك في مكان واحد",
-        "copy": "📋 نسخ البيانات",
-        "copied": "✓ تم النسخ",
-        "copyError": "تعذر النسخ",
-        "copyEmail": "البريد الإلكتروني",
-        "copyPassword": "كلمة المرور",
-        "copyLogin": "تسجيل الدخول",
-        "print": "🖨️ طباعة",
-        "done": "تم",
-        "benefits": {
-          "results": {
-            "title": "نتائج الفحوصات",
-            "text": "التحاليل والأشعة وملاحظات الأطباء ستظهر في الحساب الشخصي تلقائياً — من هذه العيادة ومن أي عيادة DocPats أخرى."
-          },
-          "online": {
-            "title": "استشارات عبر الإنترنت",
-            "text": "اطرح أسئلتك على الأطباء في محادثة آمنة — بدون الحاجة لموعد."
-          },
-          "ai": {
-            "title": "مساعد الذكاء الاصطناعي",
-            "text": "تفسير التحاليل، شرح التشخيص، أجوبة على الأسئلة المتعلقة بالأعراض."
-          },
-          "history": {
-            "title": "السجل في مكان واحد",
-            "text": "جميع الزيارات والوصفات والعلاجات وملاحظات الأطباء — في سجل طبي واحد."
-          },
-          "scheduling": {
-            "title": "الحجز والتذكيرات",
-            "text": "احجز مواعيد عبر التطبيق، استلم تذكيراً قبل الموعد بيوم."
-          }
-        }
-      },
-      "search": {
-        "title": "لنتحقق مما إذا كان المريض في DocPats",
-        "subtitle": "البحث في مستخدمي DocPats الحاليين يساعد في ربط البطاقة بحسابهم وتجنب التكرارات.",
-        "tabEmail": "بالبريد الإلكتروني",
-        "tabDob": "بتاريخ الميلاد",
-        "emailLabel": "البريد الإلكتروني للمريض",
-        "emailHint": "أدخل البريد الإلكتروني كاملاً — البحث تلقائي",
-        "dobLabel": "تاريخ الميلاد",
-        "dobPlaceholder": "ي ي.ش ش.س س س س",
-        "dobHint": "أدخل تاريخ الميلاد أولاً. الاسم واللقب لتضييق النتائج.",
-        "firstNameLabel": "الاسم",
-        "lastNameLabel": "اللقب",
-        "searchButton": "بحث",
-        "foundTitle": "موجود في DocPats",
-        "notFound": "لا يوجد أحد بهذه البيانات في DocPats. يمكنك إنشاء مريض جديد.",
-        "linkButton": "ربط",
-        "createFresh": "إنشاء مريض جديد ←",
-        "errors": {
-          "failed": "فشل البحث",
-          "dobRequired": "أدخل تاريخ الميلاد"
-        }
-      },
-      "form": {
-        "title": "بيانات المريض",
-        "prefilledFromUser": "تم تعبئة البيانات من حساب DocPats — يرجى التحقق منها والتعديل إذا لزم الأمر.",
-        "notesLabel": "ملاحظات",
-        "next": "التالي ←",
-        "emailDeliveryHint": "إذا أدخلته — سنرسل بطاقة المريض إلى هذا البريد. وإلا فسنطبعها فقط.",
-        "errors": {
-          "nameRequired": "الاسم واللقب مطلوبان",
-          "dobInFuture": "لا يمكن أن يكون تاريخ الميلاد في المستقبل",
-          "emailInvalid": "تنسيق البريد الإلكتروني غير صالح"
-        }
-      },
-      "confirm": {
-        "title": "التأكيد",
-        "subtitle": "يرجى التحقق قبل الإنشاء.",
-        "linkedTo": "الربط بـ DocPats",
-        "createProvisionalTitle": "إنشاء حساب DocPats للمريض",
-        "createProvisionalNote": "ستنشئ العيادة بريداً إلكترونياً وكلمة مرور مؤقتين. سيستلم المريض بطاقة وسيتمكن من تسجيل الدخول إلى DocPats لرؤية نتائج الفحوصات والمحادثات مع الأطباء والسجل.",
-        "alreadyLinkedNote": "المريض مرتبط بالفعل بحساب موجود — لا حاجة لإنشاء حساب جديد.",
-        "submit": "إنشاء المريض",
-        "emailDeliveryNotice": "بعد الإنشاء، سيتم إرسال بطاقة المريض إلى {{email}}",
-        "errors": {
-          "duplicatePhone": "يوجد مريض بهذا الهاتف بالفعل",
-          "dobRequired": "تاريخ الميلاد مطلوب لإنشاء حساب DocPats",
-          "generic": "تعذر إنشاء المريض"
-        }
-      },
-      "cardIssued": {
-        "title": "اكتمل التسجيل",
-        "subtitle": "دوّن هذه البيانات وسلّمها للمريض. بعد إغلاق هذه النافذة لن تظهر كلمة المرور مرة أخرى.",
-        "tmpEmail": "البريد الإلكتروني المؤقت",
-        "tmpPassword": "كلمة المرور المؤقتة",
-        "validUntil": "ساري حتى",
-        "note": "في الخطوة التالية ستظهر بطاقة قابلة للطباعة مع رمز QR. استخدم هذه البيانات حالياً.",
-        "done": "تم"
-      },
-      "consent": {
-        "active": {
-          "title": "المريض مسجل بالفعل في DocPats",
-          "intro": "هذا المريض لديه بالفعل حساب DocPats نشط مع بريد إلكتروني وكلمة مرور خاصة به. إذا تابعت، فسيتم ربط سجل المريض بعيادتك — لن يتم إصدار بيانات دخول جديدة.",
-          "confirm": "ربط بالعيادة"
-        },
-        "provisional": {
-          "title": "المريض لديه بطاقة DocPats بالفعل",
-          "intro": "توجد بطاقة غير منشطة لهذا المريض بالفعل. إذا تابعت، فسيتم إصدار بطاقة جديدة — وستتوقف البطاقة القديمة عن العمل.",
-          "confirm": "إعادة الإصدار والربط"
-        },
-        "foundUser": "المريض الموجود",
-        "cardIssuedAt": "تاريخ إصدار البطاقة",
-        "reissueCount": "تم إعادة إصدار البطاقة",
-        "reissueCountValue_zero": "صفر مرة",
-        "reissueCountValue_one": "مرة واحدة",
-        "reissueCountValue_two": "مرتان",
-        "reissueCountValue_few": "{{count}} مرات",
-        "reissueCountValue_many": "{{count}} مرة",
-        "reissueCountValue_other": "{{count}} مرة",
-        "checkbox": "أؤكد أن المريض قد وافق على الربط بعيادتنا (نموذج ورقي أو إلكتروني موقع)."
-      },
-      "duplicate": {
-        "linked": {
-          "title": "المريض مرتبط بالعيادة بالفعل",
-          "body": "حساب DocPats هذا مرتبط بالفعل بسجل مريض في عيادتك. افتح السجل الموجود للمتابعة."
-        },
-        "inClinic": {
-          "title": "المريض موجود في العيادة بالفعل",
-          "byEmail": "يوجد بالفعل مريض بهذا البريد الإلكتروني في عيادتك. افتح السجل الموجود أو تحقق من البريد الإلكتروني من الأخطاء.",
-          "byPhone": "يوجد بالفعل مريض بهذا الهاتف في عيادتك. افتح السجل الموجود أو تحقق من الهاتف من الأخطاء."
-        },
-        "openExisting": "فتح سجل المريض"
-      }
-    },
-    "back": "← لوحة التحكم",
-    "backToList": "← العودة إلى القائمة",
-    "title": "المرضى",
-    "subtitle": "إدارة سجلات مرضى العيادة",
-    "addPatient": "+ إضافة مريض",
-    "addFirstPatient": "إضافة أول مريض",
-    "allPatients": "جميع المرضى",
-    "searchResults": "نتائج البحث",
-    "searchPlaceholder": "ابحث بالهاتف أو البريد الإلكتروني أو اللقب...",
-    "noPatients": "لا يوجد مرضى حتى الآن.",
-    "noSearchResults": "لم يتم العثور على نتائج. جرب استعلامًا آخر.",
-    "noContact": "لا توجد معلومات اتصال",
-    "dob": "تاريخ الميلاد",
-    "linkedBadge": "مرتبط",
-    "unnamed": "بدون اسم",
-    "delete": "حذف",
-    "edit": "تعديل",
-    "detailsTitle": "معلومات المريض",
-    "createdAt": "تم الإنشاء",
-    "updatedAt": "آخر تحديث",
-    "createdBy": "أنشأه",
-    "createdByUnknown": "غير معروف",
-    "createdByType": {
-      "user": "طبيب",
-      "employee": "موظف"
-    },
-    "createSubmit": "إنشاء مريض",
-    "confirmDelete": "إزالة {{name}} من السجلات؟ يمكن للمسؤول التراجع عن هذا.",
-    "confirmUnlink": "إزالة الارتباط بحساب مستخدم DocPats؟",
-    "errorTitle": "فشل تحميل المرضى",
-    "notFoundTitle": "المريض غير موجود",
-    "notFoundText": "هذا المريض غير موجود أو ليس لديك حق الوصول.",
-    "linkSection": {
-      "title": "ارتباط مستخدم DocPats",
-      "linkedTo": "مرتبط بالمستخدم:",
-      "notLinked": "هذا المريض غير مرتبط بحساب مستخدم DocPats. اربط إذا كان المريض مسجلاً في المنصة — سيمنحه ذلك حق الوصول إلى سجلاته.",
-      "linkButton": "ربط بالمستخدم",
-      "userIdLabel": "معرف مستخدم DocPats",
-      "userIdHint": "ObjectId مكون من 24 حرفًا. ابحث عنه في المحادثات أو قاعدة البيانات.",
-      "linkSubmit": "ربط",
-      "unlink": "إلغاء الارتباط",
-      "modeEmail": "بالبريد الإلكتروني",
-      "modeDob": "بتاريخ الميلاد",
-      "emailLabel": "البريد الإلكتروني للمستخدم",
-      "emailHint": "أدخل البريد الإلكتروني كاملاً — بحث بمطابقة تامة",
-      "dobLabel": "تاريخ الميلاد",
-      "dobHint": "أدخل تاريخ الميلاد، ثم يمكنك تضييق النتائج بالاسم الأول واسم العائلة",
-      "searchSubmit": "بحث",
-      "resultsTitle": "نتائج البحث",
-      "noResults": "لم يتم العثور على مستخدم. تحقق من البيانات المدخلة.",
-      "errors": {
-        "emailRequired": "أدخل بريداً إلكترونياً للبحث",
-        "dobRequired": "أدخل تاريخ ميلاد للبحث",
-        "searchFailed": "فشل البحث. يرجى المحاولة مرة أخرى."
-      },
-      "role": {
-        "doctor": "طبيب",
-        "patient": "مريض",
-        "admin": "مدير",
-        "clinic_admin": "مدير العيادة",
-        "clinic_staff": "موظف العيادة"
-      }
-    },
-    "fields": {
-      "firstName": "الاسم",
-      "lastName": "اللقب",
-      "phone": "الهاتف",
-      "email": "البريد الإلكتروني",
-      "dateOfBirth": "تاريخ الميلاد",
-      "gender": "الجنس"
-    },
-    "gender": {
-      "male": "ذكر",
-      "female": "أنثى",
-      "other": "آخر",
-      "unknown": "غير محدد"
-    },
-    "errors": {
-      "firstNameRequired": "الاسم مطلوب",
-      "lastNameRequired": "اللقب مطلوب",
-      "duplicatePhone": "يوجد مريض بهذا الهاتف بالفعل",
-      "createFailed": "فشل إنشاء المريض",
-      "updateFailed": "فشل حفظ التغييرات",
-      "deleteFailed": "فشل حذف المريض",
-      "linkInvalidId": "صيغة المعرف غير صحيحة (ObjectId مكون من 24 حرفًا مطلوب)",
-      "linkUserNotFound": "المستخدم بهذا المعرف غير موجود",
-      "linkAlreadyLinked": "المريض مرتبط بالفعل بمستخدم آخر. ألغِ الارتباط أولاً.",
-      "linkFailed": "فشل الربط بالمستخدم",
-      "unlinkFailed": "فشل إلغاء الارتباط"
-    }
+    "errorTitle": "تعذّر تحميل لوحة التحكم",
+    "invitedAsRoleExpires": "دُعي كـ {{role}} · ينتهي في {{date}}"
   },
   "staff": {
+    "doctorInvitations": "دعوات الأطباء",
+    "doctorInvitePending": "دعوة طبيب",
+    "confirmCancelRequest": "هل تريد سحب هذه الدعوة؟",
     "back": "← لوحة التحكم",
     "title": "الفريق",
-    "subtitle": "أدر أعضاء فريق العيادة والدعوات",
+    "subtitle": "إدارة أعضاء فريق عيادتك ودعواتها",
     "addDoctor": "+ إضافة طبيب",
     "inviteEmployee": "+ دعوة موظف",
-    "pendingInvitations": "دعوات معلقة",
+    "pendingInvitations": "الدعوات المعلّقة",
     "teamMembers": "أعضاء الفريق",
     "noTeamMembers": "لا يوجد أعضاء فريق بعد.",
     "inviteFirstMember": "ادعُ أول عضو في فريقك",
     "remove": "إزالة",
-    "revoke": "إلغاء الدعوة",
-    "pending": "معلق",
-    "unnamed": "عضو الفريق",
-    "invitedAsRoleExpires": "تمت الدعوة بصفة {{role}} · تنتهي في {{date}}",
-    "errorTitle": "تعذر تحميل الفريق",
-    "confirmRevoke": "هل تريد إلغاء هذه الدعوة؟ لن يتمكن المستلم من استخدامها.",
-    "confirmRemove": "هل تريد إزالة {{name}} من العيادة؟ لا يمكن التراجع عن هذا الإجراء.",
-    "removeFailed": "تعذرت إزالة العضو",
-    "revokeFailed": "تعذر إلغاء الدعوة",
-    "changeRoleFailed": "تعذر تغيير الدور"
+    "revoke": "إلغاء",
+    "pending": "معلّق",
+    "unnamed": "عضو فريق",
+    "invitedAsRoleExpires": "دُعي كـ {{role}} · ينتهي في {{date}}",
+    "errorTitle": "تعذّر تحميل الفريق",
+    "confirmRevoke": "إلغاء هذه الدعوة؟ لن يتمكّن المستلم من استخدامها.",
+    "confirmRemove": "إزالة {{name}} من العيادة؟ لا يمكن التراجع عن هذا.",
+    "removeFailed": "تعذّرت إزالة العضو",
+    "revokeFailed": "تعذّر إلغاء الدعوة",
+    "changeRoleFailed": "تعذّر تغيير الدور"
   },
   "inviteModal": {
     "title": "دعوة موظف",
-    "intro": "سنرسل رابط الدعوة عبر البريد الإلكتروني. سيقوم المستلم بإعداد كلمة مرور والانضمام إلى عيادتك كموظف (دون ملف DocPats عام).",
+    "intro": "سنرسل رابط دعوة عبر البريد الإلكتروني. سيُعيّن المستلم كلمة مرور وينضم إلى عيادتك كموظف (دون ملف DocPats عام).",
     "fields": {
       "email": "البريد الإلكتروني",
-      "emailPlaceholder": "name@example.com",
+      "emailPlaceholder": "anna.smith@example.com",
       "role": "الدور",
       "roleHint": "يحدد ما يمكنه رؤيته وفعله في العيادة.",
-      "customTitle": "المسمى الوظيفي",
+      "customTitle": "مسمى وظيفي مخصص",
       "customTitlePlaceholder": "موظف استقبال أول",
       "language": "لغة البريد الإلكتروني"
     },
     "errors": {
       "emailRequired": "البريد الإلكتروني مطلوب",
-      "emailInvalid": "بريد إلكتروني غير صالح",
-      "alreadyMember": "هذا البريد مدعو أو عضو بالفعل.",
-      "generic": "تعذر إرسال الدعوة",
+      "emailInvalid": "بريد إلكتروني غير صحيح",
+      "alreadyMember": "هذا البريد الإلكتروني مدعوّ بالفعل أو عضو.",
+      "generic": "تعذّر إرسال الدعوة",
       "fixErrors": "يرجى تصحيح الأخطاء أدناه"
     },
     "sending": "جارٍ الإرسال...",
     "submit": "إرسال الدعوة"
   },
   "addDoctorModal": {
+    "titleInvite": "دعوة طبيب",
+    "introInvite": "سيتلقى الطبيب دعوة ويجب عليه قبولها.",
+    "sending": "جارٍ الإرسال…",
+    "submitInvite": "إرسال الدعوة",
     "title": "إضافة طبيب إلى عيادتك",
-    "intro": "ابحث عن طبيب موجود في DocPats وأضفه إلى عيادتك. سيحتفظ بملفه العام في DocPats.",
+    "intro": "ابحث عن طبيب DocPats موجود وأضِفه إلى عيادتك. سيحتفظ بملف DocPats العام الخاص به.",
     "searchLabel": "البحث عن أطباء",
     "searchPlaceholder": "اكتب حرفين على الأقل...",
     "searching": "جارٍ البحث...",
-    "noResults": "لم يتم العثور على أطباء",
+    "noResults": "لم يُعثر على أطباء",
     "adding": "جارٍ الإضافة...",
     "submit": "إضافة كطبيب",
     "errors": {
-      "generic": "تعذرت إضافة الطبيب"
+      "generic": "تعذّرت إضافة الطبيب"
     }
   },
   "roles": {
-    "owner": "المالك",
-    "admin": "مدير",
-    "manager": "مدير قسم",
+    "owner": "مالك",
+    "admin": "مسؤول",
+    "manager": "مدير",
     "doctor": "طبيب",
     "receptionist": "موظف استقبال",
     "nurse": "ممرض",
@@ -453,10 +1085,10 @@
     "America/New_York": "نيويورك (UTC-5/-4)"
   },
   "acceptInvitation": {
-    "backToHome": "الصفحة الرئيسية",
+    "backToHome": "العودة إلى الرئيسية",
     "preview": {
-      "title": "تمت دعوتك",
-      "subtitle": "انضم إلى {{clinicName}} كعضو في الفريق.",
+      "title": "لقد تمت دعوتك",
+      "subtitle": "انضم إلى {{clinicName}} كعضو فريق.",
       "clinic": "العيادة",
       "role": "الدور",
       "email": "البريد الإلكتروني",
@@ -465,17 +1097,17 @@
       "sending": "جارٍ الإرسال..."
     },
     "accept": {
-      "title": "أكمل التسجيل",
-      "subtitle": "أدخل الرمز المكون من 6 أرقام المرسل إلى {{email}} وأنشئ حسابك.",
+      "title": "إكمال التسجيل",
+      "subtitle": "أدخل الرمز المكوّن من 6 أرقام المرسَل إلى {{email}} وأعدّ حسابك.",
       "submit": "إكمال التسجيل",
       "submitting": "جارٍ إنشاء الحساب...",
       "resend": "إعادة إرسال الرمز",
-      "resendIn": "إعادة بعد {{seconds}} ث"
+      "resendIn": "إعادة الإرسال خلال {{seconds}} ث"
     },
     "fields": {
       "otp": "رمز التحقق",
       "firstName": "الاسم الأول",
-      "lastName": "اسم العائلة",
+      "lastName": "الاسم العائلي",
       "phoneNumber": "الهاتف",
       "password": "كلمة المرور",
       "passwordHint": "8 أحرف على الأقل.",
@@ -484,27 +1116,27 @@
     "errors": {
       "otpRequired": "الرمز مطلوب",
       "otpFormat": "يجب أن يتكون الرمز من 6 أرقام",
-      "otpWrong": "رمز خاطئ، حاول مرة أخرى",
+      "otpWrong": "رمز خاطئ، يرجى المحاولة مرة أخرى",
       "otpExpired": "انتهت صلاحية الرمز. اطلب رمزًا جديدًا.",
-      "otpGeneric": "تعذر إرسال الرمز. حاول مرة أخرى.",
+      "otpGeneric": "تعذّر إرسال الرمز. يرجى المحاولة مرة أخرى.",
       "firstNameRequired": "الاسم الأول مطلوب",
-      "lastNameRequired": "اسم العائلة مطلوب",
+      "lastNameRequired": "الاسم العائلي مطلوب",
       "passwordRequired": "كلمة المرور مطلوبة",
-      "passwordMinLength": "8 أحرف على الأقل",
-      "passwordMismatch": "كلمات المرور غير متطابقة",
-      "tooManyRequests": "طلبات كثيرة جدًا. انتظر دقيقة.",
-      "tooManyAttempts": "محاولات فاشلة كثيرة. اطلب رمزًا جديدًا.",
+      "passwordMinLength": "يجب ألا تقل كلمة المرور عن 8 أحرف",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين",
+      "tooManyRequests": "طلبات كثيرة جدًا. يرجى الانتظار دقيقة.",
+      "tooManyAttempts": "محاولات فاشلة كثيرة جدًا. يرجى طلب رمز جديد.",
       "fixErrors": "يرجى تصحيح الأخطاء أدناه",
-      "generic": "تعذر إكمال التسجيل. حاول مرة أخرى."
+      "generic": "تعذّر إكمال التسجيل. يرجى المحاولة مرة أخرى."
     },
     "errorStates": {
       "expired": {
         "title": "انتهت صلاحية الدعوة",
-        "description": "انتهت صلاحية رابط الدعوة هذا. يرجى الطلب من العيادة إرسال دعوة جديدة."
+        "description": "انتهت صلاحية رابط الدعوة هذا. يرجى الطلب من العيادة إرسال رابط جديد."
       },
       "used": {
-        "title": "تم استخدام الدعوة بالفعل",
-        "description": "تم قبول هذه الدعوة بالفعل. إذا لم تكن أنت، تواصل مع العيادة."
+        "title": "الدعوة مستخدمة بالفعل",
+        "description": "تم قبول هذه الدعوة بالفعل. إذا لم تكن أنت، فاتصل بالعيادة."
       },
       "invalid": {
         "title": "دعوة غير صالحة",
@@ -512,18 +1144,18 @@
       },
       "generic": {
         "title": "حدث خطأ ما",
-        "description": "تعذر تحميل هذه الدعوة. حاول مرة أخرى لاحقًا."
+        "description": "تعذّر علينا تحميل هذه الدعوة. يرجى المحاولة لاحقًا."
       }
     },
     "success": {
       "title": "اكتمل التسجيل!",
       "subtitle": "مرحبًا بك في {{clinicName}}.",
-      "redirecting": "جارٍ التوجيه إلى تسجيل الدخول..."
+      "redirecting": "جارٍ إعادة التوجيه إلى تسجيل الدخول..."
     }
   },
   "employeeLogin": {
     "title": "تسجيل الدخول إلى عيادتك",
-    "subtitle": "أدخل بيانات الاعتماد للوصول إلى مساحة عملك.",
+    "subtitle": "أدخل بيانات اعتمادك للوصول إلى مساحة عملك.",
     "submit": "تسجيل الدخول",
     "submitting": "جارٍ تسجيل الدخول...",
     "justRegistered": "تم إنشاء الحساب. يمكنك تسجيل الدخول الآن.",
@@ -534,12 +1166,12 @@
     },
     "errors": {
       "emailRequired": "البريد الإلكتروني مطلوب",
-      "emailInvalid": "بريد إلكتروني غير صالح",
+      "emailInvalid": "بريد إلكتروني غير صحيح",
       "passwordRequired": "كلمة المرور مطلوبة",
-      "invalidCredentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
-      "notActive": "هذا الحساب غير نشط. يرجى التواصل مع مسؤول العيادة.",
+      "invalidCredentials": "بريد إلكتروني أو كلمة مرور خاطئة",
+      "notActive": "هذا الحساب غير نشط. يرجى الاتصال بمسؤول العيادة.",
       "fixErrors": "يرجى تصحيح الأخطاء أدناه",
-      "generic": "تعذر تسجيل الدخول. حاول مرة أخرى."
+      "generic": "تعذّر تسجيل الدخول. يرجى المحاولة مرة أخرى."
     }
   },
   "employeeDashboard": {
@@ -549,7 +1181,7 @@
       "fullName": "الاسم الكامل",
       "clinic": "العيادة",
       "role": "الدور",
-      "joinedAt": "تاريخ الانضمام"
+      "joinedAt": "انضم في"
     },
     "quickActions": "إجراءات سريعة",
     "actions": {
@@ -557,7 +1189,7 @@
       "patientsSoon": "المرضى (قريبًا)",
       "pharmacySoon": "الصيدلية (قريبًا)"
     },
-    "comingSoon": "ستتاح ميزات إضافية في الإصدارات القادمة."
+    "comingSoon": "ستتوفر المزيد من الميزات في الإصدارات القادمة."
   },
   "schedule": {
     "title": "جدول الطبيب",
@@ -571,33 +1203,33 @@
     "exceptionsTab": "الاستثناءات والإجازات",
     "weekly": {
       "title": "ساعات العمل حسب أيام الأسبوع",
-      "subtitle": "حدّد الجدول المعتاد. يمكن إضافة استراحة (مثل الغداء) كفترة منفصلة.",
-      "dayOff": "يوم عطلة",
+      "subtitle": "حدّد الجدول المعتاد. يمكنك إضافة استراحة (مثل الغداء) كفترة منفصلة.",
+      "dayOff": "يوم إجازة",
       "working": "يوم عمل",
       "addInterval": "+ فترة",
-      "removeInterval": "حذف",
+      "removeInterval": "إزالة",
       "from": "من",
       "to": "إلى",
-      "noIntervals": "لا توجد فترات — يُعتبر يوم عطلة",
+      "noIntervals": "لا توجد فترات — يُعتبر يوم إجازة",
       "slotDuration": "مدة الموعد (دقيقة)",
-      "bufferMinutes": "فاصل بين المواعيد (دقيقة)",
-      "isActive": "الجدول مُفعّل",
+      "bufferMinutes": "الفاصل بين المواعيد (دقيقة)",
+      "isActive": "الجدول مفعّل",
       "save": "حفظ الجدول",
       "emptyHint": "لا يوجد جدول بعد. فعّل أيام العمل وأضف الفترات.",
-      "overlapError": "الفترات متداخلة — تحقّق من الأوقات",
-      "invalidInterval": "يجب أن يكون وقت البدء قبل وقت الانتهاء"
+      "overlapError": "الفترات متداخلة — تحقق من الأوقات",
+      "invalidInterval": "يجب أن يكون وقت البداية قبل وقت النهاية"
     },
     "exceptions": {
       "title": "استثناءات الجدول",
-      "subtitle": "تواريخ محددة تختلف عن الجدول المعتاد: أيام العطل، الإجازات، ساعات خاصة.",
+      "subtitle": "تواريخ محددة تختلف عن الجدول المعتاد: أيام الإجازة، العطلات، ساعات مخصصة.",
       "rangeFrom": "الفترة من",
       "rangeTo": "إلى",
       "loadRange": "عرض",
       "addSingle": "+ إضافة استثناء",
-      "addVacation": "+ إجازة (نطاق)",
+      "addVacation": "+ إجازة (فترة)",
       "empty": "لا توجد استثناءات في الفترة المحددة",
-      "typeDayOff": "يوم عطلة",
-      "typeCustom": "ساعات خاصة",
+      "typeDayOff": "يوم إجازة",
+      "typeCustom": "ساعات مخصصة",
       "delete": "حذف",
       "confirmDelete": "حذف هذا الاستثناء؟",
       "deleteError": "تعذّر حذف الاستثناء",
@@ -606,8 +1238,8 @@
         "title": "استثناء جديد",
         "date": "التاريخ",
         "type": "النوع",
-        "typeDayOffLabel": "يوم عطلة — الطبيب لا يعمل",
-        "typeCustomLabel": "ساعات خاصة — وقت عمل مختلف",
+        "typeDayOffLabel": "يوم إجازة — الطبيب لا يعمل",
+        "typeCustomLabel": "ساعات مخصصة — وقت عمل مختلف",
         "intervals": "فترات العمل",
         "addInterval": "+ فترة",
         "notePlaceholder": "مثال: مؤتمر، عطلة رسمية",
@@ -617,14 +1249,14 @@
       },
       "vacationModal": {
         "title": "إجازة — نطاق تواريخ",
-        "subtitle": "سيتم تحديد كل يوم في النطاق كيوم عطلة.",
+        "subtitle": "سيُوسم كل يوم في النطاق كيوم إجازة.",
         "startDate": "البداية",
         "endDate": "النهاية",
         "notePlaceholder": "مثال: إجازة سنوية",
-        "submit": "تحديد كأيام عطلة",
+        "submit": "وسم كأيام إجازة",
         "cancel": "إلغاء",
         "createError": "تعذّر إنشاء الإجازة",
-        "createdCount": "أيام العطل المُنشأة: {{count}}"
+        "createdCount": "أيام الإجازة المُنشأة: {{count}}"
       }
     },
     "weekdays": {
@@ -646,123 +1278,327 @@
       "6": "سبت"
     }
   },
-
-  "calendar": {
-    "title": "تقويم المواعيد",
-    "back": "→ العودة إلى الفريق",
-    "loadError": "تعذّر تحميل التقويم",
-    "actionError": "فشلت العملية — حاول مرة أخرى",
-    "emptyDay": "لا توجد ساعات عمل ولا مواعيد في هذا اليوم.",
-    "archive": {
-      "title": "أرشيف اليوم"
+  "rooms": {
+    "back": "← لوحة التحكم",
+    "title": "الغرف",
+    "subtitle": "غرف العيادة حسب القسم",
+    "create": "إنشاء غرفة",
+    "createFirst": "إنشاء أول غرفة",
+    "listTitle": "قائمة الغرف",
+    "empty": "لا توجد غرف بعد",
+    "errorTitle": "خطأ",
+    "searchPlaceholder": "ابحث بالاسم أو الرمز…",
+    "allDepartments": "جميع الأقسام",
+    "showArchived": "عرض الأرشيف",
+    "unknownDepartment": "بدون قسم",
+    "needDepartmentFirst": "أنشئ قسمًا واحدًا على الأقل أولًا — الغرفة تنتمي دائمًا إلى قسم.",
+    "goToDepartments": "الانتقال إلى الأقسام",
+    "archive": "أرشفة",
+    "restore": "استعادة",
+    "archivedBadge": "مؤرشف",
+    "floorShort": "طابق",
+    "capacityShort": "السعة",
+    "staffCount_zero": "أطباء: {{count}}",
+    "staffCount_one": "طبيب: {{count}}",
+    "staffCount_two": "طبيبان: {{count}}",
+    "staffCount_few": "أطباء: {{count}}",
+    "staffCount_many": "أطباء: {{count}}",
+    "staffCount_other": "أطباء: {{count}}",
+    "confirmArchive": "أرشفة «{{name}}»؟",
+    "archiveFailed": "تعذّرت أرشفة الغرفة",
+    "restoreFailed": "تعذّرت استعادة الغرفة",
+    "form": {
+      "createTitle": "غرفة جديدة",
+      "editTitle": "تعديل الغرفة",
+      "department": "القسم",
+      "departmentNone": "— اختر قسمًا —",
+      "departmentArchived": "(قسم مؤرشف)",
+      "name": "الاسم",
+      "namePlaceholder": "غرفة 12",
+      "code": "الرمز",
+      "floor": "الطابق",
+      "capacity": "السعة",
+      "assignedStaff": "الأطباء في الغرفة",
+      "noStaff": "لا يوجد موظفون في العيادة بعد",
+      "notes": "ملاحظات",
+      "errors": {
+        "departmentRequired": "اختر قسمًا",
+        "nameRequired": "أدخل اسمًا",
+        "capacityInvalid": "يجب أن تكون السعة عددًا صحيحًا ≥ 0",
+        "codeTaken": "هذا الرمز مستخدم بالفعل في العيادة",
+        "fix": "يرجى تصحيح الأخطاء في النموذج",
+        "generic": "تعذّر حفظ الغرفة"
+      }
+    }
+  },
+  "equipment": {
+    "back": "← لوحة التحكم",
+    "title": "المعدات",
+    "subtitle": "معدات العيادة حسب القسم",
+    "create": "إضافة معدة",
+    "createFirst": "إضافة أول معدة",
+    "listTitle": "قائمة المعدات",
+    "empty": "لا توجد معدات بعد",
+    "errorTitle": "خطأ",
+    "searchPlaceholder": "بحث: الاسم، رقم الجرد، التسلسلي…",
+    "allDepartments": "جميع الأقسام",
+    "allCategories": "جميع الفئات",
+    "allStatuses": "جميع الحالات",
+    "showArchived": "الأرشيف",
+    "unknownDepartment": "بدون قسم",
+    "needDepartmentFirst": "أنشئ قسمًا واحدًا على الأقل أولًا — المعدة تنتمي دائمًا إلى قسم.",
+    "goToDepartments": "الانتقال إلى الأقسام",
+    "archive": "أرشفة",
+    "restore": "استعادة",
+    "groupBy": "تجميع حسب:",
+    "nextServiceShort": "الصيانة قبل",
+    "staffCount_zero": "المسؤولون: {{count}}",
+    "staffCount_one": "مسؤول: {{count}}",
+    "staffCount_two": "مسؤولان: {{count}}",
+    "staffCount_few": "مسؤولون: {{count}}",
+    "staffCount_many": "مسؤولون: {{count}}",
+    "staffCount_other": "مسؤولون: {{count}}",
+    "confirmArchive": "أرشفة «{{name}}»؟",
+    "archiveFailed": "تعذّرت أرشفة المعدة",
+    "restoreFailed": "تعذّرت استعادة المعدة",
+    "groupMode": {
+      "department": "حسب القسم",
+      "category": "حسب الفئة",
+      "status": "حسب الحالة",
+      "flat": "قائمة مسطحة"
     },
-    "freeSlot": "وقت متاح",
-    "patientPlaceholder": "المريض",
-    "book": "احجز",
-    "today": "اليوم",
-    "prevDay": "اليوم السابق",
-    "nextDay": "اليوم التالي",
     "status": {
-      "scheduled": "مجدول",
-      "checked_in": "حضر",
-      "completed": "منتهٍ",
-      "cancelled": "ملغى",
+      "operational": "تعمل",
+      "maintenance": "في الصيانة",
+      "broken": "معطلة",
+      "decommissioned": "مشطوبة",
+      "archived": "مؤرشفة"
+    },
+    "category": {
+      "diagnostic": "تشخيص",
+      "imaging": "تصوير",
+      "surgical": "جراحة",
+      "monitoring": "مراقبة",
+      "laboratory": "مختبر",
+      "therapeutic": "علاج",
+      "sterilization": "تعقيم",
+      "life_support": "دعم الحياة",
+      "furniture": "أثاث",
+      "it": "تقنية المعلومات",
+      "other": "أخرى"
+    },
+    "form": {
+      "createTitle": "معدة جديدة",
+      "editTitle": "تعديل المعدة",
+      "department": "القسم",
+      "departmentNone": "— اختر قسمًا —",
+      "departmentArchived": "(قسم مؤرشف)",
+      "room": "الغرفة",
+      "roomNone": "— غير مخصصة —",
+      "name": "الاسم",
+      "namePlaceholder": "جهاز الموجات فوق الصوتية",
+      "category": "الفئة",
+      "status": "الحالة",
+      "inventoryNumber": "رقم الجرد",
+      "serialNumber": "الرقم التسلسلي",
+      "manufacturer": "الشركة المصنعة",
+      "model": "الطراز",
+      "purchaseDate": "تاريخ الشراء",
+      "warrantyUntil": "الضمان حتى",
+      "lastServiceDate": "آخر صيانة",
+      "nextServiceDate": "الصيانة القادمة",
+      "assignedStaff": "المسؤولون",
+      "noStaff": "لا يوجد موظفون في العيادة بعد",
+      "notes": "ملاحظات",
+      "errors": {
+        "departmentRequired": "اختر قسمًا",
+        "nameRequired": "أدخل اسمًا",
+        "inventoryTaken": "رقم الجرد هذا مستخدم بالفعل",
+        "fix": "يرجى تصحيح الأخطاء في النموذج",
+        "generic": "تعذّر حفظ المعدة"
+      }
+    }
+  },
+  "knowledge": {
+    "back": "← لوحة التحكم",
+    "backToList": "← العودة إلى القائمة",
+    "title": "قاعدة المعرفة",
+    "subtitle": "بروتوكولات العيادة وسياساتها وأدلتها",
+    "create": "مقالة جديدة",
+    "createFirst": "إنشاء أول مقالة",
+    "listTitle": "المقالات",
+    "empty": "لا توجد مقالات بعد",
+    "errorTitle": "خطأ",
+    "notFound": "المقالة غير موجودة",
+    "emptyBody": "المحتوى فارغ",
+    "searchPlaceholder": "بحث بالعنوان أو الوصف أو الوسوم…",
+    "allCategories": "جميع الفئات",
+    "allStatuses": "جميع الحالات",
+    "showArchived": "الأرشيف",
+    "archive": "أرشفة",
+    "pin": "تثبيت",
+    "unpin": "إلغاء التثبيت",
+    "publish": "نشر",
+    "unpublish": "إرجاع إلى مسودة",
+    "version": "إصدار",
+    "updated": "آخر تحديث",
+    "confirmArchive": "أرشفة «{{name}}»؟",
+    "category": {
+      "protocol": "البروتوكولات",
+      "guideline": "الإرشادات السريرية",
+      "sop": "إجراءات التشغيل القياسية",
+      "onboarding": "التأهيل",
+      "faq": "الأسئلة الشائعة",
+      "policy": "السياسات",
+      "template": "القوالب",
+      "other": "أخرى"
+    },
+    "status": {
+      "draft": "مسودة",
+      "published": "منشورة",
+      "archived": "مؤرشفة"
+    },
+    "visibility": {
+      "all": "جميع الموظفين",
+      "clinical": "الطاقم السريري",
+      "admin": "الإدارة"
+    },
+    "form": {
+      "createTitle": "مقالة جديدة",
+      "editTitle": "تعديل المقالة",
+      "titleLabel": "العنوان",
+      "category": "الفئة",
+      "visibility": "الوصول",
+      "department": "القسم",
+      "departmentNone": "— كامل العيادة —",
+      "summary": "ملخص",
+      "tags": "الوسوم",
+      "tagsHint": "مفصولة بفواصل",
+      "body": "المحتوى",
+      "bodyPlaceholder": "# عنوان\n\nنص البروتوكول. يدعم **غامق** و*مائل* والقوائم و`الشيفرة`.",
+      "errors": {
+        "titleRequired": "أدخل عنوانًا",
+        "fix": "يرجى تصحيح الأخطاء في النموذج",
+        "generic": "تعذّر حفظ المقالة"
+      }
+    }
+  },
+  "consilium": {
+    "patientJoinOn": "✓ تم قبول المريض في المكالمة",
+    "patientJoinOff": "السماح للمريض بالانضمام إلى الفيديو",
+    "patientJoinHint": "السماح للمريض بدخول غرفة فيديو الاستشارة الطبية الجماعية",
+    "patientInvited": "تمت دعوة المريض إلى المكالمة",
+    "patientJoinFailed": "تعذّر تغيير وصول المريض",
+    "back": "← لوحة التحكم",
+    "backToList": "← العودة إلى القائمة",
+    "title": "الاستشارات الطبية",
+    "subtitle": "مناقشة مشتركة للحالات السريرية",
+    "create": "استشارة جديدة",
+    "createFirst": "إنشاء أول استشارة",
+    "listTitle": "القائمة",
+    "empty": "لا توجد استشارات بعد",
+    "errorTitle": "خطأ",
+    "notFound": "الاستشارة غير موجودة",
+    "searchPlaceholder": "بحث حسب الموضوع…",
+    "allStatuses": "جميع الحالات",
+    "showArchived": "الأرشيف",
+    "hasPatient": "مريض",
+    "discussion": "المناقشة",
+    "noMessages": "لا توجد رسائل بعد. ابدأ المناقشة.",
+    "conclusion": "الخلاصة",
+    "resolve": "إنهاء",
+    "reopen": "إعادة فتح",
+    "archive": "أرشفة",
+    "resolveTitle": "إنهاء الاستشارة",
+    "send": "إرسال",
+    "sendFailed": "تعذّر الإرسال",
+    "resolveFailed": "تعذّر إنهاء الاستشارة",
+    "composerPlaceholder": "رأيك في الحالة…",
+    "composerHint": "Ctrl/⌘ + Enter للإرسال",
+    "archivedNotice": "هذه الاستشارة مؤرشفة — الرسائل الجديدة معطّلة.",
+    "unknownAuthor": "مشارك",
+    "confirmArchive": "أرشفة «{{name}}»؟",
+    "participantsCount_zero": "المشاركون: {{count}}",
+    "participantsCount_one": "مشارك: {{count}}",
+    "participantsCount_two": "مشاركان: {{count}}",
+    "participantsCount_few": "مشاركون: {{count}}",
+    "participantsCount_many": "مشاركون: {{count}}",
+    "participantsCount_other": "مشاركون: {{count}}",
+    "status": {
+      "open": "مفتوحة",
+      "resolved": "منتهية",
+      "archived": "مؤرشفة"
+    },
+    "form": {
+      "createTitle": "استشارة جديدة",
+      "titleLabel": "موضوع الحالة",
+      "description": "وصف الحالة",
+      "descriptionHint": "ملخص موجز. لا تضع معرّفات المريض المباشرة في الموضوع.",
+      "department": "القسم",
+      "departmentNone": "— غير محدد —",
+      "participants": "المشاركون",
+      "noStaff": "لا يوجد موظفون في العيادة بعد",
+      "conclusion": "الخلاصة",
+      "conclusionHint": "القرار النهائي للاستشارة…",
+      "createBtn": "إنشاء",
+      "errors": {
+        "titleRequired": "أدخل موضوعًا",
+        "fix": "يرجى تصحيح الأخطاء في النموذج",
+        "generic": "تعذّر إنشاء الاستشارة"
+      }
+    }
+  },
+  "telemed": {
+    "back": "← لوحة التحكم",
+    "title": "الطب عن بُعد",
+    "subtitle": "الزيارات الافتراضية للعيادة",
+    "create": "جدولة زيارة",
+    "createFirst": "جدولة أول زيارة",
+    "empty": "لا توجد زيارات بعد",
+    "errorTitle": "خطأ",
+    "searchPlaceholder": "بحث حسب الموضوع…",
+    "allStatuses": "جميع الحالات",
+    "upcoming": "القادمة",
+    "past": "السابقة",
+    "noUpcoming": "لا توجد زيارات قادمة",
+    "min": "دقيقة",
+    "hasPatient": "مريض",
+    "join": "انضمام",
+    "start": "بدء",
+    "complete": "إنهاء",
+    "noShow": "لم يحضر",
+    "cancel": "إلغاء",
+    "actionFailed": "تعذّر تنفيذ الإجراء",
+    "confirmCancel": "إلغاء الزيارة «{{name}}»؟",
+    "status": {
+      "scheduled": "مجدولة",
+      "live": "جارية",
+      "completed": "مكتملة",
+      "cancelled": "ملغاة",
       "no_show": "لم يحضر"
     },
-    "pastSlot": "سابق",
-    "overdueLabel": "متأخر",
-    "pastDateBanner": "تاريخ سابق — الحجز معطّل. يمكنك إغلاق المواعيد المفتوحة.",
-    "action": {
-      "checkIn": "وصل",
-      "complete": "إنهاء",
-      "cancel": "إلغاء",
-      "noShow": "لم يحضر",
-      "completeOverdueHint": "إغلاق هذه الزيارة المتأخرة"
-    },
-    "book_modal": {
-      "title": "موعد جديد",
-      "subtitle": "{{time}} · {{doctor}}",
-      "patient": "المريض",
-      "patientSearchPlaceholder": "ابحث عن مريض (اللقب، الهاتف أو البريد)",
-      "selectedPatient": "مختار:",
-      "noPatientFound": "لا توجد نتائج — أدخل المزيد من الأحرف",
-      "searchHint": "حرفان على الأقل",
-      "duration": "المدة",
-      "minutes": "د",
-      "reason": "سبب الزيارة",
-      "reasonPlaceholder": "مثال: التهاب في الحلق",
-      "submit": "إنشاء الموعد",
-      "cancel": "إلغاء",
-      "createError": "تعذّر إنشاء الموعد",
-      "conflictError": "هذا الوقت محجوز بالفعل بموعد آخر"
-    },
-    "detail_modal": {
-      "title": "الموعد",
-      "loadError": "تعذّر تحميل الموعد",
-      "patient": "المريض",
-      "doctor": "الطبيب",
+    "form": {
+      "createTitle": "زيارة افتراضية جديدة",
+      "editTitle": "تعديل الزيارة",
+      "titleLabel": "موضوع الزيارة",
+      "date": "التاريخ",
       "time": "الوقت",
       "duration": "المدة",
-      "reason": "السبب",
-      "reasonEmpty": "غير محدد",
-      "status": "الحالة",
-      "createdBy": "أنشأه",
-      "createdAt": "تاريخ الإنشاء",
-      "checkedInAt": "حضر",
-      "completedAt": "انتهى",
-      "cancelledAt": "أُلغي",
-      "cancelReason": "سبب الإلغاء",
-      "noShowAt": "وُسم «لم يحضر»",
-      "actions": "الإجراءات",
-      "actionReason": "تعديل السبب",
-      "actionReschedule": "تأجيل",
-      "saveReason": "حفظ السبب",
-      "newReason": "سبب جديد",
-      "reasonSaved": "تم حفظ السبب",
-      "reasonError": "تعذّر حفظ السبب",
-      "statusError": "تعذّر تغيير الحالة",
-      "close": "إغلاق"
-    },
-    "reschedule_modal": {
-      "title": "تأجيل الموعد",
-      "subtitle": "حاليًا: {{time}}",
-      "newDate": "تاريخ جديد",
-      "newSlot": "موعد جديد",
-      "loadingSlots": "جارٍ تحميل الأوقات المتاحة…",
-      "noFreeSlots": "لا توجد أوقات متاحة في هذا التاريخ",
-      "submit": "تأجيل",
-      "cancel": "إلغاء",
-      "rescheduleError": "تعذّر تأجيل الموعد",
-      "conflictError": "الوقت المختار محجوز بالفعل"
-    },
-    "fromPatient": {
-      "openButton": "احجز موعدًا",
-      "modalTitle": "حجز موعد لـ {{patient}}",
-      "doctorLabel": "الطبيب",
-      "doctorPlaceholder": "اختر طبيبًا",
-      "dateLabel": "التاريخ",
-      "slotLabel": "الوقت",
-      "loadingDoctors": "جارٍ تحميل الأطباء…",
-      "noDoctors": "لا يوجد أطباء في هذه العيادة بعد",
-      "loadingSlots": "جارٍ تحميل الأوقات…",
-      "noSlots": "لا توجد أوقات متاحة في هذا التاريخ"
-    },
-    "inlineCreate": {
-      "title": "إنشاء مريض جديد",
-      "lastName": "اللقب",
-      "firstName": "الاسم",
-      "phone": "الهاتف",
-      "dateOfBirth": "تاريخ الميلاد",
-      "openButton": "+ إنشاء مريض جديد",
-      "openButtonWithName": "+ إنشاء «{{name}}»",
-      "submit": "إنشاء واختيار",
-      "cancel": "إلغاء",
+      "host": "الطبيب",
+      "hostNone": "— غير محدد —",
+      "department": "القسم",
+      "departmentNone": "— غير محدد —",
+      "meetingUrl": "رابط الاجتماع",
+      "meetingUrlHint": "اتركه فارغًا لإنشاء غرفة تلقائيًا. أو الصق رابطك الخاص (Doxy.me، Zoom، إلخ).",
+      "patientUserId": "معرّف مستخدم المريض (مكالمة مدمجة)",
+      "patientUserIdHint": "إذا كان المريض مستخدمًا مسجلًا في DocPats، يبدأ زر الانضمام مكالمة فيديو. وإلا استخدم الرابط أعلاه.",
+      "notes": "ملاحظات",
       "errors": {
-        "lastNameRequired": "اللقب مطلوب",
-        "firstNameRequired": "الاسم مطلوب",
-        "duplicatePhone": "هذا الهاتف يخص مريضًا آخر",
-        "forbidden": "ليست لديك صلاحية إنشاء المرضى",
-        "generic": "تعذّر إنشاء المريض"
+        "titleRequired": "أدخل موضوعًا",
+        "dateRequired": "حدّد التاريخ والوقت",
+        "dateInvalid": "تاريخ/وقت غير صالح",
+        "fix": "يرجى تصحيح الأخطاء في النموذج",
+        "generic": "تعذّر حفظ الزيارة"
       }
     }
   }

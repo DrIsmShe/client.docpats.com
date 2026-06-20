@@ -1202,3 +1202,220 @@
     font-size: 28px;
   }
 }
+/* ═══════════════════════════════════════════════════════════════════════
+   PRESCRIPTIONS — Stage 2 #4
+   APPEND to client/src/pages/clinic/ClinicPatientDetailPage/medicalRecordsSection.css
+   Reuses existing .med-* tokens (colors, spacing) where possible.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ─── Rx list (cards instead of table — items[] needs vertical space) ─── */
+.rx-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rx-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.rx-card:hover {
+  border-color: #cbd5e1;
+}
+.rx-card.is-cross-clinic {
+  border-left: 3px solid #f59e0b;
+}
+
+.rx-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+}
+.rx-card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.rx-card-date {
+  font-size: 12px;
+  color: #64748b;
+  font-variant-numeric: tabular-nums;
+}
+.rx-card-summary {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 460px;
+}
+.rx-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.rx-card-body {
+  padding: 4px 16px 16px;
+  border-top: 1px solid #f1f5f9;
+}
+.rx-diagnosis {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #475569;
+  margin: 10px 0;
+}
+
+.rx-items-detail {
+  margin: 8px 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.rx-items-detail li {
+  font-size: 14px;
+  color: #0f172a;
+}
+.rx-item-sub {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+.rx-item-instr {
+  font-size: 13px;
+  color: #334155;
+  margin-top: 2px;
+}
+.rx-general-notes {
+  font-size: 13px;
+  color: #334155;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 8px;
+}
+.rx-closed-reason {
+  font-size: 12px;
+  color: #b45309;
+  margin-top: 8px;
+}
+
+.rx-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.rx-btn-danger {
+  color: #c0392b;
+  border-color: #f0c0bc;
+}
+.rx-btn-danger:hover:not(:disabled) {
+  background: #fdf0ee;
+}
+
+/* ─── Status pills (extend existing .med-status) ─── */
+.med-status-active {
+  background: #ecfdf5;
+  color: #047857;
+}
+.med-status-cancelled {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+.med-status-completed {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+/* ─── Form: dynamic drug items ─── */
+.rx-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  background: #fafbfc;
+}
+.rx-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.rx-item-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #3d7fff;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rx-item-remove {
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.rx-item-remove:hover:not(:disabled) {
+  background: #fef2f2;
+  color: #c0392b;
+}
+.rx-item-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.rx-prn-field {
+  display: flex;
+  align-items: flex-end;
+}
+.rx-prn-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #334155;
+  cursor: pointer;
+}
+.rx-prn-label input {
+  width: auto;
+  margin: 0;
+}
+.rx-add-item {
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* RTL — drug item number flips side */
+[dir="rtl"] .rx-card.is-cross-clinic {
+  border-left: none;
+  border-right: 3px solid #f59e0b;
+}
+[dir="rtl"] .rx-items-detail {
+  padding-left: 0;
+  padding-right: 20px;
+}

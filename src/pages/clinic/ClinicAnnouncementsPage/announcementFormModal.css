@@ -1,0 +1,115 @@
+/* client/src/pages/clinic/ClinicAnnouncementsPage/announcementFormModal.css */
+
+.ann-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 16px;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.ann-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  width: 100%;
+  max-width: 540px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+
+.ann-modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+.ann-modal-error {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.ann-modal-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  margin: 14px 0 6px;
+}
+
+.ann-modal-input,
+.ann-modal-textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 13px;
+  font-size: 14px;
+  color: #1e293b;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.ann-modal-input:focus,
+.ann-modal-textarea:focus {
+  border-color: #6366f1;
+}
+.ann-modal-textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.ann-modal-field-err {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.ann-modal-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #475569;
+  margin: 18px 0 4px;
+  cursor: pointer;
+}
+
+.ann-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+.ann-modal-cancel {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.ann-modal-submit {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #6366f1;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ann-modal-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

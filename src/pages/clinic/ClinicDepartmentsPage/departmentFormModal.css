@@ -1,0 +1,163 @@
+/* client/src/pages/clinic/ClinicDepartmentsPage/departmentFormModal.css */
+/*
+ * Self-contained modal styling. If your app already defines global
+ * .modal-* classes (e.g. via inviteEmployeeModal.css), you can trim the
+ * shared rules below to avoid duplication — they're kept here so this
+ * modal renders correctly on its own.
+ */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modal-window {
+  background: #fff;
+  border-radius: 14px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.modal-header h2 {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0;
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0 4px;
+}
+.modal-close:hover {
+  color: #475569;
+}
+
+.modal-body {
+  padding: 20px 22px;
+}
+
+.modal-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.modal-field {
+  margin-bottom: 16px;
+}
+.modal-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+.modal-field label .required {
+  color: #dc2626;
+}
+.modal-field label .optional {
+  font-weight: 400;
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.modal-field input,
+.modal-field select,
+.modal-field textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  background: #fff;
+  box-sizing: border-box;
+}
+.modal-field input:focus,
+.modal-field select:focus,
+.modal-field textarea:focus {
+  border-color: #2563eb;
+}
+.modal-field input.has-error,
+.modal-field select.has-error {
+  border-color: #dc2626;
+}
+.modal-field textarea {
+  resize: vertical;
+}
+
+.modal-field-error {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 5px;
+}
+.modal-hint {
+  color: #94a3b8;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+.modal-btn-cancel,
+.modal-btn-submit {
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.modal-btn-cancel {
+  background: #fff;
+  border-color: #e2e8f0;
+  color: #475569;
+}
+.modal-btn-cancel:hover {
+  background: #f8fafc;
+}
+.modal-btn-submit {
+  background: #2563eb;
+  color: #fff;
+}
+.modal-btn-submit:hover {
+  background: #1d4ed8;
+}
+.modal-btn-submit:disabled,
+.modal-btn-cancel:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+[dir="rtl"] .modal-footer {
+  justify-content: flex-start;
+}

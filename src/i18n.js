@@ -18,6 +18,7 @@ i18n
       "header",
       "Anthropometry",
       "clinic",
+      "clinicReviews",
     ],
     defaultNS: "common",
 

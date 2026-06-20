@@ -10,6 +10,7 @@ import { useBlockStatus } from "../hooks/useBlockStatus";
 import { uploadAttachment } from "../api/uploadAttachment";
 import { useCallContext } from "../context/GlobalCallProvider";
 import { useMessageTranslation } from "../hooks/useMessageTranslation";
+import JitsiRoom from "./JitsiRoom";
 
 const API = process.env.REACT_APP_API_URL || "http://localhost:11000";
 
@@ -717,6 +718,19 @@ const styles = `
   }
   @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(-6px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 
+  /* ── JITSI VIDEO OVERLAY ── */
+  .jitsi-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 6000; padding: 24px;
+  }
+  .jitsi-panel {
+    width: 100%; max-width: 920px; height: 78vh; max-height: 700px;
+    border-radius: 14px; overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  }
+
   /* ── MEDIA CARDS ── */
   .video-card { position: relative; border-radius: 10px; overflow: hidden; cursor: pointer; background: #111; max-width: 260px; }
   .video-thumb { width: 100%; max-height: 180px; object-fit: cover; display: block; opacity: 0.75; }
@@ -976,6 +990,8 @@ function ChatWindow({
   const [zoomVideo, setZoomVideo] = useState(null);
   const [reactions, setReactions] = useState({});
   const [hoveredMessageId, setHoveredMessageId] = useState(null);
+  // ── Jitsi видеоконференция (отдельно от native-звонка) ──
+  const [showJitsi, setShowJitsi] = useState(false);
   const hoverTimerRef = useRef(null);
 
   const extractId = (obj) => {
@@ -986,6 +1002,13 @@ function ChatWindow({
 
   const currentUserId = extractId(currentUser);
   const peerId = extractId(peerUser);
+
+  // Имя текущего пользователя для подписи в видеокомнате
+  const myDisplayName =
+    [currentUser?.firstName, currentUser?.lastName].filter(Boolean).join(" ") ||
+    currentUser?.name ||
+    dialogTitle ||
+    "User";
 
   // ── Язык перевода ─────────────────────────────────────────────────────────
   const [userLang, setUserLang] = useState(
@@ -1248,6 +1271,11 @@ function ChatWindow({
     return () => clearTimeout(t);
   }, [text, dialogId, emitTyping]);
 
+  // Закрыть видео при смене диалога
+  useEffect(() => {
+    setShowJitsi(false);
+  }, [dialogId]);
+
   const MAX_MSG_LENGTH = 5000;
 
   const handleSubmit = (e) => {
@@ -1443,21 +1471,11 @@ function ChatWindow({
               📞
             </button>
 
-            {/* Видео звонок */}
+            {/* Видеозвонок (Jitsi) */}
             <button
               className="icon-button"
               title="Video call"
-              onClick={() => {
-                if (callState !== "idle" || !peerId) return;
-                initiateCall({
-                  targetDialogId: dialogId,
-                  targetPeerId: peerId,
-                  peerName: dialogTitle || "Unknown",
-                  peerAvatar: dialogAvatar,
-                  type: "video",
-                });
-              }}
-              style={{ opacity: callState !== "idle" ? 0.4 : 1 }}
+              onClick={() => setShowJitsi(true)}
             >
               🎥
             </button>
@@ -2242,6 +2260,24 @@ function ChatWindow({
             </button>
           </form>
         </div>
+
+        {/* ── Jitsi видеоконференция (оверлей) ── */}
+        {showJitsi && (
+          <div
+            className="jitsi-overlay"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setShowJitsi(false);
+            }}
+          >
+            <div className="jitsi-panel" onClick={(e) => e.stopPropagation()}>
+              <JitsiRoom
+                dialogId={dialogId}
+                displayName={myDisplayName}
+                onClose={() => setShowJitsi(false)}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Share modal */}
         {showShareModal && (

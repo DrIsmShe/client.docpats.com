@@ -413,7 +413,6 @@ export default function PatientFileFilter() {
     setEndDate("");
   };
 
-
   /* ── Early returns ── */
   if (authLoading)
     return (
@@ -618,6 +617,11 @@ export default function PatientFileFilter() {
               typeStr === "coronographyscan" || typeStr === "coronography";
 
             const detailLink = (() => {
+              if (scan.source === "clinic" && scan._id)
+                return {
+                  to: `/patient/get-patient-file-detail-clinic/${scan._id}`,
+                  label: t("pf.openDetail", "Открыть"),
+                };
               if (isLabTest && scan._id)
                 return {
                   to: `/patient/get-patient-file-detail-lab/${scan._id}`,
@@ -790,7 +794,6 @@ export default function PatientFileFilter() {
                       {detailLink.label} →
                     </Link>
                   )}
-               
                 </div>
               </div>
             );

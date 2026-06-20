@@ -1,4 +1,51 @@
 {
+  "patients": {
+    "fields": {
+      "department": "Отделение"
+    },
+    "wizard": {
+      "form": {
+        "departmentNone": "— не указано —"
+      }
+    }
+  },
+  "calendar": {
+    "book_modal": {
+      "department": "Отделение",
+      "departmentNone": "— не указано —"
+    },
+    "detail_modal": {
+      "department": "Отделение",
+      "departmentNone": "не указано"
+    }
+  },
+  "myRx": {
+    "eyebrow": "Медкарта",
+    "titleA": "Мои",
+    "titleB": "рецепты",
+    "records": "записей",
+    "empty": "У вас пока нет рецептов",
+    "loadError": "Не удалось загрузить рецепты",
+    "noDrugs": "Рецепт",
+    "cancelReason": "Причина отмены",
+    "pdf": "Скачать PDF",
+    "pdfError": "Не удалось открыть PDF рецепта"
+  },
+  "myClinics": {
+    "title": "Мои клиники",
+    "subtitle": "Клиники, в которых вы работаете",
+    "invitations": "Приглашения",
+    "invitedAs": "Приглашение",
+    "accept": "Принять",
+    "reject": "Отклонить",
+    "open": "Перейти",
+    "empty": "Вы пока не состоите ни в одной клинике",
+    "emptyWithInvites": "Примите приглашение, чтобы присоединиться к клинике",
+    "error": "Не удалось загрузить список клиник",
+    "actionError": "Не удалось выполнить действие",
+    "primary": "Основная",
+    "unnamed": "Клиника"
+  },
   "digestAi": "AI-Дайджест",
   "aiSynthesis": "Создать статью",
   "medical_feed": "Медицинская лента",
@@ -132,7 +179,6 @@
   "my_scientific_articles": "Мои научные статьи",
   "scientific_articles": "Научные статьи",
   "articles": "Статьи",
-
   "edit_article": "Редактировать статью",
   "delete_article": "Удалить статью",
   "article_title": "Заголовок статьи",
@@ -140,32 +186,26 @@
   "publish": "Опубликовать",
   "save": "Сохранить",
   "cancel": "Отмена",
-
   "comments": "Комментарии",
   "add_comment": "Добавить комментарий...",
   "reply": "Ответить",
   "edit": "Редактировать",
   "delete": "Удалить",
-
   "upload_files": "Загрузка файлов",
   "choose_file": "Выберите файл",
   "upload": "Загрузить",
-
   "error_occurred": "Произошла ошибка",
   "success": "Успешно",
   "loading": "Загрузка...",
   "no_data": "Нет данных",
-
   "otp_code": "Код подтверждения",
   "child_otp": "OTP ребёнка",
   "parent_otp": "OTP родителя",
-
   "search": "Поиск",
   "notifications": "Уведомления",
   "settings": "Настройки",
   "profile": "Профиль",
   "save_changes": "Сохранить изменения",
-
   "welcome": "Добро пожаловать",
   "registration_date": "Дата регистрации",
   "view_all_notifications": "Просмотреть все уведомления",
@@ -178,6 +218,7 @@
   "colleagues": "Коллеги",
   "my_friends_colleagues": "Мои друзья-коллеги",
   "my_clinic": "Моя клиника",
+  "my_clinics": "Мои клиники",
   "appointments_dashboard": "Панель приёмов",
   "attention": "Внимание",
   "understood": "Понятно",
@@ -195,7 +236,6 @@
   "admin": "Администратор",
   "event_message_default": "Просмотреть событие",
   "go_to_top": "Наверх",
-
   "verification": {
     "tab": "Верификация",
     "documentType": "Тип документа",
@@ -270,52 +310,37 @@
   "no": "Нет",
   "doctor_dashboard": {
     "title": "Панель врача",
-
     "stats_confirmed": "Подтверждено",
     "stats_pending": "В ожидании",
     "stats_cancelled": "Отменено",
     "stats_total_week": "Всего за неделю",
-
     "loading": "Загрузка данных...",
     "error_loading": "Ошибка загрузки данных панели врача.",
-
     "upcoming_title": "Ближайшие приёмы (в течение 30 мин)",
     "no_upcoming": "Ближайших приёмов нет.",
-
     "date_time": "Дата и время",
     "type": "Тип",
     "status": "Статус",
     "history": "История",
-
     "type_online": "Онлайн",
     "type_offline": "Оффлайн",
     "load_error": "Ошибка загрузки данных панели.",
-
     "stats_total": "Всего",
-
     "quick_links": "Быстрые переходы",
-
     "quick_appointments_title": "Мои приёмы",
     "quick_appointments_desc": "Посмотреть и управлять приёмами пациентов.",
     "go": "Перейти",
-
     "quick_black_dates_title": "Чёрные даты",
     "quick_black_dates_desc": "Настроить отпуск, блокировки и исключения.",
-
     "quick_messages_title": "Сообщения",
     "quick_messages_desc": "Общайтесь с пациентами и коллегами.",
-
     "quick_schedule_title": "Создать календарь приема",
     "quick_schedule_desc": "Создать и управлять календарем приёма пациентов.",
-
     "upcoming_empty": "Ближайших приёмов нет.",
-
     "appointment_type": "Тип приёма",
     "appointment_status": "Статус",
-
     "online": "Онлайн",
     "offline": "Офлайн",
-
     "status_confirmed": "Подтверждён",
     "status_pending": "Ожидание",
     "status_cancelled": "Отменён"
@@ -382,59 +407,46 @@
     "confirm_and_open_whatsapp": "Подтвердить и открыть WhatsApp",
     "loading": "Загрузка...",
     "error_loading": "Не удалось загрузить приёмы.",
-
     "page_title": "Мои приёмы",
     "update": "Обновить",
     "archive": "Архивировать",
     "delete_all": "Удалить все",
     "delete_all_success": "Все приёмы успешно удалены.",
     "confirm_delete_all": "Удалить ВСЕ приёмы? Это действие необратимо!",
-
     "no_appointments": "У вас пока нет назначенных приёмов.",
     "patient": "Пациент",
     "time": "Дата и время",
     "type": "Тип",
     "status": "Статус",
     "actions": "Действия",
-
     "online": "Онлайн",
     "offline": "Офлайн",
-
     "history": "История",
     "history_title": "История изменений приёма",
     "no_history": "История отсутствует.",
-
     "delete": "Удалить",
     "delete_confirm": "Вы уверены, что хотите удалить этот приём?",
     "deleted": "Приём успешно удалён.",
-
     "status_updated": "Статус изменён на",
     "status_update_error": "Не удалось изменить статус.",
-
     "status_pending": "Ожидание",
     "status_confirmed": "Подтверждён",
     "status_cancelled": "Отменён",
     "status_completed": "Завершён",
-
     "online_consultation": "Онлайн-консультация",
-
     "archive_confirm": "Переместить этот приём в архив?",
     "archived": "Приём успешно архивирован.",
     "archive_error": "Не удалось архивировать приём.",
-
     "blocked_day_message": "Этот день заблокирован и недоступен.",
-
     "calendar_title": "Календарь врача",
     "calendar_busy": "Занято",
     "calendar_free": "Свободно",
     "calendar_blocked": "Заблокировано",
     "calendar_blocked_reason": "Заблокировано, причина:",
-
     "day_schedule_title": "Расписание на",
     "free_slot": "Свободно",
     "close": "Закрыть"
   },
-
   "article_form": {
     "create_title": "Создать новую статью",
     "title": "Заголовок",
@@ -502,10 +514,8 @@
     "of": "из",
     "per_page": "На странице",
     "no_articles": "Статей пока нет.",
-
     "preview_no_title": "Без заголовка",
     "preview_no_text": "Без описания",
-
     "pagination_prev": "«",
     "pagination_next": "»"
   },
@@ -514,48 +524,36 @@
     "error_prefix": "Ошибка",
     "load_error": "Не удалось загрузить данные.",
     "you": "Вы",
-
     "no_authors": "— авторы не указаны —",
     "no_references": "— источники не указаны —",
     "date_unknown": "Дата неизвестна",
-
     "share": "Поделиться",
     "edit": "Редактировать",
     "delete": "Удалить",
     "confirm_delete_article": "Вы уверены, что хотите удалить статью?",
     "delete_article_failed": "Не удалось удалить статью.",
-
     "comments_title": "Комментарии",
     "no_comments": "Комментариев пока нет",
-
     "comment_placeholder": "Оставьте комментарий...",
     "add_comment": "Добавить комментарий",
     "add_comment_failed": "Не удалось добавить комментарий.",
-
     "reply_placeholder": "Ваш ответ...",
     "send_reply": "Отправить ответ",
     "add_reply_failed": "Не удалось добавить ответ.",
     "add_reply_to_reply_failed": "Не удалось добавить ответ на ответ: {{error}}",
-
     "replied_to": "ответил(а)",
     "answered_to": "ответил(а)",
     "reply_nested_placeholder": "Ответить на этот ответ...",
     "answer": "Ответить",
-
     "anonymous": "Аноним",
-
     "confirm_delete_comment": "Вы уверены, что хотите удалить комментарий?",
     "delete_comment_failed": "Не удалось удалить комментарий.",
-
     "confirm_delete_reply": "Вы уверены, что хотите удалить ответ?",
     "delete_reply_failed": "Не удалось удалить ответ.",
-
     "like_comment_failed": "Не удалось поставить лайк комментарию.",
     "like_reply_failed": "Не удалось поставить лайк ответу.",
-
     "author_of_publication": "Автор публикации:",
     "co_authors": "Соавторы:",
-
     "abstract_title": "Аннотация:",
     "references_title": "Список литературы:"
   },
@@ -588,7 +586,6 @@
       "private": "Частные"
     }
   },
-
   "fields": {
     "fullName": "Полное имя",
     "company": "Компания",
@@ -615,7 +612,6 @@
     "newEmail": "Новый email",
     "otpCode": "Код подтверждения (OTP)"
   },
-
   "days": {
     "monday": "Понедельник",
     "tuesday": "Вторник",
@@ -686,7 +682,6 @@
     "noFriends": "У вас пока нет друзей-докторов.",
     "dateUnknown": "Дата неизвестна",
     "doctor": "Доктор",
-
     "searchPlaceholder": "Поиск по имени и фамилии…",
     "allSpecialties": "Все специальности",
     "allCountries": "Все страны",
@@ -694,7 +689,6 @@
     "perPage": "На странице",
     "found": "Найдено",
     "of": "из",
-
     "added": "Добавлен",
     "remove": "Удалить из друзей",
     "deleting": "Удаляем...",
@@ -713,46 +707,38 @@
       "doctor": "Доктор",
       "unknown": "Неизвестно"
     },
-
     "profile": {
       "specialization": "Специализация",
       "company": "Компания",
       "country": "Страна",
       "phone": "Телефон"
     },
-
     "endorse": {
       "byColleagues": "Рекомендован коллегами",
       "count": "{{count}} врач(ами)",
       "none": "Пока нет",
       "rating": "Рейтинг рекомендаций",
-
       "add": "Рекомендовать врача",
       "edit": "Изменить комментарий",
       "remove": "Отозвать рекомендацию",
-
       "sending": "Отправка...",
       "removing": "Удаление...",
       "already": "Вы уже рекомендовали этого врача.",
-
       "blockTitle": "Рекомендации коллег",
       "show": "Показать рекомендации ({{count}})",
       "hide": "Скрыть рекомендации ({{count}})",
       "noEndorsements": "Пока нет рекомендаций.",
-
       "modal": {
         "addTitle": "Добавить рекомендацию",
         "editTitle": "Изменить комментарий к рекомендации",
         "description": "Вы можете оставить короткий комментарий к рекомендации. Это необязательно, но делает её более ценной.",
         "placeholder": "Например: «Очень внимательный и профессиональный коллега…»",
-
         "cancel": "Отмена",
         "send": "Отправить рекомендацию",
         "saveChanges": "Сохранить изменения",
         "saving": "Сохранение..."
       }
     },
-
     "friends": {
       "add": "Добавить в Мои Друзья",
       "adding": "Добавление...",
@@ -760,22 +746,18 @@
       "remove": "Удалить из друзей",
       "removing": "Удаление..."
     },
-
     "about": {
       "title": "📚 О себе"
     },
-
     "comments": {
       "show": "Показать комментарии ({{count}})",
       "hide": "Скрыть комментарии ({{count}})"
     },
-
     "articles": {
       "title": "📖 Статьи доктора",
       "none": "У врача пока нет опубликованных статей."
     }
   },
-
   "headerPatient": {
     "search": "Поиск",
     "welcome": "Добро пожаловать",
@@ -792,33 +774,47 @@
   },
   "PatientAppointmentsHistory": {
     "title": "📅 Мои приёмы",
-
     "labels": {
       "noAppointments": "Вы ещё не записывались на приём.",
       "unknownDoctor": "Неизвестный врач",
       "type": "Тип приёма",
       "status": "Статус"
     },
-
     "statuses": {
       "cancelled": "Отменён",
       "confirmed": "Подтверждён",
       "pending": "В ожидании",
       "completed": "Завершён"
     },
-
     "actions": {
       "cancel": "Отменить",
       "cancelling": "Отмена...",
       "confirmCancel": "Вы действительно хотите отменить этот приём?"
     },
-
     "errors": {
       "failedToLoad": "Не удалось получить список приёмов",
       "loadError": "Ошибка загрузки истории приёмов",
       "noId": "Ошибка: идентификатор приёма не найден",
       "cannotCancel": "Не удалось отменить приём"
     }
+  },
+  "brand": {
+    "eyebrow": "Медицинская платформа"
+  },
+  "user": {
+    "role": "Пациент"
+  },
+  "messages": {
+    "logoutSuccess": "Вы успешно вышли из системы.",
+    "logoutError": "Произошла ошибка при выходе. Попробуйте ещё раз.",
+    "loading": "Загрузка...",
+    "photoNotSelected": "Фотография не выбрана",
+    "noFileSelected": "Файл не выбран"
+  },
+  "sections": {
+    "medicine": "Медицина",
+    "content": "Контент",
+    "doctors": "Врачи"
   },
   "AsidePatient": {
     "brand": {
@@ -837,18 +833,46 @@
       "doctors": "Врачи"
     },
     "menu": {
+      "myPrescriptions": "Мои рецепты",
       "home": "Главная",
       "myOffice": "Мой кабинет",
       "myMedicalFiles": "Мои медицинские файлы",
       "myMedicalHistories": "Мои истории болезни",
-      "articles": "Медицинская лента",
+      "articles": "Лента статей",
       "allDoctors": "Все врачи",
       "myDoctors": "Мои врачи",
       "appointments": "Записи на приём",
       "logout": "Выйти"
     }
   },
-
+  "myLab": {
+    "eyebrow": "Портал пациента",
+    "titleA": "Мои",
+    "titleB": "анализы",
+    "records": "Результатов",
+    "empty": "Анализов пока нет.",
+    "loadError": "Не удалось загрузить анализы",
+    "pdfError": "Не удалось сформировать PDF",
+    "sourceClinic": "Клиника",
+    "sourceLegacy": "Архив",
+    "colParam": "Показатель",
+    "colValue": "Значение",
+    "colRef": "Норма",
+    "attached": "Файл результата",
+    "scan": "Скан"
+  },
+  "menu": {
+    "myPrescriptions": "Мои рецепты",
+    "home": "Главная",
+    "myOffice": "Мой кабинет",
+    "myMedicalFiles": "Мои медицинские файлы",
+    "myMedicalHistories": "Мои истории болезни",
+    "articles": "Медицинская лента",
+    "allDoctors": "Все врачи",
+    "myDoctors": "Мои врачи",
+    "appointments": "Записи на приём",
+    "logout": "Выйти"
+  },
   "articles-from-doctor": {
     "header": {
       "allArticles": "Все статьи",
@@ -924,7 +948,6 @@
       "man": "Мужчина",
       "woman": "Женщина"
     },
-
     "header": {
       "subTitle": "Управление базой пациентов"
     },
@@ -1039,7 +1062,6 @@
     "hidePassword": "Скрыть символы пароля",
     "chooseFile": "Выберите файл"
   },
-
   "tabs": {
     "generalInfo": "Общая информация",
     "clinicalInfo": "Клинические данные",
@@ -1072,7 +1094,6 @@
     "coronography": "Коронарография",
     "labTests": "Лабораторные анализы"
   },
-
   "generalInfo": {
     "firstName": "Имя",
     "lastName": "Фамилия",
@@ -1084,7 +1105,6 @@
     "dpMessengerNumber": "DP messenger номер",
     "email": "Электронная почта"
   },
-
   "clinicalInfo": {
     "chronicDiseases": "Хронические заболевания",
     "operations": "Операции",
@@ -1093,7 +1113,6 @@
     "immunization": "Иммунизация",
     "badHabits": "Вредные привычки"
   },
-
   "tables": {
     "date": "Дата",
     "diagnosis": "Диагноз",
@@ -1103,11 +1122,9 @@
     "examName": "Название обследования",
     "examResult": "Результат обследования"
   },
-
   "scans": {
     "unknownDoctor": "Неизвестный врач"
   },
-
   "labTests": {
     "bloodGeneral": "Общий анализ крови",
     "bloodBiochemistry": "Биохимия крови",
@@ -1121,18 +1138,15 @@
     "other": "Другие анализы",
     "labName": "Название лаборатории"
   },
-
   "states": {
     "loading": "Загрузка...",
     "patientNotFound": "Пациент не найден"
   },
-
   "gender": {
     "man": "Мужчина",
     "woman": "Женщина",
     "unknown": "Неизвестно"
   },
-
   "exams": {
     "date": "Дата приёма",
     "name": "Название обследования",
@@ -1141,7 +1155,6 @@
     "unknownDoctor": "Неизвестный врач",
     "notSpecified": "Не указано"
   },
-
   "values": {
     "notSpecified": "Не указано",
     "unknown": "Неизвестно",
@@ -1150,13 +1163,6 @@
     "woman": "Женщина",
     "chooseCountry": "Выберите страну"
   },
-
-  "messages": {
-    "loading": "Загрузка...",
-    "photoNotSelected": "Фотография не выбрана",
-    "noFileSelected": "Файл не выбран"
-  },
-
   "avatar_choose": {
     "chooseAvatar": "Выберите аватар"
   },
@@ -1184,12 +1190,10 @@
       "recommendations": "Рекомендации",
       "chooseDiagnosis": "Выберите диагноз из списка..."
     },
-
     "placeholders": {
       "diagnosisInput": "Выберите диагноз из списка...",
       "additionalDiagnosis": "Введите дополнение к диагнозу..."
     },
-
     "buttons": {
       "insert": "Вставить",
       "preview": "Предпросмотр",
@@ -1200,27 +1204,34 @@
       "createTemplate": "Создать новый шаблон",
       "chooseFile": "Выберите файл"
     },
-
     "validation": {
       "fillRequired": "Пожалуйста, заполните поле {{field}}.",
       "requiredList": "Заполните обязательные поля:",
       "loginRequired": "Пожалуйста, выполните вход.",
       "invalidDiagnosis": "Выберите корректный диагноз из списка."
     },
-
     "modal": {
       "title": "Просмотр шаблона"
     },
-
     "templateNavigation": {
       "toTemplates": "К списку шаблонов",
       "createNew": "Создать новый шаблон"
     },
-
     "profileCard": {
       "speciality": "Специализация"
     },
-
     "loading": "Загрузка..."
+  },
+  "publicClinic": {
+    "aboutTitle": "О клинике",
+    "doctorsTitle": "Врачи",
+    "galleryTitle": "Галерея",
+    "contactsTitle": "Контакты",
+    "verified": "Подтверждена",
+    "verifiedDoctor": "Подтверждённый врач",
+    "loading": "Загрузка…",
+    "notFoundTitle": "Клиника не найдена",
+    "notFoundText": "Возможно, страница ещё не опубликована или адрес введён неверно.",
+    "error": "Не удалось загрузить страницу. Попробуйте позже."
   }
 }

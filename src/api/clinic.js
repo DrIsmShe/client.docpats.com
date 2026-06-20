@@ -1267,3 +1267,1116 @@ export const cancelConsentRequest = async (requestId) => {
   );
   return res.data;
 };
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  PRESCRIPTIONS (UMR) — Stage 2 #4
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Reuses the same `axios` import and `normalizeList` helper from the top.
+//
+// Backend module: server/modules/clinic/clinic-medical/
+// Path prefix:    /api/v1/clinic/medical
+//
+// 7 endpoints:
+//   POST   /medical/patients/:patientId/prescriptions    create
+//   GET    /medical/patients/:patientId/prescriptions    list
+//   GET    /medical/prescriptions/:id                    get one
+//   PATCH  /medical/prescriptions/:id/cancel             active → cancelled
+//   PATCH  /medical/prescriptions/:id/complete           active → completed
+//   DELETE /medical/prescriptions/:id                    owner only
+//   GET    /medical/prescriptions/:id/pdf                Level-2 PDF blank
+//
+// Same access chain as encounters (ownership / sharedWith / global consent
+// on the "encounters" scope). Cross-clinic records carry isCrossClinic.
+//
+// FSM: active → cancelled | completed. No draft.
+//
+// Prescription shape:
+//   {
+//     _id, status, patientRef, encounterId,
+//     diagnosis: { code, codeTitle, text },
+//     generalNotes,
+//     items: [{ _id, drugName, dosage, form, frequency, duration,
+//               instructions, quantity, prn, note }],
+//     issuedAt, closedAt, closedReason, createdAt, ...
+//   }
+
+/**
+ * POST /api/v1/clinic/medical/patients/:patientId/prescriptions
+ *
+ * Issue a prescription. Body:
+ *   {
+ *     items: [{ drugName (required), dosage?, form?, frequency?,
+ *               duration?, instructions?, quantity?, prn?, note? }],
+ *     diagnosis?: { code?, codeTitle?, text? },
+ *     generalNotes?: string,
+ *     encounterId?: string,
+ *     sharedWith?: [clinicId],
+ *   }
+ * `form` enum: tablet|capsule|syrup|spray|drops|ointment|injection|
+ *              inhaler|suppository|solution|powder|other
+ * Returns { prescription: {...} } on 201.
+ */
+export const createPrescription = async (patientId, payload) => {
+  const res = await axios.post(
+    `/api/v1/clinic/medical/patients/${patientId}/prescriptions`,
+    payload,
+  );
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/medical/patients/:patientId/prescriptions
+ * Options: { status?, limit?, before? }
+ * Returns { items, nextCursor, count } (normalized).
+ */
+export const listPrescriptions = async (patientId, options = {}) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/patients/${patientId}/prescriptions`,
+    { params: options },
+  );
+  return normalizeList(res.data, ["prescriptions"]);
+};
+
+/**
+ * GET /api/v1/clinic/medical/prescriptions/:id
+ * Returns { prescription: {...} }. Carries isCrossClinic if not owner.
+ */
+export const getPrescription = async (prescriptionId) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/prescriptions/${prescriptionId}`,
+  );
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/medical/prescriptions/:id/cancel
+ * active → cancelled. Body: { reason?: string }
+ */
+export const cancelPrescription = async (prescriptionId, payload = {}) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/prescriptions/${prescriptionId}/cancel`,
+    payload,
+  );
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/medical/prescriptions/:id/complete
+ * active → completed.
+ */
+export const completePrescription = async (prescriptionId) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/prescriptions/${prescriptionId}/complete`,
+  );
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/medical/prescriptions/:id
+ * Hard delete. Owner role only.
+ */
+export const deletePrescription = async (prescriptionId) => {
+  const res = await axios.delete(
+    `/api/v1/clinic/medical/prescriptions/${prescriptionId}`,
+  );
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/medical/prescriptions/:id/pdf
+ *
+ * Returns the Level-2 prescription blank as a PDF blob. Opens in a new tab
+ * or triggers download depending on caller. `lang` selects PDF language
+ * (ru|en|az|tr|ar); defaults to clinic.defaultLanguage server-side.
+ *
+ * Usage:
+ *   const blob = await getPrescriptionPdf(id, "ru");
+ *   const url = URL.createObjectURL(blob);
+ *   window.open(url, "_blank");
+ */
+export const getPrescriptionPdf = async (prescriptionId, lang) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/prescriptions/${prescriptionId}/pdf`,
+    {
+      params: lang ? { lang } : {},
+      responseType: "blob",
+    },
+  );
+  return res.data; // Blob
+};
+// ═══════════════════════════════════════════════════════════════════════════
+//  GRANTED CONSENTS (Sprint 3 closure — Pull Consent, part B, clinic-side)
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// GET    /api/v1/clinic/patients/:cardId/consents   список выданных доступов
+// DELETE /api/v1/clinic/consents/:id                отзыв своего consent
+
+/**
+ * GET /api/v1/clinic/patients/:cardId/consents
+ * Все consent'ы, выданные пациентом этой клинике (активные + история).
+ * Returns { items, count } (normalized).
+ */
+export const listClinicConsentsForPatient = async (cardId) => {
+  const res = await axios.get(`/api/v1/clinic/patients/${cardId}/consents`);
+  return normalizeList(res.data, ["consents", "items"]);
+};
+
+/**
+ * DELETE /api/v1/clinic/consents/:id
+ * Клиника прекращает выданный ей доступ. Только свой consent.
+ * @param {string} consentId
+ * @param {string} [reason] необязательная причина (<=500)
+ * Returns { consent, action: "revoked" }.
+ *
+ * Errors: 404 NOT_FOUND, 403 (чужой consent).
+ */
+export const revokeClinicConsent = async (consentId, reason) => {
+  const res = await axios.delete(`/api/v1/clinic/consents/${consentId}`, {
+    data: reason ? { reason } : {},
+  });
+  return res.data;
+};
+// ═══════════════════════════════════════════════════════════════════════════
+//  LAB RESULTS (UMR) — Stage 2 #A, Variant X
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Uses the same `import axios from "../axios"` and `normalizeList` already at
+// the top of that file. Same access chain as prescriptions (ownership /
+// sharedWith / global consent on the "encounters" scope). Cross-clinic
+// records carry isCrossClinic.
+//
+// Backend path prefix: /api/v1/clinic/medical
+//   POST   /medical/patients/:patientId/lab-results          create (multipart)
+//   GET    /medical/patients/:patientId/lab-results          list
+//   GET    /medical/patients/:patientId/lab-results/trend    trend
+//   GET    /medical/lab-results/:id                          get one
+//   PATCH  /medical/lab-results/:id/status                   FSM
+//   POST   /medical/lab-results/:id/comments                 add comment
+//   DELETE /medical/lab-results/:id                          owner only
+//   GET    /medical/lab-results/:id/pdf                      PDF blob
+
+/**
+ * GET /api/v1/clinic/medical/patients/:patientId/lab-results
+ * Options: { status?, panelType?, limit?, before? }
+ * Returns { items, nextCursor, count } (normalized).
+ */
+export const listLabResults = async (patientId, options = {}) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/patients/${patientId}/lab-results`,
+    { params: options },
+  );
+  return normalizeList(res.data, ["labResults", "items"]);
+};
+
+/**
+ * POST /api/v1/clinic/medical/patients/:patientId/lab-results
+ *
+ * Create a lab result. The route ALWAYS uses multipart (upload.array("file",1)),
+ * so we always send FormData. `parameters` and `diagnosis` are JSON-stringified
+ * (server parses them via z.preprocess). `file` is optional (original PDF/photo).
+ *
+ * @param {string} patientId
+ * @param {object} payload { panelType, panelTitle?, status?, effectiveDateTime?,
+ *                           labName?, report?, encounterId?, parameters:[], diagnosis?, sharedWith?[] }
+ * @param {File}   [file] optional original file
+ * Returns { success, labResult: {...} } on 201.
+ */
+export const createLabResult = async (patientId, payload, file = null) => {
+  const fd = new FormData();
+  if (file) fd.append("file", file);
+  fd.append("panelType", payload.panelType || "Other");
+  if (payload.panelTitle) fd.append("panelTitle", payload.panelTitle);
+  if (payload.status) fd.append("status", payload.status);
+  if (payload.effectiveDateTime)
+    fd.append("effectiveDateTime", payload.effectiveDateTime);
+  if (payload.labName) fd.append("labName", payload.labName);
+  if (payload.report) fd.append("report", payload.report);
+  if (payload.encounterId) fd.append("encounterId", payload.encounterId);
+  fd.append("parameters", JSON.stringify(payload.parameters || []));
+  if (payload.diagnosis)
+    fd.append("diagnosis", JSON.stringify(payload.diagnosis));
+  if (Array.isArray(payload.sharedWith))
+    payload.sharedWith.forEach((id) => fd.append("sharedWith", String(id)));
+
+  const res = await axios.post(
+    `/api/v1/clinic/medical/patients/${patientId}/lab-results`,
+    fd,
+    { headers: { "Content-Type": "multipart/form-data" } },
+  );
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/medical/lab-results/:id
+ * Returns { success, labResult: {...} }. Carries isCrossClinic if not owner.
+ */
+export const getLabResult = async (labResultId) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/lab-results/${labResultId}`,
+  );
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/medical/lab-results/:id/status
+ * FSM: final → corrected | amended (also corrected → amended).
+ * @param {string} labResultId
+ * @param {"corrected"|"amended"|"final"} status
+ */
+export const updateLabStatus = async (labResultId, status) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/lab-results/${labResultId}/status`,
+    { status },
+  );
+  return res.data;
+};
+
+/**
+ * POST /api/v1/clinic/medical/lab-results/:id/comments
+ * @param {string} labResultId
+ * @param {string} text
+ */
+export const addLabComment = async (labResultId, text) => {
+  const res = await axios.post(
+    `/api/v1/clinic/medical/lab-results/${labResultId}/comments`,
+    { text },
+  );
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/medical/lab-results/:id
+ * Hard delete. Owner role only. Attached original file is queued for R2 cleanup.
+ */
+export const deleteLabResult = async (labResultId) => {
+  const res = await axios.delete(
+    `/api/v1/clinic/medical/lab-results/${labResultId}`,
+  );
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/medical/lab-results/:id/pdf
+ * Returns the lab report as a PDF blob.
+ *
+ * Usage:
+ *   const blob = await getLabResultPdf(id, "ru");
+ *   const url = URL.createObjectURL(blob);
+ *   window.open(url, "_blank");
+ */
+export const getLabResultPdf = async (labResultId, lang) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/lab-results/${labResultId}/pdf`,
+    {
+      params: lang ? { lang } : {},
+      responseType: "blob",
+    },
+  );
+  return res.data; // Blob
+};
+
+/**
+ * GET /api/v1/clinic/medical/patients/:patientId/lab-results/trend
+ * Динамика одного показателя во времени (по имени или LOINC).
+ * @param {string} patientId
+ * @param {object} params { name?, loincCode? } — нужен хотя бы один
+ * Returns { success, name, loincCode, unit, points:[{date,value,unit,flag,referenceRange}], count }.
+ */
+export const getLabTrend = async (patientId, { name, loincCode } = {}) => {
+  const res = await axios.get(
+    `/api/v1/clinic/medical/patients/${patientId}/lab-results/trend`,
+    {
+      params: {
+        ...(name && { name }),
+        ...(loincCode && { loincCode }),
+      },
+    },
+  );
+  return res.data;
+};
+// ═══════════════════════════════════════════════════════════════════════════
+//  DEPARTMENTS (clinic org structure) — clinic-departments module
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Reuses the same `axios` import and `normalizeList` helper from the top.
+//
+// Backend module: server/modules/clinic/clinic-departments/
+// Path prefix:    /api/v1/clinic/departments
+//
+//   GET    /departments?status=&branchId=&specialty=&parentDepartmentId=&q=  list
+//   POST   /departments                                                       create
+//   GET    /departments/:id                                                   get one
+//   PATCH  /departments/:id                                                   update
+//   PATCH  /departments/:id/head                                              set/unset head
+//   DELETE /departments/:id                                                   soft archive
+
+/**
+ * GET /api/v1/clinic/departments
+ * @param {object} [filters] { status?, branchId?, specialty?, parentDepartmentId?, q? }
+ *   No `status` → returns active + archived. Pass status:"active" for dropdowns.
+ * Returns { items } (normalized from { departments: [...] }).
+ */
+export const listDepartments = async (filters = {}) => {
+  const res = await axios.get("/api/v1/clinic/departments", {
+    params: filters,
+  });
+  return normalizeList(res.data, ["departments"]);
+};
+
+/**
+ * POST /api/v1/clinic/departments
+ * @param {object} payload
+ *   { name (required), code?, specialty?, description?,
+ *     branchId?, headMembershipId?, parentDepartmentId? }
+ * Returns { department }.
+ * 409 if `code` already exists in this clinic.
+ */
+export const createDepartment = async (payload) => {
+  const res = await axios.post("/api/v1/clinic/departments", payload);
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/departments/:id
+ * Returns { department }.
+ */
+export const getDepartment = async (departmentId) => {
+  const res = await axios.get(`/api/v1/clinic/departments/${departmentId}`);
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/departments/:id
+ * @param {string} departmentId
+ * @param {object} updates subset of writable fields; `status` toggles
+ *                 active/archived (restore = { status: "active" }).
+ * Returns { department }.
+ */
+export const updateDepartment = async (departmentId, updates) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/departments/${departmentId}`,
+    updates,
+  );
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/departments/:id/head
+ * @param {string} departmentId
+ * @param {string|null} headMembershipId  null clears the head (заведующий)
+ * Returns { department }.
+ */
+export const setDepartmentHead = async (departmentId, headMembershipId) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/departments/${departmentId}/head`,
+    { headMembershipId: headMembershipId ?? null },
+  );
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/departments/:id
+ * Soft archive (status → archived). The system "General" department cannot
+ * be archived (backend returns 4xx). Returns { department }.
+ */
+export const archiveDepartment = async (departmentId) => {
+  const res = await axios.delete(`/api/v1/clinic/departments/${departmentId}`);
+  return res.data;
+};
+// ═══════════════════════════════════════════════════════════════════════════
+//  ROOMS (clinic org structure) — clinic-rooms module
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Reuses the same `axios` import and `normalizeList` helper from the top.
+//
+// Backend module: server/modules/clinic/clinic-rooms/
+// Path prefix:    /api/v1/clinic/rooms
+//
+//   GET    /rooms?departmentId=&status=   list
+//   POST   /rooms                          create
+//   GET    /rooms/:id                      get one
+//   PATCH  /rooms/:id                       update
+//   DELETE /rooms/:id                       soft archive
+//
+// A room ALWAYS belongs to a department (departmentId required on create).
+// assignedMembershipIds is an array of ClinicMembership ids of staff who
+// work in the room. Code is optional but unique per clinic when present.
+
+/**
+ * GET /api/v1/clinic/rooms
+ * @param {object} [filters] { departmentId?, status? }
+ *   No `status` → returns active + archived. Pass status:"active" for dropdowns.
+ * Returns { items } (normalized from { rooms: [...] }).
+ */
+export const listRooms = async (filters = {}) => {
+  const res = await axios.get("/api/v1/clinic/rooms", { params: filters });
+  return normalizeList(res.data, ["rooms"]);
+};
+
+/**
+ * POST /api/v1/clinic/rooms
+ * @param {object} payload
+ *   { departmentId (required), name (required), code?, floor?, capacity?,
+ *     notes?, assignedMembershipIds?: [id] }
+ * Returns { room }.
+ * 409 if `code` already exists in this clinic.
+ */
+export const createRoom = async (payload) => {
+  const res = await axios.post("/api/v1/clinic/rooms", payload);
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/rooms/:id
+ * Returns { room }.
+ */
+export const getRoom = async (roomId) => {
+  const res = await axios.get(`/api/v1/clinic/rooms/${roomId}`);
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/rooms/:id
+ * @param {string} roomId
+ * @param {object} updates subset of writable fields; `status` toggles
+ *                 active/archived (restore = { status: "active" }).
+ * Returns { room }.
+ */
+export const updateRoom = async (roomId, updates) => {
+  const res = await axios.patch(`/api/v1/clinic/rooms/${roomId}`, updates);
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/rooms/:id
+ * Soft archive (status → archived). Returns { room }.
+ */
+export const archiveRoom = async (roomId) => {
+  const res = await axios.delete(`/api/v1/clinic/rooms/${roomId}`);
+  return res.data;
+};
+// ═══════════════════════════════════════════════════════════════════════════
+//  EQUIPMENT (clinic org structure) — clinic-equipment module
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Reuses the same `axios` import and `normalizeList` helper from the top.
+//
+// Backend module: server/modules/clinic/clinic-equipment/
+// Path prefix:    /api/v1/clinic/equipment
+//
+//   GET    /equipment?departmentId=&roomId=&category=&status=&q=  list
+//   POST   /equipment                                             create
+//   GET    /equipment/:id                                         get one
+//   PATCH  /equipment/:id                                          update
+//   DELETE /equipment/:id                                          soft archive
+//
+// Equipment ALWAYS belongs to a department (departmentId required on create).
+// roomId is optional; when set, the room must be in the same department.
+// inventoryNumber is optional but unique per clinic when present.
+// status: operational | maintenance | broken | decommissioned | archived
+
+/**
+ * GET /api/v1/clinic/equipment
+ * @param {object} [filters] { departmentId?, roomId?, category?, status?, q? }
+ *   No `status` → returns every status incl. archived. Pass a status to narrow.
+ * Returns { items } (normalized from { items: [...] }).
+ */
+export const listEquipment = async (filters = {}) => {
+  const res = await axios.get("/api/v1/clinic/equipment", { params: filters });
+  return normalizeList(res.data, ["equipment", "items"]);
+};
+
+/**
+ * POST /api/v1/clinic/equipment
+ * @param {object} payload
+ *   { departmentId (required), name (required), roomId?, inventoryNumber?,
+ *     category?, manufacturer?, model?, serialNumber?, status?,
+ *     purchaseDate?, warrantyUntil?, lastServiceDate?, nextServiceDate?,
+ *     assignedMembershipIds?: [id], notes? }
+ * Returns { equipment }.
+ * 409 if `inventoryNumber` already exists in this clinic.
+ */
+export const createEquipment = async (payload) => {
+  const res = await axios.post("/api/v1/clinic/equipment", payload);
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/equipment/:id
+ * Returns { equipment }.
+ */
+export const getEquipment = async (equipmentId) => {
+  const res = await axios.get(`/api/v1/clinic/equipment/${equipmentId}`);
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/equipment/:id
+ * @param {string} equipmentId
+ * @param {object} updates subset of writable fields; `status` toggles the
+ *                 lifecycle (restore from archive = { status: "operational" }).
+ * Returns { equipment }.
+ */
+export const updateEquipment = async (equipmentId, updates) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/equipment/${equipmentId}`,
+    updates,
+  );
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/equipment/:id
+ * Soft archive (status → archived). Returns { equipment }.
+ */
+export const archiveEquipment = async (equipmentId) => {
+  const res = await axios.delete(`/api/v1/clinic/equipment/${equipmentId}`);
+  return res.data;
+};
+// ═══════════════════════════════════════════════════════════════════════════
+//  KNOWLEDGE BASE (internal clinic docs) — clinic-knowledge module
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Reuses the same `axios` import and `normalizeList` helper from the top.
+//
+// Backend module: server/modules/clinic/clinic-knowledge/
+// Path prefix:    /api/v1/clinic/knowledge
+//
+//   GET    /knowledge?category=&status=&departmentId=&visibility=&tag=&q=  list
+//   POST   /knowledge                                                       create
+//   GET    /knowledge/:id                                                   get one
+//   PATCH  /knowledge/:id                                                    update
+//   DELETE /knowledge/:id                                                    soft archive
+//
+// Articles are internal staff docs (protocols, SOPs, FAQs) — NOT patient
+// data. status: draft | published | archived. visibility: all | clinical | admin.
+
+/**
+ * GET /api/v1/clinic/knowledge
+ * @param {object} [filters] { category?, status?, departmentId?, visibility?, tag?, q? }
+ * Returns { items } (normalized).
+ */
+export const listKnowledge = async (filters = {}) => {
+  const res = await axios.get("/api/v1/clinic/knowledge", { params: filters });
+  return normalizeList(res.data, ["articles", "items"]);
+};
+
+/**
+ * POST /api/v1/clinic/knowledge
+ * @param {object} payload
+ *   { title (required), body?, summary?, category?, departmentId?,
+ *     tags?: [string], visibility?, status?: "draft"|"published", pinned? }
+ * Returns { article }.
+ */
+export const createKnowledge = async (payload) => {
+  const res = await axios.post("/api/v1/clinic/knowledge", payload);
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/knowledge/:id
+ * Returns { article }.
+ */
+export const getKnowledge = async (articleId) => {
+  const res = await axios.get(`/api/v1/clinic/knowledge/${articleId}`);
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/knowledge/:id
+ * @param {string} articleId
+ * @param {object} updates subset of writable fields; `status` toggles the
+ *                 draft/published/archived lifecycle.
+ * Returns { article }.
+ */
+export const updateKnowledge = async (articleId, updates) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/knowledge/${articleId}`,
+    updates,
+  );
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/knowledge/:id
+ * Soft archive (status → archived). Returns { article }.
+ */
+export const archiveKnowledge = async (articleId) => {
+  const res = await axios.delete(`/api/v1/clinic/knowledge/${articleId}`);
+  return res.data;
+};
+// ═══════════════════════════════════════════════════════════════════════════
+//  CONSILIUM (multi-doctor case discussions) — clinic-consilium module
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Reuses the same `axios` import and `normalizeList` helper from the top.
+//
+// Backend module: server/modules/clinic/clinic-consilium/
+// Path prefix:    /api/v1/clinic/consilia
+//
+//   GET    /consilia?status=&patientId=&departmentId=&participantMembershipId=&q=  list
+//   POST   /consilia                                                                create
+//   GET    /consilia/:id                                                            get one
+//   PATCH  /consilia/:id                                                             update / resolve
+//   DELETE /consilia/:id                                                             soft archive
+//   GET    /consilia/:id/messages                                                   thread (decrypted)
+//   POST   /consilia/:id/messages                                                    post a message
+//
+// Message bodies are encrypted at rest server-side; the API returns/accepts
+// plaintext `text`. status: open | resolved | archived.
+
+/**
+ * GET /api/v1/clinic/consilia
+ * @param {object} [filters] { status?, patientId?, departmentId?, participantMembershipId?, q? }
+ * Returns { items } (normalized).
+ */
+export const listConsilia = async (filters = {}) => {
+  const res = await axios.get("/api/v1/clinic/consilia", { params: filters });
+  return normalizeList(res.data, ["consilia", "items"]);
+};
+
+/**
+ * POST /api/v1/clinic/consilia
+ * @param {object} payload
+ *   { title (required), description?, patientId?, departmentId?,
+ *     participantMembershipIds?: [id] }
+ * Returns { consilium }.
+ */
+export const createConsilium = async (payload) => {
+  const res = await axios.post("/api/v1/clinic/consilia", payload);
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/consilia/:id
+ * Returns { consilium }.
+ */
+export const getConsilium = async (consiliumId) => {
+  const res = await axios.get(`/api/v1/clinic/consilia/${consiliumId}`);
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/consilia/:id
+ * @param {string} consiliumId
+ * @param {object} updates subset of writable fields; set
+ *                 { status: "resolved", conclusion } to close it.
+ * Returns { consilium }.
+ */
+export const updateConsilium = async (consiliumId, updates) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/consilia/${consiliumId}`,
+    updates,
+  );
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/consilia/:id
+ * Soft archive (status → archived). Returns { consilium }.
+ */
+export const archiveConsilium = async (consiliumId) => {
+  const res = await axios.delete(`/api/v1/clinic/consilia/${consiliumId}`);
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/consilia/:id/messages
+ * Returns { items } — messages in chronological order, bodies decrypted.
+ */
+export const listConsiliumMessages = async (consiliumId) => {
+  const res = await axios.get(
+    `/api/v1/clinic/consilia/${consiliumId}/messages`,
+  );
+  return normalizeList(res.data, ["messages", "items"]);
+};
+
+/**
+ * POST /api/v1/clinic/consilia/:id/messages
+ * @param {string} consiliumId
+ * @param {string} text plaintext (encrypted server-side)
+ * Returns { message } with decrypted `text`.
+ */
+export const postConsiliumMessage = async (consiliumId, text) => {
+  const res = await axios.post(
+    `/api/v1/clinic/consilia/${consiliumId}/messages`,
+    { text },
+  );
+  return res.data;
+};
+// ═══════════════════════════════════════════════════════════════════════════
+//  TELEMEDICINE (scheduled virtual visits) — clinic-telemed module
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Reuses the same `axios` import and `normalizeList` helper from the top.
+//
+// Backend module: server/modules/clinic/clinic-telemed/
+// Path prefix:    /api/v1/clinic/telemed
+//
+//   GET    /telemed?status=&patientId=&hostMembershipId=&departmentId=&from=&to=&q=  list
+//   POST   /telemed                                                                  create
+//   GET    /telemed/:id                                                              get one
+//   PATCH  /telemed/:id                                                               update / reschedule / transition
+//   DELETE /telemed/:id                                                               cancel
+//
+// A session carries an opaque `joinKey` consumed by the existing call layer.
+// status: scheduled | live | completed | cancelled | no_show.
+
+/**
+ * GET /api/v1/clinic/telemed
+ * @param {object} [filters] { status?, patientId?, hostMembershipId?, departmentId?, from?, to?, q? }
+ *   from/to are ISO date strings filtering on scheduledAt.
+ * Returns { items } (normalized).
+ */
+export const listTelemed = async (filters = {}) => {
+  const res = await axios.get("/api/v1/clinic/telemed", { params: filters });
+  return normalizeList(res.data, ["sessions", "items"]);
+};
+
+/**
+ * POST /api/v1/clinic/telemed
+ * @param {object} payload
+ *   { title (required), scheduledAt (required, ISO), patientId?,
+ *     hostMembershipId?, departmentId?, durationMinutes?, notes? }
+ * Returns { session }.
+ */
+export const createTelemed = async (payload) => {
+  const res = await axios.post("/api/v1/clinic/telemed", payload);
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/telemed/:id
+ * Returns { session }.
+ */
+export const getTelemed = async (sessionId) => {
+  const res = await axios.get(`/api/v1/clinic/telemed/${sessionId}`);
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/telemed/:id
+ * @param {string} sessionId
+ * @param {object} updates subset of writable fields; `status` drives the
+ *                 lifecycle (e.g. { status: "live" } to start,
+ *                 { status: "completed" } / { status: "no_show" } to finish).
+ * Returns { session }.
+ */
+export const updateTelemed = async (sessionId, updates) => {
+  const res = await axios.patch(`/api/v1/clinic/telemed/${sessionId}`, updates);
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/telemed/:id
+ * Cancel (status → cancelled, stamps endedAt). Returns { session }.
+ */
+export const cancelTelemed = async (sessionId) => {
+  const res = await axios.delete(`/api/v1/clinic/telemed/${sessionId}`);
+  return res.data;
+};
+// ═══════════════════════════════════════════════════════════════════════════
+//  ANNOUNCEMENTS (corporate-portal bulletin board) — clinic-announcements module
+// ═══════════════════════════════════════════════════════════════════════════
+// APPEND to client/src/api/clinic.js. Reuses the same `import axios from "../axios"`
+// at the top of the file (axios instance has baseURL + withCredentials).
+//
+// Backend module: server/modules/clinic/clinic-announcements/
+// Path prefix:    /api/v1/clinic/announcements
+//   GET    /announcements?status=&departmentId=&includeArchived=   list (feed)
+//   POST   /announcements                                          create
+//   GET    /announcements/:id                                      get one (+auto read)
+//   POST   /announcements/:id/read                                 mark read
+//   GET    /announcements/:id/receipts                             who read (author view)
+//   PATCH  /announcements/:id/pin       { pinned }                 pin / unpin
+//   PATCH  /announcements/:id/archive                              archive
+//   DELETE /announcements/:id                                      hard delete
+
+/**
+ * GET /api/v1/clinic/announcements
+ * @param {object} filters { status?, departmentId?, includeArchived? }
+ * Returns { items, count }.
+ */
+export const listAnnouncements = async (filters = {}) => {
+  const res = await axios.get("/api/v1/clinic/announcements", {
+    params: filters,
+  });
+  return res.data;
+};
+
+/**
+ * POST /api/v1/clinic/announcements
+ * @param {object} payload { title, body, audience?, departmentId?, pinned? }
+ * Returns { announcement }.
+ */
+export const createAnnouncement = async (payload) => {
+  const res = await axios.post("/api/v1/clinic/announcements", payload);
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/announcements/:id  (also marks read for the viewer)
+ * Returns { announcement }.
+ */
+export const getAnnouncement = async (id) => {
+  const res = await axios.get(`/api/v1/clinic/announcements/${id}`);
+  return res.data;
+};
+
+/**
+ * POST /api/v1/clinic/announcements/:id/read
+ * Returns { announcement }.
+ */
+export const markAnnouncementRead = async (id) => {
+  const res = await axios.post(`/api/v1/clinic/announcements/${id}/read`);
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/announcements/:id/receipts  (author/admin)
+ * Returns { readCount, totalMembers, readers: [{membershipId, name, at}] }.
+ */
+export const getAnnouncementReceipts = async (id) => {
+  const res = await axios.get(`/api/v1/clinic/announcements/${id}/receipts`);
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/announcements/:id/pin   { pinned }
+ * Returns { announcement }.
+ */
+export const pinAnnouncement = async (id, pinned) => {
+  const res = await axios.patch(`/api/v1/clinic/announcements/${id}/pin`, {
+    pinned,
+  });
+  return res.data;
+};
+
+/**
+ * PATCH /api/v1/clinic/announcements/:id/archive
+ * Returns { announcement }.
+ */
+export const archiveAnnouncement = async (id) => {
+  const res = await axios.patch(`/api/v1/clinic/announcements/${id}/archive`);
+  return res.data;
+};
+
+/**
+ * DELETE /api/v1/clinic/announcements/:id
+ * Returns { announcementId, deleted: true }.
+ */
+export const deleteAnnouncement = async (id) => {
+  const res = await axios.delete(`/api/v1/clinic/announcements/${id}`);
+  return res.data;
+};
+export const unarchiveAnnouncement = async (id) => {
+  const res = await axios.patch(`/api/v1/clinic/announcements/${id}/unarchive`);
+  return res.data;
+};
+// ─── MEMBERSHIP REQUESTS (Variant 2: invite a doctor with confirmation) ───
+// Owner sends an invite; the doctor accepts/rejects in their cabinet.
+//
+// Owner side  (/api/v1/clinic/membership-requests)
+// Doctor side (/api/v1/clinic/my-membership-requests)
+
+// Owner: send an invitation to an existing DocPats doctor.
+// payload { userId, role, customTitle?, employmentType? } → { request }
+export const createMembershipRequest = async (payload) => {
+  const res = await axios.post("/api/v1/clinic/membership-requests", payload);
+  return res.data;
+};
+
+// Owner: list pending invitations sent by this clinic. → { items, count }
+export const listClinicMembershipRequests = async () => {
+  const res = await axios.get("/api/v1/clinic/membership-requests");
+  return res.data;
+};
+
+// Owner: withdraw a pending invitation. → { requestId, status }
+export const cancelMembershipRequest = async (id) => {
+  const res = await axios.delete(`/api/v1/clinic/membership-requests/${id}`);
+  return res.data;
+};
+
+// Doctor: my pending invitations across clinics. → { items, count }
+export const getMyMembershipRequests = async () => {
+  const res = await axios.get("/api/v1/clinic/my-membership-requests");
+  return res.data;
+};
+
+// Doctor: accept an invitation (creates the membership). → { requestId, status }
+export const acceptMembershipRequest = async (id) => {
+  const res = await axios.post(
+    `/api/v1/clinic/my-membership-requests/${id}/accept`,
+  );
+  return res.data;
+};
+
+// Doctor: reject an invitation. → { requestId, status }
+export const rejectMembershipRequest = async (id) => {
+  const res = await axios.post(
+    `/api/v1/clinic/my-membership-requests/${id}/reject`,
+  );
+  return res.data;
+};
+// ═══════════════════════════════════════════════════════════════════════════
+//  PUBLIC CLINIC PAGE (Clinic-as-Brand, этап A) — clinic-public module
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Reuses the same `import axios from "../axios"` at the top of the file.
+//
+// ВАЖНО: getPublicClinicPage бьёт по НОВОМУ публичному пути
+//   GET /api/v1/public/clinics/:slug   (модуль clinic-public, БЕЗ авторизации)
+// — это НЕ то же самое, что легаси getClinicBySlug() выше
+//   (GET /api/v1/clinic/public/:slug, урезанный, без врачей/галереи).
+//
+// Описание/логотип/галерею владелец редактирует через уже существующий
+// updateClinic(clinicId, { description, logo, gallery }) — отдельный метод
+// не нужен. Здесь только публичное чтение + тумблер публикации.
+
+/**
+ * GET /api/v1/public/clinics/:slug
+ *
+ * Публичная страница клиники для гостя (без авторизации).
+ * Возвращает DTO НАПРЯМУЮ (не обёрнут в { clinic }):
+ *   {
+ *     name, slug, isVerified,
+ *     logo, description, gallery: [{ id, url, caption }],
+ *     address: { country, city, street },
+ *     specializations: [string],
+ *     contacts: { phone, email, website },
+ *     doctors: [{ userId, name, profileImage, specialization,
+ *                 isVerified, about, country, role, profileUrl }],
+ *   }
+ *
+ * 404 → клиника не найдена или не опубликована (isPublished=false).
+ *
+ * @param {string} slug
+ */
+export const getPublicClinicPage = async (slug) => {
+  const res = await axios.get(
+    `/api/v1/public/clinics/${encodeURIComponent(slug)}`,
+  );
+  return res.data; // DTO напрямую
+};
+
+/**
+ * PATCH /api/v1/clinic/clinics/:id/publish
+ *
+ * Тумблер видимости публичной страницы /clinic/:slug. Owner/admin (clinic.write).
+ * @param {string} clinicId
+ * @param {boolean} isPublished
+ * Returns { clinic: {...} }.
+ */
+export const setClinicPublished = async (clinicId, isPublished) => {
+  const res = await axios.patch(`/api/v1/clinic/clinics/${clinicId}/publish`, {
+    isPublished,
+  });
+  return res.data;
+};
+// ═══════════════════════════════════════════════════════════════════════════
+//  CLINIC MEDIA (Clinic-as-Brand, этап B) — логотип + галерея
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Reuses `import axios from "../axios"` at the top.
+//
+// Backend (clinic-core, под tenantMiddleware):
+//   POST   /api/v1/clinic/clinics/:id/logo            multipart, field "logo"
+//   DELETE /api/v1/clinic/clinics/:id/logo
+//   POST   /api/v1/clinic/clinics/:id/gallery         multipart, field "images"
+//   DELETE /api/v1/clinic/clinics/:id/gallery/:itemId
+//
+// uploadFile() на бэке сжимает изображения в webp и возвращает абсолютный
+// CDN-URL — фронт получает готовые URL (logo / gallery[].url).
+
+/**
+ * POST /api/v1/clinic/clinics/:id/logo
+ * Загрузить/заменить логотип клиники.
+ * @param {string} clinicId
+ * @param {File} file  изображение (field "logo")
+ * Returns { logo: <url> }.
+ */
+export const uploadClinicLogo = async (clinicId, file) => {
+  const fd = new FormData();
+  fd.append("logo", file);
+  const res = await axios.post(`/api/v1/clinic/clinics/${clinicId}/logo`, fd, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data; // { logo }
+};
+
+/**
+ * DELETE /api/v1/clinic/clinics/:id/logo
+ * Убрать логотип.
+ * Returns { logo: null }.
+ */
+export const deleteClinicLogo = async (clinicId) => {
+  const res = await axios.delete(`/api/v1/clinic/clinics/${clinicId}/logo`);
+  return res.data;
+};
+
+/**
+ * POST /api/v1/clinic/clinics/:id/gallery
+ * Добавить фото в галерею (несколько за раз).
+ * @param {string} clinicId
+ * @param {File[]} files  массив изображений (field "images")
+ * Returns { gallery: [{ id, url, caption, order }] }.
+ */
+export const uploadClinicGallery = async (clinicId, files) => {
+  const fd = new FormData();
+  (files || []).forEach((f) => fd.append("images", f));
+  const res = await axios.post(
+    `/api/v1/clinic/clinics/${clinicId}/gallery`,
+    fd,
+    { headers: { "Content-Type": "multipart/form-data" } },
+  );
+  return res.data; // { gallery }
+};
+
+/**
+ * DELETE /api/v1/clinic/clinics/:id/gallery/:itemId
+ * Удалить одно фото из галереи.
+ * @param {string} clinicId
+ * @param {string} itemId  _id элемента галереи
+ * Returns { gallery: [...] }.
+ */
+export const deleteClinicGalleryItem = async (clinicId, itemId) => {
+  const res = await axios.delete(
+    `/api/v1/clinic/clinics/${clinicId}/gallery/${itemId}`,
+  );
+  return res.data;
+};
+export const listClinicReviews = async (clinicId, opts = {}) => {
+  const params = {};
+  if (opts.status) params.status = opts.status;
+  if (opts.limit != null) params.limit = opts.limit;
+  if (opts.skip != null) params.skip = opts.skip;
+  const res = await axios.get(`/api/v1/clinic/clinics/${clinicId}/reviews`, {
+    params,
+  });
+  return res.data;
+};
+
+export const moderateClinicReview = async (
+  clinicId,
+  reviewId,
+  action,
+  note,
+) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/clinics/${clinicId}/reviews/${reviewId}`,
+    { action, note },
+  );
+  return res.data;
+};

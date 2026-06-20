@@ -4,6 +4,9 @@
 // Provides:
 // - top navigation (brand, language switcher, logout)
 // - auth guard: redirects to /login if no session
+// - onboarding guard: a logged-in DOCTOR without a clinic is allowed in
+//   (so ClinicHubPage can offer "create clinic"); non-doctors without a
+//   clinic are sent to the patient cabinet.
 // - RTL support for Arabic
 // - shared container styling
 //
@@ -16,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import axios from "../../axios";
 import { getClinicMe, getEmployeeMe, employeeLogout } from "../../api/clinic";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
+import ClinicNotificationBell from "../../components/notifications/ClinicNotificationBell";
 import "./clinicLayout.css";
 
 export default function ClinicLayout({ employeeMode = false }) {
@@ -54,10 +58,22 @@ export default function ClinicLayout({ employeeMode = false }) {
               navigate("/login", { replace: true });
               return;
             }
-            // Role guard: only doctors can access /clinic/* zone.
-            // Patients and other roles get redirected to their cabinet.
-            const userRole = data.user?.role || data.role;
-            if (userRole !== "doctor") {
+            // Onboarding guard:
+            //   - hasClinic === true  → full access (owner/admin/doctor/etc)
+            //   - hasClinic === false + role "doctor" → allow in, so the
+            //     ClinicHubPage can offer "Create clinic". A doctor without
+            //     a clinic is a valid onboarding state, NOT a forbidden one.
+            //   - hasClinic === false + any other role (patient, etc) →
+            //     send to the patient cabinet.
+            if (!data.hasClinic) {
+              if (data.role === "doctor") {
+                // Allowed — render layout; Hub/Create pages handle the rest.
+                // Internal clinic pages (dashboard/staff/patients) themselves
+                // require a clinic and will redirect to the hub if missing.
+                setContext({ kind: "user", ...data });
+                setLoading(false);
+                return;
+              }
               navigate("/patient/home-page", { replace: true });
               return;
             }
@@ -145,6 +161,7 @@ export default function ClinicLayout({ employeeMode = false }) {
           <span className="clinic-layout-context">{headerLabel}</span>
         </div>
         <div className="clinic-layout-header-right">
+          <ClinicNotificationBell limit={8} />
           <LanguageSwitcher />
           <button
             className="clinic-layout-logout"

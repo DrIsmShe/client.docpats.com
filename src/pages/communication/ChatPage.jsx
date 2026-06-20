@@ -7,7 +7,6 @@ import DialogList from "../communication/components/DialogList";
 import { useOutletContext } from "react-router-dom";
 import { useCurrentUser } from "./hooks/useCurrentUser";
 import { useCallContext } from "../communication/context/GlobalCallProvider";
-
 // Брейкпоинт по ширине окна с учётом sidebar'а (~250px)
 // iPad Mini 768px → с sidebar = 768px (полноэкранный режим без sidebar на мобильном)
 // Ставим 900 чтобы планшеты тоже получали мобильный вид
@@ -243,7 +242,7 @@ function ChatPage() {
   // ── ДЕСКТОПНЫЙ ВИД (≥ 900px) ─────────────────────────────────────────────
   return (
     <>
-      <style>{styles}</style>
+      <style>{styles}</style>;
       {userLoading ? (
         <div className="chatpage-loading">Loading…</div>
       ) : !user ? (

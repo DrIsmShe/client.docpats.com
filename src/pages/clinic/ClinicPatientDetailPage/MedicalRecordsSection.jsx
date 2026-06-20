@@ -1,7 +1,7 @@
 // client/src/pages/clinic/ClinicPatientDetailPage/MedicalRecordsSection.jsx
 //
 // Patient's Unified Medical Record (UMR) section.
-// Sprint 2 Phase 2D.2 — Step 4 (ALL 7 tabs live, including imaging).
+// Sprint 2 Phase 2D.2 — Step 4 + Stage 2 #4 (prescriptions) + #A (lab results).
 //
 // Tab map:
 //   encounters     → EncountersTab (full CRUD with sign/amend/delete)
@@ -11,6 +11,8 @@
 //   family         → SubRecordTab (family config)
 //   immunization   → SubRecordTab (immunization config)
 //   imaging        → ImagingTab (grid view + multipart upload + lightbox)
+//   prescriptions  → PrescriptionsTab (Rx blanks with items[] + PDF)
+//   labResults     → LabResultsTab (panels + params + flags + file + PDF)
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
@@ -22,6 +24,8 @@ import AmendEncounterModal from "./AmendEncounterModal";
 import SubRecordTab from "./SubRecordTab";
 import { SUB_RECORD_CONFIGS } from "./subRecordConfigs";
 import ImagingTab from "./ImagingTab";
+import PrescriptionsTab from "./PrescriptionsTab";
+import LabResultsTab from "./LabResultsTab";
 import "./medicalRecordsSection.css";
 
 const TABS = [
@@ -56,6 +60,16 @@ const TABS = [
     defaultLabel: "Прививки",
   },
   { id: "imaging", labelKey: "medical.tabs.imaging", defaultLabel: "Снимки" },
+  {
+    id: "prescriptions",
+    labelKey: "medical.tabs.prescriptions",
+    defaultLabel: "Рецепты",
+  },
+  {
+    id: "labResults",
+    labelKey: "medical.tabs.labResults",
+    defaultLabel: "Анализы",
+  },
 ];
 
 const SUB_TABS = {
@@ -116,6 +130,22 @@ export default function MedicalRecordsSection({ patient, canWrite }) {
 
         {activeTab === "imaging" && (
           <ImagingTab
+            patient={patient}
+            canWrite={canWrite}
+            canDelete={canDelete}
+          />
+        )}
+
+        {activeTab === "prescriptions" && (
+          <PrescriptionsTab
+            patient={patient}
+            canWrite={canWrite}
+            canDelete={canDelete}
+          />
+        )}
+
+        {activeTab === "labResults" && (
+          <LabResultsTab
             patient={patient}
             canWrite={canWrite}
             canDelete={canDelete}

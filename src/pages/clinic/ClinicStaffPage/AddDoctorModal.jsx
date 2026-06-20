@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { searchDoctors, addStaff } from "../../../api/clinic";
+import { searchDoctors, createMembershipRequest } from "../../../api/clinic";
 import "./inviteEmployeeModal.css";
 import "./addDoctorModal.css";
 
@@ -46,7 +46,7 @@ export default function AddDoctorModal({ onClose, onSuccess }) {
     setSubmitting(true);
     setError(null);
     try {
-      await addStaff({ userId, role: "doctor" });
+      await createMembershipRequest({ userId, role: "doctor" });
       onSuccess();
     } catch (err) {
       const data = err.response?.data;
@@ -62,7 +62,11 @@ export default function AddDoctorModal({ onClose, onSuccess }) {
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal-window" onClick={(e) => e.stopPropagation()}>
         <header className="modal-header">
-          <h2>{t("addDoctorModal.title")}</h2>
+          <h2>
+            {t("addDoctorModal.titleInvite", {
+              defaultValue: "Пригласить врача",
+            })}
+          </h2>
           <button
             className="modal-close"
             onClick={onClose}
@@ -74,7 +78,12 @@ export default function AddDoctorModal({ onClose, onSuccess }) {
         </header>
 
         <div className="modal-body">
-          <p className="modal-intro">{t("addDoctorModal.intro")}</p>
+          <p className="modal-intro">
+            {t("addDoctorModal.introInvite", {
+              defaultValue:
+                "Врач получит приглашение и должен будет его принять.",
+            })}
+          </p>
 
           {error && <div className="modal-error">{error}</div>}
 
@@ -158,8 +167,10 @@ export default function AddDoctorModal({ onClose, onSuccess }) {
               type="button"
             >
               {submitting
-                ? t("addDoctorModal.adding")
-                : t("addDoctorModal.submit")}
+                ? t("addDoctorModal.sending", { defaultValue: "Отправка…" })
+                : t("addDoctorModal.submitInvite", {
+                    defaultValue: "Отправить приглашение",
+                  })}
             </button>
           </footer>
         </div>

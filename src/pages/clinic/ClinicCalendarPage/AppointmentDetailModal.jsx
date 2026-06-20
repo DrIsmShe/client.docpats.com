@@ -7,26 +7,22 @@
 //
 // Layout (vertical):
 //   1. Title + close
-//   2. Detail rows: patient, doctor, time, duration, reason, status
+//   2. Detail rows: patient, time, duration, department, status, reason
 //      + per-status timestamps (created, checked in, completed, cancelled,
 //      no-show) and cancelReason if present
-//   3. Reason editor (inline expandable section) — works on ANY status,
-//      including terminal ones. Useful for correcting typos on completed
-//      appointments without touching their lifecycle state.
-//   4. Lifecycle actions grid — buttons for every legal FSM transition
-//      from the current status. Terminal statuses show no action buttons
-//      (still let the reason editor work).
+//   3. Reason editor (inline expandable section) — works on ANY status.
+//   4. Lifecycle actions grid — legal FSM transitions only.
 //   5. Reschedule button — opens RescheduleModal on top.
 //
-// Read-only viewers (canWrite=false, e.g. nurse) see all detail rows but
-// no edit/action UI.
+// The department NAME is resolved client-side: the appointment DTO carries
+// only departmentId, so we load the clinic's departments once and map
+// id → name. Archived departments are included so historic appointments
+// still display correctly. No backend toDTO/join change needed.
 //
 // Conventions:
 //   - no <form>, no localStorage
 //   - t() with defaultValue everywhere; t never in hook deps
-//   - re-fetches after every successful action so stale state never
-//     lingers (cheaper than threading optimistic updates through the
-//     parent, and the parent reloads too on close)
+//   - re-fetches after every successful action so stale state never lingers
 
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -35,13 +31,12 @@ import {
   getAppointment,
   changeAppointmentStatus,
   updateAppointmentReason,
+  listDepartments,
 } from "../../../api/clinic";
 import RescheduleModal from "./RescheduleModal";
 
 // ─── Constants ─────────────────────────────────────────────────
 
-// Mirror of the backend FSM (ALLOWED_TRANSITIONS). Used to drive the
-// action grid — only legal transitions are rendered as buttons.
 const ALLOWED_TRANSITIONS = {
   scheduled: ["checked_in", "cancelled", "no_show"],
   checked_in: ["completed", "cancelled", "no_show"],
@@ -50,10 +45,8 @@ const ALLOWED_TRANSITIONS = {
   no_show: [],
 };
 
-// Statuses where rescheduling is legal (mirrors backend's RESCHEDULABLE_STATUSES).
 const RESCHEDULABLE_STATUSES = new Set(["scheduled", "checked_in"]);
 
-// Variant for the lifecycle button — semantic colour. Maps to CSS classes.
 const STATUS_BUTTON_VARIANT = {
   checked_in: "go", // green
   completed: "go", // green
@@ -102,6 +95,15 @@ function durationMinutes(appt) {
   return 0;
 }
 
+// Normalize a departmentId that may arrive as a raw string or a populated
+// object — return the id string (or null).
+function extractDepartmentId(appt) {
+  const d = appt?.departmentId;
+  if (!d) return null;
+  if (typeof d === "string") return d;
+  return d._id || d.id || null;
+}
+
 // ════════════════════════════════════════════════════════════════
 //  MAIN COMPONENT
 // ════════════════════════════════════════════════════════════════
@@ -121,6 +123,9 @@ export default function AppointmentDetailModal({
 
   const [actionLoading, setActionLoading] = useState(false);
 
+  // department id → { name, code } map (includes archived)
+  const [deptMap, setDeptMap] = useState({});
+
   // Reason editor
   const [editingReason, setEditingReason] = useState(false);
   const [reasonDraft, setReasonDraft] = useState("");
@@ -129,6 +134,28 @@ export default function AppointmentDetailModal({
 
   // Reschedule sub-modal
   const [rescheduleOpen, setRescheduleOpen] = useState(false);
+
+  // ─── Load departments once (for name resolution) ───
+  useEffect(() => {
+    let cancelled = false;
+    // No status filter → returns active + archived, so historic
+    // appointments pointing at an archived department still resolve.
+    listDepartments({})
+      .then((res) => {
+        if (cancelled) return;
+        const map = {};
+        (res.items || []).forEach((d) => {
+          map[d._id || d.id] = d;
+        });
+        setDeptMap(map);
+      })
+      .catch(() => {
+        /* department label is non-critical — ignore failures */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // ─── Load ───
   const load = useCallback(async () => {
@@ -161,10 +188,7 @@ export default function AppointmentDetailModal({
     setErrorMsg(null);
     try {
       await changeAppointmentStatus(appointmentId, { status: newStatus });
-      // Refresh in place so the user sees the new timestamps without
-      // closing the modal.
       await load();
-      // Tell parent calendar to refresh its list when the modal closes.
     } catch (err) {
       setErrorMsg(
         err.response?.data?.error ||
@@ -278,6 +302,15 @@ export default function AppointmentDetailModal({
   const legalNext = ALLOWED_TRANSITIONS[appt.status] || [];
   const canReschedule = canWrite && RESCHEDULABLE_STATUSES.has(appt.status);
 
+  // Resolve department label (client-side).
+  const deptId = extractDepartmentId(appt);
+  const dept = deptId ? deptMap[deptId] : null;
+  const departmentLabel = !deptId
+    ? t("calendar.detail_modal.departmentNone", { defaultValue: "не указано" })
+    : dept
+      ? `${dept.name}${dept.code ? ` (${dept.code})` : ""}`
+      : "—";
+
   return (
     <>
       <div
@@ -330,6 +363,14 @@ export default function AppointmentDetailModal({
                   defaultValue: "min",
                 })}
               </span>
+            </div>
+            <div className="ccal-detail-row">
+              <span className="ccal-detail-key">
+                {t("calendar.detail_modal.department", {
+                  defaultValue: "Отделение",
+                })}
+              </span>
+              <span className="ccal-detail-val">{departmentLabel}</span>
             </div>
             <div className="ccal-detail-row">
               <span className="ccal-detail-key">
@@ -558,8 +599,6 @@ export default function AppointmentDetailModal({
         </div>
       </div>
 
-      {/* Reschedule sub-modal — rendered as a sibling so its overlay
-          stacks above this one. */}
       {rescheduleOpen && (
         <RescheduleModal
           appointment={appt}

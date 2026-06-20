@@ -3,12 +3,15 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Link, useOutletContext, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+
 import {
   listStaff,
   listInvitations,
   revokeInvitation,
   removeStaff,
   changeStaffRole,
+  listClinicMembershipRequests,
+  cancelMembershipRequest,
 } from "../../../api/clinic";
 import InviteEmployeeModal from "./InviteEmployeeModal";
 import AddDoctorModal from "./AddDoctorModal";
@@ -32,7 +35,7 @@ export default function ClinicStaffPage() {
   const { t, i18n } = useTranslation("clinic");
   const layoutContext = useOutletContext();
   const navigate = useNavigate();
-
+  const [doctorRequests, setDoctorRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [staff, setStaff] = useState([]);
@@ -51,12 +54,14 @@ export default function ClinicStaffPage() {
   const loadAll = useCallback(async () => {
     try {
       setError(null);
-      const [staffRes, invitationsRes] = await Promise.all([
+      const [staffRes, invitationsRes, requestsRes] = await Promise.all([
         listStaff(),
         listInvitations("pending").catch(() => ({ items: [] })),
+        listClinicMembershipRequests().catch(() => ({ items: [] })),
       ]);
       setStaff(staffRes.items || []);
       setInvitations(invitationsRes.items || []);
+      setDoctorRequests(requestsRes.items || []);
       setLoading(false);
     } catch (err) {
       console.error("Failed to load staff:", err);
@@ -95,7 +100,25 @@ export default function ClinicStaffPage() {
       setActionLoading((p) => ({ ...p, [invitationId]: false }));
     }
   }
-
+  async function handleCancelRequest(requestId) {
+    if (
+      !window.confirm(
+        t("staff.confirmCancelRequest", {
+          defaultValue: "Отозвать приглашение?",
+        }),
+      )
+    )
+      return;
+    setActionLoading((p) => ({ ...p, [requestId]: true }));
+    try {
+      await cancelMembershipRequest(requestId);
+      await loadAll();
+    } catch (err) {
+      alert(err.response?.data?.error || t("staff.revokeFailed"));
+    } finally {
+      setActionLoading((p) => ({ ...p, [requestId]: false }));
+    }
+  }
   async function handleRemoveStaff(membership) {
     const name = staffDisplayName(membership);
     if (!window.confirm(t("staff.confirmRemove", { name }))) return;
@@ -220,7 +243,28 @@ export default function ClinicStaffPage() {
           </div>
         </section>
       )}
-
+      {doctorRequests.length > 0 && (
+        <section className="staff-page-section">
+          <h2>
+            {t("staff.doctorInvitations", {
+              defaultValue: "Приглашения врачам",
+            })}
+            <span className="staff-page-count">{doctorRequests.length}</span>
+          </h2>
+          <div className="staff-page-list">
+            {doctorRequests.map((r) => (
+              <DoctorRequestRow
+                key={r.requestId}
+                request={r}
+                onCancel={canInvite ? handleCancelRequest : null}
+                isLoading={actionLoading[r.requestId]}
+                t={t}
+                formatDate={formatDate}
+              />
+            ))}
+          </div>
+        </section>
+      )}
       <section className="staff-page-section">
         <h2>
           {t("staff.teamMembers")}
@@ -405,6 +449,45 @@ function InvitationRow({ invitation, onRevoke, isLoading, t, formatDate }) {
                 invitation.invitationId || invitation._id || invitation.id,
               )
             }
+            disabled={isLoading}
+            type="button"
+          >
+            {t("staff.revoke")}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+function DoctorRequestRow({ request, onCancel, isLoading, t, formatDate }) {
+  const roleLabel = t(`roles.${request.role}`, { defaultValue: request.role });
+  return (
+    <div
+      className={`staff-row staff-row-invitation ${isLoading ? "is-loading" : ""}`}
+    >
+      <div className="staff-row-avatar staff-row-avatar-pending">⏳</div>
+      <div className="staff-row-info">
+        <div className="staff-row-name">
+          {request.doctorName ||
+            t("staff.doctorInvitePending", {
+              defaultValue: "Приглашение врачу",
+            })}
+          {request.customTitle ? ` · ${request.customTitle}` : ""}
+        </div>
+        <div className="staff-row-email">
+          {request.doctorEmail ? `${request.doctorEmail}  ·  ` : ""}
+          {roleLabel}
+          {request.createdAt ? `  ·  ${formatDate(request.createdAt)}` : ""}
+        </div>
+      </div>
+      <div className="staff-row-role">
+        <span className="staff-row-pending-badge">{t("staff.pending")}</span>
+      </div>
+      <div className="staff-row-actions">
+        {onCancel && (
+          <button
+            className="staff-row-btn-remove"
+            onClick={() => onCancel(request.requestId)}
             disabled={isLoading}
             type="button"
           >

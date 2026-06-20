@@ -11,6 +11,7 @@
 //   STEP 2 — Form
 //     Standard patient data form. Email field is OPTIONAL and serves as
 //     a DELIVERY CHANNEL for the patient card after provisional creation.
+//     Department is OPTIONAL — routes the patient to a clinic department.
 //
 //   STEP 3 — Confirm
 //     Summary + provisional-creation checkbox. On submit:
@@ -52,7 +53,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { searchUsersForLink, createPatient } from "../../../api/clinic";
+import {
+  searchUsersForLink,
+  createPatient,
+  listDepartments,
+} from "../../../api/clinic";
 import PatientCardView from "./PatientCardView";
 import ConsentConfirmationModal from "./ConsentConfirmationModal";
 import DuplicatePatientModal from "./DuplicatePatientModal";
@@ -90,8 +95,12 @@ export default function PatientRegistrationWizard({ onComplete, onCancel }) {
     email: "",
     dateOfBirth: "",
     gender: "",
+    departmentId: "",
     notes: "",
   });
+
+  // Active clinic departments — for the optional department selector.
+  const [departments, setDepartments] = useState([]);
 
   // Step 3 option
   const [createProvisional, setCreateProvisional] = useState(true);
@@ -125,6 +134,21 @@ export default function PatientRegistrationWizard({ onComplete, onCancel }) {
   // Debounce + race-condition guard for email autocomplete
   const emailDebounceRef = useRef(null);
   const searchSeqRef = useRef(0);
+
+  // ─── Load active departments once (optional field) ───
+  useEffect(() => {
+    let cancelled = false;
+    listDepartments({ status: "active" })
+      .then((res) => {
+        if (!cancelled) setDepartments(res.items || []);
+      })
+      .catch(() => {
+        /* department selection is optional — ignore failures */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // ─── Email autocomplete ───
   useEffect(() => {
@@ -293,6 +317,7 @@ export default function PatientRegistrationWizard({ onComplete, onCancel }) {
         dateOfBirth: formData.dateOfBirth || null,
         gender: formData.gender || null,
         notes: formData.notes.trim() || null,
+        ...(formData.departmentId && { departmentId: formData.departmentId }),
         patientConsentConfirmed,
       };
 
@@ -445,6 +470,14 @@ export default function PatientRegistrationWizard({ onComplete, onCancel }) {
     if (!id) return;
     // Navigate away from wizard to existing patient detail.
     navigate(`/clinic/patients/${id}`);
+  }
+
+  // Human label for a department id (used in the Step 3 summary).
+  function departmentLabel(id) {
+    if (!id) return null;
+    const d = departments.find((x) => String(x._id || x.id) === String(id));
+    if (!d) return null;
+    return `${d.name}${d.code ? ` (${d.code})` : ""}`;
   }
 
   // ─── Render ───
@@ -849,6 +882,38 @@ export default function PatientRegistrationWizard({ onComplete, onCancel }) {
             </div>
           </div>
 
+          {/* Department (optional) — shown only if the clinic has any */}
+          {departments.length > 0 && (
+            <div className="prw-field">
+              <label>
+                {t("patients.fields.department", {
+                  defaultValue: "Отделение",
+                })}{" "}
+                <span className="patients-form-optional">
+                  {t("common.optional", { defaultValue: "(необязательно)" })}
+                </span>
+              </label>
+              <select
+                value={formData.departmentId}
+                onChange={(e) =>
+                  handleFormChange("departmentId", e.target.value)
+                }
+              >
+                <option value="">
+                  {t("patients.wizard.form.departmentNone", {
+                    defaultValue: "— не указано —",
+                  })}
+                </option>
+                {departments.map((d) => (
+                  <option key={d._id || d.id} value={d._id || d.id}>
+                    {d.name}
+                    {d.code ? ` (${d.code})` : ""}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           <div className="prw-field">
             <label>
               {t("patients.wizard.form.notesLabel", {
@@ -939,6 +1004,14 @@ export default function PatientRegistrationWizard({ onComplete, onCancel }) {
                 defaultValue: "Дата рождения",
               })}
               value={formData.dateOfBirth}
+            />
+          )}
+          {formData.departmentId && departmentLabel(formData.departmentId) && (
+            <SummaryRow
+              label={t("patients.fields.department", {
+                defaultValue: "Отделение",
+              })}
+              value={departmentLabel(formData.departmentId)}
             />
           )}
           {selectedUser && (

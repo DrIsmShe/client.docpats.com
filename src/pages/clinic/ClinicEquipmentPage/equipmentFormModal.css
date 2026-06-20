@@ -1,0 +1,54 @@
+/* client/src/pages/clinic/ClinicEquipmentPage/equipmentFormModal.css */
+/*
+ * Relies on the shared global modal-* tokens (modal-backdrop, modal-window,
+ * modal-header, modal-body, modal-field, modal-footer, modal-btn-*,
+ * modal-error, modal-field-error, modal-hint, .required, .optional,
+ * .has-error) — same base used by departmentFormModal.css / roomFormModal.css.
+ *
+ * Below: only the additions specific to the equipment form (two-column rows
+ * and the assigned-staff checkbox list).
+ */
+
+.modal-row {
+  display: flex;
+  gap: 12px;
+}
+.modal-row .modal-field {
+  flex: 1 1 0;
+  min-width: 0;
+}
+@media (max-width: 520px) {
+  .modal-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+.equip-staff-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.equip-staff-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #334155;
+  cursor: pointer;
+  padding: 4px 2px;
+}
+.equip-staff-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.equip-staff-item:hover {
+  color: #1e293b;
+}

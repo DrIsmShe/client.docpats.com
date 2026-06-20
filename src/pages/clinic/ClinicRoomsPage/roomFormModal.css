@@ -1,0 +1,58 @@
+/* client/src/pages/clinic/ClinicRoomsPage/roomFormModal.css */
+/*
+ * This file relies on the shared global modal-* tokens (modal-backdrop,
+ * modal-window, modal-header, modal-body, modal-field, modal-footer,
+ * modal-btn-*, modal-error, modal-field-error, modal-hint, .required,
+ * .optional, .has-error) that departmentFormModal.css already uses.
+ *
+ * Below are ONLY the additions specific to the room form: a two-column
+ * field row and the assigned-staff checkbox list. If your global modal
+ * stylesheet doesn't define the base tokens, copy them from
+ * departmentFormModal.css.
+ */
+
+/* Two fields side by side (code + floor). Collapses on narrow screens. */
+.modal-row {
+  display: flex;
+  gap: 12px;
+}
+.modal-row .modal-field {
+  flex: 1 1 0;
+  min-width: 0;
+}
+@media (max-width: 520px) {
+  .modal-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+/* Assigned-staff checkbox list */
+.room-staff-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.room-staff-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #334155;
+  cursor: pointer;
+  padding: 4px 2px;
+}
+.room-staff-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.room-staff-item:hover {
+  color: #1e293b;
+}

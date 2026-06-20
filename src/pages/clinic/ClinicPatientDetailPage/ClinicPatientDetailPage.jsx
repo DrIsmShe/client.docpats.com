@@ -5,8 +5,10 @@
 // Sections:
 //   1. Header — name, avatar, linked badge, role-aware action buttons
 //   2. View mode — read-only display of all patient fields including
-//      createdBy (who registered this patient — doctor or staff)
-//   3. Edit mode — same form as on the list page (inline toggle)
+//      department (name resolved client-side) and createdBy (who
+//      registered this patient — doctor or staff)
+//   3. Edit mode — same form as on the list page (inline toggle), now
+//      with an optional Department <select>
 //   4. Link section — search a DocPats user (by email OR by date of
 //      birth + name) and link the patient to that account
 //   5. MEDICAL RECORDS SECTION (UMR) — Sprint 2 Phase 2D.2 — added
@@ -17,6 +19,16 @@
 //   6. Delete button (visible to canDelete)
 //   7. Book-appointment button (Sprint 1, day 5) — opens
 //      BookFromPatientModal with this patient pre-filled
+//
+// Department wiring (Clinic Departments feature):
+//   - On mount we fetch listDepartments({}) once (including archived) to
+//     build deptMap (id -> dept) so view-mode can show the department NAME
+//     even if the patient is in an archived department.
+//   - Edit-mode <select> offers only ACTIVE departments. It's rendered
+//     only when at least one department exists, so clinics that never set
+//     up departments see no extra field.
+//   - On save we send departmentId (string) or null. Backend validates
+//     it belongs to the clinic via assertDepartmentInClinic.
 //
 // Reuses .staff-page-* tokens and .patients-form-* tokens from the list
 // page CSS to keep visual identity consistent. The appointment modal
@@ -38,17 +50,34 @@ import {
   unlinkPatientFromUser,
   searchUsersForLink,
   createConsentRequest,
+  listDepartments,
 } from "../../../api/clinic";
 import "../ClinicPatientsPage/clinicPatientsPage.css";
 import "./clinicPatientDetailPage.css";
+import ClinicConsentsPanel from "./ClinicConsentsPanel.jsx";
+
 // Pull in the calendar-modal stylesheet so the .ccal-* classes used
 // inside BookFromPatientModal are styled here too.
 import "../ClinicCalendarPage/clinicCalendarPage.css";
 import BookFromPatientModal from "../ClinicCalendarPage/BookFromPatientModal.jsx";
 import ConsentRequestModal from "./ConsentRequestModal.jsx";
-
+import ConsentRequestsList from "./ConsentRequestsList.jsx";
 // Sprint 2 Phase 2D.2 — Unified Medical Record (UMR) section
 import MedicalRecordsSection from "./MedicalRecordsSection.jsx";
+
+/**
+ * Extract a department id from a patient record. departmentId may be:
+ *   - a string ObjectId
+ *   - a populated object { _id, name, ... }
+ *   - null / undefined
+ */
+function extractDepartmentId(patient) {
+  const d = patient?.departmentId;
+  if (!d) return null;
+  if (typeof d === "string") return d;
+  if (typeof d === "object" && d._id) return String(d._id);
+  return null;
+}
 
 export default function ClinicPatientDetailPage() {
   const { t, i18n } = useTranslation("clinic");
@@ -64,8 +93,18 @@ export default function ClinicPatientDetailPage() {
   // Sprint 3.2 — consent request modal
   const [requestModalOpen, setRequestModalOpen] = useState(false);
   const [requestSubmitMsg, setRequestSubmitMsg] = useState(null);
+  const [requestsRefresh, setRequestsRefresh] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+
+  // ─── Departments (for view-mode name resolution + edit <select>) ───
+  // deptMap: id -> dept (includes archived, so names always resolve).
+  // activeDepartments: only status==="active", used to populate the edit
+  // <select>. Loading failures are silent — the field just won't render.
+  const [deptMap, setDeptMap] = useState({});
+  const [activeDepartments, setActiveDepartments] = useState([]);
+  // Controlled value of the edit-mode department <select> (string id or "").
+  const [editDepartmentId, setEditDepartmentId] = useState("");
 
   // ─── Link section state ───
   const [linkOpen, setLinkOpen] = useState(false);
@@ -132,6 +171,40 @@ export default function ClinicPatientDetailPage() {
     load();
   }, [load]);
 
+  // ─── Load departments once (silent on failure) ───
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await listDepartments({});
+        if (cancelled) return;
+        const items = res.items || res.departments || res || [];
+        const map = {};
+        const active = [];
+        for (const d of items) {
+          if (!d || !d._id) continue;
+          map[String(d._id)] = d;
+          if (d.status === "active") active.push(d);
+        }
+        setDeptMap(map);
+        setActiveDepartments(active);
+      } catch (err) {
+        // Departments are optional context — never block the page.
+        console.warn("Failed to load departments:", err);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // ─── Sync edit <select> value whenever we enter edit-mode / patient changes ───
+  useEffect(() => {
+    if (editing) {
+      setEditDepartmentId(extractDepartmentId(patient) || "");
+    }
+  }, [editing, patient]);
+
   // ─── Edit submit ───
   async function handleEditSubmit(e) {
     e.preventDefault();
@@ -143,6 +216,12 @@ export default function ClinicPatientDetailPage() {
       email: form.email.value.trim() || null,
       gender: form.gender.value || null,
       dateOfBirth: form.dateOfBirth.value || null,
+      // departmentId: send the selected id, or null to clear it. Only
+      // include the key when departments exist in this clinic so we never
+      // accidentally null out a field the UI couldn't show.
+      ...(activeDepartments.length > 0 || extractDepartmentId(patient)
+        ? { departmentId: editDepartmentId || null }
+        : {}),
     };
 
     const errors = {};
@@ -312,6 +391,24 @@ export default function ClinicPatientDetailPage() {
   }
 
   /**
+   * Resolve the department display name for the current patient.
+   * Tries the populated object first, then deptMap, then a translated
+   * specialty fallback isn't needed — we show the stored name. Returns
+   * the "not specified" label when there's no department.
+   */
+  function departmentDisplay() {
+    const d = patient?.departmentId;
+    if (d && typeof d === "object" && d.name) return d.name;
+    const did = extractDepartmentId(patient);
+    if (did && deptMap[did]?.name) return deptMap[did].name;
+    return t("patients.fields.departmentNone", {
+      defaultValue: t("calendar.detail_modal.departmentNone", {
+        defaultValue: "—",
+      }),
+    });
+  }
+
+  /**
    * Format the "created by" line: "Имя Фамилия (врач)" or fallback.
    */
   function formatCreatedBy() {
@@ -333,6 +430,11 @@ export default function ClinicPatientDetailPage() {
       t("patients.unnamed")
     );
   }
+
+  // Whether to show the department field at all: show if any active dept
+  // exists OR the patient is already assigned to a (possibly archived) one.
+  const showDepartmentField =
+    activeDepartments.length > 0 || !!extractDepartmentId(patient);
 
   // ─── Render guards ───
   if (loading) {
@@ -572,6 +674,54 @@ export default function ClinicPatientDetailPage() {
               </div>
             </div>
 
+            {/* ─── Department (optional, only if departments exist) ─── */}
+            {showDepartmentField && (
+              <div className="patients-form-row">
+                <div className="patients-form-field">
+                  <label>
+                    {t("patients.fields.department")}{" "}
+                    <span className="patients-form-optional">
+                      {t("common.optional")}
+                    </span>
+                  </label>
+                  <select
+                    name="departmentId"
+                    value={editDepartmentId}
+                    onChange={(e) => setEditDepartmentId(e.target.value)}
+                  >
+                    <option value="">
+                      {t("patients.wizard.form.departmentNone", {
+                        defaultValue: "— не указано —",
+                      })}
+                    </option>
+                    {activeDepartments.map((d) => (
+                      <option key={d._id} value={d._id}>
+                        {d.name}
+                      </option>
+                    ))}
+                    {/* If the patient is in an archived dept not present in
+                        the active list, keep it selectable so we don't
+                        silently drop it on save. */}
+                    {editDepartmentId &&
+                      !activeDepartments.some(
+                        (d) => String(d._id) === String(editDepartmentId),
+                      ) &&
+                      deptMap[editDepartmentId] && (
+                        <option value={editDepartmentId}>
+                          {deptMap[editDepartmentId].name}
+                        </option>
+                      )}
+                  </select>
+                  {formErrors.departmentId && (
+                    <span className="patients-form-error">
+                      {formErrors.departmentId}
+                    </span>
+                  )}
+                </div>
+                <div className="patients-form-field" aria-hidden="true" />
+              </div>
+            )}
+
             {formErrors._form && (
               <div className="patients-form-error patients-form-error-banner">
                 {formErrors._form}
@@ -631,6 +781,12 @@ export default function ClinicPatientDetailPage() {
                 patient.gender ? t(`patients.gender.${patient.gender}`) : "—"
               }
             />
+            {showDepartmentField && (
+              <DetailRow
+                label={t("patients.fields.department")}
+                value={departmentDisplay()}
+              />
+            )}
             <DetailRow
               label={t("patients.createdAt")}
               value={formatDate(patient.createdAt)}
@@ -853,6 +1009,28 @@ export default function ClinicPatientDetailPage() {
         </section>
       )}
 
+      {/* ─── Consent Requests (Sprint 3.2) — история запросов + cancel ─── */}
+      {!editing && patient && patient.linkedUserId && (
+        <section className="staff-page-section">
+          <h2>
+            {t("patients.consentRequests.title", {
+              defaultValue: "Запросы доступа к медданным",
+            })}
+          </h2>
+          <ConsentRequestsList
+            cardId={patient._id}
+            refreshSignal={requestsRefresh}
+          />
+        </section>
+      )}
+      {/* ─── Выданные доступы (Sprint 3 closure, part B) — revoke ─── */}
+      {!editing && patient && (
+        <ClinicConsentsPanel
+          cardId={patient._id}
+          refreshSignal={requestsRefresh}
+          canRevoke={canWrite}
+        />
+      )}
       {/* ─── Medical Records (UMR) — Sprint 2 Phase 2D.2 ─── */}
       {/* Visible only in view-mode (not while editing the patient profile). */}
       {!editing && patient && (
@@ -880,6 +1058,7 @@ export default function ClinicPatientDetailPage() {
           await createConsentRequest(patient._id, payload);
           setRequestModalOpen(false);
           setRequestSubmitMsg("success");
+          setRequestsRefresh((n) => n + 1);
           setTimeout(() => setRequestSubmitMsg(null), 4000);
         }}
       />

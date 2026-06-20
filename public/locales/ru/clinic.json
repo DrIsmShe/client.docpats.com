@@ -1,5 +1,604 @@
 {
+  "announcements": {
+    "back": "Дашборд",
+    "title": "Объявления",
+    "subtitle": "Внутренние объявления клиники для всей команды",
+    "create": "Новое объявление",
+    "createFirst": "Создать первое объявление",
+    "empty": "Объявлений пока нет",
+    "errorTitle": "Не удалось загрузить объявления",
+    "pinned": "Закреплено",
+    "pin": "Закрепить",
+    "unpin": "Открепить",
+    "archive": "В архив",
+    "unarchive": "Вернуть из архива",
+    "showArchived": "Архив",
+    "delete": "Удалить",
+    "confirmDelete": "Удалить объявление навсегда?",
+    "readBy": "Прочитали {{read}} из {{total}}",
+    "author": "Автор",
+    "audienceAll": "Вся клиника",
+    "audienceDepartment": "Отделение",
+    "form": {
+      "createTitle": "Новое объявление",
+      "titleLabel": "Заголовок",
+      "titlePlaceholder": "Например: В понедельник собрание",
+      "bodyLabel": "Текст",
+      "bodyPlaceholder": "Подробности объявления…",
+      "audience": "Кому",
+      "audienceAll": "Вся клиника",
+      "audienceDepartment": "Только отделение",
+      "department": "Отделение",
+      "departmentNone": "— выберите отделение —",
+      "pin": "Закрепить вверху",
+      "submit": "Опубликовать",
+      "cancel": "Отмена",
+      "errors": {
+        "titleRequired": "Введите заголовок",
+        "bodyRequired": "Введите текст",
+        "departmentRequired": "Выберите отделение",
+        "generic": "Не удалось опубликовать объявление"
+      }
+    }
+  },
+  "patientTelemed": {
+    "eyebrow": "Портал пациента",
+    "title": "Онлайн-консультации",
+    "subtitle": "Подтверждённые видеоприёмы и консилиумы, готовые к подключению. Нажмите «Войти», когда консультация начнётся. Все записи целиком — в разделе «Записи на приём».",
+    "loading": "Загрузка…",
+    "error": "Не удалось загрузить",
+    "empty": "У вас пока нет онлайн-консультаций.",
+    "when": "Дата",
+    "doctor": "Врач",
+    "clinic": "Клиника",
+    "join": "Войти",
+    "meName": "Пациент",
+    "untitled": "Консультация",
+    "apptTitle": "Видеоприём",
+    "consiliumTitle": "Консилиум",
+    "kind": {
+      "telemed": "Клиника",
+      "appointment": "Личный приём",
+      "consilium": "Консилиум"
+    },
+    "status": {
+      "scheduled": "Запланирована",
+      "live": "Идёт",
+      "confirmed": "Подтверждён",
+      "pending": "Ожидает",
+      "open": "Открыт",
+      "resolved": "Завершён",
+      "completed": "Завершена",
+      "cancelled": "Отменена",
+      "no_show": "Неявка",
+      "refunded": "Возврат"
+    }
+  },
+  "calendar": {
+    "title": "Календарь приёмов",
+    "back": "← Назад к команде",
+    "loadError": "Не удалось загрузить календарь",
+    "actionError": "Действие не выполнено — попробуйте ещё раз",
+    "emptyDay": "В этот день нет рабочих часов и приёмов.",
+    "archive": {
+      "title": "Архив дня"
+    },
+    "freeSlot": "Свободный слот",
+    "patientPlaceholder": "Пациент",
+    "book": "Записать",
+    "today": "Сегодня",
+    "prevDay": "Предыдущий день",
+    "nextDay": "Следующий день",
+    "status": {
+      "scheduled": "Запланирован",
+      "checked_in": "Пришёл",
+      "completed": "Завершён",
+      "cancelled": "Отменён",
+      "no_show": "Не явился"
+    },
+    "pastSlot": "Прошедший",
+    "overdueLabel": "Просрочен",
+    "pastDateBanner": "Прошедшая дата — запись недоступна. Открытые приёмы можно закрыть.",
+    "action": {
+      "checkIn": "Пришёл",
+      "complete": "Завершить",
+      "cancel": "Отменить",
+      "noShow": "Не явился",
+      "completeOverdueHint": "Закрыть просроченный приём"
+    },
+    "book_modal": {
+      "department": "Отделение",
+      "departmentNone": "— не указано —",
+      "title": "Новый приём",
+      "subtitle": "{{time}} · {{doctor}}",
+      "patient": "Пациент",
+      "patientSearchPlaceholder": "Найти пациента (фамилия, телефон или email)",
+      "selectedPatient": "Выбран:",
+      "noPatientFound": "Пациенты не найдены — введите больше символов",
+      "searchHint": "Не менее 2 символов",
+      "duration": "Длительность",
+      "minutes": "мин",
+      "reason": "Причина визита",
+      "reasonPlaceholder": "Например: боль в горле",
+      "submit": "Создать приём",
+      "cancel": "Отмена",
+      "createError": "Не удалось создать приём",
+      "conflictError": "Это время уже занято другим приёмом"
+    },
+    "detail_modal": {
+      "department": "Отделение",
+      "departmentNone": "не указано",
+      "title": "Приём",
+      "loadError": "Не удалось загрузить приём",
+      "patient": "Пациент",
+      "doctor": "Врач",
+      "time": "Время",
+      "duration": "Длительность",
+      "reason": "Причина",
+      "reasonEmpty": "не указана",
+      "status": "Статус",
+      "createdBy": "Создал",
+      "createdAt": "Создан",
+      "checkedInAt": "Пришёл",
+      "completedAt": "Завершён",
+      "cancelledAt": "Отменён",
+      "cancelReason": "Причина отмены",
+      "noShowAt": "Отмечен как неявка",
+      "actions": "Действия",
+      "actionReason": "Изменить причину",
+      "actionReschedule": "Перенести",
+      "saveReason": "Сохранить причину",
+      "newReason": "Новая причина",
+      "reasonSaved": "Причина сохранена",
+      "reasonError": "Не удалось сохранить причину",
+      "statusError": "Не удалось изменить статус",
+      "close": "Закрыть"
+    },
+    "reschedule_modal": {
+      "title": "Перенос приёма",
+      "subtitle": "Сейчас: {{time}}",
+      "newDate": "Новая дата",
+      "newSlot": "Новый слот",
+      "loadingSlots": "Загрузка свободных слотов…",
+      "noFreeSlots": "На эту дату свободных слотов нет",
+      "submit": "Перенести",
+      "cancel": "Отмена",
+      "rescheduleError": "Не удалось перенести приём",
+      "conflictError": "Выбранное время уже занято"
+    },
+    "fromPatient": {
+      "openButton": "Записать на приём",
+      "modalTitle": "Записать {{patient}} на приём",
+      "doctorLabel": "Врач",
+      "doctorPlaceholder": "Выберите врача",
+      "dateLabel": "Дата",
+      "slotLabel": "Время",
+      "loadingDoctors": "Загрузка врачей…",
+      "noDoctors": "В клинике пока нет врачей",
+      "loadingSlots": "Загрузка слотов…",
+      "noSlots": "На эту дату свободных слотов нет"
+    },
+    "inlineCreate": {
+      "title": "Новый пациент",
+      "lastName": "Фамилия",
+      "firstName": "Имя",
+      "phone": "Телефон",
+      "dateOfBirth": "Дата рождения",
+      "openButton": "+ Создать пациента",
+      "openButtonWithName": "+ Создать «{{name}}»",
+      "submit": "Создать и выбрать",
+      "cancel": "Отмена",
+      "errors": {
+        "lastNameRequired": "Укажите фамилию",
+        "firstNameRequired": "Укажите имя",
+        "duplicatePhone": "Пациент с таким телефоном уже существует",
+        "forbidden": "У вас нет прав на создание пациентов",
+        "generic": "Не удалось создать пациента"
+      }
+    }
+  },
+  "tabs": {
+    "prescriptions": "Рецепты"
+  },
+  "prescriptions": {
+    "listTitle": "Рецепты",
+    "addButton": "+ Новый рецепт",
+    "addFirstButton": "Выписать первый рецепт",
+    "emptyText": "Рецептов пока нет.",
+    "loadError": "Не удалось загрузить рецепты",
+    "createTitle": "Новый рецепт",
+    "issueButton": "Выписать рецепт",
+    "diagnosisTitle": "Диагноз (МКБ-10, необязательно)",
+    "itemsTitle": "Препараты",
+    "addItemButton": "+ Добавить препарат",
+    "generalNotesTitle": "Общие примечания",
+    "pdfButton": "PDF",
+    "completeButton": "Завершить",
+    "cancelButton": "Отменить",
+    "confirmCancel": "Отменить этот рецепт?",
+    "confirmDelete": "Удалить рецепт навсегда?",
+    "cancelledReason": "Причина отмены",
+    "hiddenCrossClinic": "Содержимое скрыто (другая клиника)",
+    "pdfError": "Не удалось сгенерировать PDF",
+    "fields": {
+      "inn": "МНН (действующее вещество)",
+      "brandName": "Торговое название",
+      "strength": "Дозировка",
+      "form": "Форма",
+      "route": "Путь введения",
+      "dose": "Доза",
+      "frequency": "Кратность",
+      "duration": "Длительность",
+      "instructions": "Указания",
+      "quantity": "Кол-во на курс",
+      "prn": "По потребности"
+    },
+    "placeholders": {
+      "inn": "например, Лоратадин",
+      "dose": "1 таблетка",
+      "frequency": "1 раз в день",
+      "duration": "14 дней",
+      "instructions": "Утром после еды",
+      "generalNotes": "Повторный осмотр через 2 недели"
+    },
+    "forms": {
+      "tablet": "таблетки",
+      "capsule": "капсулы",
+      "syrup": "сироп",
+      "spray": "спрей",
+      "drops": "капли",
+      "ointment": "мазь",
+      "injection": "инъекция",
+      "inhaler": "ингалятор",
+      "suppository": "суппозиторий",
+      "solution": "раствор",
+      "powder": "порошок",
+      "other": "другое"
+    },
+    "routes": {
+      "oral": "внутрь",
+      "topical": "наружно",
+      "intramuscular": "в/м",
+      "intravenous": "в/в",
+      "subcutaneous": "п/к",
+      "inhalation": "ингаляционно",
+      "nasal": "интраназально",
+      "otic": "в ухо",
+      "ophthalmic": "в глаз",
+      "rectal": "ректально",
+      "sublingual": "под язык",
+      "other": "другое"
+    },
+    "status": {
+      "active": "Активен",
+      "cancelled": "Отменён",
+      "completed": "Завершён"
+    },
+    "errors": {
+      "innRequired": "Укажите МНН",
+      "atLeastOne": "Добавьте хотя бы один препарат"
+    }
+  },
+  "patients": {
+    "consents": {
+      "title": "Предоставленный доступ",
+      "empty": "Пациент ещё не предоставил вашей клинике доступ к своим данным.",
+      "error": "Не удалось загрузить разрешения на доступ.",
+      "signedAt": "Предоставлен",
+      "expiresAt": "Истекает",
+      "revokedAt": "Отозван",
+      "revokeButton": "Отозвать доступ",
+      "confirmRevoke": "Отозвать доступ клиники к данным пациента? Это необратимо — потребуется новое согласие.",
+      "status": {
+        "active": "Активен",
+        "revoked": "Отозван",
+        "expired": "Истёк"
+      },
+      "scopes": {
+        "encounters": "Приёмы и диагнозы",
+        "allergies": "Аллергии",
+        "chronicDiseases": "Хронические заболевания",
+        "operations": "Операции",
+        "familyHistory": "Семейный анамнез",
+        "immunization": "Прививки",
+        "imaging": "Визуализация и исследования"
+      },
+      "purpose": {
+        "treatment": "Лечение",
+        "referral": "Направление",
+        "second_opinion": "Второе мнение",
+        "emergency": "Неотложная помощь",
+        "research": "Исследование"
+      },
+      "toasts": {
+        "revoked": "Доступ отозван",
+        "forbidden": "Этот доступ не ваш",
+        "notFound": "Доступ не найден",
+        "revokeError": "Не удалось отозвать доступ"
+      }
+    },
+    "consentRequests": {
+      "title": "Запросы на доступ к медицинским данным",
+      "empty": "Запросов на доступ к этому пациенту пока нет.",
+      "requestedLabel": "Запрошено:",
+      "approvedLabel": "Одобрено:",
+      "patientNote": "Ответ пациента:",
+      "respondedAt": "Ответ дан: {{date}}",
+      "expiresIn": "Истекает через {{count}} дней",
+      "expiresIn_one": "Истекает через {{count}} день",
+      "expiresIn_other": "Истекает через {{count}} дней",
+      "expiresSoon": "Истекает сегодня",
+      "cancel": "Отменить",
+      "confirmCancel": "Отменить этот запрос на доступ? Пациент больше его не увидит.",
+      "scopeApproved": "Одобрено пациентом",
+      "scopeDropped": "Не одобрено",
+      "status": {
+        "pending": "Ожидает ответа",
+        "approved": "Одобрено",
+        "rejected": "Отклонено",
+        "cancelled": "Отменено",
+        "expired": "Истекло"
+      },
+      "scopes": {
+        "encounters": "Приёмы и диагнозы",
+        "allergies": "Аллергии",
+        "chronicDiseases": "Хронические заболевания",
+        "operations": "Операции",
+        "familyHistory": "Семейный анамнез",
+        "immunization": "Прививки",
+        "imaging": "Визуализация и исследования"
+      },
+      "errors": {
+        "loadFailed": "Не удалось загрузить запросы",
+        "cancelFailed": "Не удалось отменить запрос",
+        "notPending": "Статус запроса уже изменился — обновляем список."
+      }
+    },
+    "fullRegistration": "Полная регистрация →",
+    "wizardTitle": "Регистрация пациента",
+    "wizardSubtitle": "Сначала проверим, не зарегистрирован ли пациент в DocPats. Это защитит от дублей и даст пациенту полноценный аккаунт.",
+    "wizard": {
+      "steps": {
+        "search": "Поиск",
+        "form": "Данные",
+        "confirm": "Подтверждение"
+      },
+      "card": {
+        "title": "Карточка пациента — выдать на руки",
+        "subtitle": "Распечатайте и передайте пациенту. После закрытия этого окна пароль больше нигде не появится в системе — сохраните карточку.",
+        "frontType": "Карта пациента",
+        "fullName": "Полное имя",
+        "tmpEmail": "Временный email",
+        "tmpPassword": "Временный пароль",
+        "qrHint": "Отсканируйте, чтобы войти",
+        "registered": "Зарегистрирован",
+        "validUntil": "Активировать до",
+        "backTitle": "Что вы получите после активации",
+        "howToActivate": "Как активировать",
+        "step1": "Откройте docpats.com или отсканируйте QR-код",
+        "step2": "Войдите с временным email и паролем с этой карточки",
+        "step3": "Введите свой постоянный email и придумайте пароль",
+        "step4": "Готово — доступ к полной истории болезни открыт",
+        "tagline": "Здоровье в одном месте",
+        "copy": "📋 Скопировать данные",
+        "copied": "✓ Скопировано",
+        "copyError": "Не удалось скопировать",
+        "copyEmail": "Email",
+        "copyPassword": "Пароль",
+        "copyLogin": "Вход",
+        "print": "🖨️ Распечатать",
+        "done": "Готово",
+        "benefits": {
+          "results": {
+            "title": "Результаты обследований",
+            "text": "Анализы, снимки и заключения врачей появляются в личном кабинете автоматически — этой и любой другой клиники DocPats."
+          },
+          "online": {
+            "title": "Онлайн-консультации",
+            "text": "Задавайте вопросы врачам в защищённом чате — без записи на приём."
+          },
+          "ai": {
+            "title": "AI-помощник",
+            "text": "Расшифровка анализов, объяснение диагноза, ответы на вопросы о симптомах."
+          },
+          "history": {
+            "title": "История в одном месте",
+            "text": "Все приёмы, рецепты, назначения и заключения врачей — в единой истории болезни."
+          },
+          "scheduling": {
+            "title": "Запись и напоминания",
+            "text": "Записывайтесь к врачу через приложение, получайте напоминание за день до приёма."
+          }
+        }
+      },
+      "search": {
+        "title": "Проверим, есть ли пациент в DocPats",
+        "subtitle": "Поиск по существующим пользователям DocPats поможет привязать карту к их аккаунту и избежать дублей.",
+        "tabEmail": "По email",
+        "tabDob": "По дате рождения",
+        "emailLabel": "Email пациента",
+        "emailHint": "Введите полный email — поиск автоматически",
+        "dobLabel": "Дата рождения",
+        "dobPlaceholder": "ДД.ММ.ГГГГ",
+        "dobHint": "Сначала укажите дату рождения. Имя и фамилия — для уточнения.",
+        "firstNameLabel": "Имя",
+        "lastNameLabel": "Фамилия",
+        "searchButton": "Найти",
+        "foundTitle": "Найдено в DocPats",
+        "notFound": "В DocPats никого с такими данными нет. Можно создать нового пациента.",
+        "linkButton": "Привязать",
+        "createFresh": "Создать нового пациента →",
+        "errors": {
+          "failed": "Не удалось выполнить поиск",
+          "dobRequired": "Укажите дату рождения"
+        }
+      },
+      "form": {
+        "departmentNone": "— не указано —",
+        "title": "Данные пациента",
+        "prefilledFromUser": "Данные предзаполнены из аккаунта DocPats — проверьте и при необходимости уточните.",
+        "notesLabel": "Примечания",
+        "next": "Далее →",
+        "emailDeliveryHint": "Если введёте — отправим карточку пациента сюда на почту. Иначе просто распечатаем на руку.",
+        "errors": {
+          "nameRequired": "Имя и фамилия обязательны",
+          "dobInFuture": "Дата рождения не может быть в будущем",
+          "emailInvalid": "Неверный формат email"
+        }
+      },
+      "confirm": {
+        "title": "Подтверждение",
+        "subtitle": "Проверьте данные перед созданием.",
+        "linkedTo": "Привязка к DocPats",
+        "createProvisionalTitle": "Создать аккаунт DocPats для пациента",
+        "createProvisionalNote": "Клиника создаст временный email и пароль. Пациент получит карточку и сможет войти в DocPats, чтобы видеть результаты обследований, переписку с врачами и историю.",
+        "alreadyLinkedNote": "Пациент уже привязан к существующему аккаунту — новый создавать не нужно.",
+        "submit": "Создать пациента",
+        "emailDeliveryNotice": "После создания карточка пациента будет отправлена на {{email}}",
+        "errors": {
+          "duplicatePhone": "Пациент с таким телефоном уже существует",
+          "dobRequired": "Для создания аккаунта DocPats укажите дату рождения",
+          "generic": "Не удалось создать пациента"
+        }
+      },
+      "cardIssued": {
+        "title": "Регистрация завершена",
+        "subtitle": "Запишите эти данные и передайте пациенту. После закрытия этого окна пароль больше не отобразится.",
+        "tmpEmail": "Временный email",
+        "tmpPassword": "Временный пароль",
+        "validUntil": "Действует до",
+        "note": "На следующем шаге появится печатная карточка с QR-кодом. Пока используйте эти данные.",
+        "done": "Готово"
+      },
+      "consent": {
+        "active": {
+          "title": "Пациент уже зарегистрирован в DocPats",
+          "intro": "У этого пациента уже есть активный аккаунт DocPats с собственным email и паролем. Если продолжить, карта пациента будет привязана к вашей клинике — новые данные для входа не выдаются.",
+          "confirm": "Привязать к клинике"
+        },
+        "provisional": {
+          "title": "У пациента уже есть карта DocPats",
+          "intro": "Для этого пациента уже существует неактивированная карта. Если продолжить, будет выпущена новая карта — старая перестанет работать.",
+          "confirm": "Перевыпустить и привязать"
+        },
+        "foundUser": "Найден пациент",
+        "cardIssuedAt": "Дата выпуска карты",
+        "reissueCount": "Карта перевыпускалась",
+        "reissueCountValue_zero": "ни разу",
+        "reissueCountValue_one": "{{count}} раз",
+        "reissueCountValue_other": "{{count}} раза",
+        "checkbox": "Подтверждаю, что пациент дал согласие на привязку к нашей клинике (подписанная бумажная или электронная форма)."
+      },
+      "duplicate": {
+        "linked": {
+          "title": "Пациент уже привязан к клинике",
+          "body": "Этот аккаунт DocPats уже привязан к карте пациента в вашей клинике. Откройте существующую карту, чтобы продолжить."
+        },
+        "inClinic": {
+          "title": "Пациент уже есть в клинике",
+          "byEmail": "Пациент с таким email уже есть в вашей клинике. Откройте существующую карту или проверьте email на опечатки.",
+          "byPhone": "Пациент с таким телефоном уже есть в вашей клинике. Откройте существующую карту или проверьте телефон на опечатки."
+        },
+        "openExisting": "Открыть карту пациента"
+      }
+    },
+    "back": "← Дашборд",
+    "backToList": "← К списку",
+    "title": "Пациенты",
+    "subtitle": "Управление картами пациентов клиники",
+    "addPatient": "+ Добавить пациента",
+    "addFirstPatient": "Добавить первого пациента",
+    "allPatients": "Все пациенты",
+    "searchResults": "Результаты поиска",
+    "searchPlaceholder": "Поиск по телефону, email или фамилии...",
+    "noPatients": "Пациентов пока нет.",
+    "noSearchResults": "Ничего не найдено. Попробуйте другой запрос.",
+    "noContact": "Контактные данные не указаны",
+    "dob": "Дата рождения",
+    "linkedBadge": "Привязан",
+    "unnamed": "Без имени",
+    "delete": "Удалить",
+    "edit": "Изменить",
+    "detailsTitle": "Информация о пациенте",
+    "createdAt": "Создан",
+    "updatedAt": "Обновлён",
+    "createdBy": "Создал",
+    "createdByUnknown": "Неизвестно",
+    "createdByType": {
+      "user": "врач",
+      "employee": "сотрудник"
+    },
+    "createSubmit": "Создать пациента",
+    "confirmDelete": "Удалить {{name}} из картотеки? Администратор может это отменить.",
+    "confirmUnlink": "Убрать привязку к аккаунту DocPats?",
+    "errorTitle": "Не удалось загрузить пациентов",
+    "notFoundTitle": "Пациент не найден",
+    "notFoundText": "Такого пациента не существует или у вас нет доступа.",
+    "linkSection": {
+      "title": "Привязка к пользователю DocPats",
+      "linkedTo": "Привязан к пользователю:",
+      "notLinked": "Этот пациент не привязан к аккаунту DocPats. Привяжите, если пациент зарегистрирован на платформе — это даст ему доступ к своей истории.",
+      "linkButton": "Привязать к пользователю",
+      "userIdLabel": "ID пользователя DocPats",
+      "userIdHint": "24-символьный ObjectId. Найдёте в чатах или в базе данных.",
+      "linkSubmit": "Привязать",
+      "unlink": "Отвязать",
+      "modeEmail": "По email",
+      "modeDob": "По дате рождения",
+      "emailLabel": "Email пользователя",
+      "emailHint": "Введите полный email — поиск по точному совпадению",
+      "dobLabel": "Дата рождения",
+      "dobHint": "Укажите дату рождения, затем можно уточнить по имени и фамилии",
+      "searchSubmit": "Найти",
+      "resultsTitle": "Результаты поиска",
+      "noResults": "Пользователь не найден. Проверьте введённые данные.",
+      "errors": {
+        "emailRequired": "Введите email для поиска",
+        "dobRequired": "Укажите дату рождения для поиска",
+        "searchFailed": "Не удалось выполнить поиск. Попробуйте ещё раз."
+      },
+      "role": {
+        "doctor": "врач",
+        "patient": "пациент",
+        "admin": "администратор",
+        "clinic_admin": "администратор клиники",
+        "clinic_staff": "сотрудник клиники"
+      }
+    },
+    "fields": {
+      "department": "Отделение",
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "phone": "Телефон",
+      "email": "Email",
+      "dateOfBirth": "Дата рождения",
+      "gender": "Пол"
+    },
+    "gender": {
+      "male": "Мужской",
+      "female": "Женский",
+      "other": "Другой",
+      "unknown": "Не указан"
+    },
+    "errors": {
+      "firstNameRequired": "Укажите имя",
+      "lastNameRequired": "Укажите фамилию",
+      "duplicatePhone": "Пациент с таким телефоном уже существует",
+      "createFailed": "Не удалось создать пациента",
+      "updateFailed": "Не удалось сохранить изменения",
+      "deleteFailed": "Не удалось удалить пациента",
+      "linkInvalidId": "Неверный формат ID (нужен 24-символьный ObjectId)",
+      "linkUserNotFound": "Пользователь с таким ID не найден",
+      "linkAlreadyLinked": "Пациент уже привязан к другому пользователю. Сначала отвяжите.",
+      "linkFailed": "Не удалось привязать к пользователю",
+      "unlinkFailed": "Не удалось отвязать"
+    }
+  },
   "common": {
+    "backToDashboard": "К дашборду",
+    "actionFailed": "Действие не выполнено",
+    "saveFailed": "Не удалось сохранить",
+    "remove": "Удалить",
     "cancel": "Отмена",
     "save": "Сохранить",
     "delete": "Удалить",
@@ -18,25 +617,53 @@
     "error": "Что-то пошло не так",
     "errorReload": "Перезагрузить"
   },
+  "publicPage": {
+    "title": "Публичная страница",
+    "subtitle": "Мини-сайт клиники для пациентов: описание, врачи, контакты.",
+    "noPermission": "У вас нет прав на редактирование. Обратитесь к владельцу клиники.",
+    "statusTitle": "Статус",
+    "published": "Страница опубликована",
+    "unpublished": "Страница скрыта",
+    "publishedHint": "Страница видна всем по ссылке ниже.",
+    "unpublishedHint": "Опубликуйте, когда профиль готов — тогда страница станет видна.",
+    "linkLabel": "Адрес страницы:",
+    "descTitle": "Описание клиники",
+    "descPlaceholder": "Расскажите о клинике: направления, история, преимущества…",
+    "saved": "Сохранено",
+    "saveError": "Не удалось сохранить описание",
+    "publishError": "Не удалось изменить статус публикации",
+    "moreSoon": "Публикации врачей появятся в следующих обновлениях.",
+    "logoTitle": "Логотип",
+    "logoUpload": "Загрузить",
+    "logoReplace": "Заменить",
+    "remove": "Удалить",
+    "logoError": "Не удалось загрузить логотип",
+    "galleryTitle": "Галерея",
+    "galleryAdd": "Добавить фото",
+    "galleryEmpty": "Пока нет фотографий",
+    "galleryLimit": "Максимум 20 фотографий",
+    "galleryError": "Не удалось загрузить фото",
+    "reviewError": "Не удалось изменить статус"
+  },
   "layout": {
-    "brandName": "DocPats Clinic",
+    "brandName": "DocPats Клиника",
     "logoutFailed": "Не удалось выйти"
   },
   "hub": {
-    "title": "Добро пожаловать в DocPats Clinic",
-    "subtitle": "У вас пока нет клиники. Создайте её, чтобы управлять командой, расписанием и пациентами в одном рабочем пространстве.",
+    "title": "Добро пожаловать в DocPats Клиника",
+    "subtitle": "У вас пока нет клиники. Создайте её, чтобы управлять командой, приёмами и пациентами в едином рабочем пространстве.",
     "createClinic": "Создать клинику",
     "or": "или",
-    "alreadyInvited": "Уже получили приглашение как сотрудник?",
+    "alreadyInvited": "Уже приглашены как сотрудник?",
     "signInAsEmployee": "Войти как сотрудник",
     "features": {
       "team": {
-        "title": "Управление командой",
-        "description": "Приглашайте врачей, медсестёр, администраторов с ролевым доступом"
+        "title": "Управляйте командой",
+        "description": "Приглашайте врачей, медсестёр, регистраторов с ролевым доступом"
       },
       "scheduling": {
         "title": "Умное расписание",
-        "description": "Запись на приём, графики смен, защита от конфликтов"
+        "description": "Записывайте на приёмы, управляйте сменами, избегайте конфликтов"
       },
       "hipaa": {
         "title": "Соответствие HIPAA",
@@ -46,14 +673,14 @@
   },
   "createClinic": {
     "back": "Назад",
-    "title": "Создание клиники",
-    "subtitle": "Настройте рабочее пространство клиники. Вы станете её владельцем.",
+    "title": "Создать клинику",
+    "subtitle": "Настройте рабочее пространство клиники. Вы станете владельцем.",
     "fields": {
       "name": "Название клиники",
       "namePlaceholder": "Мой медицинский центр",
-      "slug": "URL-идентификатор",
-      "slugPlaceholder": "my-medical-center",
-      "slugHint": "Используется для публичной страницы клиники. Создаётся автоматически, если оставить пустым.",
+      "slug": "URL-слаг",
+      "slugPlaceholder": "moy-medicinskiy-centr",
+      "slugHint": "Используется для публичной страницы клиники. Сгенерируется из названия, если оставить пустым.",
       "defaultLanguage": "Язык по умолчанию",
       "defaultCurrency": "Валюта по умолчанию",
       "timezone": "Часовой пояс",
@@ -65,91 +692,334 @@
       "emailPlaceholder": "info@myclinic.com"
     },
     "errors": {
-      "nameRequired": "Название клиники обязательно",
-      "nameMinLength": "Минимум 2 символа",
-      "nameMaxLength": "Не более 200 символов",
-      "slugFormat": "Только строчные буквы, цифры и дефисы",
-      "slugTaken": "Такой идентификатор уже занят",
-      "emailFormat": "Неверный email",
+      "nameRequired": "Укажите название клиники",
+      "nameMinLength": "Название должно содержать не менее 2 символов",
+      "nameMaxLength": "Название должно быть не длиннее 200 символов",
+      "slugFormat": "Слаг может содержать только строчные латинские буквы, цифры и дефисы",
+      "slugTaken": "Этот слаг уже занят",
+      "emailFormat": "Неверный адрес email",
       "fixErrors": "Исправьте ошибки ниже",
-      "duplicate": "Клиника с таким идентификатором уже существует",
+      "duplicate": "Клиника с таким слагом уже существует",
       "generic": "Не удалось создать клинику. Попробуйте ещё раз."
     },
     "creating": "Создание...",
     "submit": "Создать клинику"
   },
+  "medical": {
+    "crossClinicBadge": "Другая клиника",
+    "crossClinicHint": "Рецепт выписан другой клиникой — доступ по согласию пациента",
+    "encounters": {
+      "placeholders": {
+        "icdSearch": "Поиск МКБ-10 по коду (J45) или названию (астма)...",
+        "diagnosisText": "Диагноз на вашем языке"
+      }
+    },
+    "prescriptions": {
+      "listTitle": "Рецепты",
+      "addButton": "+ Новый рецепт",
+      "addFirstButton": "Выписать первый рецепт",
+      "emptyText": "Рецептов пока нет.",
+      "loadError": "Не удалось загрузить рецепты",
+      "createTitle": "Новый рецепт",
+      "issueButton": "Выписать рецепт",
+      "diagnosisTitle": "Диагноз (МКБ-10, необязательно)",
+      "itemsTitle": "Препараты",
+      "addItemButton": "+ Добавить препарат",
+      "generalNotesTitle": "Общие указания",
+      "pdfButton": "PDF",
+      "completeButton": "Завершить",
+      "cancelButton": "Отменить",
+      "confirmCancel": "Отменить этот рецепт?",
+      "confirmDelete": "Удалить рецепт навсегда?",
+      "cancelledReason": "Причина отмены",
+      "hiddenCrossClinic": "Содержимое скрыто (другая клиника)",
+      "pdfError": "Не удалось сгенерировать PDF",
+      "fields": {
+        "inn": "МНН (действующее вещество)",
+        "brandName": "Торговое название",
+        "strength": "Дозировка",
+        "form": "Форма",
+        "route": "Путь введения",
+        "dose": "Разовая доза",
+        "frequency": "Кратность",
+        "duration": "Длительность",
+        "instructions": "Указания",
+        "quantity": "Количество на курс",
+        "prn": "По потребности"
+      },
+      "placeholders": {
+        "inn": "например, Лоратадин",
+        "dose": "1 таблетка",
+        "frequency": "1 раз в день",
+        "duration": "14 дней",
+        "instructions": "утром после еды",
+        "generalNotes": "Повторный осмотр через 2 недели"
+      },
+      "forms": {
+        "tablet": "таблетки",
+        "capsule": "капсулы",
+        "syrup": "сироп",
+        "spray": "спрей",
+        "drops": "капли",
+        "ointment": "мазь",
+        "injection": "инъекция",
+        "inhaler": "ингалятор",
+        "suppository": "суппозиторий",
+        "solution": "раствор",
+        "powder": "порошок",
+        "other": "другое"
+      },
+      "routes": {
+        "oral": "внутрь",
+        "topical": "наружно",
+        "intramuscular": "в/м",
+        "intravenous": "в/в",
+        "subcutaneous": "п/к",
+        "inhalation": "ингаляционно",
+        "nasal": "интраназально",
+        "otic": "в ухо",
+        "ophthalmic": "в глаз",
+        "rectal": "ректально",
+        "sublingual": "под язык",
+        "other": "другое"
+      },
+      "status": {
+        "active": "Активен",
+        "cancelled": "Отменён",
+        "completed": "Завершён"
+      },
+      "errors": {
+        "innRequired": "Укажите МНН препарата",
+        "atLeastOne": "Добавьте хотя бы один препарат"
+      }
+    },
+    "tabs": {
+      "labResults": "Анализы"
+    },
+    "labResults": {
+      "listTitle": "Результаты анализов",
+      "addButton": "+ Новый результат",
+      "addFirstButton": "Добавить первый результат",
+      "emptyText": "Результатов анализов пока нет.",
+      "loadError": "Не удалось загрузить результаты анализов",
+      "createTitle": "Новый результат анализа",
+      "saveButton": "Сохранить результат",
+      "pdfButton": "PDF",
+      "pdfError": "Не удалось сгенерировать PDF",
+      "confirmDelete": "Удалить этот результат анализа навсегда?",
+      "markCorrected": "Отметить как исправленный",
+      "markAmended": "Отметить как дополненный",
+      "hiddenCrossClinic": "Содержимое скрыто (другая клиника)",
+      "attachedFile": "Прикреплённый файл",
+      "panelTitle": "Тип панели",
+      "parametersTitle": "Параметры",
+      "reportTitle": "Заключение",
+      "fileTitle": "Оригинал (PDF / фото)",
+      "selectPanel": "— выберите панель —",
+      "addParamButton": "+ Добавить параметр",
+      "pickPanelHint": "Выберите панель выше — параметры заполнятся автоматически. Или добавьте параметр вручную.",
+      "fields": {
+        "panel": "Панель",
+        "panelTitle": "Отображаемое название",
+        "effectiveDate": "Дата забора",
+        "labName": "Лаборатория",
+        "paramName": "Параметр",
+        "value": "Значение",
+        "unit": "Ед. изм.",
+        "min": "мин",
+        "max": "макс",
+        "refText": "норма",
+        "ref": "Референс"
+      },
+      "placeholders": {
+        "panelTitle": "Общий анализ крови",
+        "report": "Интерпретация результатов..."
+      },
+      "errors": {
+        "empty": "Заполните хотя бы один параметр, заключение или прикрепите файл",
+        "fileTooBig": "Файл слишком большой (макс. 20 МБ)"
+      },
+      "status": {
+        "preliminary": "Предварительный",
+        "final": "Окончательный",
+        "corrected": "Исправленный",
+        "amended": "Дополненный"
+      },
+      "panels": {
+        "BloodTestGeneral": "Общий анализ крови",
+        "BloodTestBiochemistry": "Биохимия крови",
+        "UrineTest": "Общий анализ мочи",
+        "StoolTest": "Анализ кала",
+        "HormonePanel": "Гормоны",
+        "TumorMarkers": "Онкомаркеры",
+        "PCR": "ПЦР",
+        "Immunology": "Иммунология",
+        "GeneticScreening": "Генетический скрининг",
+        "CoagulationPanel": "Коагулограмма",
+        "LipidProfile": "Липидный профиль",
+        "LiverFunction": "Печёночные пробы",
+        "RenalElectrolytes": "Почки и электролиты",
+        "IronStudies": "Обмен железа",
+        "DiabetesPanel": "Диабетическая панель",
+        "ThyroidPanel": "Щитовидная железа",
+        "CardiacMarkers": "Кардиомаркеры",
+        "VitaminsTrace": "Витамины и микроэлементы",
+        "InfectiousSerology": "Инфекционная серология",
+        "UrineAlbuminACR": "Альбумин/креатинин мочи",
+        "StoolInflammation": "Воспаление кишечника",
+        "Other": "Другое"
+      }
+    }
+  },
+  "specialty": {
+    "general": "Общее",
+    "family_medicine": "Семейная медицина",
+    "internal_medicine": "Внутренние болезни",
+    "therapy": "Терапия",
+    "pediatrics": "Педиатрия",
+    "neonatology": "Неонатология",
+    "geriatrics": "Гериатрия",
+    "emergency_medicine": "Неотложная медицина",
+    "intensive_care": "Реанимация и интенсивная терапия",
+    "anesthesiology": "Анестезиология",
+    "cardiology": "Кардиология",
+    "cardiac_surgery": "Кардиохирургия",
+    "vascular_surgery": "Сосудистая хирургия",
+    "thoracic_surgery": "Торакальная хирургия",
+    "phlebology": "Флебология",
+    "neurology": "Неврология",
+    "neurosurgery": "Нейрохирургия",
+    "psychiatry": "Психиатрия",
+    "psychology": "Психология",
+    "psychotherapy": "Психотерапия",
+    "addiction_medicine": "Наркология",
+    "gastroenterology": "Гастроэнтерология",
+    "hepatology": "Гепатология",
+    "endocrinology": "Эндокринология",
+    "nutrition": "Диетология",
+    "nephrology": "Нефрология",
+    "urology": "Урология",
+    "andrology": "Андрология",
+    "gynecology": "Гинекология",
+    "obstetrics": "Акушерство",
+    "reproductive_medicine": "Репродуктология",
+    "mammology": "Маммология",
+    "pulmonology": "Пульмонология",
+    "rheumatology": "Ревматология",
+    "orthopedics": "Ортопедия",
+    "traumatology": "Травматология",
+    "sports_medicine": "Спортивная медицина",
+    "hematology": "Гематология",
+    "oncology": "Онкология",
+    "radiation_oncology": "Лучевая терапия",
+    "immunology": "Иммунология",
+    "allergology": "Аллергология",
+    "transfusion_medicine": "Трансфузиология",
+    "infectious_diseases": "Инфекционные болезни",
+    "dermatology": "Дерматология",
+    "venereology": "Венерология",
+    "cosmetology": "Косметология",
+    "plastic_surgery": "Пластическая хирургия",
+    "ent": "Оториноларингология (ЛОР)",
+    "audiology": "Сурдология",
+    "ophthalmology": "Офтальмология",
+    "surgery": "Хирургия",
+    "pediatric_surgery": "Детская хирургия",
+    "proctology": "Проктология",
+    "transplantology": "Трансплантология",
+    "dentistry": "Стоматология",
+    "orthodontics": "Ортодонтия",
+    "maxillofacial_surgery": "Челюстно-лицевая хирургия",
+    "radiology": "Лучевая диагностика",
+    "nuclear_medicine": "Ядерная медицина",
+    "pathology": "Патоморфология",
+    "laboratory_medicine": "Лабораторная диагностика",
+    "microbiology": "Микробиология",
+    "genetics": "Генетика",
+    "rehabilitation": "Реабилитология",
+    "physiotherapy": "Физиотерапия",
+    "pain_medicine": "Лечение боли",
+    "palliative_care": "Паллиативная помощь",
+    "occupational_medicine": "Профпатология",
+    "preventive_medicine": "Профилактическая медицина",
+    "forensic_medicine": "Судебная медицина",
+    "other": "Другое"
+  },
   "dashboard": {
     "yourRole": "Ваша роль:",
     "stats": {
-      "teamMembers": "Участников команды",
-      "pendingInvitations": "Ожидают приглашения",
+      "teamMembers": "Участники команды",
+      "pendingInvitations": "Ожидающие приглашения",
       "subscription": "Подписка"
     },
     "quickActions": "Быстрые действия",
     "actions": {
-      "inviteTeamMember": "Пригласить сотрудника",
+      "inviteTeamMember": "Пригласить в команду",
       "viewTeam": "Команда",
-      "scheduleSoon": "Расписание (скоро)",
-      "viewPatients": "Пациенты"
+      "viewPatients": "Пациенты",
+      "scheduleSoon": "Расписание (скоро)"
     },
     "team": "Команда",
-    "viewAll": "Все ({{count}}) →",
-    "noTeamMembers": "В команде пока никого нет.",
-    "inviteFirstMember": "Пригласить первого сотрудника →",
+    "viewAll": "Показать все ({{count}}) →",
+    "noTeamMembers": "Участников команды пока нет.",
+    "inviteFirstMember": "Пригласите первого участника →",
     "pendingInvitations": "Ожидающие приглашения",
-    "manage": "Управление →",
-    "clinicDetails": "Информация о клинике",
+    "manage": "Управлять →",
+    "clinicDetails": "Данные клиники",
     "details": {
       "name": "Название",
-      "slug": "Идентификатор",
+      "slug": "Слаг",
       "timezone": "Часовой пояс",
-      "defaultCurrency": "Валюта",
-      "defaultLanguage": "Язык",
+      "defaultCurrency": "Валюта по умолчанию",
+      "defaultLanguage": "Язык по умолчанию",
       "tier": "Тариф",
       "phone": "Телефон",
       "email": "Email"
     },
-    "errorTitle": "Не удалось загрузить панель",
-    "invitedAsRoleExpires": "Приглашён(а) как {{role}} · истекает {{date}}"
+    "errorTitle": "Не удалось загрузить дашборд",
+    "invitedAsRoleExpires": "Приглашён как {{role}} · истекает {{date}}"
   },
   "staff": {
-    "back": "← Панель",
+    "doctorInvitations": "Приглашения врачам",
+    "doctorInvitePending": "Приглашение врачу",
+    "confirmCancelRequest": "Отозвать приглашение?",
+    "back": "← Дашборд",
     "title": "Команда",
-    "subtitle": "Управляйте сотрудниками и приглашениями клиники",
+    "subtitle": "Управление участниками команды и приглашениями клиники",
     "addDoctor": "+ Добавить врача",
     "inviteEmployee": "+ Пригласить сотрудника",
     "pendingInvitations": "Ожидающие приглашения",
-    "teamMembers": "Сотрудники",
-    "noTeamMembers": "В команде пока никого нет.",
-    "inviteFirstMember": "Пригласить первого сотрудника",
+    "teamMembers": "Участники команды",
+    "noTeamMembers": "Участников команды пока нет.",
+    "inviteFirstMember": "Пригласите первого участника",
     "remove": "Удалить",
     "revoke": "Отозвать",
     "pending": "Ожидает",
-    "unnamed": "Сотрудник",
-    "invitedAsRoleExpires": "Приглашён(а) как {{role}} · истекает {{date}}",
+    "unnamed": "Участник команды",
+    "invitedAsRoleExpires": "Приглашён как {{role}} · истекает {{date}}",
     "errorTitle": "Не удалось загрузить команду",
-    "confirmRevoke": "Отозвать приглашение? Получатель не сможет им воспользоваться.",
-    "confirmRemove": "Удалить {{name}} из клиники? Это действие нельзя отменить.",
-    "removeFailed": "Не удалось удалить сотрудника",
+    "confirmRevoke": "Отозвать это приглашение? Получатель не сможет им воспользоваться.",
+    "confirmRemove": "Удалить {{name}} из клиники? Это нельзя отменить.",
+    "removeFailed": "Не удалось удалить участника",
     "revokeFailed": "Не удалось отозвать приглашение",
     "changeRoleFailed": "Не удалось изменить роль"
   },
   "inviteModal": {
     "title": "Пригласить сотрудника",
-    "intro": "Мы отправим ссылку-приглашение на email. Получатель установит пароль и присоединится к клинике как сотрудник (без публичного профиля DocPats).",
+    "intro": "Мы отправим ссылку-приглашение на email. Получатель задаст пароль и присоединится к клинике как сотрудник (без публичного профиля DocPats).",
     "fields": {
       "email": "Email",
       "emailPlaceholder": "anna.smith@example.com",
       "role": "Роль",
-      "roleHint": "Определяет, что сотрудник может видеть и делать.",
+      "roleHint": "Определяет, что сотрудник может видеть и делать в клинике.",
       "customTitle": "Должность",
-      "customTitlePlaceholder": "Старший администратор",
+      "customTitlePlaceholder": "Старший регистратор",
       "language": "Язык письма"
     },
     "errors": {
-      "emailRequired": "Введите email",
+      "emailRequired": "Укажите email",
       "emailInvalid": "Неверный email",
-      "alreadyMember": "Этот email уже приглашён или сотрудник.",
+      "alreadyMember": "Этот email уже приглашён или является участником.",
       "generic": "Не удалось отправить приглашение",
       "fixErrors": "Исправьте ошибки ниже"
     },
@@ -157,10 +1027,14 @@
     "submit": "Отправить приглашение"
   },
   "addDoctorModal": {
+    "titleInvite": "Пригласить врача",
+    "introInvite": "Врач получит приглашение и должен будет его принять.",
+    "sending": "Отправка…",
+    "submitInvite": "Отправить приглашение",
     "title": "Добавить врача в клинику",
-    "intro": "Найдите существующего врача DocPats и добавьте в клинику. Его публичный профиль DocPats сохранится.",
+    "intro": "Найдите существующего врача DocPats и добавьте его в клинику. Он сохранит свой публичный профиль DocPats.",
     "searchLabel": "Поиск врачей",
-    "searchPlaceholder": "Введите минимум 2 символа...",
+    "searchPlaceholder": "Введите не менее 2 символов...",
     "searching": "Поиск...",
     "noResults": "Врачи не найдены",
     "adding": "Добавление...",
@@ -174,7 +1048,7 @@
     "admin": "Администратор",
     "manager": "Менеджер",
     "doctor": "Врач",
-    "receptionist": "Администратор ресепшн",
+    "receptionist": "Регистратор",
     "nurse": "Медсестра",
     "accountant": "Бухгалтер",
     "pharmacist": "Фармацевт",
@@ -214,21 +1088,21 @@
     "backToHome": "На главную",
     "preview": {
       "title": "Вас пригласили",
-      "subtitle": "Присоединяйтесь к {{clinicName}} в качестве сотрудника.",
+      "subtitle": "Присоединяйтесь к {{clinicName}} как участник команды.",
       "clinic": "Клиника",
       "role": "Роль",
       "email": "Email",
-      "continueHint": "Мы отправим 6-значный код подтверждения на ваш email.",
+      "continueHint": "Мы отправим 6-значный код подтверждения на вашу почту.",
       "continue": "Отправить код подтверждения",
       "sending": "Отправка..."
     },
     "accept": {
       "title": "Завершите регистрацию",
-      "subtitle": "Введите 6-значный код, отправленный на {{email}}, и заполните данные.",
+      "subtitle": "Введите 6-значный код, отправленный на {{email}}, и настройте аккаунт.",
       "submit": "Завершить регистрацию",
       "submitting": "Создание аккаунта...",
       "resend": "Отправить код повторно",
-      "resendIn": "Повтор через {{seconds}} с"
+      "resendIn": "Повторно через {{seconds}} с"
     },
     "fields": {
       "otp": "Код подтверждения",
@@ -236,19 +1110,19 @@
       "lastName": "Фамилия",
       "phoneNumber": "Телефон",
       "password": "Пароль",
-      "passwordHint": "Минимум 8 символов.",
-      "passwordConfirm": "Повторите пароль"
+      "passwordHint": "Не менее 8 символов.",
+      "passwordConfirm": "Подтвердите пароль"
     },
     "errors": {
-      "otpRequired": "Введите код",
+      "otpRequired": "Укажите код",
       "otpFormat": "Код должен состоять из 6 цифр",
       "otpWrong": "Неверный код, попробуйте ещё раз",
       "otpExpired": "Срок действия кода истёк. Запросите новый.",
       "otpGeneric": "Не удалось отправить код. Попробуйте ещё раз.",
-      "firstNameRequired": "Введите имя",
-      "lastNameRequired": "Введите фамилию",
-      "passwordRequired": "Введите пароль",
-      "passwordMinLength": "Минимум 8 символов",
+      "firstNameRequired": "Укажите имя",
+      "lastNameRequired": "Укажите фамилию",
+      "passwordRequired": "Укажите пароль",
+      "passwordMinLength": "Пароль должен содержать не менее 8 символов",
       "passwordMismatch": "Пароли не совпадают",
       "tooManyRequests": "Слишком много запросов. Подождите минуту.",
       "tooManyAttempts": "Слишком много неудачных попыток. Запросите новый код.",
@@ -258,344 +1132,101 @@
     "errorStates": {
       "expired": {
         "title": "Срок приглашения истёк",
-        "description": "Эта ссылка-приглашение больше не действительна. Попросите клинику отправить новое приглашение."
+        "description": "Срок действия этой ссылки-приглашения истёк. Попросите клинику отправить новую."
       },
       "used": {
         "title": "Приглашение уже использовано",
-        "description": "Это приглашение уже было принято. Если это были не вы — свяжитесь с клиникой."
+        "description": "Это приглашение уже принято. Если это были не вы — свяжитесь с клиникой."
       },
       "invalid": {
-        "title": "Неверное приглашение",
-        "description": "Эта ссылка-приглашение неверна или не существует."
+        "title": "Недействительное приглашение",
+        "description": "Эта ссылка-приглашение недействительна или не существует."
       },
       "generic": {
         "title": "Что-то пошло не так",
-        "description": "Не удалось загрузить приглашение. Попробуйте позже."
+        "description": "Не удалось загрузить это приглашение. Попробуйте позже."
       }
     },
     "success": {
       "title": "Регистрация завершена!",
       "subtitle": "Добро пожаловать в {{clinicName}}.",
-      "redirecting": "Перенаправляем на страницу входа..."
-    },
-    "employeeLogin": {
-      "title": "Вход в клинику",
-      "subtitle": "Введите данные для доступа к рабочему пространству.",
-      "submit": "Войти",
-      "submitting": "Вход...",
-      "justRegistered": "Аккаунт создан. Теперь вы можете войти.",
-      "fields": {
-        "email": "Email",
-        "emailPlaceholder": "you@example.com",
-        "password": "Пароль"
-      },
-      "errors": {
-        "emailRequired": "Введите email",
-        "emailInvalid": "Неверный email",
-        "passwordRequired": "Введите пароль",
-        "invalidCredentials": "Неверный email или пароль",
-        "notActive": "Аккаунт неактивен. Свяжитесь с администратором клиники.",
-        "fixErrors": "Исправьте ошибки ниже",
-        "generic": "Не удалось войти. Попробуйте ещё раз."
-      }
-    },
-    "employeeDashboard": {
-      "welcome": "Добро пожаловать, {{name}}!",
-      "subtitle": "Вы вошли в клинику {{clinicName}}.",
-      "profile": {
-        "fullName": "Полное имя",
-        "clinic": "Клиника",
-        "role": "Роль",
-        "joinedAt": "Дата начала работы"
-      },
-      "quickActions": "Быстрые действия",
-      "actions": {
-        "scheduleSoon": "Расписание (скоро)",
-        "patientsSoon": "Пациенты (скоро)",
-        "pharmacySoon": "Аптека (скоро)"
-      },
-      "comingSoon": "Дополнительные возможности появятся в следующих релизах."
+      "redirecting": "Переход на страницу входа..."
     }
   },
-  "patients": {
-    "fullRegistration": "Полная регистрация →",
-    "wizardTitle": "Регистрация пациента",
-    "wizardSubtitle": "Сначала проверим, не зарегистрирован ли пациент в DocPats уже. Это защитит от дублей и даст пациенту полноценный аккаунт.",
-    "wizard": {
-      "steps": {
-        "search": "Поиск",
-        "form": "Данные",
-        "confirm": "Подтверждение"
-      },
-      "card": {
-        "title": "Карточка пациента — выдать на руки",
-        "subtitle": "Распечатайте и передайте пациенту. После закрытия этого окна пароль больше нигде не появится в системе — обязательно сохраните карточку.",
-        "frontType": "Карта пациента",
-        "fullName": "Полное имя",
-        "tmpEmail": "Временный email",
-        "tmpPassword": "Временный пароль",
-        "qrHint": "Отсканируйте, чтобы войти",
-        "registered": "Зарегистрирован",
-        "validUntil": "Активировать до",
-        "backTitle": "Что вы получите после активации",
-        "howToActivate": "Как активировать",
-        "step1": "Откройте docpats.com или отсканируйте QR-код",
-        "step2": "Войдите с временным email и паролем с этой карточки",
-        "step3": "Введите свой постоянный email и придумайте пароль",
-        "step4": "Готово — доступ к полной истории открыт",
-        "tagline": "Здоровье в одном месте",
-        "copy": "📋 Скопировать данные",
-        "copied": "✓ Скопировано",
-        "copyError": "Не удалось скопировать",
-        "copyEmail": "Email",
-        "copyPassword": "Пароль",
-        "copyLogin": "Вход",
-        "print": "🖨️ Распечатать",
-        "done": "Готово",
-        "benefits": {
-          "results": {
-            "title": "Результаты обследований",
-            "text": "Анализы, снимки и заключения врачей появятся в личном кабинете автоматически — этой и любой другой клиники DocPats."
-          },
-          "online": {
-            "title": "Онлайн-консультации",
-            "text": "Задавайте вопросы врачам в защищённом чате — без записи на приём."
-          },
-          "ai": {
-            "title": "AI-помощник",
-            "text": "Расшифровка анализов, объяснение диагноза, ответы на вопросы о симптомах."
-          },
-          "history": {
-            "title": "История в одном месте",
-            "text": "Все приёмы, рецепты, назначения и заключения врачей — в одной истории болезни."
-          },
-          "scheduling": {
-            "title": "Запись и напоминания",
-            "text": "Записывайтесь к врачу через приложение, получайте напоминания за день до приёма."
-          }
-        }
-      },
-      "search": {
-        "title": "Проверим, есть ли пациент в DocPats",
-        "subtitle": "Поиск по существующим пользователям DocPats — поможет привязать карту к их аккаунту и избежать дублей.",
-        "tabEmail": "По email",
-        "tabDob": "По дате рождения",
-        "emailLabel": "Email пациента",
-        "emailHint": "Введите полный email — поиск автоматически",
-        "dobLabel": "Дата рождения",
-        "dobPlaceholder": "ДД.ММ.ГГГГ",
-        "dobHint": "Сначала укажите дату рождения. Имя и фамилия — для уточнения.",
-        "firstNameLabel": "Имя",
-        "lastNameLabel": "Фамилия",
-        "searchButton": "Найти",
-        "foundTitle": "Найдено в DocPats",
-        "notFound": "В DocPats никого с такими данными нет. Можно создать нового пациента.",
-        "linkButton": "Привязать",
-        "createFresh": "Создать нового пациента →",
-        "errors": {
-          "failed": "Не удалось выполнить поиск",
-          "dobRequired": "Укажите дату рождения"
-        }
-      },
-      "form": {
-        "title": "Данные пациента",
-        "prefilledFromUser": "Данные предзаполнены из аккаунта DocPats — проверьте и при необходимости уточните.",
-        "notesLabel": "Примечания",
-        "next": "Далее →",
-        "emailDeliveryHint": "Если введёте — отправим карточку пациента сюда на почту. Иначе просто распечатаем на руку.",
-        "errors": {
-          "nameRequired": "Имя и фамилия обязательны",
-          "dobInFuture": "Дата рождения не может быть в будущем",
-          "emailInvalid": "Неверный формат email"
-        }
-      },
-      "confirm": {
-        "title": "Подтверждение",
-        "subtitle": "Проверьте данные перед созданием.",
-        "linkedTo": "Привязка к DocPats",
-        "createProvisionalTitle": "Создать аккаунт DocPats для пациента",
-        "createProvisionalNote": "Клиника создаст временный email и пароль. Пациент получит карточку и сможет войти в DocPats, чтобы видеть результаты обследований, переписку с врачами и историю.",
-        "alreadyLinkedNote": "Пациент уже привязан к существующему аккаунту — новый создавать не нужно.",
-        "submit": "Создать пациента",
-        "emailDeliveryNotice": "После создания карточка пациента будет отправлена на {{email}}",
-        "errors": {
-          "duplicatePhone": "Пациент с таким телефоном уже существует",
-          "dobRequired": "Для создания аккаунта DocPats укажите дату рождения",
-          "generic": "Не удалось создать пациента"
-        }
-      },
-      "cardIssued": {
-        "title": "Регистрация выполнена",
-        "subtitle": "Запишите эти данные и передайте пациенту. После закрытия этого окна пароль больше нигде не появится.",
-        "tmpEmail": "Временный email",
-        "tmpPassword": "Временный пароль",
-        "validUntil": "Действительно до",
-        "note": "В следующем шаге появится печатная карточка с QR-кодом. Пока используйте эти данные.",
-        "done": "Готово"
-      },
-      "consent": {
-        "active": {
-          "title": "Пациент уже зарегистрирован в DocPats",
-          "intro": "У этого пациента уже есть активный аккаунт DocPats с собственным email и паролем. Если вы продолжите, карта пациента будет привязана к вашей клинике — новые данные для входа не выдаются.",
-          "confirm": "Привязать к клинике"
-        },
-        "provisional": {
-          "title": "Пациент уже имеет карту в DocPats",
-          "intro": "В системе уже есть неактивированная карта для этого пациента. Если вы продолжите, будет выпущена новая карта — старая перестанет работать.",
-          "confirm": "Перевыпустить и привязать"
-        },
-        "foundUser": "Найденный пациент",
-        "cardIssuedAt": "Карта выдана",
-        "reissueCount": "Карта перевыпускалась",
-        "reissueCountValue_one": "{{count}} раз",
-        "reissueCountValue_few": "{{count}} раза",
-        "reissueCountValue_many": "{{count}} раз",
-        "checkbox": "Я подтверждаю, что пациент дал согласие на привязку к нашей клинике (бумажная или электронная форма подписана)."
-      },
-      "duplicate": {
-        "linked": {
-          "title": "Пациент уже привязан к клинике",
-          "body": "Этот аккаунт DocPats уже привязан к карте пациента в вашей клинике. Откройте существующую карту, чтобы продолжить работу."
-        },
-        "inClinic": {
-          "title": "Пациент уже есть в клинике",
-          "byEmail": "В вашей клинике уже есть пациент с таким email. Откройте существующую карту, либо проверьте email на ошибку.",
-          "byPhone": "В вашей клинике уже есть пациент с таким телефоном. Откройте существующую карту, либо проверьте телефон на ошибку."
-        },
-        "openExisting": "Открыть карту пациента"
-      }
-    },
-    "back": "← Панель",
-    "backToList": "← К списку пациентов",
-    "title": "Пациенты",
-    "subtitle": "Управляйте картотекой пациентов клиники",
-    "addPatient": "+ Добавить пациента",
-    "addFirstPatient": "Добавить первого пациента",
-    "allPatients": "Все пациенты",
-    "searchResults": "Результаты поиска",
-    "searchPlaceholder": "Поиск по телефону, email или фамилии...",
-    "noPatients": "В картотеке пока нет пациентов.",
-    "noSearchResults": "Ничего не найдено. Попробуйте другой запрос.",
-    "noContact": "Нет контактных данных",
-    "dob": "Дата рождения",
-    "linkedBadge": "Связан с пользователем",
-    "unnamed": "Без имени",
-    "delete": "Удалить",
-    "edit": "Изменить",
-    "detailsTitle": "Информация о пациенте",
-    "createdAt": "Создан",
-    "updatedAt": "Изменён",
-    "createdBy": "Оформил(а)",
-    "createdByUnknown": "Неизвестно",
-    "createdByType": {
-      "user": "врач",
-      "employee": "сотрудник"
-    },
-    "createSubmit": "Создать пациента",
-    "confirmDelete": "Удалить {{name}} из картотеки? Это действие можно отменить через администратора.",
-    "confirmUnlink": "Разорвать связь с пользователем DocPats?",
-    "errorTitle": "Не удалось загрузить пациентов",
-    "notFoundTitle": "Пациент не найден",
-    "notFoundText": "Этого пациента не существует или у вас нет доступа.",
-    "linkSection": {
-      "title": "Связь с DocPats",
-      "linkedTo": "Связан с пользователем:",
-      "notLinked": "Этот пациент не связан с пользователем DocPats. Свяжите карту, если пациент зарегистрирован на платформе — это даст ему доступ к своей истории.",
-      "linkButton": "Связать с пользователем",
-      "userIdLabel": "ID пользователя DocPats",
-      "userIdHint": "24-символьный ObjectId. Найдите его в диалогах или базе данных.",
-      "linkSubmit": "Связать",
-      "unlink": "Разорвать связь",
-      "modeEmail": "По email",
-      "modeDob": "По дате рождения",
-      "emailLabel": "Email пользователя",
-      "emailHint": "Введите полный email — поиск по точному совпадению",
-      "dobLabel": "Дата рождения",
-      "dobHint": "Укажите дату рождения, затем при необходимости уточните имя и фамилию",
-      "searchSubmit": "Найти",
-      "resultsTitle": "Результаты поиска",
-      "noResults": "Пользователь не найден. Проверьте введённые данные.",
-      "errors": {
-        "emailRequired": "Введите email для поиска",
-        "dobRequired": "Укажите дату рождения для поиска",
-        "searchFailed": "Не удалось выполнить поиск. Попробуйте ещё раз."
-      },
-      "role": {
-        "doctor": "врач",
-        "patient": "пациент",
-        "admin": "администратор",
-        "clinic_admin": "админ клиники",
-        "clinic_staff": "сотрудник клиники"
-      }
-    },
+  "employeeLogin": {
+    "title": "Вход в клинику",
+    "subtitle": "Введите учётные данные для доступа к рабочему пространству.",
+    "submit": "Войти",
+    "submitting": "Вход...",
+    "justRegistered": "Аккаунт создан. Теперь можно войти.",
     "fields": {
-      "firstName": "Имя",
-      "lastName": "Фамилия",
-      "phone": "Телефон",
       "email": "Email",
-      "dateOfBirth": "Дата рождения",
-      "gender": "Пол"
-    },
-    "gender": {
-      "male": "Мужской",
-      "female": "Женский",
-      "other": "Другой",
-      "unknown": "Не указан"
+      "emailPlaceholder": "you@example.com",
+      "password": "Пароль"
     },
     "errors": {
-      "firstNameRequired": "Введите имя",
-      "lastNameRequired": "Введите фамилию",
-      "duplicatePhone": "Пациент с таким телефоном уже существует",
-      "createFailed": "Не удалось создать пациента",
-      "updateFailed": "Не удалось сохранить изменения",
-      "deleteFailed": "Не удалось удалить пациента",
-      "linkInvalidId": "Неверный формат ID (нужен 24-символьный ObjectId)",
-      "linkUserNotFound": "Пользователь с таким ID не найден",
-      "linkAlreadyLinked": "Пациент уже связан с другим пользователем. Сначала разорвите связь.",
-      "linkFailed": "Не удалось связать с пользователем",
-      "unlinkFailed": "Не удалось разорвать связь"
+      "emailRequired": "Укажите email",
+      "emailInvalid": "Неверный email",
+      "passwordRequired": "Укажите пароль",
+      "invalidCredentials": "Неверный email или пароль",
+      "notActive": "Этот аккаунт неактивен. Обратитесь к администратору клиники.",
+      "fixErrors": "Исправьте ошибки ниже",
+      "generic": "Не удалось войти. Попробуйте ещё раз."
     }
   },
-
+  "employeeDashboard": {
+    "welcome": "Добро пожаловать, {{name}}!",
+    "subtitle": "Вы вошли в {{clinicName}}.",
+    "profile": {
+      "fullName": "Полное имя",
+      "clinic": "Клиника",
+      "role": "Роль",
+      "joinedAt": "Присоединился"
+    },
+    "quickActions": "Быстрые действия",
+    "actions": {
+      "scheduleSoon": "Расписание (скоро)",
+      "patientsSoon": "Пациенты (скоро)",
+      "pharmacySoon": "Аптека (скоро)"
+    },
+    "comingSoon": "Больше функций станет доступно в следующих обновлениях."
+  },
   "schedule": {
     "title": "Расписание врача",
-    "back": "← К команде",
+    "back": "← Назад к команде",
     "loadError": "Не удалось загрузить расписание",
     "retry": "Повторить",
     "saving": "Сохранение…",
     "saved": "Сохранено",
     "saveError": "Не удалось сохранить",
-
     "weeklyTab": "Недельное расписание",
-    "exceptionsTab": "Исключения и отпуска",
-
+    "exceptionsTab": "Исключения и отгулы",
     "weekly": {
       "title": "Рабочие часы по дням недели",
-      "subtitle": "Задайте обычное расписание. Можно добавить перерыв (например, обед) как отдельный интервал.",
+      "subtitle": "Задайте обычное расписание. Перерыв (например, обед) можно добавить отдельным интервалом.",
       "dayOff": "Выходной",
       "working": "Рабочий день",
       "addInterval": "+ Интервал",
       "removeInterval": "Удалить",
       "from": "С",
       "to": "До",
-      "noIntervals": "Нет интервалов — день считается выходным",
+      "noIntervals": "Без интервалов — считается выходным",
       "slotDuration": "Длительность приёма (мин)",
-      "bufferMinutes": "Буфер между приёмами (мин)",
+      "bufferMinutes": "Перерыв между приёмами (мин)",
       "isActive": "Расписание активно",
       "save": "Сохранить расписание",
-      "emptyHint": "Расписание ещё не задано. Включите рабочие дни и добавьте интервалы.",
+      "emptyHint": "Расписания пока нет. Включите рабочие дни и добавьте интервалы.",
       "overlapError": "Интервалы пересекаются — проверьте время",
       "invalidInterval": "Время начала должно быть раньше времени окончания"
     },
-
     "exceptions": {
-      "title": "Исключения из расписания",
-      "subtitle": "Отдельные даты, которые отличаются от обычного расписания: выходные, отпуск, нестандартные часы.",
+      "title": "Исключения в расписании",
+      "subtitle": "Конкретные даты, отличающиеся от обычного расписания: выходные, отпуск, особые часы.",
       "rangeFrom": "Период с",
       "rangeTo": "по",
       "loadRange": "Показать",
       "addSingle": "+ Добавить исключение",
-      "addVacation": "+ Отпуск (диапазон)",
+      "addVacation": "+ Отпуск (период)",
       "empty": "В выбранном периоде исключений нет",
       "typeDayOff": "Выходной",
       "typeCustom": "Особые часы",
@@ -603,7 +1234,6 @@
       "confirmDelete": "Удалить это исключение?",
       "deleteError": "Не удалось удалить исключение",
       "note": "Примечание",
-
       "singleModal": {
         "title": "Новое исключение",
         "date": "Дата",
@@ -612,25 +1242,23 @@
         "typeCustomLabel": "Особые часы — другое рабочее время",
         "intervals": "Рабочие интервалы",
         "addInterval": "+ Интервал",
-        "notePlaceholder": "Например: Конференция, Праздник",
+        "notePlaceholder": "Например: конференция, праздник",
         "submit": "Создать",
         "cancel": "Отмена",
         "createError": "Не удалось создать исключение"
       },
-
       "vacationModal": {
         "title": "Отпуск — диапазон дат",
-        "subtitle": "Каждый день диапазона будет отмечен как выходной.",
+        "subtitle": "Каждый день в диапазоне будет отмечен как выходной.",
         "startDate": "Начало",
         "endDate": "Конец",
-        "notePlaceholder": "Например: Ежегодный отпуск",
-        "submit": "Отметить выходными",
+        "notePlaceholder": "Например: ежегодный отпуск",
+        "submit": "Отметить как выходные",
         "cancel": "Отмена",
         "createError": "Не удалось создать отпуск",
-        "createdCount": "Создано выходных дней: {{count}}"
+        "createdCount": "Создано выходных: {{count}}"
       }
     },
-
     "weekdays": {
       "0": "Воскресенье",
       "1": "Понедельник",
@@ -650,123 +1278,321 @@
       "6": "Сб"
     }
   },
-  "calendar": {
-    "title": "Календарь приёмов",
-    "back": "← К команде",
-    "loadError": "Не удалось загрузить календарь",
-    "actionError": "Не удалось выполнить действие — попробуйте ещё раз",
-    "emptyDay": "В этот день нет рабочих часов и нет приёмов.",
-    "archive": {
-      "title": "Архив дня"
+  "rooms": {
+    "back": "← Дашборд",
+    "title": "Кабинеты",
+    "subtitle": "Кабинеты клиники по отделениям",
+    "create": "Создать кабинет",
+    "createFirst": "Создать первый кабинет",
+    "listTitle": "Список кабинетов",
+    "empty": "Кабинетов пока нет",
+    "errorTitle": "Ошибка",
+    "searchPlaceholder": "Поиск по названию или коду…",
+    "allDepartments": "Все отделения",
+    "showArchived": "Показать архив",
+    "unknownDepartment": "Без отделения",
+    "needDepartmentFirst": "Сначала создайте хотя бы одно отделение — кабинет всегда принадлежит отделению.",
+    "goToDepartments": "Перейти к отделениям",
+    "archive": "В архив",
+    "restore": "Восстановить",
+    "archivedBadge": "архив",
+    "floorShort": "этаж",
+    "capacityShort": "мест",
+    "staffCount_one": "врач: {{count}}",
+    "staffCount_few": "врача: {{count}}",
+    "staffCount_many": "врачей: {{count}}",
+    "staffCount_other": "врачей: {{count}}",
+    "confirmArchive": "Архивировать «{{name}}»?",
+    "archiveFailed": "Не удалось архивировать кабинет",
+    "restoreFailed": "Не удалось восстановить кабинет",
+    "form": {
+      "createTitle": "Новый кабинет",
+      "editTitle": "Редактировать кабинет",
+      "department": "Отделение",
+      "departmentNone": "— выберите отделение —",
+      "departmentArchived": "(архивное отделение)",
+      "name": "Название",
+      "namePlaceholder": "Кабинет №12",
+      "code": "Код",
+      "floor": "Этаж",
+      "capacity": "Вместимость",
+      "assignedStaff": "Врачи в кабинете",
+      "noStaff": "В клинике пока нет сотрудников",
+      "notes": "Заметки",
+      "errors": {
+        "departmentRequired": "Выберите отделение",
+        "nameRequired": "Введите название",
+        "capacityInvalid": "Вместимость — целое число ≥ 0",
+        "codeTaken": "Такой код уже используется в клинике",
+        "fix": "Исправьте ошибки в форме",
+        "generic": "Не удалось сохранить кабинет"
+      }
+    }
+  },
+  "equipment": {
+    "back": "← Дашборд",
+    "title": "Оборудование",
+    "subtitle": "Оборудование клиники по отделениям",
+    "create": "Добавить оборудование",
+    "createFirst": "Добавить первое оборудование",
+    "listTitle": "Список оборудования",
+    "empty": "Оборудования пока нет",
+    "errorTitle": "Ошибка",
+    "searchPlaceholder": "Поиск: название, инв. №, серийный…",
+    "allDepartments": "Все отделения",
+    "allCategories": "Все категории",
+    "allStatuses": "Все статусы",
+    "showArchived": "Архив",
+    "unknownDepartment": "Без отделения",
+    "needDepartmentFirst": "Сначала создайте хотя бы одно отделение — оборудование всегда принадлежит отделению.",
+    "goToDepartments": "Перейти к отделениям",
+    "archive": "В архив",
+    "restore": "Восстановить",
+    "groupBy": "Группировка:",
+    "nextServiceShort": "ТО до",
+    "staffCount_one": "ответственный: {{count}}",
+    "staffCount_few": "ответственных: {{count}}",
+    "staffCount_many": "ответственных: {{count}}",
+    "staffCount_other": "ответственных: {{count}}",
+    "confirmArchive": "Архивировать «{{name}}»?",
+    "archiveFailed": "Не удалось архивировать оборудование",
+    "restoreFailed": "Не удалось восстановить оборудование",
+    "groupMode": {
+      "department": "По отделению",
+      "category": "По категории",
+      "status": "По статусу",
+      "flat": "Списком"
     },
-    "freeSlot": "Свободный слот",
-    "patientPlaceholder": "Пациент",
-    "book": "Записать",
-    "today": "Сегодня",
-    "prevDay": "Предыдущий день",
-    "nextDay": "Следующий день",
+    "status": {
+      "operational": "Рабочее",
+      "maintenance": "На ТО",
+      "broken": "Сломано",
+      "decommissioned": "Списано",
+      "archived": "В архиве"
+    },
+    "category": {
+      "diagnostic": "Диагностика",
+      "imaging": "Визуализация",
+      "surgical": "Хирургия",
+      "monitoring": "Мониторинг",
+      "laboratory": "Лаборатория",
+      "therapeutic": "Терапия",
+      "sterilization": "Стерилизация",
+      "life_support": "Жизнеобеспечение",
+      "furniture": "Мебель",
+      "it": "ИТ-техника",
+      "other": "Прочее"
+    },
+    "form": {
+      "createTitle": "Новое оборудование",
+      "editTitle": "Редактировать оборудование",
+      "department": "Отделение",
+      "departmentNone": "— выберите отделение —",
+      "departmentArchived": "(архивное отделение)",
+      "room": "Кабинет",
+      "roomNone": "— не закреплён —",
+      "name": "Название",
+      "namePlaceholder": "Аппарат УЗИ",
+      "category": "Категория",
+      "status": "Статус",
+      "inventoryNumber": "Инвентарный №",
+      "serialNumber": "Серийный №",
+      "manufacturer": "Производитель",
+      "model": "Модель",
+      "purchaseDate": "Дата покупки",
+      "warrantyUntil": "Гарантия до",
+      "lastServiceDate": "Последнее ТО",
+      "nextServiceDate": "Следующее ТО",
+      "assignedStaff": "Ответственные",
+      "noStaff": "В клинике пока нет сотрудников",
+      "notes": "Заметки",
+      "errors": {
+        "departmentRequired": "Выберите отделение",
+        "nameRequired": "Введите название",
+        "inventoryTaken": "Такой инвентарный номер уже используется",
+        "fix": "Исправьте ошибки в форме",
+        "generic": "Не удалось сохранить оборудование"
+      }
+    }
+  },
+  "knowledge": {
+    "back": "← Дашборд",
+    "backToList": "← К списку",
+    "title": "База знаний",
+    "subtitle": "Протоколы, регламенты и инструкции клиники",
+    "create": "Новая статья",
+    "createFirst": "Создать первую статью",
+    "listTitle": "Статьи",
+    "empty": "Статей пока нет",
+    "errorTitle": "Ошибка",
+    "notFound": "Статья не найдена",
+    "emptyBody": "Содержимое пусто",
+    "searchPlaceholder": "Поиск по названию, описанию, тегам…",
+    "allCategories": "Все категории",
+    "allStatuses": "Все статусы",
+    "showArchived": "Архив",
+    "archive": "В архив",
+    "pin": "Закрепить",
+    "unpin": "Открепить",
+    "publish": "Опубликовать",
+    "unpublish": "В черновик",
+    "version": "версия",
+    "updated": "обновлено",
+    "confirmArchive": "Архивировать «{{name}}»?",
+    "category": {
+      "protocol": "Протоколы",
+      "guideline": "Клинические рекомендации",
+      "sop": "СОП",
+      "onboarding": "Онбординг",
+      "faq": "FAQ",
+      "policy": "Политики",
+      "template": "Шаблоны",
+      "other": "Прочее"
+    },
+    "status": {
+      "draft": "Черновик",
+      "published": "Опубликовано",
+      "archived": "В архиве"
+    },
+    "visibility": {
+      "all": "Все сотрудники",
+      "clinical": "Клинический персонал",
+      "admin": "Администрация"
+    },
+    "form": {
+      "createTitle": "Новая статья",
+      "editTitle": "Редактировать статью",
+      "titleLabel": "Заголовок",
+      "category": "Категория",
+      "visibility": "Доступ",
+      "department": "Отделение",
+      "departmentNone": "— вся клиника —",
+      "summary": "Краткое описание",
+      "tags": "Теги",
+      "tagsHint": "через запятую",
+      "body": "Содержимое",
+      "bodyPlaceholder": "# Заголовок\n\nТекст протокола. Поддерживается **жирный**, *курсив*, списки, `код`.",
+      "errors": {
+        "titleRequired": "Введите заголовок",
+        "fix": "Исправьте ошибки в форме",
+        "generic": "Не удалось сохранить статью"
+      }
+    }
+  },
+  "consilium": {
+    "patientJoinOn": "✓ Пациент допущен в видео",
+    "patientJoinOff": "Пустить пациента в видео",
+    "patientJoinHint": "Разрешить пациенту входить в видеокомнату консилиума",
+    "patientInvited": "Пациент приглашён в видео",
+    "patientJoinFailed": "Не удалось изменить доступ пациента",
+    "back": "← Дашборд",
+    "backToList": "← К списку",
+    "title": "Консилиумы",
+    "subtitle": "Совместное обсуждение клинических случаев",
+    "create": "Новый консилиум",
+    "createFirst": "Создать первый консилиум",
+    "listTitle": "Список",
+    "empty": "Консилиумов пока нет",
+    "errorTitle": "Ошибка",
+    "notFound": "Консилиум не найден",
+    "searchPlaceholder": "Поиск по теме…",
+    "allStatuses": "Все статусы",
+    "showArchived": "Архив",
+    "hasPatient": "пациент",
+    "discussion": "Обсуждение",
+    "noMessages": "Пока нет сообщений. Начните обсуждение.",
+    "conclusion": "Заключение",
+    "resolve": "Завершить",
+    "reopen": "Возобновить",
+    "archive": "В архив",
+    "resolveTitle": "Завершить консилиум",
+    "send": "Отправить",
+    "sendFailed": "Не удалось отправить",
+    "resolveFailed": "Не удалось завершить консилиум",
+    "composerPlaceholder": "Ваше мнение по случаю…",
+    "composerHint": "Ctrl/⌘ + Enter — отправить",
+    "archivedNotice": "Консилиум в архиве — новые сообщения недоступны.",
+    "unknownAuthor": "Участник",
+    "confirmArchive": "Архивировать «{{name}}»?",
+    "participantsCount_one": "участник: {{count}}",
+    "participantsCount_few": "участника: {{count}}",
+    "participantsCount_many": "участников: {{count}}",
+    "participantsCount_other": "участников: {{count}}",
+    "status": {
+      "open": "Открыт",
+      "resolved": "Завершён",
+      "archived": "В архиве"
+    },
+    "form": {
+      "createTitle": "Новый консилиум",
+      "titleLabel": "Тема случая",
+      "description": "Описание случая",
+      "descriptionHint": "Краткое изложение. Не указывайте прямые идентификаторы пациента в теме.",
+      "department": "Отделение",
+      "departmentNone": "— не указано —",
+      "participants": "Участники",
+      "noStaff": "В клинике пока нет сотрудников",
+      "conclusion": "Заключение",
+      "conclusionHint": "Итоговое решение консилиума…",
+      "createBtn": "Создать",
+      "errors": {
+        "titleRequired": "Введите тему",
+        "fix": "Исправьте ошибки в форме",
+        "generic": "Не удалось создать консилиум"
+      }
+    }
+  },
+  "telemed": {
+    "back": "← Дашборд",
+    "title": "Телемедицина",
+    "subtitle": "Виртуальные приёмы клиники",
+    "create": "Запланировать приём",
+    "createFirst": "Запланировать первый приём",
+    "empty": "Приёмов пока нет",
+    "errorTitle": "Ошибка",
+    "searchPlaceholder": "Поиск по теме…",
+    "allStatuses": "Все статусы",
+    "upcoming": "Предстоящие",
+    "past": "Прошедшие",
+    "noUpcoming": "Нет предстоящих приёмов",
+    "min": "мин",
+    "hasPatient": "пациент",
+    "join": "Войти",
+    "start": "Начать",
+    "complete": "Завершить",
+    "noShow": "Неявка",
+    "cancel": "Отменить",
+    "actionFailed": "Не удалось выполнить",
+    "confirmCancel": "Отменить приём «{{name}}»?",
     "status": {
       "scheduled": "Запланирован",
-      "checked_in": "Пришёл",
+      "live": "Идёт",
       "completed": "Завершён",
       "cancelled": "Отменён",
-      "no_show": "Не явился"
+      "no_show": "Неявка"
     },
-    "pastSlot": "Прошедший",
-    "overdueLabel": "Просрочен",
-    "pastDateBanner": "Прошлая дата — запись недоступна. Просроченные приёмы можно закрыть.",
-    "action": {
-      "checkIn": "Пришёл",
-      "complete": "Завершить",
-      "cancel": "Отменить",
-      "noShow": "Не явился",
-      "completeOverdueHint": "Закрыть просроченный приём"
-    },
-
-    "book_modal": {
-      "title": "Новая запись",
-      "subtitle": "{{time}} · {{doctor}}",
-      "patient": "Пациент",
-      "patientSearchPlaceholder": "Найти пациента (фамилия, телефон или email)",
-      "selectedPatient": "Выбран:",
-      "noPatientFound": "Пациенты не найдены — введите больше символов",
-      "searchHint": "Минимум 2 символа",
-      "duration": "Длительность",
-      "minutes": "мин",
-      "reason": "Причина визита",
-      "reasonPlaceholder": "Например: жалобы на боль в горле",
-      "submit": "Создать запись",
-      "cancel": "Отмена",
-      "createError": "Не удалось создать запись",
-      "conflictError": "Это время уже занято другим приёмом"
-    },
-    "detail_modal": {
-      "title": "Приём",
-      "loadError": "Не удалось загрузить приём",
-      "patient": "Пациент",
-      "doctor": "Врач",
+    "form": {
+      "createTitle": "Новый виртуальный приём",
+      "editTitle": "Изменить приём",
+      "titleLabel": "Тема приёма",
+      "date": "Дата",
       "time": "Время",
       "duration": "Длительность",
-      "reason": "Причина",
-      "reasonEmpty": "не указана",
-      "status": "Статус",
-      "createdBy": "Создал",
-      "createdAt": "Создано",
-      "checkedInAt": "Пришёл",
-      "completedAt": "Завершён",
-      "cancelledAt": "Отменён",
-      "cancelReason": "Причина отмены",
-      "noShowAt": "Отмечен «Не явился»",
-      "actions": "Действия",
-      "actionReason": "Изменить причину",
-      "actionReschedule": "Перенести",
-      "saveReason": "Сохранить причину",
-      "newReason": "Новая причина",
-      "reasonSaved": "Причина сохранена",
-      "reasonError": "Не удалось сохранить причину",
-      "statusError": "Не удалось изменить статус",
-      "close": "Закрыть"
-    },
-    "reschedule_modal": {
-      "title": "Перенести приём",
-      "subtitle": "Сейчас: {{time}}",
-      "newDate": "Новая дата",
-      "newSlot": "Новый слот",
-      "loadingSlots": "Загружаю свободные слоты…",
-      "noFreeSlots": "На эту дату нет свободных слотов",
-      "submit": "Перенести",
-      "cancel": "Отмена",
-      "rescheduleError": "Не удалось перенести приём",
-      "conflictError": "Выбранное время уже занято"
-    },
-    "fromPatient": {
-      "openButton": "Записать на приём",
-      "modalTitle": "Записать {{patient}} на приём",
-      "doctorLabel": "Врач",
-      "doctorPlaceholder": "Выберите врача",
-      "dateLabel": "Дата",
-      "slotLabel": "Слот времени",
-      "loadingDoctors": "Загружаю врачей…",
-      "noDoctors": "В клинике пока нет врачей",
-      "loadingSlots": "Загружаю слоты…",
-      "noSlots": "На эту дату нет свободных слотов"
-    },
-    "inlineCreate": {
-      "title": "Создать нового пациента",
-      "lastName": "Фамилия",
-      "firstName": "Имя",
-      "phone": "Телефон",
-      "dateOfBirth": "Дата рождения",
-      "openButton": "+ Создать нового пациента",
-      "openButtonWithName": "+ Создать «{{name}}»",
-      "submit": "Создать и выбрать",
-      "cancel": "Отмена",
+      "host": "Врач",
+      "hostNone": "— не указан —",
+      "department": "Отделение",
+      "departmentNone": "— не указано —",
+      "meetingUrl": "Ссылка на видеовстречу",
+      "meetingUrlHint": "Оставьте пустым — комната создастся автоматически. Можно вписать свою ссылку (Doxy.me, Zoom и т.п.).",
+      "patientUserId": "User ID пациента (встроенный звонок)",
+      "patientUserIdHint": "Если пациент зарегистрирован в DocPats — «Войти» начнёт видеозвонок. Иначе используйте ссылку выше.",
+      "notes": "Заметки",
       "errors": {
-        "lastNameRequired": "Укажите фамилию",
-        "firstNameRequired": "Укажите имя",
-        "duplicatePhone": "Этот телефон уже у другого пациента",
-        "forbidden": "Нет прав на создание пациентов",
-        "generic": "Не удалось создать пациента"
+        "titleRequired": "Введите тему",
+        "dateRequired": "Укажите дату и время",
+        "dateInvalid": "Неверная дата/время",
+        "fix": "Исправьте ошибки в форме",
+        "generic": "Не удалось сохранить приём"
       }
     }
   }

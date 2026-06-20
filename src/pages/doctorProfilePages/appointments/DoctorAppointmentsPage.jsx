@@ -21,12 +21,17 @@ import {
   FaRedo,
   FaTrashAlt,
   FaTrash,
+  FaVideo,
 } from "react-icons/fa";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { Modal } from "react-bootstrap";
 import AuditTimeline from "./AuditTimelinesPage.jsx";
 import { useTranslation } from "react-i18next";
+import JitsiRoom from "../../communication/components/JitsiRoom.jsx";
+
+// Statuses where joining a video call no longer makes sense.
+const VIDEO_TERMINAL = ["cancelled", "completed", "no_show", "refunded"];
 
 export default function DoctorAppointmentsPage() {
   const { t } = useTranslation();
@@ -49,6 +54,9 @@ export default function DoctorAppointmentsPage() {
   const [showWhatsappModal, setShowWhatsappModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [whatsappPhone, setWhatsappPhone] = useState("");
+
+  // Video call modal state.
+  const [videoApptId, setVideoApptId] = useState(null);
 
   /* ========================== 📅 Load appointments ========================== */
   const fetchAppointments = async () => {
@@ -205,6 +213,10 @@ export default function DoctorAppointmentsPage() {
     setSelectedDay(day);
     setShowDayModal(true);
   };
+
+  // Can the doctor join a video call for this appointment?
+  // Video is available only after the appointment is confirmed.
+  const canJoinVideo = (a) => a?.type === "video" && a?.status === "confirmed";
 
   if (loading)
     return (
@@ -445,6 +457,21 @@ export default function DoctorAppointmentsPage() {
 
                       <td>
                         <div className="d-flex justify-content-center gap-2 mb-2">
+                          {canJoinVideo(a) && (
+                            <Button
+                              size="sm"
+                              variant="info"
+                              className="text-white"
+                              onClick={() => setVideoApptId(a._id)}
+                            >
+                              <FaVideo className="me-1" />
+                              {t(
+                                "doctor_appointments_page.join_video",
+                                "Видео",
+                              )}
+                            </Button>
+                          )}
+
                           {a.status === "pending" && (
                             <>
                               <Button
@@ -772,6 +799,26 @@ export default function DoctorAppointmentsPage() {
               {t("doctor_appointments_page.confirm_and_open_whatsapp")}
             </Button>
           </Modal.Footer>
+        </Modal>
+
+        {/* Video call modal (freelance appointment) */}
+        <Modal
+          show={!!videoApptId}
+          onHide={() => setVideoApptId(null)}
+          size="lg"
+          centered
+          contentClassName="bg-transparent border-0"
+        >
+          <Modal.Body style={{ padding: 0, height: "70vh" }}>
+            {videoApptId && (
+              <JitsiRoom
+                source="appointment"
+                id={videoApptId}
+                displayName="Dr. Radiolog"
+                onClose={() => setVideoApptId(null)}
+              />
+            )}
+          </Modal.Body>
         </Modal>
       </Card>
     </>

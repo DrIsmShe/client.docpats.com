@@ -1,0 +1,43 @@
+/* client/src/pages/clinic/ClinicConsiliumPage/consiliumFormModal.css */
+/*
+ * Relies on the shared global modal-* tokens (modal-backdrop, modal-window,
+ * modal-header, modal-body, modal-field, modal-footer, modal-btn-*,
+ * modal-error, modal-field-error, modal-hint, .required, .optional,
+ * .has-error) — same base used by the other clinic form modals.
+ *
+ * Below: additions specific to the consilium modals.
+ */
+
+.cons-modal-wide {
+  max-width: 640px;
+  width: 92%;
+}
+
+.cons-staff-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.cons-staff-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #334155;
+  cursor: pointer;
+  padding: 4px 2px;
+}
+.cons-staff-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.cons-staff-item:hover {
+  color: #1e293b;
+}

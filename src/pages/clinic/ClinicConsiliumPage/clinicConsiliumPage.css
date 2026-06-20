@@ -1,0 +1,446 @@
+/* client/src/pages/clinic/ClinicConsiliumPage/clinicConsiliumPage.css */
+
+.cons-page,
+.cons-detail {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+/* ─── Loading / error ─── */
+.cons-page-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+}
+.cons-page-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #6366f1;
+  border-radius: 50%;
+  animation: cons-spin 0.8s linear infinite;
+}
+@keyframes cons-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.cons-page-error {
+  text-align: center;
+  padding: 48px 16px;
+}
+.cons-page-error h2 {
+  margin-bottom: 8px;
+  color: #b91c1c;
+}
+
+/* ─── Header ─── */
+.cons-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.cons-page-back {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: #64748b;
+  text-decoration: none;
+  font-size: 14px;
+}
+.cons-page-back:hover {
+  color: #6366f1;
+}
+.cons-page-header-left h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1e293b;
+}
+.cons-page-subtitle {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+.cons-page-btn-primary {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  background: #6366f1;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-block;
+}
+.cons-page-btn-primary:hover {
+  background: #4f46e5;
+}
+.cons-page-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─── Toolbar ─── */
+.cons-page-toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+.cons-page-search {
+  flex: 1 1 240px;
+  padding: 10px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 14px;
+}
+.cons-page-search:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+.cons-page-select {
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 13px;
+  background: #fff;
+  cursor: pointer;
+}
+.cons-page-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #475569;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* ─── Section / groups ─── */
+.cons-page-section h2,
+.cons-thread h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 16px;
+}
+.cons-page-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 11px;
+  background: #eef2ff;
+  color: #4f46e5;
+  font-size: 12px;
+  font-weight: 600;
+}
+.cons-page-empty {
+  text-align: center;
+  padding: 40px 16px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  color: #64748b;
+}
+.cons-page-empty p {
+  margin: 0 0 14px;
+}
+.cons-page-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.cons-group-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.cons-group-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ─── Cards ─── */
+.cons-page-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cons-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s;
+}
+.cons-card:hover {
+  border-color: #c7d2fe;
+}
+.cons-card.is-archived {
+  opacity: 0.6;
+  background: #f8fafc;
+}
+.cons-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+}
+.cons-card-desc {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #64748b;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.cons-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #64748b;
+}
+.cons-card-arrow {
+  color: #cbd5e1;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* ─── Status badges ─── */
+.cons-status-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.status-open {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+.status-resolved {
+  background: #dcfce7;
+  color: #15803d;
+}
+.status-archived {
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+
+/* ═══ Detail page ═══ */
+.cons-detail-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.cons-detail-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.cons-detail-btn {
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #475569;
+}
+.cons-detail-btn:hover {
+  border-color: #6366f1;
+  color: #6366f1;
+}
+.cons-detail-btn.is-danger {
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+.cons-detail-btn.is-danger:hover {
+  background: #fef2f2;
+}
+.cons-detail-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cons-detail-header {
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 18px;
+  margin-bottom: 20px;
+}
+.cons-detail-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #64748b;
+}
+.cons-detail-title {
+  margin: 0 0 8px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+.cons-detail-desc {
+  margin: 0;
+  font-size: 15px;
+  color: #475569;
+  white-space: pre-wrap;
+}
+
+/* ─── Conclusion ─── */
+.cons-conclusion {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 24px;
+}
+.cons-conclusion-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #15803d;
+  margin-bottom: 6px;
+}
+.cons-conclusion-text {
+  font-size: 15px;
+  color: #14532d;
+  white-space: pre-wrap;
+}
+
+/* ─── Thread ─── */
+.cons-thread-empty {
+  text-align: center;
+  padding: 28px 16px;
+  color: #94a3b8;
+  font-size: 14px;
+  border: 1px dashed #e2e8f0;
+  border-radius: 10px;
+}
+.cons-thread-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.cons-msg {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #fff;
+}
+.cons-msg-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.cons-msg-author {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4f46e5;
+}
+.cons-msg-time {
+  font-size: 12px;
+  color: #94a3b8;
+}
+.cons-msg-text {
+  font-size: 14px;
+  color: #1e293b;
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+/* ─── Composer ─── */
+.cons-composer {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  background: #f8fafc;
+}
+.cons-composer-input {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  box-sizing: border-box;
+}
+.cons-composer-input:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+.cons-composer-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  gap: 10px;
+}
+.cons-composer-hint {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+@media (max-width: 600px) {
+  .cons-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .cons-card-arrow {
+    display: none;
+  }
+}

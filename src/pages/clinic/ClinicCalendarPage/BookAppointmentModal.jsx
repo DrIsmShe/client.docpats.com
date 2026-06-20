@@ -23,10 +23,13 @@
 //      (owner/admin/receptionist) = exactly the roles that have
 //      patient.write on the backend.
 //
-//   2. DURATION — pills 15/30/60/90 min. Default = the doctor's schedule
+//   2. DEPARTMENT — optional dropdown of active clinic departments.
+//      Routes the appointment to a department; null/"" = unassigned.
+//
+//   3. DURATION — pills 15/30/60/90 min. Default = the doctor's schedule
 //      slotDurationMinutes, snapped to one of the four pill values.
 //
-//   3. REASON — optional, ≤2000 chars.
+//   4. REASON — optional, ≤2000 chars.
 //
 // On submit:
 //   - compute endUTC = slot.startUTC + durationMinutes
@@ -40,7 +43,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { searchPatients, createAppointment } from "../../../api/clinic";
+import {
+  searchPatients,
+  createAppointment,
+  listDepartments,
+} from "../../../api/clinic";
 import InlinePatientCreate from "./InlinePatientCreate";
 
 // ─── Constants ────────────────────────────────────────────────
@@ -62,12 +69,6 @@ function minutesToHHMM(min) {
 
 /**
  * Guess what KIND of search the input is — phone / email / lastName.
- * Used to pick which searchPatients() parameter to populate so we hit
- * the right blind index on the backend.
- *
- * "+994 50 123 45 67" / "0501234567" → phone
- * "ivan@example.com"                  → email
- * "Иван"                              → lastName
  */
 function classifyPatientSearch(raw) {
   if (!raw) return { kind: null, value: "" };
@@ -76,8 +77,6 @@ function classifyPatientSearch(raw) {
 
   if (trimmed.includes("@")) return { kind: "email", value: trimmed };
 
-  // Count digits — phone numbers have ≥7. Treat leading "+" as a strong
-  // phone signal even for short strings (the user is mid-typing).
   const digitCount = (trimmed.match(/\d/g) || []).length;
   if (trimmed.startsWith("+") || digitCount >= 7) {
     return { kind: "phone", value: trimmed };
@@ -86,10 +85,6 @@ function classifyPatientSearch(raw) {
   return { kind: "lastName", value: trimmed };
 }
 
-/**
- * Pick the default duration pill for a doctor whose schedule says
- * slotDurationMinutes = X. Snap to the nearest available pill.
- */
 function pickDefaultDuration(slotDurationMinutes) {
   const n = Number(slotDurationMinutes) || 30;
   if (DURATION_OPTIONS.includes(n)) return n;
@@ -123,6 +118,9 @@ export default function BookAppointmentModal({
   // When true, render <InlinePatientCreate /> in place of the search hint
   const [creatingPatient, setCreatingPatient] = useState(false);
 
+  const [departments, setDepartments] = useState([]);
+  const [departmentId, setDepartmentId] = useState("");
+
   const [duration, setDuration] = useState(() =>
     pickDefaultDuration(slotDurationMinutes),
   );
@@ -131,10 +129,23 @@ export default function BookAppointmentModal({
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
 
+  // ─── Load active departments once (optional field) ───
+  useEffect(() => {
+    let cancelled = false;
+    listDepartments({ status: "active" })
+      .then((res) => {
+        if (!cancelled) setDepartments(res.items || []);
+      })
+      .catch(() => {
+        /* department selection is optional — ignore failures */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   // ─── Patient search (debounced) ───
 
-  // Ref to the latest in-flight request — lets us drop stale responses
-  // when the user keeps typing.
   const searchSeqRef = useRef(0);
 
   const runSearch = useCallback(async (raw) => {
@@ -153,7 +164,6 @@ export default function BookAppointmentModal({
       else if (classified.kind === "email") params.email = classified.value;
       else params.lastName = classified.value;
       const res = await searchPatients(params);
-      // Drop the result if a newer search has started.
       if (seq !== searchSeqRef.current) return;
       setSearchResults(res.items || []);
     } catch {
@@ -165,11 +175,7 @@ export default function BookAppointmentModal({
   }, []);
 
   useEffect(() => {
-    // Hide search entirely when a patient is locked-in (prefilled flow
-    // or after selection).
     if (selectedPatient) return undefined;
-    // Also pause search while the inline-create form is open — typing
-    // in those fields shouldn't trigger phantom search calls.
     if (creatingPatient) return undefined;
     if (!searchQuery || searchQuery.trim().length < MIN_SEARCH_LENGTH) {
       setSearchResults([]);
@@ -182,8 +188,6 @@ export default function BookAppointmentModal({
 
   // ─── Inline-create handlers ───
   function handleInlineCreated(newPatient) {
-    // Promote the new patient to the selected slot; close the create
-    // form; clear the search query so the chip sits clean.
     setSelectedPatient(newPatient);
     setCreatingPatient(false);
     setSearchQuery("");
@@ -195,8 +199,6 @@ export default function BookAppointmentModal({
     setCreatingPatient(false);
   }
 
-  // The "Create" button's label echoes the search query (truncated) so
-  // the user knows what name will be pre-filled.
   function createButtonLabel() {
     const q = searchQuery.trim();
     if (!q)
@@ -210,13 +212,6 @@ export default function BookAppointmentModal({
     });
   }
 
-  // Decide whether the "create new patient" button should be visible.
-  // Only when a search has happened, came back empty, and the input
-  // looks like a NAME (not a phone or email) — for phones the right
-  // action is "check the phone again" rather than create yet another
-  // duplicate, and email-only entries usually don't have enough data
-  // to bootstrap a patient anyway. The user can always type the last
-  // name to surface the button.
   const showCreateButton =
     !creatingPatient &&
     !selectedPatient &&
@@ -247,6 +242,7 @@ export default function BookAppointmentModal({
         patientId: selectedPatient._id,
         startUTC: startUTC.toISOString(),
         endUTC: endUTC.toISOString(),
+        ...(departmentId && { departmentId }),
         ...(reason.trim() && { reason: reason.trim() }),
       });
 
@@ -291,11 +287,6 @@ export default function BookAppointmentModal({
     <div
       className="ccal-modal-overlay"
       onClick={(e) => {
-        // Close ONLY on direct clicks on the backdrop. Without this guard,
-        // a click on a button inside the modal could close the modal if
-        // the button was removed from the DOM between click and bubble
-        // (e.g. our inline-create form unmounts on success). Comparing
-        // target === currentTarget is the standard, race-proof pattern.
         if (e.target === e.currentTarget) onClose();
       }}
     >
@@ -321,8 +312,6 @@ export default function BookAppointmentModal({
                   selectedPatient.email ||
                   "—"}
               </span>
-              {/* Hide remove-X when a parent prefilled the patient and
-                  wants to keep them locked. */}
               {!prefilledPatient && (
                 <button
                   type="button"
@@ -339,8 +328,6 @@ export default function BookAppointmentModal({
               )}
             </div>
           ) : creatingPatient ? (
-            /* Inline create form — replaces the search UI until the
-               new patient is created or the user cancels. */
             <InlinePatientCreate
               initialLastName={searchQuery.trim()}
               onCreated={handleInlineCreated}
@@ -422,6 +409,33 @@ export default function BookAppointmentModal({
             </>
           )}
         </div>
+
+        {/* Department (optional) */}
+        {departments.length > 0 && (
+          <div className="ccal-field">
+            <span>
+              {t("calendar.book_modal.department", {
+                defaultValue: "Отделение",
+              })}
+            </span>
+            <select
+              value={departmentId}
+              onChange={(e) => setDepartmentId(e.target.value)}
+            >
+              <option value="">
+                {t("calendar.book_modal.departmentNone", {
+                  defaultValue: "— не указано —",
+                })}
+              </option>
+              {departments.map((d) => (
+                <option key={d._id || d.id} value={d._id || d.id}>
+                  {d.name}
+                  {d.code ? ` (${d.code})` : ""}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {/* Duration pills */}
         <div className="ccal-field">

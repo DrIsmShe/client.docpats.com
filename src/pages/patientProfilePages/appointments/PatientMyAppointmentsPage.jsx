@@ -11,8 +11,12 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import JitsiRoom from "../../communication/components/JitsiRoom.jsx";
 
 const API_BASE = process.env.REACT_APP_API_URL;
+
+// Statuses where joining a video call no longer makes sense.
+const VIDEO_TERMINAL = ["cancelled", "completed", "no_show", "refunded"];
 
 /* ====== Маппинг языков i18n → BCP-47 локали (для дат и Intl) ====== */
 const LANG_TO_LOCALE = {
@@ -547,6 +551,14 @@ const MAStyles = () => (
       background: #fff1f2;
       border-color: #f43f5e;
     }
+    .ma-btn-whatsapp {
+      background: #25d366;
+      color: white;
+      border-color: #25d366;
+    }
+    .ma-btn-whatsapp:hover:not(:disabled) {
+      background: #1ebe5b;
+    }
 
     /* ===== Modal ===== */
     .ma-modal-overlay {
@@ -703,6 +715,28 @@ const MAStyles = () => (
       animation: ma-spin 0.7s linear infinite;
     }
 
+    /* ===== Video modal ===== */
+    .ma-video-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 1060;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      animation: ma-fade 0.2s ease-out;
+    }
+    .ma-video-box {
+      width: 100%;
+      max-width: 880px;
+      height: 72vh;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
     /* ===== Breakpoints ===== */
     @media (max-width: 560px) {
       .ma-grid { grid-template-columns: 1fr; }
@@ -738,6 +772,8 @@ export default function PatientMyAppointmentsPage() {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [cancelReason, setCancelReason] = useState("");
   const [cancelLoading, setCancelLoading] = useState(false);
+  // Видео-приём (Jitsi): id открытого приёма.
+  const [videoApptId, setVideoApptId] = useState(null);
   const navigate = useNavigate();
   // 🔹 Загрузка всех приёмов пациента
   useEffect(() => {
@@ -800,6 +836,10 @@ export default function PatientMyAppointmentsPage() {
         return { key: "unknown", label: t("myAppointments.status.unknown") };
     }
   };
+
+  // Может ли пациент войти в видео по этому приёму?
+  // Видео доступно только после подтверждения врачом.
+  const canJoinVideo = (a) => a?.type === "video" && a?.status === "confirmed";
 
   // 🔹 Открыть модалку отмены
   const handleOpenCancel = (appointment) => {
@@ -999,15 +1039,29 @@ export default function PatientMyAppointmentsPage() {
                     {statusMeta.label}
                   </span>
                   <div className="ma-actions">
-                    {a.type === "video" && a.status === "confirmed" && (
-                      <Link
-                        to={`/chat/videocall/${a._id}`}
+                    {canJoinVideo(a) && (
+                      <button
+                        type="button"
                         className="ma-btn ma-btn-video"
+                        onClick={() => setVideoApptId(a._id)}
                       >
                         <IconVideoCall />
                         {t("myAppointments.card.videoCall")}
-                      </Link>
+                      </button>
                     )}
+
+                    {a.channel === "whatsapp" &&
+                      a.status === "confirmed" &&
+                      a.whatsApp?.phone && (
+                        <a
+                          href={`https://wa.me/${a.whatsApp.phone}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="ma-btn ma-btn-whatsapp"
+                        >
+                          💬 WhatsApp
+                        </a>
+                      )}
 
                     {["confirmed", "pending"].includes(a.status) && (
                       <button
@@ -1095,6 +1149,25 @@ export default function PatientMyAppointmentsPage() {
                 )}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ===== Видео-модалка (Jitsi, фриланс-приём) ===== */}
+      {videoApptId && (
+        <div
+          className="ma-video-overlay"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setVideoApptId(null)}
+        >
+          <div className="ma-video-box" onClick={(e) => e.stopPropagation()}>
+            <JitsiRoom
+              source="appointment"
+              id={videoApptId}
+              displayName={t("myAppointments.header.eyebrow", "Пациент")}
+              onClose={() => setVideoApptId(null)}
+            />
           </div>
         </div>
       )}

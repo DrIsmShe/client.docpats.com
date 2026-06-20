@@ -154,3 +154,107 @@ export async function rejectConsentRequest(requestId, note = null) {
   );
   return data;
 }
+// ═══════════════════════════════════════════════════════════════════════════
+//  MY PRESCRIPTIONS (Stage 2 — patient side, read-only)
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND to client/src/api/patient.js. Uses the same axios instance / API_BASE
+// as the other patient calls in this file.
+//
+// Backend:
+//   GET /patient-profile/get-my-prescriptions          -> { ok, items }
+//   GET /patient-profile/get-my-prescription-pdf/:id    -> application/pdf
+
+/**
+ * GET /patient-profile/get-my-prescriptions
+ * Все рецепты пациента со всех привязанных клиник. Read-only.
+ * Returns { ok, items: [...] }.
+ */
+export const getMyPrescriptions = async () => {
+  const res = await axios.get(
+    `${API_BASE}/patient-profile/get-my-prescriptions`,
+    { withCredentials: true },
+  );
+  return res.data; // { ok, items }
+};
+
+/**
+ * GET /patient-profile/get-my-prescription-pdf/:id
+ * PDF одного рецепта (тот же бланк, что у клиники). Возвращает Blob.
+ * @param {string} id
+ * @param {string} [lang] ru|en|az|tr|ar
+ */
+export const getMyPrescriptionPdf = async (id, lang) => {
+  const res = await axios.get(
+    `${API_BASE}/patient-profile/get-my-prescription-pdf/${id}`,
+    {
+      withCredentials: true,
+      params: lang ? { lang } : {},
+      responseType: "blob",
+    },
+  );
+  return res.data; // Blob
+};
+// ═══════════════════════════════════════════════════════════════════════════
+//  MY LAB RESULTS (Stage 2 — patient side, unified clinic + legacy)
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Backend:
+//   GET /patient-profile/get-my-lab-results  -> { ok, items }
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  MY LAB RESULTS (Stage 2 — patient side, unified clinic + legacy)
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND to client/src/api/patient.js (same axios + ${API_BASE} + withCredentials).
+//
+// Backend:
+//   GET /patient-profile/get-my-lab-results            -> { ok, items }
+//   GET /patient-profile/get-my-lab-result-pdf/:id      -> application/pdf (clinic only)
+
+/**
+ * GET /patient-profile/get-my-lab-results
+ * Все анализы пациента: новые (клиника) + старые (архив) в одном списке.
+ * Returns { ok, items: [...] }.
+ */
+export const getMyLabResults = async () => {
+  const res = await axios.get(
+    `${API_BASE}/patient-profile/get-my-lab-results`,
+    { withCredentials: true },
+  );
+  return res.data; // { ok, items }
+};
+
+/**
+ * GET /patient-profile/get-my-lab-result-pdf/:id
+ * PDF одного анализа (только source="clinic"). Возвращает Blob.
+ * @param {string} id
+ * @param {string} [lang] ru|en|az|tr|ar
+ */
+export const getMyLabResultPdf = async (id, lang) => {
+  const res = await axios.get(
+    `${API_BASE}/patient-profile/get-my-lab-result-pdf/${id}`,
+    {
+      withCredentials: true,
+      params: lang ? { lang } : {},
+      responseType: "blob",
+    },
+  );
+  return res.data; // Blob
+};
+export const submitMyClinicReview = async ({ clinicId, rating, text }) => {
+  const { data } = await axios.post(
+    `${API_BASE}/patient-profile/clinic-reviews`,
+    { clinicId, rating, text },
+    { withCredentials: true },
+  );
+  return data;
+};
+
+export const getMyClinicReview = async (clinicId) => {
+  const { data } = await axios.get(
+    `${API_BASE}/patient-profile/clinic-reviews/${clinicId}`,
+    { withCredentials: true },
+  );
+  return data;
+};

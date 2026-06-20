@@ -1,0 +1,38 @@
+/* client/src/pages/clinic/ClinicKnowledgePage/knowledgeFormModal.css */
+/*
+ * Relies on the shared global modal-* tokens (modal-backdrop, modal-window,
+ * modal-header, modal-body, modal-field, modal-footer, modal-btn-*,
+ * modal-error, modal-field-error, .required, .optional, .has-error) — same
+ * base used by departmentFormModal.css / roomFormModal.css / equipmentFormModal.css.
+ *
+ * Below: only the additions for the knowledge form — a wider modal and a
+ * tall monospace body textarea.
+ */
+
+.kb-modal-wide {
+  max-width: 720px;
+  width: 92%;
+}
+
+.modal-row {
+  display: flex;
+  gap: 12px;
+}
+.modal-row .modal-field {
+  flex: 1 1 0;
+  min-width: 0;
+}
+@media (max-width: 520px) {
+  .modal-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+.kb-body-textarea {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 220px;
+}

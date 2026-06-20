@@ -1,7 +1,10 @@
 // ClinicConsentCard.jsx
 // Sprint 3.1 — карточка одной клиники в списке "Мои клиники".
+// Clinic-as-Brand этап C — секция «Мой отзыв» (рейтинг + текст), i18n ns "clinicReviews".
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { submitMyClinicReview, getMyClinicReview } from "../../../api/patient";
 
 /* SVG icons inline (same style as MyDoctors) */
 const IconShield = () => (
@@ -16,20 +19,6 @@ const IconShield = () => (
     strokeLinejoin="round"
   >
     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-  </svg>
-);
-const IconCheck = () => (
-  <svg
-    width="16"
-    height="16"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2.4"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="20 6 9 17 4 12" />
   </svg>
 );
 const IconSettings = () => (
@@ -242,15 +231,95 @@ const CardStyles = () => (
       background: #fff1f2;
       border-color: #fda4af;
     }
+
+    /* ── Review section (этап C) ── */
+    .cc-review {
+      border-top: 1px dashed #e2e8f0;
+      padding-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .cc-review-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .cc-review-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .cc-review-badge.pending {
+      background: #fef9c3; color: #854d0e; border: 1px solid #fde68a;
+    }
+    .cc-review-badge.approved {
+      background: #ecfdf5; color: #166534; border: 1px solid #bbf7d0;
+    }
+    .cc-review-badge.rejected {
+      background: #fef2f2; color: #991b1b; border: 1px solid #fecaca;
+    }
+    .cc-stars {
+      display: inline-flex;
+      gap: 3px;
+    }
+    .cc-star {
+      cursor: pointer;
+      font-size: 22px;
+      line-height: 1;
+      color: #cbd5e1;
+      background: none;
+      border: none;
+      padding: 0;
+      transition: color 0.12s ease, transform 0.12s ease;
+    }
+    .cc-star:hover:not(:disabled) { transform: scale(1.12); }
+    .cc-star.on { color: #f59e0b; }
+    .cc-star:disabled { cursor: default; }
+    .cc-review-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #0f172a;
+      resize: vertical;
+      min-height: 64px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .cc-review-textarea:focus { border-color: #6366f1; }
+    .cc-review-textarea:disabled { opacity: 0.6; }
+    .cc-review-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .cc-review-hint {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+    .cc-review-saved {
+      font-size: 12px;
+      color: #16a34a;
+      font-weight: 600;
+    }
   `}</style>
 );
 
-/**
- * Derives consent status from item.consent:
- *   - null → "none" (no active consent)
- *   - all 7 scopes true → "granted" (full access)
- *   - subset true → "partial" (granular)
- */
 function getConsentStatus(consent) {
   if (!consent) return "none";
   const scopes = consent.scopes || {};
@@ -290,7 +359,68 @@ export default function ClinicConsentCard({
   onRevoke,
   t,
 }) {
+  // Отдельный namespace для отзывов (t — проп из MyClinics, ns "PatuentTranslate")
+  const { t: tr } = useTranslation("clinicReviews");
+
   const { clinic, card, consent } = item || {};
+
+  // ─── Review state (этап C) ───
+  const clinicId = clinic?._id || null;
+  const canReview = clinic?.isPublished === true;
+
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [text, setText] = useState("");
+  const [reviewStatus, setReviewStatus] = useState(null); // null|pending|approved|rejected
+  const [reviewBusy, setReviewBusy] = useState(false);
+  const [reviewSaved, setReviewSaved] = useState(false);
+  const [reviewLoaded, setReviewLoaded] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!clinicId || !canReview) {
+      setReviewLoaded(true);
+      return;
+    }
+    (async () => {
+      try {
+        const { review } = await getMyClinicReview(clinicId);
+        if (cancelled) return;
+        if (review) {
+          setRating(review.rating || 0);
+          setText(review.text || "");
+          setReviewStatus(review.status || null);
+        }
+      } catch {
+        // нет отзыва / ошибка — просто пустая форма
+      } finally {
+        if (!cancelled) setReviewLoaded(true);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [clinicId, canReview]);
+
+  const handleSubmitReview = async () => {
+    if (!clinicId || reviewBusy || rating < 1) return;
+    setReviewBusy(true);
+    try {
+      const { review } = await submitMyClinicReview({
+        clinicId,
+        rating,
+        text,
+      });
+      setReviewStatus(review?.status || "pending");
+      setReviewSaved(true);
+      setTimeout(() => setReviewSaved(false), 2500);
+    } catch (err) {
+      console.error("submit review failed:", err);
+    } finally {
+      setReviewBusy(false);
+    }
+  };
+
   if (!clinic) return null;
 
   const status = getConsentStatus(consent);
@@ -301,6 +431,8 @@ export default function ClinicConsentCard({
     .map((s) => s[0])
     .join("")
     .toUpperCase();
+
+  const activeStars = hoverRating || rating;
 
   return (
     <article className="cc-card">
@@ -400,6 +532,77 @@ export default function ClinicConsentCard({
             </>
           )}
         </div>
+
+        {/* ── Review (этап C) — только для опубликованных клиник ── */}
+        {canReview && reviewLoaded && (
+          <div className="cc-review">
+            <div className="cc-review-title">
+              <span>{tr("myTitle")}</span>
+              {reviewStatus && (
+                <span className={`cc-review-badge ${reviewStatus}`}>
+                  {reviewStatus === "pending" && tr("statusPending")}
+                  {reviewStatus === "approved" && tr("statusApproved")}
+                  {reviewStatus === "rejected" && tr("statusRejected")}
+                </span>
+              )}
+            </div>
+
+            {/* Stars */}
+            <div
+              className="cc-stars"
+              onMouseLeave={() => setHoverRating(0)}
+              role="radiogroup"
+              aria-label={tr("myTitle")}
+            >
+              {[1, 2, 3, 4, 5].map((n) => (
+                <button
+                  key={n}
+                  type="button"
+                  className={`cc-star${n <= activeStars ? " on" : ""}`}
+                  disabled={reviewBusy}
+                  onMouseEnter={() => setHoverRating(n)}
+                  onClick={() => setRating(n)}
+                  aria-label={`${n}`}
+                  aria-checked={rating === n}
+                  role="radio"
+                >
+                  ★
+                </button>
+              ))}
+            </div>
+
+            <textarea
+              className="cc-review-textarea"
+              value={text}
+              maxLength={2000}
+              disabled={reviewBusy}
+              placeholder={tr("placeholder")}
+              onChange={(e) => setText(e.target.value)}
+            />
+
+            <div className="cc-review-foot">
+              <span className="cc-review-hint">
+                {reviewSaved ? (
+                  <span className="cc-review-saved">{tr("saved")}</span>
+                ) : (
+                  tr("hint")
+                )}
+              </span>
+              <button
+                className="cc-btn primary"
+                style={{ padding: "9px 18px" }}
+                disabled={reviewBusy || rating < 1}
+                onClick={handleSubmitReview}
+              >
+                {reviewBusy
+                  ? tr("sending")
+                  : reviewStatus
+                    ? tr("update")
+                    : tr("submit")}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </article>
   );

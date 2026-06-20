@@ -9,6 +9,7 @@ import {
   FaFacebookMessenger,
   FaCalendarCheck,
   FaComments,
+  FaVideo,
 } from "react-icons/fa6";
 import { GoFileSubmodule } from "react-icons/go";
 import { FaCommentMedical } from "react-icons/fa6";
@@ -401,6 +402,15 @@ export default function AsidePatient() {
           label: t("AsidePatient.menu.myMedicalFiles"),
         },
         {
+          to: "/patient/my-lab-results",
+          icon: <GoFileSubmodule />,
+          label: t("AsidePatient.menu.myLabResults", "Мои анализы"),
+        },
+        {
+          to: "/patient/my-prescriptions",
+          label: t("AsidePatient.menu.myPrescriptions", "Мои рецепты"),
+        },
+        {
           to: "/patient/my-medical-histories",
           icon: <FaCommentMedical />,
           label: t("AsidePatient.menu.myMedicalHistories"),
@@ -456,6 +466,12 @@ export default function AsidePatient() {
           to: "/patient/appointments-info",
           icon: <FaCalendarCheck />,
           label: t("AsidePatient.menu.appointments"),
+        },
+        // Телемед — онлайн-консультации пациента (Jitsi)
+        {
+          to: "/patient/telemed",
+          icon: <FaVideo />,
+          label: t("AsidePatient.menu.telemed", "Онлайн-консультации"),
         },
         {
           to: "/patient/communication",
