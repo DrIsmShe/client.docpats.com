@@ -1,6 +1,21 @@
 // client/src/pages/communication/hooks/useCall.js
 //
-// WebRTC Audio/Video Call Hook — FIXED v5
+// WebRTC Audio/Video Call Hook — FIXED v6
+// Изменения v6 (для фикса "нет звука + обрыв через ~15 сек у ПРИНИМАЮЩЕГО"):
+//   • [v6-FIX] Полностью убрана ручная буферизация callee-ICE в applyOffer
+//     (флаг answerSent + pendingCalleeCandidates + двойное переопределение
+//     pc.onicecandidate). Она создавала race condition: ICE gathering у callee
+//     стартует АСИНХРОННО по setLocalDescription(answer) и генерирует кандидаты
+//     ПОЗЖЕ момента flush → буфер всегда пустой ("Flushing 0 buffered callee ICE
+//     candidates"), а переопределение onicecandidate терял последующие
+//     кандидаты. Итог: callee не отправлял НИ ОДНОГО ICE-кандидата, PC никогда
+//     не достигал "connected", соединение рвалось по ICE-таймауту (~15 сек).
+//     Симптом: звонок caller→callee работает, а callee→caller "звука нет".
+//   • Правильный trickle ICE: onicecandidate ставится ОДИН раз в createPC и
+//     шлёт кандидаты сразу по мере генерации; входящие кандидаты от peer
+//     буферизуются на приёмной стороне через onIce + remoteDescSet.
+//     applyOffer теперь НЕ трогает onicecandidate вообще.
+//
 // Изменения v5 (для фикса невидимого видео):
 //   • [v5-FIX A] Убраны legacy флаги offerToReceiveAudio/Video из createOffer().
 //     Они создавали лишние recvonly transceivers ("3 sections" в SDP)
@@ -156,51 +171,31 @@ export function useCall(currentUserId) {
   }, []);
 
   // ─── APPLY OFFER ─────────────────────────────────────────────────────────────
+  // [v6-FIX] Убрана вся ручная буферизация callee-ICE с флагом answerSent.
+  // Она ломала соединение у ПРИНИМАЮЩЕЙ стороны: ICE gathering у callee стартует
+  // асинхронно по setLocalDescription(answer) и генерирует кандидаты ПОЗЖЕ
+  // момента flush → flush всегда пустой ("Flushing 0"), а переопределение
+  // pc.onicecandidate терял последующие кандидаты → PC не достигал "connected"
+  // → обрыв по ICE-таймауту (~15 сек), "звука нет".
+  //
+  // Правильный trickle ICE: callee-кандидаты шлём сразу как появляются — это
+  // уже делает handler, установленный ОДИН раз в createPC. Входящие кандидаты
+  // caller'а буферизуются на приёмной стороне через onIce + remoteDescSet.
+  // Поэтому здесь onicecandidate НЕ трогаем вообще.
   const applyOffer = useCallback(
     async (pc, offer, cId) => {
       try {
         console.log("📥 Applying offer to PC...");
-
-        // [FIX CALLEE ICE] Буферизуем ICE кандидаты callee пока answer не отправлен.
-        // Без этого onicecandidate срабатывает ДО того как сервер знает о callee,
-        // кандидаты теряются и PC никогда не достигает connected.
-        const pendingCalleeCandidates = [];
-        let answerSent = false;
-        const origOnIce = pc.onicecandidate;
-        pc.onicecandidate = ({ candidate }) => {
-          if (!candidate) return;
-          if (answerSent) {
-            // После отправки answer — сразу шлём как обычно
-            socket.emit("call:ice", { callId: cId, candidate });
-          } else {
-            // До отправки answer — буферизуем
-            console.log(
-              "🧊 [callee] Buffering ICE candidate until answer sent",
-            );
-            pendingCalleeCandidates.push(candidate);
-          }
-        };
-
         await pc.setRemoteDescription(new RTCSessionDescription(offer));
         remoteDescSet.current = true;
+        // применяем входящие ICE-кандидаты caller'а, накопленные до setRemoteDescription
         await flushIceCandidates(pc);
         const answer = await pc.createAnswer();
         await pc.setLocalDescription(answer);
         console.log("📤 Sending answer");
         socket.emit("call:answer", { callId: cId, answer });
-
-        // Теперь answer отправлен — флашим буфер и восстанавливаем обычный handler
-        answerSent = true;
-        console.log(
-          `🧊 [callee] Flushing ${pendingCalleeCandidates.length} buffered callee ICE candidates`,
-        );
-        for (const c of pendingCalleeCandidates) {
-          socket.emit("call:ice", { callId: cId, candidate: c });
-        }
-        // Восстанавливаем обычный onicecandidate
-        pc.onicecandidate = ({ candidate }) => {
-          if (candidate) socket.emit("call:ice", { callId: cId, candidate });
-        };
+        // onicecandidate уже установлен в createPC и шлёт callee-кандидаты
+        // немедленно по мере их генерации — ручной буфер не нужен.
       } catch (err) {
         console.error("applyOffer error:", err);
       }
@@ -270,6 +265,8 @@ export function useCall(currentUserId) {
 
       const pc = new RTCPeerConnection({ iceServers });
 
+      // Единственный источник ICE-кандидатов для ОБЕИХ ролей (caller и callee).
+      // [v6-FIX] applyOffer больше НЕ переопределяет этот handler.
       pc.onicecandidate = ({ candidate }) => {
         if (candidate) {
           socket.emit("call:ice", { callId: cId, candidate });
