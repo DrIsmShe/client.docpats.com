@@ -13,6 +13,7 @@ import {
   listKnowledge,
   listConsilia,
   listTelemed,
+  listServices,
 } from "../../../api/clinic";
 import "./clinicDashboardPage.css";
 
@@ -40,7 +41,7 @@ export default function ClinicDashboardPage() {
   const [knowledge, setKnowledge] = useState([]);
   const [consilia, setConsilia] = useState([]);
   const [telemed, setTelemed] = useState([]);
-
+  const [services, setServices] = useState([]);
   useEffect(() => {
     let cancelled = false;
 
@@ -56,6 +57,7 @@ export default function ClinicDashboardPage() {
           knowledgeRes,
           consiliaRes,
           telemedRes,
+          servicesRes,
         ] = await Promise.all([
           getClinicMe(),
           listStaff().catch((err) => {
@@ -90,6 +92,10 @@ export default function ClinicDashboardPage() {
             console.warn("Failed to load telemed:", err);
             return { items: [] };
           }),
+          listServices().catch((err) => {
+            console.warn("Failed to load services:", err);
+            return [];
+          }),
         ]);
 
         if (cancelled) return;
@@ -116,6 +122,11 @@ export default function ClinicDashboardPage() {
         setTelemed(
           (telemedRes.items || []).filter(
             (x) => x.status === "scheduled" || x.status === "live",
+          ),
+        );
+        setServices(
+          (Array.isArray(servicesRes) ? servicesRes : []).filter(
+            (s) => s.status !== "archived",
           ),
         );
         setLoading(false);
@@ -243,6 +254,14 @@ export default function ClinicDashboardPage() {
           link="/clinic/telemed"
         />
         <StatCard
+          icon="💲"
+          label={t("dashboard.stats.services", {
+            defaultValue: "Услуги",
+          })}
+          value={services.length}
+          link="/clinic/services"
+        />
+        <StatCard
           icon="✉️"
           label={t("dashboard.stats.pendingInvitations")}
           value={invitations.length}
@@ -346,6 +365,15 @@ export default function ClinicDashboardPage() {
             <span className="clinic-dashboard-action-label">
               {t("dashboard.actions.viewTelemed", {
                 defaultValue: "Телемедицина",
+              })}
+            </span>
+            <span className="clinic-dashboard-action-arrow">→</span>
+          </Link>
+          <Link to="/clinic/services" className="clinic-dashboard-action">
+            <span className="clinic-dashboard-action-icon">💲</span>
+            <span className="clinic-dashboard-action-label">
+              {t("dashboard.actions.viewServices", {
+                defaultValue: "Услуги и прайс",
               })}
             </span>
             <span className="clinic-dashboard-action-arrow">→</span>

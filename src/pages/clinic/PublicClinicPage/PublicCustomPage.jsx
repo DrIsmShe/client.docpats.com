@@ -1,21 +1,18 @@
-// client/src/pages/clinic/PublicClinicPage/PublicClinicPage.jsx
+// client/src/pages/clinic/PublicClinicPage/PublicCustomPage.jsx
 //
-// Публичная страница клиники /<prefix>/:slug — ТОНКИЙ ШЕЛЛ.
-// Гостевая, БЕЗ авторизации. Данные: getPublicClinicPage(slug) →
-// GET /api/v1/public/clinics/:slug (DTO напрямую).
+// ВИТРИНА 2.0 (Часть 2) — публичная КАСТОМНАЯ страница /clinics/:slug/dp/:pageSlug.
+// Гостевая, без авторизации. Грузит ПАРАЛЛЕЛЬНО:
+//   - клинику (getPublicClinicPage)        → тема, данные блоков, chrome
+//   - контент страницы (getPublicCustomPage) → page.layout.blocks
+// и отдаёт оба в CustomPageRenderer.
 //
-// Вся вёрстка вынесена в ВИТРИНУ 2.0: рендерер сам применяет тему (cssVars,
-// шрифты, dir, фон) и проходит по layout.blocks через реестр блоков.
-// Здесь остаются только: загрузка данных и состояния loading / not-found / error.
-//
-// Состояния показываются ДО загрузки клиники (темы ещё нет) → стилизованы
-// автономно дефолтными цветами витрины (cream + teal), без токенов.
+// Состояния loading / not-found / error — автономные (тема ещё не загружена).
 
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getPublicClinicPage } from "../../../api/clinic";
-import VitrinaRenderer from "../vitrina/VitrinaRenderer.jsx";
+import { getPublicClinicPage, getPublicCustomPage } from "../../../api/clinic";
+import CustomPageRenderer from "../vitrina/CustomPageRenderer.jsx";
 
 const STATE_CSS = `
 .pcp-state-wrap { background: #faf8f4; min-height: 100vh; display: flex; align-items: center; justify-content: center; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
@@ -35,12 +32,13 @@ function StateScreen({ dir, children }) {
   );
 }
 
-export default function PublicClinicPage() {
-  const { slug } = useParams();
+export default function PublicCustomPage() {
+  const { slug, pageSlug } = useParams();
   const { t, i18n } = useTranslation();
   const dir = i18n.language === "ar" ? "rtl" : "ltr";
 
   const [clinic, setClinic] = useState(null);
+  const [page, setPage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState(false);
@@ -51,10 +49,18 @@ export default function PublicClinicPage() {
     setNotFound(false);
     setError(false);
 
-    getPublicClinicPage(slug)
-      .then((data) => {
+    Promise.all([
+      getPublicClinicPage(slug),
+      getPublicCustomPage(slug, pageSlug),
+    ])
+      .then(([clinicData, pageData]) => {
         if (!alive) return;
-        setClinic(data);
+        if (!clinicData || !pageData) {
+          setNotFound(true);
+        } else {
+          setClinic(clinicData);
+          setPage(pageData);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -67,7 +73,7 @@ export default function PublicClinicPage() {
     return () => {
       alive = false;
     };
-  }, [slug]);
+  }, [slug, pageSlug]);
 
   if (loading) {
     return (
@@ -81,14 +87,14 @@ export default function PublicClinicPage() {
   if (notFound) {
     return (
       <StateScreen dir={dir}>
-        <span className="pcp-state-ico">🏥</span>
+        <span className="pcp-state-ico">📄</span>
         <div className="pcp-state-title">
-          {t("publicClinic.notFoundTitle", {
-            defaultValue: "Клиника не найдена",
+          {t("publicClinic.pageNotFoundTitle", {
+            defaultValue: "Страница не найдена",
           })}
         </div>
         <span>
-          {t("publicClinic.notFoundText", {
+          {t("publicClinic.pageNotFoundText", {
             defaultValue:
               "Возможно, страница ещё не опубликована или адрес введён неверно.",
           })}
@@ -97,7 +103,7 @@ export default function PublicClinicPage() {
     );
   }
 
-  if (error || !clinic) {
+  if (error || !clinic || !page) {
     return (
       <StateScreen dir={dir}>
         <span className="pcp-state-ico">⚠</span>
@@ -110,5 +116,5 @@ export default function PublicClinicPage() {
     );
   }
 
-  return <VitrinaRenderer clinic={clinic} />;
+  return <CustomPageRenderer clinic={clinic} page={page} />;
 }

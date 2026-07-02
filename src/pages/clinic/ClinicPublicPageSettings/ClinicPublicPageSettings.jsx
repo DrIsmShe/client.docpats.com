@@ -7,6 +7,9 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ThemeSwitcher from "../vitrina/theme/ThemeSwitcher.jsx";
+import LayoutEditor from "../vitrina/layout/LayoutEditor.jsx";
+import ClinicContentForm from "../vitrina/settings/ClinicContentForm.jsx";
 import {
   getClinicMe,
   updateClinic,
@@ -17,6 +20,7 @@ import {
   deleteClinicGalleryItem,
   listClinicReviews,
   moderateClinicReview,
+  listCustomPages,
 } from "../../../api/clinic";
 import "./clinicPublicPageSettings.css";
 
@@ -88,7 +92,15 @@ export default function ClinicPublicPageSettings() {
         const perms = me.permissions || {};
         const writable =
           role === "owner" || role === "admin" || perms?.clinic?.write === true;
-
+        try {
+          const pagesRes = await listCustomPages();
+          c.customPages = (pagesRes.items || []).map((p) => ({
+            slug: p.slug,
+            title: p.title,
+          }));
+        } catch {
+          c.customPages = [];
+        }
         setClinic(c);
         setDescription(c.description || "");
         setIsPublished(c.isPublished === true);
@@ -136,7 +148,18 @@ export default function ClinicPublicPageSettings() {
       setSavingDesc(false);
     }
   };
-
+  const handleSaveTheme = async (theme) => {
+    if (!clinic?.id) return;
+    await updateClinic(clinic.id, { theme });
+    setClinic((c) => ({ ...c, theme }));
+    flashSaved();
+  };
+  const handleSaveLayout = async (blocks) => {
+    if (!clinic?.id) return;
+    await updateClinic(clinic.id, { layout: { blocks } });
+    setClinic((c) => ({ ...c, layout: { blocks } }));
+    flashSaved();
+  };
   // ─── publish ───
   const handleTogglePublish = async () => {
     if (!clinic?.id || savingPub) return;
@@ -245,7 +268,12 @@ export default function ClinicPublicPageSettings() {
       setGalleryBusy(false);
     }
   };
-
+  const handleSaveContent = async (fields) => {
+    if (!clinic?.id) return;
+    await updateClinic(clinic.id, fields);
+    setClinic((c) => ({ ...c, ...fields }));
+    flashSaved();
+  };
   // ─── reviews moderation (этап C) ───
   const loadReviews = useCallback(
     async (filter) => {
@@ -579,7 +607,77 @@ export default function ClinicPublicPageSettings() {
           )}
         </div>
       </section>
-
+      <section className="cpps-card">
+        <div className="cpps-card-head">
+          <h2 className="cpps-card-title">
+            {t("publicPage.contentTitle", { defaultValue: "Контент клиники" })}
+          </h2>
+        </div>
+        <div className="cpps-card-body">
+          <ClinicContentForm
+            clinic={clinic}
+            canWrite={canWrite}
+            onSave={handleSaveContent}
+            onCoverChange={(url) =>
+              setClinic((c) => ({ ...c, coverImage: url }))
+            }
+            onPageBgChange={(url) =>
+              setClinic((c) => ({ ...c, pageBackground: url }))
+            }
+          />
+        </div>
+      </section>
+      <section className="cpps-card">
+        <div className="cpps-card-head">
+          <h2 className="cpps-card-title">
+            {t("publicPage.themeTitle", { defaultValue: "Оформление витрины" })}
+          </h2>
+        </div>
+        <div className="cpps-card-body">
+          <ThemeSwitcher
+            clinic={clinic}
+            canWrite={canWrite}
+            onSave={handleSaveTheme}
+          />
+        </div>
+      </section>
+      <section className="cpps-card">
+        <div className="cpps-card-head">
+          <h2 className="cpps-card-title">
+            {t("publicPage.layoutTitle", { defaultValue: "Блоки витрины" })}
+          </h2>
+        </div>
+        <div className="cpps-card-body">
+          <LayoutEditor
+            clinic={clinic}
+            canWrite={canWrite}
+            onSave={handleSaveLayout}
+          />
+        </div>
+      </section>
+      {/* CUSTOM PAGES — ссылка на конструктор кастомных страниц */}
+      <section className="cpps-card">
+        <div className="cpps-card-head">
+          <h2 className="cpps-card-title">
+            {t("publicPage.customPagesTitle", {
+              defaultValue: "Страницы сайта",
+            })}
+          </h2>
+        </div>
+        <div className="cpps-card-body">
+          <p style={{ marginBottom: 14, color: "#78716c", fontSize: 14 }}>
+            {t("publicPage.customPagesHint", {
+              defaultValue:
+                "Создавайте отдельные страницы (Акции, О враче, Цены) из блоков и добавляйте их в меню витрины.",
+            })}
+          </p>
+          <Link to="/clinic/pages" className="cpps-btn cpps-btn-primary">
+            {t("publicPage.customPagesManage", {
+              defaultValue: "Управление страницами →",
+            })}
+          </Link>
+        </div>
+      </section>
       {/* REVIEWS MODERATION (этап C) — namespace clinicReviews */}
       {canWrite && (
         <section className="cpps-card">

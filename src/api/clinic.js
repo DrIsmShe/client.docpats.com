@@ -2380,3 +2380,171 @@ export const moderateClinicReview = async (
   );
   return res.data;
 };
+// ─── COVER (ВИТРИНА 2.0 V4: обложка hero) ───
+// Reuses `import axios from "../axios"` at the top.
+
+export const uploadClinicCover = async (clinicId, file) => {
+  const fd = new FormData();
+  fd.append("cover", file);
+  const res = await axios.post(`/api/v1/clinic/clinics/${clinicId}/cover`, fd, {
+    // Don't set Content-Type manually — let axios set the multipart boundary
+  });
+  return res.data;
+};
+
+export const deleteClinicCover = async (clinicId) => {
+  const res = await axios.delete(`/api/v1/clinic/clinics/${clinicId}/cover`);
+  return res.data;
+};
+// ВИТРИНА 2.0 — словари тем (публичные, без авторизации)
+export const getThemePresets = async () => {
+  const res = await axios.get("/api/v1/public/theme-presets");
+  return res.data;
+};
+// ВИТРИНА 2.0 — фон всей страницы (отдельно от обложки hero)
+export const uploadClinicPageBg = async (clinicId, file) => {
+  const fd = new FormData();
+  fd.append("pageBg", file);
+  const res = await axios.post(
+    `/api/v1/clinic/clinics/${clinicId}/page-bg`,
+    fd,
+  );
+  return res.data; // { pageBackground }
+};
+
+export const deleteClinicPageBg = async (clinicId) => {
+  const res = await axios.delete(`/api/v1/clinic/clinics/${clinicId}/page-bg`);
+  return res.data; // { pageBackground: null }
+};
+// ВИТРИНА 2.0 (Путь 1) — универсальная загрузка картинки в R2 (баннеры
+// страниц-разделов и пр.). Возвращает { url } — фронт кладёт в config блока.
+export const uploadClinicAsset = async (clinicId, file) => {
+  const fd = new FormData();
+  fd.append("asset", file);
+  const res = await axios.post(`/api/v1/clinic/clinics/${clinicId}/asset`, fd);
+  return res.data; // { url }
+};
+// ВИТРИНА 2.0 (Часть 2) — контент кастомной страницы (публично, без авторизации).
+export const getPublicCustomPage = async (slug, pageSlug) => {
+  const res = await axios.get(
+    `/api/v1/public/clinics/${encodeURIComponent(slug)}/pages/${encodeURIComponent(pageSlug)}`,
+  );
+  return res.data; // { slug, title, seo, layout:{blocks} }
+};
+// ВИТРИНА 2.0 (Часть 2) — CRUD кастомных страниц (админ, под сессией клиники).
+export const listCustomPages = async (status) => {
+  const res = await axios.get("/api/v1/clinic/pages", {
+    params: status ? { status } : {},
+  });
+  return res.data; // { items: [...] }
+};
+export const getCustomPage = async (id) => {
+  const res = await axios.get(`/api/v1/clinic/pages/${id}`);
+  return res.data; // { page }
+};
+export const createCustomPage = async (payload) => {
+  const res = await axios.post("/api/v1/clinic/pages", payload);
+  return res.data; // { page }
+};
+export const updateCustomPage = async (id, updates) => {
+  const res = await axios.patch(`/api/v1/clinic/pages/${id}`, updates);
+  return res.data; // { page }
+};
+export const publishCustomPage = async (id, status) => {
+  const res = await axios.patch(`/api/v1/clinic/pages/${id}/publish`, {
+    status,
+  });
+  return res.data; // { page }
+};
+export const deleteCustomPage = async (id) => {
+  const res = await axios.delete(`/api/v1/clinic/pages/${id}`);
+  return res.data; // { id, deleted }
+};
+export const getPublicCategoryArticles = (slug, pageSlug) =>
+  axios
+    .get(`/api/v1/public/clinics/${slug}/dp/${pageSlug}/articles`)
+    .then((r) => r.data); // → { items: [...] }
+
+export const getPublicArticleDetail = (slug, pageSlug, articleSlug) =>
+  axios
+    .get(
+      `/api/v1/public/clinics/${slug}/dp/${pageSlug}/articles/${articleSlug}`,
+    )
+    .then((r) => r.data); // → полный объект статьи
+export const listArticles = (params) =>
+  axios.get(`/api/v1/clinic/articles`, { params }).then((r) => r.data);
+export const getArticle = (id) =>
+  axios.get(`/api/v1/clinic/articles/${id}`).then((r) => r.data);
+export const createArticle = (data) =>
+  axios.post(`/api/v1/clinic/articles`, data).then((r) => r.data);
+export const updateArticle = (id, data) =>
+  axios.patch(`/api/v1/clinic/articles/${id}`, data).then((r) => r.data);
+export const publishArticle = (id, status) =>
+  axios
+    .patch(`/api/v1/clinic/articles/${id}/publish`, { status })
+    .then((r) => r.data);
+export const deleteArticle = (id) =>
+  axios.delete(`/api/v1/clinic/articles/${id}`).then((r) => r.data);
+export const getPublicCategoryGallery = (slug, pageSlug) =>
+  axios
+    .get(`/api/v1/public/clinics/${slug}/dp/${pageSlug}/gallery`)
+    .then((r) => r.data); // → { items: [...] }
+export const listGalleryItems = (params) =>
+  axios.get(`/api/v1/clinic/gallery`, { params }).then((r) => r.data);
+export const createGalleryItem = (data) =>
+  axios.post(`/api/v1/clinic/gallery`, data).then((r) => r.data);
+export const updateGalleryItem = (id, data) =>
+  axios.patch(`/api/v1/clinic/gallery/${id}`, data).then((r) => r.data);
+export const deleteGalleryItem = (id) =>
+  axios.delete(`/api/v1/clinic/gallery/${id}`).then((r) => r.data);
+export const getPublicParentArticles = (slug, pageSlug) =>
+  axios
+    .get(`/api/v1/public/clinics/${slug}/dp/${pageSlug}/all-articles`)
+    .then((r) => r.data); // → { articles, subcategories }
+// ── ВИТРИНА 2.0 (V4.2) — услуги клиники ────────────────────────────────
+// Добавить в client/src/api/clinic.js рядом с хелперами departments.
+// axios-инстанс тот же, что используют listCustomPages и пр. (api/http).
+// REACT_APP_API_URL = http://localhost:11000 (БЕЗ /api/v1) — поэтому путь
+// пишем С префиксом /api/v1/clinic (clinicRouter смонтирован на /api/v1/clinic).
+
+// ── ВИТРИНА 2.0 (V4.2) — услуги клиники ────────────────────────────────
+// Reuses `import axios from "../axios"` at the top. Backend whitelists list
+// responses в { services: [...] }; здесь нормализуем к массиву (для ServicesPage).
+//
+// Backend module: server/modules/clinic/clinic-services/
+//   GET    /api/v1/clinic/services?status=&departmentId=&branchId=&q=  list
+//   POST   /api/v1/clinic/services                                     create
+//   GET    /api/v1/clinic/services/:id                                 get one
+//   PATCH  /api/v1/clinic/services/:id                                 update
+//   DELETE /api/v1/clinic/services/:id                                 soft archive
+
+// GET /api/v1/clinic/services
+// Возвращает МАССИВ услуг (ServicesPage ждёт массив, не { items }).
+export const listServices = async (params = {}) => {
+  const res = await axios.get("/api/v1/clinic/services", { params });
+  return Array.isArray(res.data?.services) ? res.data.services : [];
+};
+
+// GET /api/v1/clinic/services/:id  → { service }
+export const getService = async (id) => {
+  const res = await axios.get(`/api/v1/clinic/services/${id}`);
+  return res.data?.service;
+};
+
+// POST /api/v1/clinic/services  → { service }
+export const createService = async (body) => {
+  const res = await axios.post("/api/v1/clinic/services", body);
+  return res.data?.service;
+};
+
+// PATCH /api/v1/clinic/services/:id  → { service }
+export const updateService = async (id, body) => {
+  const res = await axios.patch(`/api/v1/clinic/services/${id}`, body);
+  return res.data?.service;
+};
+
+// DELETE /api/v1/clinic/services/:id  (soft archive) → { service }
+export const archiveService = async (id) => {
+  const res = await axios.delete(`/api/v1/clinic/services/${id}`);
+  return res.data?.service;
+};

@@ -529,6 +529,10 @@ import PatientTelemedPage from "./pages/patientProfilePages/telemed/PatientTelem
 import DoctorMyClinicsPage from "./pages/doctorProfilePages/myClinics/DoctorMyClinicsPage.jsx";
 import PublicClinicPage from "./pages/clinic/PublicClinicPage/PublicClinicPage.jsx";
 import ClinicPublicPageSettings from "./pages/clinic/ClinicPublicPageSettings/ClinicPublicPageSettings.jsx";
+import PublicCustomPage from "./pages/clinic/PublicClinicPage/PublicCustomPage.jsx";
+import ClinicCustomPagesPage from "./pages/clinic/ClinicCustomPagesPage/ClinicCustomPagesPage.jsx";
+import PublicArticleDetail from "./pages/clinic/PublicClinicPage/PublicArticleDetail.jsx";
+import ServicesPage from "./pages/clinic/ServicesPage/ServicesPage.jsx";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -587,12 +591,25 @@ function App() {
             {/* ─── CLINIC MODULE — Public routes ─── */}
             {/* ─── CLINIC MODULE — Public routes ─── */}
             <Route path="/clinics/:slug" element={<PublicClinicPage />} />
+
+            <Route
+              path="/clinics/:slug/dp/:pageSlug"
+              element={<PublicCustomPage />}
+            />
+            <Route
+              path="/clinics/:slug/dp/:pageSlug/articles/:articleSlug"
+              element={<PublicArticleDetail />}
+            />
+            <Route
+              path="/clinics/:slug/:section"
+              element={<PublicClinicPage />}
+            />
             <Route
               path="/clinic/invitations/accept"
               element={<InvitationAcceptPage />}
             />
-            <Route path="/clinic/staff-login" element={<EmployeeLoginPage />} />
 
+            <Route path="/clinic/staff-login" element={<EmployeeLoginPage />} />
             {/* ─── CLINIC MODULE — Employee authenticated zone ─── */}
             <Route
               path="/clinic/employee"
@@ -600,7 +617,6 @@ function App() {
             >
               <Route index element={<EmployeeDashboardPage />} />
             </Route>
-
             {/* ─── CLINIC MODULE — DocPats user authenticated zone ─── */}
             <Route path="/clinic" element={<ClinicLayout />}>
               <Route index element={<ClinicHubPage />} />
@@ -608,6 +624,8 @@ function App() {
                 path="public-page"
                 element={<ClinicPublicPageSettings />}
               />
+              <Route path="services" element={<ServicesPage />} />
+              <Route path="pages" element={<ClinicCustomPagesPage />} />
               <Route path="create" element={<CreateClinicPage />} />
               <Route path="dashboard" element={<ClinicDashboardPage />} />
               <Route path="staff" element={<ClinicStaffPage />} />
@@ -644,7 +662,6 @@ function App() {
                 element={<ClinicPatientDetailPage />}
               />
             </Route>
-
             <Route
               path="/clinic/employee"
               element={<ClinicLayout employeeMode />}
@@ -2498,9 +2515,7 @@ function App() {
                 element={<PolyclinicPatientDelete />}
               />
             </Route>
-
             {/* Здесь перечислены все маршруты для раздела СТРАНИЦА НЕ НАЙДЕНА */}
-
             <Route path="*" element={<Pagenotfound />} />
           </Routes>
           <ToastContainer position="bottom-right" autoClose={5000} />
