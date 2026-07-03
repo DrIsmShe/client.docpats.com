@@ -42,13 +42,29 @@ const styles = `
     from { opacity: 0; transform: scale(0.96); }
     to   { opacity: 1; transform: scale(1); }
   }
+  /*
+    [FIX] backdrop по умолчанию — самый нижний слой (видеозвонок).
+    Для АУДИО backdrop поднимается НАД Jitsi-контейнером (класс on-top),
+    чтобы непрозрачно накрыть его: Jitsi продолжает играть звук (он видим и
+    полноразмерен, не заглушён), но визуально скрыт под backdrop'ом, и
+    пользователь видит твой аудио-UI (аватар/кнопки).
+  */
   .call-backdrop {
     position: absolute;
     inset: 0;
     background: linear-gradient(160deg, #0f2c3f 0%, #1a6b8a 50%, #0a1f2e 100%);
     z-index: 0;
   }
-  /* Контейнер Jitsi — для видеозвонка на весь экран, для аудио скрыт */
+  .call-backdrop.on-top {
+    /* аудиозвонок: backdrop поверх Jitsi-контейнера (z-index:1) */
+    z-index: 2;
+  }
+  /*
+    [FIX] Контейнер Jitsi ВСЕГДА видим и полноразмерен — и для видео, и для
+    аудио. НИКОГДА не скрываем через visibility:hidden / 1px / opacity:0 —
+    это глушило аудио-вывод Jitsi (звук в видео был, в аудио — нет, потому
+    что там контейнер прятали). Для аудио его накрывает backdrop.on-top.
+  */
   .call-jitsi-container {
     position: absolute;
     inset: 0;
@@ -57,16 +73,6 @@ const styles = `
     background: #000;
     z-index: 1;
     border: none;
-  }
-  .call-jitsi-container.audio-hidden {
-    width: 1px;
-    height: 1px;
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
-    inset: auto;
-    left: 0;
-    bottom: 0;
   }
   .call-video-dim {
     position: absolute;
@@ -316,20 +322,23 @@ export default function CallUI({
       <style>{styles}</style>
 
       <div className={`call-overlay${showVideoStage ? " has-video" : ""}`}>
-        <div className="call-backdrop" />
+        {/*
+          backdrop.
+          - Видеозвонок (showVideoStage) → backdrop снизу (z-index:0),
+            Jitsi-видео поверх него видно.
+          - Аудио / звонок не активен → backdrop.on-top (z-index:2), НАКРЫВАЕТ
+            Jitsi-контейнер непрозрачно: Jitsi звучит под ним, но не виден.
+        */}
+        <div className={`call-backdrop${showVideoStage ? "" : " on-top"}`} />
 
         {/*
-          КОНТЕЙНЕР JITSI.
-          - Видеозвонок active → на весь экран (класс без audio-hidden).
-          - Всё остальное (аудио, звонок ещё не активен) → audio-hidden:
-            1px + visibility:hidden. Jitsi качает звук, но не виден.
-          ⚠️ Контейнер ВСЕГДА в DOM пока звонок не idle, иначе useJitsiCall
-             не сможет в него смонтироваться.
+          КОНТЕЙНЕР JITSI — ВСЕГДА видим и полноразмерен (и аудио, и видео).
+          [FIX] Больше НЕ скрывается через audio-hidden/visibility:hidden —
+          это глушило звук. Для аудио его накрывает backdrop.on-top сверху.
+          ⚠️ Контейнер всегда в DOM пока звонок не idle, иначе useJitsiCall
+             не сможет смонтировать в него Jitsi.
         */}
-        <div
-          ref={jitsiContainerRef}
-          className={`call-jitsi-container${showVideoStage ? "" : " audio-hidden"}`}
-        />
+        <div ref={jitsiContainerRef} className="call-jitsi-container" />
 
         {showVideoStage && <div className="call-video-dim" />}
 

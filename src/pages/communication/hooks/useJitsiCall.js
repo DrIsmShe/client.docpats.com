@@ -217,9 +217,17 @@ export function useJitsiCall(currentUserId) {
             displayName: peerInfo?.name || "User",
           },
           configOverwrite: {
-            prejoinPageEnabled: false, // сразу в комнату, без "Join meeting"
+            // [FIX] Отключаем prejoin ДВУМЯ способами — старый флаг
+            // prejoinPageEnabled в свежих версиях Jitsi игнорируется, нужен
+            // prejoinConfig.enabled. Без этого участник застревал на экране
+            // "Присоединиться к встрече" и НЕ входил в комнату → тишина.
+            prejoinPageEnabled: false,
+            prejoinConfig: { enabled: false },
             startWithAudioMuted: false,
             startWithVideoMuted: !isVideo, // аудиозвонок = видео замьючено
+            // [FIX] startAudioOnly УБРАН — на мобильных он ломал аудио-дорожку.
+            // Для аудиозвонка достаточно startWithVideoMuted: камера не
+            // транслируется, а звук идёт нормально (как в видеозвонке).
             disableDeepLinking: true,
             disableInviteFunctions: true,
             toolbarButtons: isVideo
