@@ -1,21 +1,28 @@
-import React, { useEffect, useRef } from "react";
+// client/src/pages/communication/components/CallUI.jsx
+//
+// ═══════════════════════════════════════════════════════════════════════════
+// CallUI — версия под JITSI (работает с useJitsiCall)
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Что изменилось относительно P2P-версии (v5):
+//   • Убраны <audio ref={remoteAudioRef}>, <video ref={remoteVideoRef}>,
+//     <video ref={localVideoRef}> и вся ручная play()-логика — теперь медиа
+//     рендерит Jitsi внутри своего контейнера (jitsiContainerRef).
+//   • Добавлен ОДИН контейнер <div ref={jitsiContainerRef}> — сюда
+//     useJitsiCall монтирует JitsiMeetExternalAPI.
+//       - АУДИОЗВОНОК: контейнер скрыт (visibility:hidden, 1px) — слышно звук,
+//         а сверху рисуется твой красивый UI (аватар/таймер/кнопки).
+//       - ВИДЕОЗВОНОК: контейнер на весь экран (Jitsi показывает видео),
+//         сверху — панель с именем/таймером и твои кнопки управления.
+//   • Кнопки mute/end/toggleVideo дёргают те же onToggleMute/onEnd/onToggleVideo,
+//     но в useJitsiCall они вызывают Jitsi API (executeCommand), а не P2P-треки.
+//
+// ⚠️ visibility:hidden (НЕ display:none) для скрытого контейнера — чтобы Jitsi
+//    продолжал прокачивать аудио. display:none может остановить медиа.
+//
+// Дизайн (стили, аватар, кнопки, backdrop) — сохранён 1:1 из v5.
 
-// ============================================================================
-// CallUI v5 — фикс невидимого видео
-// Изменения:
-//   • [v5-FIX 1] Добавлен `isolation: isolate` на .call-overlay — создаём
-//     чистый stacking context, чтобы z-index'ы не конфликтовали с внешним DOM.
-//   • [v5-FIX 2] Явные z-index'ы на ВСЕ слои (backdrop / video / dim / card / buttons / pip).
-//     Раньше backdrop с z-index:auto иногда перекрывал видео в зависимости от
-//     порядка в DOM — теперь порядок жёсткий.
-//   • [v5-FIX 3] GPU compositing для <video> (translateZ + will-change +
-//     backface-visibility) — форсит видео на отдельный compositor-слой,
-//     обходит баги CPU-рендера в некоторых сборках Chrome.
-//   • [v5-FIX 4] Замена `display: none` на `visibility: hidden + opacity: 0`
-//     для remote/local <video>. display:none ОСТАНАВЛИВАЕТ декодирование
-//     видео — после переключения в block нужно ждать новый I-frame, что
-//     приводит к чёрному экрану. visibility:hidden оставляет декодер активным.
-// ============================================================================
+import React from "react";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
@@ -29,7 +36,6 @@ const styles = `
     justify-content: center;
     font-family: 'Nunito', sans-serif;
     animation: callFadeIn 0.3s ease;
-    /* [v5-FIX 1] чистый stacking context — z-index дочерних не утечёт наружу */
     isolation: isolate;
   }
   @keyframes callFadeIn {
@@ -40,23 +46,27 @@ const styles = `
     position: absolute;
     inset: 0;
     background: linear-gradient(160deg, #0f2c3f 0%, #1a6b8a 50%, #0a1f2e 100%);
-    /* [v5-FIX 2] явный z-index самого нижнего слоя */
     z-index: 0;
   }
-  .call-remote-video {
+  /* Контейнер Jitsi — для видеозвонка на весь экран, для аудио скрыт */
+  .call-jitsi-container {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
     background: #000;
-    /* [v5-FIX 2] над backdrop, но под dim */
     z-index: 1;
-    /* [v5-FIX 3] GPU compositing — обход багов рендера видео */
-    transform: translateZ(0);
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-    transition: opacity 0.25s ease;
+    border: none;
+  }
+  .call-jitsi-container.audio-hidden {
+    width: 1px;
+    height: 1px;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    inset: auto;
+    left: 0;
+    bottom: 0;
   }
   .call-video-dim {
     position: absolute;
@@ -68,48 +78,11 @@ const styles = `
       transparent 60%,
       rgba(0,0,0,0.55) 100%
     );
-    /* [v5-FIX 2] над видео */
     z-index: 2;
     pointer-events: none;
   }
-  .call-local-video-wrap {
-    position: absolute;
-    bottom: 130px;
-    right: 20px;
-    /* [v5-FIX 2] picture-in-picture над всем медиа-слоем */
-    z-index: 4;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    border: 2px solid rgba(255,255,255,0.25);
-    width: 110px;
-    height: 160px;
-    background: #111;
-    cursor: pointer;
-    transition: transform 0.15s, opacity 0.25s;
-  }
-  .call-local-video-wrap:hover { transform: scale(1.04); }
-  .call-local-video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scaleX(-1) translateZ(0); /* [v5-FIX 3] GPU + зеркало */
-    will-change: transform;
-    backface-visibility: hidden;
-  }
-  .call-local-video-off {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #1a2a35;
-    color: rgba(255,255,255,0.4);
-    font-size: 28px;
-  }
   .call-card {
     position: relative;
-    /* [v5-FIX 2] карточка с информацией — над видео и dim */
     z-index: 3;
     display: flex;
     flex-direction: column;
@@ -127,6 +100,7 @@ const styles = `
     padding-top: 28px;
     padding-bottom: 20px;
     gap: 10px;
+    pointer-events: none;
   }
   .call-avatar-wrap {
     position: relative;
@@ -204,6 +178,7 @@ const styles = `
     margin-top: 24px;
     align-items: center;
     justify-content: center;
+    pointer-events: auto;
   }
   .call-overlay.has-video .call-buttons {
     position: fixed;
@@ -211,7 +186,6 @@ const styles = `
     left: 50%;
     transform: translateX(-50%);
     margin-top: 0;
-    /* [v5-FIX 2] кнопки управления — самый верхний слой */
     z-index: 5;
     background: rgba(0,0,0,0.35);
     backdrop-filter: blur(12px);
@@ -228,6 +202,7 @@ const styles = `
     border: none;
     cursor: pointer;
     transition: transform 0.15s;
+    pointer-events: auto;
   }
   .call-btn:hover { transform: scale(1.07); }
   .call-btn:active { transform: scale(0.96); }
@@ -283,21 +258,6 @@ const styles = `
     border-radius: 12px;
     margin-top: -6px;
   }
-  /* [MOBILE] подсказка тап для звука */
-  .call-tap-hint {
-    position: absolute;
-    bottom: 110px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 6;
-    font-size: 12px;
-    color: rgba(255,255,255,0.5);
-    background: rgba(0,0,0,0.3);
-    padding: 4px 12px;
-    border-radius: 20px;
-    pointer-events: none;
-    animation: callBlink 2s ease infinite;
-  }
 `;
 
 function formatStatus(callState, endedInfo) {
@@ -333,9 +293,7 @@ export default function CallUI({
   formattedDuration,
   durationSec,
   endedInfo,
-  remoteAudioRef,
-  localVideoRef,
-  remoteVideoRef,
+  jitsiContainerRef, // ← НОВОЕ: контейнер, куда useJitsiCall монтирует Jitsi
   onAccept,
   onDecline,
   onCancel,
@@ -343,48 +301,6 @@ export default function CallUI({
   onToggleMute,
   onToggleVideo,
 }) {
-  // [MOBILE FIX] при tap на overlay — пробуем play() audio/video
-  // iOS Safari блокирует autoplay без user gesture
-  const audioUnlockedRef = useRef(false);
-
-  useEffect(() => {
-    if (callState !== "active") return;
-
-    const tryPlayAll = () => {
-      if (audioUnlockedRef.current) return;
-      audioUnlockedRef.current = true;
-
-      if (remoteAudioRef.current && remoteAudioRef.current.paused) {
-        remoteAudioRef.current.play().catch(() => {});
-      }
-      if (remoteVideoRef.current && remoteVideoRef.current.paused) {
-        remoteVideoRef.current.play().catch(() => {});
-      }
-      if (localVideoRef.current && localVideoRef.current.paused) {
-        localVideoRef.current.play().catch(() => {});
-      }
-    };
-
-    // Сразу пробуем
-    tryPlayAll();
-
-    // На мобиле — повторяем при первом tap
-    document.addEventListener("touchstart", tryPlayAll, { once: true });
-    document.addEventListener("click", tryPlayAll, { once: true });
-
-    return () => {
-      document.removeEventListener("touchstart", tryPlayAll);
-      document.removeEventListener("click", tryPlayAll);
-    };
-  }, [callState, remoteAudioRef, remoteVideoRef, localVideoRef]);
-
-  // Сбрасываем unlock при новом звонке
-  useEffect(() => {
-    if (callState === "idle") {
-      audioUnlockedRef.current = false;
-    }
-  }, [callState]);
-
   if (callState === "idle") return null;
 
   const isRinging = callState === "ringing_in" || callState === "ringing_out";
@@ -392,46 +308,30 @@ export default function CallUI({
   const avatar = peerInfo?.avatar;
 
   const isVideoCall = callType === "video";
-  const showRemoteVideo = isVideoCall && callState === "active";
-  const showLocalVideo =
-    isVideoCall && callState === "active" && isVideoEnabled;
-
-  // [v5-FIX 4] вспомогательный объект — управляем видимостью через
-  // visibility/opacity, НЕ через display. display:none останавливает
-  // декодирование видео; visibility:hidden оставляет декодер активным.
-  const videoVisibilityStyle = (visible) => ({
-    visibility: visible ? "visible" : "hidden",
-    opacity: visible ? 1 : 0,
-    pointerEvents: visible ? "auto" : "none",
-  });
+  // Показываем Jitsi-видео на весь экран только в активном видеозвонке
+  const showVideoStage = isVideoCall && callState === "active";
 
   return (
     <>
       <style>{styles}</style>
 
-      {/* [MOBILE FIX] audio: muted=false + playsInline обязательны */}
-      <audio
-        ref={remoteAudioRef}
-        autoPlay
-        playsInline
-        muted={false}
-        style={{ display: "none" }}
-      />
-
-      <div className={`call-overlay${showRemoteVideo ? " has-video" : ""}`}>
+      <div className={`call-overlay${showVideoStage ? " has-video" : ""}`}>
         <div className="call-backdrop" />
 
-        {/* [v5-FIX 4] remoteVideo: ВСЕГДА в DOM и ВСЕГДА декодирует. 
-            Скрываем через visibility/opacity, не через display:none */}
-        <video
-          ref={remoteVideoRef}
-          autoPlay
-          playsInline
-          muted
-          className="call-remote-video"
-          style={videoVisibilityStyle(showRemoteVideo)}
+        {/*
+          КОНТЕЙНЕР JITSI.
+          - Видеозвонок active → на весь экран (класс без audio-hidden).
+          - Всё остальное (аудио, звонок ещё не активен) → audio-hidden:
+            1px + visibility:hidden. Jitsi качает звук, но не виден.
+          ⚠️ Контейнер ВСЕГДА в DOM пока звонок не idle, иначе useJitsiCall
+             не сможет в него смонтироваться.
+        */}
+        <div
+          ref={jitsiContainerRef}
+          className={`call-jitsi-container${showVideoStage ? "" : " audio-hidden"}`}
         />
-        {showRemoteVideo && <div className="call-video-dim" />}
+
+        {showVideoStage && <div className="call-video-dim" />}
 
         <div className="call-card">
           <div className={`call-avatar-wrap ${isRinging ? "ringing" : ""}`}>
@@ -446,7 +346,7 @@ export default function CallUI({
 
           <div className="call-name">{name}</div>
 
-          {isVideoCall && !showRemoteVideo && (
+          {isVideoCall && !showVideoStage && (
             <div className="call-type-badge">🎥 Видеозвонок</div>
           )}
 
@@ -528,29 +428,6 @@ export default function CallUI({
             )}
           </div>
         </div>
-
-        {/* [v5-FIX 4] localVideo: ВСЕГДА в DOM при isVideoCall.
-            Wrapper и видео скрываются visibility/opacity, не display */}
-        {isVideoCall && (
-          <div
-            className="call-local-video-wrap"
-            style={{
-              ...videoVisibilityStyle(
-                callState === "active" || callState === "ringing_out",
-              ),
-            }}
-          >
-            <video
-              ref={localVideoRef}
-              autoPlay
-              muted
-              playsInline
-              className="call-local-video"
-              style={videoVisibilityStyle(showLocalVideo)}
-            />
-            {!showLocalVideo && <div className="call-local-video-off">📷</div>}
-          </div>
-        )}
       </div>
     </>
   );

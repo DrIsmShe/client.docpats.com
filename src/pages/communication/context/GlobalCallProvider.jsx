@@ -1,19 +1,32 @@
 // client/src/pages/communication/context/GlobalCallProvider.jsx
 //
-// Оборачивает всё приложение — звонок работает на любой странице сайта.
-// Использование в App.jsx:
-//   import { GlobalCallProvider } from "./pages/communication/context/GlobalCallProvider";
+// ═══════════════════════════════════════════════════════════════════════════
+// GlobalCallProvider — версия под JITSI
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Оборачивает всё приложение — звонок работает на любой странице.
+// Использование в App.jsx (без изменений):
 //   <GlobalCallProvider currentUserId={currentUserId}>
 //     ... весь BrowserRouter и Routes ...
 //   </GlobalCallProvider>
 //
-// [VIDEO v4] Добавлены: callType, isVideoEnabled, localVideoRef, remoteVideoRef, toggleVideo
+// Что изменилось относительно P2P-версии:
+//   • useCall → useJitsiCall (медиа через Jitsi/JVB, обходит мобильный NAT)
+//   • Вместо remoteAudioRef/localVideoRef/remoteVideoRef в CallUI передаётся
+//     ОДИН jitsiContainerRef — контейнер, куда монтируется Jitsi.
+//
+// Публичный API контекста (useCallContext) — тот же: initiateCall, acceptCall,
+// callState, peerInfo и т.д. Поэтому ChatPage/ChatWindow/кнопки звонка
+// НЕ меняются — они продолжают вызывать call.initiateCall(...) как раньше.
+//
+// ⚠️ Старый useCall.js НЕ удаляется — остаётся для P2P/fallback/референса.
+//    Чтобы вернуться на P2P: поменять импорт обратно на useCall и вернуть
+//    старую версию CallUI.
 
 import { createContext, useContext } from "react";
-import { useCall } from "../hooks/useCall";
+import { useJitsiCall } from "../hooks/useJitsiCall";
 import CallUI from "../components/CallUI";
 
-// Контекст — позволяет любому компоненту вызвать initiateCall из любого места
 const CallContext = createContext(null);
 
 export function useCallContext() {
@@ -21,26 +34,24 @@ export function useCallContext() {
 }
 
 export function GlobalCallProvider({ currentUserId, children }) {
-  const call = useCall(currentUserId);
+  const call = useJitsiCall(currentUserId);
 
   const {
     callState,
-    callType, // [VIDEO]
+    callType,
     peerInfo,
     isMuted,
-    isVideoEnabled, // [VIDEO]
+    isVideoEnabled,
     formattedDuration,
     durationSec,
     endedInfo,
-    remoteAudioRef,
-    localVideoRef, // [VIDEO]
-    remoteVideoRef, // [VIDEO]
+    jitsiContainerRef, // ← вместо remoteAudioRef/localVideoRef/remoteVideoRef
     acceptCall,
     declineCall,
     cancelCall,
     endCall,
     toggleMute,
-    toggleVideo, // [VIDEO]
+    toggleVideo,
     callId,
   } = call;
 
@@ -59,9 +70,7 @@ export function GlobalCallProvider({ currentUserId, children }) {
         formattedDuration={formattedDuration}
         durationSec={durationSec}
         endedInfo={endedInfo}
-        remoteAudioRef={remoteAudioRef}
-        localVideoRef={localVideoRef}
-        remoteVideoRef={remoteVideoRef}
+        jitsiContainerRef={jitsiContainerRef}
         onAccept={() => acceptCall(callId)}
         onDecline={() => declineCall(callId)}
         onCancel={cancelCall}
