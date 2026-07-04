@@ -12,10 +12,12 @@
 //   Telemed (pat):   <JitsiRoom source="telemed-patient" id={sessionId} … />
 //   Appointment:     <JitsiRoom source="appointment" id={appointmentId} … />
 //
-// While idle it shows a start button; once active it embeds the Jitsi iframe
-// full-size in its container. Closing disposes the call.
+// While idle it shows a start button inside its parent container. Once the
+// call is ACTIVE the whole component pins itself to the viewport
+// (position: fixed, 100dvh) so the parent/modal size no longer matters, and
+// a Fullscreen-API button gives true immersive mode.
 
-import React from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import useVideoRoom from "../hooks/useVideoRoom";
 
 const LABELS = {
@@ -45,6 +47,10 @@ const LABELS = {
   },
 };
 
+function getFsElement() {
+  return document.fullscreenElement || document.webkitFullscreenElement || null;
+}
+
 export default function JitsiRoom({
   source = "dialog",
   id,
@@ -59,16 +65,84 @@ export default function JitsiRoom({
     displayName,
   });
 
-  const labels = LABELS[source] || LABELS.dialog;
+  const rootRef = useRef(null);
+  const [isFs, setIsFs] = useState(false);
 
-  const handleClose = () => {
+  const labels = LABELS[source] || LABELS.dialog;
+  const active = status === "active";
+
+  // ── Keep local state in sync with the browser's native fullscreen ──
+  useEffect(() => {
+    const onFsChange = () => setIsFs(Boolean(getFsElement()));
+    document.addEventListener("fullscreenchange", onFsChange);
+    document.addEventListener("webkitfullscreenchange", onFsChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", onFsChange);
+      document.removeEventListener("webkitfullscreenchange", onFsChange);
+    };
+  }, []);
+
+  const enterFullscreen = useCallback(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const req = el.requestFullscreen || el.webkitRequestFullscreen;
+    if (req) {
+      try {
+        const p = req.call(el);
+        if (p && typeof p.catch === "function") p.catch(() => {});
+      } catch (_) {
+        /* ignore */
+      }
+    }
+  }, []);
+
+  const exitFullscreen = useCallback(() => {
+    if (!getFsElement()) return;
+    const exit = document.exitFullscreen || document.webkitExitFullscreen;
+    if (exit) {
+      try {
+        const p = exit.call(document);
+        if (p && typeof p.catch === "function") p.catch(() => {});
+      } catch (_) {
+        /* ignore */
+      }
+    }
+  }, []);
+
+  const toggleFullscreen = useCallback(() => {
+    if (isFs) exitFullscreen();
+    else enterFullscreen();
+  }, [isFs, enterFullscreen, exitFullscreen]);
+
+  const handleClose = useCallback(() => {
+    exitFullscreen();
     stop();
     if (onClose) onClose();
-  };
+  }, [exitFullscreen, stop, onClose]);
 
-  return (
-    <div
-      style={{
+  // ── Lock body scroll while the fixed overlay covers the viewport ──
+  useEffect(() => {
+    if (!active) return undefined;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [active]);
+
+  const rootStyle = active
+    ? {
+        position: "fixed",
+        inset: 0,
+        width: "100vw",
+        height: "100dvh",
+        zIndex: 9999,
+        background: "#0b0f1a",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+      }
+    : {
         display: "flex",
         flexDirection: "column",
         width: "100%",
@@ -78,19 +152,36 @@ export default function JitsiRoom({
         borderRadius: 12,
         overflow: "hidden",
         position: "relative",
-      }}
-    >
+      };
+
+  const iconBtn = {
+    width: 34,
+    height: 34,
+    borderRadius: "50%",
+    border: "none",
+    background: "rgba(0,0,0,.45)",
+    color: "#fff",
+    fontSize: 16,
+    lineHeight: "34px",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  };
+
+  return (
+    <div ref={rootRef} style={rootStyle}>
       <div
         ref={containerRef}
         style={{
           flex: 1,
           width: "100%",
           height: "100%",
-          display: status === "active" ? "block" : "none",
+          display: active ? "block" : "none",
         }}
       />
 
-      {status !== "active" && (
+      {!active && (
         <div
           style={{
             flex: 1,
@@ -156,28 +247,36 @@ export default function JitsiRoom({
         </div>
       )}
 
-      <button
-        onClick={handleClose}
+      {/* Top-right controls */}
+      <div
         style={{
           position: "absolute",
           top: 10,
           right: 10,
           zIndex: 5,
-          width: 32,
-          height: 32,
-          borderRadius: "50%",
-          border: "none",
-          background: "rgba(0,0,0,.45)",
-          color: "#fff",
-          fontSize: 18,
-          lineHeight: "32px",
-          cursor: "pointer",
+          display: "flex",
+          gap: 8,
         }}
-        aria-label="Закрыть видео"
-        title="Закрыть"
       >
-        ×
-      </button>
+        {active && (
+          <button
+            onClick={toggleFullscreen}
+            style={iconBtn}
+            aria-label={isFs ? "Выйти из полного экрана" : "На весь экран"}
+            title={isFs ? "Выйти из полного экрана" : "На весь экран"}
+          >
+            {isFs ? "🗗" : "⛶"}
+          </button>
+        )}
+        <button
+          onClick={handleClose}
+          style={{ ...iconBtn, fontSize: 18 }}
+          aria-label="Закрыть видео"
+          title="Закрыть"
+        >
+          ×
+        </button>
+      </div>
     </div>
   );
 }
