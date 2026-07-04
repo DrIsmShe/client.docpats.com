@@ -22,7 +22,7 @@
 //
 // Дизайн (стили, аватар, кнопки, backdrop) — сохранён 1:1 из v5.
 
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
@@ -30,6 +30,13 @@ const styles = `
   .call-overlay {
     position: fixed;
     inset: 0;
+    /* [FULLSCREEN] Гарантируем весь экран на ВСЕХ устройствах.
+       На мобильных 100% высоты ломается из-за динамической адресной строки —
+       используем 100dvh (dynamic viewport height), с fallback на 100vh. */
+    width: 100vw;
+    width: 100dvw;
+    height: 100vh;
+    height: 100dvh;
     z-index: 9999;
     display: flex;
     align-items: center;
@@ -37,6 +44,7 @@ const styles = `
     font-family: 'Nunito', sans-serif;
     animation: callFadeIn 0.3s ease;
     isolation: isolate;
+    overflow: hidden;
   }
   @keyframes callFadeIn {
     from { opacity: 0; transform: scale(0.96); }
@@ -73,6 +81,13 @@ const styles = `
     background: #000;
     z-index: 1;
     border: none;
+  }
+  /* [FULLSCREEN] iframe, который Jitsi монтирует внутрь контейнера,
+     должен заполнять его целиком на всех устройствах */
+  .call-jitsi-container iframe {
+    width: 100% !important;
+    height: 100% !important;
+    border: none !important;
   }
   .call-video-dim {
     position: absolute;
@@ -239,6 +254,7 @@ const styles = `
   .btn-cancel  .call-btn-icon { background: #ef4444; box-shadow: 0 4px 20px rgba(239,68,68,0.5); }
   .btn-video     .call-btn-icon { background: rgba(255,255,255,0.15); }
   .btn-video.active .call-btn-icon { background: rgba(239,68,68,0.3); }
+  .btn-fullscreen .call-btn-icon { background: rgba(255,255,255,0.15); }
   .call-ended-info {
     font-size: 14px;
     color: rgba(255,255,255,0.55);
@@ -307,6 +323,48 @@ export default function CallUI({
   onToggleMute,
   onToggleVideo,
 }) {
+  // [FULLSCREEN] Хуки ДОЛЖНЫ быть до раннего return (правила хуков React).
+  const overlayRef = useRef(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Следим за выходом из fullscreen (Esc / системная кнопка) — синхронизируем иконку
+  useEffect(() => {
+    const onFsChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener("fullscreenchange", onFsChange);
+    // iOS Safari webkit-префикс
+    document.addEventListener("webkitfullscreenchange", onFsChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", onFsChange);
+      document.removeEventListener("webkitfullscreenchange", onFsChange);
+    };
+  }, []);
+
+  // [FULLSCREEN] Запрос/выход настоящего полноэкранного режима (Fullscreen API).
+  // Работает на десктопе и Android. На iOS Safari Fullscreen API для div
+  // ограничен — там overlay и так занимает весь экран (100dvh), кнопка просто
+  // не даст доп. эффекта, но и не сломает.
+  const toggleFullscreen = () => {
+    const el = overlayRef.current;
+    if (!el) return;
+    const isFs = document.fullscreenElement || document.webkitFullscreenElement;
+    if (!isFs) {
+      const req =
+        el.requestFullscreen ||
+        el.webkitRequestFullscreen ||
+        el.webkitRequestFullScreen ||
+        el.msRequestFullscreen;
+      if (req) req.call(el).catch(() => {});
+    } else {
+      const exit =
+        document.exitFullscreen ||
+        document.webkitExitFullscreen ||
+        document.msExitFullscreen;
+      if (exit) exit.call(document).catch(() => {});
+    }
+  };
+
   if (callState === "idle") return null;
 
   const isRinging = callState === "ringing_in" || callState === "ringing_out";
@@ -321,7 +379,10 @@ export default function CallUI({
     <>
       <style>{styles}</style>
 
-      <div className={`call-overlay${showVideoStage ? " has-video" : ""}`}>
+      <div
+        ref={overlayRef}
+        className={`call-overlay${showVideoStage ? " has-video" : ""}`}
+      >
         {/*
           backdrop.
           - Видеозвонок (showVideoStage) → backdrop снизу (z-index:0),
@@ -425,6 +486,21 @@ export default function CallUI({
                     </div>
                     <span className="call-btn-label">
                       {isVideoEnabled ? "Камера вкл" : "Камера выкл"}
+                    </span>
+                  </button>
+                )}
+
+                {/* [FULLSCREEN] Кнопка полноэкранного режима — только в видеозвонке */}
+                {isVideoCall && (
+                  <button
+                    className="call-btn btn-fullscreen"
+                    onClick={toggleFullscreen}
+                  >
+                    <div className="call-btn-icon">
+                      {isFullscreen ? "🗗" : "⛶"}
+                    </div>
+                    <span className="call-btn-label">
+                      {isFullscreen ? "Свернуть" : "Во весь экран"}
                     </span>
                   </button>
                 )}
