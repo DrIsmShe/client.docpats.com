@@ -12,7 +12,6 @@ const ROLES = [
   "pharmacist",
   "marketer",
   "manager",
-  "admin",
 ];
 
 const LANGUAGE_CODES = ["ru", "en", "tr", "az", "ar"];
