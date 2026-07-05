@@ -1,4 +1,19 @@
 // client/src/pages/clinic/ClinicDashboardPage/ClinicDashboardPage.jsx
+//
+// PERMISSION-GATED DASHBOARD.
+//   Every stat card and quick-action is shown only when the current
+//   member has READ permission on the underlying resource. Permissions
+//   come from getClinicMe() (meRes.permissions) — the same ROLE_PERMISSIONS
+//   the backend enforces — so the dashboard never offers a tile that would
+//   403 on click.
+//
+//   Resource keys (server RESOURCES): staff, department, room, equipment,
+//   knowledge, consilium, telemed, patient, clinic. "services" has no own
+//   resource → tied to `clinic`. Invitations use canInvite (staff_invite).
+//
+//   owner/admin have full permissions → they see everything as before.
+//   nurse/receptionist see only their slice (e.g. patients + read-only
+//   org structure), NOT the management tiles (team, services, invites).
 
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link, useOutletContext } from "react-router-dom";
@@ -142,6 +157,7 @@ export default function ClinicDashboardPage() {
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   if (loading) {
@@ -166,8 +182,18 @@ export default function ClinicDashboardPage() {
 
   const tier = clinic?.tier || "starter";
   const myRole = layoutContext?.role || "member";
+
+  // ─── Permission helper ───
+  // READ access on a resource. owner/admin have full ROLE_PERMISSIONS so
+  // this is true for them across the board; nurse/receptionist only get
+  // their allowed slice. Unknown/missing resource → false (hidden).
+  const canRead = (resource) => !!permissions?.[resource]?.read;
+
   const canInvite =
-    !!permissions.canInviteStaff || myRole === "owner" || myRole === "admin";
+    !!permissions?.staff_invite?.write ||
+    !!permissions.canInviteStaff ||
+    myRole === "owner" ||
+    myRole === "admin";
 
   const formatDate = (d) => {
     if (!d) return "";
@@ -199,74 +225,92 @@ export default function ClinicDashboardPage() {
       </header>
 
       <section className="clinic-dashboard-stats">
-        <StatCard
-          icon="👥"
-          label={t("dashboard.stats.teamMembers")}
-          value={staff.length}
-          link="/clinic/staff"
-        />
-        <StatCard
-          icon="🏥"
-          label={t("dashboard.stats.departments", {
-            defaultValue: "Отделения",
-          })}
-          value={departments.length}
-          link="/clinic/departments"
-        />
-        <StatCard
-          icon="🚪"
-          label={t("dashboard.stats.rooms", {
-            defaultValue: "Кабинеты",
-          })}
-          value={rooms.length}
-          link="/clinic/rooms"
-        />
-        <StatCard
-          icon="🩻"
-          label={t("dashboard.stats.equipment", {
-            defaultValue: "Оборудование",
-          })}
-          value={equipment.length}
-          link="/clinic/equipment"
-        />
-        <StatCard
-          icon="📚"
-          label={t("dashboard.stats.knowledge", {
-            defaultValue: "База знаний",
-          })}
-          value={knowledge.length}
-          link="/clinic/knowledge"
-        />
-        <StatCard
-          icon="🧑‍⚕️"
-          label={t("dashboard.stats.consilia", {
-            defaultValue: "Консилиумы",
-          })}
-          value={consilia.length}
-          link="/clinic/consilia"
-        />
-        <StatCard
-          icon="📹"
-          label={t("dashboard.stats.telemed", {
-            defaultValue: "Телемедицина",
-          })}
-          value={telemed.length}
-          link="/clinic/telemed"
-        />
-        <StatCard
-          icon="💲"
-          label={t("dashboard.stats.services", {
-            defaultValue: "Услуги",
-          })}
-          value={services.length}
-          link="/clinic/services"
-        />
-        <StatCard
-          icon="✉️"
-          label={t("dashboard.stats.pendingInvitations")}
-          value={invitations.length}
-          link={canInvite ? "/clinic/staff" : null}
-        />
+        {canRead("staff") && (
+          <StatCard
+            icon="👥"
+            label={t("dashboard.stats.teamMembers")}
+            value={staff.length}
+            link="/clinic/staff"
+          />
+        )}
+        {canRead("department") && (
+          <StatCard
+            icon="🏥"
+            label={t("dashboard.stats.departments", {
+              defaultValue: "Отделения",
+            })}
+            value={departments.length}
+            link="/clinic/departments"
+          />
+        )}
+        {canRead("room") && (
+          <StatCard
+            icon="🚪"
+            label={t("dashboard.stats.rooms", {
+              defaultValue: "Кабинеты",
+            })}
+            value={rooms.length}
+            link="/clinic/rooms"
+          />
+        )}
+        {canRead("equipment") && (
+          <StatCard
+            icon="🩻"
+            label={t("dashboard.stats.equipment", {
+              defaultValue: "Оборудование",
+            })}
+            value={equipment.length}
+            link="/clinic/equipment"
+          />
+        )}
+        {canRead("knowledge") && (
+          <StatCard
+            icon="📚"
+            label={t("dashboard.stats.knowledge", {
+              defaultValue: "База знаний",
+            })}
+            value={knowledge.length}
+            link="/clinic/knowledge"
+          />
+        )}
+        {canRead("consilium") && (
+          <StatCard
+            icon="🧑‍⚕️"
+            label={t("dashboard.stats.consilia", {
+              defaultValue: "Консилиумы",
+            })}
+            value={consilia.length}
+            link="/clinic/consilia"
+          />
+        )}
+        {canRead("telemed") && (
+          <StatCard
+            icon="📹"
+            label={t("dashboard.stats.telemed", {
+              defaultValue: "Телемедицина",
+            })}
+            value={telemed.length}
+            link="/clinic/telemed"
+          />
+        )}
+        {canRead("clinic") && (
+          <StatCard
+            icon="💲"
+            label={t("dashboard.stats.services", {
+              defaultValue: "Услуги",
+            })}
+            value={services.length}
+            link="/clinic/services"
+          />
+        )}
+        {canInvite && (
+          <StatCard
+            icon="✉️"
+            label={t("dashboard.stats.pendingInvitations")}
+            value={invitations.length}
+            link="/clinic/staff"
+          />
+        )}
         <StatCard
           icon="📅"
           label={t("dashboard.stats.subscription")}
@@ -287,130 +331,161 @@ export default function ClinicDashboardPage() {
               <span className="clinic-dashboard-action-arrow">→</span>
             </Link>
           )}
-          <Link to="/clinic/public-page" className="clinic-dashboard-action">
-            <span className="clinic-dashboard-action-icon">🌐</span>
-            <span className="clinic-dashboard-action-label">
-              {t("dashboard.actions.publicPage", {
-                defaultValue: "Публичная страница",
+          {canRead("clinic") && (
+            <Link to="/clinic/public-page" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">🌐</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.publicPage", {
+                  defaultValue: "Публичная страница",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
+          {canRead("staff") && (
+            <Link to="/clinic/staff" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">👥</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.viewTeam")}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
+          {canRead("patient") && (
+            <Link to="/clinic/patients" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">🩺</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.viewPatients")}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
+          {canRead("department") && (
+            <Link to="/clinic/departments" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">🏥</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.viewDepartments", {
+                  defaultValue: "Отделения",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
+          {canRead("room") && (
+            <Link to="/clinic/rooms" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">🚪</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.viewRooms", {
+                  defaultValue: "Кабинеты",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
+          {canRead("equipment") && (
+            <Link to="/clinic/equipment" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">🩻</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.viewEquipment", {
+                  defaultValue: "Оборудование",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
+          {canRead("knowledge") && (
+            <Link to="/clinic/knowledge" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">📚</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.viewKnowledge", {
+                  defaultValue: "База знаний",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
+          {canRead("knowledge") && (
+            <Link
+              to="/clinic/announcements"
+              className="clinic-dashboard-action"
+            >
+              {t("dashboard.actions.viewAnnouncements", {
+                defaultValue: "Объявления",
               })}
-            </span>
-            <span className="clinic-dashboard-action-arrow">→</span>
-          </Link>
-          <Link to="/clinic/staff" className="clinic-dashboard-action">
-            <span className="clinic-dashboard-action-icon">👥</span>
-            <span className="clinic-dashboard-action-label">
-              {t("dashboard.actions.viewTeam")}
-            </span>
-            <span className="clinic-dashboard-action-arrow">→</span>
-          </Link>
-          <Link to="/clinic/patients" className="clinic-dashboard-action">
-            <span className="clinic-dashboard-action-icon">🩺</span>
-            <span className="clinic-dashboard-action-label">
-              {t("dashboard.actions.viewPatients")}
-            </span>
-            <span className="clinic-dashboard-action-arrow">→</span>
-          </Link>
-          <Link to="/clinic/departments" className="clinic-dashboard-action">
-            <span className="clinic-dashboard-action-icon">🏥</span>
-            <span className="clinic-dashboard-action-label">
-              {t("dashboard.actions.viewDepartments", {
-                defaultValue: "Отделения",
-              })}
-            </span>
-            <span className="clinic-dashboard-action-arrow">→</span>
-          </Link>
-          <Link to="/clinic/rooms" className="clinic-dashboard-action">
-            <span className="clinic-dashboard-action-icon">🚪</span>
-            <span className="clinic-dashboard-action-label">
-              {t("dashboard.actions.viewRooms", {
-                defaultValue: "Кабинеты",
-              })}
-            </span>
-            <span className="clinic-dashboard-action-arrow">→</span>
-          </Link>
-          <Link to="/clinic/equipment" className="clinic-dashboard-action">
-            <span className="clinic-dashboard-action-icon">🩻</span>
-            <span className="clinic-dashboard-action-label">
-              {t("dashboard.actions.viewEquipment", {
-                defaultValue: "Оборудование",
-              })}
-            </span>
-            <span className="clinic-dashboard-action-arrow">→</span>
-          </Link>
-          <Link to="/clinic/knowledge" className="clinic-dashboard-action">
-            <span className="clinic-dashboard-action-icon">📚</span>
-            <span className="clinic-dashboard-action-label">
-              {t("dashboard.actions.viewKnowledge", {
-                defaultValue: "База знаний",
-              })}
-            </span>
-            <span className="clinic-dashboard-action-arrow">→</span>
-          </Link>
-          <Link to="/clinic/announcements" className="clinic-dashboard-action">
-            {t("dashboard.actions.viewAnnouncements", {
-              defaultValue: "Объявления",
-            })}
-          </Link>
-          <Link to="/clinic/consilia" className="clinic-dashboard-action">
-            <span className="clinic-dashboard-action-icon">🧑‍⚕️</span>
-            <span className="clinic-dashboard-action-label">
-              {t("dashboard.actions.viewConsilia", {
-                defaultValue: "Консилиумы",
-              })}
-            </span>
-            <span className="clinic-dashboard-action-arrow">→</span>
-          </Link>
-          <Link to="/clinic/telemed" className="clinic-dashboard-action">
-            <span className="clinic-dashboard-action-icon">📹</span>
-            <span className="clinic-dashboard-action-label">
-              {t("dashboard.actions.viewTelemed", {
-                defaultValue: "Телемедицина",
-              })}
-            </span>
-            <span className="clinic-dashboard-action-arrow">→</span>
-          </Link>
-          <Link to="/clinic/services" className="clinic-dashboard-action">
-            <span className="clinic-dashboard-action-icon">💲</span>
-            <span className="clinic-dashboard-action-label">
-              {t("dashboard.actions.viewServices", {
-                defaultValue: "Услуги и прайс",
-              })}
-            </span>
-            <span className="clinic-dashboard-action-arrow">→</span>
-          </Link>
-        </div>
-      </section>
-
-      <section className="clinic-dashboard-section">
-        <div className="clinic-dashboard-section-header">
-          <h2>{t("dashboard.team")}</h2>
-          {staff.length > 5 && (
-            <Link to="/clinic/staff" className="clinic-dashboard-section-link">
-              {t("dashboard.viewAll", { count: staff.length })}
+            </Link>
+          )}
+          {canRead("consilium") && (
+            <Link to="/clinic/consilia" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">🧑‍⚕️</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.viewConsilia", {
+                  defaultValue: "Консилиумы",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
+          {canRead("telemed") && (
+            <Link to="/clinic/telemed" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">📹</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.viewTelemed", {
+                  defaultValue: "Телемедицина",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
+          {canRead("clinic") && (
+            <Link to="/clinic/services" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">💲</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.viewServices", {
+                  defaultValue: "Услуги и прайс",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
             </Link>
           )}
         </div>
-        {staff.length === 0 ? (
-          <div className="clinic-dashboard-empty">
-            <p>{t("dashboard.noTeamMembers")}</p>
-            {canInvite && (
-              <Link to="/clinic/staff" className="clinic-dashboard-empty-cta">
-                {t("dashboard.inviteFirstMember")}
+      </section>
+
+      {/* Team section — only for members who can read staff */}
+      {canRead("staff") && (
+        <section className="clinic-dashboard-section">
+          <div className="clinic-dashboard-section-header">
+            <h2>{t("dashboard.team")}</h2>
+            {staff.length > 5 && (
+              <Link
+                to="/clinic/staff"
+                className="clinic-dashboard-section-link"
+              >
+                {t("dashboard.viewAll", { count: staff.length })}
               </Link>
             )}
           </div>
-        ) : (
-          <div className="clinic-dashboard-team-list">
-            {staff.slice(0, 5).map((m) => (
-              <TeamRow
-                key={getMembershipId(m) || `${m.userId}-${m.role}`}
-                member={m}
-                t={t}
-              />
-            ))}
-          </div>
-        )}
-      </section>
+          {staff.length === 0 ? (
+            <div className="clinic-dashboard-empty">
+              <p>{t("dashboard.noTeamMembers")}</p>
+              {canInvite && (
+                <Link to="/clinic/staff" className="clinic-dashboard-empty-cta">
+                  {t("dashboard.inviteFirstMember")}
+                </Link>
+              )}
+            </div>
+          ) : (
+            <div className="clinic-dashboard-team-list">
+              {staff.slice(0, 5).map((m) => (
+                <TeamRow
+                  key={getMembershipId(m) || `${m.userId}-${m.role}`}
+                  member={m}
+                  t={t}
+                />
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
       {invitations.length > 0 && canInvite && (
         <section className="clinic-dashboard-section">
@@ -433,44 +508,50 @@ export default function ClinicDashboardPage() {
         </section>
       )}
 
-      <section className="clinic-dashboard-section">
-        <h2>{t("dashboard.clinicDetails")}</h2>
-        <div className="clinic-dashboard-details">
-          <DetailRow label={t("dashboard.details.name")} value={clinic.name} />
-          <DetailRow
-            label={t("dashboard.details.slug")}
-            value={clinic.slug || "—"}
-          />
-          <DetailRow
-            label={t("dashboard.details.timezone")}
-            value={clinic.timezone || "—"}
-          />
-          <DetailRow
-            label={t("dashboard.details.defaultCurrency")}
-            value={clinic.defaultCurrency || "—"}
-          />
-          <DetailRow
-            label={t("dashboard.details.defaultLanguage")}
-            value={clinic.defaultLanguage || "—"}
-          />
-          <DetailRow
-            label={t("dashboard.details.tier")}
-            value={t(`tiers.${tier}`, { defaultValue: tier })}
-          />
-          {clinic.contacts?.phone && (
+      {/* Clinic details — only for members who can read clinic settings */}
+      {canRead("clinic") && (
+        <section className="clinic-dashboard-section">
+          <h2>{t("dashboard.clinicDetails")}</h2>
+          <div className="clinic-dashboard-details">
             <DetailRow
-              label={t("dashboard.details.phone")}
-              value={clinic.contacts.phone}
+              label={t("dashboard.details.name")}
+              value={clinic.name}
             />
-          )}
-          {clinic.contacts?.email && (
             <DetailRow
-              label={t("dashboard.details.email")}
-              value={clinic.contacts.email}
+              label={t("dashboard.details.slug")}
+              value={clinic.slug || "—"}
             />
-          )}
-        </div>
-      </section>
+            <DetailRow
+              label={t("dashboard.details.timezone")}
+              value={clinic.timezone || "—"}
+            />
+            <DetailRow
+              label={t("dashboard.details.defaultCurrency")}
+              value={clinic.defaultCurrency || "—"}
+            />
+            <DetailRow
+              label={t("dashboard.details.defaultLanguage")}
+              value={clinic.defaultLanguage || "—"}
+            />
+            <DetailRow
+              label={t("dashboard.details.tier")}
+              value={t(`tiers.${tier}`, { defaultValue: tier })}
+            />
+            {clinic.contacts?.phone && (
+              <DetailRow
+                label={t("dashboard.details.phone")}
+                value={clinic.contacts.phone}
+              />
+            )}
+            {clinic.contacts?.email && (
+              <DetailRow
+                label={t("dashboard.details.email")}
+                value={clinic.contacts.email}
+              />
+            )}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
