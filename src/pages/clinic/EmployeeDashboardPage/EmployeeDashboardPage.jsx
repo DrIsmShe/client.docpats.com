@@ -1,7 +1,7 @@
 // client/src/pages/clinic/EmployeeDashboardPage/EmployeeDashboardPage.jsx
 
 import React from "react";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./employeeDashboardPage.css";
 
@@ -30,6 +30,11 @@ export default function EmployeeDashboardPage() {
 
   const tier = clinic?.tier || "starter";
   const roleLabel = t(`roles.${role}`, { defaultValue: role });
+
+  // Roles that are allowed to manage patients from the employee zone.
+  // Backend enforces this too (PATIENT: RW for receptionist); this only
+  // controls whether the shortcut is shown.
+  const canManagePatients = ["receptionist", "nurse", "admin"].includes(role);
 
   return (
     <div className="employee-dashboard">
@@ -124,15 +129,32 @@ export default function EmployeeDashboardPage() {
               {t("employeeDashboard.actions.scheduleSoon")}
             </span>
           </button>
-          <button
-            className="employee-dashboard-action employee-dashboard-action-disabled"
-            disabled
-          >
-            <span className="employee-dashboard-action-icon">👥</span>
-            <span className="employee-dashboard-action-label">
-              {t("employeeDashboard.actions.patientsSoon")}
-            </span>
-          </button>
+
+          {/* Patients — now LIVE for roles with PATIENT access. */}
+          {canManagePatients ? (
+            <Link
+              to="/clinic/employee/patients"
+              className="employee-dashboard-action"
+            >
+              <span className="employee-dashboard-action-icon">👥</span>
+              <span className="employee-dashboard-action-label">
+                {t("employeeDashboard.actions.patients", {
+                  defaultValue: "Пациенты",
+                })}
+              </span>
+            </Link>
+          ) : (
+            <button
+              className="employee-dashboard-action employee-dashboard-action-disabled"
+              disabled
+            >
+              <span className="employee-dashboard-action-icon">👥</span>
+              <span className="employee-dashboard-action-label">
+                {t("employeeDashboard.actions.patientsSoon")}
+              </span>
+            </button>
+          )}
+
           <button
             className="employee-dashboard-action employee-dashboard-action-disabled"
             disabled

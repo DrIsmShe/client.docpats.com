@@ -51,7 +51,7 @@
 //         straight to onComplete().
 
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   searchUsersForLink,
@@ -80,7 +80,7 @@ export default function PatientRegistrationWizard({ onComplete, onCancel }) {
   const navigate = useNavigate();
   const layoutContext = useOutletContext();
   const clinic = layoutContext?.clinic || null;
-
+  const location = useLocation();
   // ─── Wizard state ───
   const [step, setStep] = useState(1); // 1=search, 2=form, 3=confirm
 
@@ -468,10 +468,16 @@ export default function PatientRegistrationWizard({ onComplete, onCancel }) {
   function handleOpenExisting() {
     const id = dedupConflict?.existingPatientId;
     if (!id) return;
-    // Navigate away from wizard to existing patient detail.
-    navigate(`/clinic/patients/${id}`);
+    const isEmployee =
+      layoutContext?.kind === "employee" ||
+      location.pathname.startsWith("/clinic/employee");
+    // Employee zone has no patient detail page yet — return to the list.
+    if (isEmployee) {
+      navigate("/clinic/employee/patients");
+    } else {
+      navigate(`/clinic/patients/${id}`);
+    }
   }
-
   // Human label for a department id (used in the Step 3 summary).
   function departmentLabel(id) {
     if (!id) return null;

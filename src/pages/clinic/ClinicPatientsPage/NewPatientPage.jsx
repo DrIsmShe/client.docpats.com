@@ -1,19 +1,24 @@
 // client/src/pages/clinic/ClinicPatientsPage/NewPatientPage.jsx
 //
 // Standalone page hosting the PatientRegistrationWizard.
-// Route: /clinic/patients/new
+// Routes:
+//   /clinic/patients/new            → owner/admin zone
+//   /clinic/employee/patients/new   → employee (receptionist) zone
 //
-// Layout matches other clinic pages (header + back link + content shell)
-// so the wizard sits naturally inside ClinicLayout's outlet.
-//
-// On success the wizard calls onComplete(result) — we forward the user
-// to the patient detail page. If the result includes provisionalCredentials
-// the wizard itself renders the "card view" step BEFORE calling onComplete,
-// so by the time we navigate, the receptionist has already had a chance
-// to print/copy.
+// ZONE-AWARE: detects owner vs employee from the layout context
+// (`kind === "employee"`) with a pathname fallback, and builds all
+// navigation from `basePath`. In employee mode there is NO patient
+// detail page yet (it exposes the medical record, which receptionists
+// can't access), so after a successful create we return to the LIST
+// instead of the detail page.
 
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useOutletContext,
+  useLocation,
+} from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import PatientRegistrationWizard from "./PatientRegistrationWizard";
 import "./newPatientPage.css";
@@ -21,26 +26,40 @@ import "./newPatientPage.css";
 export default function NewPatientPage() {
   const { t } = useTranslation("clinic");
   const navigate = useNavigate();
+  const layoutContext = useOutletContext();
+  const location = useLocation();
+
+  const isEmployee =
+    layoutContext?.kind === "employee" ||
+    location.pathname.startsWith("/clinic/employee");
+  const basePath = isEmployee ? "/clinic/employee" : "/clinic";
 
   function handleComplete(result) {
     // Wizard returns either the patient object (no provisional) or
     // { patient, provisionalCredentials } (provisional flow).
     const patient = result?.patient || result;
+
+    // Employee zone: no detail page — always return to the list.
+    if (isEmployee) {
+      navigate(`${basePath}/patients`, { replace: true });
+      return;
+    }
+
     if (patient?._id) {
-      navigate(`/clinic/patients/${patient._id}`, { replace: true });
+      navigate(`${basePath}/patients/${patient._id}`, { replace: true });
     } else {
-      navigate("/clinic/patients", { replace: true });
+      navigate(`${basePath}/patients`, { replace: true });
     }
   }
 
   function handleCancel() {
-    navigate("/clinic/patients");
+    navigate(`${basePath}/patients`);
   }
 
   return (
     <div className="new-patient-page">
       <div className="new-patient-page-header">
-        <Link to="/clinic/patients" className="staff-page-back">
+        <Link to={`${basePath}/patients`} className="staff-page-back">
           {t("patients.backToList", { defaultValue: "← К списку пациентов" })}
         </Link>
         <h1>

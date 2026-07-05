@@ -610,13 +610,7 @@ function App() {
             />
 
             <Route path="/clinic/staff-login" element={<EmployeeLoginPage />} />
-            {/* ─── CLINIC MODULE — Employee authenticated zone ─── */}
-            <Route
-              path="/clinic/employee"
-              element={<ClinicLayout employeeMode={true} />}
-            >
-              <Route index element={<EmployeeDashboardPage />} />
-            </Route>
+
             {/* ─── CLINIC MODULE — DocPats user authenticated zone ─── */}
             <Route path="/clinic" element={<ClinicLayout />}>
               <Route index element={<ClinicHubPage />} />
@@ -662,11 +656,14 @@ function App() {
                 element={<ClinicPatientDetailPage />}
               />
             </Route>
+            {/* ─── CLINIC MODULE — Employee authenticated zone ─── */}
             <Route
               path="/clinic/employee"
-              element={<ClinicLayout employeeMode />}
+              element={<ClinicLayout employeeMode={true} />}
             >
-              {/* <Route index element={<EmployeeDashboardPage />} /> */}
+              <Route index element={<EmployeeDashboardPage />} />
+              <Route path="patients" element={<ClinicPatientsPage />} />
+              <Route path="patients/new" element={<NewPatientPage />} />
             </Route>
             {/* Здесь перечислены все маршруты для раздела ПОЛИКЛИНИКА */}
             <Route path="/dp" element={<MainPolyclinicLayout />}>

@@ -2,32 +2,38 @@
 //
 // Patient management page for the current clinic.
 //
+// ZONE-AWARE (owner vs employee):
+//   The same component is mounted under TWO route trees:
+//     /clinic/patients            → owner/admin zone  (ClinicLayout)
+//     /clinic/employee/patients   → employee zone     (ClinicLayout employeeMode)
+//   It detects the zone from the layout context (`kind === "employee"`)
+//   with a pathname fallback, and builds ALL internal links from a
+//   computed `basePath`. This keeps the receptionist inside the employee
+//   zone instead of bouncing them to the owner zone (which would 401 →
+//   /login because they have session.employeeId, not session.userId).
+//
+//   In employee mode, patient rows are NOT clickable — the detail page
+//   pulls the medical record (encounters/allergies/prescriptions) which
+//   the receptionist role has NO permission for (would 403). The detail
+//   page will be adapted for employees in a separate step.
+//
 // Features:
 //   - List patients (paginated, cursor-based)
 //   - Search by phone OR email OR lastName (debounced 400ms)
-//   - "Add patient" button routes to the registration wizard at
-//     /clinic/patients/new — this is the ONLY entry point for creating
-//     patients. The previous inline "quick-create" form was removed
-//     because it bypassed the User-system check (no search for existing
-//     DocPats users, no provisional account, no audit trail of "linked
-//     vs fresh"). The wizard provides:
-//       Step 1 — search User collection (excludes doctors)
-//       Step 2 — confirm / edit form
-//       Step 3 — optional provisional User creation + QR card
-//     This ensures every ClinicPatient has the chance to be linked to
-//     an existing DocPats account instead of becoming a duplicate.
+//   - "Add patient" button routes to the registration wizard.
 //   - Delete patient (soft) with confirmation
 //   - Show "created by" line under each patient name
-//   - Clickable rows → patient detail page
 //
 // Permissions enforced server-side, but we hide write/delete buttons
 // when role doesn't have permission to keep UX clean.
-//
-// Reuses the same .staff-page-* / .staff-row-* CSS tokens used by
-// ClinicStaffPage for visual consistency.
 
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { Link, useOutletContext, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useOutletContext,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   listPatients,
@@ -42,6 +48,18 @@ export default function ClinicPatientsPage() {
   const { t, i18n } = useTranslation("clinic");
   const layoutContext = useOutletContext();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // ─── Zone detection (owner vs employee) ───
+  // Employee layout injects { kind: "employee", ... }; owner layout does not.
+  // Pathname fallback covers any context shape drift.
+  const isEmployee =
+    layoutContext?.kind === "employee" ||
+    location.pathname.startsWith("/clinic/employee");
+
+  const basePath = isEmployee ? "/clinic/employee" : "/clinic";
+  const loginPath = isEmployee ? "/clinic/staff-login" : "/login";
+  const dashboardPath = isEmployee ? "/clinic/employee" : "/clinic/dashboard";
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -55,6 +73,8 @@ export default function ClinicPatientsPage() {
 
   const [actionLoading, setActionLoading] = useState({});
 
+  // Employee context carries `role` directly; owner context carries
+  // role + permissions. Receptionist gets write via role fallback.
   const myRole = layoutContext?.role || "member";
   const permissions = layoutContext?.permissions || {};
   const canWrite =
@@ -74,14 +94,14 @@ export default function ClinicPatientsPage() {
     } catch (err) {
       console.error("Failed to load patients:", err);
       if (err.response?.status === 401) {
-        navigate("/login", { replace: true });
+        navigate(loginPath, { replace: true });
         return;
       }
       setError(err.message || "Failed to load patients");
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate]);
+  }, [navigate, loginPath]);
 
   useEffect(() => {
     loadList();
@@ -191,7 +211,7 @@ export default function ClinicPatientsPage() {
     <div className="staff-page">
       <div className="staff-page-header">
         <div className="staff-page-header-left">
-          <Link to="/clinic/dashboard" className="staff-page-back">
+          <Link to={dashboardPath} className="staff-page-back">
             {t("patients.back")}
           </Link>
           <h1>{t("patients.title")}</h1>
@@ -199,15 +219,10 @@ export default function ClinicPatientsPage() {
         </div>
         {canWrite && (
           <div className="staff-page-header-actions">
-            {/*
-              "+ Add patient" is now the ONLY way to create a patient
-              and always goes through the full registration wizard at
-              /clinic/patients/new. The old inline quick-create form
-              has been removed — it bypassed User-search and produced
-              orphan ClinicPatient records with no path to becoming a
-              real DocPats account.
-            */}
-            <Link to="/clinic/patients/new" className="staff-page-btn-primary">
+            <Link
+              to={`${basePath}/patients/new`}
+              className="staff-page-btn-primary"
+            >
               {t("patients.addPatient", {
                 defaultValue: "+ Добавить пациента",
               })}
@@ -252,7 +267,7 @@ export default function ClinicPatientsPage() {
             </p>
             {canWrite && searchQuery.trim().length === 0 && (
               <Link
-                to="/clinic/patients/new"
+                to={`${basePath}/patients/new`}
                 className="staff-page-btn-primary"
               >
                 {t("patients.addFirstPatient", {
@@ -273,6 +288,8 @@ export default function ClinicPatientsPage() {
                 displayName={patientDisplayName(p)}
                 formatDob={formatDob}
                 t={t}
+                basePath={basePath}
+                clickable={!isEmployee}
               />
             ))}
           </div>
@@ -292,43 +309,61 @@ function PatientRow({
   displayName,
   formatDob,
   t,
+  basePath,
+  clickable,
 }) {
   const initial = (displayName[0] || "?").toUpperCase();
   const dob = formatDob(patient.dateOfBirth);
 
+  // Inner content is identical in both modes; only the wrapper differs
+  // (clickable <Link> for owner, plain <div> for employee — no detail
+  // page for receptionists yet, since it exposes the medical record).
+  const inner = (
+    <>
+      <div className="staff-row-avatar patient-avatar">{initial}</div>
+      <div className="staff-row-info">
+        <div className="staff-row-name">{displayName}</div>
+        {patient.createdByName && (
+          <div className="patient-created-by">
+            {t("patients.createdBy")}: {patient.createdByName}
+          </div>
+        )}
+        <div className="staff-row-email patient-meta">
+          {patient.phone && <span>{patient.phone}</span>}
+          {patient.phone && (patient.email || dob) && (
+            <span className="patient-meta-sep">·</span>
+          )}
+          {patient.email && <span>{patient.email}</span>}
+          {patient.email && dob && <span className="patient-meta-sep">·</span>}
+          {dob && (
+            <span>
+              {t("patients.dob")}: {dob}
+            </span>
+          )}
+          {!patient.phone && !patient.email && !dob && (
+            <span>{t("patients.noContact")}</span>
+          )}
+        </div>
+      </div>
+    </>
+  );
+
   return (
     <div
-      className={`staff-row patient-row-clickable ${isLoading ? "is-loading" : ""}`}
+      className={`staff-row ${clickable ? "patient-row-clickable" : ""} ${
+        isLoading ? "is-loading" : ""
+      }`}
     >
-      <Link to={`/clinic/patients/${patient._id}`} className="patient-row-link">
-        <div className="staff-row-avatar patient-avatar">{initial}</div>
-        <div className="staff-row-info">
-          <div className="staff-row-name">{displayName}</div>
-          {patient.createdByName && (
-            <div className="patient-created-by">
-              {t("patients.createdBy")}: {patient.createdByName}
-            </div>
-          )}
-          <div className="staff-row-email patient-meta">
-            {patient.phone && <span>{patient.phone}</span>}
-            {patient.phone && (patient.email || dob) && (
-              <span className="patient-meta-sep">·</span>
-            )}
-            {patient.email && <span>{patient.email}</span>}
-            {patient.email && dob && (
-              <span className="patient-meta-sep">·</span>
-            )}
-            {dob && (
-              <span>
-                {t("patients.dob")}: {dob}
-              </span>
-            )}
-            {!patient.phone && !patient.email && !dob && (
-              <span>{t("patients.noContact")}</span>
-            )}
-          </div>
-        </div>
-      </Link>
+      {clickable ? (
+        <Link
+          to={`${basePath}/patients/${patient._id}`}
+          className="patient-row-link"
+        >
+          {inner}
+        </Link>
+      ) : (
+        <div className="patient-row-link patient-row-static">{inner}</div>
+      )}
       {patient.linkedUserId && (
         <div className="staff-row-role">
           <span className="patient-linked-badge">
