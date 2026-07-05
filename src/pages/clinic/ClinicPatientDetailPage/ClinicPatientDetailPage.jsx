@@ -146,6 +146,12 @@ export default function ClinicPatientDetailPage() {
     canWriteMedical ||
     ["owner", "admin", "doctor", "nurse"].includes(myRole);
 
+  // Consent management (request access to PHI + view/revoke granted consents)
+  // is a clinician/admin responsibility, NOT reception or nursing. The
+  // /consents endpoint returns 403 for nurse/receptionist, so we hide the
+  // whole consent UI for them (prevents the "failed to load" banner too).
+  const canManageConsent = ["owner", "admin", "doctor"].includes(myRole);
+
   // ─── Load patient ───
   const load = useCallback(async () => {
     try {
@@ -510,8 +516,8 @@ export default function ClinicPatientDetailPage() {
               </button>
             )}
             {/* Sprint 3.2 — Запросить доступ к медданным.
-                Medical layer: gated by canViewMedical (hidden for reception). */}
-            {canViewMedical &&
+                Consent management: owner/admin/doctor only (not nurse). */}
+            {canManageConsent &&
               (patient.linkedUserId ? (
                 <button
                   className="staff-page-btn-primary"
@@ -994,12 +1000,11 @@ export default function ClinicPatientDetailPage() {
       )}
 
       {/* ═══════════════════════════════════════════════════════════
-          MEDICAL LAYER — gated by canViewMedical.
-          Receptionists have no medical_record permission, so this
-          entire block is hidden for them (prevents 403s + keeps PHI
-          out of reception's view).
+          CONSENT LAYER — owner/admin/doctor only (canManageConsent).
+          Hidden for nurse/reception: the /consents endpoint 403s for
+          them, and requesting PHI access is a clinician responsibility.
           ═══════════════════════════════════════════════════════════ */}
-      {canViewMedical && (
+      {canManageConsent && (
         <>
           {/* ─── Consent Requests (Sprint 3.2) — история запросов + cancel ─── */}
           {!editing && patient && patient.linkedUserId && (
@@ -1024,16 +1029,17 @@ export default function ClinicPatientDetailPage() {
               canRevoke={canWrite}
             />
           )}
-
-          {/* ─── Medical Records (UMR) — Sprint 2 Phase 2D.2 ─── */}
-          {/* Visible only in view-mode (not while editing the profile). */}
-          {!editing && patient && (
-            <MedicalRecordsSection
-              patient={patient}
-              canWrite={canWriteMedical}
-            />
-          )}
         </>
+      )}
+
+      {/* ═══════════════════════════════════════════════════════════
+          MEDICAL RECORD (UMR) — canViewMedical (includes nurse).
+          The section itself gates per-tab write internally, mirroring
+          the backend RBAC matrix (nurse writes only anamnestic
+          sub-records; encounters/rx/imaging/labs are read-only).
+          ═══════════════════════════════════════════════════════════ */}
+      {canViewMedical && !editing && patient && (
+        <MedicalRecordsSection patient={patient} canWrite={canWriteMedical} />
       )}
 
       {/* ─── Book-appointment modal (day 5 second entry-point) ─── */}
@@ -1049,8 +1055,8 @@ export default function ClinicPatientDetailPage() {
         />
       )}
 
-      {/* Sprint 3.2 — Consent Request Modal (medical layer) */}
-      {canViewMedical && (
+      {/* Sprint 3.2 — Consent Request Modal (owner/admin/doctor only) */}
+      {canManageConsent && (
         <ConsentRequestModal
           open={requestModalOpen}
           onClose={() => setRequestModalOpen(false)}
