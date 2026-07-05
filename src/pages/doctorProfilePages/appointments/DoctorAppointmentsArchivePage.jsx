@@ -33,7 +33,7 @@ export default function DoctorAppointmentsArchivePage() {
 
     try {
       await axios.put(
-        `${API_BASE}/appointment/unarchive/${id}`,
+        `${API_BASE}/schedule/appointment/unarchive/${id}`,
         {},
         { withCredentials: true }
       );
