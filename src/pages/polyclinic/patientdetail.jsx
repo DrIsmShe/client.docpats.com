@@ -425,7 +425,40 @@ export default function PatientDetail() {
     if (isAbsolute && !isR2) return DEFAULT_UNISEX;
     return toUploadsUrl(p);
   }
+  /* ── Открыть чат с пациентом ── */
+  const [chatLoading, setChatLoading] = useState(false);
 
+  const openChatWithPatient = async () => {
+    const peerUserId =
+      patient?.linkedUserId?._id || patient?.linkedUserId || null;
+
+    if (!peerUserId) {
+      setFlashWarning(
+        "У пациента нет привязанного аккаунта DocPats — чат недоступен.",
+      );
+      return;
+    }
+
+    try {
+      setChatLoading(true);
+      const { data } = await axios.post(
+        `${API_BASE}/communication/dialogs/with-user`,
+        { peerUserId },
+        { withCredentials: true },
+      );
+      const dialogId = data?.dialog?._id;
+      if (!dialogId) {
+        setFlashWarning("Не удалось получить диалог.");
+        return;
+      }
+      navigate(`/doctor/communication/${dialogId}`);
+    } catch (err) {
+      console.error("Ошибка открытия чата:", err);
+      setFlashWarning("Ошибка при открытии чата с пациентом.");
+    } finally {
+      setChatLoading(false);
+    }
+  };
   /* ── Effects ── */
   useEffect(() => {
     if (location.state?.success) setFlashMessage(t("examAddedSuccess"));
@@ -845,6 +878,13 @@ export default function PatientDetail() {
             }
           >
             🔪 Создать хирургический кейс
+          </button>
+          <button
+            className="ppd-btn ppd-btn-outline"
+            onClick={openChatWithPatient}
+            disabled={chatLoading}
+          >
+            💬 {chatLoading ? "Открываю…" : "Написать пациенту"}
           </button>
           {error && <div className="ppd-error-box">⚠ {error}</div>}
         </div>
