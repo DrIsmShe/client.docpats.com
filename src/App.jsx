@@ -664,6 +664,10 @@ function App() {
               <Route index element={<EmployeeDashboardPage />} />
               <Route path="patients" element={<ClinicPatientsPage />} />
               <Route path="patients/new" element={<NewPatientPage />} />
+              <Route
+                path="patients/:id"
+                element={<ClinicPatientDetailPage />}
+              />
             </Route>
             {/* Здесь перечислены все маршруты для раздела ПОЛИКЛИНИКА */}
             <Route path="/dp" element={<MainPolyclinicLayout />}>

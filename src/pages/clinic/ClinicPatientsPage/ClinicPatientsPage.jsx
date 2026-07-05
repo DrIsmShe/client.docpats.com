@@ -12,10 +12,9 @@
 //   zone instead of bouncing them to the owner zone (which would 401 →
 //   /login because they have session.employeeId, not session.userId).
 //
-//   In employee mode, patient rows are NOT clickable — the detail page
-//   pulls the medical record (encounters/allergies/prescriptions) which
-//   the receptionist role has NO permission for (would 403). The detail
-//   page will be adapted for employees in a separate step.
+//   Patient rows are clickable in BOTH zones. The detail page gates its
+//   medical layer behind medical_record permission, so a receptionist
+//   opening a card sees contacts/demographics + booking, but no PHI.
 //
 // Features:
 //   - List patients (paginated, cursor-based)
@@ -289,7 +288,7 @@ export default function ClinicPatientsPage() {
                 formatDob={formatDob}
                 t={t}
                 basePath={basePath}
-                clickable={!isEmployee}
+                clickable={true}
               />
             ))}
           </div>

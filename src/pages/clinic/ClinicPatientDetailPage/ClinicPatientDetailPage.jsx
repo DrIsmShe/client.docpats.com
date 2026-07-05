@@ -1,38 +1,31 @@
 // client/src/pages/clinic/ClinicPatientDetailPage/ClinicPatientDetailPage.jsx
 //
-// Patient detail page at /clinic/patients/:id
+// Patient detail page.
+//
+// Routes:
+//   /clinic/patients/:id            → owner/admin/doctor zone
+//   /clinic/employee/patients/:id   → employee (receptionist) zone
+//
+// ZONE-AWARE: detects owner vs employee from the layout context
+// (`kind === "employee"`) with a pathname fallback, and builds all
+// navigation from `basePath` / `loginPath`. This keeps a receptionist
+// (session.employeeId) inside the employee zone instead of bouncing to
+// the owner zone (→ 401 → /login).
+//
+// MEDICAL DATA GATING: the receptionist role has NO `medical_record`
+// permission. Everything that reads/writes PHI — the Unified Medical
+// Record section, the consent-request history, the granted-consents
+// panel, and the "request access" button — is gated behind
+// `canViewMedical`. Receptionists see contacts/demographics, the
+// "Book appointment" action, edit, and DocPats-account linking only.
 //
 // Sections:
 //   1. Header — name, avatar, linked badge, role-aware action buttons
-//   2. View mode — read-only display of all patient fields including
-//      department (name resolved client-side) and createdBy (who
-//      registered this patient — doctor or staff)
-//   3. Edit mode — same form as on the list page (inline toggle), now
-//      with an optional Department <select>
-//   4. Link section — search a DocPats user (by email OR by date of
-//      birth + name) and link the patient to that account
-//   5. MEDICAL RECORDS SECTION (UMR) — Sprint 2 Phase 2D.2 — added
-//      between the Link section and the book-appointment modal. Shows
-//      encounter history with create/sign/amend flow (gated by canWrite),
-//      plus tabs for allergies / chronic / operations / family /
-//      immunization / imaging.
-//   6. Delete button (visible to canDelete)
-//   7. Book-appointment button (Sprint 1, day 5) — opens
-//      BookFromPatientModal with this patient pre-filled
-//
-// Department wiring (Clinic Departments feature):
-//   - On mount we fetch listDepartments({}) once (including archived) to
-//     build deptMap (id -> dept) so view-mode can show the department NAME
-//     even if the patient is in an archived department.
-//   - Edit-mode <select> offers only ACTIVE departments. It's rendered
-//     only when at least one department exists, so clinics that never set
-//     up departments see no extra field.
-//   - On save we send departmentId (string) or null. Backend validates
-//     it belongs to the clinic via assertDepartmentInClinic.
-//
-// Reuses .staff-page-* tokens and .patients-form-* tokens from the list
-// page CSS to keep visual identity consistent. The appointment modal
-// uses .ccal-* tokens from clinicCalendarPage.css — imported below.
+//   2. View / Edit mode — patient fields (+ department)
+//   3. Link section — link patient to a DocPats user account
+//   4. MEDICAL layer (gated by canViewMedical): consent requests,
+//      granted consents, Unified Medical Record
+//   5. Book-appointment modal (canBook)
 
 import React, { useEffect, useState, useCallback } from "react";
 import {
@@ -40,6 +33,7 @@ import {
   useNavigate,
   useParams,
   useOutletContext,
+  useLocation,
 } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -84,6 +78,15 @@ export default function ClinicPatientDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const layoutContext = useOutletContext();
+  const location = useLocation();
+
+  // ─── Zone detection (owner vs employee) ───
+  const isEmployee =
+    layoutContext?.kind === "employee" ||
+    location.pathname.startsWith("/clinic/employee");
+  const basePath = isEmployee ? "/clinic/employee" : "/clinic";
+  const loginPath = isEmployee ? "/clinic/staff-login" : "/login";
+
   const [bookModalOpen, setBookModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -98,28 +101,20 @@ export default function ClinicPatientDetailPage() {
   const [formErrors, setFormErrors] = useState({});
 
   // ─── Departments (for view-mode name resolution + edit <select>) ───
-  // deptMap: id -> dept (includes archived, so names always resolve).
-  // activeDepartments: only status==="active", used to populate the edit
-  // <select>. Loading failures are silent — the field just won't render.
   const [deptMap, setDeptMap] = useState({});
   const [activeDepartments, setActiveDepartments] = useState([]);
-  // Controlled value of the edit-mode department <select> (string id or "").
   const [editDepartmentId, setEditDepartmentId] = useState("");
 
   // ─── Link section state ───
   const [linkOpen, setLinkOpen] = useState(false);
-  // Search mode: "email" | "dob"
   const [linkMode, setLinkMode] = useState("email");
-  // Input fields
   const [linkEmail, setLinkEmail] = useState("");
   const [linkDob, setLinkDob] = useState("");
   const [linkFirstName, setLinkFirstName] = useState("");
   const [linkLastName, setLinkLastName] = useState("");
-  // Search state
   const [searching, setSearching] = useState(false);
   const [searchResults, setSearchResults] = useState(null); // null = not searched yet
   const [searchError, setSearchError] = useState(null);
-  // Linking state (after user picks a result)
   const [linkSubmitting, setLinkSubmitting] = useState(false);
   const [linkError, setLinkError] = useState(null);
 
@@ -138,11 +133,17 @@ export default function ClinicPatientDetailPage() {
   const canBook = ["owner", "admin", "receptionist"].includes(myRole);
 
   // ─── Permission for medical records (UMR) ───
-  // Backend RBAC: owner/admin/doctor can write encounters & sub-records,
-  // nurse can write anamnestic sub-records. We use a wide "canWriteMedical"
-  // for the section header; finer-grained gating happens server-side.
+  // WRITE (create/sign/amend encounters & sub-records):
   const canWriteMedical =
     !!permissions?.medical_record?.write ||
+    ["owner", "admin", "doctor", "nurse"].includes(myRole);
+  // VIEW/READ the medical layer at all. Receptionist has NO medical_record
+  // permission, so the entire PHI layer (records + consent panels + the
+  // "request access" button) is hidden for them — prevents 403s and keeps
+  // PHI out of reception's view.
+  const canViewMedical =
+    !!permissions?.medical_record?.read ||
+    canWriteMedical ||
     ["owner", "admin", "doctor", "nurse"].includes(myRole);
 
   // ─── Load patient ───
@@ -155,7 +156,7 @@ export default function ClinicPatientDetailPage() {
     } catch (err) {
       console.error("Failed to load patient:", err);
       if (err.response?.status === 401) {
-        navigate("/login", { replace: true });
+        navigate(loginPath, { replace: true });
         return;
       }
       if (err.response?.status === 404) {
@@ -165,7 +166,7 @@ export default function ClinicPatientDetailPage() {
       }
       setLoading(false);
     }
-  }, [id, navigate]);
+  }, [id, navigate, loginPath]);
 
   useEffect(() => {
     load();
@@ -216,9 +217,6 @@ export default function ClinicPatientDetailPage() {
       email: form.email.value.trim() || null,
       gender: form.gender.value || null,
       dateOfBirth: form.dateOfBirth.value || null,
-      // departmentId: send the selected id, or null to clear it. Only
-      // include the key when departments exist in this clinic so we never
-      // accidentally null out a field the UI couldn't show.
       ...(activeDepartments.length > 0 || extractDepartmentId(patient)
         ? { departmentId: editDepartmentId || null }
         : {}),
@@ -282,7 +280,6 @@ export default function ClinicPatientDetailPage() {
     setLinkError(null);
     setSearchResults(null);
 
-    // Client-side validation per mode
     if (linkMode === "email") {
       if (!linkEmail.trim()) {
         setSearchError(t("patients.linkSection.errors.emailRequired"));
@@ -363,7 +360,7 @@ export default function ClinicPatientDetailPage() {
     setDeleting(true);
     try {
       await deletePatient(id);
-      navigate("/clinic/patients", { replace: true });
+      navigate(`${basePath}/patients`, { replace: true });
     } catch (err) {
       alert(err.response?.data?.error || t("patients.errors.deleteFailed"));
       setDeleting(false);
@@ -390,12 +387,6 @@ export default function ClinicPatientDetailPage() {
     }
   }
 
-  /**
-   * Resolve the department display name for the current patient.
-   * Tries the populated object first, then deptMap, then a translated
-   * specialty fallback isn't needed — we show the stored name. Returns
-   * the "not specified" label when there's no department.
-   */
   function departmentDisplay() {
     const d = patient?.departmentId;
     if (d && typeof d === "object" && d.name) return d.name;
@@ -408,9 +399,6 @@ export default function ClinicPatientDetailPage() {
     });
   }
 
-  /**
-   * Format the "created by" line: "Имя Фамилия (врач)" or fallback.
-   */
   function formatCreatedBy() {
     if (!patient?.createdByName) {
       return t("patients.createdByUnknown");
@@ -421,7 +409,6 @@ export default function ClinicPatientDetailPage() {
     return `${patient.createdByName} (${actorTypeLabel})`;
   }
 
-  /** Display name for a user search result. */
   function userResultName(u) {
     return (
       [u.firstName, u.lastName].filter(Boolean).join(" ") ||
@@ -431,8 +418,6 @@ export default function ClinicPatientDetailPage() {
     );
   }
 
-  // Whether to show the department field at all: show if any active dept
-  // exists OR the patient is already assigned to a (possibly archived) one.
   const showDepartmentField =
     activeDepartments.length > 0 || !!extractDepartmentId(patient);
 
@@ -450,7 +435,7 @@ export default function ClinicPatientDetailPage() {
       <div className="staff-page-error">
         <h2>{t("patients.notFoundTitle")}</h2>
         <p>{t("patients.notFoundText")}</p>
-        <Link to="/clinic/patients" className="staff-page-btn-primary">
+        <Link to={`${basePath}/patients`} className="staff-page-btn-primary">
           {t("patients.backToList")}
         </Link>
       </div>
@@ -475,7 +460,7 @@ export default function ClinicPatientDetailPage() {
       {/* ─── Header ─── */}
       <div className="staff-page-header">
         <div className="staff-page-header-left">
-          <Link to="/clinic/patients" className="staff-page-back">
+          <Link to={`${basePath}/patients`} className="staff-page-back">
             {t("patients.backToList")}
           </Link>
           <div className="patient-detail-header">
@@ -524,34 +509,36 @@ export default function ClinicPatientDetailPage() {
                 {deleting ? t("common.loading") : t("patients.delete")}
               </button>
             )}
-            {/* Sprint 3.2 — Запросить доступ к медданным */}
-            {patient.linkedUserId ? (
-              <button
-                className="staff-page-btn-primary"
-                onClick={() => setRequestModalOpen(true)}
-                type="button"
-                style={{ background: "#6366f1" }}
-                title={t(
-                  "patients.consentRequest.openButton",
-                  "Запросить доступ",
-                )}
-              >
-                {t("patients.consentRequest.openButton", "Запросить доступ")}
-              </button>
-            ) : (
-              <button
-                className="staff-page-btn-primary"
-                disabled
-                type="button"
-                style={{ opacity: 0.5, cursor: "not-allowed" }}
-                title={t(
-                  "patients.consentRequest.notLinkedHint",
-                  "Сначала свяжите карту с аккаунтом DocPats",
-                )}
-              >
-                {t("patients.consentRequest.openButton", "Запросить доступ")}
-              </button>
-            )}
+            {/* Sprint 3.2 — Запросить доступ к медданным.
+                Medical layer: gated by canViewMedical (hidden for reception). */}
+            {canViewMedical &&
+              (patient.linkedUserId ? (
+                <button
+                  className="staff-page-btn-primary"
+                  onClick={() => setRequestModalOpen(true)}
+                  type="button"
+                  style={{ background: "#6366f1" }}
+                  title={t(
+                    "patients.consentRequest.openButton",
+                    "Запросить доступ",
+                  )}
+                >
+                  {t("patients.consentRequest.openButton", "Запросить доступ")}
+                </button>
+              ) : (
+                <button
+                  className="staff-page-btn-primary"
+                  disabled
+                  type="button"
+                  style={{ opacity: 0.5, cursor: "not-allowed" }}
+                  title={t(
+                    "patients.consentRequest.notLinkedHint",
+                    "Сначала свяжите карту с аккаунтом DocPats",
+                  )}
+                >
+                  {t("patients.consentRequest.openButton", "Запросить доступ")}
+                </button>
+              ))}
           </div>
         )}
       </div>
@@ -699,9 +686,6 @@ export default function ClinicPatientDetailPage() {
                         {d.name}
                       </option>
                     ))}
-                    {/* If the patient is in an archived dept not present in
-                        the active list, keep it selectable so we don't
-                        silently drop it on save. */}
                     {editDepartmentId &&
                       !activeDepartments.some(
                         (d) => String(d._id) === String(editDepartmentId),
@@ -1009,32 +993,47 @@ export default function ClinicPatientDetailPage() {
         </section>
       )}
 
-      {/* ─── Consent Requests (Sprint 3.2) — история запросов + cancel ─── */}
-      {!editing && patient && patient.linkedUserId && (
-        <section className="staff-page-section">
-          <h2>
-            {t("patients.consentRequests.title", {
-              defaultValue: "Запросы доступа к медданным",
-            })}
-          </h2>
-          <ConsentRequestsList
-            cardId={patient._id}
-            refreshSignal={requestsRefresh}
-          />
-        </section>
-      )}
-      {/* ─── Выданные доступы (Sprint 3 closure, part B) — revoke ─── */}
-      {!editing && patient && (
-        <ClinicConsentsPanel
-          cardId={patient._id}
-          refreshSignal={requestsRefresh}
-          canRevoke={canWrite}
-        />
-      )}
-      {/* ─── Medical Records (UMR) — Sprint 2 Phase 2D.2 ─── */}
-      {/* Visible only in view-mode (not while editing the patient profile). */}
-      {!editing && patient && (
-        <MedicalRecordsSection patient={patient} canWrite={canWriteMedical} />
+      {/* ═══════════════════════════════════════════════════════════
+          MEDICAL LAYER — gated by canViewMedical.
+          Receptionists have no medical_record permission, so this
+          entire block is hidden for them (prevents 403s + keeps PHI
+          out of reception's view).
+          ═══════════════════════════════════════════════════════════ */}
+      {canViewMedical && (
+        <>
+          {/* ─── Consent Requests (Sprint 3.2) — история запросов + cancel ─── */}
+          {!editing && patient && patient.linkedUserId && (
+            <section className="staff-page-section">
+              <h2>
+                {t("patients.consentRequests.title", {
+                  defaultValue: "Запросы доступа к медданным",
+                })}
+              </h2>
+              <ConsentRequestsList
+                cardId={patient._id}
+                refreshSignal={requestsRefresh}
+              />
+            </section>
+          )}
+
+          {/* ─── Выданные доступы (Sprint 3 closure, part B) — revoke ─── */}
+          {!editing && patient && (
+            <ClinicConsentsPanel
+              cardId={patient._id}
+              refreshSignal={requestsRefresh}
+              canRevoke={canWrite}
+            />
+          )}
+
+          {/* ─── Medical Records (UMR) — Sprint 2 Phase 2D.2 ─── */}
+          {/* Visible only in view-mode (not while editing the profile). */}
+          {!editing && patient && (
+            <MedicalRecordsSection
+              patient={patient}
+              canWrite={canWriteMedical}
+            />
+          )}
+        </>
       )}
 
       {/* ─── Book-appointment modal (day 5 second entry-point) ─── */}
@@ -1049,19 +1048,22 @@ export default function ClinicPatientDetailPage() {
           }}
         />
       )}
-      {/* Sprint 3.2 — Consent Request Modal */}
-      <ConsentRequestModal
-        open={requestModalOpen}
-        onClose={() => setRequestModalOpen(false)}
-        patientName={name}
-        onSubmit={async (payload) => {
-          await createConsentRequest(patient._id, payload);
-          setRequestModalOpen(false);
-          setRequestSubmitMsg("success");
-          setRequestsRefresh((n) => n + 1);
-          setTimeout(() => setRequestSubmitMsg(null), 4000);
-        }}
-      />
+
+      {/* Sprint 3.2 — Consent Request Modal (medical layer) */}
+      {canViewMedical && (
+        <ConsentRequestModal
+          open={requestModalOpen}
+          onClose={() => setRequestModalOpen(false)}
+          patientName={name}
+          onSubmit={async (payload) => {
+            await createConsentRequest(patient._id, payload);
+            setRequestModalOpen(false);
+            setRequestSubmitMsg("success");
+            setRequestsRefresh((n) => n + 1);
+            setTimeout(() => setRequestSubmitMsg(null), 4000);
+          }}
+        />
+      )}
 
       {/* Sprint 3.2 — Toast for success */}
       {requestSubmitMsg === "success" && (
