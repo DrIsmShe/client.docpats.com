@@ -533,8 +533,8 @@ import PublicCustomPage from "./pages/clinic/PublicClinicPage/PublicCustomPage.j
 import ClinicCustomPagesPage from "./pages/clinic/ClinicCustomPagesPage/ClinicCustomPagesPage.jsx";
 import PublicArticleDetail from "./pages/clinic/PublicClinicPage/PublicArticleDetail.jsx";
 import ServicesPage from "./pages/clinic/ServicesPage/ServicesPage.jsx";
-import MembershipInviteAccept from "./pages/clinic/";
 import MyClinicInvitations from "./pages/clinic/ClinicStaffPage/MyClinicInvitations.jsx";
+import MembershipInviteAccept from "./pages/clinic/MembershipInviteAccept/MembershipInviteAccept.jsx";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
