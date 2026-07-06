@@ -1,4 +1,46 @@
-{
+﻿{
+  "inviteAdminModal": {
+    "title": "Administrator dəvət et",
+    "intro": "E-poçta dəvət linki göndərəcəyik. Qəbul edən şəxs DocPats-ə daxil olur və ya qeydiyyatdan keçir və klinikanın administratoru olur (\"az qala sahib\"). Administrator DocPats istifadəçisidir, daxili işçi deyil.",
+    "fields": {
+      "email": "E-poçt",
+      "emailPlaceholder": "anna.smith@example.com",
+      "customTitle": "Vəzifə",
+      "customTitlePlaceholder": "Direktor müavini",
+      "roleNote": "Rol \"Administrator\"dur. Administrator dəvət etmək hüququ yalnız klinika sahibinə məxsusdur.",
+      "language": "Məktub dili"
+    },
+    "errors": {
+      "emailRequired": "E-poçt tələb olunur",
+      "emailInvalid": "Yanlış e-poçt",
+      "alreadyPending": "Bu e-poçt üçün artıq aktiv dəvət var.",
+      "forbidden": "Administrator dəvət etmək hüququ yalnız klinika sahibinə məxsusdur.",
+      "generic": "Dəvət göndərilmədi",
+      "fixErrors": "Aşağıdakı səhvləri düzəldin"
+    },
+    "sending": "Göndərilir...",
+    "submit": "Dəvət göndər"
+  },
+  "acceptInvite": {
+    "title": "Klinikaya dəvət",
+    "body": "Sizi «{{clinic}}» klinikasına «{{role}}» kimi qoşulmağa dəvət edirlər.",
+    "forEmail": "Hesab üçün: {{email}}",
+    "needAuth": "Dəvəti qəbul etmək üçün bu e-poçt ilə daxil olun və ya qeydiyyatdan keçin.",
+    "accept": "Dəvəti qəbul et",
+    "accepting": "Qəbul edilir…",
+    "register": "Qeydiyyatdan keç",
+    "login": "Daxil ol",
+    "success": "Dəvət qəbul edildi",
+    "alreadyMember": "Siz artıq bu klinikanın üzvüsünüz",
+    "successHint": "İndi klinikaya girişiniz var.",
+    "goToClinic": "Klinikaya keç",
+    "invalid": "Dəvət etibarsızdır, ləğv edilib və ya vaxtı keçib.",
+    "loadFailed": "Dəvət yüklənmədi.",
+    "noToken": "Yanlış link: token yoxdur.",
+    "wrongAccount": "Bu dəvət başqa e-poçt üçün verilib. Düzgün hesabla daxil olun.",
+    "acceptFailed": "Dəvət qəbul edilmədi.",
+    "aClinic": "klinikaya"
+  },
   "announcements": {
     "back": "Panel",
     "title": "Elanlar",
@@ -980,6 +1022,8 @@
     "invitedAsRoleExpires": "{{role}} kimi dəvət edilib · {{date}} tarixində bitir"
   },
   "staff": {
+    "inviteAdmin": "+ Admin dəvət et",
+    "adminInvitations": "Admin dəvətləri",
     "doctorInvitations": "Həkim dəvətləri",
     "doctorInvitePending": "Həkim dəvəti",
     "confirmCancelRequest": "Bu dəvət geri götürülsün?",

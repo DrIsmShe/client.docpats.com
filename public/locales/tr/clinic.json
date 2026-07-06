@@ -1,4 +1,46 @@
-{
+﻿{
+  "inviteAdminModal": {
+    "title": "Yönetici davet et",
+    "intro": "E-postaya bir davet bağlantısı göndeririz. Alıcı DocPats'e giriş yapar veya kaydolur ve klinik yöneticisi olur (\"neredeyse sahip\"). Yönetici bir DocPats kullanıcısıdır, dahili bir çalışan değildir.",
+    "fields": {
+      "email": "E-posta",
+      "emailPlaceholder": "anna.smith@example.com",
+      "customTitle": "Unvan",
+      "customTitlePlaceholder": "Müdür yardımcısı",
+      "roleNote": "Rol \"Yönetici\"dir. Yönetici davet etme yetkisi yalnızca klinik sahibindedir.",
+      "language": "E-posta dili"
+    },
+    "errors": {
+      "emailRequired": "E-posta gerekli",
+      "emailInvalid": "Geçersiz e-posta",
+      "alreadyPending": "Bu e-posta için zaten aktif bir davet var.",
+      "forbidden": "Yönetici davet etme yetkisi yalnızca klinik sahibindedir.",
+      "generic": "Davet gönderilemedi",
+      "fixErrors": "Aşağıdaki hataları düzeltin"
+    },
+    "sending": "Gönderiliyor...",
+    "submit": "Davet gönder"
+  },
+  "acceptInvite": {
+    "title": "Klinik daveti",
+    "body": "\"{{clinic}}\" kliniğine \"{{role}}\" olarak katılmaya davet edildiniz.",
+    "forEmail": "Hesap için: {{email}}",
+    "needAuth": "Daveti kabul etmek için bu e-posta ile giriş yapın veya kaydolun.",
+    "accept": "Daveti kabul et",
+    "accepting": "Kabul ediliyor…",
+    "register": "Kaydol",
+    "login": "Giriş yap",
+    "success": "Davet kabul edildi",
+    "alreadyMember": "Bu kliniğin zaten üyesisiniz",
+    "successHint": "Artık kliniğe erişiminiz var.",
+    "goToClinic": "Kliniğe git",
+    "invalid": "Davet geçersiz, iptal edilmiş veya süresi dolmuş.",
+    "loadFailed": "Davet yüklenemedi.",
+    "noToken": "Geçersiz bağlantı: belirteç eksik.",
+    "wrongAccount": "Bu davet farklı bir e-posta için düzenlendi. Doğru hesapla giriş yapın.",
+    "acceptFailed": "Davet kabul edilemedi.",
+    "aClinic": "kliniğe"
+  },
   "announcements": {
     "back": "Panel",
     "title": "Duyurular",
@@ -980,6 +1022,8 @@
     "invitedAsRoleExpires": "{{role}} olarak davet edildi · {{date}} tarihinde sona erer"
   },
   "staff": {
+    "inviteAdmin": "+ Yönetici davet et",
+    "adminInvitations": "Yönetici davetleri",
     "doctorInvitations": "Doktor davetleri",
     "doctorInvitePending": "Doktor daveti",
     "confirmCancelRequest": "Bu davet geri alınsın mı?",

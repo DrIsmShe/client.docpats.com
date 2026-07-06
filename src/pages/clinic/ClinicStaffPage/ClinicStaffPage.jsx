@@ -12,8 +12,11 @@ import {
   changeStaffRole,
   listClinicMembershipRequests,
   cancelMembershipRequest,
+  listMembershipInvites,
+  revokeMembershipInvite,
 } from "../../../api/clinic";
 import InviteEmployeeModal from "./InviteEmployeeModal";
+import InviteAdminModal from "./InviteAdminModal";
 import AddDoctorModal from "./AddDoctorModal";
 import "./clinicStaffPage.css";
 
@@ -40,8 +43,10 @@ export default function ClinicStaffPage() {
   const [error, setError] = useState(null);
   const [staff, setStaff] = useState([]);
   const [invitations, setInvitations] = useState([]);
+  const [adminInvites, setAdminInvites] = useState([]);
 
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
+  const [adminInviteModalOpen, setAdminInviteModalOpen] = useState(false);
   const [addDoctorModalOpen, setAddDoctorModalOpen] = useState(false);
 
   const [actionLoading, setActionLoading] = useState({});
@@ -50,18 +55,25 @@ export default function ClinicStaffPage() {
   const canInvite = ["owner", "admin"].includes(myRole);
   const canManageRoles = ["owner", "admin"].includes(myRole);
   const canRemove = ["owner", "admin"].includes(myRole);
+  // Only the owner may invite admins — admin lacks STAFF_INVITE in the RBAC
+  // matrix (backend also enforces this). Keep separate from canInvite so the
+  // employee-invite button stays available to admins.
+  const canInviteAdmin = myRole === "owner";
 
   const loadAll = useCallback(async () => {
     try {
       setError(null);
-      const [staffRes, invitationsRes, requestsRes] = await Promise.all([
-        listStaff(),
-        listInvitations("pending").catch(() => ({ items: [] })),
-        listClinicMembershipRequests().catch(() => ({ items: [] })),
-      ]);
+      const [staffRes, invitationsRes, requestsRes, adminInvitesRes] =
+        await Promise.all([
+          listStaff(),
+          listInvitations("pending").catch(() => ({ items: [] })),
+          listClinicMembershipRequests().catch(() => ({ items: [] })),
+          listMembershipInvites("pending").catch(() => ({ items: [] })),
+        ]);
       setStaff(staffRes.items || []);
       setInvitations(invitationsRes.items || []);
       setDoctorRequests(requestsRes.items || []);
+      setAdminInvites(adminInvitesRes.items || []);
       setLoading(false);
     } catch (err) {
       console.error("Failed to load staff:", err);
@@ -100,6 +112,20 @@ export default function ClinicStaffPage() {
       setActionLoading((p) => ({ ...p, [invitationId]: false }));
     }
   }
+
+  async function handleRevokeAdminInvite(inviteId) {
+    if (!window.confirm(t("staff.confirmRevoke"))) return;
+    setActionLoading((p) => ({ ...p, [inviteId]: true }));
+    try {
+      await revokeMembershipInvite(inviteId);
+      await loadAll();
+    } catch (err) {
+      alert(err.response?.data?.error || t("staff.revokeFailed"));
+    } finally {
+      setActionLoading((p) => ({ ...p, [inviteId]: false }));
+    }
+  }
+
   async function handleCancelRequest(requestId) {
     if (
       !window.confirm(
@@ -161,6 +187,11 @@ export default function ClinicStaffPage() {
     loadAll();
   }
 
+  function handleInviteAdminSuccess() {
+    setAdminInviteModalOpen(false);
+    loadAll();
+  }
+
   function handleAddDoctorSuccess() {
     setAddDoctorModalOpen(false);
     loadAll();
@@ -203,25 +234,61 @@ export default function ClinicStaffPage() {
           <h1>{t("staff.title")}</h1>
           <p className="staff-page-subtitle">{t("staff.subtitle")}</p>
         </div>
-        {canInvite && (
+        {(canInvite || canInviteAdmin) && (
           <div className="staff-page-header-actions">
-            <button
-              className="staff-page-btn-secondary"
-              onClick={() => setAddDoctorModalOpen(true)}
-              type="button"
-            >
-              {t("staff.addDoctor")}
-            </button>
-            <button
-              className="staff-page-btn-primary"
-              onClick={() => setInviteModalOpen(true)}
-              type="button"
-            >
-              {t("staff.inviteEmployee")}
-            </button>
+            {canInviteAdmin && (
+              <button
+                className="staff-page-btn-secondary"
+                onClick={() => setAdminInviteModalOpen(true)}
+                type="button"
+              >
+                {t("staff.inviteAdmin", { defaultValue: "Пригласить админа" })}
+              </button>
+            )}
+            {canInvite && (
+              <>
+                <button
+                  className="staff-page-btn-secondary"
+                  onClick={() => setAddDoctorModalOpen(true)}
+                  type="button"
+                >
+                  {t("staff.addDoctor")}
+                </button>
+                <button
+                  className="staff-page-btn-primary"
+                  onClick={() => setInviteModalOpen(true)}
+                  type="button"
+                >
+                  {t("staff.inviteEmployee")}
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>
+
+      {adminInvites.length > 0 && (
+        <section className="staff-page-section">
+          <h2>
+            {t("staff.adminInvitations", {
+              defaultValue: "Приглашения администраторов",
+            })}
+            <span className="staff-page-count">{adminInvites.length}</span>
+          </h2>
+          <div className="staff-page-list">
+            {adminInvites.map((inv) => (
+              <InvitationRow
+                key={inv.id || inv._id}
+                invitation={inv}
+                onRevoke={canInviteAdmin ? handleRevokeAdminInvite : null}
+                isLoading={actionLoading[inv.id || inv._id]}
+                t={t}
+                formatDate={formatDate}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       {invitations.length > 0 && (
         <section className="staff-page-section">
@@ -308,6 +375,12 @@ export default function ClinicStaffPage() {
         <InviteEmployeeModal
           onClose={() => setInviteModalOpen(false)}
           onSuccess={handleInviteSuccess}
+        />
+      )}
+      {adminInviteModalOpen && (
+        <InviteAdminModal
+          onClose={() => setAdminInviteModalOpen(false)}
+          onSuccess={handleInviteAdminSuccess}
         />
       )}
       {addDoctorModalOpen && (

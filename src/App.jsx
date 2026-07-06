@@ -533,6 +533,7 @@ import PublicCustomPage from "./pages/clinic/PublicClinicPage/PublicCustomPage.j
 import ClinicCustomPagesPage from "./pages/clinic/ClinicCustomPagesPage/ClinicCustomPagesPage.jsx";
 import PublicArticleDetail from "./pages/clinic/PublicClinicPage/PublicArticleDetail.jsx";
 import ServicesPage from "./pages/clinic/ServicesPage/ServicesPage.jsx";
+import MembershipInviteAccept from "./pages/clinic/MembershipInviteAccept/MembershipInviteAccept.jsx";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -610,7 +611,10 @@ function App() {
             />
 
             <Route path="/clinic/staff-login" element={<EmployeeLoginPage />} />
-
+            <Route
+              path="/clinic/membership-invitations/accept"
+              element={<MembershipInviteAccept />}
+            />
             {/* ─── CLINIC MODULE — DocPats user authenticated zone ─── */}
             <Route path="/clinic" element={<ClinicLayout />}>
               <Route index element={<ClinicHubPage />} />
@@ -618,6 +622,7 @@ function App() {
                 path="public-page"
                 element={<ClinicPublicPageSettings />}
               />
+
               <Route path="services" element={<ServicesPage />} />
               <Route path="pages" element={<ClinicCustomPagesPage />} />
               <Route path="create" element={<CreateClinicPage />} />

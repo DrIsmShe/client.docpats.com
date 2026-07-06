@@ -1,4 +1,46 @@
-{
+﻿{
+  "inviteAdminModal": {
+    "title": "Invite an administrator",
+    "intro": "We'll email an invitation link. The recipient signs in or registers on DocPats and becomes a clinic administrator (\"near-owner\"). An admin is a DocPats user, not an internal employee.",
+    "fields": {
+      "email": "Email",
+      "emailPlaceholder": "anna.smith@example.com",
+      "customTitle": "Title",
+      "customTitlePlaceholder": "Deputy director",
+      "roleNote": "The role is \"Administrator\". Only the clinic owner can invite admins.",
+      "language": "Email language"
+    },
+    "errors": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email",
+      "alreadyPending": "There is already an active invitation for this email.",
+      "forbidden": "Only the clinic owner can invite admins.",
+      "generic": "Failed to send the invitation",
+      "fixErrors": "Fix the errors below"
+    },
+    "sending": "Sending...",
+    "submit": "Send invitation"
+  },
+  "acceptInvite": {
+    "title": "Clinic invitation",
+    "body": "You're invited to join \"{{clinic}}\" as \"{{role}}\".",
+    "forEmail": "For account: {{email}}",
+    "needAuth": "Sign in or register with this email to accept the invitation.",
+    "accept": "Accept invitation",
+    "accepting": "Accepting…",
+    "register": "Register",
+    "login": "Log in",
+    "success": "Invitation accepted",
+    "alreadyMember": "You're already a member of this clinic",
+    "successHint": "You now have access to the clinic.",
+    "goToClinic": "Go to clinic",
+    "invalid": "The invitation is invalid, revoked or expired.",
+    "loadFailed": "Failed to load the invitation.",
+    "noToken": "Invalid link: token is missing.",
+    "wrongAccount": "This invitation was issued for a different email. Sign in with the right account.",
+    "acceptFailed": "Failed to accept the invitation.",
+    "aClinic": "the clinic"
+  },
   "announcements": {
     "back": "Dashboard",
     "title": "Announcements",
@@ -980,6 +1022,8 @@
     "invitedAsRoleExpires": "Invited as {{role}} · expires {{date}}"
   },
   "staff": {
+    "inviteAdmin": "+ Invite admin",
+    "adminInvitations": "Admin invitations",
     "doctorInvitations": "Doctor invitations",
     "doctorInvitePending": "Doctor invitation",
     "confirmCancelRequest": "Withdraw this invitation?",

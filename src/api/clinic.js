@@ -2548,3 +2548,101 @@ export const archiveService = async (id) => {
   const res = await axios.delete(`/api/v1/clinic/services/${id}`);
   return res.data?.service;
 };
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  MEMBERSHIP INVITES (admin — User + ClinicMembership) — clinic-staff module
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// APPEND this block to the END of client/src/api/clinic.js.
+// Reuses `import axios from "../axios"` at the top.
+//
+// Distinct from the EMPLOYEE invite helpers above (createInvitation /
+// listInvitations / revokeInvitation / previewInvitation / acceptInvitation)
+// which target ClinicEmployee via OTP. These target a DocPats User who becomes
+// an admin ("near-owner") via ClinicMembership. Names are prefixed
+// "MembershipInvite" to avoid colliding with the employee-invite exports.
+//
+// Backend module: server/modules/clinic/clinic-staff/
+// Path prefix:    /api/v1/clinic
+//   POST   /membership-invitations            create (owner-only in practice)
+//   GET    /membership-invitations?status=    list
+//   DELETE /membership-invitations/:id         revoke
+//   GET    /membership-invitations/preview?token=   preview (public)
+//   POST   /membership-invitations/accept      accept (authenticated user)
+//
+// Owner endpoints run in the owner zone (tenant context). preview is public.
+// accept requires the person to be logged in (session userId), but NOT to have
+// clinic context yet. A brand-new person registers via the link and the
+// registration flow binds the membership (confirmationController) — no accept
+// call from the client is needed in that case.
+
+/**
+ * POST /api/v1/clinic/membership-invitations
+ * Invite a DocPats user (by email) to become an admin. Sends a signed link.
+ * @param {object} payload { email, role?, customTitle?, language? }
+ *   role defaults to "admin" server-side.
+ * Returns { invitation, emailSent }.
+ */
+export const createMembershipInvite = async ({
+  email,
+  role,
+  customTitle,
+  language,
+}) => {
+  const res = await axios.post("/api/v1/clinic/membership-invitations", {
+    email,
+    ...(role && { role }),
+    ...(customTitle && { customTitle }),
+    ...(language && { language }),
+  });
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/membership-invitations?status=pending
+ * List membership invites of the current clinic.
+ * Returns { items } (normalized from { invitations: [...] }).
+ */
+export const listMembershipInvites = async (status = "pending") => {
+  const res = await axios.get("/api/v1/clinic/membership-invitations", {
+    params: { status },
+  });
+  return normalizeList(res.data, ["invitations"]);
+};
+
+/**
+ * DELETE /api/v1/clinic/membership-invitations/:id
+ * Revoke a pending membership invite. Returns { invitation: { id, status } }.
+ */
+export const revokeMembershipInvite = async (inviteId) => {
+  const res = await axios.delete(
+    `/api/v1/clinic/membership-invitations/${inviteId}`,
+  );
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/membership-invitations/preview?token=...
+ * Public — preview invite details (clinic, role, email) before acting.
+ * Returns { email, role, customTitle, clinic:{id,name,slug}, expiresAt, language }.
+ */
+export const previewMembershipInvite = async (token) => {
+  const res = await axios.get("/api/v1/clinic/membership-invitations/preview", {
+    params: { token },
+  });
+  return res.data;
+};
+
+/**
+ * POST /api/v1/clinic/membership-invitations/accept
+ * Authenticated — the logged-in user accepts the invite; a ClinicMembership
+ * (actorType "user", role admin) is created.
+ * @param {string} token
+ * Returns { membershipId, clinicId, role, status, alreadyMember, message }.
+ */
+export const acceptMembershipInvite = async (token) => {
+  const res = await axios.post("/api/v1/clinic/membership-invitations/accept", {
+    token,
+  });
+  return res.data;
+};
