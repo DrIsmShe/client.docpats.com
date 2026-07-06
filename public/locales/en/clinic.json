@@ -1,4 +1,44 @@
 ﻿{
+  "mci": {
+    "title": "Clinic invitations",
+    "subtitle": "Clinics that invited you to join. Accept or decline the invitation.",
+    "loading": "Loading…",
+    "empty": "You have no active invitations.",
+    "roleLine": "Role: {{role}}",
+    "accept": "Accept",
+    "reject": "Decline",
+    "processing": "…",
+    "acceptedHint": "Invitation accepted. ",
+    "goToClinic": "Go to clinic workspace",
+    "errorLoad": "Failed to load invitations",
+    "errorAccept": "Failed to accept the invitation",
+    "errorReject": "Failed to decline the invitation",
+    "role": {
+      "admin": "administrator",
+      "doctor": "doctor",
+      "owner": "owner",
+      "staff": "staff member"
+    }
+  },
+  "iabu": {
+    "title": "Invite an administrator",
+    "close": "Close",
+    "hint": "Find an existing DocPats user by email and invite them as an administrator. The invitation will appear in their account.",
+    "invited": "Invitation sent: {{name}}. It will appear in the user's account.",
+    "inviteAnother": "Invite another",
+    "done": "Done",
+    "searchPlaceholder": "User email",
+    "searching": "Searching…",
+    "search": "Search",
+    "customTitle": "Title (optional)",
+    "customTitlePlaceholder": "e.g. Deputy Chief Physician",
+    "noResults": "User not found.",
+    "inviting": "…",
+    "invite": "Invite as admin",
+    "errorSearch": "Search failed",
+    "errorInvite": "Failed to send the invitation"
+  },
+
   "inviteAdminModal": {
     "title": "Invite an administrator",
     "intro": "We'll email an invitation link. The recipient signs in or registers on DocPats and becomes a clinic administrator (\"near-owner\"). An admin is a DocPats user, not an internal employee.",
@@ -1021,7 +1061,11 @@
     "errorTitle": "Couldn't load your dashboard",
     "invitedAsRoleExpires": "Invited as {{role}} · expires {{date}}"
   },
+
   "staff": {
+    "membershipRequests": "Member invitations",
+    "memberInvitePending": "Member invitation",
+    "inviteAdminByEmail": "Admin by email",
     "inviteAdmin": "+ Invite admin",
     "adminInvitations": "Admin invitations",
     "doctorInvitations": "Doctor invitations",

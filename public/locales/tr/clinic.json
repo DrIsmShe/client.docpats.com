@@ -1,4 +1,44 @@
 ﻿{
+  "mci": {
+    "title": "Klinik davetleri",
+    "subtitle": "Sizi katılmaya davet eden klinikler. Daveti kabul edin veya reddedin.",
+    "loading": "Yükleniyor…",
+    "empty": "Aktif davetiniz yok.",
+    "roleLine": "Rol: {{role}}",
+    "accept": "Kabul et",
+    "reject": "Reddet",
+    "processing": "…",
+    "acceptedHint": "Davet kabul edildi. ",
+    "goToClinic": "Klinik paneline git",
+    "errorLoad": "Davetler yüklenemedi",
+    "errorAccept": "Davet kabul edilemedi",
+    "errorReject": "Davet reddedilemedi",
+    "role": {
+      "admin": "yönetici",
+      "doctor": "doktor",
+      "owner": "sahip",
+      "staff": "personel"
+    }
+  },
+  "iabu": {
+    "title": "Yönetici davet et",
+    "close": "Kapat",
+    "hint": "Mevcut bir DocPats kullanıcısını e-posta ile bulun ve yönetici olarak davet edin. Davet, kullanıcının hesabında görünecektir.",
+    "invited": "Davet gönderildi: {{name}}. Kullanıcının hesabında görünecektir.",
+    "inviteAnother": "Başka davet et",
+    "done": "Tamam",
+    "searchPlaceholder": "Kullanıcı e-postası",
+    "searching": "Aranıyor…",
+    "search": "Ara",
+    "customTitle": "Unvan (isteğe bağlı)",
+    "customTitlePlaceholder": "Örn.: Başhekim Yardımcısı",
+    "noResults": "Kullanıcı bulunamadı.",
+    "inviting": "…",
+    "invite": "Yönetici olarak davet et",
+    "errorSearch": "Arama başarısız",
+    "errorInvite": "Davet gönderilemedi"
+  },
+
   "inviteAdminModal": {
     "title": "Yönetici davet et",
     "intro": "E-postaya bir davet bağlantısı göndeririz. Alıcı DocPats'e giriş yapar veya kaydolur ve klinik yöneticisi olur (\"neredeyse sahip\"). Yönetici bir DocPats kullanıcısıdır, dahili bir çalışan değildir.",
@@ -1022,6 +1062,9 @@
     "invitedAsRoleExpires": "{{role}} olarak davet edildi · {{date}} tarihinde sona erer"
   },
   "staff": {
+    "membershipRequests": "Üye davetleri",
+    "memberInvitePending": "Üye daveti",
+    "inviteAdminByEmail": "E-posta ile yönetici",
     "inviteAdmin": "+ Yönetici davet et",
     "adminInvitations": "Yönetici davetleri",
     "doctorInvitations": "Doktor davetleri",

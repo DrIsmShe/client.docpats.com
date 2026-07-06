@@ -1,4 +1,43 @@
 ﻿{
+  "mci": {
+    "title": "دعوات العيادات",
+    "subtitle": "العيادات التي دعتك للانضمام. اقبل الدعوة أو ارفضها.",
+    "loading": "جارٍ التحميل…",
+    "empty": "ليس لديك دعوات نشطة.",
+    "roleLine": "الدور: {{role}}",
+    "accept": "قبول",
+    "reject": "رفض",
+    "processing": "…",
+    "acceptedHint": "تم قبول الدعوة. ",
+    "goToClinic": "الانتقال إلى لوحة العيادة",
+    "errorLoad": "تعذّر تحميل الدعوات",
+    "errorAccept": "تعذّر قبول الدعوة",
+    "errorReject": "تعذّر رفض الدعوة",
+    "role": {
+      "admin": "مدير",
+      "doctor": "طبيب",
+      "owner": "مالك",
+      "staff": "موظف"
+    }
+  },
+  "iabu": {
+    "title": "دعوة مدير",
+    "close": "إغلاق",
+    "hint": "ابحث عن مستخدم DocPats موجود عبر البريد الإلكتروني وادعُه كمدير. ستظهر الدعوة في حسابه.",
+    "invited": "تم إرسال الدعوة: {{name}}. ستظهر في حساب المستخدم.",
+    "inviteAnother": "دعوة آخر",
+    "done": "تم",
+    "searchPlaceholder": "البريد الإلكتروني للمستخدم",
+    "searching": "جارٍ البحث…",
+    "search": "بحث",
+    "customTitle": "المسمى الوظيفي (اختياري)",
+    "customTitlePlaceholder": "مثال: نائب رئيس الأطباء",
+    "noResults": "لم يتم العثور على المستخدم.",
+    "inviting": "…",
+    "invite": "دعوة كمدير",
+    "errorSearch": "فشل البحث",
+    "errorInvite": "تعذّر إرسال الدعوة"
+  },
   "inviteAdminModal": {
     "title": "دعوة مسؤول",
     "intro": "سنرسل رابط دعوة عبر البريد الإلكتروني. يقوم المستلم بتسجيل الدخول أو التسجيل في DocPats ويصبح مسؤولاً عن العيادة (\"شبه مالك\"). المسؤول هو مستخدم DocPats وليس موظفاً داخلياً.",
@@ -1022,6 +1061,9 @@
     "invitedAsRoleExpires": "دُعي كـ {{role}} · ينتهي في {{date}}"
   },
   "staff": {
+    "membershipRequests": "دعوات الأعضاء",
+    "memberInvitePending": "دعوة عضو",
+    "inviteAdminByEmail": "مدير عبر البريد",
     "inviteAdmin": "+ دعوة مسؤول",
     "adminInvitations": "دعوات المسؤولين",
     "doctorInvitations": "دعوات الأطباء",

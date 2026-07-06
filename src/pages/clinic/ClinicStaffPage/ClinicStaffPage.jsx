@@ -16,7 +16,8 @@ import {
   revokeMembershipInvite,
 } from "../../../api/clinic";
 import InviteEmployeeModal from "./InviteEmployeeModal";
-import InviteAdminModal from "./InviteAdminModal";
+import InviteAdminModal from "./InviteAdminModal"; // email invite — kept as fallback (external, not-yet-registered admins)
+import InviteAdminByUser from "./InviteAdminByUser"; // primary: pick an existing DocPats User → membershipRequest
 import AddDoctorModal from "./AddDoctorModal";
 import "./clinicStaffPage.css";
 
@@ -38,7 +39,7 @@ export default function ClinicStaffPage() {
   const { t, i18n } = useTranslation("clinic");
   const layoutContext = useOutletContext();
   const navigate = useNavigate();
-  const [doctorRequests, setDoctorRequests] = useState([]);
+  const [memberRequests, setMemberRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [staff, setStaff] = useState([]);
@@ -46,6 +47,10 @@ export default function ClinicStaffPage() {
   const [adminInvites, setAdminInvites] = useState([]);
 
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
+  const [adminByUserModalOpen, setAdminByUserModalOpen] = useState(false);
+  // Email admin-invite modal — kept wired but with no primary trigger.
+  // Re-enable by adding a button that calls setAdminInviteModalOpen(true)
+  // (needed only for inviting an admin who has NO DocPats account yet).
   const [adminInviteModalOpen, setAdminInviteModalOpen] = useState(false);
   const [addDoctorModalOpen, setAddDoctorModalOpen] = useState(false);
 
@@ -57,7 +62,8 @@ export default function ClinicStaffPage() {
   const canRemove = ["owner", "admin"].includes(myRole);
   // Only the owner may invite admins — admin lacks STAFF_INVITE in the RBAC
   // matrix (backend also enforces this). Keep separate from canInvite so the
-  // employee-invite button stays available to admins.
+  // employee-invite button stays available to admins. Owner-only also gates
+  // creating/cancelling membership requests (backend cancel = staff.write).
   const canInviteAdmin = myRole === "owner";
 
   const loadAll = useCallback(async () => {
@@ -72,7 +78,7 @@ export default function ClinicStaffPage() {
         ]);
       setStaff(staffRes.items || []);
       setInvitations(invitationsRes.items || []);
-      setDoctorRequests(requestsRes.items || []);
+      setMemberRequests(requestsRes.items || []);
       setAdminInvites(adminInvitesRes.items || []);
       setLoading(false);
     } catch (err) {
@@ -239,7 +245,7 @@ export default function ClinicStaffPage() {
             {canInviteAdmin && (
               <button
                 className="staff-page-btn-secondary"
-                onClick={() => setAdminInviteModalOpen(true)}
+                onClick={() => setAdminByUserModalOpen(true)}
                 type="button"
               >
                 {t("staff.inviteAdmin", { defaultValue: "Пригласить админа" })}
@@ -310,20 +316,20 @@ export default function ClinicStaffPage() {
           </div>
         </section>
       )}
-      {doctorRequests.length > 0 && (
+      {memberRequests.length > 0 && (
         <section className="staff-page-section">
           <h2>
-            {t("staff.doctorInvitations", {
-              defaultValue: "Приглашения врачам",
+            {t("staff.membershipRequests", {
+              defaultValue: "Приглашения участникам",
             })}
-            <span className="staff-page-count">{doctorRequests.length}</span>
+            <span className="staff-page-count">{memberRequests.length}</span>
           </h2>
           <div className="staff-page-list">
-            {doctorRequests.map((r) => (
-              <DoctorRequestRow
+            {memberRequests.map((r) => (
+              <MembershipRequestRow
                 key={r.requestId}
                 request={r}
-                onCancel={canInvite ? handleCancelRequest : null}
+                onCancel={canInviteAdmin ? handleCancelRequest : null}
                 isLoading={actionLoading[r.requestId]}
                 t={t}
                 formatDate={formatDate}
@@ -375,6 +381,12 @@ export default function ClinicStaffPage() {
         <InviteEmployeeModal
           onClose={() => setInviteModalOpen(false)}
           onSuccess={handleInviteSuccess}
+        />
+      )}
+      {adminByUserModalOpen && (
+        <InviteAdminByUser
+          onClose={() => setAdminByUserModalOpen(false)}
+          onInvited={loadAll}
         />
       )}
       {adminInviteModalOpen && (
@@ -532,7 +544,8 @@ function InvitationRow({ invitation, onRevoke, isLoading, t, formatDate }) {
     </div>
   );
 }
-function DoctorRequestRow({ request, onCancel, isLoading, t, formatDate }) {
+// Pending MembershipRequest row — invitee may be admin OR doctor (User-backed).
+function MembershipRequestRow({ request, onCancel, isLoading, t, formatDate }) {
   const roleLabel = t(`roles.${request.role}`, { defaultValue: request.role });
   return (
     <div
@@ -542,8 +555,8 @@ function DoctorRequestRow({ request, onCancel, isLoading, t, formatDate }) {
       <div className="staff-row-info">
         <div className="staff-row-name">
           {request.doctorName ||
-            t("staff.doctorInvitePending", {
-              defaultValue: "Приглашение врачу",
+            t("staff.memberInvitePending", {
+              defaultValue: "Приглашение участнику",
             })}
           {request.customTitle ? ` · ${request.customTitle}` : ""}
         </div>

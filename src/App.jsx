@@ -533,7 +533,8 @@ import PublicCustomPage from "./pages/clinic/PublicClinicPage/PublicCustomPage.j
 import ClinicCustomPagesPage from "./pages/clinic/ClinicCustomPagesPage/ClinicCustomPagesPage.jsx";
 import PublicArticleDetail from "./pages/clinic/PublicClinicPage/PublicArticleDetail.jsx";
 import ServicesPage from "./pages/clinic/ServicesPage/ServicesPage.jsx";
-import MembershipInviteAccept from "./pages/clinic/MembershipInviteAccept/MembershipInviteAccept.jsx";
+import MembershipInviteAccept from "./pages/clinic/";
+import MyClinicInvitations from "./pages/clinic/ClinicStaffPage/MyClinicInvitations.jsx";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -614,6 +615,10 @@ function App() {
             <Route
               path="/clinic/membership-invitations/accept"
               element={<MembershipInviteAccept />}
+            />
+            <Route
+              path="/clinic/my-invitations"
+              element={<MyClinicInvitations />}
             />
             {/* ─── CLINIC MODULE — DocPats user authenticated zone ─── */}
             <Route path="/clinic" element={<ClinicLayout />}>

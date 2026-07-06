@@ -1,4 +1,44 @@
 ﻿{
+  "mci": {
+    "title": "Klinika dəvətləri",
+    "subtitle": "Sizi qoşulmağa dəvət edən klinikalar. Dəvəti qəbul edin və ya rədd edin.",
+    "loading": "Yüklənir…",
+    "empty": "Aktiv dəvətiniz yoxdur.",
+    "roleLine": "Rol: {{role}}",
+    "accept": "Qəbul et",
+    "reject": "Rədd et",
+    "processing": "…",
+    "acceptedHint": "Dəvət qəbul edildi. ",
+    "goToClinic": "Klinika kabinetinə keçin",
+    "errorLoad": "Dəvətləri yükləmək alınmadı",
+    "errorAccept": "Dəvəti qəbul etmək alınmadı",
+    "errorReject": "Dəvəti rədd etmək alınmadı",
+    "role": {
+      "admin": "administrator",
+      "doctor": "həkim",
+      "owner": "sahib",
+      "staff": "əməkdaş"
+    }
+  },
+  "iabu": {
+    "title": "Administrator dəvət et",
+    "close": "Bağla",
+    "hint": "Mövcud DocPats istifadəçisini e-poçt ilə tapın və administrator kimi dəvət edin. Dəvət istifadəçinin kabinetində görünəcək.",
+    "invited": "Dəvət göndərildi: {{name}}. O, istifadəçinin kabinetində görünəcək.",
+    "inviteAnother": "Daha bir dəvət et",
+    "done": "Hazırdır",
+    "searchPlaceholder": "İstifadəçi e-poçtu",
+    "searching": "Axtarılır…",
+    "search": "Axtar",
+    "customTitle": "Vəzifə (istəyə bağlı)",
+    "customTitlePlaceholder": "Məs.: Baş həkimin müavini",
+    "noResults": "İstifadəçi tapılmadı.",
+    "inviting": "…",
+    "invite": "Administrator kimi dəvət et",
+    "errorSearch": "Axtarış alınmadı",
+    "errorInvite": "Dəvət göndərmək alınmadı"
+  },
+
   "inviteAdminModal": {
     "title": "Administrator dəvət et",
     "intro": "E-poçta dəvət linki göndərəcəyik. Qəbul edən şəxs DocPats-ə daxil olur və ya qeydiyyatdan keçir və klinikanın administratoru olur (\"az qala sahib\"). Administrator DocPats istifadəçisidir, daxili işçi deyil.",
@@ -1021,7 +1061,11 @@
     "errorTitle": "Panel yüklənmədi",
     "invitedAsRoleExpires": "{{role}} kimi dəvət edilib · {{date}} tarixində bitir"
   },
+
   "staff": {
+    "membershipRequests": "Üzv dəvətləri",
+    "memberInvitePending": "Üzv dəvəti",
+    "inviteAdminByEmail": "E-poçt ilə administrator",
     "inviteAdmin": "+ Admin dəvət et",
     "adminInvitations": "Admin dəvətləri",
     "doctorInvitations": "Həkim dəvətləri",
