@@ -1275,7 +1275,12 @@
     "actions": {
       "scheduleSoon": "Cədvəl (tezliklə)",
       "patientsSoon": "Pasiyentlər (tezliklə)",
-      "pharmacySoon": "Aptek (tezliklə)"
+      "pharmacySoon": "Aptek (tezliklə)",
+      "vitrinaSoon": "Vitrin (tezliklə)",
+      "marketingSoon": "Nəşrlər (tezliklə)",
+      "reviewsSoon": "Rəylər (tezliklə)",
+      "analyticsSoon": "Analitika (tezliklə)",
+      "leadsSoon": "Müraciətlər (tezliklə)"
     },
     "comingSoon": "Daha çox funksiya növbəti versiyalarda əlçatan olacaq."
   },

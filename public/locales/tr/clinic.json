@@ -1274,7 +1274,12 @@
     "actions": {
       "scheduleSoon": "Takvim (yakında)",
       "patientsSoon": "Hastalar (yakında)",
-      "pharmacySoon": "Eczane (yakında)"
+      "pharmacySoon": "Eczane (yakında)",
+      "vitrinaSoon": "Vitrin (yakında)",
+      "marketingSoon": "Yayınlar (yakında)",
+      "reviewsSoon": "Yorumlar (yakında)",
+      "analyticsSoon": "Analitik (yakında)",
+      "leadsSoon": "Talepler (yakında)"
     },
     "comingSoon": "Daha fazla özellik gelecek sürümlerde kullanıma sunulacak."
   },

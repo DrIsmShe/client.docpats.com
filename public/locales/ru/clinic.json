@@ -1275,7 +1275,12 @@
     "actions": {
       "scheduleSoon": "Расписание (скоро)",
       "patientsSoon": "Пациенты (скоро)",
-      "pharmacySoon": "Аптека (скоро)"
+      "pharmacySoon": "Аптека (скоро)",
+      "vitrinaSoon": "Витрина (скоро)",
+      "marketingSoon": "Публикации (скоро)",
+      "reviewsSoon": "Отзывы (скоро)",
+      "analyticsSoon": "Аналитика (скоро)",
+      "leadsSoon": "Обращения (скоро)"
     },
     "comingSoon": "Больше функций станет доступно в следующих обновлениях."
   },

@@ -1275,7 +1275,12 @@
     "actions": {
       "scheduleSoon": "Schedule (soon)",
       "patientsSoon": "Patients (soon)",
-      "pharmacySoon": "Pharmacy (soon)"
+      "pharmacySoon": "Pharmacy (soon)",
+      "vitrinaSoon": "Storefront (soon)",
+      "marketingSoon": "Publications (soon)",
+      "reviewsSoon": "Reviews (soon)",
+      "analyticsSoon": "Analytics (soon)",
+      "leadsSoon": "Leads (soon)"
     },
     "comingSoon": "More features will become available in upcoming releases."
   },

@@ -1273,7 +1273,12 @@
     "actions": {
       "scheduleSoon": "الجدول (قريبًا)",
       "patientsSoon": "المرضى (قريبًا)",
-      "pharmacySoon": "الصيدلية (قريبًا)"
+      "pharmacySoon": "الصيدلية (قريبًا)",
+      "vitrinaSoon": "الواجهة (قريبًا)",
+      "marketingSoon": "المنشورات (قريبًا)",
+      "reviewsSoon": "التقييمات (قريبًا)",
+      "analyticsSoon": "التحليلات (قريبًا)",
+      "leadsSoon": "الطلبات (قريبًا)"
     },
     "comingSoon": "ستتوفر المزيد من الميزات في الإصدارات القادمة."
   },
