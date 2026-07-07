@@ -1184,6 +1184,13 @@
       "continue": "Təsdiq kodu göndər",
       "sending": "Göndərilir..."
     },
+    "existing": {
+      "title": "Klinika dəvəti",
+      "subtitle": "{{clinicName}} klinikasına qoşulmağa dəvət olunmusunuz.",
+      "hint": "Artıq işçi hesabınız var. «Qəbul et» düyməsinə klikləyin — mövcud parolunuzla daxil olacaqsınız.",
+      "accept": "Dəvəti qəbul et",
+      "accepting": "Qəbul edilir…"
+    },
     "accept": {
       "title": "Qeydiyyatı tamamlayın",
       "subtitle": "{{email}} ünvanına göndərilən 6 rəqəmli kodu daxil edin və hesabınızı qurun.",

@@ -1184,6 +1184,13 @@
       "continue": "Send verification code",
       "sending": "Sending..."
     },
+    "existing": {
+      "title": "Clinic invitation",
+      "subtitle": "You're invited to join {{clinicName}}.",
+      "hint": "You already have a worker account. Click Accept — you'll sign in with your existing password.",
+      "accept": "Accept invitation",
+      "accepting": "Accepting…"
+    },
     "accept": {
       "title": "Complete registration",
       "subtitle": "Enter the 6-digit code sent to {{email}} and set up your account.",

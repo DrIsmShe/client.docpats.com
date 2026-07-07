@@ -1183,6 +1183,13 @@
       "continue": "Doğrulama kodu gönder",
       "sending": "Gönderiliyor..."
     },
+    "existing": {
+      "title": "Klinik daveti",
+      "subtitle": "{{clinicName}} kliniğine katılmaya davet edildiniz.",
+      "hint": "Zaten bir çalışan hesabınız var. Kabul Et'e tıklayın — mevcut parolanızla giriş yaparsınız.",
+      "accept": "Daveti kabul et",
+      "accepting": "Kabul ediliyor…"
+    },
     "accept": {
       "title": "Kaydı tamamlayın",
       "subtitle": "{{email}} adresine gönderilen 6 haneli kodu girin ve hesabınızı kurun.",

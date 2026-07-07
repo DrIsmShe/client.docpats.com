@@ -1,10 +1,14 @@
 // client/src/pages/clinic/InvitationAcceptPage/InvitationAcceptPage.jsx
 //
-// Public page reached via the email invitation link.
-// 3-step wizard:
-//   1) Auto preview by token (loads clinic name, role, email)
-//   2) Request OTP code (sent to invitation email)
-//   3) Accept: enter OTP, name, password → register as ClinicEmployee
+// Public page reached via the email invitation link. Two flows, chosen by the
+// invitation `kind` returned by previewInvitation:
+//
+//   kind "new"      → 3-step wizard: preview → request OTP → accept
+//                     (enter OTP, name, password) → create ClinicEmployee.
+//   kind "existing" → the recipient already has a global clinic-worker account.
+//                     One-click consent: preview → Accept → join this clinic.
+//                     No OTP, no password (they log in with their existing one).
+//
 // On success, redirects to /clinic/staff-login.
 
 import React, { useEffect, useState, useCallback } from "react";
@@ -107,7 +111,7 @@ export default function InvitationAcceptPage() {
     return () => clearTimeout(timer);
   }, [resendCountdown]);
 
-  // ─── Step 2: Request OTP ───
+  // ─── Step 2 (new flow only): Request OTP ───
   const handleRequestOtp = useCallback(async () => {
     if (requestingOtp || resendCountdown > 0) return;
     setRequestingOtp(true);
@@ -130,7 +134,42 @@ export default function InvitationAcceptPage() {
     }
   }, [token, requestingOtp, resendCountdown, t]);
 
-  // ─── Step 3: Accept form helpers ───
+  // ─── Existing-worker flow: one-click consent (no OTP, no password) ───
+  const handleAcceptExisting = useCallback(async () => {
+    if (submitting) return;
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      await acceptInvitation({
+        token,
+        language: (i18n.language || "en").split("-")[0],
+      });
+      setStep("success");
+      setTimeout(() => {
+        navigate("/clinic/staff-login", {
+          replace: true,
+          state: { email: preview?.email },
+        });
+      }, 2000);
+    } catch (err) {
+      const status = err.response?.status;
+      const data = err.response?.data;
+      if (status === 409) {
+        setSubmitError(
+          data?.error ||
+            t("acceptInvitation.errors.alreadyMember", {
+              defaultValue: "Вы уже состоите в этой клинике.",
+            }),
+        );
+      } else {
+        setSubmitError(data?.error || t("acceptInvitation.errors.generic"));
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  }, [token, submitting, i18n.language, navigate, preview, t]);
+
+  // ─── Step 3 (new flow): Accept form helpers ───
   const handleChange = (field) => (e) => {
     const value = e.target.value;
     setForm((p) => ({ ...p, [field]: value }));
@@ -246,14 +285,24 @@ export default function InvitationAcceptPage() {
           <ErrorState errorCode={errorCode} errorMessage={errorMessage} t={t} />
         )}
 
-        {step === "preview" && preview && (
-          <PreviewState
-            preview={preview}
-            requestingOtp={requestingOtp}
-            onContinue={handleRequestOtp}
-            t={t}
-          />
-        )}
+        {step === "preview" &&
+          preview &&
+          (preview.isExistingWorker ? (
+            <ExistingConsentState
+              preview={preview}
+              submitting={submitting}
+              submitError={submitError}
+              onAccept={handleAcceptExisting}
+              t={t}
+            />
+          ) : (
+            <PreviewState
+              preview={preview}
+              requestingOtp={requestingOtp}
+              onContinue={handleRequestOtp}
+              t={t}
+            />
+          ))}
 
         {step === "accept" && preview && (
           <AcceptForm
@@ -365,6 +414,89 @@ function PreviewState({ preview, requestingOtp, onContinue, t }) {
         {requestingOtp
           ? t("acceptInvitation.preview.sending")
           : t("acceptInvitation.preview.continue")}
+      </button>
+    </div>
+  );
+}
+
+// One-click consent for a worker who already has a global clinic-worker
+// account. No OTP, no password — they'll sign in with their existing one.
+function ExistingConsentState({
+  preview,
+  submitting,
+  submitError,
+  onAccept,
+  t,
+}) {
+  const roleLabel = t(`roles.${preview.role}`, { defaultValue: preview.role });
+
+  return (
+    <div className="invite-accept-card">
+      <div className="invite-accept-icon">🏥</div>
+      <h1>
+        {t("acceptInvitation.existing.title", {
+          defaultValue: "Приглашение в клинику",
+        })}
+      </h1>
+      <p className="invite-accept-subtitle">
+        {t("acceptInvitation.existing.subtitle", {
+          clinicName: preview.clinicName || preview.clinic?.name,
+          defaultValue:
+            "Вас приглашают присоединиться к клинике {{clinicName}}.",
+        })}
+      </p>
+
+      {submitError && (
+        <div className="invite-accept-server-error">{submitError}</div>
+      )}
+
+      <div className="invite-accept-info">
+        <div className="invite-accept-info-row">
+          <span className="invite-accept-info-label">
+            {t("acceptInvitation.preview.clinic")}
+          </span>
+          <span className="invite-accept-info-value">
+            {preview.clinicName || preview.clinic?.name || "—"}
+          </span>
+        </div>
+        <div className="invite-accept-info-row">
+          <span className="invite-accept-info-label">
+            {t("acceptInvitation.preview.role")}
+          </span>
+          <span className="invite-accept-info-value">
+            <span className={`invite-accept-role-badge role-${preview.role}`}>
+              {roleLabel}
+            </span>
+          </span>
+        </div>
+        <div className="invite-accept-info-row">
+          <span className="invite-accept-info-label">
+            {t("acceptInvitation.preview.email")}
+          </span>
+          <span className="invite-accept-info-value">{preview.email}</span>
+        </div>
+      </div>
+
+      <p className="invite-accept-hint">
+        {t("acceptInvitation.existing.hint", {
+          defaultValue:
+            "У вас уже есть учётная запись сотрудника. Нажмите «Принять» — вы войдёте со своим текущим паролем.",
+        })}
+      </p>
+
+      <button
+        type="button"
+        className="invite-accept-btn-primary"
+        onClick={onAccept}
+        disabled={submitting}
+      >
+        {submitting
+          ? t("acceptInvitation.existing.accepting", {
+              defaultValue: "Принимаем…",
+            })
+          : t("acceptInvitation.existing.accept", {
+              defaultValue: "Принять приглашение",
+            })}
       </button>
     </div>
   );
