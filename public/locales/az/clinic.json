@@ -1172,6 +1172,22 @@
     "Asia/Dubai": "Dubay (UTC+4)",
     "America/New_York": "Nyu-York (UTC-5/-4)"
   },
+  "deleteClinic": {
+    "title": "Təhlükəli zona",
+    "description": "Klinikanın silinməsi geri qaytarıla bilməz. Şöbələr, otaqlar, avadanlıq, məqalələr və cədvəllər silinəcək. Pasiyent məlumatları və qəbul tarixçəsi tələblərə uyğun arxivləşdirilir.",
+    "button": "Klinikanı sil",
+    "modal": {
+      "title": "Klinika həmişəlik silinsin?",
+      "text": "Bu əməliyyat geri qaytarıla bilməz. Təsdiq üçün klinikanın adını yazın: {{clinicName}}",
+      "confirm": "Həmişəlik sil",
+      "deleting": "Silinir…"
+    },
+    "errors": {
+      "notOwner": "Klinikanı yalnız sahibi silə bilər.",
+      "nameMismatch": "Ad uyğun gəlmir.",
+      "generic": "Klinikanı silmək mümkün olmadı. Yenidən cəhd edin."
+    }
+  },
   "acceptInvitation": {
     "backToHome": "Ana səhifəyə",
     "preview": {

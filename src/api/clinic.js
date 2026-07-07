@@ -2646,3 +2646,9 @@ export const acceptMembershipInvite = async (token) => {
   });
   return res.data;
 };
+export const deleteClinic = async (clinicId, confirmationName) => {
+  const res = await axios.delete(`/api/v1/clinic/clinics/${clinicId}`, {
+    data: { confirmationName },
+  });
+  return res.data;
+};

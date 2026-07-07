@@ -1172,6 +1172,22 @@
     "Asia/Dubai": "Dubai (UTC+4)",
     "America/New_York": "New York (UTC-5/-4)"
   },
+  "deleteClinic": {
+    "title": "Danger zone",
+    "description": "Deleting a clinic is irreversible. Departments, rooms, equipment, articles and schedules will be removed. Patient data and appointment history are archived in line with compliance requirements.",
+    "button": "Delete clinic",
+    "modal": {
+      "title": "Delete clinic permanently?",
+      "text": "This action cannot be undone. To confirm, type the clinic name: {{clinicName}}",
+      "confirm": "Delete permanently",
+      "deleting": "Deleting…"
+    },
+    "errors": {
+      "notOwner": "Only the owner can delete the clinic.",
+      "nameMismatch": "The name does not match.",
+      "generic": "Failed to delete the clinic. Please try again."
+    }
+  },
   "acceptInvitation": {
     "backToHome": "Back to home",
     "preview": {

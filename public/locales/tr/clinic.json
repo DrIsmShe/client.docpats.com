@@ -1171,6 +1171,22 @@
     "Asia/Dubai": "Dubai (UTC+4)",
     "America/New_York": "New York (UTC-5/-4)"
   },
+  "deleteClinic": {
+    "title": "Tehlikeli bölge",
+    "description": "Kliniği silmek geri alınamaz. Bölümler, odalar, ekipman, makaleler ve programlar silinir. Hasta verileri ve randevu geçmişi mevzuata uygun şekilde arşivlenir.",
+    "button": "Kliniği sil",
+    "modal": {
+      "title": "Klinik kalıcı olarak silinsin mi?",
+      "text": "Bu işlem geri alınamaz. Onaylamak için klinik adını yazın: {{clinicName}}",
+      "confirm": "Kalıcı olarak sil",
+      "deleting": "Siliniyor…"
+    },
+    "errors": {
+      "notOwner": "Kliniği yalnızca sahibi silebilir.",
+      "nameMismatch": "Ad eşleşmiyor.",
+      "generic": "Klinik silinemedi. Lütfen tekrar deneyin."
+    }
+  },
   "acceptInvitation": {
     "backToHome": "Ana sayfaya dön",
     "preview": {

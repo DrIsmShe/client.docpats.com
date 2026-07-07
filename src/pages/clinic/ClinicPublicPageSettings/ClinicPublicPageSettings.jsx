@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import ThemeSwitcher from "../vitrina/theme/ThemeSwitcher.jsx";
 import LayoutEditor from "../vitrina/layout/LayoutEditor.jsx";
 import ClinicContentForm from "../vitrina/settings/ClinicContentForm.jsx";
+import DeleteClinicSection from "./DeleteClinicSection";
 import {
   getClinicMe,
   updateClinic,
@@ -763,6 +764,7 @@ export default function ClinicPublicPageSettings() {
           ← {t("common.backToDashboard", { defaultValue: "К дашборду" })}
         </Link>
       </div>
+      <DeleteClinicSection clinicId={clinic.id} clinicName={clinic.name} />
     </div>
   );
 }

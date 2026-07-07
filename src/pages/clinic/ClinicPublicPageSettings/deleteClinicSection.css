@@ -1,0 +1,119 @@
+.delete-clinic-danger {
+  margin-top: 48px;
+  padding: 24px;
+  border: 1px solid #f0c0c0;
+  border-radius: 12px;
+  background: #fef6f6;
+}
+.delete-clinic-danger-header h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #b42318;
+}
+.delete-clinic-danger-header p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #64748b;
+}
+.delete-clinic-trigger {
+  background: #fff;
+  color: #b42318;
+  border: 1px solid #e5a3a3;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+.delete-clinic-trigger:hover {
+  background: #b42318;
+  color: #fff;
+  border-color: #b42318;
+}
+
+.delete-clinic-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+.delete-clinic-modal {
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+}
+.delete-clinic-modal-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+.delete-clinic-modal h3 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  color: #1a1a18;
+}
+.delete-clinic-modal-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #64748b;
+  margin: 0 0 20px;
+}
+.delete-clinic-error {
+  background: #fef2f2;
+  color: #b42318;
+  border: 1px solid #f0c0c0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.delete-clinic-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+.delete-clinic-input:focus {
+  outline: none;
+  border-color: #b42318;
+}
+.delete-clinic-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.delete-clinic-cancel,
+.delete-clinic-confirm {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+}
+.delete-clinic-cancel {
+  background: #f1f5f9;
+  color: #334155;
+}
+.delete-clinic-confirm {
+  background: #b42318;
+  color: #fff;
+}
+.delete-clinic-confirm:disabled {
+  background: #e5b3ad;
+  cursor: not-allowed;
+}
+[dir="rtl"] .delete-clinic-danger {
+  text-align: right;
+}
