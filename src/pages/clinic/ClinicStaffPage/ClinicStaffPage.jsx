@@ -56,15 +56,28 @@ export default function ClinicStaffPage() {
 
   const [actionLoading, setActionLoading] = useState({});
 
+  // ─── Permission-based gating ──────────────────────────────────
+  // Source of truth = the same effective permissions the backend enforces
+  // (getEffectivePermissions), delivered through the clinic outlet context.
+  // Owner is treated as always-full: the owner is never restricted, and this
+  // also guards against an edge case where permissions are momentarily absent.
   const myRole = layoutContext?.role || "member";
-  const canInvite = ["owner", "admin"].includes(myRole);
-  const canManageRoles = ["owner", "admin"].includes(myRole);
-  const canRemove = ["owner", "admin"].includes(myRole);
-  // Only the owner may invite admins — admin lacks STAFF_INVITE in the RBAC
-  // matrix (backend also enforces this). Keep separate from canInvite so the
-  // employee-invite button stays available to admins. Owner-only also gates
+  const perms = layoutContext?.permissions || {};
+  const isOwner = myRole === "owner";
+  const allow = (resource, action) => isOwner || !!perms?.[resource]?.[action];
+
+  // Inviting an employee / adding a doctor writes to STAFF_INVITE.
+  // admin has staff_invite:NONE → these stay hidden (backend also rejects).
+  const canInviteEmployee = allow("staff_invite", "write");
+  // Changing roles / removing members writes to STAFF.
+  // admin has STAFF:RO → hidden (backend rejects with 403 otherwise).
+  const canManageRoles = allow("staff", "write");
+  const canRemove = allow("staff", "write");
+  // Inviting an admin (existing DocPats User → membershipRequest) is
+  // OWNER-ONLY by product decision; admin lacks STAFF_INVITE and only the
+  // owner may reshape clinic ownership/administration. Owner-only also gates
   // creating/cancelling membership requests (backend cancel = staff.write).
-  const canInviteAdmin = myRole === "owner";
+  const canInviteAdmin = isOwner;
 
   const loadAll = useCallback(async () => {
     try {
@@ -240,7 +253,7 @@ export default function ClinicStaffPage() {
           <h1>{t("staff.title")}</h1>
           <p className="staff-page-subtitle">{t("staff.subtitle")}</p>
         </div>
-        {(canInvite || canInviteAdmin) && (
+        {(canInviteEmployee || canInviteAdmin) && (
           <div className="staff-page-header-actions">
             {canInviteAdmin && (
               <button
@@ -251,7 +264,7 @@ export default function ClinicStaffPage() {
                 {t("staff.inviteAdmin", { defaultValue: "Пригласить админа" })}
               </button>
             )}
-            {canInvite && (
+            {canInviteEmployee && (
               <>
                 <button
                   className="staff-page-btn-secondary"
@@ -307,7 +320,7 @@ export default function ClinicStaffPage() {
               <InvitationRow
                 key={inv.invitationId || inv._id || inv.id}
                 invitation={inv}
-                onRevoke={canInvite ? handleRevokeInvitation : null}
+                onRevoke={canInviteEmployee ? handleRevokeInvitation : null}
                 isLoading={actionLoading[inv.invitationId || inv._id || inv.id]}
                 t={t}
                 formatDate={formatDate}
@@ -346,7 +359,7 @@ export default function ClinicStaffPage() {
         {staff.length === 0 ? (
           <div className="staff-page-empty">
             <p>{t("staff.noTeamMembers")}</p>
-            {canInvite && (
+            {canInviteEmployee && (
               <button
                 className="staff-page-btn-primary"
                 onClick={() => setInviteModalOpen(true)}
