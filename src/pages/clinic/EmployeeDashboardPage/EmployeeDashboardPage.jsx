@@ -1,4 +1,4 @@
-// client/src/pages/clinic/EmployeeDashboardPage/EmployeeDashboardPage.jsx
+﻿// client/src/pages/clinic/EmployeeDashboardPage/EmployeeDashboardPage.jsx
 //
 // NOTE: all emoji are written as \uXXXX escape sequences (pure ASCII) so the
 // file is immune to editor/terminal encoding corruption. JS resolves them to
@@ -7,7 +7,10 @@
 import React from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useClinicPermissions } from "../../../lib/can";
+import {
+  Calendar, Users, Building2, DoorOpen, Wrench, Megaphone, BookOpen, Pill,
+  LayoutTemplate, Send, Star, BarChart3, Inbox, User, Hospital, Award,
+} from "lucide-react";import { useClinicPermissions } from "../../../lib/can";
 import "./employeeDashboardPage.css";
 
 // Quick actions in the employee zone. Each is gated by a permission
@@ -17,134 +20,134 @@ const QUICK_ACTIONS = [
   // clinical / operational
   {
     key: "schedule",
-    icon: "\uD83D\uDCC5",
+    Icon: Calendar,
     res: "schedule",
     act: "read",
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.scheduleSoon",
-    labelDefault: "Р Р°СЃРїРёСЃР°РЅРёРµ (СЃРєРѕСЂРѕ)",
+    labelDefault: "Р В Р В°РЎРѓР С—Р С‘РЎРѓР В°Р Р…Р С‘Р Вµ (РЎРѓР С”Р С•РЎР‚Р С•)",
   },
   {
     key: "patients",
-    icon: "\uD83D\uDC65",
+    Icon: Users,
     res: "patient",
     act: "read",
     soon: false,
     to: "/clinic/employee/patients",
     labelKey: "employeeDashboard.actions.patients",
-    labelDefault: "РџР°С†РёРµРЅС‚С‹",
+    labelDefault: "Р СџР В°РЎвЂ Р С‘Р ВµР Р…РЎвЂљРЎвЂ№",
   },
   {
     key: "departments",
-    icon: "\uD83C\uDFE2",
+    Icon: Building2,
     res: "department",
     act: "read",
     soon: false,
     to: "/clinic/employee/departments",
     labelKey: "employeeDashboard.actions.departments",
-    labelDefault: "РћС‚РґРµР»РµРЅРёСЏ",
+    labelDefault: "Р С›РЎвЂљР Т‘Р ВµР В»Р ВµР Р…Р С‘РЎРЏ",
   },
   {
     key: "rooms",
-    icon: "\uD83D\uDEAA",
+    Icon: DoorOpen,
     res: "room",
     act: "read",
     soon: false,
     to: "/clinic/employee/rooms",
     labelKey: "employeeDashboard.actions.rooms",
-    labelDefault: "РљР°Р±РёРЅРµС‚С‹",
+    labelDefault: "Р С™Р В°Р В±Р С‘Р Р…Р ВµРЎвЂљРЎвЂ№",
   },
   {
     key: "equipment",
-    icon: "\uD83D\uDD27",
+    Icon: Wrench,
     res: "equipment",
     act: "read",
     soon: false,
     to: "/clinic/employee/equipment",
     labelKey: "employeeDashboard.actions.equipment",
-    labelDefault: "РћР±РѕСЂСѓРґРѕРІР°РЅРёРµ",
+    labelDefault: "Р С›Р В±Р С•РЎР‚РЎС“Р Т‘Р С•Р Р†Р В°Р Р…Р С‘Р Вµ",
   },
   {
     key: "announcements",
-    icon: "\uD83D\uDCE2",
+    Icon: Megaphone,
     res: "knowledge",
     act: "read",
     soon: false,
     to: "/clinic/employee/announcements",
     labelKey: "employeeDashboard.actions.announcements",
-    labelDefault: "РћР±СЉСЏРІР»РµРЅРёСЏ",
+    labelDefault: "Р С›Р В±РЎР‰РЎРЏР Р†Р В»Р ВµР Р…Р С‘РЎРЏ",
   },
   {
     key: "knowledge",
-    icon: "\uD83D\uDCDA",
+    Icon: BookOpen,
     res: "knowledge",
     act: "read",
     soon: false,
     to: "/clinic/employee/knowledge",
     labelKey: "employeeDashboard.actions.knowledge",
-    labelDefault: "Р‘Р°Р·Р° Р·РЅР°РЅРёР№",
+    labelDefault: "Р вЂР В°Р В·Р В° Р В·Р Р…Р В°Р Р…Р С‘Р в„–",
   },
   {
     key: "pharmacy",
-    icon: "\uD83D\uDC8A",
+    Icon: Pill,
     res: "pharmacy",
     act: "read",
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.pharmacySoon",
-    labelDefault: "РђРїС‚РµРєР° (СЃРєРѕСЂРѕ)",
+    labelDefault: "Р С’Р С—РЎвЂљР ВµР С”Р В° (РЎРѓР С”Р С•РЎР‚Р С•)",
   },
   // marketing / public site
   {
     key: "vitrina",
-    icon: "\uD83D\uDDBC\uFE0F",
+    Icon: LayoutTemplate,
     res: "site_builder",
     act: "write",
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.vitrinaSoon",
-    labelDefault: "Р’РёС‚СЂРёРЅР° (СЃРєРѕСЂРѕ)",
+    labelDefault: "Р вЂ™Р С‘РЎвЂљРЎР‚Р С‘Р Р…Р В° (РЎРѓР С”Р С•РЎР‚Р С•)",
   },
   {
     key: "marketing",
-    icon: "\uD83D\uDCE3",
+    Icon: Send,
     res: "marketing",
     act: "write",
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.marketingSoon",
-    labelDefault: "РџСѓР±Р»РёРєР°С†РёРё (СЃРєРѕСЂРѕ)",
+    labelDefault: "Р СџРЎС“Р В±Р В»Р С‘Р С”Р В°РЎвЂ Р С‘Р С‘ (РЎРѓР С”Р С•РЎР‚Р С•)",
   },
   {
     key: "reviews",
-    icon: "\u2B50",
+    Icon: Star,
     res: "review",
     act: "read",
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.reviewsSoon",
-    labelDefault: "РћС‚Р·С‹РІС‹ (СЃРєРѕСЂРѕ)",
+    labelDefault: "Р С›РЎвЂљР В·РЎвЂ№Р Р†РЎвЂ№ (РЎРѓР С”Р С•РЎР‚Р С•)",
   },
   {
     key: "analytics",
-    icon: "\uD83D\uDCCA",
+    Icon: BarChart3,
     res: "analytics",
     act: "read",
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.analyticsSoon",
-    labelDefault: "РђРЅР°Р»РёС‚РёРєР° (СЃРєРѕСЂРѕ)",
+    labelDefault: "Р С’Р Р…Р В°Р В»Р С‘РЎвЂљР С‘Р С”Р В° (РЎРѓР С”Р С•РЎР‚Р С•)",
   },
   {
     key: "leads",
-    icon: "\uD83D\uDCE8",
+    Icon: Inbox,
     res: "lead",
     act: "read",
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.leadsSoon",
-    labelDefault: "РћР±СЂР°С‰РµРЅРёСЏ (СЃРєРѕСЂРѕ)",
+    labelDefault: "Р С›Р В±РЎР‚Р В°РЎвЂ°Р ВµР Р…Р С‘РЎРЏ (РЎРѓР С”Р С•РЎР‚Р С•)",
   },
 ];
 
@@ -164,11 +167,11 @@ export default function EmployeeDashboardPage() {
     t("staff.unnamed");
 
   const formatDate = (d) => {
-    if (!d) return "вЂ”";
+    if (!d) return "РІР‚вЂќ";
     try {
       return new Date(d).toLocaleDateString(i18n.language || undefined);
     } catch {
-      return "вЂ”";
+      return "РІР‚вЂќ";
     }
   };
 
@@ -187,14 +190,14 @@ export default function EmployeeDashboardPage() {
         </h1>
         <p className="employee-dashboard-subtitle">
           {t("employeeDashboard.subtitle", {
-            clinicName: clinic?.name || "вЂ”",
+            clinicName: clinic?.name || "РІР‚вЂќ",
           })}
         </p>
       </header>
 
       <section className="employee-dashboard-info">
         <div className="employee-dashboard-info-card">
-          <div className="employee-dashboard-info-icon">{"\uD83D\uDC64"}</div>
+          <div className="employee-dashboard-info-icon"><User size={22} /></div>
           <div className="employee-dashboard-info-content">
             <div className="employee-dashboard-info-label">
               {t("employeeDashboard.profile.fullName")}
@@ -209,13 +212,13 @@ export default function EmployeeDashboardPage() {
         </div>
 
         <div className="employee-dashboard-info-card">
-          <div className="employee-dashboard-info-icon">{"\uD83C\uDFE5"}</div>
+          <div className="employee-dashboard-info-icon"><Hospital size={22} /></div>
           <div className="employee-dashboard-info-content">
             <div className="employee-dashboard-info-label">
               {t("employeeDashboard.profile.clinic")}
             </div>
             <div className="employee-dashboard-info-value">
-              {clinic?.name || "вЂ”"}
+              {clinic?.name || "РІР‚вЂќ"}
             </div>
             {clinic?.slug && (
               <div className="employee-dashboard-info-sub">/{clinic.slug}</div>
@@ -225,7 +228,7 @@ export default function EmployeeDashboardPage() {
 
         <div className="employee-dashboard-info-card">
           <div className="employee-dashboard-info-icon">
-            {"\uD83C\uDF96\uFE0F"}
+            <Award size={22} />
           </div>
           <div className="employee-dashboard-info-content">
             <div className="employee-dashboard-info-label">
@@ -245,7 +248,7 @@ export default function EmployeeDashboardPage() {
         </div>
 
         <div className="employee-dashboard-info-card">
-          <div className="employee-dashboard-info-icon">{"\uD83D\uDCC5"}</div>
+          <div className="employee-dashboard-info-icon"><Calendar size={22} /></div>
           <div className="employee-dashboard-info-content">
             <div className="employee-dashboard-info-label">
               {t("employeeDashboard.profile.joinedAt")}
@@ -267,7 +270,7 @@ export default function EmployeeDashboardPage() {
           <p className="employee-dashboard-coming-soon">
             {t("employeeDashboard.noActions", {
               defaultValue:
-                "Р”Р»СЏ РІР°С€РµР№ СЂРѕР»Рё РґРµР№СЃС‚РІРёСЏ РїРѕСЏРІСЏС‚СЃСЏ РІ СЃР»РµРґСѓСЋС‰РёС… РѕР±РЅРѕРІР»РµРЅРёСЏС….",
+                "Р вЂќР В»РЎРЏ Р Р†Р В°РЎв‚¬Р ВµР в„– РЎР‚Р С•Р В»Р С‘ Р Т‘Р ВµР в„–РЎРѓРЎвЂљР Р†Р С‘РЎРЏ Р С—Р С•РЎРЏР Р†РЎРЏРЎвЂљРЎРѓРЎРЏ Р Р† РЎРѓР В»Р ВµР Т‘РЎС“РЎР‹РЎвЂ°Р С‘РЎвЂ¦ Р С•Р В±Р Р…Р С•Р Р†Р В»Р ВµР Р…Р С‘РЎРЏРЎвЂ¦.",
             })}
           </p>
         ) : (
@@ -276,6 +279,7 @@ export default function EmployeeDashboardPage() {
               {visibleActions.map((a) => {
                 const label = t(a.labelKey, { defaultValue: a.labelDefault });
                 const isLive = a.to && !a.soon;
+                const Icon = a.Icon;
 
                 if (isLive) {
                   return (
@@ -285,7 +289,7 @@ export default function EmployeeDashboardPage() {
                       className="employee-dashboard-action"
                     >
                       <span className="employee-dashboard-action-icon">
-                        {a.icon}
+                        <Icon size={22} />
                       </span>
                       <span className="employee-dashboard-action-label">
                         {label}
@@ -301,7 +305,7 @@ export default function EmployeeDashboardPage() {
                     disabled
                   >
                     <span className="employee-dashboard-action-icon">
-                      {a.icon}
+                      <Icon size={22} />
                     </span>
                     <span className="employee-dashboard-action-label">
                       {label}
