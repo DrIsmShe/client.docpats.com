@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+﻿import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GlobalCallProvider } from "./pages/communication/context/GlobalCallProvider";
@@ -24,7 +24,7 @@ import SearchPatientFromPatient from "./pages/patientProfilePages/addPatient/sea
 import DeletePatientFromOffice from "./pages/polyclinic/deletePatientFromOffice.jsx";
 import Notifications from "./pages/patientProfilePages/Notifications.jsx";
 
-// Импорт страниц авторизации
+// РРјРїРѕСЂС‚ СЃС‚СЂР°РЅРёС† Р°РІС‚РѕСЂРёР·Р°С†РёРё
 import Registration from "./pages/auth/register/registration";
 import AuthLayout from "./layoutes/authLayout/authLayout";
 import Login from "./pages/auth/login/login";
@@ -34,7 +34,7 @@ import Resetpasswordchange from "./pages/auth/resetpassword/resetpasswordchange"
 import Otpresetpasswordchange from "./pages/auth/resetpassword/otpresetpasswordchange";
 import Pagenotfound from "./pages/pagenotfound/pagenotfound";
 
-// Импорт страниц профиля доктора
+// РРјРїРѕСЂС‚ СЃС‚СЂР°РЅРёС† РїСЂРѕС„РёР»СЏ РґРѕРєС‚РѕСЂР°
 
 import DoctorpofileLayout from "./layoutes/doctorprofileLayout/doctorprofileLayout";
 import HomeDoctorMainPage from "./pages/doctorProfilePages/home/homeMainPage";
@@ -64,7 +64,7 @@ import EditMyArticleScientificDoctor from "./pages/doctorProfilePages/articles/e
 import ArtislesScientificFromDoctors from "./pages/doctorProfilePages/shared/articles/artislesScientificFromDoctors.jsx";
 import DoctorArticlesScientific from "./pages/doctorProfilePages/shared/doctors/doctorsArticlesScientific";
 
-// Импорт страниц администратора
+// РРјРїРѕСЂС‚ СЃС‚СЂР°РЅРёС† Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°
 import AdminLayout from "./layoutes/adminLayout/adminLyout";
 import HomeAdminMainPage from "./pages/admin/homePageAdmin";
 import UsersListPage from "./pages/admin/user/usersList.jsx";
@@ -82,7 +82,7 @@ import PolyclinicPatientDetail from "./pages/admin/patient/PolyclinicPatientDeta
 import PolyclinicPatientDelete from "./pages/admin/patient/PolyclinicPatientDelete";
 import AdminExportCollection from "./pages/admin/components/AdminExportCollection";
 
-// Импорт страниц поликлиники
+// РРјРїРѕСЂС‚ СЃС‚СЂР°РЅРёС† РїРѕР»РёРєР»РёРЅРёРєРё
 import MainPolyclinicLayout from "./layoutes/polyclinic/MainPolyclinicLayout";
 import Polyclinic from "./pages/polyclinic/polyclinic";
 import Patientdetail from "./pages/polyclinic/patientdetail";
@@ -92,7 +92,7 @@ import Addpatient from "./pages/polyclinic/addpatientpolyclinic/addpatientpolycl
 import AddPatientMedicalHistory from "./pages/polyclinic/addpatientpolyclinic/addPatientMedicalHistory";
 import MedicalHistory from "./pages/polyclinic/medicalHistory";
 
-// Импорт шаблонов медицинских записей
+// РРјРїРѕСЂС‚ С€Р°Р±Р»РѕРЅРѕРІ РјРµРґРёС†РёРЅСЃРєРёС… Р·Р°РїРёСЃРµР№
 import TempComplaints from "./pages/polyclinic/addpatientpolyclinic/templates/tempComplaints";
 import ComplaintDetail from "./pages/polyclinic/addpatientpolyclinic/templates/ComplaintDetail";
 import TempAnamnesisMorbi from "./pages/polyclinic/addpatientpolyclinic/templates/tempAnamnesisMorbi";
@@ -105,7 +105,7 @@ import TempCScanerResults from "./pages/polyclinic/addpatientpolyclinic/template
 import TempUltrasoundResults from "./pages/polyclinic/addpatientpolyclinic/templates/tempUltrasoundResults";
 import TempLaboratoryTestResults from "./pages/polyclinic/addpatientpolyclinic/templates/tempLaboratoryTestResults";
 
-// Импорт страниц профиля пациента
+// РРјРїРѕСЂС‚ СЃС‚СЂР°РЅРёС† РїСЂРѕС„РёР»СЏ РїР°С†РёРµРЅС‚Р°
 import PatientNotificationsMain from "./pages/patientProfilePages/notifications/PatientNotificationsPage.jsx";
 import PatientAppointmentsMain from "./pages/patientProfilePages/appointments/PatientAppointmentsMain.jsx";
 import PatientAppointmentsHistory from "./pages/patientProfilePages/appointments/PatientAppointmentsHistory.jsx";
@@ -515,7 +515,7 @@ import NewPatientPage from "./pages/clinic/ClinicPatientsPage/NewPatientPage.jsx
 import CompleteRegistrationPage from "./pages/auth/CompleteRegistrationPage/CompleteRegistrationPage";
 import MyLabResults from "./pages/patientProfilePages/MyMedicalHistories/MyLabResults";
 import MyPrescriptions from "./pages/patientProfilePages/MyMedicalHistories/MyPrescriptions";
-import PatientFileDetailClinic from "./pages/patientProfilePages/MyMedicalHistories/PatientFileDetailClinic"; // путь подгони под свой проект
+import PatientFileDetailClinic from "./pages/patientProfilePages/MyMedicalHistories/PatientFileDetailClinic"; // РїСѓС‚СЊ РїРѕРґРіРѕРЅРё РїРѕРґ СЃРІРѕР№ РїСЂРѕРµРєС‚
 import ClinicDepartmentsPage from "./pages/clinic/ClinicDepartmentsPage/ClinicDepartmentsPage.jsx";
 import ClinicRoomsPage from "./pages/clinic/ClinicRoomsPage/ClinicRoomsPage.jsx";
 import ClinicEquipmentPage from "./pages/clinic/ClinicEquipmentPage/ClinicEquipmentPage.jsx";
@@ -590,8 +590,8 @@ function App() {
                 element={<DoctorDetailsForAll />}
               />
             </Route>
-            {/* ─── CLINIC MODULE — Public routes ─── */}
-            {/* ─── CLINIC MODULE — Public routes ─── */}
+            {/* в”Ђв”Ђв”Ђ CLINIC MODULE вЂ” Public routes в”Ђв”Ђв”Ђ */}
+            {/* в”Ђв”Ђв”Ђ CLINIC MODULE вЂ” Public routes в”Ђв”Ђв”Ђ */}
             <Route path="/clinics/:slug" element={<PublicClinicPage />} />
 
             <Route
@@ -620,7 +620,7 @@ function App() {
               path="/clinic/my-invitations"
               element={<MyClinicInvitations />}
             />
-            {/* ─── CLINIC MODULE — DocPats user authenticated zone ─── */}
+            {/* в”Ђв”Ђв”Ђ CLINIC MODULE вЂ” DocPats user authenticated zone в”Ђв”Ђв”Ђ */}
             <Route path="/clinic" element={<ClinicLayout />}>
               <Route index element={<ClinicHubPage />} />
               <Route
@@ -666,7 +666,7 @@ function App() {
                 element={<ClinicPatientDetailPage />}
               />
             </Route>
-            {/* ─── CLINIC MODULE — Employee authenticated zone ─── */}
+            {/* в”Ђв”Ђв”Ђ CLINIC MODULE вЂ” Employee authenticated zone в”Ђв”Ђв”Ђ */}
             <Route
               path="/clinic/employee"
               element={<ClinicLayout employeeMode={true} />}
@@ -678,20 +678,26 @@ function App() {
                 path="patients/:id"
                 element={<ClinicPatientDetailPage />}
               />
+                <Route path="departments" element={<ClinicDepartmentsPage />} />
+                <Route path="rooms" element={<ClinicRoomsPage />} />
+                <Route path="equipment" element={<ClinicEquipmentPage />} />
+                <Route path="announcements" element={<ClinicAnnouncementsPage />} />
+                <Route path="knowledge" element={<ClinicKnowledgePage />} />
+                <Route path="knowledge/:id" element={<ClinicKnowledgeArticlePage />} />
             </Route>
-            {/* Здесь перечислены все маршруты для раздела ПОЛИКЛИНИКА */}
+            {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° РџРћР›РРљР›РРќРРљРђ */}
             <Route path="/dp" element={<MainPolyclinicLayout />}>
               <Route path="simulation" element={<SimulationHubPage />} />
               <Route path="simulation/help" element={<HelpPage />} />
-              {/* Face — старый список и editor под /face */}
+              {/* Face вЂ” СЃС‚Р°СЂС‹Р№ СЃРїРёСЃРѕРє Рё editor РїРѕРґ /face */}
               <Route path="simulation/face" element={<PlanListPage />} />
               <Route
                 path="simulation/face/plans/:id"
                 element={<PlanEditorPage />}
               />
-              {/* Backwards compat — старый URL /simulation/plans/:id */}
+              {/* Backwards compat вЂ” СЃС‚Р°СЂС‹Р№ URL /simulation/plans/:id */}
               <Route path="simulation/plans/:id" element={<PlanEditorPage />} />
-              {/* Breast — placeholder, реализуем в Phase 3B */}
+              {/* Breast вЂ” placeholder, СЂРµР°Р»РёР·СѓРµРј РІ Phase 3B */}
               <Route path="simulation/breast" element={<BreastListPage />} />
               <Route
                 path="simulation/breast/plans/:id"
@@ -808,9 +814,9 @@ function App() {
                 path="detail-coronography-scan-template-recomandation/:id"
                 element={<CoronographyScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела CORONOGRAPHY EKG END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° CORONOGRAPHY EKG END */}
 
-              {/* Здесь перечислены все маршруты для раздела ECHO EKG START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° ECHO EKG START */}
               <Route
                 path="add-echo-ekg-scan-results/:patientModel/:patientId"
                 element={<AddEchoEKGScanUpload />}
@@ -883,9 +889,9 @@ function App() {
                 path="detail-echo-ekg-scan-template-recomandation/:id"
                 element={<EchoEKGScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела ECHO EKG END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° ECHO EKG END */}
 
-              {/* Здесь перечислены все маршруты для раздела EKG START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° EKG START */}
               <Route
                 path="add-ekg-scan-results/:patientModel/:patientId"
                 element={<AddEKGScanUpload />}
@@ -958,9 +964,9 @@ function App() {
                 path="detail-ekg-scan-template-recomandation/:id"
                 element={<EKGScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела EKG END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° EKG END */}
 
-              {/* Здесь перечислены все маршруты для раздела Angography START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Angography START */}
               <Route
                 path="add-angiography-scan-results/:patientModel/:patientId"
                 element={<AddAngiographyScanUpload />}
@@ -1033,8 +1039,8 @@ function App() {
                 path="detail-angiography-scan-template-recomandation/:id"
                 element={<AngiographyScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела Angography END */}
-              {/* Здесь перечислены все маршруты для раздела Capsule Endoscopy START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Angography END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Capsule Endoscopy START */}
               <Route
                 path="add-capsule-endoscopy-scan-results/:patientModel/:patientId"
                 element={<AddCapsulEndoscopyScanUpload />}
@@ -1107,9 +1113,9 @@ function App() {
                 path="detail-capsule-endoscopy-scan-template-recomandation/:id"
                 element={<CapsuleEndoscopyScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела Capsule Endoscopy END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Capsule Endoscopy END */}
 
-              {/* Здесь перечислены все маршруты для раздела GASTROSCOPY START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° GASTROSCOPY START */}
               <Route
                 path="add-gastroscopy-scan-results/:patientModel/:patientId"
                 element={<AddGastroscopyScanUpload />}
@@ -1182,9 +1188,9 @@ function App() {
                 path="detail-gastroscopy-scan-template-recomandation/:id"
                 element={<GastroscopyScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела GASTROSCOPY END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° GASTROSCOPY END */}
 
-              {/* Здесь перечислены все маршруты для раздела DOPLER START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° DOPLER START */}
               <Route
                 path="add-dopler-scan-results/:patientModel/:patientId"
                 element={<AddDoplerScanUpload />}
@@ -1257,8 +1263,8 @@ function App() {
                 path="detail-dopler-scan-template-recomandation/:id"
                 element={<DoplerScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела DOPLER END */}
-              {/* Здесь перечислены все маршруты для раздела SPIROMETR START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° DOPLER END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° SPIROMETR START */}
               <Route
                 path="add-spirometry-scan-results/:patientModel/:patientId"
                 element={<AddSpirometryScanUpload />}
@@ -1331,9 +1337,9 @@ function App() {
                 path="detail-spirometry-scan-template-recomandation/:id"
                 element={<SpirometryScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела SPIROMETR END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° SPIROMETR END */}
 
-              {/* Здесь перечислены все маршруты для раздела HOLTER MONITOR START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° HOLTER MONITOR START */}
               <Route
                 path="add-holter-scan-results/:patientModel/:patientId"
                 element={<AddHOLTERScanUpload />}
@@ -1406,9 +1412,9 @@ function App() {
                 path="detail-holter-scan-template-recomandation/:id"
                 element={<HOLTERScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела HOLTER MONITOR END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° HOLTER MONITOR END */}
 
-              {/* Здесь перечислены все маршруты для раздела Ginecology Test START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Ginecology Test START */}
               <Route
                 path="add-ginecology-test-results/:patientModel/:patientId"
                 element={<AddGinecologyUpload />}
@@ -1481,9 +1487,9 @@ function App() {
                 path="detail-ginecology-test-template-recomandation/:id"
                 element={<GinecologyTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела Ginecology Test END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Ginecology Test END */}
 
-              {/* Здесь перечислены все маршруты для раздела EEG scan START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° EEG scan START */}
               <Route
                 path="add-eeg-scan-results/:patientModel/:patientId"
                 element={<AddEEGScanUpload />}
@@ -1556,9 +1562,9 @@ function App() {
                 path="detail-eeg-scan-template-recommendation/:id"
                 element={<EEGScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела EEG scan END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° EEG scan END */}
 
-              {/* Здесь перечислены все маршруты для раздела SPECT scan START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° SPECT scan START */}
               <Route
                 path="/dp/add-spect-scan/:patientModel/:patientId"
                 element={<AddSPECTScanUpload />}
@@ -1631,9 +1637,9 @@ function App() {
                 path="detail-spect-scan-template-recomandation/:id"
                 element={<SPECTScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела SPECT scan END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° SPECT scan END */}
 
-              {/* Здесь перечислены все маршруты для раздела PET scan START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° PET scan START */}
               <Route
                 path="add-pet-scan-results/:patientId"
                 element={<AddPETScanUpload />}
@@ -1706,9 +1712,9 @@ function App() {
                 path="detail-pet-scan-template-recomandation/:id"
                 element={<PETScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела PET scan END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° PET scan END */}
 
-              {/* Здесь перечислены все маршруты для раздела XRAY scan START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° XRAY scan START */}
               <Route
                 path="add-xray-scan-results/:patientId"
                 element={<AddXRAYScanUpload />}
@@ -1781,9 +1787,9 @@ function App() {
                 path="detail-xray-scan-template-recomandation/:id"
                 element={<XRAYScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела XRAY scan END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° XRAY scan END */}
 
-              {/* Здесь перечислены все маршруты для раздела USM scan START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° USM scan START */}
               <Route
                 path="add-usm-scan-results/:patientId"
                 element={<AddUSMScanUpload />}
@@ -1858,9 +1864,9 @@ function App() {
                 path="detail-usm-scan-template-recomandation/:id"
                 element={<USMScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь перечислены все маршруты для раздела USM scan END */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° USM scan END */}
 
-              {/* Здесь перечислены все маршруты для раздела CT scan START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° CT scan START */}
               <Route
                 path="/dp/add-ct-scan-upload/:patientModel/:patientId"
                 element={<AddCTScanUpload />}
@@ -1935,9 +1941,9 @@ function App() {
                 element={<CTScanerTemplateRecomendationDetails />}
               />
 
-              {/* Здесь ЗАКАНЧИВАЮТСЯ все маршруты для раздела CT scan START */}
+              {/* Р—РґРµСЃСЊ Р—РђРљРђРќР§РР’РђР®РўРЎРЇ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° CT scan START */}
 
-              {/* Здесь перечислены все маршруты для раздела MRI scan START */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° MRI scan START */}
               <Route
                 path="/dp/add-mri-scan-upload/:patientModel/:patientId"
                 element={<AddMRIScanUpload />}
@@ -2010,7 +2016,7 @@ function App() {
                 path="detail-mri-scan-template-recomandation/:id"
                 element={<MRIScanerTemplateRecomendationDetails />}
               />
-              {/* Здесь ЗАКАНЧИВАЮТСЯ все маршруты для раздела MRI scan START */}
+              {/* Р—РґРµСЃСЊ Р—РђРљРђРќР§РР’РђР®РўРЎРЇ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° MRI scan START */}
 
               <Route
                 path="temp-complaints-list"
@@ -2153,7 +2159,7 @@ function App() {
             <Route path="/demo" element={<DemoPage />} />
             <Route path="/terms-consent-page" element={<TermsConsentPage />} />
             <Route path="/pricing" element={<PricingPage />} />
-            {/* Здесь перечислены все маршруты для раздела РЕГИСТРАЦИИ И АВТОРИЗАЦИИ */}
+            {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Р Р•Р“РРЎРўР РђР¦РР Р РђР’РўРћР РР—РђР¦РР */}
             <Route path="/" element={<AuthLayout />}>
               <Route path="registration" element={<Registration />} />
               <Route path="login" element={<Login />} />
@@ -2175,7 +2181,7 @@ function App() {
               path="/complete-registration"
               element={<CompleteRegistrationPage />}
             />
-            {/* Здесь перечислены все маршруты для раздела ПРОФИЛЬ ПАЦИЕНТА */}
+            {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° РџР РћР¤РР›Р¬ РџРђР¦РР•РќРўРђ */}
             <Route path="/patient" element={<PatientLayout />}>
               <Route path="news" element={<NewsList />} />
               <Route path="consultation-ai" element={<ConsultationPage />} />
@@ -2204,7 +2210,7 @@ function App() {
               />
               <Route path="my-lab-results" element={<MyLabResults />} />
               <Route path="my-prescriptions" element={<MyPrescriptions />} />
-              {/* Здесь перечислены все маршруты для раздела шаблоны исследований ПАЦИЕНТА */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° С€Р°Р±Р»РѕРЅС‹ РёСЃСЃР»РµРґРѕРІР°РЅРёР№ РџРђР¦РР•РќРўРђ */}
               <Route
                 path="get-patient-file-detail-coronography-scan/:id"
                 element={<PatientFileDetailECoronographyScan />}
@@ -2277,7 +2283,7 @@ function App() {
                 path="get-patient-file-detail-dopler/:id"
                 element={<PatientFileDetailDopler />}
               />
-              {/* Здесь перечислены все маршруты для раздела шаблоны исследований ПАЦИЕНТА */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° С€Р°Р±Р»РѕРЅС‹ РёСЃСЃР»РµРґРѕРІР°РЅРёР№ РџРђР¦РР•РќРўРђ */}
               <Route
                 path="patient-profile/:id"
                 element={<HomePatientMainPage />}
@@ -2350,7 +2356,7 @@ function App() {
               path="/doctor/anthropometry/photos/:photoId/annotate"
               element={<PhotoAnnotationPage />}
             />
-            {/* Здесь перечислены все маршруты для раздела ПРОФИЛЬ ДОКТОРА */}
+            {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° РџР РћР¤РР›Р¬ Р”РћРљРўРћР Рђ */}
             <Route path="/doctor" element={<DoctorpofileLayout />}>
               <Route path="my-clinics" element={<DoctorMyClinicsPage />} />
               <Route
@@ -2440,7 +2446,7 @@ function App() {
                 path="doctor-appointment"
                 element={<DoctorAppointment />}
               />
-              {/* Здесь перечислены все маршруты для раздела doctorDashboard */}
+              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° doctorDashboard */}
               <Route
                 path="dashboard"
                 element={<DoctorAppointmenDashboardt />}
@@ -2464,7 +2470,7 @@ function App() {
                 element={<DoctorDashboardMain />}
               />
             </Route>
-            {/* Здесь перечислены все маршруты для раздела АДМИН */}
+            {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° РђР”РњРРќ */}
             <Route path="admin" element={<AdminLayout />}>
               <Route path="admin-panel" element={<HomeAdminMainPage />} />
               <Route path="users-list" element={<UsersListPage />} />
@@ -2526,7 +2532,7 @@ function App() {
                 element={<PolyclinicPatientDelete />}
               />
             </Route>
-            {/* Здесь перечислены все маршруты для раздела СТРАНИЦА НЕ НАЙДЕНА */}
+            {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° РЎРўР РђРќРР¦Рђ РќР• РќРђР™Р”Р•РќРђ */}
             <Route path="*" element={<Pagenotfound />} />
           </Routes>
           <ToastContainer position="bottom-right" autoClose={5000} />

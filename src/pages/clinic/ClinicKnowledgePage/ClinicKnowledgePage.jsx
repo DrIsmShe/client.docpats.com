@@ -1,8 +1,9 @@
-// client/src/pages/clinic/ClinicKnowledgePage/ClinicKnowledgePage.jsx
+﻿// client/src/pages/clinic/ClinicKnowledgePage/ClinicKnowledgePage.jsx
 
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Link, useOutletContext, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useClinicZone } from "../../../lib/useClinicZone";
 import {
   listKnowledge,
   listDepartments,
@@ -27,6 +28,7 @@ export default function ClinicKnowledgePage() {
   const { t } = useTranslation("clinic");
   const layoutContext = useOutletContext();
   const navigate = useNavigate();
+  const { basePath, dashboardPath, loginPath } = useClinicZone();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -62,14 +64,14 @@ export default function ClinicKnowledgePage() {
     } catch (err) {
       console.error("Failed to load knowledge base:", err);
       if (err.response?.status === 401) {
-        navigate("/login", { replace: true });
+        navigate(loginPath, { replace: true });
         return;
       }
       setError(err.message || "Failed to load knowledge base");
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate]);
+  }, [navigate, loginPath]);
 
   useEffect(() => {
     loadAll();
@@ -114,7 +116,7 @@ export default function ClinicKnowledgePage() {
     setModalOpen(false);
     // jump straight into the new article
     const id = res.article?._id || res.article?.id;
-    if (id) navigate(`/clinic/knowledge/${id}`);
+    if (id) navigate(`${basePath}/knowledge/${id}`);
     else loadAll();
   }
 
@@ -129,10 +131,10 @@ export default function ClinicKnowledgePage() {
   if (error) {
     return (
       <div className="kb-page-error">
-        <h2>{t("knowledge.errorTitle", { defaultValue: "Ошибка" })}</h2>
+        <h2>{t("knowledge.errorTitle", { defaultValue: "РћС€РёР±РєР°" })}</h2>
         <p>{error}</p>
         <button onClick={loadAll}>
-          {t("common.retry", { defaultValue: "Повторить" })}
+          {t("common.retry", { defaultValue: "РџРѕРІС‚РѕСЂРёС‚СЊ" })}
         </button>
       </div>
     );
@@ -142,13 +144,13 @@ export default function ClinicKnowledgePage() {
     <div className="kb-page">
       <div className="kb-page-header">
         <div className="kb-page-header-left">
-          <Link to="/clinic/dashboard" className="kb-page-back">
-            {t("knowledge.back", { defaultValue: "← Дашборд" })}
+          <Link to={dashboardPath} className="kb-page-back">
+            {t("knowledge.back", { defaultValue: "в†ђ Р”Р°С€Р±РѕСЂРґ" })}
           </Link>
-          <h1>{t("knowledge.title", { defaultValue: "База знаний" })}</h1>
+          <h1>{t("knowledge.title", { defaultValue: "Р‘Р°Р·Р° Р·РЅР°РЅРёР№" })}</h1>
           <p className="kb-page-subtitle">
             {t("knowledge.subtitle", {
-              defaultValue: "Протоколы, регламенты и инструкции клиники",
+              defaultValue: "РџСЂРѕС‚РѕРєРѕР»С‹, СЂРµРіР»Р°РјРµРЅС‚С‹ Рё РёРЅСЃС‚СЂСѓРєС†РёРё РєР»РёРЅРёРєРё",
             })}
           </p>
         </div>
@@ -159,7 +161,7 @@ export default function ClinicKnowledgePage() {
               onClick={() => setModalOpen(true)}
               type="button"
             >
-              {t("knowledge.create", { defaultValue: "Новая статья" })}
+              {t("knowledge.create", { defaultValue: "РќРѕРІР°СЏ СЃС‚Р°С‚СЊСЏ" })}
             </button>
           </div>
         )}
@@ -172,7 +174,7 @@ export default function ClinicKnowledgePage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={t("knowledge.searchPlaceholder", {
-            defaultValue: "Поиск по названию, описанию, тегам…",
+            defaultValue: "РџРѕРёСЃРє РїРѕ РЅР°Р·РІР°РЅРёСЋ, РѕРїРёСЃР°РЅРёСЋ, С‚РµРіР°РјвЂ¦",
           })}
         />
         <select
@@ -181,7 +183,7 @@ export default function ClinicKnowledgePage() {
           onChange={(e) => setCategoryFilter(e.target.value)}
         >
           <option value="">
-            {t("knowledge.allCategories", { defaultValue: "Все категории" })}
+            {t("knowledge.allCategories", { defaultValue: "Р’СЃРµ РєР°С‚РµРіРѕСЂРёРё" })}
           </option>
           {CATEGORIES.map((c) => (
             <option key={c} value={c}>
@@ -195,7 +197,7 @@ export default function ClinicKnowledgePage() {
           onChange={(e) => setStatusFilter(e.target.value)}
         >
           <option value="">
-            {t("knowledge.allStatuses", { defaultValue: "Все статусы" })}
+            {t("knowledge.allStatuses", { defaultValue: "Р’СЃРµ СЃС‚Р°С‚СѓСЃС‹" })}
           </option>
           {STATUSES.map((s) => (
             <option key={s} value={s}>
@@ -209,19 +211,19 @@ export default function ClinicKnowledgePage() {
             checked={showArchived}
             onChange={(e) => setShowArchived(e.target.checked)}
           />
-          {t("knowledge.showArchived", { defaultValue: "Архив" })}
+          {t("knowledge.showArchived", { defaultValue: "РђСЂС…РёРІ" })}
         </label>
       </div>
 
       <section className="kb-page-section">
         <h2>
-          {t("knowledge.listTitle", { defaultValue: "Статьи" })}
+          {t("knowledge.listTitle", { defaultValue: "РЎС‚Р°С‚СЊРё" })}
           <span className="kb-page-count">{filtered.length}</span>
         </h2>
 
         {filtered.length === 0 ? (
           <div className="kb-page-empty">
-            <p>{t("knowledge.empty", { defaultValue: "Статей пока нет" })}</p>
+            <p>{t("knowledge.empty", { defaultValue: "РЎС‚Р°С‚РµР№ РїРѕРєР° РЅРµС‚" })}</p>
             {canManage && (
               <button
                 className="kb-page-btn-primary"
@@ -229,7 +231,7 @@ export default function ClinicKnowledgePage() {
                 type="button"
               >
                 {t("knowledge.createFirst", {
-                  defaultValue: "Создать первую статью",
+                  defaultValue: "РЎРѕР·РґР°С‚СЊ РїРµСЂРІСѓСЋ СЃС‚Р°С‚СЊСЋ",
                 })}
               </button>
             )}
@@ -249,6 +251,7 @@ export default function ClinicKnowledgePage() {
                     <ArticleCard
                       key={a._id || a.id}
                       article={a}
+                      basePath={basePath}
                       deptMap={deptMap}
                       t={t}
                     />
@@ -272,7 +275,7 @@ export default function ClinicKnowledgePage() {
   );
 }
 
-function ArticleCard({ article, deptMap, t }) {
+function ArticleCard({ article, deptMap, basePath, t }) {
   const archived = article.status === "archived";
   const deptName = article.departmentId
     ? deptMap[String(article.departmentId)]?.name
@@ -280,12 +283,12 @@ function ArticleCard({ article, deptMap, t }) {
 
   return (
     <Link
-      to={`/clinic/knowledge/${article._id || article.id}`}
+      to={`${basePath}/knowledge/${article._id || article.id}`}
       className={`kb-card ${archived ? "is-archived" : ""}`}
     >
       <div className="kb-card-main">
         <div className="kb-card-title">
-          {article.pinned && <span className="kb-pin">📌</span>}
+          {article.pinned && <span className="kb-pin">рџ“Њ</span>}
           {article.title}
           <span className={`kb-status-badge status-${article.status}`}>
             {t(`knowledge.status.${article.status}`, {
@@ -297,7 +300,7 @@ function ArticleCard({ article, deptMap, t }) {
           <div className="kb-card-summary">{article.summary}</div>
         )}
         <div className="kb-card-meta">
-          {deptName && <span className="kb-card-dept">🏥 {deptName}</span>}
+          {deptName && <span className="kb-card-dept">рџЏҐ {deptName}</span>}
           {(article.tags || []).slice(0, 5).map((tg) => (
             <span className="kb-tag" key={tg}>
               #{tg}
@@ -305,7 +308,7 @@ function ArticleCard({ article, deptMap, t }) {
           ))}
         </div>
       </div>
-      <span className="kb-card-arrow">→</span>
+      <span className="kb-card-arrow">в†’</span>
     </Link>
   );
 }

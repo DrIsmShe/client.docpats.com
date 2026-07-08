@@ -1,4 +1,4 @@
-// client/src/pages/clinic/ClinicKnowledgePage/ClinicKnowledgeArticlePage.jsx
+﻿// client/src/pages/clinic/ClinicKnowledgePage/ClinicKnowledgeArticlePage.jsx
 
 import React, { useEffect, useState, useCallback } from "react";
 import {
@@ -8,6 +8,7 @@ import {
   useOutletContext,
 } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useClinicZone } from "../../../lib/useClinicZone";
 import {
   getKnowledge,
   updateKnowledge,
@@ -23,6 +24,7 @@ export default function ClinicKnowledgeArticlePage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const layoutContext = useOutletContext();
+  const { basePath, loginPath } = useClinicZone();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -46,17 +48,17 @@ export default function ClinicKnowledgeArticlePage() {
       setLoading(false);
     } catch (err) {
       if (err.response?.status === 401) {
-        navigate("/login", { replace: true });
+        navigate(loginPath, { replace: true });
         return;
       }
       setError(
         err.response?.status === 404
-          ? t("knowledge.notFound", { defaultValue: "Статья не найдена" })
+          ? t("knowledge.notFound", { defaultValue: "РЎС‚Р°С‚СЊСЏ РЅРµ РЅР°Р№РґРµРЅР°" })
           : err.message || "Failed to load article",
       );
       setLoading(false);
     }
-  }, [id, navigate, t]);
+  }, [id, navigate, loginPath, t]);
 
   useEffect(() => {
     load();
@@ -105,7 +107,7 @@ export default function ClinicKnowledgeArticlePage() {
       !window.confirm(
         t("knowledge.confirmArchive", {
           name: article?.title,
-          defaultValue: `Архивировать «${article?.title}»?`,
+          defaultValue: `РђСЂС…РёРІРёСЂРѕРІР°С‚СЊ В«${article?.title}В»?`,
         }),
       )
     )
@@ -113,7 +115,7 @@ export default function ClinicKnowledgeArticlePage() {
     setBusy(true);
     try {
       await archiveKnowledge(id);
-      navigate("/clinic/knowledge");
+      navigate(`${basePath}/knowledge`);
     } catch (err) {
       alert(err.response?.data?.error || "Failed");
       setBusy(false);
@@ -140,10 +142,10 @@ export default function ClinicKnowledgeArticlePage() {
   if (error) {
     return (
       <div className="kb-page-error">
-        <h2>{t("knowledge.errorTitle", { defaultValue: "Ошибка" })}</h2>
+        <h2>{t("knowledge.errorTitle", { defaultValue: "РћС€РёР±РєР°" })}</h2>
         <p>{error}</p>
-        <Link to="/clinic/knowledge" className="kb-page-btn-primary">
-          {t("knowledge.back", { defaultValue: "← База знаний" })}
+        <Link to={`${basePath}/knowledge`} className="kb-page-btn-primary">
+          {t("knowledge.back", { defaultValue: "в†ђ Р‘Р°Р·Р° Р·РЅР°РЅРёР№" })}
         </Link>
       </div>
     );
@@ -156,8 +158,8 @@ export default function ClinicKnowledgeArticlePage() {
   return (
     <div className="kb-article">
       <div className="kb-article-topbar">
-        <Link to="/clinic/knowledge" className="kb-page-back">
-          {t("knowledge.backToList", { defaultValue: "← К списку" })}
+        <Link to={`${basePath}/knowledge`} className="kb-page-back">
+          {t("knowledge.backToList", { defaultValue: "в†ђ Рљ СЃРїРёСЃРєСѓ" })}
         </Link>
         {canManage && (
           <div className="kb-article-actions">
@@ -168,8 +170,8 @@ export default function ClinicKnowledgeArticlePage() {
               type="button"
             >
               {article.pinned
-                ? t("knowledge.unpin", { defaultValue: "Открепить" })
-                : t("knowledge.pin", { defaultValue: "Закрепить" })}
+                ? t("knowledge.unpin", { defaultValue: "РћС‚РєСЂРµРїРёС‚СЊ" })
+                : t("knowledge.pin", { defaultValue: "Р—Р°РєСЂРµРїРёС‚СЊ" })}
             </button>
             <button
               className="kb-article-btn"
@@ -178,8 +180,8 @@ export default function ClinicKnowledgeArticlePage() {
               type="button"
             >
               {article.status === "published"
-                ? t("knowledge.unpublish", { defaultValue: "В черновик" })
-                : t("knowledge.publish", { defaultValue: "Опубликовать" })}
+                ? t("knowledge.unpublish", { defaultValue: "Р’ С‡РµСЂРЅРѕРІРёРє" })
+                : t("knowledge.publish", { defaultValue: "РћРїСѓР±Р»РёРєРѕРІР°С‚СЊ" })}
             </button>
             <button
               className="kb-article-btn"
@@ -187,7 +189,7 @@ export default function ClinicKnowledgeArticlePage() {
               disabled={busy}
               type="button"
             >
-              {t("common.edit", { defaultValue: "Изменить" })}
+              {t("common.edit", { defaultValue: "РР·РјРµРЅРёС‚СЊ" })}
             </button>
             <button
               className="kb-article-btn is-danger"
@@ -195,7 +197,7 @@ export default function ClinicKnowledgeArticlePage() {
               disabled={busy || article.status === "archived"}
               type="button"
             >
-              {t("knowledge.archive", { defaultValue: "В архив" })}
+              {t("knowledge.archive", { defaultValue: "Р’ Р°СЂС…РёРІ" })}
             </button>
           </div>
         )}
@@ -213,21 +215,21 @@ export default function ClinicKnowledgeArticlePage() {
               defaultValue: article.status,
             })}
           </span>
-          {article.pinned && <span className="kb-pin">📌</span>}
+          {article.pinned && <span className="kb-pin">рџ“Њ</span>}
         </div>
         <h1 className="kb-article-title">{article.title}</h1>
         {article.summary && (
           <p className="kb-article-summary">{article.summary}</p>
         )}
         <div className="kb-article-meta">
-          {deptName && <span>🏥 {deptName}</span>}
+          {deptName && <span>рџЏҐ {deptName}</span>}
           <span>
-            {t("knowledge.version", { defaultValue: "версия" })}{" "}
+            {t("knowledge.version", { defaultValue: "РІРµСЂСЃРёСЏ" })}{" "}
             {article.version}
           </span>
           {fmtDate(article.updatedAt) && (
             <span>
-              {t("knowledge.updated", { defaultValue: "обновлено" })}{" "}
+              {t("knowledge.updated", { defaultValue: "РѕР±РЅРѕРІР»РµРЅРѕ" })}{" "}
               {fmtDate(article.updatedAt)}
             </span>
           )}
@@ -244,7 +246,7 @@ export default function ClinicKnowledgeArticlePage() {
           <MiniMarkdown source={article.body} />
         ) : (
           <p className="kb-article-empty-body">
-            {t("knowledge.emptyBody", { defaultValue: "Содержимое пусто" })}
+            {t("knowledge.emptyBody", { defaultValue: "РЎРѕРґРµСЂР¶РёРјРѕРµ РїСѓСЃС‚Рѕ" })}
           </p>
         )}
       </article>

@@ -1,8 +1,17 @@
 // client/src/pages/clinic/ClinicDepartmentsPage/ClinicDepartmentsPage.jsx
+//
+// Mounted in BOTH clinic zones:
+//   /clinic/departments            → owner zone    (owner/admin)
+//   /clinic/employee/departments   → employee zone (manager)
+//
+// Zone-aware navigation via useClinicZone(): the back link and 401 redirect
+// resolve to the correct zone so a manager never gets bounced into the owner
+// zone (which they cannot access).
 
 import React, { useEffect, useState, useCallback } from "react";
 import { Link, useOutletContext, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useClinicZone } from "../../../lib/useClinicZone";
 import {
   listDepartments,
   archiveDepartment,
@@ -15,6 +24,7 @@ export default function ClinicDepartmentsPage() {
   const { t } = useTranslation("clinic");
   const layoutContext = useOutletContext();
   const navigate = useNavigate();
+  const { dashboardPath, loginPath } = useClinicZone();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -28,6 +38,7 @@ export default function ClinicDepartmentsPage() {
 
   // Permission-based gating — mirrors backend RBAC (DEPARTMENT resource).
   // admin has DEPARTMENT:RO → create/edit/archive stay hidden (no 403).
+  // manager has DEPARTMENT:RW → sees management actions.
   // Owner is always-full (never restricted, guards against absent perms).
   const myRole = layoutContext?.role || "member";
   const perms = layoutContext?.permissions || {};
@@ -46,14 +57,14 @@ export default function ClinicDepartmentsPage() {
     } catch (err) {
       console.error("Failed to load departments:", err);
       if (err.response?.status === 401) {
-        navigate("/login", { replace: true });
+        navigate(loginPath, { replace: true });
         return;
       }
       setError(err.message || "Failed to load departments");
       setLoading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate, showArchived]);
+  }, [navigate, loginPath, showArchived]);
 
   useEffect(() => {
     loadAll();
@@ -163,7 +174,7 @@ export default function ClinicDepartmentsPage() {
     <div className="dept-page">
       <div className="dept-page-header">
         <div className="dept-page-header-left">
-          <Link to="/clinic/dashboard" className="dept-page-back">
+          <Link to={dashboardPath} className="dept-page-back">
             {t("departments.back", { defaultValue: "← Дашборд" })}
           </Link>
           <h1>{t("departments.title", { defaultValue: "Отделения" })}</h1>
