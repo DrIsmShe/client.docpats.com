@@ -4,6 +4,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Header from "../../components/newsAI/header/header";
+import { getSession, clearSession } from "../../api/session";
 
 export default function DashboardLayout() {
   const { t, i18n } = useTranslation("NewsAiTranslate");
@@ -20,13 +21,15 @@ export default function DashboardLayout() {
 
   const API_BASE = process.env.REACT_APP_API_URL;
 
-  // 🔑 Проверка авторизации — как в Header.jsx и HeaderPatient.jsx
+  // 🔑 Проверка авторизации через общий кэш сессии (getSession):
+  // дедупликация одновременных вызовов + короткий TTL → один сетевой запрос
+  // на весь shell вместо запроса из каждого компонента.
   useEffect(() => {
+    let cancelled = false;
     (async () => {
       try {
-        const { data } = await axios.get(`${API_BASE}/common-for-user`, {
-          withCredentials: true,
-        });
+        const data = await getSession();
+        if (cancelled) return;
         if (data?.authenticated) {
           setIsAuthenticated(true);
           setUser(data.user);
@@ -38,7 +41,10 @@ export default function DashboardLayout() {
         console.error("Auth check error (news):", e);
       }
     })();
-  }, [API_BASE]);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // 🚪 Logout
   const handleLogout = async () => {
@@ -48,6 +54,7 @@ export default function DashboardLayout() {
         {},
         { withCredentials: true },
       );
+      clearSession(); // сбросить кэш сессии, чтобы следующий getSession() перепроверил сервер
       setIsAuthenticated(false);
       setUser(null);
       setUserRole("");

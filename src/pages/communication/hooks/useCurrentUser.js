@@ -1,36 +1,32 @@
 // client/src/hooks/useCurrentUser.js
 
 import { useEffect, useState } from "react";
-import axios from "axios";
-
+import { getSession } from "../../../api/session";
 export const useCurrentUser = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const API_BASE = process.env.REACT_APP_API_URL;
-
   useEffect(() => {
-    const fetchUser = async () => {
+    let cancelled = false;
+
+    (async () => {
       try {
-        const { data } = await axios.get(`${API_BASE}/common-for-user`, {
-          withCredentials: true, // 🔥 ОБЯЗАТЕЛЬНО для session
-        });
-
-        if (data?.authenticated) {
-          setUser(data.user);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        console.error("❌ Ошибка получения пользователя:", error);
-        setUser(null);
+        // getSession() de-dupes concurrent calls and caches the result,
+        // so many components sharing this hook cost ONE network request.
+        const data = await getSession();
+        if (cancelled) return;
+        setUser(data?.authenticated ? data.user : null);
+      } catch {
+        if (!cancelled) setUser(null);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
-    };
+    })();
 
-    fetchUser();
-  }, [API_BASE]);
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return { user, loading };
 };
