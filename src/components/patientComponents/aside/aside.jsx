@@ -173,6 +173,29 @@ const S = `
     color: #0d9488;
   }
 
+  /* Клиника — фиолетовый акцент, отделяет "рабочую" зону от пациентской */
+  .ap-link.is-clinic {
+    color: #7c3aed;
+  }
+  .ap-link.is-clinic .ap-icon { color: #7c3aed; }
+  .ap-link.is-clinic:hover {
+    background: rgba(124,58,237,.08);
+    color: #7c3aed;
+  }
+  .ap-clinic-role {
+    margin-left: auto;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #7c3aed;
+    background: rgba(124,58,237,.1);
+    padding: 2px 7px;
+    border-radius: 6px;
+    line-height: 1.4;
+    flex-shrink: 0;
+  }
+
   .ap-icon {
     font-size: 16px;
     color: #94a3b8;
@@ -238,6 +261,23 @@ const S = `
   }
 `;
 
+/* Локализованная метка роли для бейджа клиники */
+function clinicRoleLabel(role, t) {
+  if (!role) return "";
+  const map = {
+    owner: t("AsidePatient.clinicRoles.owner", "Владелец"),
+    admin: t("AsidePatient.clinicRoles.admin", "Админ"),
+    manager: t("AsidePatient.clinicRoles.manager", "Менеджер"),
+    doctor: t("AsidePatient.clinicRoles.doctor", "Врач"),
+    receptionist: t("AsidePatient.clinicRoles.receptionist", "Регистратор"),
+    nurse: t("AsidePatient.clinicRoles.nurse", "Медсестра"),
+    marketer: t("AsidePatient.clinicRoles.marketer", "Маркетолог"),
+    accountant: t("AsidePatient.clinicRoles.accountant", "Бухгалтер"),
+    pharmacist: t("AsidePatient.clinicRoles.pharmacist", "Фармацевт"),
+  };
+  return map[role] || role;
+}
+
 export default function AsidePatient() {
   const { t } = useTranslation();
   const isOpen = useSelector((state) => state.menu.isOpen);
@@ -251,6 +291,10 @@ export default function AsidePatient() {
 
   // Sprint 3.2 — pending consent requests count
   const [pendingConsentRequests, setPendingConsentRequests] = useState(0);
+
+  // Клиника, где этот пациент состоит как сотрудник/админ/владелец (ClinicMembership).
+  // null → пациент не связан ни с одной клиникой, пункт не показываем.
+  const [clinicMembership, setClinicMembership] = useState(null);
 
   const handleLogout = async () => {
     try {
@@ -344,6 +388,45 @@ export default function AsidePatient() {
       clearInterval(intervalId);
     };
   }, [isAuthenticated]);
+
+  // Проверяем, состоит ли текущий пользователь в клинике (ClinicMembership).
+  // Тот же источник истины, что и ClinicHubPage / ClinicLayout: /api/v1/clinic/me.
+  // Пациент без клиники получит 4xx — молча игнорируем, пункт не появится.
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const { data } = await axios.get(`${API_BASE}/api/v1/clinic/me`, {
+          withCredentials: true,
+        });
+
+        const clinic = data?.clinic || null;
+        const hasClinic = data?.hasClinic ?? !!clinic;
+
+        if (!cancelled && hasClinic && clinic) {
+          setClinicMembership({
+            id: clinic.id || clinic._id || null,
+            name:
+              clinic.name ||
+              clinic.title ||
+              t("AsidePatient.menu.clinicPanel", "Панель клиники"),
+            role: data?.role || data?.membership?.role || null,
+          });
+        } else if (!cancelled) {
+          setClinicMembership(null);
+        }
+      } catch (_) {
+        // не сотрудник клиники — пункт не показываем
+        if (!cancelled) setClinicMembership(null);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated, API_BASE, t]);
 
   const myOfficeHref = `/patient/patient-profile/${userId ?? ""}`;
 
@@ -482,6 +565,25 @@ export default function AsidePatient() {
     },
   ];
 
+  // ─── Клиника ───────────────────────────────────────────────
+  // Появляется только если пользователь состоит в клинике (ClinicMembership).
+  // Переход в /clinic/dashboard — ClinicLayout сам разрулит роль и права.
+  if (clinicMembership) {
+    navItems.push({
+      section: t("AsidePatient.sections.clinic", "Клиника"),
+      items: [
+        {
+          to: "/clinic/dashboard",
+          icon: <RiHomeOfficeFill />,
+          label: clinicMembership.name,
+          accent: "clinic",
+          roleLabel: clinicRoleLabel(clinicMembership.role, t),
+        },
+      ],
+    });
+  }
+  // ───────────────────────────────────────────────────────────
+
   if (!isAuthenticated) return null;
 
   return (
@@ -526,7 +628,8 @@ export default function AsidePatient() {
                 const cls =
                   `ap-link` +
                   (isActive(item.to) ? " active" : "") +
-                  (item.accent === "ai" ? " is-ai" : "");
+                  (item.accent === "ai" ? " is-ai" : "") +
+                  (item.accent === "clinic" ? " is-clinic" : "");
                 return (
                   <Link
                     key={ii}
@@ -534,9 +637,22 @@ export default function AsidePatient() {
                     target={item.external ? "_blank" : undefined}
                     rel={item.external ? "noopener noreferrer" : undefined}
                     className={cls}
+                    title={item.label}
                   >
                     <span className="ap-icon">{item.icon}</span>
-                    {item.label}
+                    <span
+                      style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {item.label}
+                    </span>
+                    {/* Роль в клинике (Клиника-секция) */}
+                    {item.roleLabel && (
+                      <span className="ap-clinic-role">{item.roleLabel}</span>
+                    )}
                     {/* Sprint 3.2 — badge for pending consent requests */}
                     {typeof item.badge === "number" && item.badge > 0 && (
                       <span className="ap-link-badge">{item.badge}</span>

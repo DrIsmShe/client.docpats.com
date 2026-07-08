@@ -759,32 +759,42 @@
     "scan": "Scan"
   },
   "AsidePatient": {
-    "brand": {
-      "eyebrow": "Medical Platform"
-    },
-    "user": {
-      "role": "Patient"
-    },
+    "brand": { "eyebrow": "Medical platform" },
+    "user": { "role": "Patient" },
     "messages": {
-      "logoutSuccess": "You have been successfully logged out.",
-      "logoutError": "An error occurred while logging out. Please try again."
+      "logoutSuccess": "You have successfully signed out.",
+      "logoutError": "An error occurred while signing out. Please try again."
     },
     "sections": {
       "medicine": "Medicine",
       "content": "Content",
-      "doctors": "Doctors"
+      "doctors": "Doctors",
+      "clinic": "Clinic"
     },
     "menu": {
       "myPrescriptions": "My prescriptions",
       "home": "Home",
-      "myOffice": "My Office",
-      "myMedicalFiles": "My Medical Files",
-      "myMedicalHistories": "My Medical Histories",
-      "articles": "Medical Feed",
-      "allDoctors": "All Doctors",
-      "myDoctors": "My Doctors",
+      "myOffice": "My office",
+      "myMedicalFiles": "My medical files",
+      "myMedicalHistories": "My medical histories",
+      "articles": "Article feed",
+      "allDoctors": "All doctors",
+      "myDoctors": "My doctors",
+      "myClinics": "My clinics",
       "appointments": "Appointments",
-      "logout": "Log Out"
+      "clinicPanel": "Clinic panel",
+      "logout": "Sign out"
+    },
+    "clinicRoles": {
+      "owner": "Owner",
+      "admin": "Admin",
+      "manager": "Manager",
+      "doctor": "Doctor",
+      "receptionist": "Receptionist",
+      "nurse": "Nurse",
+      "marketer": "Marketer",
+      "accountant": "Accountant",
+      "pharmacist": "Pharmacist"
     }
   },
   "articles-from-doctor": {

@@ -780,32 +780,42 @@
     "unnamed": "Klinika"
   },
   "AsidePatient": {
-    "brand": {
-      "eyebrow": "Tibbi Platform"
-    },
-    "user": {
-      "role": "Xəstə"
-    },
+    "brand": { "eyebrow": "Tibbi platforma" },
+    "user": { "role": "Pasiyent" },
     "messages": {
       "logoutSuccess": "Sistemdən uğurla çıxdınız.",
       "logoutError": "Çıxış zamanı xəta baş verdi. Yenidən cəhd edin."
     },
     "sections": {
       "medicine": "Tibb",
-      "content": "Kontent",
-      "doctors": "Həkimlər"
+      "content": "Məzmun",
+      "doctors": "Həkimlər",
+      "clinic": "Klinika"
     },
     "menu": {
       "myPrescriptions": "Reseptlərim",
-      "home": "Ana Səhifə",
-      "myOffice": "Mənim Kabinetim",
-      "myMedicalFiles": "Tibbi Fayllarım",
-      "myMedicalHistories": "Xəstəlik Tarixçəm",
-      "articles": "Tibbi Lenta",
-      "allDoctors": "Bütün Həkimlər",
-      "myDoctors": "Mənim Həkimlərim",
-      "appointments": "Qeydiyyatlar",
+      "home": "Ana səhifə",
+      "myOffice": "Kabinetim",
+      "myMedicalFiles": "Tibbi sənədlərim",
+      "myMedicalHistories": "Xəstəlik tariximlərim",
+      "articles": "Məqalə lenti",
+      "allDoctors": "Bütün həkimlər",
+      "myDoctors": "Həkimlərim",
+      "myClinics": "Kliniklərim",
+      "appointments": "Qəbullar",
+      "clinicPanel": "Klinika paneli",
       "logout": "Çıxış"
+    },
+    "clinicRoles": {
+      "owner": "Sahib",
+      "admin": "Admin",
+      "manager": "Menecer",
+      "doctor": "Həkim",
+      "receptionist": "Qeydiyyatçı",
+      "nurse": "Tibb bacısı",
+      "marketer": "Marketoloq",
+      "accountant": "Mühasib",
+      "pharmacist": "Əczaçı"
     }
   },
   "myLab": {

@@ -779,32 +779,42 @@
     "unnamed": "عيادة"
   },
   "AsidePatient": {
-    "brand": {
-      "eyebrow": "المنصة الطبية"
-    },
-    "user": {
-      "role": "المريض"
-    },
+    "brand": { "eyebrow": "منصة طبية" },
+    "user": { "role": "مريض" },
     "messages": {
-      "logoutSuccess": "تم تسجيل الخروج بنجاح.",
-      "logoutError": "حدث خطأ أثناء تسجيل الخروج. يرجى المحاولة مرة أخرى."
+      "logoutSuccess": "تم تسجيل خروجك بنجاح.",
+      "logoutError": "حدث خطأ أثناء تسجيل الخروج. حاول مرة أخرى."
     },
     "sections": {
       "medicine": "الطب",
       "content": "المحتوى",
-      "doctors": "الأطباء"
+      "doctors": "الأطباء",
+      "clinic": "العيادة"
     },
     "menu": {
-      "myPrescriptions": "وصفاتي",
+      "myPrescriptions": "وصفاتي الطبية",
       "home": "الرئيسية",
       "myOffice": "مكتبي",
       "myMedicalFiles": "ملفاتي الطبية",
       "myMedicalHistories": "تاريخي الطبي",
-      "articles": "التغذية الطبية",
+      "articles": "خلاصة المقالات",
       "allDoctors": "جميع الأطباء",
       "myDoctors": "أطبائي",
+      "myClinics": "عياداتي",
       "appointments": "المواعيد",
+      "clinicPanel": "لوحة العيادة",
       "logout": "تسجيل الخروج"
+    },
+    "clinicRoles": {
+      "owner": "المالك",
+      "admin": "المشرف",
+      "manager": "المدير",
+      "doctor": "طبيب",
+      "receptionist": "موظف الاستقبال",
+      "nurse": "ممرضة",
+      "marketer": "مسوّق",
+      "accountant": "محاسب",
+      "pharmacist": "صيدلي"
     }
   },
   "articles-from-doctor": {

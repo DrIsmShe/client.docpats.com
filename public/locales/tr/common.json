@@ -779,32 +779,42 @@
     "unnamed": "Klinik"
   },
   "AsidePatient": {
-    "brand": {
-      "eyebrow": "Tıbbi Platform"
-    },
-    "user": {
-      "role": "Hasta"
-    },
+    "brand": { "eyebrow": "Tıbbi platform" },
+    "user": { "role": "Hasta" },
     "messages": {
       "logoutSuccess": "Başarıyla çıkış yaptınız.",
-      "logoutError": "Çıkış yapılırken hata oluştu. Lütfen tekrar deneyin."
+      "logoutError": "Çıkış yapılırken bir hata oluştu. Lütfen tekrar deneyin."
     },
     "sections": {
       "medicine": "Tıp",
       "content": "İçerik",
-      "doctors": "Doktorlar"
+      "doctors": "Doktorlar",
+      "clinic": "Klinik"
     },
     "menu": {
       "myPrescriptions": "Reçetelerim",
-      "home": "Ana Sayfa",
+      "home": "Ana sayfa",
       "myOffice": "Ofisim",
-      "myMedicalFiles": "Tıbbi Dosyalarım",
-      "myMedicalHistories": "Tıbbi Geçmişim",
-      "articles": "Tıbbi Akış",
-      "allDoctors": "Tüm Doktorlar",
+      "myMedicalFiles": "Tıbbi dosyalarım",
+      "myMedicalHistories": "Tıbbi geçmişim",
+      "articles": "Makale akışı",
+      "allDoctors": "Tüm doktorlar",
       "myDoctors": "Doktorlarım",
-      "appointments": "Randevularım",
-      "logout": "Çıkış Yap"
+      "myClinics": "Kliniklerim",
+      "appointments": "Randevular",
+      "clinicPanel": "Klinik paneli",
+      "logout": "Çıkış yap"
+    },
+    "clinicRoles": {
+      "owner": "Sahip",
+      "admin": "Yönetici",
+      "manager": "Müdür",
+      "doctor": "Doktor",
+      "receptionist": "Resepsiyonist",
+      "nurse": "Hemşire",
+      "marketer": "Pazarlamacı",
+      "accountant": "Muhasebeci",
+      "pharmacist": "Eczacı"
     }
   },
   "myLab": {

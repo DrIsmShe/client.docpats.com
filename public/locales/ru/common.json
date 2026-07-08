@@ -816,6 +816,7 @@
     "content": "Контент",
     "doctors": "Врачи"
   },
+
   "AsidePatient": {
     "brand": {
       "eyebrow": "Медицинская платформа"
@@ -830,7 +831,8 @@
     "sections": {
       "medicine": "Медицина",
       "content": "Контент",
-      "doctors": "Врачи"
+      "doctors": "Врачи",
+      "clinic": "Клиника"
     },
     "menu": {
       "myPrescriptions": "Мои рецепты",
@@ -841,8 +843,21 @@
       "articles": "Лента статей",
       "allDoctors": "Все врачи",
       "myDoctors": "Мои врачи",
+      "myClinics": "Мои клиники",
       "appointments": "Записи на приём",
+      "clinicPanel": "Панель клиники",
       "logout": "Выйти"
+    },
+    "clinicRoles": {
+      "owner": "Владелец",
+      "admin": "Админ",
+      "manager": "Менеджер",
+      "doctor": "Врач",
+      "receptionist": "Регистратор",
+      "nurse": "Медсестра",
+      "marketer": "Маркетолог",
+      "accountant": "Бухгалтер",
+      "pharmacist": "Фармацевт"
     }
   },
   "myLab": {
