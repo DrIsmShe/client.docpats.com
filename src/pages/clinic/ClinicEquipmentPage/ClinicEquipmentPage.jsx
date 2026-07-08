@@ -57,8 +57,13 @@ export default function ClinicEquipmentPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
 
+  // Permission-based gating — mirrors backend RBAC (EQUIPMENT resource).
+  // admin has EQUIPMENT:RO → create/edit/archive stay hidden (no 403).
+  // Owner is always-full (never restricted, guards against absent perms).
   const myRole = layoutContext?.role || "member";
-  const canManage = ["owner", "admin", "manager"].includes(myRole);
+  const perms = layoutContext?.permissions || {};
+  const isOwner = myRole === "owner";
+  const canManage = isOwner || !!perms?.equipment?.write;
 
   const deptMap = useMemo(() => {
     const m = {};

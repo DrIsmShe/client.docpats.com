@@ -29,8 +29,13 @@ export default function ClinicRoomsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null); // null = create, room = edit
 
+  // Permission-based gating — mirrors backend RBAC (ROOM resource).
+  // admin has ROOM:RO → create/edit/archive stay hidden (no 403).
+  // Owner is always-full (never restricted, guards against absent perms).
   const myRole = layoutContext?.role || "member";
-  const canManage = ["owner", "admin", "manager"].includes(myRole);
+  const perms = layoutContext?.permissions || {};
+  const isOwner = myRole === "owner";
+  const canManage = isOwner || !!perms?.room?.write;
 
   // Map departmentId → dept (for resolving names on each room row).
   const deptMap = useMemo(() => {
