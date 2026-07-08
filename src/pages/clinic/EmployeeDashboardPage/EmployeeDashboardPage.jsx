@@ -1,4 +1,8 @@
-﻿// client/src/pages/clinic/EmployeeDashboardPage/EmployeeDashboardPage.jsx
+// client/src/pages/clinic/EmployeeDashboardPage/EmployeeDashboardPage.jsx
+//
+// NOTE: all emoji are written as \uXXXX escape sequences (pure ASCII) so the
+// file is immune to editor/terminal encoding corruption. JS resolves them to
+// the real glyphs at runtime.
 
 import React from "react";
 import { Link, useOutletContext } from "react-router-dom";
@@ -6,71 +10,14 @@ import { useTranslation } from "react-i18next";
 import { useClinicPermissions } from "../../../lib/can";
 import "./employeeDashboardPage.css";
 
-// Quick actions available in the employee zone.
-// Each is gated by a permission (resource + action); an action is rendered
-// ONLY when the current user's effective permissions grant it. This makes the
-// dashboard role-aware for every role (marketer, receptionist, nurse, manager)
-// without any hardcoded role arrays.
-//
-//   - `to`   present + `soon:false` в†’ live <Link>
-//   - `soon:true` (or no `to`)      в†’ disabled "(coming soon)" placeholder
-//
-// As pages ship in later phases, flip `soon` to false and set `to`.
+// Quick actions in the employee zone. Each is gated by a permission
+// (resource + action); an action renders ONLY when effective permissions
+// grant it. `to` + `soon:false` => live Link; otherwise disabled placeholder.
 const QUICK_ACTIONS = [
-  {
-    key: "departments",
-    icon: "\uD83C\uDFE2",
-    res: "department",
-    act: "read",
-    soon: false,
-    to: "/clinic/employee/departments",
-    labelKey: "employeeDashboard.actions.departments",
-    labelDefault: "Отделения",
-  },
-  {
-    key: "rooms",
-    icon: "\uD83D\uDEAA",
-    res: "room",
-    act: "read",
-    soon: false,
-    to: "/clinic/employee/rooms",
-    labelKey: "employeeDashboard.actions.rooms",
-    labelDefault: "Кабинеты",
-  },
-  {
-    key: "equipment",
-    icon: "\uD83D\uDD27",
-    res: "equipment",
-    act: "read",
-    soon: false,
-    to: "/clinic/employee/equipment",
-    labelKey: "employeeDashboard.actions.equipment",
-    labelDefault: "Оборудование",
-  },
-  {
-    key: "announcements",
-    icon: "\uD83D\uDCE2",
-    res: "knowledge",
-    act: "read",
-    soon: false,
-    to: "/clinic/employee/announcements",
-    labelKey: "employeeDashboard.actions.announcements",
-    labelDefault: "Объявления",
-  },
-  {
-    key: "knowledge",
-    icon: "\uD83D\uDCDA",
-    res: "knowledge",
-    act: "read",
-    soon: false,
-    to: "/clinic/employee/knowledge",
-    labelKey: "employeeDashboard.actions.knowledge",
-    labelDefault: "База знаний",
-  },
-  // в”Ђв”Ђ clinical / operational в”Ђв”Ђ
+  // clinical / operational
   {
     key: "schedule",
-    icon: "рџ“…",
+    icon: "\uD83D\uDCC5",
     res: "schedule",
     act: "read",
     soon: true,
@@ -80,7 +27,7 @@ const QUICK_ACTIONS = [
   },
   {
     key: "patients",
-    icon: "рџ‘Ґ",
+    icon: "\uD83D\uDC65",
     res: "patient",
     act: "read",
     soon: false,
@@ -90,7 +37,7 @@ const QUICK_ACTIONS = [
   },
   {
     key: "departments",
-    icon: "рџЏў",
+    icon: "\uD83C\uDFE2",
     res: "department",
     act: "read",
     soon: false,
@@ -100,7 +47,7 @@ const QUICK_ACTIONS = [
   },
   {
     key: "rooms",
-    icon: "рџљЄ",
+    icon: "\uD83D\uDEAA",
     res: "room",
     act: "read",
     soon: false,
@@ -110,7 +57,7 @@ const QUICK_ACTIONS = [
   },
   {
     key: "equipment",
-    icon: "рџ”§",
+    icon: "\uD83D\uDD27",
     res: "equipment",
     act: "read",
     soon: false,
@@ -120,7 +67,7 @@ const QUICK_ACTIONS = [
   },
   {
     key: "announcements",
-    icon: "рџ“ў",
+    icon: "\uD83D\uDCE2",
     res: "knowledge",
     act: "read",
     soon: false,
@@ -130,7 +77,7 @@ const QUICK_ACTIONS = [
   },
   {
     key: "knowledge",
-    icon: "рџ“љ",
+    icon: "\uD83D\uDCDA",
     res: "knowledge",
     act: "read",
     soon: false,
@@ -140,7 +87,7 @@ const QUICK_ACTIONS = [
   },
   {
     key: "pharmacy",
-    icon: "рџ’Љ",
+    icon: "\uD83D\uDC8A",
     res: "pharmacy",
     act: "read",
     soon: true,
@@ -148,10 +95,10 @@ const QUICK_ACTIONS = [
     labelKey: "employeeDashboard.actions.pharmacySoon",
     labelDefault: "РђРїС‚РµРєР° (СЃРєРѕСЂРѕ)",
   },
-  // в”Ђв”Ђ marketing / public site в”Ђв”Ђ
+  // marketing / public site
   {
     key: "vitrina",
-    icon: "рџ–јпёЏ",
+    icon: "\uD83D\uDDBC\uFE0F",
     res: "site_builder",
     act: "write",
     soon: true,
@@ -161,7 +108,7 @@ const QUICK_ACTIONS = [
   },
   {
     key: "marketing",
-    icon: "рџ“Ј",
+    icon: "\uD83D\uDCE3",
     res: "marketing",
     act: "write",
     soon: true,
@@ -171,7 +118,7 @@ const QUICK_ACTIONS = [
   },
   {
     key: "reviews",
-    icon: "в­ђ",
+    icon: "\u2B50",
     res: "review",
     act: "read",
     soon: true,
@@ -181,7 +128,7 @@ const QUICK_ACTIONS = [
   },
   {
     key: "analytics",
-    icon: "рџ“Љ",
+    icon: "\uD83D\uDCCA",
     res: "analytics",
     act: "read",
     soon: true,
@@ -191,7 +138,7 @@ const QUICK_ACTIONS = [
   },
   {
     key: "leads",
-    icon: "рџ“Ё",
+    icon: "\uD83D\uDCE8",
     res: "lead",
     act: "read",
     soon: true,
@@ -228,7 +175,6 @@ export default function EmployeeDashboardPage() {
   const tier = clinic?.tier || "starter";
   const roleLabel = t(`roles.${role}`, { defaultValue: role });
 
-  // Only show actions the current user is actually allowed to use.
   const visibleActions = QUICK_ACTIONS.filter((a) => can(a.res, a.act));
 
   return (
@@ -248,7 +194,7 @@ export default function EmployeeDashboardPage() {
 
       <section className="employee-dashboard-info">
         <div className="employee-dashboard-info-card">
-          <div className="employee-dashboard-info-icon">рџ‘¤</div>
+          <div className="employee-dashboard-info-icon">{"\uD83D\uDC64"}</div>
           <div className="employee-dashboard-info-content">
             <div className="employee-dashboard-info-label">
               {t("employeeDashboard.profile.fullName")}
@@ -263,7 +209,7 @@ export default function EmployeeDashboardPage() {
         </div>
 
         <div className="employee-dashboard-info-card">
-          <div className="employee-dashboard-info-icon">рџЏҐ</div>
+          <div className="employee-dashboard-info-icon">{"\uD83C\uDFE5"}</div>
           <div className="employee-dashboard-info-content">
             <div className="employee-dashboard-info-label">
               {t("employeeDashboard.profile.clinic")}
@@ -278,7 +224,9 @@ export default function EmployeeDashboardPage() {
         </div>
 
         <div className="employee-dashboard-info-card">
-          <div className="employee-dashboard-info-icon">рџЋ–пёЏ</div>
+          <div className="employee-dashboard-info-icon">
+            {"\uD83C\uDF96\uFE0F"}
+          </div>
           <div className="employee-dashboard-info-content">
             <div className="employee-dashboard-info-label">
               {t("employeeDashboard.profile.role")}
@@ -297,7 +245,7 @@ export default function EmployeeDashboardPage() {
         </div>
 
         <div className="employee-dashboard-info-card">
-          <div className="employee-dashboard-info-icon">рџ“…</div>
+          <div className="employee-dashboard-info-icon">{"\uD83D\uDCC5"}</div>
           <div className="employee-dashboard-info-content">
             <div className="employee-dashboard-info-label">
               {t("employeeDashboard.profile.joinedAt")}
