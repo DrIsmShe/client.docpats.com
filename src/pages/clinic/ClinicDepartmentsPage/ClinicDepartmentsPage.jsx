@@ -26,8 +26,13 @@ export default function ClinicDepartmentsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null); // null = create, dept = edit
 
+  // Permission-based gating — mirrors backend RBAC (DEPARTMENT resource).
+  // admin has DEPARTMENT:RO → create/edit/archive stay hidden (no 403).
+  // Owner is always-full (never restricted, guards against absent perms).
   const myRole = layoutContext?.role || "member";
-  const canManage = ["owner", "admin"].includes(myRole);
+  const perms = layoutContext?.permissions || {};
+  const isOwner = myRole === "owner";
+  const canManage = isOwner || !!perms?.department?.write;
 
   const loadAll = useCallback(async () => {
     try {
