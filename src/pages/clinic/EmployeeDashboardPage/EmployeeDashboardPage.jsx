@@ -1,16 +1,30 @@
-﻿// client/src/pages/clinic/EmployeeDashboardPage/EmployeeDashboardPage.jsx
+// client/src/pages/clinic/EmployeeDashboardPage/EmployeeDashboardPage.jsx
 //
-// NOTE: all emoji are written as \uXXXX escape sequences (pure ASCII) so the
-// file is immune to editor/terminal encoding corruption. JS resolves them to
-// the real glyphs at runtime.
+// Icons are lucide-react components (not emoji) so the file stays pure ASCII
+// and is immune to editor/terminal encoding corruption.
 
 import React from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
-  Calendar, Users, Building2, DoorOpen, Wrench, Megaphone, BookOpen, Pill,
-  LayoutTemplate, Send, Star, BarChart3, Inbox, User, Hospital, Award,
-} from "lucide-react";import { useClinicPermissions } from "../../../lib/can";
+  Calendar,
+  Users,
+  Building2,
+  DoorOpen,
+  Wrench,
+  Megaphone,
+  BookOpen,
+  Pill,
+  LayoutTemplate,
+  Send,
+  Star,
+  BarChart3,
+  Inbox,
+  User,
+  Hospital,
+  Award,
+} from "lucide-react";
+import { useClinicPermissions } from "../../../lib/can";
 import "./employeeDashboardPage.css";
 
 // Quick actions in the employee zone. Each is gated by a permission
@@ -26,7 +40,8 @@ const QUICK_ACTIONS = [
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.scheduleSoon",
-    labelDefault: "Р В Р В°РЎРѓР С—Р С‘РЎРѓР В°Р Р…Р С‘Р Вµ (РЎРѓР С”Р С•РЎР‚Р С•)",
+    labelDefault:
+      "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435 (\u0441\u043A\u043E\u0440\u043E)",
   },
   {
     key: "patients",
@@ -36,7 +51,7 @@ const QUICK_ACTIONS = [
     soon: false,
     to: "/clinic/employee/patients",
     labelKey: "employeeDashboard.actions.patients",
-    labelDefault: "Р СџР В°РЎвЂ Р С‘Р ВµР Р…РЎвЂљРЎвЂ№",
+    labelDefault: "\u041F\u0430\u0446\u0438\u0435\u043D\u0442\u044B",
   },
   {
     key: "departments",
@@ -46,7 +61,7 @@ const QUICK_ACTIONS = [
     soon: false,
     to: "/clinic/employee/departments",
     labelKey: "employeeDashboard.actions.departments",
-    labelDefault: "Р С›РЎвЂљР Т‘Р ВµР В»Р ВµР Р…Р С‘РЎРЏ",
+    labelDefault: "\u041E\u0442\u0434\u0435\u043B\u0435\u043D\u0438\u044F",
   },
   {
     key: "rooms",
@@ -56,7 +71,7 @@ const QUICK_ACTIONS = [
     soon: false,
     to: "/clinic/employee/rooms",
     labelKey: "employeeDashboard.actions.rooms",
-    labelDefault: "Р С™Р В°Р В±Р С‘Р Р…Р ВµРЎвЂљРЎвЂ№",
+    labelDefault: "\u041A\u0430\u0431\u0438\u043D\u0435\u0442\u044B",
   },
   {
     key: "equipment",
@@ -66,7 +81,8 @@ const QUICK_ACTIONS = [
     soon: false,
     to: "/clinic/employee/equipment",
     labelKey: "employeeDashboard.actions.equipment",
-    labelDefault: "Р С›Р В±Р С•РЎР‚РЎС“Р Т‘Р С•Р Р†Р В°Р Р…Р С‘Р Вµ",
+    labelDefault:
+      "\u041E\u0431\u043E\u0440\u0443\u0434\u043E\u0432\u0430\u043D\u0438\u0435",
   },
   {
     key: "announcements",
@@ -76,7 +92,8 @@ const QUICK_ACTIONS = [
     soon: false,
     to: "/clinic/employee/announcements",
     labelKey: "employeeDashboard.actions.announcements",
-    labelDefault: "Р С›Р В±РЎР‰РЎРЏР Р†Р В»Р ВµР Р…Р С‘РЎРЏ",
+    labelDefault:
+      "\u041E\u0431\u044A\u044F\u0432\u043B\u0435\u043D\u0438\u044F",
   },
   {
     key: "knowledge",
@@ -86,7 +103,8 @@ const QUICK_ACTIONS = [
     soon: false,
     to: "/clinic/employee/knowledge",
     labelKey: "employeeDashboard.actions.knowledge",
-    labelDefault: "Р вЂР В°Р В·Р В° Р В·Р Р…Р В°Р Р…Р С‘Р в„–",
+    labelDefault:
+      "\u0411\u0430\u0437\u0430 \u0437\u043D\u0430\u043D\u0438\u0439",
   },
   {
     key: "pharmacy",
@@ -96,7 +114,8 @@ const QUICK_ACTIONS = [
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.pharmacySoon",
-    labelDefault: "Р С’Р С—РЎвЂљР ВµР С”Р В° (РЎРѓР С”Р С•РЎР‚Р С•)",
+    labelDefault:
+      "\u0410\u043F\u0442\u0435\u043A\u0430 (\u0441\u043A\u043E\u0440\u043E)",
   },
   // marketing / public site
   {
@@ -107,7 +126,8 @@ const QUICK_ACTIONS = [
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.vitrinaSoon",
-    labelDefault: "Р вЂ™Р С‘РЎвЂљРЎР‚Р С‘Р Р…Р В° (РЎРѓР С”Р С•РЎР‚Р С•)",
+    labelDefault:
+      "\u0412\u0438\u0442\u0440\u0438\u043D\u0430 (\u0441\u043A\u043E\u0440\u043E)",
   },
   {
     key: "marketing",
@@ -117,7 +137,8 @@ const QUICK_ACTIONS = [
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.marketingSoon",
-    labelDefault: "Р СџРЎС“Р В±Р В»Р С‘Р С”Р В°РЎвЂ Р С‘Р С‘ (РЎРѓР С”Р С•РЎР‚Р С•)",
+    labelDefault:
+      "\u041F\u0443\u0431\u043B\u0438\u043A\u0430\u0446\u0438\u0438 (\u0441\u043A\u043E\u0440\u043E)",
   },
   {
     key: "reviews",
@@ -127,7 +148,8 @@ const QUICK_ACTIONS = [
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.reviewsSoon",
-    labelDefault: "Р С›РЎвЂљР В·РЎвЂ№Р Р†РЎвЂ№ (РЎРѓР С”Р С•РЎР‚Р С•)",
+    labelDefault:
+      "\u041E\u0442\u0437\u044B\u0432\u044B (\u0441\u043A\u043E\u0440\u043E)",
   },
   {
     key: "analytics",
@@ -137,7 +159,8 @@ const QUICK_ACTIONS = [
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.analyticsSoon",
-    labelDefault: "Р С’Р Р…Р В°Р В»Р С‘РЎвЂљР С‘Р С”Р В° (РЎРѓР С”Р С•РЎР‚Р С•)",
+    labelDefault:
+      "\u0410\u043D\u0430\u043B\u0438\u0442\u0438\u043A\u0430 (\u0441\u043A\u043E\u0440\u043E)",
   },
   {
     key: "leads",
@@ -147,7 +170,8 @@ const QUICK_ACTIONS = [
     soon: true,
     to: null,
     labelKey: "employeeDashboard.actions.leadsSoon",
-    labelDefault: "Р С›Р В±РЎР‚Р В°РЎвЂ°Р ВµР Р…Р С‘РЎРЏ (РЎРѓР С”Р С•РЎР‚Р С•)",
+    labelDefault:
+      "\u041E\u0431\u0440\u0430\u0449\u0435\u043D\u0438\u044F (\u0441\u043A\u043E\u0440\u043E)",
   },
 ];
 
@@ -167,11 +191,11 @@ export default function EmployeeDashboardPage() {
     t("staff.unnamed");
 
   const formatDate = (d) => {
-    if (!d) return "РІР‚вЂќ";
+    if (!d) return "\u2014";
     try {
       return new Date(d).toLocaleDateString(i18n.language || undefined);
     } catch {
-      return "РІР‚вЂќ";
+      return "\u2014";
     }
   };
 
@@ -190,14 +214,16 @@ export default function EmployeeDashboardPage() {
         </h1>
         <p className="employee-dashboard-subtitle">
           {t("employeeDashboard.subtitle", {
-            clinicName: clinic?.name || "РІР‚вЂќ",
+            clinicName: clinic?.name || "\u2014",
           })}
         </p>
       </header>
 
       <section className="employee-dashboard-info">
         <div className="employee-dashboard-info-card">
-          <div className="employee-dashboard-info-icon"><User size={22} /></div>
+          <div className="employee-dashboard-info-icon">
+            <User size={22} />
+          </div>
           <div className="employee-dashboard-info-content">
             <div className="employee-dashboard-info-label">
               {t("employeeDashboard.profile.fullName")}
@@ -212,13 +238,15 @@ export default function EmployeeDashboardPage() {
         </div>
 
         <div className="employee-dashboard-info-card">
-          <div className="employee-dashboard-info-icon"><Hospital size={22} /></div>
+          <div className="employee-dashboard-info-icon">
+            <Hospital size={22} />
+          </div>
           <div className="employee-dashboard-info-content">
             <div className="employee-dashboard-info-label">
               {t("employeeDashboard.profile.clinic")}
             </div>
             <div className="employee-dashboard-info-value">
-              {clinic?.name || "РІР‚вЂќ"}
+              {clinic?.name || "\u2014"}
             </div>
             {clinic?.slug && (
               <div className="employee-dashboard-info-sub">/{clinic.slug}</div>
@@ -248,7 +276,9 @@ export default function EmployeeDashboardPage() {
         </div>
 
         <div className="employee-dashboard-info-card">
-          <div className="employee-dashboard-info-icon"><Calendar size={22} /></div>
+          <div className="employee-dashboard-info-icon">
+            <Calendar size={22} />
+          </div>
           <div className="employee-dashboard-info-content">
             <div className="employee-dashboard-info-label">
               {t("employeeDashboard.profile.joinedAt")}
@@ -270,7 +300,7 @@ export default function EmployeeDashboardPage() {
           <p className="employee-dashboard-coming-soon">
             {t("employeeDashboard.noActions", {
               defaultValue:
-                "Р вЂќР В»РЎРЏ Р Р†Р В°РЎв‚¬Р ВµР в„– РЎР‚Р С•Р В»Р С‘ Р Т‘Р ВµР в„–РЎРѓРЎвЂљР Р†Р С‘РЎРЏ Р С—Р С•РЎРЏР Р†РЎРЏРЎвЂљРЎРѓРЎРЏ Р Р† РЎРѓР В»Р ВµР Т‘РЎС“РЎР‹РЎвЂ°Р С‘РЎвЂ¦ Р С•Р В±Р Р…Р С•Р Р†Р В»Р ВµР Р…Р С‘РЎРЏРЎвЂ¦.",
+                "\u0414\u043B\u044F \u0432\u0430\u0448\u0435\u0439 \u0440\u043E\u043B\u0438 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044F \u043F\u043E\u044F\u0432\u044F\u0442\u0441\u044F \u0432 \u0441\u043B\u0435\u0434\u0443\u044E\u0449\u0438\u0445 \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F\u0445.",
             })}
           </p>
         ) : (
