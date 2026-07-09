@@ -1,4 +1,4 @@
-﻿{
+{
   "mci": {
     "title": "Clinic invitations",
     "subtitle": "Clinics that invited you to join. Accept or decline the invitation.",
@@ -38,7 +38,6 @@
     "errorSearch": "Search failed",
     "errorInvite": "Failed to send the invitation"
   },
-
   "inviteAdminModal": {
     "title": "Invite an administrator",
     "intro": "We'll email an invitation link. The recipient signs in or registers on DocPats and becomes a clinic administrator (\"near-owner\"). An admin is a DocPats user, not an internal employee.",
@@ -1061,7 +1060,6 @@
     "errorTitle": "Couldn't load your dashboard",
     "invitedAsRoleExpires": "Invited as {{role}} · expires {{date}}"
   },
-
   "staff": {
     "membershipRequests": "Member invitations",
     "memberInvitePending": "Member invitation",
@@ -1295,16 +1293,6 @@
       "joinedAt": "Joined"
     },
     "quickActions": "Quick actions",
-    "actions": {
-      "scheduleSoon": "Schedule (soon)",
-      "patientsSoon": "Patients (soon)",
-      "pharmacySoon": "Pharmacy (soon)",
-      "vitrinaSoon": "Storefront (soon)",
-      "marketingSoon": "Publications (soon)",
-      "reviewsSoon": "Reviews (soon)",
-      "analyticsSoon": "Analytics (soon)",
-      "leadsSoon": "Leads (soon)"
-    },
     "comingSoon": "More features will become available in upcoming releases."
   },
   "schedule": {

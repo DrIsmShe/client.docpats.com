@@ -1,4 +1,4 @@
-﻿{
+{
   "mci": {
     "title": "Klinik davetleri",
     "subtitle": "Sizi katılmaya davet eden klinikler. Daveti kabul edin veya reddedin.",
@@ -38,7 +38,6 @@
     "errorSearch": "Arama başarısız",
     "errorInvite": "Davet gönderilemedi"
   },
-
   "inviteAdminModal": {
     "title": "Yönetici davet et",
     "intro": "E-postaya bir davet bağlantısı göndeririz. Alıcı DocPats'e giriş yapar veya kaydolur ve klinik yöneticisi olur (\"neredeyse sahip\"). Yönetici bir DocPats kullanıcısıdır, dahili bir çalışan değildir.",
@@ -1294,16 +1293,6 @@
       "joinedAt": "Katıldı"
     },
     "quickActions": "Hızlı işlemler",
-    "actions": {
-      "scheduleSoon": "Takvim (yakında)",
-      "patientsSoon": "Hastalar (yakında)",
-      "pharmacySoon": "Eczane (yakında)",
-      "vitrinaSoon": "Vitrin (yakında)",
-      "marketingSoon": "Yayınlar (yakında)",
-      "reviewsSoon": "Yorumlar (yakında)",
-      "analyticsSoon": "Analitik (yakında)",
-      "leadsSoon": "Talepler (yakında)"
-    },
     "comingSoon": "Daha fazla özellik gelecek sürümlerde kullanıma sunulacak."
   },
   "schedule": {

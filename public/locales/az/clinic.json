@@ -1,4 +1,4 @@
-﻿{
+{
   "mci": {
     "title": "Klinika dəvətləri",
     "subtitle": "Sizi qoşulmağa dəvət edən klinikalar. Dəvəti qəbul edin və ya rədd edin.",
@@ -38,7 +38,6 @@
     "errorSearch": "Axtarış alınmadı",
     "errorInvite": "Dəvət göndərmək alınmadı"
   },
-
   "inviteAdminModal": {
     "title": "Administrator dəvət et",
     "intro": "E-poçta dəvət linki göndərəcəyik. Qəbul edən şəxs DocPats-ə daxil olur və ya qeydiyyatdan keçir və klinikanın administratoru olur (\"az qala sahib\"). Administrator DocPats istifadəçisidir, daxili işçi deyil.",
@@ -1061,7 +1060,6 @@
     "errorTitle": "Panel yüklənmədi",
     "invitedAsRoleExpires": "{{role}} kimi dəvət edilib · {{date}} tarixində bitir"
   },
-
   "staff": {
     "membershipRequests": "Üzv dəvətləri",
     "memberInvitePending": "Üzv dəvəti",
@@ -1295,16 +1293,6 @@
       "joinedAt": "Qoşulub"
     },
     "quickActions": "Sürətli əməliyyatlar",
-    "actions": {
-      "scheduleSoon": "Cədvəl (tezliklə)",
-      "patientsSoon": "Pasiyentlər (tezliklə)",
-      "pharmacySoon": "Aptek (tezliklə)",
-      "vitrinaSoon": "Vitrin (tezliklə)",
-      "marketingSoon": "Nəşrlər (tezliklə)",
-      "reviewsSoon": "Rəylər (tezliklə)",
-      "analyticsSoon": "Analitika (tezliklə)",
-      "leadsSoon": "Müraciətlər (tezliklə)"
-    },
     "comingSoon": "Daha çox funksiya növbəti versiyalarda əlçatan olacaq."
   },
   "schedule": {
