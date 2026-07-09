@@ -1,4 +1,4 @@
-﻿import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GlobalCallProvider } from "./pages/communication/context/GlobalCallProvider";
@@ -507,6 +507,7 @@ import ClinicStaffPage from "./pages/clinic/ClinicStaffPage/ClinicStaffPage.jsx"
 import InvitationAcceptPage from "./pages/clinic/InvitationAcceptPage/InvitationAcceptPage";
 import EmployeeLoginPage from "./pages/clinic/EmployeeLoginPage/EmployeeLoginPage";
 import EmployeeDashboardPage from "./pages/clinic/EmployeeDashboardPage/EmployeeDashboardPage";
+import EmployeeSchedulePage from "./pages/clinic/EmployeeSchedulePage/EmployeeSchedulePage";
 import ClinicPatientsPage from "./pages/clinic/ClinicPatientsPage/ClinicPatientsPage.jsx";
 import ClinicPatientDetailPage from "./pages/clinic/ClinicPatientDetailPage/ClinicPatientDetailPage.jsx";
 import ClinicSchedulePage from "./pages/clinic/ClinicSchedulePage/ClinicSchedulePage.jsx";
@@ -683,6 +684,8 @@ function App() {
                 <Route path="equipment" element={<ClinicEquipmentPage />} />
                 <Route path="announcements" element={<ClinicAnnouncementsPage />} />
                 <Route path="knowledge" element={<ClinicKnowledgePage />} />
+                <Route path="schedule" element={<EmployeeSchedulePage />} />
+                <Route path="schedule/:doctorId" element={<ClinicSchedulePage />} />
                 <Route path="knowledge/:id" element={<ClinicKnowledgeArticlePage />} />
             </Route>
             {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° РџРћР›РРљР›РРќРРљРђ */}

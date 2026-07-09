@@ -37,11 +37,11 @@ const QUICK_ACTIONS = [
     Icon: Calendar,
     res: "schedule",
     act: "read",
-    soon: true,
-    to: null,
-    labelKey: "employeeDashboard.actions.scheduleSoon",
+    soon: false,
+    to: "/clinic/employee/schedule",
+    labelKey: "employeeDashboard.actions.schedule",
     labelDefault:
-      "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435 (\u0441\u043A\u043E\u0440\u043E)",
+      "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435",
   },
   {
     key: "patients",
@@ -51,7 +51,7 @@ const QUICK_ACTIONS = [
     soon: false,
     to: "/clinic/employee/patients",
     labelKey: "employeeDashboard.actions.patients",
-    labelDefault: "\u041F\u0430\u0446\u0438\u0435\u043D\u0442\u044B",
+    labelDefault: "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435",
   },
   {
     key: "departments",

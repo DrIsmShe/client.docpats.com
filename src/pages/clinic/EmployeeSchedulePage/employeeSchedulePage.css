@@ -1,0 +1,154 @@
+/* client/src/pages/clinic/EmployeeSchedulePage/employeeSchedulePage.css */
+
+.emp-sched-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.emp-sched-header {
+  margin-bottom: 20px;
+}
+.emp-sched-back {
+  display: inline-block;
+  font-size: 13px;
+  color: #6b7280;
+  text-decoration: none;
+  margin-bottom: 12px;
+}
+.emp-sched-back:hover {
+  color: #111827;
+}
+.emp-sched-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: #111827;
+}
+.emp-sched-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.emp-sched-toolbar {
+  margin: 16px 0;
+}
+.emp-sched-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.emp-sched-search-icon {
+  position: absolute;
+  left: 12px;
+  color: #9ca3af;
+  pointer-events: none;
+}
+.emp-sched-search {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.emp-sched-search:focus {
+  border-color: #7c3aed;
+}
+
+.emp-sched-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.emp-sched-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background: #fff;
+  text-decoration: none;
+  transition:
+    box-shadow 0.15s,
+    border-color 0.15s,
+    transform 0.05s;
+}
+.emp-sched-row:hover {
+  border-color: #ddd6fe;
+  box-shadow: 0 2px 10px rgba(124, 58, 237, 0.08);
+}
+.emp-sched-row:active {
+  transform: translateY(1px);
+}
+.emp-sched-row-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f5f3ff;
+  color: #7c3aed;
+  flex-shrink: 0;
+}
+.emp-sched-row-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.emp-sched-row-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+.emp-sched-row-meta {
+  font-size: 13px;
+  color: #6b7280;
+}
+.emp-sched-row-arrow {
+  color: #c4b5fd;
+  flex-shrink: 0;
+}
+
+.emp-sched-empty {
+  padding: 48px 16px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+.emp-sched-loading,
+.emp-sched-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 16px;
+  gap: 12px;
+}
+.emp-sched-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #ede9fe;
+  border-top-color: #7c3aed;
+  border-radius: 50%;
+  animation: emp-sched-spin 0.8s linear infinite;
+}
+@keyframes emp-sched-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.emp-sched-error button {
+  padding: 8px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
