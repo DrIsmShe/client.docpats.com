@@ -23,6 +23,7 @@ import {
   User,
   Hospital,
   Award,
+  UserCog
 } from "lucide-react";
 import { useClinicPermissions } from "../../../lib/can";
 import "./employeeDashboardPage.css";
@@ -52,6 +53,16 @@ const QUICK_ACTIONS = [
     to: "/clinic/employee/patients",
     labelKey: "employeeDashboard.actions.patients",
     labelDefault: "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435",
+  },
+  {
+    key: "staff",
+    Icon: UserCog,
+    res: "staff",
+    act: "read",
+    soon: false,
+    to: "/clinic/employee/staff",
+    labelKey: "employeeDashboard.actions.staff",
+    labelDefault: "\u0421\u043E\u0442\u0440\u0443\u0434\u043D\u0438\u043A\u0438",
   },
   {
     key: "departments",

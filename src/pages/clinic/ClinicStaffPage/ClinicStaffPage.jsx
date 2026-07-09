@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { Link, useOutletContext, useNavigate } from "react-router-dom";
+import { useClinicZone } from "../../../lib/useClinicZone";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -38,6 +39,7 @@ const SCHEDULE_ROLES = ["owner", "admin", "doctor"];
 export default function ClinicStaffPage() {
   const { t, i18n } = useTranslation("clinic");
   const layoutContext = useOutletContext();
+  const { dashboardPath } = useClinicZone();
   const navigate = useNavigate();
   const [memberRequests, setMemberRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -72,7 +74,7 @@ export default function ClinicStaffPage() {
   // Changing roles / removing members writes to STAFF.
   // admin has STAFF:RO → hidden (backend rejects with 403 otherwise).
   const canManageRoles = allow("staff", "write");
-  const canRemove = allow("staff", "write");
+  const canRemove = allow("staff", "delete");
   // Inviting an admin (existing DocPats User → membershipRequest) is
   // OWNER-ONLY by product decision; admin lacks STAFF_INVITE and only the
   // owner may reshape clinic ownership/administration. Owner-only also gates
@@ -247,7 +249,7 @@ export default function ClinicStaffPage() {
     <div className="staff-page">
       <div className="staff-page-header">
         <div className="staff-page-header-left">
-          <Link to="/clinic/dashboard" className="staff-page-back">
+          <Link to={dashboardPath} className="staff-page-back">
             {t("staff.back")}
           </Link>
           <h1>{t("staff.title")}</h1>

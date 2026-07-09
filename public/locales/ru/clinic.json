@@ -1301,7 +1301,8 @@
       "rooms": "Кабинеты",
       "equipment": "Оборудование",
       "announcements": "Объявления",
-      "knowledge": "База знаний"
+      "knowledge": "База знаний",
+      "staff": "Сотрудники"
     }
   },
   "schedule": {

@@ -1301,7 +1301,8 @@
       "rooms": "Rooms",
       "equipment": "Equipment",
       "announcements": "Announcements",
-      "knowledge": "Knowledge Base"
+      "knowledge": "Knowledge Base",
+      "staff": "Staff"
     }
   },
   "schedule": {

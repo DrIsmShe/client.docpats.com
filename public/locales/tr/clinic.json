@@ -1301,7 +1301,8 @@
       "rooms": "Odalar",
       "equipment": "Ekipman",
       "announcements": "Duyurular",
-      "knowledge": "Bilgi Bankası"
+      "knowledge": "Bilgi Bankası",
+      "staff": "Personel"
     }
   },
   "schedule": {

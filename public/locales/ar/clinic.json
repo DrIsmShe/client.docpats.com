@@ -1301,7 +1301,8 @@
       "rooms": "الغرف",
       "equipment": "المعدات",
       "announcements": "الإعلانات",
-      "knowledge": "قاعدة المعرفة"
+      "knowledge": "قاعدة المعرفة",
+      "staff": "الموظفون"
     }
   },
   "schedule": {
