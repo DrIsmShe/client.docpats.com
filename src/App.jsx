@@ -24,7 +24,7 @@ import SearchPatientFromPatient from "./pages/patientProfilePages/addPatient/sea
 import DeletePatientFromOffice from "./pages/polyclinic/deletePatientFromOffice.jsx";
 import Notifications from "./pages/patientProfilePages/Notifications.jsx";
 
-// РРјРїРѕСЂС‚ СЃС‚СЂР°РЅРёС† Р°РІС‚РѕСЂРёР·Р°С†РёРё
+// Р ВР СР С—Р С•РЎР‚РЎвЂљ РЎРѓРЎвЂљРЎР‚Р В°Р Р…Р С‘РЎвЂ  Р В°Р Р†РЎвЂљР С•РЎР‚Р С‘Р В·Р В°РЎвЂ Р С‘Р С‘
 import Registration from "./pages/auth/register/registration";
 import AuthLayout from "./layoutes/authLayout/authLayout";
 import Login from "./pages/auth/login/login";
@@ -34,7 +34,7 @@ import Resetpasswordchange from "./pages/auth/resetpassword/resetpasswordchange"
 import Otpresetpasswordchange from "./pages/auth/resetpassword/otpresetpasswordchange";
 import Pagenotfound from "./pages/pagenotfound/pagenotfound";
 
-// РРјРїРѕСЂС‚ СЃС‚СЂР°РЅРёС† РїСЂРѕС„РёР»СЏ РґРѕРєС‚РѕСЂР°
+// Р ВР СР С—Р С•РЎР‚РЎвЂљ РЎРѓРЎвЂљРЎР‚Р В°Р Р…Р С‘РЎвЂ  Р С—РЎР‚Р С•РЎвЂћР С‘Р В»РЎРЏ Р Т‘Р С•Р С”РЎвЂљР С•РЎР‚Р В°
 
 import DoctorpofileLayout from "./layoutes/doctorprofileLayout/doctorprofileLayout";
 import HomeDoctorMainPage from "./pages/doctorProfilePages/home/homeMainPage";
@@ -64,7 +64,7 @@ import EditMyArticleScientificDoctor from "./pages/doctorProfilePages/articles/e
 import ArtislesScientificFromDoctors from "./pages/doctorProfilePages/shared/articles/artislesScientificFromDoctors.jsx";
 import DoctorArticlesScientific from "./pages/doctorProfilePages/shared/doctors/doctorsArticlesScientific";
 
-// РРјРїРѕСЂС‚ СЃС‚СЂР°РЅРёС† Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°
+// Р ВР СР С—Р С•РЎР‚РЎвЂљ РЎРѓРЎвЂљРЎР‚Р В°Р Р…Р С‘РЎвЂ  Р В°Р Т‘Р СР С‘Р Р…Р С‘РЎРѓРЎвЂљРЎР‚Р В°РЎвЂљР С•РЎР‚Р В°
 import AdminLayout from "./layoutes/adminLayout/adminLyout";
 import HomeAdminMainPage from "./pages/admin/homePageAdmin";
 import UsersListPage from "./pages/admin/user/usersList.jsx";
@@ -82,7 +82,7 @@ import PolyclinicPatientDetail from "./pages/admin/patient/PolyclinicPatientDeta
 import PolyclinicPatientDelete from "./pages/admin/patient/PolyclinicPatientDelete";
 import AdminExportCollection from "./pages/admin/components/AdminExportCollection";
 
-// РРјРїРѕСЂС‚ СЃС‚СЂР°РЅРёС† РїРѕР»РёРєР»РёРЅРёРєРё
+// Р ВР СР С—Р С•РЎР‚РЎвЂљ РЎРѓРЎвЂљРЎР‚Р В°Р Р…Р С‘РЎвЂ  Р С—Р С•Р В»Р С‘Р С”Р В»Р С‘Р Р…Р С‘Р С”Р С‘
 import MainPolyclinicLayout from "./layoutes/polyclinic/MainPolyclinicLayout";
 import Polyclinic from "./pages/polyclinic/polyclinic";
 import Patientdetail from "./pages/polyclinic/patientdetail";
@@ -92,7 +92,7 @@ import Addpatient from "./pages/polyclinic/addpatientpolyclinic/addpatientpolycl
 import AddPatientMedicalHistory from "./pages/polyclinic/addpatientpolyclinic/addPatientMedicalHistory";
 import MedicalHistory from "./pages/polyclinic/medicalHistory";
 
-// РРјРїРѕСЂС‚ С€Р°Р±Р»РѕРЅРѕРІ РјРµРґРёС†РёРЅСЃРєРёС… Р·Р°РїРёСЃРµР№
+// Р ВР СР С—Р С•РЎР‚РЎвЂљ РЎв‚¬Р В°Р В±Р В»Р С•Р Р…Р С•Р Р† Р СР ВµР Т‘Р С‘РЎвЂ Р С‘Р Р…РЎРѓР С”Р С‘РЎвЂ¦ Р В·Р В°Р С—Р С‘РЎРѓР ВµР в„–
 import TempComplaints from "./pages/polyclinic/addpatientpolyclinic/templates/tempComplaints";
 import ComplaintDetail from "./pages/polyclinic/addpatientpolyclinic/templates/ComplaintDetail";
 import TempAnamnesisMorbi from "./pages/polyclinic/addpatientpolyclinic/templates/tempAnamnesisMorbi";
@@ -105,7 +105,7 @@ import TempCScanerResults from "./pages/polyclinic/addpatientpolyclinic/template
 import TempUltrasoundResults from "./pages/polyclinic/addpatientpolyclinic/templates/tempUltrasoundResults";
 import TempLaboratoryTestResults from "./pages/polyclinic/addpatientpolyclinic/templates/tempLaboratoryTestResults";
 
-// РРјРїРѕСЂС‚ СЃС‚СЂР°РЅРёС† РїСЂРѕС„РёР»СЏ РїР°С†РёРµРЅС‚Р°
+// Р ВР СР С—Р С•РЎР‚РЎвЂљ РЎРѓРЎвЂљРЎР‚Р В°Р Р…Р С‘РЎвЂ  Р С—РЎР‚Р С•РЎвЂћР С‘Р В»РЎРЏ Р С—Р В°РЎвЂ Р С‘Р ВµР Р…РЎвЂљР В°
 import PatientNotificationsMain from "./pages/patientProfilePages/notifications/PatientNotificationsPage.jsx";
 import PatientAppointmentsMain from "./pages/patientProfilePages/appointments/PatientAppointmentsMain.jsx";
 import PatientAppointmentsHistory from "./pages/patientProfilePages/appointments/PatientAppointmentsHistory.jsx";
@@ -516,7 +516,7 @@ import NewPatientPage from "./pages/clinic/ClinicPatientsPage/NewPatientPage.jsx
 import CompleteRegistrationPage from "./pages/auth/CompleteRegistrationPage/CompleteRegistrationPage";
 import MyLabResults from "./pages/patientProfilePages/MyMedicalHistories/MyLabResults";
 import MyPrescriptions from "./pages/patientProfilePages/MyMedicalHistories/MyPrescriptions";
-import PatientFileDetailClinic from "./pages/patientProfilePages/MyMedicalHistories/PatientFileDetailClinic"; // РїСѓС‚СЊ РїРѕРґРіРѕРЅРё РїРѕРґ СЃРІРѕР№ РїСЂРѕРµРєС‚
+import PatientFileDetailClinic from "./pages/patientProfilePages/MyMedicalHistories/PatientFileDetailClinic"; // Р С—РЎС“РЎвЂљРЎРЉ Р С—Р С•Р Т‘Р С–Р С•Р Р…Р С‘ Р С—Р С•Р Т‘ РЎРѓР Р†Р С•Р в„– Р С—РЎР‚Р С•Р ВµР С”РЎвЂљ
 import ClinicDepartmentsPage from "./pages/clinic/ClinicDepartmentsPage/ClinicDepartmentsPage.jsx";
 import ClinicRoomsPage from "./pages/clinic/ClinicRoomsPage/ClinicRoomsPage.jsx";
 import ClinicEquipmentPage from "./pages/clinic/ClinicEquipmentPage/ClinicEquipmentPage.jsx";
@@ -591,8 +591,8 @@ function App() {
                 element={<DoctorDetailsForAll />}
               />
             </Route>
-            {/* в”Ђв”Ђв”Ђ CLINIC MODULE вЂ” Public routes в”Ђв”Ђв”Ђ */}
-            {/* в”Ђв”Ђв”Ђ CLINIC MODULE вЂ” Public routes в”Ђв”Ђв”Ђ */}
+            {/* РІвЂќР‚РІвЂќР‚РІвЂќР‚ CLINIC MODULE РІР‚вЂќ Public routes РІвЂќР‚РІвЂќР‚РІвЂќР‚ */}
+            {/* РІвЂќР‚РІвЂќР‚РІвЂќР‚ CLINIC MODULE РІР‚вЂќ Public routes РІвЂќР‚РІвЂќР‚РІвЂќР‚ */}
             <Route path="/clinics/:slug" element={<PublicClinicPage />} />
 
             <Route
@@ -621,7 +621,7 @@ function App() {
               path="/clinic/my-invitations"
               element={<MyClinicInvitations />}
             />
-            {/* в”Ђв”Ђв”Ђ CLINIC MODULE вЂ” DocPats user authenticated zone в”Ђв”Ђв”Ђ */}
+            {/* РІвЂќР‚РІвЂќР‚РІвЂќР‚ CLINIC MODULE РІР‚вЂќ DocPats user authenticated zone РІвЂќР‚РІвЂќР‚РІвЂќР‚ */}
             <Route path="/clinic" element={<ClinicLayout />}>
               <Route index element={<ClinicHubPage />} />
               <Route
@@ -667,7 +667,7 @@ function App() {
                 element={<ClinicPatientDetailPage />}
               />
             </Route>
-            {/* в”Ђв”Ђв”Ђ CLINIC MODULE вЂ” Employee authenticated zone в”Ђв”Ђв”Ђ */}
+            {/* РІвЂќР‚РІвЂќР‚РІвЂќР‚ CLINIC MODULE РІР‚вЂќ Employee authenticated zone РІвЂќР‚РІвЂќР‚РІвЂќР‚ */}
             <Route
               path="/clinic/employee"
               element={<ClinicLayout employeeMode={true} />}
@@ -686,21 +686,22 @@ function App() {
                 <Route path="knowledge" element={<ClinicKnowledgePage />} />
                 <Route path="schedule" element={<EmployeeSchedulePage />} />
                 <Route path="schedule/:doctorId" element={<ClinicSchedulePage />} />
+                <Route path="schedule/:doctorId/calendar" element={<ClinicCalendarPage />} />
                 <Route path="knowledge/:id" element={<ClinicKnowledgeArticlePage />} />
             </Route>
-            {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° РџРћР›РРљР›РРќРРљРђ */}
+            {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° Р СџР С›Р вЂєР ВР С™Р вЂєР ВР СњР ВР С™Р С’ */}
             <Route path="/dp" element={<MainPolyclinicLayout />}>
               <Route path="simulation" element={<SimulationHubPage />} />
               <Route path="simulation/help" element={<HelpPage />} />
-              {/* Face вЂ” СЃС‚Р°СЂС‹Р№ СЃРїРёСЃРѕРє Рё editor РїРѕРґ /face */}
+              {/* Face РІР‚вЂќ РЎРѓРЎвЂљР В°РЎР‚РЎвЂ№Р в„– РЎРѓР С—Р С‘РЎРѓР С•Р С” Р С‘ editor Р С—Р С•Р Т‘ /face */}
               <Route path="simulation/face" element={<PlanListPage />} />
               <Route
                 path="simulation/face/plans/:id"
                 element={<PlanEditorPage />}
               />
-              {/* Backwards compat вЂ” СЃС‚Р°СЂС‹Р№ URL /simulation/plans/:id */}
+              {/* Backwards compat РІР‚вЂќ РЎРѓРЎвЂљР В°РЎР‚РЎвЂ№Р в„– URL /simulation/plans/:id */}
               <Route path="simulation/plans/:id" element={<PlanEditorPage />} />
-              {/* Breast вЂ” placeholder, СЂРµР°Р»РёР·СѓРµРј РІ Phase 3B */}
+              {/* Breast РІР‚вЂќ placeholder, РЎР‚Р ВµР В°Р В»Р С‘Р В·РЎС“Р ВµР С Р Р† Phase 3B */}
               <Route path="simulation/breast" element={<BreastListPage />} />
               <Route
                 path="simulation/breast/plans/:id"
@@ -817,9 +818,9 @@ function App() {
                 path="detail-coronography-scan-template-recomandation/:id"
                 element={<CoronographyScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° CORONOGRAPHY EKG END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° CORONOGRAPHY EKG END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° ECHO EKG START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° ECHO EKG START */}
               <Route
                 path="add-echo-ekg-scan-results/:patientModel/:patientId"
                 element={<AddEchoEKGScanUpload />}
@@ -892,9 +893,9 @@ function App() {
                 path="detail-echo-ekg-scan-template-recomandation/:id"
                 element={<EchoEKGScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° ECHO EKG END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° ECHO EKG END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° EKG START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° EKG START */}
               <Route
                 path="add-ekg-scan-results/:patientModel/:patientId"
                 element={<AddEKGScanUpload />}
@@ -967,9 +968,9 @@ function App() {
                 path="detail-ekg-scan-template-recomandation/:id"
                 element={<EKGScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° EKG END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° EKG END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Angography START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° Angography START */}
               <Route
                 path="add-angiography-scan-results/:patientModel/:patientId"
                 element={<AddAngiographyScanUpload />}
@@ -1042,8 +1043,8 @@ function App() {
                 path="detail-angiography-scan-template-recomandation/:id"
                 element={<AngiographyScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Angography END */}
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Capsule Endoscopy START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° Angography END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° Capsule Endoscopy START */}
               <Route
                 path="add-capsule-endoscopy-scan-results/:patientModel/:patientId"
                 element={<AddCapsulEndoscopyScanUpload />}
@@ -1116,9 +1117,9 @@ function App() {
                 path="detail-capsule-endoscopy-scan-template-recomandation/:id"
                 element={<CapsuleEndoscopyScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Capsule Endoscopy END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° Capsule Endoscopy END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° GASTROSCOPY START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° GASTROSCOPY START */}
               <Route
                 path="add-gastroscopy-scan-results/:patientModel/:patientId"
                 element={<AddGastroscopyScanUpload />}
@@ -1191,9 +1192,9 @@ function App() {
                 path="detail-gastroscopy-scan-template-recomandation/:id"
                 element={<GastroscopyScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° GASTROSCOPY END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° GASTROSCOPY END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° DOPLER START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° DOPLER START */}
               <Route
                 path="add-dopler-scan-results/:patientModel/:patientId"
                 element={<AddDoplerScanUpload />}
@@ -1266,8 +1267,8 @@ function App() {
                 path="detail-dopler-scan-template-recomandation/:id"
                 element={<DoplerScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° DOPLER END */}
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° SPIROMETR START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° DOPLER END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° SPIROMETR START */}
               <Route
                 path="add-spirometry-scan-results/:patientModel/:patientId"
                 element={<AddSpirometryScanUpload />}
@@ -1340,9 +1341,9 @@ function App() {
                 path="detail-spirometry-scan-template-recomandation/:id"
                 element={<SpirometryScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° SPIROMETR END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° SPIROMETR END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° HOLTER MONITOR START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° HOLTER MONITOR START */}
               <Route
                 path="add-holter-scan-results/:patientModel/:patientId"
                 element={<AddHOLTERScanUpload />}
@@ -1415,9 +1416,9 @@ function App() {
                 path="detail-holter-scan-template-recomandation/:id"
                 element={<HOLTERScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° HOLTER MONITOR END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° HOLTER MONITOR END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Ginecology Test START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° Ginecology Test START */}
               <Route
                 path="add-ginecology-test-results/:patientModel/:patientId"
                 element={<AddGinecologyUpload />}
@@ -1490,9 +1491,9 @@ function App() {
                 path="detail-ginecology-test-template-recomandation/:id"
                 element={<GinecologyTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Ginecology Test END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° Ginecology Test END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° EEG scan START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° EEG scan START */}
               <Route
                 path="add-eeg-scan-results/:patientModel/:patientId"
                 element={<AddEEGScanUpload />}
@@ -1565,9 +1566,9 @@ function App() {
                 path="detail-eeg-scan-template-recommendation/:id"
                 element={<EEGScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° EEG scan END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° EEG scan END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° SPECT scan START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° SPECT scan START */}
               <Route
                 path="/dp/add-spect-scan/:patientModel/:patientId"
                 element={<AddSPECTScanUpload />}
@@ -1640,9 +1641,9 @@ function App() {
                 path="detail-spect-scan-template-recomandation/:id"
                 element={<SPECTScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° SPECT scan END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° SPECT scan END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° PET scan START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° PET scan START */}
               <Route
                 path="add-pet-scan-results/:patientId"
                 element={<AddPETScanUpload />}
@@ -1715,9 +1716,9 @@ function App() {
                 path="detail-pet-scan-template-recomandation/:id"
                 element={<PETScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° PET scan END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° PET scan END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° XRAY scan START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° XRAY scan START */}
               <Route
                 path="add-xray-scan-results/:patientId"
                 element={<AddXRAYScanUpload />}
@@ -1790,9 +1791,9 @@ function App() {
                 path="detail-xray-scan-template-recomandation/:id"
                 element={<XRAYScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° XRAY scan END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° XRAY scan END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° USM scan START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° USM scan START */}
               <Route
                 path="add-usm-scan-results/:patientId"
                 element={<AddUSMScanUpload />}
@@ -1867,9 +1868,9 @@ function App() {
                 path="detail-usm-scan-template-recomandation/:id"
                 element={<USMScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° USM scan END */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° USM scan END */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° CT scan START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° CT scan START */}
               <Route
                 path="/dp/add-ct-scan-upload/:patientModel/:patientId"
                 element={<AddCTScanUpload />}
@@ -1944,9 +1945,9 @@ function App() {
                 element={<CTScanerTemplateRecomendationDetails />}
               />
 
-              {/* Р—РґРµСЃСЊ Р—РђРљРђРќР§РР’РђР®РўРЎРЇ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° CT scan START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р вЂ”Р С’Р С™Р С’Р СњР В§Р ВР вЂ™Р С’Р В®Р СћР РЋР Р‡ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° CT scan START */}
 
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° MRI scan START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° MRI scan START */}
               <Route
                 path="/dp/add-mri-scan-upload/:patientModel/:patientId"
                 element={<AddMRIScanUpload />}
@@ -2019,7 +2020,7 @@ function App() {
                 path="detail-mri-scan-template-recomandation/:id"
                 element={<MRIScanerTemplateRecomendationDetails />}
               />
-              {/* Р—РґРµСЃСЊ Р—РђРљРђРќР§РР’РђР®РўРЎРЇ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° MRI scan START */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р вЂ”Р С’Р С™Р С’Р СњР В§Р ВР вЂ™Р С’Р В®Р СћР РЋР Р‡ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° MRI scan START */}
 
               <Route
                 path="temp-complaints-list"
@@ -2162,7 +2163,7 @@ function App() {
             <Route path="/demo" element={<DemoPage />} />
             <Route path="/terms-consent-page" element={<TermsConsentPage />} />
             <Route path="/pricing" element={<PricingPage />} />
-            {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° Р Р•Р“РРЎРўР РђР¦РР Р РђР’РўРћР РР—РђР¦РР */}
+            {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° Р В Р вЂўР вЂњР ВР РЋР СћР В Р С’Р В¦Р ВР В Р В Р С’Р вЂ™Р СћР С›Р В Р ВР вЂ”Р С’Р В¦Р ВР В */}
             <Route path="/" element={<AuthLayout />}>
               <Route path="registration" element={<Registration />} />
               <Route path="login" element={<Login />} />
@@ -2184,7 +2185,7 @@ function App() {
               path="/complete-registration"
               element={<CompleteRegistrationPage />}
             />
-            {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° РџР РћР¤РР›Р¬ РџРђР¦РР•РќРўРђ */}
+            {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° Р СџР В Р С›Р В¤Р ВР вЂєР В¬ Р СџР С’Р В¦Р ВР вЂўР СњР СћР С’ */}
             <Route path="/patient" element={<PatientLayout />}>
               <Route path="news" element={<NewsList />} />
               <Route path="consultation-ai" element={<ConsultationPage />} />
@@ -2213,7 +2214,7 @@ function App() {
               />
               <Route path="my-lab-results" element={<MyLabResults />} />
               <Route path="my-prescriptions" element={<MyPrescriptions />} />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° С€Р°Р±Р»РѕРЅС‹ РёСЃСЃР»РµРґРѕРІР°РЅРёР№ РџРђР¦РР•РќРўРђ */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° РЎв‚¬Р В°Р В±Р В»Р С•Р Р…РЎвЂ№ Р С‘РЎРѓРЎРѓР В»Р ВµР Т‘Р С•Р Р†Р В°Р Р…Р С‘Р в„– Р СџР С’Р В¦Р ВР вЂўР СњР СћР С’ */}
               <Route
                 path="get-patient-file-detail-coronography-scan/:id"
                 element={<PatientFileDetailECoronographyScan />}
@@ -2286,7 +2287,7 @@ function App() {
                 path="get-patient-file-detail-dopler/:id"
                 element={<PatientFileDetailDopler />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° С€Р°Р±Р»РѕРЅС‹ РёСЃСЃР»РµРґРѕРІР°РЅРёР№ РџРђР¦РР•РќРўРђ */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° РЎв‚¬Р В°Р В±Р В»Р С•Р Р…РЎвЂ№ Р С‘РЎРѓРЎРѓР В»Р ВµР Т‘Р С•Р Р†Р В°Р Р…Р С‘Р в„– Р СџР С’Р В¦Р ВР вЂўР СњР СћР С’ */}
               <Route
                 path="patient-profile/:id"
                 element={<HomePatientMainPage />}
@@ -2359,7 +2360,7 @@ function App() {
               path="/doctor/anthropometry/photos/:photoId/annotate"
               element={<PhotoAnnotationPage />}
             />
-            {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° РџР РћР¤РР›Р¬ Р”РћРљРўРћР Рђ */}
+            {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° Р СџР В Р С›Р В¤Р ВР вЂєР В¬ Р вЂќР С›Р С™Р СћР С›Р В Р С’ */}
             <Route path="/doctor" element={<DoctorpofileLayout />}>
               <Route path="my-clinics" element={<DoctorMyClinicsPage />} />
               <Route
@@ -2449,7 +2450,7 @@ function App() {
                 path="doctor-appointment"
                 element={<DoctorAppointment />}
               />
-              {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° doctorDashboard */}
+              {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° doctorDashboard */}
               <Route
                 path="dashboard"
                 element={<DoctorAppointmenDashboardt />}
@@ -2473,7 +2474,7 @@ function App() {
                 element={<DoctorDashboardMain />}
               />
             </Route>
-            {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° РђР”РњРРќ */}
+            {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° Р С’Р вЂќР СљР ВР Сњ */}
             <Route path="admin" element={<AdminLayout />}>
               <Route path="admin-panel" element={<HomeAdminMainPage />} />
               <Route path="users-list" element={<UsersListPage />} />
@@ -2535,7 +2536,7 @@ function App() {
                 element={<PolyclinicPatientDelete />}
               />
             </Route>
-            {/* Р—РґРµСЃСЊ РїРµСЂРµС‡РёСЃР»РµРЅС‹ РІСЃРµ РјР°СЂС€СЂСѓС‚С‹ РґР»СЏ СЂР°Р·РґРµР»Р° РЎРўР РђРќРР¦Рђ РќР• РќРђР™Р”Р•РќРђ */}
+            {/* Р вЂ”Р Т‘Р ВµРЎРѓРЎРЉ Р С—Р ВµРЎР‚Р ВµРЎвЂЎР С‘РЎРѓР В»Р ВµР Р…РЎвЂ№ Р Р†РЎРѓР Вµ Р СР В°РЎР‚РЎв‚¬РЎР‚РЎС“РЎвЂљРЎвЂ№ Р Т‘Р В»РЎРЏ РЎР‚Р В°Р В·Р Т‘Р ВµР В»Р В° Р РЋР СћР В Р С’Р СњР ВР В¦Р С’ Р СњР вЂў Р СњР С’Р в„ўР вЂќР вЂўР СњР С’ */}
             <Route path="*" element={<Pagenotfound />} />
           </Routes>
           <ToastContainer position="bottom-right" autoClose={5000} />

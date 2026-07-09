@@ -152,3 +152,56 @@
   cursor: pointer;
   font-size: 14px;
 }
+
+/* --- row actions (schedule + queue buttons) --- */
+.emp-sched-row {
+  cursor: default;
+}
+.emp-sched-row:hover {
+  border-color: #eee;
+  box-shadow: none;
+}
+.emp-sched-row-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.emp-sched-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4b5563;
+  text-decoration: none;
+  background: #fff;
+  transition:
+    border-color 0.15s,
+    color 0.15s,
+    background 0.15s;
+}
+.emp-sched-action:hover {
+  border-color: #ddd6fe;
+  color: #7c3aed;
+  background: #faf5ff;
+}
+.emp-sched-action-queue:hover {
+  border-color: #bfdbfe;
+  color: #2563eb;
+  background: #eff6ff;
+}
+@media (max-width: 560px) {
+  .emp-sched-row {
+    flex-wrap: wrap;
+  }
+  .emp-sched-row-actions {
+    width: 100%;
+  }
+  .emp-sched-action {
+    flex: 1;
+    justify-content: center;
+  }
+}

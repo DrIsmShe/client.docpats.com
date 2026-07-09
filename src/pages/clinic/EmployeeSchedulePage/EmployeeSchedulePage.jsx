@@ -1,21 +1,12 @@
 // client/src/pages/clinic/EmployeeSchedulePage/EmployeeSchedulePage.jsx
-//
-// Manager entry point for doctor schedules in the EMPLOYEE zone.
-// The owner zone reaches a doctor's schedule via the staff page; the employee
-// zone has no staff page, so this lightweight picker lists the clinic doctors
-// and links each to /clinic/employee/schedule/:doctorId (ClinicSchedulePage,
-// which is zone-aware and lets a manager edit via the schedule.write permission).
-
 import React, { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { CalendarClock, ChevronRight, Search } from "lucide-react";
+import { CalendarClock, CalendarDays, Search } from "lucide-react";
 import { useClinicZone } from "../../../lib/useClinicZone";
 import { listStaff } from "../../../api/clinic";
 import "./employeeSchedulePage.css";
 
-// Roles whose members have a bookable schedule. Managers/receptionists etc.
-// don't hold appointments, so we only show doctors here.
 const SCHEDULABLE_ROLES = ["doctor", "owner", "admin"];
 
 export default function EmployeeSchedulePage() {
@@ -41,10 +32,7 @@ export default function EmployeeSchedulePage() {
       }
       setError(
         err.response?.data?.error ||
-          t("schedule.loadError", {
-            defaultValue:
-              "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0441\u043F\u0438\u0441\u043E\u043A",
-          }),
+          t("schedule.loadError", { defaultValue: "\u041D\u0435 \u0443\u0434\u0430\u043B\u043E\u0441\u044C \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044C \u0441\u043F\u0438\u0441\u043E\u043A" }),
       );
       setLoading(false);
     }
@@ -59,13 +47,10 @@ export default function EmployeeSchedulePage() {
     [m.firstName, m.lastName].filter(Boolean).join(" ") ||
     m.email ||
     m.username ||
-    t("staff.unnamed", {
-      defaultValue: "\u0411\u0435\u0437 \u0438\u043C\u0435\u043D\u0438",
-    });
+    t("staff.unnamed", { defaultValue: "\u0411\u0435\u0437 \u0438\u043C\u0435\u043D\u0438" });
 
   const idOf = (m) => String(m.userId || m._id || m.id || "");
 
-  // Only doctors (and owner/admin who may also see patients) have schedules.
   const doctors = staff.filter((m) => SCHEDULABLE_ROLES.includes(m.role));
 
   const filtered = doctors.filter((m) => {
@@ -89,18 +74,10 @@ export default function EmployeeSchedulePage() {
   if (error) {
     return (
       <div className="emp-sched-error">
-        <h2>
-          {t("schedule.title", {
-            defaultValue:
-              "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435",
-          })}
-        </h2>
+        <h2>{t("schedule.title", { defaultValue: "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435" })}</h2>
         <p>{error}</p>
         <button onClick={load} type="button">
-          {t("schedule.retry", {
-            defaultValue:
-              "\u041F\u043E\u0432\u0442\u043E\u0440\u0438\u0442\u044C",
-          })}
+          {t("schedule.retry", { defaultValue: "\u041F\u043E\u0432\u0442\u043E\u0440\u0438\u0442\u044C" })}
         </button>
       </div>
     );
@@ -110,20 +87,14 @@ export default function EmployeeSchedulePage() {
     <div className="emp-sched-page">
       <div className="emp-sched-header">
         <Link to={dashboardPath} className="emp-sched-back">
-          {t("schedule.backToDashboard", {
-            defaultValue: "\u2190 \u0414\u0430\u0448\u0431\u043E\u0440\u0434",
-          })}
+          {t("schedule.backToDashboard", { defaultValue: "\u2190 \u0414\u0430\u0448\u0431\u043E\u0440\u0434" })}
         </Link>
         <h1 className="emp-sched-title">
-          {t("schedule.pickerTitle", {
-            defaultValue:
-              "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u0432\u0440\u0430\u0447\u0435\u0439",
-          })}
+          {t("schedule.pickerTitle", { defaultValue: "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u0432\u0440\u0430\u0447\u0435\u0439" })}
         </h1>
         <p className="emp-sched-subtitle">
           {t("schedule.pickerSubtitle", {
-            defaultValue:
-              "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0440\u0430\u0447\u0430, \u0447\u0442\u043E\u0431\u044B \u043D\u0430\u0441\u0442\u0440\u043E\u0438\u0442\u044C \u0435\u0433\u043E \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435",
+            defaultValue: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u0432\u0440\u0430\u0447\u0430: \u0440\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435 \u0438\u043B\u0438 \u043E\u0447\u0435\u0440\u0435\u0434\u044C \u043D\u0430 \u0434\u0435\u043D\u044C",
           })}
         </p>
       </div>
@@ -137,8 +108,7 @@ export default function EmployeeSchedulePage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t("schedule.pickerSearch", {
-              defaultValue:
-                "\u041F\u043E\u0438\u0441\u043A \u0432\u0440\u0430\u0447\u0430...",
+              defaultValue: "\u041F\u043E\u0438\u0441\u043A \u0432\u0440\u0430\u0447\u0430...",
             })}
           />
         </div>
@@ -147,8 +117,7 @@ export default function EmployeeSchedulePage() {
       {filtered.length === 0 ? (
         <div className="emp-sched-empty">
           {t("schedule.pickerEmpty", {
-            defaultValue:
-              "\u0412\u0440\u0430\u0447\u0435\u0439 \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D\u043E",
+            defaultValue: "\u0412\u0440\u0430\u0447\u0435\u0439 \u043D\u0435 \u043D\u0430\u0439\u0434\u0435\u043D\u043E",
           })}
         </div>
       ) : (
@@ -157,14 +126,7 @@ export default function EmployeeSchedulePage() {
             const id = idOf(m);
             const role = t(`roles.${m.role}`, { defaultValue: m.role });
             return (
-              <Link
-                key={id}
-                to={`${basePath}/schedule/${id}`}
-                className="emp-sched-row"
-              >
-                <span className="emp-sched-row-icon">
-                  <CalendarClock size={22} />
-                </span>
+              <div key={id} className="emp-sched-row">
                 <span className="emp-sched-row-main">
                   <span className="emp-sched-row-name">{nameOf(m)}</span>
                   <span className="emp-sched-row-meta">
@@ -172,8 +134,17 @@ export default function EmployeeSchedulePage() {
                     {role}
                   </span>
                 </span>
-                <ChevronRight size={18} className="emp-sched-row-arrow" />
-              </Link>
+                <span className="emp-sched-row-actions">
+                  <Link to={`${basePath}/schedule/${id}`} className="emp-sched-action">
+                    <CalendarClock size={16} />
+                    {t("schedule.openSchedule", { defaultValue: "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435" })}
+                  </Link>
+                  <Link to={`${basePath}/schedule/${id}/calendar`} className="emp-sched-action emp-sched-action-queue">
+                    <CalendarDays size={16} />
+                    {t("schedule.openQueue", { defaultValue: "\u041E\u0447\u0435\u0440\u0435\u0434\u044C \u0434\u043D\u044F" })}
+                  </Link>
+                </span>
+              </div>
             );
           })}
         </div>

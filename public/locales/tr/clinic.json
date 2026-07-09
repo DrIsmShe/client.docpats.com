@@ -1293,7 +1293,16 @@
       "joinedAt": "Katıldı"
     },
     "quickActions": "Hızlı işlemler",
-    "comingSoon": "Daha fazla özellik gelecek sürümlerde kullanıma sunulacak."
+    "comingSoon": "Daha fazla özellik gelecek sürümlerde kullanıma sunulacak.",
+    "actions": {
+      "schedule": "Takvim",
+      "patients": "Hastalar",
+      "departments": "Bölümler",
+      "rooms": "Odalar",
+      "equipment": "Ekipman",
+      "announcements": "Duyurular",
+      "knowledge": "Bilgi Bankası"
+    }
   },
   "schedule": {
     "title": "Doktor takvimi",
@@ -1380,7 +1389,14 @@
       "4": "Per",
       "5": "Cum",
       "6": "Cmt"
-    }
+    },
+    "pickerTitle": "Doktor takvimleri",
+    "pickerSubtitle": "Takvimini yönetmek için bir doktor seçin",
+    "pickerSearch": "Doktor ara...",
+    "pickerEmpty": "Doktor bulunamadı",
+    "backToDashboard": "← Panel",
+    "openSchedule": "Takvim",
+    "openQueue": "Gün kuyruğu"
   },
   "rooms": {
     "back": "← Panel",

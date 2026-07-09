@@ -1,31 +1,31 @@
 // client/src/pages/clinic/ClinicCalendarPage/ClinicCalendarPage.jsx
 //
-// Doctor's day calendar — the daily booking workbench for the clinic.
+// Doctor's day calendar вЂ” the daily booking workbench for the clinic.
 //
 // Route: /clinic/staff/:doctorId/calendar
 //
 // Layout per day (two sections):
 //
-//   Main timeline — chronological list of the doctor's working time:
-//     (a) FREE slot    → "Book" button → BookAppointmentModal
-//     (b) ACTIVE appt  (scheduled | checked_in) → patient card + inline
-//                       lifecycle buttons + click → AppointmentDetailModal
+//   Main timeline вЂ” chronological list of the doctor's working time:
+//     (a) FREE slot    в†’ "Book" button в†’ BookAppointmentModal
+//     (b) ACTIVE appt  (scheduled | checked_in) в†’ patient card + inline
+//                       lifecycle buttons + click в†’ AppointmentDetailModal
 //
-//   Day archive (collapsible, only if non-empty) — terminal appts
+//   Day archive (collapsible, only if non-empty) вЂ” terminal appts
 //     (completed | cancelled | no_show), separated so they don't
 //     visually intermix with bookable free slots.
 //
 // PAST-DATE GUARDS (added 17 May 2026):
 //   The calendar lets you navigate to any past day, but the FSM there
 //   behaves differently:
-//     - Free slot in the past   → no Book button. Shows "Past" label
+//     - Free slot in the past   в†’ no Book button. Shows "Past" label
 //                                  with a dimmed style.
-//     - Active appt in the past → flagged as overdue (doctor never
+//     - Active appt in the past в†’ flagged as overdue (doctor never
 //                                  closed it on the day). Only the
 //                                  "closing" lifecycle buttons stay
 //                                  visible:
-//                                    scheduled  → Complete + No-show
-//                                    checked_in → Complete
+//                                    scheduled  в†’ Complete + No-show
+//                                    checked_in в†’ Complete
 //                                  Arrived/Cancel are removed: Arrived
 //                                  doesn't make sense yesterday; Cancel
 //                                  for past visits should go through
@@ -34,11 +34,11 @@
 //   Backend FSM stays unchanged (ALLOWED_TRANSITIONS already permits
 //   these transitions at any time); this is a UI guard only.
 //
-//   Today and the future behave as before — all buttons available.
+//   Today and the future behave as before вЂ” all buttons available.
 //
-// CSS NOTE — three new classes for past-date dimming:
-//   .ccal-row-past         (free .ccal-row in the past — dimmed, no Book)
-//   .ccal-row-overdue      (booked .ccal-row in the past — accent border)
+// CSS NOTE вЂ” three new classes for past-date dimming:
+//   .ccal-row-past         (free .ccal-row in the past вЂ” dimmed, no Book)
+//   .ccal-row-overdue      (booked .ccal-row in the past вЂ” accent border)
 //   .ccal-past-label       ("Past" text replacing the Book button)
 //   .ccal-overdue-badge    ("Overdue" badge next to patient name)
 //   .ccal-msg-past         (the banner above the timeline on past days)
@@ -70,6 +70,7 @@ import {
   Link,
 } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useClinicZone } from "../../../lib/useClinicZone";
 
 import {
   listStaff,
@@ -81,13 +82,13 @@ import BookAppointmentModal from "./BookAppointmentModal";
 import AppointmentDetailModal from "./AppointmentDetailModal";
 import "./clinicCalendarPage.css";
 
-// ─── Constants ─────────────────────────────────────────────────
+// в”Ђв”Ђв”Ђ Constants в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
 
 const WRITE_ROLES = new Set(["owner", "admin", "receptionist"]);
 const ACTIVE_STATUSES = new Set(["scheduled", "checked_in"]);
 const TERMINAL_STATUSES = new Set(["completed", "cancelled", "no_show"]);
 
-// ─── Helpers ───────────────────────────────────────────────────
+// в”Ђв”Ђв”Ђ Helpers в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
 
 function minutesToHHMM(min) {
   const m = Math.max(0, Math.min(1440, Number(min) || 0));
@@ -112,7 +113,7 @@ function shiftISO(iso, days) {
 }
 
 function formatDateLong(iso, lang) {
-  if (!iso) return "—";
+  if (!iso) return "вЂ”";
   try {
     const d = new Date(iso + "T00:00:00");
     return d.toLocaleDateString(lang || undefined, {
@@ -126,7 +127,7 @@ function formatDateLong(iso, lang) {
   }
 }
 
-// ─── Split + merge helpers ─────────────────────────────────────
+// в”Ђв”Ђв”Ђ Split + merge helpers в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
 
 function splitAppointments(appointments) {
   const active = [];
@@ -169,14 +170,15 @@ function buildArchive(terminalAppointments) {
   );
 }
 
-// ════════════════════════════════════════════════════════════════
+// в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
 //  MAIN COMPONENT
-// ════════════════════════════════════════════════════════════════
+// в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
 
 export default function ClinicCalendarPage() {
   const { doctorId } = useParams();
   const navigate = useNavigate();
   const layoutContext = useOutletContext();
+  const { dashboardPath } = useClinicZone();
   const { t, i18n } = useTranslation("clinic");
 
   const myRole = layoutContext?.role || "member";
@@ -201,7 +203,7 @@ export default function ClinicCalendarPage() {
   const [bookSlot, setBookSlot] = useState(null);
   const [detailId, setDetailId] = useState(null);
 
-  // String compare on YYYY-MM-DD is sound — both sides use toISODate in
+  // String compare on YYYY-MM-DD is sound вЂ” both sides use toISODate in
   // the BROWSER's tz. Recompute on every render so a long-lived tab
   // doesn't get stuck thinking yesterday is "today".
   const isPast = useMemo(() => date < todayISO(), [date]);
@@ -296,7 +298,7 @@ export default function ClinicCalendarPage() {
       setActionError(
         err.response?.data?.error ||
           t("calendar.actionError", {
-            defaultValue: "Action failed — try again",
+            defaultValue: "Action failed вЂ” try again",
           }),
       );
     } finally {
@@ -306,7 +308,7 @@ export default function ClinicCalendarPage() {
 
   function handleBookOpen(slot) {
     if (!canWrite) return;
-    if (isPast) return; // defensive — the Book button is also hidden
+    if (isPast) return; // defensive вЂ” the Book button is also hidden
     setBookSlot(slot);
   }
   function handleBookCreated() {
@@ -332,8 +334,8 @@ export default function ClinicCalendarPage() {
   return (
     <div className="ccal-page">
       <div className="ccal-header">
-        <Link to="/clinic/staff" className="ccal-back">
-          {t("calendar.back", { defaultValue: "← Back to team" })}
+        <Link to={dashboardPath} className="ccal-back">
+          {t("calendar.back", { defaultValue: "в†ђ Back to team" })}
         </Link>
         <h1 className="ccal-title">
           {t("calendar.title", { defaultValue: "Calendar" })}
@@ -348,7 +350,7 @@ export default function ClinicCalendarPage() {
           onClick={goPrev}
           aria-label={t("calendar.prevDay", { defaultValue: "Previous day" })}
         >
-          ◀
+          в—Ђ
         </button>
         <button type="button" className="ccal-btn-secondary" onClick={goToday}>
           {t("calendar.today", { defaultValue: "Today" })}
@@ -359,7 +361,7 @@ export default function ClinicCalendarPage() {
           onClick={goNext}
           aria-label={t("calendar.nextDay", { defaultValue: "Next day" })}
         >
-          ▶
+          в–¶
         </button>
         <input
           type="date"
@@ -372,12 +374,12 @@ export default function ClinicCalendarPage() {
         </div>
       </div>
 
-      {/* Past-date banner — soft signal that this view is read-mostly */}
+      {/* Past-date banner вЂ” soft signal that this view is read-mostly */}
       {isPast && (
         <div className="ccal-msg ccal-msg-past">
           {t("calendar.pastDateBanner", {
             defaultValue:
-              "Past date — booking is disabled. You can still close open appointments.",
+              "Past date вЂ” booking is disabled. You can still close open appointments.",
           })}
         </div>
       )}
@@ -432,7 +434,7 @@ export default function ClinicCalendarPage() {
               }
             }}
           >
-            <span className="ccal-archive-chevron">▶</span>
+            <span className="ccal-archive-chevron">в–¶</span>
             <span>
               {t("calendar.archive.title", {
                 defaultValue: "Day archive",
@@ -475,9 +477,9 @@ export default function ClinicCalendarPage() {
   );
 }
 
-// ════════════════════════════════════════════════════════════════
-//  TimelineRow — one row in the main timeline (free or active appt)
-// ════════════════════════════════════════════════════════════════
+// в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
+//  TimelineRow вЂ” one row in the main timeline (free or active appt)
+// в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
 
 function TimelineRow({
   item,
@@ -489,12 +491,12 @@ function TimelineRow({
   onOpenDetail,
   onQuickStatus,
 }) {
-  const timeRange = `${minutesToHHMM(item.startMinute)}–${minutesToHHMM(
+  const timeRange = `${minutesToHHMM(item.startMinute)}вЂ“${minutesToHHMM(
     item.endMinute,
   )}`;
 
   if (item.kind === "free") {
-    // Past free slot → dim + no Book button, just a "past" label.
+    // Past free slot в†’ dim + no Book button, just a "past" label.
     if (isPast) {
       return (
         <div className="ccal-row ccal-row-free ccal-row-past">
@@ -513,7 +515,7 @@ function TimelineRow({
       );
     }
 
-    // Today / future free slot → Book button (write role only).
+    // Today / future free slot в†’ Book button (write role only).
     return (
       <div className="ccal-row ccal-row-free">
         <div className="ccal-row-time">{timeRange}</div>
@@ -582,12 +584,12 @@ function TimelineRow({
   );
 }
 
-// ════════════════════════════════════════════════════════════════
-//  TerminalRow — one row in the day archive (terminal status only)
-// ════════════════════════════════════════════════════════════════
+// в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
+//  TerminalRow вЂ” one row in the day archive (terminal status only)
+// в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
 
 function TerminalRow({ appt, t, onOpenDetail }) {
-  const timeRange = `${minutesToHHMM(appt.startMinute)}–${minutesToHHMM(
+  const timeRange = `${minutesToHHMM(appt.startMinute)}вЂ“${minutesToHHMM(
     appt.endMinute,
   )}`;
   return (
@@ -627,18 +629,18 @@ function StatusBadge({ status, t }) {
   );
 }
 
-// ─── Quick action buttons per status ───
+// в”Ђв”Ђв”Ђ Quick action buttons per status в”Ђв”Ђв”Ђ
 //
 // Mirrors the backend FSM (ALLOWED_TRANSITIONS):
-//   scheduled   → checked_in, cancelled, no_show
-//   checked_in  → completed, cancelled, no_show
+//   scheduled   в†’ checked_in, cancelled, no_show
+//   checked_in  в†’ completed, cancelled, no_show
 // Terminal statuses have no inline buttons.
 //
 // PAST-DATE behaviour (isPast=true):
-//   - scheduled  → only Complete + No-show
+//   - scheduled  в†’ only Complete + No-show
 //                  (Arrived doesn't make sense yesterday;
 //                   Cancel goes through detail modal with a reason)
-//   - checked_in → only Complete
+//   - checked_in в†’ only Complete
 //                  (close-out for a forgotten visit)
 
 function QuickActions({ status, isPast, isLoading, t, onAction }) {
