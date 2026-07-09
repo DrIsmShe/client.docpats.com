@@ -1,31 +1,31 @@
 // client/src/pages/clinic/ClinicCalendarPage/ClinicCalendarPage.jsx
 //
-// Doctor's day calendar вЂ” the daily booking workbench for the clinic.
+// Doctor's day calendar РІР‚вЂќ the daily booking workbench for the clinic.
 //
 // Route: /clinic/staff/:doctorId/calendar
 //
 // Layout per day (two sections):
 //
-//   Main timeline вЂ” chronological list of the doctor's working time:
-//     (a) FREE slot    в†’ "Book" button в†’ BookAppointmentModal
-//     (b) ACTIVE appt  (scheduled | checked_in) в†’ patient card + inline
-//                       lifecycle buttons + click в†’ AppointmentDetailModal
+//   Main timeline РІР‚вЂќ chronological list of the doctor's working time:
+//     (a) FREE slot    РІвЂ вЂ™ "Book" button РІвЂ вЂ™ BookAppointmentModal
+//     (b) ACTIVE appt  (scheduled | checked_in) РІвЂ вЂ™ patient card + inline
+//                       lifecycle buttons + click РІвЂ вЂ™ AppointmentDetailModal
 //
-//   Day archive (collapsible, only if non-empty) вЂ” terminal appts
+//   Day archive (collapsible, only if non-empty) РІР‚вЂќ terminal appts
 //     (completed | cancelled | no_show), separated so they don't
 //     visually intermix with bookable free slots.
 //
 // PAST-DATE GUARDS (added 17 May 2026):
 //   The calendar lets you navigate to any past day, but the FSM there
 //   behaves differently:
-//     - Free slot in the past   в†’ no Book button. Shows "Past" label
+//     - Free slot in the past   РІвЂ вЂ™ no Book button. Shows "Past" label
 //                                  with a dimmed style.
-//     - Active appt in the past в†’ flagged as overdue (doctor never
+//     - Active appt in the past РІвЂ вЂ™ flagged as overdue (doctor never
 //                                  closed it on the day). Only the
 //                                  "closing" lifecycle buttons stay
 //                                  visible:
-//                                    scheduled  в†’ Complete + No-show
-//                                    checked_in в†’ Complete
+//                                    scheduled  РІвЂ вЂ™ Complete + No-show
+//                                    checked_in РІвЂ вЂ™ Complete
 //                                  Arrived/Cancel are removed: Arrived
 //                                  doesn't make sense yesterday; Cancel
 //                                  for past visits should go through
@@ -34,11 +34,11 @@
 //   Backend FSM stays unchanged (ALLOWED_TRANSITIONS already permits
 //   these transitions at any time); this is a UI guard only.
 //
-//   Today and the future behave as before вЂ” all buttons available.
+//   Today and the future behave as before РІР‚вЂќ all buttons available.
 //
-// CSS NOTE вЂ” three new classes for past-date dimming:
-//   .ccal-row-past         (free .ccal-row in the past вЂ” dimmed, no Book)
-//   .ccal-row-overdue      (booked .ccal-row in the past вЂ” accent border)
+// CSS NOTE РІР‚вЂќ three new classes for past-date dimming:
+//   .ccal-row-past         (free .ccal-row in the past РІР‚вЂќ dimmed, no Book)
+//   .ccal-row-overdue      (booked .ccal-row in the past РІР‚вЂќ accent border)
 //   .ccal-past-label       ("Past" text replacing the Book button)
 //   .ccal-overdue-badge    ("Overdue" badge next to patient name)
 //   .ccal-msg-past         (the banner above the timeline on past days)
@@ -82,13 +82,13 @@ import BookAppointmentModal from "./BookAppointmentModal";
 import AppointmentDetailModal from "./AppointmentDetailModal";
 import "./clinicCalendarPage.css";
 
-// в”Ђв”Ђв”Ђ Constants в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+// РІвЂќР‚РІвЂќР‚РІвЂќР‚ Constants РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚
 
-const WRITE_ROLES = new Set(["owner", "admin", "receptionist"]);
+const WRITE_ROLES = new Set(["owner", "admin", "manager", "receptionist"]);
 const ACTIVE_STATUSES = new Set(["scheduled", "checked_in"]);
 const TERMINAL_STATUSES = new Set(["completed", "cancelled", "no_show"]);
 
-// в”Ђв”Ђв”Ђ Helpers в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+// РІвЂќР‚РІвЂќР‚РІвЂќР‚ Helpers РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚
 
 function minutesToHHMM(min) {
   const m = Math.max(0, Math.min(1440, Number(min) || 0));
@@ -113,7 +113,7 @@ function shiftISO(iso, days) {
 }
 
 function formatDateLong(iso, lang) {
-  if (!iso) return "вЂ”";
+  if (!iso) return "РІР‚вЂќ";
   try {
     const d = new Date(iso + "T00:00:00");
     return d.toLocaleDateString(lang || undefined, {
@@ -127,7 +127,7 @@ function formatDateLong(iso, lang) {
   }
 }
 
-// в”Ђв”Ђв”Ђ Split + merge helpers в”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђв”Ђ
+// РІвЂќР‚РІвЂќР‚РІвЂќР‚ Split + merge helpers РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚РІвЂќР‚
 
 function splitAppointments(appointments) {
   const active = [];
@@ -170,9 +170,9 @@ function buildArchive(terminalAppointments) {
   );
 }
 
-// в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
+// РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’
 //  MAIN COMPONENT
-// в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
+// РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’
 
 export default function ClinicCalendarPage() {
   const { doctorId } = useParams();
@@ -203,7 +203,7 @@ export default function ClinicCalendarPage() {
   const [bookSlot, setBookSlot] = useState(null);
   const [detailId, setDetailId] = useState(null);
 
-  // String compare on YYYY-MM-DD is sound вЂ” both sides use toISODate in
+  // String compare on YYYY-MM-DD is sound РІР‚вЂќ both sides use toISODate in
   // the BROWSER's tz. Recompute on every render so a long-lived tab
   // doesn't get stuck thinking yesterday is "today".
   const isPast = useMemo(() => date < todayISO(), [date]);
@@ -298,7 +298,7 @@ export default function ClinicCalendarPage() {
       setActionError(
         err.response?.data?.error ||
           t("calendar.actionError", {
-            defaultValue: "Action failed вЂ” try again",
+            defaultValue: "Action failed РІР‚вЂќ try again",
           }),
       );
     } finally {
@@ -308,7 +308,7 @@ export default function ClinicCalendarPage() {
 
   function handleBookOpen(slot) {
     if (!canWrite) return;
-    if (isPast) return; // defensive вЂ” the Book button is also hidden
+    if (isPast) return; // defensive РІР‚вЂќ the Book button is also hidden
     setBookSlot(slot);
   }
   function handleBookCreated() {
@@ -335,7 +335,7 @@ export default function ClinicCalendarPage() {
     <div className="ccal-page">
       <div className="ccal-header">
         <Link to={dashboardPath} className="ccal-back">
-          {t("calendar.back", { defaultValue: "в†ђ Back to team" })}
+          {t("calendar.back", { defaultValue: "РІвЂ С’ Back to team" })}
         </Link>
         <h1 className="ccal-title">
           {t("calendar.title", { defaultValue: "Calendar" })}
@@ -350,7 +350,7 @@ export default function ClinicCalendarPage() {
           onClick={goPrev}
           aria-label={t("calendar.prevDay", { defaultValue: "Previous day" })}
         >
-          в—Ђ
+          РІвЂ”Р‚
         </button>
         <button type="button" className="ccal-btn-secondary" onClick={goToday}>
           {t("calendar.today", { defaultValue: "Today" })}
@@ -361,7 +361,7 @@ export default function ClinicCalendarPage() {
           onClick={goNext}
           aria-label={t("calendar.nextDay", { defaultValue: "Next day" })}
         >
-          в–¶
+          РІвЂ“В¶
         </button>
         <input
           type="date"
@@ -374,12 +374,12 @@ export default function ClinicCalendarPage() {
         </div>
       </div>
 
-      {/* Past-date banner вЂ” soft signal that this view is read-mostly */}
+      {/* Past-date banner РІР‚вЂќ soft signal that this view is read-mostly */}
       {isPast && (
         <div className="ccal-msg ccal-msg-past">
           {t("calendar.pastDateBanner", {
             defaultValue:
-              "Past date вЂ” booking is disabled. You can still close open appointments.",
+              "Past date РІР‚вЂќ booking is disabled. You can still close open appointments.",
           })}
         </div>
       )}
@@ -434,7 +434,7 @@ export default function ClinicCalendarPage() {
               }
             }}
           >
-            <span className="ccal-archive-chevron">в–¶</span>
+            <span className="ccal-archive-chevron">РІвЂ“В¶</span>
             <span>
               {t("calendar.archive.title", {
                 defaultValue: "Day archive",
@@ -477,9 +477,9 @@ export default function ClinicCalendarPage() {
   );
 }
 
-// в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
-//  TimelineRow вЂ” one row in the main timeline (free or active appt)
-// в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
+// РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’
+//  TimelineRow РІР‚вЂќ one row in the main timeline (free or active appt)
+// РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’
 
 function TimelineRow({
   item,
@@ -491,12 +491,12 @@ function TimelineRow({
   onOpenDetail,
   onQuickStatus,
 }) {
-  const timeRange = `${minutesToHHMM(item.startMinute)}вЂ“${minutesToHHMM(
+  const timeRange = `${minutesToHHMM(item.startMinute)}РІР‚вЂњ${minutesToHHMM(
     item.endMinute,
   )}`;
 
   if (item.kind === "free") {
-    // Past free slot в†’ dim + no Book button, just a "past" label.
+    // Past free slot РІвЂ вЂ™ dim + no Book button, just a "past" label.
     if (isPast) {
       return (
         <div className="ccal-row ccal-row-free ccal-row-past">
@@ -515,7 +515,7 @@ function TimelineRow({
       );
     }
 
-    // Today / future free slot в†’ Book button (write role only).
+    // Today / future free slot РІвЂ вЂ™ Book button (write role only).
     return (
       <div className="ccal-row ccal-row-free">
         <div className="ccal-row-time">{timeRange}</div>
@@ -584,12 +584,12 @@ function TimelineRow({
   );
 }
 
-// в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
-//  TerminalRow вЂ” one row in the day archive (terminal status only)
-// в•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђв•ђ
+// РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’
+//  TerminalRow РІР‚вЂќ one row in the day archive (terminal status only)
+// РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’РІвЂўС’
 
 function TerminalRow({ appt, t, onOpenDetail }) {
-  const timeRange = `${minutesToHHMM(appt.startMinute)}вЂ“${minutesToHHMM(
+  const timeRange = `${minutesToHHMM(appt.startMinute)}РІР‚вЂњ${minutesToHHMM(
     appt.endMinute,
   )}`;
   return (
@@ -629,18 +629,18 @@ function StatusBadge({ status, t }) {
   );
 }
 
-// в”Ђв”Ђв”Ђ Quick action buttons per status в”Ђв”Ђв”Ђ
+// РІвЂќР‚РІвЂќР‚РІвЂќР‚ Quick action buttons per status РІвЂќР‚РІвЂќР‚РІвЂќР‚
 //
 // Mirrors the backend FSM (ALLOWED_TRANSITIONS):
-//   scheduled   в†’ checked_in, cancelled, no_show
-//   checked_in  в†’ completed, cancelled, no_show
+//   scheduled   РІвЂ вЂ™ checked_in, cancelled, no_show
+//   checked_in  РІвЂ вЂ™ completed, cancelled, no_show
 // Terminal statuses have no inline buttons.
 //
 // PAST-DATE behaviour (isPast=true):
-//   - scheduled  в†’ only Complete + No-show
+//   - scheduled  РІвЂ вЂ™ only Complete + No-show
 //                  (Arrived doesn't make sense yesterday;
 //                   Cancel goes through detail modal with a reason)
-//   - checked_in в†’ only Complete
+//   - checked_in РІвЂ вЂ™ only Complete
 //                  (close-out for a forgotten visit)
 
 function QuickActions({ status, isPast, isLoading, t, onAction }) {
