@@ -167,11 +167,10 @@ const QUICK_ACTIONS = [
     Icon: BarChart3,
     res: "analytics",
     act: "read",
-    soon: true,
-    to: null,
-    labelKey: "employeeDashboard.actions.analyticsSoon",
-    labelDefault:
-      "\u0410\u043D\u0430\u043B\u0438\u0442\u0438\u043A\u0430 (\u0441\u043A\u043E\u0440\u043E)",
+    soon: false,
+    to: "/clinic/employee/analytics",
+    labelKey: "employeeDashboard.actions.analytics",
+    labelDefault: "\u0410\u043D\u0430\u043B\u0438\u0442\u0438\u043A\u0430",
   },
   {
     key: "leads",

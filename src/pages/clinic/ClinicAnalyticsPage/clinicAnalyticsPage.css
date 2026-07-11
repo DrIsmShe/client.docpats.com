@@ -1,0 +1,173 @@
+/* client/src/pages/clinic/ClinicAnalyticsPage/clinicAnalyticsPage.css */
+
+.an-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+
+/* Header */
+.an-page-header {
+  margin-bottom: 20px;
+}
+.an-page-back {
+  display: inline-block;
+  font-size: 13px;
+  color: #64748b;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+.an-page-back:hover {
+  color: #3d7fff;
+}
+.an-page-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px;
+}
+.an-page-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Period selector */
+.an-range-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.an-range-btn {
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+  background: #f1f5f9;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.an-range-btn:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+.an-range-btn.is-active {
+  background: #3d7fff;
+  color: #fff;
+}
+.an-range-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Metric cards */
+.an-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.an-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.an-card-num {
+  font-size: 32px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+  margin-bottom: 6px;
+}
+.an-card-label {
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* Sections + charts */
+.an-section {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.an-section h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 16px;
+}
+.an-chart {
+  width: 100%;
+}
+.an-empty {
+  padding: 32px 0;
+  text-align: center;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+/* Loading */
+.an-page-loading {
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+}
+.an-page-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #3d7fff;
+  border-radius: 50%;
+  animation: an-spin 0.8s linear infinite;
+}
+@keyframes an-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error / no-access */
+.an-page-error {
+  background: #fff;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 28px;
+  text-align: center;
+}
+.an-page-error h2 {
+  font-size: 18px;
+  color: #b91c1c;
+  margin: 0 0 8px;
+}
+.an-page-error p {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0 0 16px;
+}
+.an-page-error button,
+.an-page-error a {
+  display: inline-block;
+  padding: 8px 18px;
+  font-size: 14px;
+  color: #fff;
+  background: #3d7fff;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .an-cards {
+    grid-template-columns: 1fr;
+  }
+  .an-page-header h1 {
+    font-size: 22px;
+  }
+}

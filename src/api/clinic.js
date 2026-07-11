@@ -2652,3 +2652,18 @@ export const deleteClinic = async (clinicId, confirmationName) => {
   });
   return res.data;
 };
+
+/**
+ * GET /api/v1/clinic/analytics/overview?range=<preset>
+ * Read-only clinic analytics for the manager/owner/admin (RBAC: analytics.read).
+ * `range` is one of: day | week | month | half_year | year | three_years |
+ * five_years | all. Omit for the backend default ("month").
+ * Returns { overview: { range, appointments, noShow, doctorLoad, dailyTrend,
+ * newPatients, generatedAt } }.
+ */
+export const getAnalyticsOverview = async (range) => {
+  const res = await axios.get("/api/v1/clinic/analytics/overview", {
+    params: range ? { range } : {},
+  });
+  return res.data;
+};
