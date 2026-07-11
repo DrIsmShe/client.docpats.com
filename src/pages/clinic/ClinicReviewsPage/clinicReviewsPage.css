@@ -1,0 +1,235 @@
+/* client/src/pages/clinic/ClinicReviewsPage/clinicReviewsPage.css */
+
+.rev-page {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+
+/* Header */
+.rev-page-header {
+  margin-bottom: 20px;
+}
+.rev-page-back {
+  display: inline-block;
+  font-size: 13px;
+  color: #64748b;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+.rev-page-back:hover {
+  color: #3d7fff;
+}
+.rev-page-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px;
+}
+.rev-page-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Status tabs */
+.rev-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.rev-tab {
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #475569;
+  background: #f1f5f9;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.rev-tab:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+.rev-tab.is-active {
+  background: #3d7fff;
+  color: #fff;
+}
+.rev-tab:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* List */
+.rev-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Card */
+.rev-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.rev-card.status-pending {
+  border-left: 4px solid #f59e0b;
+}
+.rev-card.status-approved {
+  border-left: 4px solid #22c55e;
+}
+.rev-card.status-rejected {
+  border-left: 4px solid #ef4444;
+}
+
+.rev-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* Stars */
+.rev-stars {
+  font-size: 18px;
+  color: #f59e0b;
+  letter-spacing: 1px;
+}
+.rev-stars-empty {
+  color: #d1d5db;
+}
+
+/* Status badge */
+.rev-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.rev-badge.badge-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+.rev-badge.badge-approved {
+  background: #dcfce7;
+  color: #166534;
+}
+.rev-badge.badge-rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Text */
+.rev-text {
+  font-size: 14px;
+  color: #1e293b;
+  line-height: 1.6;
+  margin: 0 0 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.rev-text-empty {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.rev-card-meta {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 8px;
+}
+
+.rev-mod-note {
+  font-size: 13px;
+  color: #64748b;
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+}
+
+/* Actions */
+.rev-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+.rev-btn {
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.rev-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.rev-btn-approve {
+  background: #22c55e;
+  color: #fff;
+}
+.rev-btn-approve:hover:not(:disabled) {
+  background: #16a34a;
+}
+.rev-btn-reject {
+  background: #fff;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+.rev-btn-reject:hover:not(:disabled) {
+  background: #fef2f2;
+}
+
+/* States */
+.rev-loading {
+  display: flex;
+  justify-content: center;
+  padding: 64px 0;
+}
+.rev-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #3d7fff;
+  border-radius: 50%;
+  animation: rev-spin 0.8s linear infinite;
+}
+@keyframes rev-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.rev-empty {
+  padding: 48px 0;
+  text-align: center;
+  font-size: 14px;
+  color: #94a3b8;
+}
+.rev-error {
+  background: #fff;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+.rev-error p {
+  color: #b91c1c;
+  margin: 0 0 14px;
+}
+.rev-error button {
+  padding: 8px 18px;
+  font-size: 14px;
+  color: #fff;
+  background: #3d7fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

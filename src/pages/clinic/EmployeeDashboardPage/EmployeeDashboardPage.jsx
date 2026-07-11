@@ -156,11 +156,10 @@ const QUICK_ACTIONS = [
     Icon: Star,
     res: "review",
     act: "read",
-    soon: true,
-    to: null,
-    labelKey: "employeeDashboard.actions.reviewsSoon",
-    labelDefault:
-      "\u041E\u0442\u0437\u044B\u0432\u044B (\u0441\u043A\u043E\u0440\u043E)",
+    soon: false,
+    to: "/clinic/employee/reviews",
+    labelKey: "employeeDashboard.actions.reviews",
+    labelDefault: "\u041E\u0442\u0437\u044B\u0432\u044B",
   },
   {
     key: "analytics",
