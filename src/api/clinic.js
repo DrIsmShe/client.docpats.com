@@ -2667,3 +2667,52 @@ export const getAnalyticsOverview = async (range) => {
   });
   return res.data;
 };
+
+// ═══════════════════════════════════════════════════════════════════════════
+//  LEADS (clinic contact requests) — clinic-leads module
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Public submit (vitrina contact form) + private manager inbox.
+//   POST  /api/v1/public/clinics/:slug/leads   submit (no auth)
+//   GET   /api/v1/clinic/leads?status=&limit=&skip=   list (manager)
+//   PATCH /api/v1/clinic/leads/:leadId   update status (manager)
+
+/**
+ * POST /api/v1/public/clinics/:slug/leads
+ * Public — a visitor leaves a contact request on the clinic's vitrina.
+ * @param {string} slug
+ * @param {object} payload { name, phone, message?, type? }  type: callback|message
+ * Returns { ok, leadId, status }.
+ */
+export const submitLead = async (slug, payload) => {
+  const res = await axios.post(
+    `/api/v1/public/clinics/${encodeURIComponent(slug)}/leads`,
+    payload,
+  );
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/leads?status=&limit=&skip=
+ * Manager inbox. status: new|in_progress|closed (omit for all).
+ * Returns { leads, total }.
+ */
+export const listLeads = async (opts = {}) => {
+  const params = {};
+  if (opts.status) params.status = opts.status;
+  if (opts.limit != null) params.limit = opts.limit;
+  if (opts.skip != null) params.skip = opts.skip;
+  const res = await axios.get("/api/v1/clinic/leads", { params });
+  return res.data; // { leads, total }
+};
+
+/**
+ * PATCH /api/v1/clinic/leads/:leadId
+ * @param {string} leadId
+ * @param {object} payload { status, note? }  status: new|in_progress|closed
+ * Returns { lead }.
+ */
+export const updateLeadStatus = async (leadId, payload) => {
+  const res = await axios.patch(`/api/v1/clinic/leads/${leadId}`, payload);
+  return res.data;
+};

@@ -176,11 +176,10 @@ const QUICK_ACTIONS = [
     Icon: Inbox,
     res: "lead",
     act: "read",
-    soon: true,
-    to: null,
-    labelKey: "employeeDashboard.actions.leadsSoon",
-    labelDefault:
-      "\u041E\u0431\u0440\u0430\u0449\u0435\u043D\u0438\u044F (\u0441\u043A\u043E\u0440\u043E)",
+    soon: false,
+    to: "/clinic/employee/leads",
+    labelKey: "employeeDashboard.actions.leads",
+    labelDefault: "\u041E\u0431\u0440\u0430\u0449\u0435\u043D\u0438\u044F",
   },
 ];
 
