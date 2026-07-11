@@ -35,3 +35,7 @@ Thumbs.db
 
 # Misc
 client.docpats.com/
+
+# local-only HTML reports (never deploy to prod build)
+public/security-audit.html
+public/chat-review.html
