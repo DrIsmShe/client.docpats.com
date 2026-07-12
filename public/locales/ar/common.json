@@ -1172,6 +1172,18 @@
     "loading": "جارٍ التحميل..."
   },
   "publicClinic": {
+    "leadFormTitle": "اترك طلبًا — سنتواصل معك",
+    "leadCallback": "اتصلوا بي",
+    "leadMessage": "اكتب رسالة",
+    "leadName": "اسمك",
+    "leadPhone": "الهاتف",
+    "leadMsg": "رسالتك",
+    "leadSubmit": "إرسال",
+    "leadSending": "جارٍ الإرسال…",
+    "leadSuccess": "تم إرسال الطلب. سنتواصل معك قريبًا.",
+    "leadSuccessMore": "إرسال طلب آخر",
+    "leadValidation": "يرجى إدخال الاسم ورقم الهاتف.",
+    "leadError": "تعذّر الإرسال. حاول مرة أخرى لاحقًا.",
     "loading": "جارٍ التحميل…",
     "notFoundTitle": "لم يتم العثور على العيادة",
     "notFoundText": "قد لا تكون الصفحة منشورة بعد، أو أن العنوان غير صحيح.",

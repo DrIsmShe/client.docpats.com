@@ -129,6 +129,9 @@
     "isoDesc": "إدارة أمن المعلومات"
   },
   "footer": {
+    "aiConsult": "استشارة بالذكاء الاصطناعي",
+    "about": "هيئة التحرير",
+    "staffLogin": "دخول العيادات",
     "copyright": "DocPats MedConnect · جميع الحقوق محفوظة",
     "terms": "الشروط",
     "privacy": "الخصوصية",

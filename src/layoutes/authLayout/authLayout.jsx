@@ -1767,6 +1767,7 @@ export default function AuthLayout() {
             </motion.div>
 
             {/* ══ FOOTER ══ */}
+            {/* ══ FOOTER ══ */}
             <footer className="dp-footer">
               <a className="dp-footer-logo" href="/">
                 <div className="dp-footer-logo-name">
@@ -1774,7 +1775,7 @@ export default function AuthLayout() {
                 </div>
               </a>
               <div className="dp-footer-links">
-                <a className="dp-footer-link" href="/public/consultation">
+                <a className="dp-footer-link" href="/consultation">
                   {t("footer.aiConsult") || "AI Консультация"}
                 </a>
                 <a className="dp-footer-link" href="/terms-consent-page">
@@ -1790,8 +1791,11 @@ export default function AuthLayout() {
                   {t("footer.contact") || "Contact"}
                 </a>
                 <a className="dp-footer-link" href="/public/about">
-                  О редакции|| "О редакции"
+                  {t("footer.about") || "О редакции"}
                 </a>
+                <Link className="dp-footer-link" to="/clinic/staff-login">
+                  {t("footer.staffLogin") || "Вход для клиник"}
+                </Link>
               </div>
               <div className="dp-footer-copy">
                 © {new Date().getFullYear()}{" "}

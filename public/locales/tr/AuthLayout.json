@@ -129,6 +129,9 @@
     "isoDesc": "Bilgi güvenliği yönetimi"
   },
   "footer": {
+    "aiConsult": "AI Konsültasyon",
+    "about": "Editör",
+    "staffLogin": "Klinik Girişi",
     "copyright": "DocPats MedConnect · Tüm hakları saklıdır",
     "terms": "Şartlar",
     "privacy": "Gizlilik",

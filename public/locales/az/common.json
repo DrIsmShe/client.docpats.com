@@ -1268,6 +1268,18 @@
     "loading": "Yüklənir..."
   },
   "publicClinic": {
+    "leadFormTitle": "Müraciət qoyun — sizinlə əlaqə saxlayacağıq",
+    "leadCallback": "Mənə zəng edin",
+    "leadMessage": "Mesaj yazın",
+    "leadName": "Adınız",
+    "leadPhone": "Telefon",
+    "leadMsg": "Mesajınız",
+    "leadSubmit": "Göndər",
+    "leadSending": "Göndərilir…",
+    "leadSuccess": "Müraciət göndərildi. Tezliklə sizinlə əlaqə saxlayacağıq.",
+    "leadSuccessMore": "Başqa müraciət qoy",
+    "leadValidation": "Zəhmət olmasa ad və telefon nömrəsi daxil edin.",
+    "leadError": "Göndərmək mümkün olmadı. Zəhmət olmasa sonra yenidən cəhd edin.",
     "loading": "Yüklənir…",
     "notFoundTitle": "Klinika tapılmadı",
     "notFoundText": "Səhifə hələ dərc olunmaya bilər və ya ünvan səhv daxil edilib.",

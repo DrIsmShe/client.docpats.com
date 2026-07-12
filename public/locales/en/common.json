@@ -1162,6 +1162,18 @@
     "loading": "Loading..."
   },
   "publicClinic": {
+    "leadFormTitle": "Leave a request — we'll get in touch",
+    "leadCallback": "Call me back",
+    "leadMessage": "Write a message",
+    "leadName": "Your name",
+    "leadPhone": "Phone",
+    "leadMsg": "Your message",
+    "leadSubmit": "Send",
+    "leadSending": "Sending…",
+    "leadSuccess": "Request sent. We'll contact you soon.",
+    "leadSuccessMore": "Send another request",
+    "leadValidation": "Please provide a name and phone number.",
+    "leadError": "Could not send. Please try again later.",
     "loading": "Loading…",
     "notFoundTitle": "Clinic not found",
     "notFoundText": "The page may not be published yet, or the address is incorrect.",

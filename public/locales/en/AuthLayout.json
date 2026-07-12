@@ -129,6 +129,9 @@
     "isoDesc": "Info security mgmt"
   },
   "footer": {
+    "aiConsult": "AI Consultation",
+    "about": "Editorial",
+    "staffLogin": "Clinic Login",
     "copyright": "DocPats MedConnect · All rights reserved",
     "terms": "Terms",
     "privacy": "Privacy",

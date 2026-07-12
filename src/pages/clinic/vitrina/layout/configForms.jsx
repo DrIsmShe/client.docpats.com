@@ -1051,7 +1051,45 @@ function CategoryGalleryForm({ config, onChange }) {
     </div>
   );
 }
+// Контакты: фон + форма заявки (лид) + настройки отдельной страницы.
+function ContactsForm({ config, onChange, clinic }) {
+  const { t } = useTranslation("clinic");
+  const hasPage = Boolean(SECTION_BY_TYPE.contacts);
+  const showLead = config.showLeadForm !== false;
+  return (
+    <div className="vt-cf">
+      <BgField config={config} onChange={onChange} t={t} />
 
+      <LabeledCheckbox
+        label={t("publicPage.cfgShowLeadForm", {
+          defaultValue: "Показывать форму заявки",
+        })}
+        checked={showLead}
+        onChange={(v) => onChange({ ...config, showLeadForm: v })}
+      />
+      {showLead && (
+        <LabeledInput
+          label={t("publicPage.cfgLeadFormTitle", {
+            defaultValue: "Заголовок формы заявки",
+          })}
+          value={config.leadFormTitle}
+          onChange={(v) => onChange({ ...config, leadFormTitle: v })}
+          placeholder="Оставьте заявку — мы перезвоним"
+        />
+      )}
+
+      {hasPage && (
+        <PageSettingsField
+          config={config}
+          onChange={onChange}
+          t={t}
+          sectionType="contacts"
+          clinic={clinic}
+        />
+      )}
+    </div>
+  );
+}
 export const CONFIG_FORMS = {
   hero: HeroForm,
   stats: StatsForm,
@@ -1066,7 +1104,7 @@ export const CONFIG_FORMS = {
   reviews: BgOnlyForm,
   gallery: BgOnlyForm,
   publications: BgOnlyForm,
-  contacts: BgOnlyForm,
+  contacts: ContactsForm,
   categoryArticles: CategoryArticlesForm,
   categoryGallery: CategoryGalleryForm,
   parentCategoryArticles: CategoryArticlesForm,

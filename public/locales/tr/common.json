@@ -1186,6 +1186,18 @@
     "loading": "Yükleniyor..."
   },
   "publicClinic": {
+    "leadFormTitle": "Talep bırakın — sizinle iletişime geçelim",
+    "leadCallback": "Beni arayın",
+    "leadMessage": "Mesaj yazın",
+    "leadName": "Adınız",
+    "leadPhone": "Telefon",
+    "leadMsg": "Mesajınız",
+    "leadSubmit": "Gönder",
+    "leadSending": "Gönderiliyor…",
+    "leadSuccess": "Talep gönderildi. Kısa süre içinde sizinle iletişime geçeceğiz.",
+    "leadSuccessMore": "Başka bir talep bırak",
+    "leadValidation": "Lütfen ad ve telefon numarası girin.",
+    "leadError": "Gönderilemedi. Lütfen daha sonra tekrar deneyin.",
     "loading": "Yükleniyor…",
     "notFoundTitle": "Klinik bulunamadı",
     "notFoundText": "Sayfa henüz yayınlanmamış olabilir veya adres yanlış girilmiş olabilir.",
