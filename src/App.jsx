@@ -661,24 +661,6 @@ function App() {
                 element={<ClinicKnowledgeArticlePage />}
               />
               {/* ── PHARMACY (pharmacist) ── */}
-              <Route path="pharmacy" element={<PharmacyCatalogPage />} />
-
-              <Route
-                path="pharmacy/requisitions"
-                element={<PharmacyRequisitionsPage />}
-              />
-              <Route
-                path="pharmacy/dispense"
-                element={<PharmacyDispensePage />}
-              />
-              <Route
-                path="pharmacy/reports"
-                element={<PharmacyReportsPage />}
-              />
-              <Route
-                path="pharmacy/suppliers"
-                element={<PharmacySuppliersPage />}
-              />
 
               <Route
                 path="staff/:doctorId/schedule"
@@ -705,6 +687,24 @@ function App() {
               <Route
                 path="patients/:id"
                 element={<ClinicPatientDetailPage />}
+              />
+              <Route path="pharmacy" element={<PharmacyCatalogPage />} />
+
+              <Route
+                path="pharmacy/requisitions"
+                element={<PharmacyRequisitionsPage />}
+              />
+              <Route
+                path="pharmacy/dispense"
+                element={<PharmacyDispensePage />}
+              />
+              <Route
+                path="pharmacy/reports"
+                element={<PharmacyReportsPage />}
+              />
+              <Route
+                path="pharmacy/suppliers"
+                element={<PharmacySuppliersPage />}
               />
               <Route path="staff" element={<ClinicStaffPage />} />
               <Route path="departments" element={<ClinicDepartmentsPage />} />
