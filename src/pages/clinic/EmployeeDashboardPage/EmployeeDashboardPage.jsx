@@ -23,7 +23,7 @@ import {
   User,
   Hospital,
   Award,
-  UserCog
+  UserCog,
 } from "lucide-react";
 import { useClinicPermissions } from "../../../lib/can";
 import "./employeeDashboardPage.css";
@@ -52,7 +52,8 @@ const QUICK_ACTIONS = [
     soon: false,
     to: "/clinic/employee/patients",
     labelKey: "employeeDashboard.actions.patients",
-    labelDefault: "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435",
+    labelDefault:
+      "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435",
   },
   {
     key: "staff",
@@ -62,7 +63,8 @@ const QUICK_ACTIONS = [
     soon: false,
     to: "/clinic/employee/staff",
     labelKey: "employeeDashboard.actions.staff",
-    labelDefault: "\u0421\u043E\u0442\u0440\u0443\u0434\u043D\u0438\u043A\u0438",
+    labelDefault:
+      "\u0421\u043E\u0442\u0440\u0443\u0434\u043D\u0438\u043A\u0438",
   },
   {
     key: "departments",
@@ -122,11 +124,10 @@ const QUICK_ACTIONS = [
     Icon: Pill,
     res: "pharmacy",
     act: "read",
-    soon: true,
-    to: null,
-    labelKey: "employeeDashboard.actions.pharmacySoon",
-    labelDefault:
-      "\u0410\u043F\u0442\u0435\u043A\u0430 (\u0441\u043A\u043E\u0440\u043E)",
+    soon: false,
+    to: "/clinic/employee/pharmacy",
+    labelKey: "employeeDashboard.actions.pharmacy",
+    labelDefault: "\u0410\u043F\u0442\u0435\u043A\u0430",
   },
   // marketing / public site
   {
