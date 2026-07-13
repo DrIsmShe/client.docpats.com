@@ -1,15 +1,25 @@
 // client/src/pages/clinic/ClinicCustomPagesPage/ClinicCustomPagesPage.jsx
 //
 // ВИТРИНА 2.0 (Часть 2, Этап 4 + Часть 3, Этап 5) — управление кастомными
-// страницами сайта + статьями категорий.
+// страницами сайта + статьями категорий («Публикации»).
 //
-// Список страниц клиники (создать / опубликовать-снять / удалить) + редактор
-// выбранной страницы через PageLayoutEditor (конструктор блоков). У каждой
-// страницы кнопка «Статьи» → панель ClinicArticlesPanel (CRUD статей категории).
+// DUAL-MODE:
+//   • OWNER-зона (/clinic/pages): источник clinic — getClinicMe();
+//     canWrite = owner/admin/clinic.write.
+//   • EMPLOYEE-зона (/clinic/employee/marketing, роль marketer): clinic из
+//     useOutletContext(); canWrite = can("site_builder","write") ИЛИ
+//     can("marketing","write"). getClinicMe НЕ вызывается (это owner-endpoint,
+//     userId-first — маркетолога он не пустит).
 //
-// Данные клиники (getClinicMe) нужны для темы превью + прав (canWrite).
+// ⚠ BACKEND: CRUD кастомных страниц (create/update/publish/delete) должен
+// пускать marketer по site_builder/marketing — проверить гейт в контроллере
+// customPage (аналогично clinic.controller.js SITE_BUILDER_FIELDS). Если гейт
+// на clinic.write / article — маркетолог получит 403 на создании/правке.
+//
+// Данные клиники нужны для темы превью + прав (canWrite).
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   getClinicMe,
@@ -20,6 +30,7 @@ import {
   publishCustomPage,
   deleteCustomPage,
 } from "../../../api/clinic";
+import { useClinicPermissions } from "../../../lib/can";
 import PageLayoutEditor from "../vitrina/layout/PageLayoutEditor.jsx";
 import ClinicArticlesPanel from "./ClinicArticlesPanel.jsx";
 import ClinicGalleryPanel from "./ClinicGalleryPanel.jsx";
@@ -61,6 +72,11 @@ const CSS = `
 export default function ClinicCustomPagesPage() {
   const { t } = useTranslation("clinic");
 
+  // Режим: employee-зона (marketer) vs owner-зона.
+  const ctx = useOutletContext();
+  const isEmployee = ctx?.kind === "employee";
+  const { can } = useClinicPermissions();
+
   const [clinic, setClinic] = useState(null);
   const [canWrite, setCanWrite] = useState(false);
   const [pages, setPages] = useState([]);
@@ -84,29 +100,58 @@ export default function ClinicCustomPagesPage() {
   useEffect(() => {
     let alive = true;
     setLoading(true);
-    Promise.all([getClinicMe(), listCustomPages()])
-      .then(([me, list]) => {
+
+    (async () => {
+      try {
+        let c;
+        let writable;
+
+        if (isEmployee) {
+          // EMPLOYEE (marketer): clinic из outlet-контекста.
+          const src = ctx?.clinic;
+          c = src ? { ...src } : null;
+          if (c && !c.id && c._id) c.id = String(c._id);
+          // Публикации/страницы — домен site_builder/marketing. Маркетолог
+          // имеет оба FULL; достаточно любого write.
+          writable = can("site_builder", "write") || can("marketing", "write");
+
+          const list = await listCustomPages();
+          if (!alive) return;
+          setClinic(c);
+          setCanWrite(writable);
+          setPages(list.items || []);
+          setLoading(false);
+          return;
+        }
+
+        // OWNER/ADMIN.
+        const [me, list] = await Promise.all([
+          getClinicMe(),
+          listCustomPages(),
+        ]);
         if (!alive) return;
         setClinic(me?.clinic || null);
         setCanWrite(
-          Boolean(me?.permissions?.includes?.("clinic.write")) ||
+          me?.permissions?.clinic?.write === true ||
             me?.role === "owner" ||
             me?.role === "admin",
         );
         setPages(list.items || []);
         setLoading(false);
-      })
-      .catch(() => {
+      } catch {
         if (!alive) return;
         setError(
           t("publicPage.loadError", { defaultValue: "Ошибка загрузки." }),
         );
         setLoading(false);
-      });
+      }
+    })();
+
     return () => {
       alive = false;
     };
-  }, [t]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEmployee]);
 
   // сменить родителя категории ("" → открепить, сделать корневой)
   const handleChangeParent = async (page, parentId) => {

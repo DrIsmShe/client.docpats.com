@@ -681,6 +681,8 @@ function App() {
               path="/clinic/employee"
               element={<ClinicLayout employeeMode={true} />}
             >
+              <Route path="vitrina" element={<ClinicPublicPageSettings />} />
+              <Route path="marketing" element={<ClinicCustomPagesPage />} />
               <Route index element={<EmployeeDashboardPage />} />
               <Route path="patients" element={<ClinicPatientsPage />} />
               <Route path="patients/new" element={<NewPatientPage />} />

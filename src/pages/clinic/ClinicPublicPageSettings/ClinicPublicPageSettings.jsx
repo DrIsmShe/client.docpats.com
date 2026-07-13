@@ -1,16 +1,30 @@
 // client/src/pages/clinic/ClinicPublicPageSettings/ClinicPublicPageSettings.jsx
 //
-// Clinic-as-Brand (этапы A+B+C) — раздел «Публичная страница» в clinic-настройках.
-// Владелец/админ: описание, публикация, логотип, галерея (B), модерация отзывов (C).
+// Clinic-as-Brand (этапы A+B+C) — раздел «Публичная страница» / витрина.
+//
+// DUAL-MODE:
+//   • OWNER-зона (/clinic/public-page): источник данных — getClinicMe();
+//     canWrite = owner/admin/clinic.write. Виден блок удаления клиники,
+//     ссылки ведут в owner-зону (/clinic/pages, /clinic/dashboard).
+//   • EMPLOYEE-зона (/clinic/employee/vitrina, роль marketer): источник данных
+//     — useOutletContext().clinic (толстый DTO из employeeAuth); canWrite =
+//     can("site_builder","write"). Блок удаления скрыт, ссылки ведут в
+//     employee-зону. Модерация отзывов гейтится отдельным правом review.write.
+//
+// Режим определяется по ctx.kind === "employee". Backend-гейт витринных
+// сохранений — site_builder.write ИЛИ clinic.write (clinic.controller.js
+// SITE_BUILDER_FIELDS + clinicMedia.controller assertCanEdit).
+//
 // Отзывы используют namespace "clinicReviews" (хук tr).
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useOutletContext, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ThemeSwitcher from "../vitrina/theme/ThemeSwitcher.jsx";
 import LayoutEditor from "../vitrina/layout/LayoutEditor.jsx";
 import ClinicContentForm from "../vitrina/settings/ClinicContentForm.jsx";
 import DeleteClinicSection from "./DeleteClinicSection";
+import { useClinicPermissions } from "../../../lib/can";
 import {
   getClinicMe,
   updateClinic,
@@ -46,6 +60,15 @@ export default function ClinicPublicPageSettings() {
   const { t: tr } = useTranslation("clinicReviews"); // namespace отзывов
   const navigate = useNavigate();
 
+  // Режим: employee-зона (marketer) vs owner-зона.
+  const ctx = useOutletContext();
+  const isEmployee = ctx?.kind === "employee";
+  const { can } = useClinicPermissions();
+
+  // Mode-aware навигация.
+  const pagesPath = isEmployee ? "/clinic/employee/marketing" : "/clinic/pages";
+  const backPath = isEmployee ? "/clinic/employee" : "/clinic/dashboard";
+
   const logoInputRef = useRef(null);
   const galleryInputRef = useRef(null);
 
@@ -54,6 +77,10 @@ export default function ClinicPublicPageSettings() {
 
   const [clinic, setClinic] = useState(null);
   const [canWrite, setCanWrite] = useState(false);
+
+  // Модерация отзывов — отдельное право (review.write). У marketer оно есть
+  // (RW), у owner/admin — тоже. Не путать с витринным site_builder.write.
+  const canModerateReviews = isEmployee ? can("review", "write") : canWrite;
 
   // editable state
   const [description, setDescription] = useState("");
@@ -80,19 +107,40 @@ export default function ClinicPublicPageSettings() {
 
     (async () => {
       try {
-        const me = await getClinicMe();
-        if (cancelled) return;
+        let c;
+        let writable;
 
-        if (!me.hasClinic) {
-          navigate("/clinic", { replace: true });
-          return;
+        if (isEmployee) {
+          // EMPLOYEE (marketer): clinic приходит из outlet-контекста
+          // (толстый DTO из employeeAuth — theme/layout/gallery/… уже внутри).
+          const src = ctx?.clinic;
+          if (!src) {
+            setError(t("common.error", { defaultValue: "Ошибка" }));
+            setLoading(false);
+            return;
+          }
+          c = { ...src };
+          // employee DTO использует _id; owner-код опирается на .id — нормализуем.
+          if (!c.id && c._id) c.id = String(c._id);
+          writable = can("site_builder", "write");
+        } else {
+          // OWNER/ADMIN: canonical source — /clinic/me.
+          const me = await getClinicMe();
+          if (cancelled) return;
+          if (!me.hasClinic) {
+            navigate("/clinic", { replace: true });
+            return;
+          }
+          c = me.clinic || {};
+          const role = me.role || "member";
+          const perms = me.permissions || {};
+          writable =
+            role === "owner" ||
+            role === "admin" ||
+            perms?.clinic?.write === true;
         }
 
-        const c = me.clinic || {};
-        const role = me.role || "member";
-        const perms = me.permissions || {};
-        const writable =
-          role === "owner" || role === "admin" || perms?.clinic?.write === true;
+        // Кастомные страницы (оба режима, clinic-scoped: marketer read ок).
         try {
           const pagesRes = await listCustomPages();
           c.customPages = (pagesRes.items || []).map((p) => ({
@@ -102,6 +150,9 @@ export default function ClinicPublicPageSettings() {
         } catch {
           c.customPages = [];
         }
+
+        if (cancelled) return;
+
         setClinic(c);
         setDescription(c.description || "");
         setIsPublished(c.isPublished === true);
@@ -120,7 +171,8 @@ export default function ClinicPublicPageSettings() {
     return () => {
       cancelled = true;
     };
-  }, [navigate, t]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEmployee, navigate]);
 
   const flashSaved = () => {
     setSavedMsg(t("publicPage.saved", { defaultValue: "Сохранено" }));
@@ -295,8 +347,8 @@ export default function ClinicPublicPageSettings() {
   );
 
   useEffect(() => {
-    if (clinic?.id && canWrite) loadReviews(reviewFilter);
-  }, [clinic, canWrite, reviewFilter, loadReviews]);
+    if (clinic?.id && canModerateReviews) loadReviews(reviewFilter);
+  }, [clinic, canModerateReviews, reviewFilter, loadReviews]);
 
   const handleModerate = async (reviewId, action) => {
     if (!clinic?.id || reviewBusyId) return;
@@ -672,7 +724,7 @@ export default function ClinicPublicPageSettings() {
                 "Создавайте отдельные страницы (Акции, О враче, Цены) из блоков и добавляйте их в меню витрины.",
             })}
           </p>
-          <Link to="/clinic/pages" className="cpps-btn cpps-btn-primary">
+          <Link to={pagesPath} className="cpps-btn cpps-btn-primary">
             {t("publicPage.customPagesManage", {
               defaultValue: "Управление страницами →",
             })}
@@ -680,7 +732,7 @@ export default function ClinicPublicPageSettings() {
         </div>
       </section>
       {/* REVIEWS MODERATION (этап C) — namespace clinicReviews */}
-      {canWrite && (
+      {canModerateReviews && (
         <section className="cpps-card">
           <div className="cpps-card-head">
             <h2 className="cpps-card-title">{tr("modTitle")}</h2>
@@ -760,11 +812,15 @@ export default function ClinicPublicPageSettings() {
       </div>
 
       <div className="cpps-back">
-        <Link to="/clinic/dashboard" className="cpps-back-link">
+        <Link to={backPath} className="cpps-back-link">
           ← {t("common.backToDashboard", { defaultValue: "К дашборду" })}
         </Link>
       </div>
-      <DeleteClinicSection clinicId={clinic.id} clinicName={clinic.name} />
+
+      {/* Удаление клиники — только owner-зона. Маркетолог не должен видеть. */}
+      {!isEmployee && (
+        <DeleteClinicSection clinicId={clinic.id} clinicName={clinic.name} />
+      )}
     </div>
   );
 }
