@@ -508,6 +508,7 @@ import InvitationAcceptPage from "./pages/clinic/InvitationAcceptPage/Invitation
 import EmployeeLoginPage from "./pages/clinic/EmployeeLoginPage/EmployeeLoginPage";
 import EmployeeDashboardPage from "./pages/clinic/EmployeeDashboardPage/EmployeeDashboardPage";
 import EmployeeSchedulePage from "./pages/clinic/EmployeeSchedulePage/EmployeeSchedulePage";
+import EmployeeBookAppointmentPage from "./pages/clinic/EmployeeBookAppointmentPage/EmployeeBookAppointmentPage";
 import ClinicAnalyticsPage from "./pages/clinic/ClinicAnalyticsPage/ClinicAnalyticsPage";
 import ClinicReviewsPage from "./pages/clinic/ClinicReviewsPage/ClinicReviewsPage";
 import ClinicLeadsPage from "./pages/clinic/ClinicLeadsPage/ClinicLeadsPage";
@@ -718,6 +719,7 @@ function App() {
               />
               <Route path="knowledge" element={<ClinicKnowledgePage />} />
               <Route path="schedule" element={<EmployeeSchedulePage />} />
+              <Route path="book" element={<EmployeeBookAppointmentPage />} />
               <Route
                 path="schedule/:doctorId"
                 element={<ClinicSchedulePage />}

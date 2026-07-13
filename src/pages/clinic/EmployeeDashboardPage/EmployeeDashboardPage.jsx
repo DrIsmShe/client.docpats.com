@@ -8,6 +8,7 @@ import { Link, useOutletContext } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   Calendar,
+  CalendarPlus,
   Users,
   Building2,
   DoorOpen,
@@ -65,6 +66,17 @@ const QUICK_ACTIONS = [
     labelKey: "employeeDashboard.actions.staff",
     labelDefault:
       "\u0421\u043E\u0442\u0440\u0443\u0434\u043D\u0438\u043A\u0438",
+  },
+  {
+    key: "book",
+    Icon: CalendarPlus,
+    res: "appointment",
+    act: "write",
+    soon: false,
+    to: "/clinic/employee/book",
+    labelKey: "employeeDashboard.actions.book",
+    labelDefault:
+      "\u0417\u0430\u043F\u0438\u0441\u044C \u043D\u0430 \u043F\u0440\u0438\u0451\u043C",
   },
   {
     key: "departments",
