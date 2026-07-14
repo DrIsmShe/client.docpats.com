@@ -266,6 +266,67 @@ export const getEmployeeMe = async () => {
   return res.data;
 };
 
+// ─── Employee password ────────────────────────────────────────
+//
+// Восстановление идёт в две половины ОДНОГО письма: ссылка (с подписанным
+// токеном) и 6-значный код. Нужны обе — см. employeePassword.service.js.
+
+/**
+ * POST /api/v1/clinic/employees/forgot-password
+ * Public — просит выслать письмо со ссылкой и кодом.
+ * ВСЕГДА отвечает 200, даже если такого сотрудника нет: сервер намеренно не
+ * раскрывает, существует ли учётная запись. Ошибку показывать не нужно.
+ */
+export const employeeForgotPassword = async ({ email }) => {
+  const res = await axios.post("/api/v1/clinic/employees/forgot-password", {
+    email,
+  });
+  return res.data;
+};
+
+/**
+ * GET /api/v1/clinic/employees/reset-password?token=...
+ * Public — проверить ссылку до показа формы.
+ * → { valid: true, maskedEmail, expiresAt, attemptsLeft }
+ * Просроченная/поддельная ссылка приходит как 409.
+ */
+export const getEmployeeResetContext = async (token) => {
+  const res = await axios.get("/api/v1/clinic/employees/reset-password", {
+    params: { token },
+  });
+  return res.data;
+};
+
+/**
+ * POST /api/v1/clinic/employees/reset-password
+ * Public — ссылка + код + новый пароль.
+ * 400 → неверный код (в details.attemptsLeft осталось попыток)
+ * 409 → ссылка мертва (истекла, использована или сожжена попытками)
+ */
+export const employeeResetPassword = async ({ token, otp, password }) => {
+  const res = await axios.post("/api/v1/clinic/employees/reset-password", {
+    token,
+    otp,
+    password,
+  });
+  return res.data;
+};
+
+/**
+ * POST /api/v1/clinic/employees/change-password
+ * Сотрудник в кабинете меняет свой пароль, зная текущий.
+ */
+export const employeeChangePassword = async ({
+  currentPassword,
+  newPassword,
+}) => {
+  const res = await axios.post("/api/v1/clinic/employees/change-password", {
+    currentPassword,
+    newPassword,
+  });
+  return res.data;
+};
+
 // ─── Patients ──────────────────────────────────────────────────
 
 /**

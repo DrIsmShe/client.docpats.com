@@ -506,6 +506,8 @@ import ClinicDashboardPage from "./pages/clinic/ClinicDashboardPage/ClinicDashbo
 import ClinicStaffPage from "./pages/clinic/ClinicStaffPage/ClinicStaffPage.jsx";
 import InvitationAcceptPage from "./pages/clinic/InvitationAcceptPage/InvitationAcceptPage";
 import EmployeeLoginPage from "./pages/clinic/EmployeeLoginPage/EmployeeLoginPage";
+import EmployeeForgotPasswordPage from "./pages/clinic/EmployeeForgotPasswordPage/EmployeeForgotPasswordPage";
+import EmployeeResetPasswordPage from "./pages/clinic/EmployeeResetPasswordPage/EmployeeResetPasswordPage";
 import EmployeeDashboardPage from "./pages/clinic/EmployeeDashboardPage/EmployeeDashboardPage";
 import EmployeeSchedulePage from "./pages/clinic/EmployeeSchedulePage/EmployeeSchedulePage";
 import EmployeeBookAppointmentPage from "./pages/clinic/EmployeeBookAppointmentPage/EmployeeBookAppointmentPage";
@@ -622,6 +624,16 @@ function App() {
             />
 
             <Route path="/clinic/staff-login" element={<EmployeeLoginPage />} />
+            {/* Восстановление пароля сотрудника: шаг 1 — email, шаг 2 — ссылка
+                из письма (?token=...) + код из того же письма. */}
+            <Route
+              path="/clinic/staff-forgot-password"
+              element={<EmployeeForgotPasswordPage />}
+            />
+            <Route
+              path="/clinic/staff-reset-password"
+              element={<EmployeeResetPasswordPage />}
+            />
             <Route
               path="/clinic/membership-invitations/accept"
               element={<MembershipInviteAccept />}

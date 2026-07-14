@@ -1268,6 +1268,7 @@
     "submit": "Sign in",
     "submitting": "Signing in...",
     "justRegistered": "Account created. You can sign in now.",
+    "forgot": "Forgot your password?",
     "fields": {
       "email": "Email",
       "emailPlaceholder": "you@example.com",
@@ -1281,6 +1282,68 @@
       "notActive": "This account is not active. Please contact your clinic admin.",
       "fixErrors": "Please fix the errors below",
       "generic": "Couldn't sign in. Please try again."
+    }
+  },
+  "employeeForgotPassword": {
+    "title": "Password recovery",
+    "subtitle": "Enter your work email — we'll send you a link and a code.",
+    "submit": "Send",
+    "submitting": "Sending...",
+    "sentTitle": "Check your inbox",
+    "sentText": "If {{email}} belongs to a staff account, we've sent it a link and a confirmation code.",
+    "sentHint": "The link and code are valid for 30 minutes. No email? Check your spam folder.",
+    "backToLogin": "Back to sign in",
+    "errors": {
+      "tooMany": "Too many requests. Please try again in a few minutes."
+    }
+  },
+  "employeeChangePassword": {
+    "sectionTitle": "Security",
+    "title": "Password",
+    "hint": "Change your password if you suspect someone else knows it.",
+    "open": "Change password",
+    "fields": {
+      "current": "Current password",
+      "new": "New password",
+      "repeat": "Repeat new password"
+    },
+    "submit": "Save",
+    "submitting": "Saving...",
+    "cancel": "Cancel",
+    "success": "Password changed.",
+    "errors": {
+      "currentRequired": "Enter your current password",
+      "currentWrong": "Current password is incorrect",
+      "newShort": "At least {{count}} characters",
+      "sameAsCurrent": "The new password must differ from the current one",
+      "mismatch": "Passwords don't match"
+    }
+  },
+  "employeeResetPassword": {
+    "checking": "Checking the link...",
+    "title": "New password",
+    "subtitle": "Enter the code from the email and a new password.",
+    "subtitleWithEmail": "Enter the code we sent to {{email}} and a new password.",
+    "fields": {
+      "otp": "Code from the email",
+      "newPassword": "New password",
+      "repeatPassword": "Repeat password"
+    },
+    "showPassword": "Show password",
+    "submit": "Save password",
+    "submitting": "Saving...",
+    "attemptsLeft": "Attempts left: {{count}}",
+    "successTitle": "Password changed",
+    "successText": "Taking you to the sign-in page.",
+    "invalidTitle": "Link is not valid",
+    "invalidText": "The link has expired, was already used, or is incorrect. Request a new one.",
+    "requestNew": "Request a new link",
+    "errors": {
+      "otpFormat": "The code is 6 digits",
+      "otpWrong": "Wrong code",
+      "otpWrongWithAttempts": "Wrong code. Attempts left: {{count}}",
+      "passwordShort": "At least {{count}} characters",
+      "passwordMismatch": "Passwords don't match"
     }
   },
   "employeeDashboard": {

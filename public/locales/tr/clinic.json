@@ -1268,6 +1268,7 @@
     "submit": "Giriş yap",
     "submitting": "Giriş yapılıyor...",
     "justRegistered": "Hesap oluşturuldu. Şimdi giriş yapabilirsiniz.",
+    "forgot": "Şifrenizi mi unuttunuz?",
     "fields": {
       "email": "E-posta",
       "emailPlaceholder": "siz@example.com",
@@ -1281,6 +1282,68 @@
       "notActive": "Bu hesap aktif değil. Lütfen klinik yöneticinizle iletişime geçin.",
       "fixErrors": "Lütfen aşağıdaki hataları düzeltin",
       "generic": "Giriş yapılamadı. Lütfen tekrar deneyin."
+    }
+  },
+  "employeeForgotPassword": {
+    "title": "Şifre kurtarma",
+    "subtitle": "İş e-postanızı girin — size bir bağlantı ve kod göndereceğiz.",
+    "submit": "Gönder",
+    "submitting": "Gönderiliyor...",
+    "sentTitle": "E-postanızı kontrol edin",
+    "sentText": "{{email}} bir çalışan hesabına aitse, bağlantı ve doğrulama kodu gönderdik.",
+    "sentHint": "Bağlantı ve kod 30 dakika geçerlidir. E-posta gelmediyse spam klasörüne bakın.",
+    "backToLogin": "Girişe dön",
+    "errors": {
+      "tooMany": "Çok fazla istek. Lütfen birkaç dakika sonra tekrar deneyin."
+    }
+  },
+  "employeeChangePassword": {
+    "sectionTitle": "Güvenlik",
+    "title": "Şifre",
+    "hint": "Şifrenizi başkasının bildiğinden şüpheleniyorsanız değiştirin.",
+    "open": "Şifreyi değiştir",
+    "fields": {
+      "current": "Mevcut şifre",
+      "new": "Yeni şifre",
+      "repeat": "Yeni şifreyi tekrarlayın"
+    },
+    "submit": "Kaydet",
+    "submitting": "Kaydediliyor...",
+    "cancel": "İptal",
+    "success": "Şifre değiştirildi.",
+    "errors": {
+      "currentRequired": "Mevcut şifrenizi girin",
+      "currentWrong": "Mevcut şifre hatalı",
+      "newShort": "En az {{count}} karakter",
+      "sameAsCurrent": "Yeni şifre mevcut şifreden farklı olmalıdır",
+      "mismatch": "Şifreler eşleşmiyor"
+    }
+  },
+  "employeeResetPassword": {
+    "checking": "Bağlantı kontrol ediliyor...",
+    "title": "Yeni şifre",
+    "subtitle": "E-postadaki kodu ve yeni şifrenizi girin.",
+    "subtitleWithEmail": "{{email}} adresine gönderdiğimiz kodu ve yeni şifrenizi girin.",
+    "fields": {
+      "otp": "E-postadaki kod",
+      "newPassword": "Yeni şifre",
+      "repeatPassword": "Şifreyi tekrarlayın"
+    },
+    "showPassword": "Şifreyi göster",
+    "submit": "Şifreyi kaydet",
+    "submitting": "Kaydediliyor...",
+    "attemptsLeft": "Kalan deneme: {{count}}",
+    "successTitle": "Şifre değiştirildi",
+    "successText": "Sizi giriş sayfasına yönlendiriyoruz.",
+    "invalidTitle": "Bağlantı geçersiz",
+    "invalidText": "Bağlantının süresi dolmuş, daha önce kullanılmış ya da hatalı. Yeni bir tane isteyin.",
+    "requestNew": "Yeni bağlantı iste",
+    "errors": {
+      "otpFormat": "Kod 6 hanelidir",
+      "otpWrong": "Kod hatalı",
+      "otpWrongWithAttempts": "Kod hatalı. Kalan deneme: {{count}}",
+      "passwordShort": "En az {{count}} karakter",
+      "passwordMismatch": "Şifreler eşleşmiyor"
     }
   },
   "employeeDashboard": {

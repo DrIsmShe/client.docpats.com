@@ -1268,6 +1268,7 @@
     "submit": "Daxil ol",
     "submitting": "Daxil olunur...",
     "justRegistered": "Hesab yaradıldı. İndi daxil ola bilərsiniz.",
+    "forgot": "Parolu unutmusunuz?",
     "fields": {
       "email": "E-poçt",
       "emailPlaceholder": "siz@example.com",
@@ -1281,6 +1282,68 @@
       "notActive": "Bu hesab aktiv deyil. Klinika administratoru ilə əlaqə saxlayın.",
       "fixErrors": "Aşağıdakı səhvləri düzəldin",
       "generic": "Daxil olunmadı. Yenidən cəhd edin."
+    }
+  },
+  "employeeForgotPassword": {
+    "title": "Parolun bərpası",
+    "subtitle": "İş e-poçtunuzu daxil edin — link və təsdiq kodu göndərəcəyik.",
+    "submit": "Göndər",
+    "submitting": "Göndərilir...",
+    "sentTitle": "Poçtunuzu yoxlayın",
+    "sentText": "{{email}} işçi hesabına aiddirsə, ora link və təsdiq kodu göndərdik.",
+    "sentHint": "Link və kod 30 dəqiqə etibarlıdır. Məktub gəlmirsə, spam qovluğuna baxın.",
+    "backToLogin": "Girişə qayıt",
+    "errors": {
+      "tooMany": "Çox sayda sorğu. Bir neçə dəqiqədən sonra yenidən cəhd edin."
+    }
+  },
+  "employeeChangePassword": {
+    "sectionTitle": "Təhlükəsizlik",
+    "title": "Parol",
+    "hint": "Kiminsə parolunuzu bildiyindən şübhələnirsinizsə, onu dəyişin.",
+    "open": "Parolu dəyiş",
+    "fields": {
+      "current": "Cari parol",
+      "new": "Yeni parol",
+      "repeat": "Yeni parolu təkrarlayın"
+    },
+    "submit": "Yadda saxla",
+    "submitting": "Yadda saxlanılır...",
+    "cancel": "Ləğv et",
+    "success": "Parol dəyişdirildi.",
+    "errors": {
+      "currentRequired": "Cari parolu daxil edin",
+      "currentWrong": "Cari parol səhvdir",
+      "newShort": "Ən azı {{count}} simvol",
+      "sameAsCurrent": "Yeni parol cari paroldan fərqlənməlidir",
+      "mismatch": "Parollar uyğun gəlmir"
+    }
+  },
+  "employeeResetPassword": {
+    "checking": "Link yoxlanılır...",
+    "title": "Yeni parol",
+    "subtitle": "Məktubdakı kodu və yeni parolu daxil edin.",
+    "subtitleWithEmail": "{{email}} ünvanına göndərdiyimiz kodu və yeni parolu daxil edin.",
+    "fields": {
+      "otp": "Məktubdakı kod",
+      "newPassword": "Yeni parol",
+      "repeatPassword": "Parolu təkrarlayın"
+    },
+    "showPassword": "Parolu göstər",
+    "submit": "Parolu yadda saxla",
+    "submitting": "Yadda saxlanılır...",
+    "attemptsLeft": "Qalan cəhd: {{count}}",
+    "successTitle": "Parol dəyişdirildi",
+    "successText": "Sizi giriş səhifəsinə yönləndiririk.",
+    "invalidTitle": "Link etibarsızdır",
+    "invalidText": "Linkin vaxtı bitib, artıq istifadə olunub və ya səhvdir. Yenisini tələb edin.",
+    "requestNew": "Yeni link tələb et",
+    "errors": {
+      "otpFormat": "Kod 6 rəqəmdən ibarətdir",
+      "otpWrong": "Kod səhvdir",
+      "otpWrongWithAttempts": "Kod səhvdir. Qalan cəhd: {{count}}",
+      "passwordShort": "Ən azı {{count}} simvol",
+      "passwordMismatch": "Parollar uyğun gəlmir"
     }
   },
   "employeeDashboard": {

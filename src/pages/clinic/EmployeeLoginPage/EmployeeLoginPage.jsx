@@ -187,6 +187,12 @@ export default function EmployeeLoginPage() {
           </button>
 
           <div className="employee-login-footer">
+            <Link
+              to="/clinic/staff-forgot-password"
+              className="employee-login-footer-link"
+            >
+              {t("employeeLogin.forgot")}
+            </Link>
             <Link to="/" className="employee-login-footer-link">
               {t("acceptInvitation.backToHome")}
             </Link>

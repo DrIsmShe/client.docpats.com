@@ -27,6 +27,7 @@ import {
   UserCog,
 } from "lucide-react";
 import { useClinicPermissions } from "../../../lib/can";
+import EmployeeChangePasswordCard from "./EmployeeChangePasswordCard";
 import "./employeeDashboardPage.css";
 
 // Quick actions in the employee zone. Each is gated by a permission
@@ -370,6 +371,8 @@ export default function EmployeeDashboardPage() {
           </>
         )}
       </section>
+
+      <EmployeeChangePasswordCard />
     </div>
   );
 }

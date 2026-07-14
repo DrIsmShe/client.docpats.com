@@ -225,6 +225,24 @@ html[dir="rtl"] .employee-login-field {
   text-decoration: underline;
 }
 
+/* Чекбокс «показать пароль» на странице восстановления пароля. */
+.employee-login-show-password {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: -4px 0 16px;
+  font-size: 13px;
+  color: #64748b;
+  cursor: pointer;
+  user-select: none;
+}
+
+.employee-login-show-password input {
+  width: auto;
+  margin: 0;
+  cursor: pointer;
+}
+
 @media (max-width: 540px) {
   .employee-login-header {
     padding: 12px 16px;
