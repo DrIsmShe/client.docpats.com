@@ -460,13 +460,19 @@ export default function ResetPasswordChange() {
       return;
     }
 
+    // email мог быть введён в поле выше, но если пусто — берём тот, что
+    // сохранён на первом шаге. Код подтверждения приходит со страницы ввода OTP.
+    const effectiveEmail = email || localStorage.getItem("resetEmail") || "";
+    const otpPassword = localStorage.getItem("resetOtp") || "";
+
     try {
       const response = await axios.post(
         `${API_BASE}/auth/change-password`,
         {
-          email,
+          email: effectiveEmail,
           newPassword: password,
           newRepeatPassword: repeatPassword,
+          otpPassword,
           agreement: true,
         },
         { withCredentials: true },
@@ -476,6 +482,9 @@ export default function ResetPasswordChange() {
       setErrorMessage("");
       setPassword("");
       setReapetPassword("");
+      // Код одноразовый — убираем следы из браузера.
+      localStorage.removeItem("resetOtp");
+      localStorage.removeItem("resetEmail");
 
       setTimeout(() => {
         navigate("/login");

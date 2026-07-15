@@ -74,9 +74,15 @@ export default function EmployeeLoginPage() {
         setFieldErrors(fe);
         setError(t("employeeLogin.errors.fixErrors"));
       } else if (status === 401) {
-        const msg = data?.error || "";
-        if (msg.toLowerCase().includes("not active")) {
+        // Сервер за 401 прячет несколько разных причин — разводим их по тексту
+        // сообщения, чтобы сотрудник понимал, что делать дальше.
+        const msg = (data?.error || data?.message || "").toLowerCase();
+        if (msg.includes("locked")) {
+          setError(t("employeeLogin.errors.locked"));
+        } else if (msg.includes("not active")) {
           setError(t("employeeLogin.errors.notActive"));
+        } else if (msg.includes("member")) {
+          setError(t("employeeLogin.errors.noMembership"));
         } else {
           setError(t("employeeLogin.errors.invalidCredentials"));
         }

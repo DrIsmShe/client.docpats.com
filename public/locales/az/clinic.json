@@ -1280,6 +1280,8 @@
       "passwordRequired": "Parol mütləqdir",
       "invalidCredentials": "Yanlış e-poçt və ya parol",
       "notActive": "Bu hesab aktiv deyil. Klinika administratoru ilə əlaqə saxlayın.",
+      "locked": "Uğursuz giriş cəhdlərinə görə hesab müvəqqəti bloklandı. 15 dəqiqə gözləyin və ya parolu bərpa edin.",
+      "noMembership": "Siz heç bir aktiv klinikaya bağlı deyilsiniz. Administratorla əlaqə saxlayın.",
       "fixErrors": "Aşağıdakı səhvləri düzəldin",
       "generic": "Daxil olunmadı. Yenidən cəhd edin."
     }

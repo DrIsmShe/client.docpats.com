@@ -1280,6 +1280,8 @@
       "passwordRequired": "Şifre zorunludur",
       "invalidCredentials": "Yanlış e-posta veya şifre",
       "notActive": "Bu hesap aktif değil. Lütfen klinik yöneticinizle iletişime geçin.",
+      "locked": "Başarısız giriş denemeleri nedeniyle hesap geçici olarak kilitlendi. 15 dakika bekleyin veya şifrenizi sıfırlayın.",
+      "noMembership": "Herhangi bir aktif kliniğe bağlı değilsiniz. Lütfen yöneticinizle iletişime geçin.",
       "fixErrors": "Lütfen aşağıdaki hataları düzeltin",
       "generic": "Giriş yapılamadı. Lütfen tekrar deneyin."
     }

@@ -213,6 +213,11 @@ html[dir="rtl"] .employee-login-field {
 .employee-login-footer {
   margin-top: 20px;
   font-size: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .employee-login-footer-link {

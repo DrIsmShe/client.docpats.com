@@ -1280,6 +1280,8 @@
       "passwordRequired": "Password is required",
       "invalidCredentials": "Wrong email or password",
       "notActive": "This account is not active. Please contact your clinic admin.",
+      "locked": "Account temporarily locked after failed login attempts. Wait 15 minutes or reset your password.",
+      "noMembership": "You are not linked to any active clinic. Please contact your administrator.",
       "fixErrors": "Please fix the errors below",
       "generic": "Couldn't sign in. Please try again."
     }

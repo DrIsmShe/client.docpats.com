@@ -422,20 +422,17 @@ export default function Otpresetpasswordchange() {
     e.preventDefault();
     setErrorMessage("");
 
-    try {
-      const response = await axios.post(
-        `${API_BASE}/auth/otp-for-reset-password`,
-        { otpPassword, email },
-      );
-
-      alert(response.data.message);
-      navigate("/resetpasswordchange");
-    } catch (error) {
-      setErrorMessage(
-        error.response?.data?.message ||
-          t("OtpResetPasswordChange.errors.unexpected"),
-      );
+    // Код НЕ проверяем здесь и НЕ перезапрашиваем: раньше этот submit слал
+    // /auth/otp-for-reset-password, который генерировал НОВЫЙ код и затирал
+    // тот, что уже в письме. Просто сохраняем введённый код и переходим —
+    // сервер проверит его на финальном шаге (/auth/change-password).
+    const code = otpPassword.trim();
+    if (!code) {
+      setErrorMessage(t("OtpResetPasswordChange.errors.unexpected"));
+      return;
     }
+    localStorage.setItem("resetOtp", code);
+    navigate("/resetpasswordchange");
   };
 
   const handleResendOTP = async () => {
