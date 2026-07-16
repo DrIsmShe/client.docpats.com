@@ -8,6 +8,7 @@ import { BsCalendar2DateFill } from "react-icons/bs";
 import { AiFillLike } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { BsFillShareFill } from "react-icons/bs";
+import { sh } from "../../lib/sanitizeHtml";
 
 export default function Doctors() {
   const { t } = useTranslation("doctorsPage");
@@ -107,7 +108,7 @@ export default function Doctors() {
                                 marginTop: "20px",
                               }}
                               dangerouslySetInnerHTML={{
-                                __html: doctor.about,
+                                __html: sh(doctor.about,)
                               }}
                             />
 

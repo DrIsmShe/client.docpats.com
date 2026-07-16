@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { sh } from "../../../../lib/sanitizeHtml";
 
 export default function TempLaboratoryResultsDetail() {
   const { t } = useTranslation("Examinations");
@@ -57,7 +58,7 @@ export default function TempLaboratoryResultsDetail() {
 
       <div
         className="card-text"
-        dangerouslySetInnerHTML={{ __html: template?.content }}
+        dangerouslySetInnerHTML={{ __html: sh(template?.content) }}
       />
 
       <p>

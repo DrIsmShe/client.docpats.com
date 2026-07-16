@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FaCommentDots, FaUserNurse } from "react-icons/fa6";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { AiFillLike } from "react-icons/ai";
+import { sh } from "../../../../lib/sanitizeHtml";
 
 /* ====================== Страны (фиксированный список) ====================== */
 const COUNTRIES = [
@@ -619,7 +620,7 @@ export default function ArticlesFromDoctorsForPatient() {
                               whiteSpace: "normal",
                             }}
                             dangerouslySetInnerHTML={{
-                              __html: pickContentHtml(article),
+                              __html: sh(pickContentHtml(article),)
                             }}
                           />
                         </div>

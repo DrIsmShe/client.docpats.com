@@ -5,6 +5,7 @@ import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaCommentDots } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
 import { BsFillShareFill } from "react-icons/bs";
+import { sh } from "../../lib/sanitizeHtml";
 
 export default function DoctorsArticles() {
   const { id } = useParams(); // doctor profile id from URL
@@ -81,7 +82,7 @@ export default function DoctorsArticles() {
                                 marginTop: "20px",
                               }}
                               dangerouslySetInnerHTML={{
-                                __html: article.content,
+                                __html: sh(article.content,)
                               }}
                             />
                           </div>

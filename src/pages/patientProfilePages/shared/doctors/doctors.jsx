@@ -5,6 +5,7 @@ import { FaCommentDots } from "react-icons/fa6";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { AiFillLike } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
+import { sh } from "../../../../lib/sanitizeHtml";
 
 /* ====================== Страны (фиксированный список) ====================== */
 const COUNTRIES = [
@@ -1330,7 +1331,7 @@ export default function DoctorsAll() {
                 <div
                   className="da-about"
                   dangerouslySetInnerHTML={{
-                    __html: doctor.about || t("doctorsAll.card.aboutFallback"),
+                    __html: sh(doctor.about || t("doctorsAll.card.aboutFallback"),)
                   }}
                 />
 

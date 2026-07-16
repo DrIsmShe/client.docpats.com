@@ -10,6 +10,7 @@ import { BsFillShareFill } from "react-icons/bs";
 import CommentSection from "../../../../components/shared/CommentSection";
 import useCommentCount from "../../../../components/shared/useCommentCountDetail";
 import { useTranslation } from "react-i18next";
+import { sh } from "../../../../lib/sanitizeHtml";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
@@ -857,9 +858,9 @@ export default function SingleArticle() {
             <div
               className="sa-article-content"
               dangerouslySetInnerHTML={{
-                __html: showOriginal
+                __html: sh(showOriginal
                   ? article.originalContent || article.content
-                  : article.content,
+                  : article.content,)
               }}
             />
 

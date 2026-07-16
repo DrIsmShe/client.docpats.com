@@ -5,6 +5,7 @@ import { FaCommentDots } from "react-icons/fa6";
 import { BsCalendar2DateFill, BsFillShareFill } from "react-icons/bs";
 import { AiFillLike } from "react-icons/ai";
 import useCommentCountBulk from "../../../../components/shared/useCommentCount";
+import { sh } from "../../../../lib/sanitizeHtml";
 
 export default function ArticlesFromDoctorsForPatient() {
   const [articles, setArticles] = useState([]);
@@ -89,8 +90,8 @@ export default function ArticlesFromDoctorsForPatient() {
                               }}
                               dangerouslySetInnerHTML={{
                                 __html:
-                                  article.content ||
-                                  "<p>Контент отсутствует</p>",
+                                  sh(article.content ||
+                                  "<p>Контент отсутствует</p>",)
                               }}
                             />
                           </div>

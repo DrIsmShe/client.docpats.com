@@ -19,6 +19,7 @@ import { useVitrinaTheme } from "./theme/useVitrinaTheme.js";
 import { getBlockComponent } from "./blocks/blockRegistry.js";
 import { RTL_LANGS, resolveUrl, formatDate } from "./lib/utils.js";
 import Lightbox from "./components/Lightbox.jsx";
+import { sh } from "../../../lib/sanitizeHtml";
 
 const CHROME_TOP = new Set(["topbar", "nav"]);
 
@@ -151,7 +152,7 @@ export default function ArticleDetailRenderer({ clinic, article }) {
         {/* rich-text контент */}
         <div
           className="vt-art-body"
-          dangerouslySetInnerHTML={{ __html: article.body || "" }}
+          dangerouslySetInnerHTML={{ __html: sh(article.body || "") }}
         />
 
         {/* галерея статьи */}

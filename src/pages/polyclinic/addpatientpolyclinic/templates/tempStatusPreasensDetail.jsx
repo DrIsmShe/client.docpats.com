@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { sh } from "../../../../lib/sanitizeHtml";
 
 const TempStatusPreasensDetail = () => {
   const { id } = useParams();
@@ -60,7 +61,7 @@ const TempStatusPreasensDetail = () => {
 
       <div
         className="card-text mt-3"
-        dangerouslySetInnerHTML={{ __html: template.content }}
+        dangerouslySetInnerHTML={{ __html: sh(template.content) }}
       />
 
       <p className="mt-3">

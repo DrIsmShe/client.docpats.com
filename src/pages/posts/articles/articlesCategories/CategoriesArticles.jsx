@@ -7,6 +7,7 @@ import { AiFillLike } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import parse from "html-react-parser";
 import { BsFillShareFill } from "react-icons/bs";
+import { sh } from "../../../../lib/sanitizeHtml";
 export default function AllArticles() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -88,7 +89,7 @@ export default function AllArticles() {
                                 marginTop: "20px",
                               }}
                               dangerouslySetInnerHTML={{
-                                __html: article.content,
+                                __html: sh(article.content,)
                               }}
                             />
                           </div>

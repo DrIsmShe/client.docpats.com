@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { sh } from "../../../../lib/sanitizeHtml";
 
 export default function TempRecommendationsDetail() {
   const { t } = useTranslation("examinations");
@@ -53,7 +54,7 @@ export default function TempRecommendationsDetail() {
 
       <div
         className="card-text"
-        dangerouslySetInnerHTML={{ __html: template?.content }}
+        dangerouslySetInnerHTML={{ __html: sh(template?.content) }}
       />
 
       <p>

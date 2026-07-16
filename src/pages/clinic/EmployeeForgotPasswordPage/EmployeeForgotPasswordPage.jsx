@@ -48,7 +48,9 @@ export default function EmployeeForgotPasswordPage() {
 
     setSubmitting(true);
     try {
-      await employeeForgotPassword({ email: value });
+      // Письмо придёт на языке, выбранном на этой странице.
+      const lang = (i18n.language || "ru").split("-")[0];
+      await employeeForgotPassword({ email: value, language: lang });
       setSent(true);
     } catch (err) {
       // Сюда попадаем только при сетевой ошибке или 429 (слишком часто) —

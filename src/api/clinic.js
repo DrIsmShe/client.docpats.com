@@ -277,9 +277,11 @@ export const getEmployeeMe = async () => {
  * ВСЕГДА отвечает 200, даже если такого сотрудника нет: сервер намеренно не
  * раскрывает, существует ли учётная запись. Ошибку показывать не нужно.
  */
-export const employeeForgotPassword = async ({ email }) => {
+export const employeeForgotPassword = async ({ email, language }) => {
   const res = await axios.post("/api/v1/clinic/employees/forgot-password", {
     email,
+    // Язык письма = язык, выбранный на странице сейчас.
+    ...(language && { language }),
   });
   return res.data;
 };

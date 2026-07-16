@@ -9,6 +9,7 @@ import DoctorEndorseItem from "./DoctorEndorseItem";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
 import { getOrCreateDialogWithUser } from "../../../communication/api/communicationApi";
+import { sh } from "../../../../lib/sanitizeHtml";
 
 /* ===== STYLES ===== */
 const styles = `
@@ -1448,7 +1449,7 @@ export default function DoctorDetails() {
                       <div
                         className="dd-article-preview"
                         dangerouslySetInnerHTML={{
-                          __html: article.content.slice(0, 100) + "...",
+                          __html: sh(article.content.slice(0, 100) + "...",)
                         }}
                       />
                       <div className="dd-article-meta">

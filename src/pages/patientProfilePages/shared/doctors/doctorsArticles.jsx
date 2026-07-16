@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { BsCalendar2DateFill, BsFillShareFill } from "react-icons/bs";
 import { FaCommentDots, FaUserNurse } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
+import { sh } from "../../../../lib/sanitizeHtml";
 
 export default function DoctorArticlesForPatient() {
   const { id } = useParams();
@@ -91,7 +92,7 @@ export default function DoctorArticlesForPatient() {
                   <div
                     className="card-text"
                     style={{ height: "92px", overflow: "hidden" }}
-                    dangerouslySetInnerHTML={{ __html: article.content }}
+                    dangerouslySetInnerHTML={{ __html: sh(article.content) }}
                   />
 
                   <div className="d-flex justify-content-start align-items-center mt-3 gap-4 flex-wrap">

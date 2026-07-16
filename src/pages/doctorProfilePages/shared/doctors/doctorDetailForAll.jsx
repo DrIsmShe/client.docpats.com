@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
 import { getOrCreateDialogWithUser } from "../../../communication/api/communicationApi";
 import { Helmet } from "react-helmet-async";
+import { sh } from "../../../../lib/sanitizeHtml";
 /* ===== STYLES ===== */
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
@@ -1514,7 +1515,7 @@ export default function DoctorDetailsForAll() {
                       <div
                         className="dd-article-preview"
                         dangerouslySetInnerHTML={{
-                          __html: article.content.slice(0, 100) + "...",
+                          __html: sh(article.content.slice(0, 100) + "...",)
                         }}
                       />
                       <div className="dd-article-meta">

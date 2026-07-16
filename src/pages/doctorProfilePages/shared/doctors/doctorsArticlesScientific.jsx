@@ -5,6 +5,7 @@ import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaCommentDots, FaUserNurse } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
+import { sh } from "../../../../lib/sanitizeHtml";
 
 /* ===== STYLES ===== */
 const styles = `
@@ -520,7 +521,7 @@ export default function DoctorsArticlesScientific() {
 
                   <div
                     className="doa-card-preview"
-                    dangerouslySetInnerHTML={{ __html: article.content }}
+                    dangerouslySetInnerHTML={{ __html: sh(article.content) }}
                   />
                 </div>
 

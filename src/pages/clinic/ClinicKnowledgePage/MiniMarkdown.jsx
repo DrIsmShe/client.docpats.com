@@ -9,6 +9,7 @@
 // all HTML so article bodies can never inject markup.
 
 import React from "react";
+import { sh } from "../../../lib/sanitizeHtml";
 
 function escapeHtml(s) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -152,7 +153,7 @@ export default function MiniMarkdown({ source = "" }) {
     <div
       className="kb-markdown"
       // Content is fully HTML-escaped above; only our own safe tags are added.
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={{ __html: sh(html) }}
     />
   );
 }

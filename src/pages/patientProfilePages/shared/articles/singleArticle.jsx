@@ -6,6 +6,7 @@ import { BsCalendar2DateFill, BsFillShareFill } from "react-icons/bs";
 import { AiFillLike } from "react-icons/ai";
 import CommentSection from "../../../../components/shared/CommentSection";
 import useCommentCount from "../../../../components/shared/useCommentCountDetail";
+import { sh } from "../../../../lib/sanitizeHtml";
 
 /* ─────────────── STYLES ─────────────── */
 const S = `
@@ -572,7 +573,7 @@ export default function SingleArticle() {
               <div
                 className="sa-content"
                 dangerouslySetInnerHTML={{
-                  __html: article.content || "<p>Контент отсутствует</p>",
+                  __html: sh(article.content || "<p>Контент отсутствует</p>",)
                 }}
               />
 
