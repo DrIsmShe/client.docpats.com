@@ -10,70 +10,120 @@ export default function Aside() {
         className={isOpen ? "sidebar open" : "sidebar"}
       >
         <ul id="sidebar-nav" className="sidebar-nav">
-          {/* <li className="nav-item">
-            <a className="nav-link " href="index.html">
-              <i className="bi bi-grid"></i>
-              <span>Dashboard</span>
-            </a>
-          </li> */}
+          {/* ─── Обзор ─── */}
+          <li className="nav-heading">Обзор</li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="overview">
+              <i className="bi bi-speedometer2"></i>
+              <span>Обзор платформы</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="system">
+              <i className="bi bi-hdd-network"></i>
+              <span>Статус системы</span>
+            </Link>
+          </li>
+
+          {/* ─── Клиники ─── */}
+          <li className="nav-heading">Клиники</li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="clinics">
+              <i className="bi bi-hospital"></i>
+              <span>Клиники</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="features">
+              <i className="bi bi-toggles"></i>
+              <span>Фичи клиник</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="reviews">
+              <i className="bi bi-star"></i>
+              <span>Отзывы</span>
+            </Link>
+          </li>
+
+          {/* ─── Пользователи и врачи ─── */}
+          <li className="nav-heading">Пользователи</li>
           <li className="nav-item">
             <Link className="nav-link collapsed" to="users-list">
-              <i class="bi bi-newspaper"></i>
-              <span>Users list</span>
+              <i className="bi bi-people"></i>
+              <span>Все пользователи</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="doctors">
+              <i className="bi bi-person-badge"></i>
+              <span>Врачи и приёмы</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="verification">
+              <i className="bi bi-patch-check"></i>
+              <span>Верификация врачей</span>
             </Link>
           </li>
           <li className="nav-item">
             <Link className="nav-link collapsed" to="polyclinic/get-all">
-              <i class="bi bi-newspaper"></i>
-              <span>Polyclinic</span>
+              <i className="bi bi-clipboard2-pulse"></i>
+              <span>Поликлиника</span>
             </Link>
           </li>
-          {/* <li className="nav-item">
-            <Link
-              className="nav-link collapsed"
-              data-bs-target="#tables-nav"
-              data-bs-toggle="collapse"
-              href="#"
-            >
-              <i class="bi bi-book-half"></i>
-              <span>Books</span>
-            </Link>
-          </li> */}
 
+          {/* ─── Безопасность ─── */}
+          <li className="nav-heading">Безопасность</li>
           <li className="nav-item">
-            <Link
-              className="nav-link collapsed"
-              to="create-categories-of-my-articles"
-            >
-              <i class="bi bi-newspaper"></i>
-              <span>Create categories</span>
+            <Link className="nav-link collapsed" to="security">
+              <i className="bi bi-shield-exclamation"></i>
+              <span>Дашборд безопасности</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="audit-log">
+              <i className="bi bi-shield-lock"></i>
+              <span>Аудит-лог</span>
+            </Link>
+          </li>
+
+          {/* ─── Данные ─── */}
+          <li className="nav-heading">Данные</li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="database">
+              <i className="bi bi-bar-chart-line"></i>
+              <span>База данных (аналитика)</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="create-categories-of-my-articles">
+              <i className="bi bi-tags"></i>
+              <span>Категории статей</span>
             </Link>
           </li>
           <li className="nav-item">
             <Link className="nav-link collapsed" to="mongodb-database">
-              <i class="bi bi-newspaper"></i>
-              <span>Download DB</span>
+              <i className="bi bi-download"></i>
+              <span>Экспорт БД</span>
             </Link>
           </li>
           <li className="nav-item">
             <Link className="nav-link collapsed" to="mongodb-database-import">
-              <i class="bi bi-newspaper"></i>
-              <span>Import DB</span>
+              <i className="bi bi-upload"></i>
+              <span>Импорт БД</span>
             </Link>
           </li>
           <li className="nav-item">
             <Link className="nav-link collapsed" to="mongodb">
-              <i class="bi bi-newspaper"></i>
-              <span>Download collections</span>
+              <i className="bi bi-download"></i>
+              <span>Экспорт коллекций</span>
             </Link>
           </li>
           <li className="nav-item">
-            <Link
-              className="nav-link collapsed"
-              to="mongodb-database-collection"
-            >
-              <i class="bi bi-newspaper"></i>
-              <span>Import collections</span>
+            <Link className="nav-link collapsed" to="mongodb-database-collection">
+              <i className="bi bi-upload"></i>
+              <span>Импорт коллекций</span>
             </Link>
           </li>
           {/* <li className="nav-item">

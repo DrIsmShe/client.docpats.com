@@ -23,7 +23,9 @@ const DeleteUser = () => {
 
     try {
       const response = await axios.post(
-        `${API_BASE}/admin/delete-user/${userId}`
+        `${API_BASE}/admin/delete-user/${userId}`,
+        {},
+        { withCredentials: true }
       );
       setMessage(response.data.message);
       navigate("/admin/users-list");

@@ -27,7 +27,8 @@ const BlockUser = () => {
         `${API_BASE}/admin/block-user-from-admin/${userId}`,
         {
           isBlocked,
-        }
+        },
+        { withCredentials: true }
       );
       console.log("User is blocked");
       setMessage(response.data.message);

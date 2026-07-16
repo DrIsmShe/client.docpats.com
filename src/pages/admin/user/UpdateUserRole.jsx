@@ -14,7 +14,8 @@ const UpdateUserRole = () => {
     try {
       const response = await axios.put(
         `${API_BASE}/admin/user/users-role-update/${userId}`,
-        { newRole: role }
+        { newRole: role },
+        { withCredentials: true }
       );
       setMessage(response.data.message);
       navigate("/admin/users-list");
