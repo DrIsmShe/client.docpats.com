@@ -5,6 +5,7 @@ import CommentSection from "../../../../components/shared/CommentSection";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaCommentDots } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
+import ShareMenu from "../../../../components/shared/ShareMenu";
 import DoctorEndorseItem from "./DoctorEndorseItem";
 import { useTranslation } from "react-i18next";
 import { useMemo } from "react";
@@ -1244,6 +1245,15 @@ export default function DoctorDetailsForAll() {
                   sub="Войдите или зарегистрируйтесь — это бесплатно"
                 />
               )}
+
+              {/* Поделиться профилем врача — публичная ссылка, видна всем */}
+              <div style={{ marginTop: 12 }}>
+                <ShareMenu
+                  url={`${window.location.origin}/public/doctor-profile/doctor-details/${id}`}
+                  title={`Dr. ${fullName}`}
+                  className="dd-btn dd-btn-outline"
+                />
+              </div>
             </div>
           </div>
 

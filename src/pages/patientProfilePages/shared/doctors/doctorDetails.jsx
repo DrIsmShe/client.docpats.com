@@ -13,6 +13,7 @@ import CommentSection from "../../../../components/shared/CommentSection";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaCommentDots } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
+import ShareMenu from "../../../../components/shared/ShareMenu";
 import { FaCalendarCheck } from "react-icons/fa";
 import { getOrCreateDialogWithUser } from "../../../communication/api/communicationApi";
 const API = process.env.REACT_APP_API_URL;
@@ -1507,6 +1508,13 @@ export default function DoctorDetail() {
                     <AiFillLike /> {recommendCount}
                   </span>
                 </button>
+
+                {/* Поделиться профилем врача — публичная ссылка */}
+                <ShareMenu
+                  url={`${window.location.origin}/public/doctor-profile/doctor-details/${profileId}`}
+                  title={`Dr. ${fullName}`}
+                  className="dd-btn"
+                />
               </div>
             </div>
 

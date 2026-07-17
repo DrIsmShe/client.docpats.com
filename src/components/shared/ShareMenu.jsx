@@ -18,7 +18,12 @@ import {
   FaCheck,
 } from "react-icons/fa6";
 
-export default function ShareMenu({ url, title = "", className = "sa-share-btn" }) {
+export default function ShareMenu({
+  url,
+  title = "",
+  className = "sa-share-btn",
+  direction = "down",
+}) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -91,13 +96,26 @@ export default function ShareMenu({ url, title = "", className = "sa-share-btn" 
 
   return (
     <span ref={wrapRef} style={{ position: "relative", display: "inline-block" }}>
-      <button type="button" className={className} onClick={handleTrigger}>
+      <button
+        type="button"
+        className={className}
+        onClick={handleTrigger}
+        style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+      >
         <BsFillShareFill size={13} />
         {t("article_single.share")}
       </button>
 
       {open && (
-        <div style={menu} role="menu">
+        <div
+          style={{
+            ...menu,
+            ...(direction === "up"
+              ? { bottom: "calc(100% + 8px)" }
+              : { top: "calc(100% + 8px)" }),
+          }}
+          role="menu"
+        >
           <button type="button" style={row} onClick={copyLink}>
             <span style={{ ...iconBox, background: copied ? "#dcfce7" : "#eef2f7", color: copied ? "#16a34a" : "#334155" }}>
               {copied ? <FaCheck /> : <FaLink />}
@@ -121,7 +139,6 @@ export default function ShareMenu({ url, title = "", className = "sa-share-btn" 
 
 const menu = {
   position: "absolute",
-  bottom: "calc(100% + 8px)",
   left: 0,
   zIndex: 1000,
   minWidth: 220,
