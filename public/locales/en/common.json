@@ -443,7 +443,10 @@
     "comments_login_title": "Log in to leave a comment",
     "comments_login_sub": "Please log in or register to leave a comment.",
     "login_btn": "Log in",
-    "register_btn": "Register"
+    "register_btn": "Register",
+    "share_copy": "Copy link",
+    "share_copied": "Link copied",
+    "share_email": "Email"
   },
   "verification": {
     "tab": "Verification",

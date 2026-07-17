@@ -481,7 +481,10 @@
     "comments_login_title": "Yorum yapmak için giriş yapın",
     "comments_login_sub": "Yorum bırakmak için giriş yapın veya kayıt olun.",
     "login_btn": "Giriş yap",
-    "register_btn": "Kayıt ol"
+    "register_btn": "Kayıt ol",
+    "share_copy": "Bağlantıyı kopyala",
+    "share_copied": "Bağlantı kopyalandı",
+    "share_email": "E-posta"
   },
   "verification": {
     "tab": "Doğrulama",

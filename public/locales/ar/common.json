@@ -512,7 +512,10 @@
     "comments_login_title": "سجّل الدخول لكتابة تعليق",
     "comments_login_sub": "لكتابة تعليق، يُرجى تسجيل الدخول أو إنشاء حساب.",
     "login_btn": "تسجيل الدخول",
-    "register_btn": "إنشاء حساب"
+    "register_btn": "إنشاء حساب",
+    "share_copy": "نسخ الرابط",
+    "share_copied": "تم نسخ الرابط",
+    "share_email": "البريد الإلكتروني"
   },
   "doctor_home": {
     "ui": {

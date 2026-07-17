@@ -7,6 +7,7 @@ import { AiFillLike } from "react-icons/ai";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { BsFillShareFill } from "react-icons/bs";
+import ShareMenu from "../../../../components/shared/ShareMenu";
 import CommentSection from "../../../../components/shared/CommentSection";
 import useCommentCount from "../../../../components/shared/useCommentCountDetail";
 import { useTranslation } from "react-i18next";
@@ -305,11 +306,7 @@ const SingleArticleScientificForAll = () => {
     }
   };
 
-  const handleShare = () => {
-    const url = `${window.location.origin}/doctor/article-scientific-detail/${id}`;
-    navigator.clipboard.writeText(url);
-    alert(`${t("article_single.share")}: ${url}`);
-  };
+  const shareUrl = `${window.location.origin}/public/doctor/article-scientific-detail-for-all/${id}`;
 
   const getInitials = (firstName, lastName) =>
     ((firstName?.[0] || "") + (lastName?.[0] || "")).toUpperCase() || "Dr";
@@ -694,10 +691,7 @@ const SingleArticleScientificForAll = () => {
                 </Link>
               )}
 
-              <button className="sa-share-btn" onClick={handleShare}>
-                <BsFillShareFill size={13} />
-                {t("article_single.share")}
-              </button>
+              <ShareMenu url={shareUrl} title={article?.title} />
 
               {/* Кнопки: редактирование — владельцу ИЛИ админу; удаление — только владельцу */}
               {canEdit && (
