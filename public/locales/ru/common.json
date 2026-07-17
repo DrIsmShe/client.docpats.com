@@ -555,7 +555,11 @@
     "author_of_publication": "Автор публикации:",
     "co_authors": "Соавторы:",
     "abstract_title": "Аннотация:",
-    "references_title": "Список литературы:"
+    "references_title": "Список литературы:",
+    "comments_login_title": "Войдите, чтобы комментировать",
+    "comments_login_sub": "Чтобы оставить комментарий, войдите в аккаунт или зарегистрируйтесь.",
+    "login_btn": "Войти",
+    "register_btn": "Зарегистрироваться"
   },
   "doctor_home": {
     "ui": {

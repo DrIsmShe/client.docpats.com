@@ -150,7 +150,7 @@ function getItemLink(item, { isAuthenticated, userRole } = {}) {
       return `/public/doctor-profile/article-detail-for-all/${item._id}`;
     if (userRole === "patient") return `/patient/article-detail/${item._id}`;
     if (userRole === "doctor") return `/doctor/article-detail/${item._id}`;
-    return `/public/doctor/article-detail-for-all/${item._id}`;
+    return `/public/doctor-profile/article-detail-for-all/${item._id}`;
   }
   if (item._sourceType === "scientific") {
     if (!isAuthenticated)

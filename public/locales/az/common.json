@@ -478,7 +478,11 @@
     "co_authors": "Həm-müəlliflər:",
     "abstract": "Xülasə:",
     "references_title": "İstinadlar:",
-    "abstract_title": "Xülasə:"
+    "abstract_title": "Xülasə:",
+    "comments_login_title": "Şərh yazmaq üçün daxil olun",
+    "comments_login_sub": "Şərh yazmaq üçün hesabınıza daxil olun və ya qeydiyyatdan keçin.",
+    "login_btn": "Daxil ol",
+    "register_btn": "Qeydiyyat"
   },
   "verification": {
     "tab": "Təsdiqləmə",

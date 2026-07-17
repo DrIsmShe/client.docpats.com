@@ -603,9 +603,22 @@ function App() {
                 path="doctor-profile/article-detail-for-all/:id"
                 element={<SingleArticleForAll />}
               />
+              {/* Редактирование обычной статьи — автору И админу (бэкенд
+                  проверяет право сохранения: только автор или админ). */}
+              <Route
+                path="edit-article/:id"
+                element={<EditMyArticleDoctor />}
+              />
               <Route
                 path="doctor/article-scientific-detail-for-all/:id"
                 element={<SingleArticleScientificForAll />}
+              />
+              {/* Редактирование научной статьи — доступно автору И админу
+                  (докторский layout выкидывает админа; тут публичный). Бэкенд
+                  проверяет право сохранения: только автор или админ. */}
+              <Route
+                path="edit-article-scientific/:id"
+                element={<EditMyArticleScientificDoctor />}
               />
               <Route
                 path="doctor-profile/doctor-details/:id"

@@ -108,7 +108,9 @@ export default function EditMyArticleDoctor() {
       );
 
       alert(t("article_edit.updated_success"));
-      navigate(`/doctor/article-detail/${id}`);
+      // Публичная страница — доступна и врачу-автору, и админу
+      // (докторская /doctor/... выкидывает админа на /login).
+      navigate(`/public/doctor-profile/article-detail-for-all/${id}`);
       window.location.reload();
     } catch (error) {
       console.error("❌ Update error:", error);

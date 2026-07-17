@@ -508,7 +508,11 @@
     "author_of_publication": "كاتب النشر:",
     "co_authors": "المؤلفون المشاركون:",
     "abstract_title": "الملخص:",
-    "references_title": "المراجع:"
+    "references_title": "المراجع:",
+    "comments_login_title": "سجّل الدخول لكتابة تعليق",
+    "comments_login_sub": "لكتابة تعليق، يُرجى تسجيل الدخول أو إنشاء حساب.",
+    "login_btn": "تسجيل الدخول",
+    "register_btn": "إنشاء حساب"
   },
   "doctor_home": {
     "ui": {

@@ -477,7 +477,11 @@
     "author_of_publication": "Yayınlayan yazar:",
     "co_authors": "Eş-yazarlar:",
     "abstract_title": "Özet:",
-    "references_title": "Kaynaklar:"
+    "references_title": "Kaynaklar:",
+    "comments_login_title": "Yorum yapmak için giriş yapın",
+    "comments_login_sub": "Yorum bırakmak için giriş yapın veya kayıt olun.",
+    "login_btn": "Giriş yap",
+    "register_btn": "Kayıt ol"
   },
   "verification": {
     "tab": "Doğrulama",

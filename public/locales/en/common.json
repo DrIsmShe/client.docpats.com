@@ -439,7 +439,11 @@
     "author_of_publication": "Author of publication:",
     "co_authors": "Co-authors:",
     "abstract_title": "Abstract:",
-    "references_title": "References:"
+    "references_title": "References:",
+    "comments_login_title": "Log in to leave a comment",
+    "comments_login_sub": "Please log in or register to leave a comment.",
+    "login_btn": "Log in",
+    "register_btn": "Register"
   },
   "verification": {
     "tab": "Verification",

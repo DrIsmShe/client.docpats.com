@@ -557,6 +557,7 @@ export default function SingleArticleForAll() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [userRole, setUserRole] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
   const [liked, setLiked] = useState(false);
@@ -589,6 +590,7 @@ export default function SingleArticleForAll() {
           userRes.value?.data?.authenticated
         ) {
           setUserId(userRes.value.data.user.userId);
+          setUserRole(userRes.value.data.user.role);
           setIsAuthenticated(true);
         }
 
@@ -718,6 +720,9 @@ export default function SingleArticleForAll() {
   const isOwner =
     isAuthenticated &&
     String(article?.authorId?._id ?? article?.authorId) === String(userId);
+  // Админ может редактировать любую статью (модерация); бэкенд проверяет так же.
+  const isAdmin = userRole === "admin";
+  const canEdit = isOwner || isAdmin;
 
   // ---------------- RENDER ----------------
   return (
@@ -981,11 +986,11 @@ export default function SingleArticleForAll() {
                 {t("article_single.share")}
               </button>
 
-              {/* Owner buttons — only for authenticated owner */}
-              {isOwner && (
+              {/* Редактирование — владельцу ИЛИ админу; удаление — только владельцу */}
+              {canEdit && (
                 <div className="sa-owner-actions">
                   <Link
-                    to={`/doctor/update-my-article/${article._id}`}
+                    to={`/public/edit-article/${article._id}`}
                     state={{
                       title: article.title,
                       content: article.content,
@@ -1001,9 +1006,11 @@ export default function SingleArticleForAll() {
                   >
                     <FaEdit size={13} /> {t("article_single.edit")}
                   </Link>
-                  <button className="sa-btn-delete" onClick={handleDelete}>
-                    <MdDelete size={14} /> {t("article_single.delete")}
-                  </button>
+                  {isOwner && (
+                    <button className="sa-btn-delete" onClick={handleDelete}>
+                      <MdDelete size={14} /> {t("article_single.delete")}
+                    </button>
+                  )}
                 </div>
               )}
             </div>
