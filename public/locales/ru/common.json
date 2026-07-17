@@ -816,7 +816,6 @@
     "content": "Контент",
     "doctors": "Врачи"
   },
-
   "AsidePatient": {
     "brand": {
       "eyebrow": "Медицинская платформа"
@@ -1282,5 +1281,10 @@
     "statsDoctors_few": "врача",
     "statsDoctors_many": "врачей",
     "statsDoctors_other": "врача"
+  },
+  "profileMain": {
+    "noUserId": "Не удалось определить пользователя.",
+    "updated": "Профиль успешно обновлён.",
+    "updateError": "Не удалось обновить профиль. Попробуйте ещё раз."
   }
 }

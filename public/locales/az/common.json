@@ -780,8 +780,12 @@
     "unnamed": "Klinika"
   },
   "AsidePatient": {
-    "brand": { "eyebrow": "Tibbi platforma" },
-    "user": { "role": "Pasiyent" },
+    "brand": {
+      "eyebrow": "Tibbi platforma"
+    },
+    "user": {
+      "role": "Pasiyent"
+    },
     "messages": {
       "logoutSuccess": "Sistemdən uğurla çıxdınız.",
       "logoutError": "Çıxış zamanı xəta baş verdi. Yenidən cəhd edin."
@@ -1308,5 +1312,10 @@
     "experience_other": "{{count}} il təcrübə",
     "statsDoctors_one": "həkim",
     "statsDoctors_other": "həkim"
+  },
+  "profileMain": {
+    "noUserId": "İstifadəçi müəyyən edilə bilmədi.",
+    "updated": "Profil uğurla yeniləndi.",
+    "updateError": "Profil yenilənmədi. Zəhmət olmasa yenidən cəhd edin."
   }
 }

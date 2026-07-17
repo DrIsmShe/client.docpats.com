@@ -759,8 +759,12 @@
     "scan": "Scan"
   },
   "AsidePatient": {
-    "brand": { "eyebrow": "Medical platform" },
-    "user": { "role": "Patient" },
+    "brand": {
+      "eyebrow": "Medical platform"
+    },
+    "user": {
+      "role": "Patient"
+    },
     "messages": {
       "logoutSuccess": "You have successfully signed out.",
       "logoutError": "An error occurred while signing out. Please try again."
@@ -1202,5 +1206,10 @@
     "experience_other": "{{count}} years of experience",
     "statsDoctors_one": "doctor",
     "statsDoctors_other": "doctors"
+  },
+  "profileMain": {
+    "noUserId": "Could not determine the user.",
+    "updated": "Profile updated successfully.",
+    "updateError": "Failed to update the profile. Please try again."
   }
 }

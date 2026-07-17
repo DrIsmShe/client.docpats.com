@@ -1100,7 +1100,7 @@ export default function HomeMainPage() {
     const userId = id || data?.userId;
     if (!userId) {
       console.error("Error: user is missing");
-      alert("Error: Unable to determine user ID.");
+      alert(t("profileMain.noUserId"));
       return;
     }
     const requestData = {
@@ -1113,17 +1113,20 @@ export default function HomeMainPage() {
       bio: document.getElementById("bio").value,
     };
     try {
-      const response = await axios.post(
+      // withCredentials обязателен: сервер теперь определяет профиль по сессии.
+      await axios.post(
         `${API_BASE}/doctor-profile/update-main-profile-of-doctor`,
         requestData,
+        { withCredentials: true },
       );
+      alert(t("profileMain.updated"));
       navigate("/doctor/my-articles");
-      alert("Ура! " + response.data.message);
     } catch (error) {
       console.error(
         "Error sending data:",
         error.response ? error.response.data : error.message,
       );
+      alert(t("profileMain.updateError"));
     }
   };
 

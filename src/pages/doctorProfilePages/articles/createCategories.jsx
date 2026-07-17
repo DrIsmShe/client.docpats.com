@@ -21,15 +21,19 @@ const CreateCategoryPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_BASE}/my-articles-categories`, {
-        name,
-        description,
-        slug,
-        parentCategory,
-        icon,
-        metaDescription,
-        metaKeywords,
-      });
+      const response = await axios.post(
+        `${API_BASE}/my-articles-categories`,
+        {
+          name,
+          description,
+          slug,
+          parentCategory,
+          icon,
+          metaDescription,
+          metaKeywords,
+        },
+        { withCredentials: true },
+      );
 
       setMessage(t("category_form.success"));
       navigate("/create-my-articles");

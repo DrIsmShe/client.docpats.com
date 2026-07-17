@@ -779,8 +779,12 @@
     "unnamed": "Klinik"
   },
   "AsidePatient": {
-    "brand": { "eyebrow": "Tıbbi platform" },
-    "user": { "role": "Hasta" },
+    "brand": {
+      "eyebrow": "Tıbbi platform"
+    },
+    "user": {
+      "role": "Hasta"
+    },
     "messages": {
       "logoutSuccess": "Başarıyla çıkış yaptınız.",
       "logoutError": "Çıkış yapılırken bir hata oluştu. Lütfen tekrar deneyin."
@@ -1226,5 +1230,10 @@
     "experience_other": "{{count}} yıl deneyim",
     "statsDoctors_one": "doktor",
     "statsDoctors_other": "doktor"
+  },
+  "profileMain": {
+    "noUserId": "Kullanıcı belirlenemedi.",
+    "updated": "Profil başarıyla güncellendi.",
+    "updateError": "Profil güncellenemedi. Lütfen tekrar deneyin."
   }
 }

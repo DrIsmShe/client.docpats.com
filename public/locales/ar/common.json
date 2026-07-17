@@ -779,8 +779,12 @@
     "unnamed": "عيادة"
   },
   "AsidePatient": {
-    "brand": { "eyebrow": "منصة طبية" },
-    "user": { "role": "مريض" },
+    "brand": {
+      "eyebrow": "منصة طبية"
+    },
+    "user": {
+      "role": "مريض"
+    },
     "messages": {
       "logoutSuccess": "تم تسجيل خروجك بنجاح.",
       "logoutError": "حدث خطأ أثناء تسجيل الخروج. حاول مرة أخرى."
@@ -1220,5 +1224,10 @@
     "statsDoctors_few": "أطباء",
     "statsDoctors_many": "طبيبًا",
     "statsDoctors_other": "طبيب"
+  },
+  "profileMain": {
+    "noUserId": "تعذّر تحديد المستخدم.",
+    "updated": "تم تحديث الملف الشخصي بنجاح.",
+    "updateError": "فشل تحديث الملف الشخصي. يرجى المحاولة مرة أخرى."
   }
 }
