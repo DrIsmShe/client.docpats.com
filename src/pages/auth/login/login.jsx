@@ -422,10 +422,10 @@ export default function Login() {
         error.response?.data,
       );
 
-      if (
-        error.response?.status === 403 &&
-        error.response?.data?.mustChangePassword
-      ) {
+      const status = error.response?.status;
+      const data = error.response?.data || {};
+
+      if (status === 403 && data.mustChangePassword) {
         setTimeout(() => {
           navigate("/resetpasswordchange");
 
@@ -439,7 +439,34 @@ export default function Login() {
         return;
       }
 
-      setError(error.response?.data?.message || t("Login.errors.failed"));
+      // Слишком много запросов с этого IP (rate-limiter отдаёт текст в data.error)
+      if (status === 429) {
+        setError(
+          t("Login.errors.rateLimited", {
+            defaultValue:
+              "Слишком много попыток входа. Подождите около 15 минут и попробуйте снова.",
+          }),
+        );
+        return;
+      }
+
+      // Аккаунт временно заблокирован после серии неверных паролей (H-1)
+      if (
+        status === 403 &&
+        (data.code === "ACCOUNT_LOCKED" || /locked/i.test(data.message || ""))
+      ) {
+        const mins = data.retryAfterMinutes || 15;
+        setError(
+          t("Login.errors.locked", {
+            mins,
+            defaultValue:
+              "Аккаунт временно заблокирован из-за нескольких неверных попыток входа. Попробуйте через ~{{mins}} мин или восстановите пароль.",
+          }),
+        );
+        return;
+      }
+
+      setError(data.message || data.error || t("Login.errors.failed"));
     } finally {
       setLoading(false);
     }
@@ -544,21 +571,23 @@ export default function Login() {
               </div>
             </div>
 
-            {/* REMEMBER ME (НЕ УДАЛЯЕМ) */}
-            {/*
-            <div className="col-12">
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  id="rememberMe"
-                />
-                <label className="form-check-label" htmlFor="rememberMe">
-                  {t("Login.rememberMe")}
-                </label>
-              </div>
-            </div>
-            */}
+            {/* REMEMBER ME — id="rememberMe" читается в handleSubmit */}
+            <label
+              htmlFor="rememberMe"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                fontFamily: "var(--mono)",
+                fontSize: "12px",
+                color: "var(--muted)",
+                marginBottom: "8px",
+                cursor: "pointer",
+              }}
+            >
+              <input type="checkbox" id="rememberMe" style={{ cursor: "pointer" }} />
+              {t("Login.rememberMe") || "Запомнить меня на 30 дней"}
+            </label>
 
             {/* SUBMIT */}
             <button className="dp-btn" type="submit" disabled={loading}>
