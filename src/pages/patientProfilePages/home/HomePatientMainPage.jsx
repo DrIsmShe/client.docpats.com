@@ -777,6 +777,7 @@ export default function HomePatientMainPage() {
           dateOfBirth: dateOfBirth || undefined,
           bio: bio || undefined,
         },
+        { withCredentials: true },
       );
       navigate("/patient/home-page");
     } catch (err) {
