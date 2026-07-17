@@ -1316,6 +1316,7 @@
   "profileMain": {
     "noUserId": "İstifadəçi müəyyən edilə bilmədi.",
     "updated": "Profil uğurla yeniləndi.",
-    "updateError": "Profil yenilənmədi. Zəhmət olmasa yenidən cəhd edin."
+    "updateError": "Profil yenilənmədi. Zəhmət olmasa yenidən cəhd edin.",
+    "usernameTaken": "Bu istifadəçi adı artıq tutulub. Zəhmət olmasa başqasını seçin."
   }
 }

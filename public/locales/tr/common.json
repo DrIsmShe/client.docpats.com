@@ -1234,6 +1234,7 @@
   "profileMain": {
     "noUserId": "Kullanıcı belirlenemedi.",
     "updated": "Profil başarıyla güncellendi.",
-    "updateError": "Profil güncellenemedi. Lütfen tekrar deneyin."
+    "updateError": "Profil güncellenemedi. Lütfen tekrar deneyin.",
+    "usernameTaken": "Bu kullanıcı adı zaten alınmış. Lütfen başka bir tane seçin."
   }
 }

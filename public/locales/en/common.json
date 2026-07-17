@@ -1210,6 +1210,7 @@
   "profileMain": {
     "noUserId": "Could not determine the user.",
     "updated": "Profile updated successfully.",
-    "updateError": "Failed to update the profile. Please try again."
+    "updateError": "Failed to update the profile. Please try again.",
+    "usernameTaken": "This username is already taken. Please choose another."
   }
 }

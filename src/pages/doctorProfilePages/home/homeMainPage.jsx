@@ -1126,7 +1126,11 @@ export default function HomeMainPage() {
         "Error sending data:",
         error.response ? error.response.data : error.message,
       );
-      alert(t("profileMain.updateError"));
+      if (error.response?.data?.code === "USERNAME_TAKEN") {
+        alert(t("profileMain.usernameTaken"));
+      } else {
+        alert(t("profileMain.updateError"));
+      }
     }
   };
 
