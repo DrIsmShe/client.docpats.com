@@ -33,18 +33,18 @@
 
   "guestBanner": {
     "title": "Try for free",
-    "text": "No registration — 1 trial article. After signing up — free plan forever: 7 AI consultations every month.",
+    "text": "No registration — 1 trial article. After signing up — free plan forever: 5 AI consultations every month.",
     "cta": "Sign up"
   },
 
   "doctorBanner": {
     "title": "6 months free for new doctors",
-    "text": "After signing up — full Doctor Super features for 6 months. Then stay on the platform for $19/mo or pick a paid plan that fits your practice.",
+    "text": "After signing up — full Doctor Growth features for 6 months. Then stay on the platform for $19/mo or pick a paid plan that fits your practice.",
     "cta": "Get started"
   },
 
   "patientFooter": "💡 The free plan is forever. Paid features activate immediately after payment, cancel anytime.",
-  "doctorFooter": "💡 The higher the tier — the lower the commission per booking. Doctor Super pays for itself with 2-3 patients a month, Doctor Pro with 4-5.",
+  "doctorFooter": "💡 The higher the tier — the lower the commission per booking. Doctor Growth pays for itself with 2-3 patients a month, Doctor Pro with 4-5.",
   "clinicFooter": "💡 The Medical Center plan includes a dedicated manager and custom configuration tailored to your clinic. Contact us to discuss.",
 
   "card": {
@@ -70,16 +70,16 @@
       "desc": "Maximum AI capabilities and priority"
     },
     "doctor_basic": {
-      "name": "Basic",
+      "name": "Start",
       "desc": "Basic presence on the platform after trial",
-      "trialNote": "First 6 months — free, equivalent to Doctor Super"
+      "trialNote": "First 6 months — free, equivalent to Doctor Growth"
     },
     "doctor_super": {
-      "name": "Super",
+      "name": "Growth",
       "desc": "For growing private practice"
     },
     "doctor_pro": {
-      "name": "Professional",
+      "name": "Pro",
       "desc": "Full toolkit for an established practice"
     },
     "clinic_start": {
@@ -87,11 +87,11 @@
       "desc": "For small clinics up to 5 doctors"
     },
     "clinic": {
-      "name": "Clinic",
+      "name": "Business",
       "desc": "For clinics up to 15 doctors"
     },
     "clinic_pro": {
-      "name": "Medical Center",
+      "name": "Enterprise",
       "desc": "For large medical centers"
     }
   },

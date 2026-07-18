@@ -626,7 +626,7 @@ export default function PricingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <GuestBanner t={t} />
+            {!userRole && <GuestBanner t={t} />}
             <div className="row g-4 justify-content-center">
               {PATIENT_PLANS.map((plan) => (
                 <div key={plan.key} className="col-md-4">
@@ -653,7 +653,7 @@ export default function PricingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <DoctorBanner t={t} />
+            {!currentPlanKey && <DoctorBanner t={t} />}
             <div className="row g-4 justify-content-center">
               {DOCTOR_PLANS.map((plan) => (
                 <div key={plan.key} className="col-md-4">

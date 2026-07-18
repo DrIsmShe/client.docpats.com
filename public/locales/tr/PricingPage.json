@@ -33,18 +33,18 @@
 
   "guestBanner": {
     "title": "Ücretsiz dene",
-    "text": "Kayıt olmadan — 1 deneme makalesi. Kayıt olduktan sonra — sonsuza dek ücretsiz plan: her ay 7 AI konsültasyonu.",
+    "text": "Kayıt olmadan — 1 deneme makalesi. Kayıt olduktan sonra — sonsuza dek ücretsiz plan: her ay 5 AI konsültasyonu.",
     "cta": "Kayıt ol"
   },
 
   "doctorBanner": {
     "title": "Yeni doktorlar için 6 ay ücretsiz",
-    "text": "Kayıt olduktan sonra — 6 ay boyunca tüm Doctor Super özellikleri. Sonrasında platformda $19/ay ile kalabilir veya pratiğinize uygun bir ücretli plan seçebilirsiniz.",
+    "text": "Kayıt olduktan sonra — 6 ay boyunca tüm Doctor Growth özellikleri. Sonrasında platformda $19/ay ile kalabilir veya pratiğinize uygun bir ücretli plan seçebilirsiniz.",
     "cta": "Başla"
   },
 
   "patientFooter": "💡 Ücretsiz plan sonsuza dek geçerlidir. Ücretli özellikler ödemeden hemen sonra etkinleşir, istediğiniz zaman iptal edebilirsiniz.",
-  "doctorFooter": "💡 Plan ne kadar yüksekse — randevu başına komisyon o kadar düşük olur. Doctor Super ayda 2-3 hastayla, Doctor Pro 4-5 hastayla kendini amorti eder.",
+  "doctorFooter": "💡 Plan ne kadar yüksekse — randevu başına komisyon o kadar düşük olur. Doctor Growth ayda 2-3 hastayla, Doctor Pro 4-5 hastayla kendini amorti eder.",
   "clinicFooter": "💡 Medical Center planı, kişisel bir yönetici ve kliniğinizin ihtiyaçlarına özel yapılandırma içerir. Detaylar için bizimle iletişime geçin.",
 
   "card": {
@@ -58,7 +58,7 @@
 
   "plans": {
     "patient_free": {
-      "name": "Ücretsiz",
+      "name": "Free",
       "desc": "Kayıt sonrası kalıcı temel erişim"
     },
     "patient_std": {
@@ -70,28 +70,28 @@
       "desc": "Maksimum AI olanakları ve öncelik"
     },
     "doctor_basic": {
-      "name": "Temel",
+      "name": "Start",
       "desc": "Deneme süresi sonrası platformda temel varlık",
-      "trialNote": "İlk 6 ay — Doctor Super seviyesinde ücretsiz"
+      "trialNote": "İlk 6 ay — Doctor Growth seviyesinde ücretsiz"
     },
     "doctor_super": {
-      "name": "Süper",
+      "name": "Growth",
       "desc": "Büyüyen özel pratik için"
     },
     "doctor_pro": {
-      "name": "Profesyonel",
+      "name": "Pro",
       "desc": "Olgun pratik için tam araç seti"
     },
     "clinic_start": {
-      "name": "Başlangıç",
+      "name": "Start",
       "desc": "5 doktora kadar küçük klinikler için"
     },
     "clinic": {
-      "name": "Klinik",
+      "name": "Business",
       "desc": "15 doktora kadar klinikler için"
     },
     "clinic_pro": {
-      "name": "Tıp Merkezi",
+      "name": "Enterprise",
       "desc": "Büyük tıp merkezleri için"
     }
   },

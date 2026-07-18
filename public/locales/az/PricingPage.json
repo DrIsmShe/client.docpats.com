@@ -33,18 +33,18 @@
 
   "guestBanner": {
     "title": "Pulsuz sınayın",
-    "text": "Qeydiyyatsız — 1 sınaq məqaləsi. Qeydiyyatdan sonra — daimi pulsuz plan: hər ay 7 AI konsultasiyası.",
+    "text": "Qeydiyyatsız — 1 sınaq məqaləsi. Qeydiyyatdan sonra — daimi pulsuz plan: hər ay 5 AI konsultasiyası.",
     "cta": "Qeydiyyatdan keç"
   },
 
   "doctorBanner": {
     "title": "Yeni həkimlər üçün 6 ay pulsuz",
-    "text": "Qeydiyyatdan sonra — 6 ay ərzində bütün Doctor Super imkanları. Sonra platformada $19/ay ilə qala bilər və ya təcrübənizə uyğun ödənişli plan seçə bilərsiniz.",
+    "text": "Qeydiyyatdan sonra — 6 ay ərzində bütün Doctor Growth imkanları. Sonra platformada $19/ay ilə qala bilər və ya təcrübənizə uyğun ödənişli plan seçə bilərsiniz.",
     "cta": "Başla"
   },
 
   "patientFooter": "💡 Pulsuz plan həmişəlikdir. Ödənişli funksiyalar ödənişdən dərhal sonra aktivləşir, istənilən vaxt ləğv edə bilərsiniz.",
-  "doctorFooter": "💡 Tarif nə qədər yüksəkdirsə — qeydiyyat üçün komissiya o qədər aşağıdır. Doctor Super ayda 2-3 xəstə ilə, Doctor Pro 4-5 xəstə ilə özünü ödəyir.",
+  "doctorFooter": "💡 Tarif nə qədər yüksəkdirsə — qeydiyyat üçün komissiya o qədər aşağıdır. Doctor Growth ayda 2-3 xəstə ilə, Doctor Pro 4-5 xəstə ilə özünü ödəyir.",
   "clinicFooter": "💡 Tibb Mərkəzi tarifinə şəxsi menecer və klinikanızın ehtiyaclarına uyğun fərdi konfiqurasiya daxildir. Detallar üçün bizimlə əlaqə saxlayın.",
 
   "card": {
@@ -58,7 +58,7 @@
 
   "plans": {
     "patient_free": {
-      "name": "Pulsuz",
+      "name": "Free",
       "desc": "Qeydiyyatdan sonra daimi əsas giriş"
     },
     "patient_std": {
@@ -70,16 +70,16 @@
       "desc": "Maksimum AI imkanları və prioritet"
     },
     "doctor_basic": {
-      "name": "Əsas",
+      "name": "Start",
       "desc": "Sınaq müddətindən sonra platformada əsas mövcudluq",
-      "trialNote": "İlk 6 ay — Doctor Super səviyyəsində pulsuz"
+      "trialNote": "İlk 6 ay — Doctor Growth səviyyəsində pulsuz"
     },
     "doctor_super": {
-      "name": "Super",
+      "name": "Growth",
       "desc": "Böyüyən fərdi təcrübə üçün"
     },
     "doctor_pro": {
-      "name": "Professional",
+      "name": "Pro",
       "desc": "Yetkin təcrübə üçün tam alət dəsti"
     },
     "clinic_start": {
@@ -87,11 +87,11 @@
       "desc": "5 həkimə qədər kiçik klinikalar üçün"
     },
     "clinic": {
-      "name": "Klinika",
+      "name": "Business",
       "desc": "15 həkimə qədər klinikalar üçün"
     },
     "clinic_pro": {
-      "name": "Tibb Mərkəzi",
+      "name": "Enterprise",
       "desc": "Böyük tibbi mərkəzlər üçün"
     }
   },
