@@ -1339,5 +1339,17 @@
     "scan": "Kamera ilə skan edin",
     "invited": "dəvət edilib",
     "bonusDays": "bonus gün qazanılıb"
+  },
+  "doctorReview": {
+    "title": "Pasiyent rəyləri",
+    "count": "rəy",
+    "leave": "Rəy yaz",
+    "thanks": "Rəyiniz üçün təşəkkürlər!",
+    "loginNeeded": "Rəy yazmaq üçün daxil olun.",
+    "error": "Rəy göndərilə bilmədi.",
+    "placeholder": "Qəbul haqqında yazın (istəyə görə)…",
+    "sending": "Göndərilir…",
+    "submit": "Rəyi göndər",
+    "empty": "Hələ rəy yoxdur — ilk siz olun."
   }
 }

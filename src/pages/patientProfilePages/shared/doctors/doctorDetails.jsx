@@ -10,6 +10,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import CommentSection from "../../../../components/shared/CommentSection";
+import DoctorReviews from "../../../../components/shared/DoctorReviews";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaCommentDots } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
@@ -1572,6 +1573,7 @@ export default function DoctorDetail() {
               <IconChat />
               {t("doctorDetail.comments.title")}
             </h4>
+            <DoctorReviews doctorProfileId={doctorProfile?._id} />
             <CommentSection refId={profileId} targetType="Doctor" />
           </div>
         </div>

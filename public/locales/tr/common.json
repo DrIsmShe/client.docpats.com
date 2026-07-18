@@ -1257,5 +1257,17 @@
     "scan": "Kamera ile tarayın",
     "invited": "davet edildi",
     "bonusDays": "bonus gün kazanıldı"
+  },
+  "doctorReview": {
+    "title": "Hasta yorumları",
+    "count": "yorum",
+    "leave": "Yorum bırak",
+    "thanks": "Yorumunuz için teşekkürler!",
+    "loginNeeded": "Yorum bırakmak için giriş yapın.",
+    "error": "Yorum gönderilemedi.",
+    "placeholder": "Ziyaretinizi anlatın (isteğe bağlı)…",
+    "sending": "Gönderiliyor…",
+    "submit": "Yorumu gönder",
+    "empty": "Henüz yorum yok — ilk siz olun."
   }
 }

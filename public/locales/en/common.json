@@ -1233,5 +1233,17 @@
     "scan": "Scan with your camera",
     "invited": "invited",
     "bonusDays": "bonus days earned"
+  },
+  "doctorReview": {
+    "title": "Patient reviews",
+    "count": "reviews",
+    "leave": "Leave a review",
+    "thanks": "Thanks for your review!",
+    "loginNeeded": "Log in to leave a review.",
+    "error": "Couldn't submit your review.",
+    "placeholder": "Tell us about your visit (optional)…",
+    "sending": "Sending…",
+    "submit": "Submit review",
+    "empty": "No reviews yet — be the first."
   }
 }

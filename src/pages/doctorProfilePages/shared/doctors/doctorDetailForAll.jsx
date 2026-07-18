@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import CommentSection from "../../../../components/shared/CommentSection";
+import DoctorReviews from "../../../../components/shared/DoctorReviews";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaCommentDots } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
@@ -1436,6 +1437,9 @@ export default function DoctorDetailsForAll() {
               </div>
             </div>
           </div>
+
+          {/* Отзывы пациентов о враче */}
+          <DoctorReviews doctorProfileId={doctorProfile?._id} />
 
           {/* Comments */}
           <div className="dd-card">
