@@ -55,10 +55,15 @@ export default function PricingCheckoutPage() {
           navigate("/login", { state: { from: "/pricing" } });
           return;
         }
-        setError(
-          e.response?.data?.message ||
-            "Ошибка при оформлении подписки. Попробуйте позже.",
-        );
+        const raw = e.response?.data?.message || "";
+        // Тариф чужой роли (бэкенд: "Role ... cannot purchase plan ...").
+        if (/cannot purchase/i.test(raw)) {
+          setError(
+            "Этот тариф предназначен для другой роли. Выберите план из своего раздела: врач — «Врачи», пациент — «Пациенты», клиника — «Клиники».",
+          );
+        } else {
+          setError(raw || "Ошибка при оформлении подписки. Попробуйте позже.");
+        }
       }
     })();
   }, [plan, period, navigate]);
