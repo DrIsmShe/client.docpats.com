@@ -116,7 +116,7 @@ export default function MockCheckoutPage() {
             Подписка активирована. Спасибо!
           </p>
           <button
-            onClick={() => navigate("/subscription")}
+            onClick={() => navigate("/pricing")}
             style={{
               width: "100%",
               padding: "12px 0",
