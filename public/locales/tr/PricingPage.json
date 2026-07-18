@@ -62,7 +62,7 @@
       "desc": "Kayıt sonrası kalıcı temel erişim"
     },
     "patient_std": {
-      "name": "Standart",
+      "name": "Plus",
       "desc": "Aktif AI kullanımı için"
     },
     "patient_pro": {
@@ -88,7 +88,7 @@
     },
     "clinic": {
       "name": "Klinik",
-      "desc": "10 doktora kadar klinikler için"
+      "desc": "15 doktora kadar klinikler için"
     },
     "clinic_pro": {
       "name": "Tıp Merkezi",

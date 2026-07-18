@@ -62,7 +62,7 @@
       "desc": "Qeydiyyatdan sonra daimi əsas giriş"
     },
     "patient_std": {
-      "name": "Standart",
+      "name": "Plus",
       "desc": "Aktiv AI istifadəsi üçün"
     },
     "patient_pro": {
@@ -88,7 +88,7 @@
     },
     "clinic": {
       "name": "Klinika",
-      "desc": "10 həkimə qədər klinikalar üçün"
+      "desc": "15 həkimə qədər klinikalar üçün"
     },
     "clinic_pro": {
       "name": "Tibb Mərkəzi",

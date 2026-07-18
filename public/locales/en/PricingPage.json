@@ -62,7 +62,7 @@
       "desc": "Basic access forever after registration"
     },
     "patient_std": {
-      "name": "Standard",
+      "name": "Plus",
       "desc": "For active AI usage"
     },
     "patient_pro": {
@@ -88,7 +88,7 @@
     },
     "clinic": {
       "name": "Clinic",
-      "desc": "For clinics up to 10 doctors"
+      "desc": "For clinics up to 15 doctors"
     },
     "clinic_pro": {
       "name": "Medical Center",
