@@ -119,6 +119,8 @@
     "directPayments": "Прямые онлайн-платежи",
     "commission": "Комиссия DocPats {{percent}}%",
     "aiPriority": "Приоритет в AI-рекомендациях",
+    "anthropometryTools": "Инструменты антропометрии",
+    "surgicalSimulation": "Хирургическая симуляция",
 
     "viewDocuments": "Просмотр всех своих документов — без лимита",
     "fullHistory": "Полная история документов",

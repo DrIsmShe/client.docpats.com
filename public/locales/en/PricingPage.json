@@ -119,6 +119,8 @@
     "directPayments": "Direct online payments",
     "commission": "DocPats commission {{percent}}%",
     "aiPriority": "Priority in AI recommendations",
+    "anthropometryTools": "Anthropometry tools",
+    "surgicalSimulation": "Surgical simulation",
 
     "viewDocuments": "View all your own documents — unlimited",
     "fullHistory": "Full document history",

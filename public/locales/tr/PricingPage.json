@@ -119,6 +119,8 @@
     "directPayments": "Doğrudan online ödemeler",
     "commission": "DocPats komisyonu %{{percent}}",
     "aiPriority": "AI önerilerinde öncelik",
+    "anthropometryTools": "Antropometri araçları",
+    "surgicalSimulation": "Cerrahi simülasyon",
 
     "viewDocuments": "Kendi belgelerini görüntüleme — sınırsız",
     "fullHistory": "Tam belge geçmişi",

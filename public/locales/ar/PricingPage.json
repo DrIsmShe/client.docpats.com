@@ -119,6 +119,8 @@
     "directPayments": "مدفوعات مباشرة عبر الإنترنت",
     "commission": "عمولة DocPats {{percent}}%",
     "aiPriority": "أولوية في توصيات الذكاء الاصطناعي",
+    "anthropometryTools": "أدوات قياسات الجسم",
+    "surgicalSimulation": "محاكاة جراحية",
 
     "viewDocuments": "عرض جميع مستنداتك — بدون حد",
     "fullHistory": "السجل الكامل للمستندات",
