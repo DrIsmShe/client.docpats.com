@@ -10,14 +10,14 @@ import LanguageSwitcher from "../components/LanguageSwitcher";
 //   PLAN_PRICES. Если меняешь там — меняй и здесь.
 // ═════════════════════════════════════════════════════════════════════
 const PRICES_USD = {
-  patient_std: { monthly: 5, yearly: 48 },
-  patient_pro: { monthly: 11, yearly: 106 },
-  doctor_basic: { monthly: 3.5, yearly: 34 },
-  doctor_super: { monthly: 13, yearly: 125 },
-  doctor_pro: { monthly: 29, yearly: 278 },
-  clinic_start: { monthly: 59, yearly: 566 },
-  clinic: { monthly: 99, yearly: 950 },
-  clinic_pro: { monthly: 199, yearly: 1910 },
+  patient_std: { monthly: 9, yearly: 90 },
+  patient_pro: { monthly: 19, yearly: 190 },
+  doctor_basic: { monthly: 19, yearly: 190 },
+  doctor_super: { monthly: 49, yearly: 490 },
+  doctor_pro: { monthly: 99, yearly: 990 },
+  clinic_start: { monthly: 99, yearly: 990 },
+  clinic: { monthly: 249, yearly: 2490 },
+  clinic_pro: { monthly: 499, yearly: 4990 },
 };
 
 // ═════════════════════════════════════════════════════════════════════
@@ -34,9 +34,9 @@ const PATIENT_PLANS = [
     cta: "register",
     ctaPath: "/register",
     features: [
-      { i18nKey: "features.aiConsultations", vars: { count: 7 } },
+      { i18nKey: "features.aiConsultations", vars: { count: 5 } },
       { i18nKey: "features.aiArticlesOne" },
-      { i18nKey: "features.soapEpicrises", vars: { count: 7 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 3 } },
       { i18nKey: "features.viewDocuments" },
       { i18nKey: "features.bookDoctor" },
       { i18nKey: "features.paidConsultations" },
@@ -51,8 +51,8 @@ const PATIENT_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=patient_std",
     features: [
-      { i18nKey: "features.aiConsultations", vars: { count: 20 } },
-      { i18nKey: "features.aiArticles", vars: { count: 3 } },
+      { i18nKey: "features.aiConsultations", vars: { count: 30 } },
+      { i18nKey: "features.aiArticles", vars: { count: 5 } },
       { i18nKey: "features.soapEpicrises", vars: { count: 20 } },
       { i18nKey: "features.fullHistory" },
       { i18nKey: "features.exportPdf" },
@@ -68,9 +68,9 @@ const PATIENT_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=patient_pro",
     features: [
-      { i18nKey: "features.aiConsultations", vars: { count: 60 } },
-      { i18nKey: "features.aiArticles", vars: { count: 10 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 60 } },
+      { i18nKey: "features.aiConsultationsUnlimited" },
+      { i18nKey: "features.aiArticles", vars: { count: 20 } },
+      { i18nKey: "features.soapEpicrisesUnlimited" },
       { i18nKey: "features.fullHistoryBackup" },
       { i18nKey: "features.exportPdf" },
       { i18nKey: "features.consultationDiscount", vars: { percent: 20 } },
@@ -90,12 +90,12 @@ const DOCTOR_PLANS = [
     showTrialNote: true,
     features: [
       { i18nKey: "features.doctorProfile" },
-      { i18nKey: "features.aiAnalyses", vars: { count: 7 } },
+      { i18nKey: "features.aiAnalyses", vars: { count: 10 } },
       { i18nKey: "features.aiArticles", vars: { count: 3 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 7 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 10 } },
       { i18nKey: "features.aiPatientConsultations", vars: { count: 5 } },
-      { i18nKey: "features.patientsInOffice", vars: { count: 5 } },
-      { i18nKey: "features.videoMinutes", vars: { count: 30 } },
+      { i18nKey: "features.patientsInOffice", vars: { count: 50 } },
+      { i18nKey: "features.videoMinutes", vars: { count: 120 } },
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.commission", vars: { percent: 15 } },
     ],
@@ -107,11 +107,11 @@ const DOCTOR_PLANS = [
     ctaPath: "/pricing/checkout?plan=doctor_super",
     features: [
       { i18nKey: "features.doctorProfile" },
-      { i18nKey: "features.aiAnalyses", vars: { count: 30 } },
-      { i18nKey: "features.aiArticles", vars: { count: 10 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 30 } },
-      { i18nKey: "features.aiPatientConsultations", vars: { count: 30 } },
-      { i18nKey: "features.patientsInOffice", vars: { count: 60 } },
+      { i18nKey: "features.aiAnalyses", vars: { count: 50 } },
+      { i18nKey: "features.aiArticles", vars: { count: 15 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 50 } },
+      { i18nKey: "features.aiPatientConsultations", vars: { count: 50 } },
+      { i18nKey: "features.patientsInOffice", vars: { count: 500 } },
       {
         i18nKey: "features.videoMinutesHours",
         vars: { count: 600, hours: 10 },
@@ -127,9 +127,9 @@ const DOCTOR_PLANS = [
     ctaPath: "/pricing/checkout?plan=doctor_pro",
     features: [
       { i18nKey: "features.doctorProfilePriority" },
-      { i18nKey: "features.aiAnalyses", vars: { count: 100 } },
-      { i18nKey: "features.aiArticles", vars: { count: 30 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 100 } },
+      { i18nKey: "features.aiAnalysesUnlimited" },
+      { i18nKey: "features.aiArticlesUnlimited" },
+      { i18nKey: "features.soapEpicrisesUnlimited" },
       { i18nKey: "features.aiConsultationsUnlimited" },
       { i18nKey: "features.patientsInOfficeUnlimited" },
       {
@@ -168,7 +168,7 @@ const CLINIC_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=clinic",
     features: [
-      { i18nKey: "features.doctorsInClinic", vars: { count: 10 } },
+      { i18nKey: "features.doctorsInClinic", vars: { count: 15 } },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedSchedule" },
       { i18nKey: "features.aiAnalysesUnlimited" },
