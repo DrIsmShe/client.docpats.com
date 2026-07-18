@@ -32,7 +32,7 @@ const PATIENT_PLANS = [
     free: true,
     highlight: false,
     cta: "register",
-    ctaPath: "/register",
+    ctaPath: "/registration",
     features: [
       { i18nKey: "features.aiConsultations", vars: { count: 5 } },
       { i18nKey: "features.aiArticlesOne" },
@@ -188,7 +188,7 @@ const CLINIC_PLANS = [
     key: "clinic_pro",
     highlight: false,
     cta: "contact",
-    ctaPath: "/contact?subject=clinic_pro",
+    ctaPath: "mailto:support@docpats.com?subject=Clinic%20Enterprise",
     features: [
       { i18nKey: "features.doctorsInClinicUnlimited" },
       { i18nKey: "features.allDoctorsProfiles" },
@@ -309,6 +309,11 @@ function PlanCard({ plan, period, t }) {
             }`}
             onClick={() => {
               const path = plan.ctaPath || "/";
+              // mailto/внешние ссылки — обычным переходом, не через роутер.
+              if (path.startsWith("mailto:") || path.startsWith("http")) {
+                window.location.href = path;
+                return;
+              }
               // На страницу оплаты пробрасываем выбранный период (мес/год).
               navigate(
                 path.startsWith("/pricing/checkout")
@@ -347,7 +352,7 @@ function GuestBanner({ t }) {
       </div>
       <button
         className="btn btn-primary rounded-3 flex-shrink-0"
-        onClick={() => navigate("/register")}
+        onClick={() => navigate("/registration")}
       >
         {t("guestBanner.cta")}
       </button>
@@ -374,7 +379,7 @@ function DoctorBanner({ t }) {
       </div>
       <button
         className="btn btn-primary rounded-3 flex-shrink-0"
-        onClick={() => navigate("/register")}
+        onClick={() => navigate("/registration")}
       >
         {t("doctorBanner.cta")}
       </button>
