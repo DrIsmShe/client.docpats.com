@@ -1,37 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-
-// Иконка по типу уведомления (единый центр — каждый тип узнаваем).
-const ICONS = {
-  appointment_booked: "📅",
-  appointment_confirmed: "📅",
-  appointment_completed: "✅",
-  appointment_cancelled: "❌",
-  appointment_reminder: "⏰",
-  comment: "💬",
-  comment_reply: "💬",
-  comment_doctor: "💬",
-  comment_reply_in_article: "💬",
-  "doctorProfile.commented": "💬",
-  "doctorProfile.replied": "💬",
-  "doctorProfile.commentSent": "💬",
-  chat_message: "✉️",
-  like: "👍",
-  friend_request: "🤝",
-  payment: "💳",
-  consent_request_new: "🔐",
-  clinic_lead: "📥",
-  system_message: "🔔",
-  custom: "🔔",
-};
-
-function iconFor(n) {
-  const link = n.link || "";
-  if (/review=1/.test(link)) return "⭐"; // запрос отзыва
-  if (/\/registration\?ref=/.test(link)) return "🎁"; // реферал
-  return ICONS[n.type] || "🔔";
-}
+import { notificationIcon } from "../../utils/notificationIcon";
 
 export default function NotificationBell({ onUnreadChange, limit = 6 }) {
   const { t } = useTranslation();
@@ -183,7 +153,7 @@ export default function NotificationBell({ onUnreadChange, limit = 6 }) {
               onClick={() => (n.link ? openNotification(n) : null)}
             >
               <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <span style={{ fontSize: 18, lineHeight: "20px" }}>{iconFor(n)}</span>
+                <span style={{ fontSize: 18, lineHeight: "20px" }}>{notificationIcon(n)}</span>
                 <div style={{ minWidth: 0, flex: 1 }}>
                   <div className="fw-bold text-dark" style={{ fontSize: 14 }}>
                     {n.title}

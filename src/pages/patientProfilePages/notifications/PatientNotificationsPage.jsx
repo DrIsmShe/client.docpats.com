@@ -13,6 +13,7 @@ import {
 } from "react-bootstrap";
 import { FaBell, FaCheckCircle, FaTrashAlt, FaSyncAlt } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { notificationIcon } from "../../../utils/notificationIcon";
 
 const API_BASE = process.env.REACT_APP_API_URL;
 
@@ -219,7 +220,10 @@ export default function PatientNotificationsPage() {
             >
               <Card.Body>
                 <Card.Title className="mb-2 d-flex justify-content-between align-items-center">
-                  <span>{n.title || "Уведомление"}</span>
+                  <span>
+                    <span style={{ marginRight: 8 }}>{notificationIcon(n)}</span>
+                    {n.title || "Уведомление"}
+                  </span>
                 </Card.Title>
 
                 <Card.Text className="mb-1 text-dark">{n.message}</Card.Text>

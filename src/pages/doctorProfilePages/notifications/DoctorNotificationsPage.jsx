@@ -20,6 +20,7 @@ import {
   FaPaperPlane,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { notificationIcon } from "../../../utils/notificationIcon";
 
 const API_BASE = process.env.REACT_APP_API_URL;
 export default function DoctorNotificationsPage() {
@@ -240,6 +241,7 @@ export default function DoctorNotificationsPage() {
                       n.isRead ? "text-secondary" : "text-dark"
                     }`}
                   >
+                    <span style={{ marginRight: 8 }}>{notificationIcon(n)}</span>
                     {n.title || "Уведомление"}
                   </Card.Title>
 
