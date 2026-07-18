@@ -31,7 +31,7 @@ export default function MockCheckoutPage() {
     setStatus("paying");
     try {
       const res = await axios.post(
-        `${API_BASE}/payments/mock/confirm`,
+        `${API_BASE}/api/payments/mock/confirm`,
         { transactionId: tx },
         { withCredentials: true },
       );

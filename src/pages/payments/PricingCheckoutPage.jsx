@@ -34,7 +34,7 @@ export default function PricingCheckoutPage() {
       }
       try {
         const res = await axios.post(
-          `${API_BASE}/payments/subscribe`,
+          `${API_BASE}/api/payments/subscribe`,
           { planKey: plan, period },
           { withCredentials: true },
         );
