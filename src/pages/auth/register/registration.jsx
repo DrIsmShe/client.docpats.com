@@ -574,6 +574,9 @@ export default function Registration() {
       bio,
       agreement,
       role,
+      // Реферальный код из ссылки /register?ref=CODE (если пришли по приглашению)
+      ref:
+        new URLSearchParams(window.location.search).get("ref") || undefined,
       parentEmail:
         role === "patient" && age !== null && age < 18
           ? parentEmail
