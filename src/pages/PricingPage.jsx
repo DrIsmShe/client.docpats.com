@@ -307,7 +307,15 @@ function PlanCard({ plan, period, t }) {
             className={`btn rounded-3 mt-auto fw-semibold ${
               plan.highlight ? "btn-primary" : "btn-outline-primary"
             }`}
-            onClick={() => navigate(plan.ctaPath)}
+            onClick={() => {
+              const path = plan.ctaPath || "/";
+              // На страницу оплаты пробрасываем выбранный период (мес/год).
+              navigate(
+                path.startsWith("/pricing/checkout")
+                  ? `${path}&period=${period}`
+                  : path,
+              );
+            }}
           >
             {t(ctaLabelKey)}
           </button>
