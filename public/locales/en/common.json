@@ -1245,5 +1245,6 @@
     "sending": "Sending…",
     "submit": "Submit review",
     "empty": "No reviews yet — be the first."
-  }
+  },
+  "mark_all_read": "Mark all read"
 }

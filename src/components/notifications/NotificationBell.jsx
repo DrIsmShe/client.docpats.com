@@ -2,7 +2,38 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-export default function NotificationBell({ onUnreadChange, limit = 3 }) {
+// Иконка по типу уведомления (единый центр — каждый тип узнаваем).
+const ICONS = {
+  appointment_booked: "📅",
+  appointment_confirmed: "📅",
+  appointment_completed: "✅",
+  appointment_cancelled: "❌",
+  appointment_reminder: "⏰",
+  comment: "💬",
+  comment_reply: "💬",
+  comment_doctor: "💬",
+  comment_reply_in_article: "💬",
+  "doctorProfile.commented": "💬",
+  "doctorProfile.replied": "💬",
+  "doctorProfile.commentSent": "💬",
+  chat_message: "✉️",
+  like: "👍",
+  friend_request: "🤝",
+  payment: "💳",
+  consent_request_new: "🔐",
+  clinic_lead: "📥",
+  system_message: "🔔",
+  custom: "🔔",
+};
+
+function iconFor(n) {
+  const link = n.link || "";
+  if (/review=1/.test(link)) return "⭐"; // запрос отзыва
+  if (/\/registration\?ref=/.test(link)) return "🎁"; // реферал
+  return ICONS[n.type] || "🔔";
+}
+
+export default function NotificationBell({ onUnreadChange, limit = 6 }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const API_BASE = process.env.REACT_APP_API_URL;
@@ -48,16 +79,6 @@ export default function NotificationBell({ onUnreadChange, limit = 3 }) {
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
       const unread = list.filter((n) => !n.isRead);
-      console.log(
-        "📋 loadNotifications: total=",
-        list.length,
-        "unread=",
-        unread.length,
-        "d2.unreadCount=",
-        d2.unreadCount,
-        "sample=",
-        unread[0],
-      );
       setNotifications(unread.slice(0, limit));
       onUnreadChange?.(d2.unreadCount ?? unread.length);
     } catch (err) {
@@ -74,11 +95,10 @@ export default function NotificationBell({ onUnreadChange, limit = 3 }) {
     const handler = (e) => {
       const payload = e.detail;
       if (!payload) return;
-      console.log("🔔 new_notification (window):", payload);
 
-      // Оптимистично добавляем сразу
       const newNotif = {
         _id: payload._id || `rt-${Date.now()}`,
+        type: payload.type || "system_message",
         title: payload.title || "Новое сообщение",
         message: payload.message || "",
         link: payload.link || null,
@@ -92,14 +112,12 @@ export default function NotificationBell({ onUnreadChange, limit = 3 }) {
       });
       onUnreadChange?.((prev) => (typeof prev === "number" ? prev + 1 : 1));
 
-      // Перезагружаем из БД через 800ms — получаем точный счётчик
       clearTimeout(reloadTimer.current);
       reloadTimer.current = setTimeout(() => loadNotifications(), 800);
     };
 
     window.addEventListener("new_notification", handler);
 
-    // When user reads chat messages — reload to update badge
     const readHandler = () => {
       clearTimeout(reloadTimer.current);
       reloadTimer.current = setTimeout(() => loadNotifications(), 300);
@@ -113,32 +131,87 @@ export default function NotificationBell({ onUnreadChange, limit = 3 }) {
     };
   }, [limit, onUnreadChange, loadNotifications]);
 
+  // ── Actions ─────────────────────────────────────────────────────────────────
+  const markAllRead = async () => {
+    try {
+      await fetch(`${API_BASE}/notifications/mark-read`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({}), // без id → все
+      });
+    } catch {
+      /* игнор */
+    }
+    setNotifications([]);
+    onUnreadChange?.(0);
+  };
+
+  const openNotification = async (n) => {
+    // Помечаем прочитанным (реальные id; оптимистичные rt-… пропускаем)
+    if (n._id && !String(n._id).startsWith("rt-")) {
+      try {
+        await fetch(`${API_BASE}/notifications/mark-read`, {
+          method: "PATCH",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ notificationId: n._id }),
+        });
+      } catch {
+        /* игнор */
+      }
+    }
+    setNotifications((prev) => prev.filter((x) => x._id !== n._id));
+    onUnreadChange?.((prev) => (typeof prev === "number" ? Math.max(0, prev - 1) : 0));
+    if (n.link) navigate(n.link);
+  };
+
   // ── UI ─────────────────────────────────────────────────────────────────────
   return (
     <div>
       {notifications.length === 0 ? (
-        <div className="text-center text-muted small py-2">
+        <div className="text-center text-muted small py-3">
           {t("no_new_notifications")}
         </div>
       ) : (
-        notifications.map((n, i) => (
-          <div key={n._id || i} className="px-3 py-2 border-bottom">
-            <div className="fw-bold text-dark">{n.title}</div>
-            {n.link ? (
-              <button
-                onClick={() => navigate(n.link)}
-                className="btn btn-link p-0 text-primary text-decoration-none small"
-              >
-                {n.message || t("go_to_event")}
-              </button>
-            ) : (
-              <div className="text-muted small">{n.message}</div>
-            )}
-            <div className="text-secondary small">
-              {new Date(n.createdAt).toLocaleString()}
+        <>
+          {notifications.map((n, i) => (
+            <div
+              key={n._id || i}
+              className="px-3 py-2 border-bottom"
+              style={{ cursor: n.link ? "pointer" : "default" }}
+              onClick={() => (n.link ? openNotification(n) : null)}
+            >
+              <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 18, lineHeight: "20px" }}>{iconFor(n)}</span>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div className="fw-bold text-dark" style={{ fontSize: 14 }}>
+                    {n.title}
+                  </div>
+                  {n.message && (
+                    <div
+                      className="small"
+                      style={{ color: n.link ? "#0d6efd" : "#6c757d" }}
+                    >
+                      {n.message}
+                    </div>
+                  )}
+                  <div className="text-secondary" style={{ fontSize: 11 }}>
+                    {new Date(n.createdAt).toLocaleString()}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        ))
+          ))}
+          <button
+            type="button"
+            onClick={markAllRead}
+            className="btn btn-link btn-sm w-100 text-decoration-none"
+            style={{ padding: "8px 0" }}
+          >
+            {t("mark_all_read", { defaultValue: "Прочитать все" })}
+          </button>
+        </>
       )}
     </div>
   );
