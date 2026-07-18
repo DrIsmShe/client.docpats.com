@@ -398,6 +398,7 @@ export default function PricingPage() {
   const [showLimitBanner, setShowLimitBanner] = useState(false);
   const [activeTab, setActiveTab] = useState("patients");
   const [period, setPeriod] = useState("monthly"); // monthly | yearly
+  const [userRole, setUserRole] = useState(null); // null = гость/загрузка
 
   const isRTL = i18n.language === "ar";
 
@@ -414,6 +415,22 @@ export default function PricingPage() {
     }
   }, [location.state]);
 
+  // Роль текущего юзера — чтобы показывать только подходящие тарифы.
+  useEffect(() => {
+    let alive = true;
+    fetch(`${process.env.REACT_APP_API_URL}/common-for-user`, {
+      credentials: "include",
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (alive && d?.authenticated) setUserRole(d.user?.role || null);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   const TABS = useMemo(
     () => [
       { key: "patients", label: t("tabs.patients") },
@@ -422,6 +439,26 @@ export default function PricingPage() {
     ],
     [t],
   );
+
+  // Какие вкладки доступны роли: врач — свои + клиники (может владеть клиникой),
+  // пациент — только пациентские, гость/админ — весь прайс.
+  const allowedTabKeys = useMemo(() => {
+    if (userRole === "doctor") return ["doctors", "clinics"];
+    if (userRole === "patient" || userRole === "user") return ["patients"];
+    return ["patients", "doctors", "clinics"];
+  }, [userRole]);
+
+  const visibleTabs = useMemo(
+    () => TABS.filter((tab) => allowedTabKeys.includes(tab.key)),
+    [TABS, allowedTabKeys],
+  );
+
+  // Если активная вкладка недоступна роли — переключаемся на первую доступную.
+  useEffect(() => {
+    if (!allowedTabKeys.includes(activeTab)) {
+      setActiveTab(allowedTabKeys[0]);
+    }
+  }, [allowedTabKeys, activeTab]);
 
   return (
     <div
@@ -520,6 +557,7 @@ export default function PricingPage() {
         </div>
 
         {/* TABS */}
+        {visibleTabs.length > 1 && (
         <div className="d-flex justify-content-center mb-5">
           <div
             className="d-flex rounded-pill p-1 gap-1"
@@ -529,7 +567,7 @@ export default function PricingPage() {
               backdropFilter: "blur(8px)",
             }}
           >
-            {TABS.map((tab) => (
+            {visibleTabs.map((tab) => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
@@ -545,6 +583,7 @@ export default function PricingPage() {
             ))}
           </div>
         </div>
+        )}
 
         {/* PATIENTS */}
         {activeTab === "patients" && (
