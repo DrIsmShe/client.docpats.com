@@ -1243,5 +1243,19 @@
     "updated": "Profil başarıyla güncellendi.",
     "updateError": "Profil güncellenemedi. Lütfen tekrar deneyin.",
     "usernameTaken": "Bu kullanıcı adı zaten alınmış. Lütfen başka bir tane seçin."
+  },
+  "referral": {
+    "nav": "Davet et (+bonus)",
+    "badge": "Bonus",
+    "title": "Davet edin — +30 gün kazanın",
+    "pitch": "Kişisel bağlantınızı bir meslektaşınıza veya hastanıza gönderin. Kaydolduğunda ikiniz de tam erişime 30 bonus gün kazanırsınız.",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "error": "Davet yüklenemedi.",
+    "loading": "Yükleniyor…",
+    "shareTitle": "DocPats’te bana katılın",
+    "scan": "Kamera ile tarayın",
+    "invited": "davet edildi",
+    "bonusDays": "bonus gün kazanıldı"
   }
 }

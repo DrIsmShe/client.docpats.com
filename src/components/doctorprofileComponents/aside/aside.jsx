@@ -438,6 +438,10 @@ export default function Aside() {
             </span>
             {t("aiSynthesis")}
           </Link>
+          <Link className="dp2-item is-chat" to="/doctor/invite">
+            <span className="dp2-icon">🎁</span>
+            {t("referral.nav", { defaultValue: "Пригласить (+бонус)" })}
+          </Link>
           <Link className="dp2-item is-chat" to="/doctor/news">
             <span className="dp2-icon">
               <LuNewspaper />

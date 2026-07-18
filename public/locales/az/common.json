@@ -1325,5 +1325,19 @@
     "updated": "Profil uğurla yeniləndi.",
     "updateError": "Profil yenilənmədi. Zəhmət olmasa yenidən cəhd edin.",
     "usernameTaken": "Bu istifadəçi adı artıq tutulub. Zəhmət olmasa başqasını seçin."
+  },
+  "referral": {
+    "nav": "Dəvət et (+bonus)",
+    "badge": "Bonus",
+    "title": "Dəvət edin — +30 gün qazanın",
+    "pitch": "Şəxsi linkinizi həmkarınıza və ya pasiyentə göndərin. Qeydiyyatdan keçdikdə hər ikiniz tam girişə 30 bonus gün qazanırsınız.",
+    "copy": "Kopyala",
+    "copied": "Kopyalandı",
+    "error": "Dəvəti yükləmək mümkün olmadı.",
+    "loading": "Yüklənir…",
+    "shareTitle": "DocPats-da mənə qoşulun",
+    "scan": "Kamera ilə skan edin",
+    "invited": "dəvət edilib",
+    "bonusDays": "bonus gün qazanılıb"
   }
 }

@@ -1219,5 +1219,19 @@
     "updated": "Profile updated successfully.",
     "updateError": "Failed to update the profile. Please try again.",
     "usernameTaken": "This username is already taken. Please choose another."
+  },
+  "referral": {
+    "nav": "Invite (+bonus)",
+    "badge": "Bonus",
+    "title": "Invite — get +30 days",
+    "pitch": "Send your personal link to a colleague or patient. When they sign up, you both get 30 bonus days of full access.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "error": "Couldn't load your invite.",
+    "loading": "Loading…",
+    "shareTitle": "Join me on DocPats",
+    "scan": "Scan with your camera",
+    "invited": "invited",
+    "bonusDays": "bonus days earned"
   }
 }
