@@ -39,7 +39,7 @@
 
   "doctorBanner": {
     "title": "6 months free for new doctors",
-    "text": "After signing up — full Doctor Super features for 6 months. Then stay on the platform for $3.50/mo or pick a paid plan that fits your practice.",
+    "text": "After signing up — full Doctor Super features for 6 months. Then stay on the platform for $19/mo or pick a paid plan that fits your practice.",
     "cta": "Get started"
   },
 
@@ -52,7 +52,8 @@
     "recommended": "Recommended",
     "ctaSubscribe": "Subscribe",
     "ctaRegister": "Sign up",
-    "ctaContact": "Contact us"
+    "ctaContact": "Contact us",
+    "currentPlan": "Current plan"
   },
 
   "plans": {

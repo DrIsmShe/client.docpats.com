@@ -39,7 +39,7 @@
 
   "doctorBanner": {
     "title": "Yeni doktorlar için 6 ay ücretsiz",
-    "text": "Kayıt olduktan sonra — 6 ay boyunca tüm Doctor Super özellikleri. Sonrasında platformda $3.50/ay ile kalabilir veya pratiğinize uygun bir ücretli plan seçebilirsiniz.",
+    "text": "Kayıt olduktan sonra — 6 ay boyunca tüm Doctor Super özellikleri. Sonrasında platformda $19/ay ile kalabilir veya pratiğinize uygun bir ücretli plan seçebilirsiniz.",
     "cta": "Başla"
   },
 
@@ -52,7 +52,8 @@
     "recommended": "Önerilen",
     "ctaSubscribe": "Abone ol",
     "ctaRegister": "Kayıt ol",
-    "ctaContact": "İletişime geç"
+    "ctaContact": "İletişime geç",
+    "currentPlan": "Mevcut plan"
   },
 
   "plans": {

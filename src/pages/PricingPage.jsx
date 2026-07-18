@@ -210,9 +210,10 @@ const CLINIC_PLANS = [
 // ═════════════════════════════════════════════════════════════════════
 //                    КАРТОЧКА ТАРИФА
 // ═════════════════════════════════════════════════════════════════════
-function PlanCard({ plan, period, t }) {
+function PlanCard({ plan, period, t, currentPlanKey }) {
   const navigate = useNavigate();
   const isFree = !!plan.free;
+  const isCurrent = !!currentPlanKey && plan.key === currentPlanKey;
   const price = isFree ? null : PRICES_USD[plan.key]?.[period];
 
   // Для годового — посчитаем "≈ X $/мес" (округление до десятых)
@@ -236,17 +237,23 @@ function PlanCard({ plan, period, t }) {
     >
       <div
         className={`card border-0 rounded-4 h-100 ${
-          plan.highlight
-            ? "shadow-lg border border-primary border-2"
-            : "shadow-sm"
+          isCurrent
+            ? "shadow-lg border border-success border-2"
+            : plan.highlight
+              ? "shadow-lg border border-primary border-2"
+              : "shadow-sm"
         }`}
       >
         <div className="card-body d-flex flex-column p-4">
-          {plan.highlight && (
+          {isCurrent ? (
+            <span className="badge bg-success mb-3 align-self-center px-3 py-2">
+              ✓ {t("card.currentPlan")}
+            </span>
+          ) : plan.highlight ? (
             <span className="badge bg-primary mb-3 align-self-center px-3 py-2">
               {t("card.recommended")}
             </span>
-          )}
+          ) : null}
 
           <h4 className="fw-bold mb-1">{t(`plans.${plan.key}.name`)}</h4>
 
@@ -307,10 +314,16 @@ function PlanCard({ plan, period, t }) {
           </ul>
 
           <button
+            disabled={isCurrent}
             className={`btn rounded-3 mt-auto fw-semibold ${
-              plan.highlight ? "btn-primary" : "btn-outline-primary"
+              isCurrent
+                ? "btn-success"
+                : plan.highlight
+                  ? "btn-primary"
+                  : "btn-outline-primary"
             }`}
             onClick={() => {
+              if (isCurrent) return;
               const path = plan.ctaPath || "/";
               // mailto/внешние ссылки — обычным переходом, не через роутер.
               if (path.startsWith("mailto:") || path.startsWith("http")) {
@@ -325,7 +338,7 @@ function PlanCard({ plan, period, t }) {
               );
             }}
           >
-            {t(ctaLabelKey)}
+            {isCurrent ? t("card.currentPlan") : t(ctaLabelKey)}
           </button>
         </div>
       </div>
@@ -402,6 +415,7 @@ export default function PricingPage() {
   const [activeTab, setActiveTab] = useState("patients");
   const [period, setPeriod] = useState("monthly"); // monthly | yearly
   const [userRole, setUserRole] = useState(null); // null = гость/загрузка
+  const [currentPlanKey, setCurrentPlanKey] = useState(null); // активная подписка
 
   const isRTL = i18n.language === "ar";
 
@@ -427,6 +441,22 @@ export default function PricingPage() {
       .then((r) => r.json())
       .then((d) => {
         if (alive && d?.authenticated) setUserRole(d.user?.role || null);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  // Текущая (оплаченная) подписка — чтобы подсветить активный тариф.
+  useEffect(() => {
+    let alive = true;
+    fetch(`${process.env.REACT_APP_API_URL}/api/payments/my-subscription`, {
+      credentials: "include",
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (alive && d?.success) setCurrentPlanKey(d.storedPlan || null);
       })
       .catch(() => {});
     return () => {
@@ -600,7 +630,12 @@ export default function PricingPage() {
             <div className="row g-4 justify-content-center">
               {PATIENT_PLANS.map((plan) => (
                 <div key={plan.key} className="col-md-4">
-                  <PlanCard plan={plan} period={period} t={t} />
+                  <PlanCard
+                  plan={plan}
+                  period={period}
+                  t={t}
+                  currentPlanKey={currentPlanKey}
+                />
                 </div>
               ))}
             </div>
@@ -622,7 +657,12 @@ export default function PricingPage() {
             <div className="row g-4 justify-content-center">
               {DOCTOR_PLANS.map((plan) => (
                 <div key={plan.key} className="col-md-4">
-                  <PlanCard plan={plan} period={period} t={t} />
+                  <PlanCard
+                  plan={plan}
+                  period={period}
+                  t={t}
+                  currentPlanKey={currentPlanKey}
+                />
                 </div>
               ))}
             </div>
@@ -643,7 +683,12 @@ export default function PricingPage() {
             <div className="row g-4 justify-content-center">
               {CLINIC_PLANS.map((plan) => (
                 <div key={plan.key} className="col-md-4">
-                  <PlanCard plan={plan} period={period} t={t} />
+                  <PlanCard
+                  plan={plan}
+                  period={period}
+                  t={t}
+                  currentPlanKey={currentPlanKey}
+                />
                 </div>
               ))}
             </div>

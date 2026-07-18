@@ -39,7 +39,7 @@
 
   "doctorBanner": {
     "title": "Yeni həkimlər üçün 6 ay pulsuz",
-    "text": "Qeydiyyatdan sonra — 6 ay ərzində bütün Doctor Super imkanları. Sonra platformada $3.50/ay ilə qala bilər və ya təcrübənizə uyğun ödənişli plan seçə bilərsiniz.",
+    "text": "Qeydiyyatdan sonra — 6 ay ərzində bütün Doctor Super imkanları. Sonra platformada $19/ay ilə qala bilər və ya təcrübənizə uyğun ödənişli plan seçə bilərsiniz.",
     "cta": "Başla"
   },
 
@@ -52,7 +52,8 @@
     "recommended": "Tövsiyə olunur",
     "ctaSubscribe": "Abunə ol",
     "ctaRegister": "Qeydiyyatdan keç",
-    "ctaContact": "Əlaqə saxla"
+    "ctaContact": "Əlaqə saxla",
+    "currentPlan": "Cari plan"
   },
 
   "plans": {
