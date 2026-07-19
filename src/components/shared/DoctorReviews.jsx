@@ -30,6 +30,10 @@ export default function DoctorReviews({ doctorProfileId }) {
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState(null);
+  const [viewerId, setViewerId] = useState(null);
+  const [replyOpen, setReplyOpen] = useState(null); // reviewId с открытой формой
+  const [replyText, setReplyText] = useState("");
+  const [replyBusy, setReplyBusy] = useState(false);
 
   const load = () => {
     if (!doctorProfileId) return;
@@ -39,6 +43,46 @@ export default function DoctorReviews({ doctorProfileId }) {
       .catch(() => {});
   };
   useEffect(load, [doctorProfileId]);
+
+  // Кто смотрит — чтобы показать форму ответа только владельцу профиля.
+  useEffect(() => {
+    axios
+      .get(`${API_BASE}/common-for-user`, { withCredentials: true })
+      .then((r) => {
+        if (r.data?.authenticated) {
+          const u = r.data.user || {};
+          setViewerId((u._id ?? u.userId ?? "").toString() || null);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const isOwner =
+    viewerId &&
+    data?.ownerUserId &&
+    String(viewerId) === String(data.ownerUserId);
+
+  const openReply = (r) => {
+    setReplyOpen(r._id);
+    setReplyText(r.reply || "");
+  };
+  const sendReply = async (reviewId) => {
+    setReplyBusy(true);
+    try {
+      await axios.post(
+        `${API_BASE}/doctor-profile/reviews/${reviewId}/reply`,
+        { reply: replyText },
+        { withCredentials: true },
+      );
+      setReplyOpen(null);
+      setReplyText("");
+      load();
+    } catch {
+      /* игнор */
+    } finally {
+      setReplyBusy(false);
+    }
+  };
 
   const submit = async (e) => {
     e.preventDefault();
@@ -154,6 +198,60 @@ export default function DoctorReviews({ doctorProfileId }) {
             <div style={{ color: "#94a3b8", fontSize: 12, marginTop: 4 }}>
               {new Date(r.createdAt).toLocaleDateString()}
             </div>
+
+            {r.reply && (
+              <div style={replyBox}>
+                <div style={{ fontWeight: 600, color: "#0f766e", fontSize: 13 }}>
+                  {t("doctorReview.doctorReply", { defaultValue: "Ответ врача" })}
+                </div>
+                <div style={{ color: "#334155", fontSize: 14, marginTop: 2 }}>
+                  {r.reply}
+                </div>
+              </div>
+            )}
+
+            {isOwner && replyOpen !== r._id && (
+              <button type="button" style={replyLink} onClick={() => openReply(r)}>
+                {r.reply
+                  ? t("doctorReview.editReply", { defaultValue: "Изменить ответ" })
+                  : t("doctorReview.reply", { defaultValue: "Ответить" })}
+              </button>
+            )}
+            {isOwner && replyOpen === r._id && (
+              <div style={{ marginTop: 8 }}>
+                <textarea
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                  maxLength={1000}
+                  placeholder={t("doctorReview.replyPlaceholder", {
+                    defaultValue: "Ваш ответ пациенту…",
+                  })}
+                  style={textarea}
+                />
+                <div style={{ display: "flex", gap: 8, marginTop: 6 }}>
+                  <button
+                    type="button"
+                    disabled={replyBusy || !replyText.trim()}
+                    style={submitBtn}
+                    onClick={() => sendReply(r._id)}
+                  >
+                    {replyBusy
+                      ? "…"
+                      : t("doctorReview.sendReply", { defaultValue: "Отправить ответ" })}
+                  </button>
+                  <button
+                    type="button"
+                    style={cancelBtn}
+                    onClick={() => {
+                      setReplyOpen(null);
+                      setReplyText("");
+                    }}
+                  >
+                    {t("doctorReview.cancel", { defaultValue: "Отмена" })}
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -168,3 +266,6 @@ const form = { marginTop: 14, padding: 16, background: "#f8fafc", border: "1px s
 const textarea = { width: "100%", minHeight: 80, padding: "10px 12px", border: "1px solid #d9dfe8", borderRadius: 10, fontSize: 14, resize: "vertical", boxSizing: "border-box" };
 const submitBtn = { marginTop: 10, padding: "9px 18px", background: "#3d7fff", color: "#fff", border: "none", borderRadius: 10, cursor: "pointer", fontWeight: 600 };
 const item = { padding: "12px 0", borderTop: "1px solid #eef2f7" };
+const replyBox = { marginTop: 8, padding: "8px 12px", background: "#f0fdfa", borderLeft: "3px solid #0f766e", borderRadius: 8 };
+const replyLink = { marginTop: 6, background: "none", border: "none", color: "#0f766e", fontWeight: 600, fontSize: 13, cursor: "pointer", padding: 0 };
+const cancelBtn = { padding: "9px 14px", background: "#e2e8f0", color: "#334155", border: "none", borderRadius: 10, cursor: "pointer", fontWeight: 600 };
