@@ -27,6 +27,7 @@ export default async function handler(request, context) {
 
   try {
     let title, desc, pageUrl, publishedAt, imageUrl, locale, schemaType;
+    let aggregateRating; // для врача — звёзды в выдаче Google
 
     if (articleMatch) {
       const articleId = articleMatch[1];
@@ -153,6 +154,27 @@ export default async function handler(request, context) {
       pageUrl = `https://docpats.com/public/doctor-profile/doctor-details/${doctorId}`;
       publishedAt = null;
       imageUrl = doctor.profileImage || "https://docpats.com/og-default.jpg";
+
+      // Агрегированный рейтинг — для rich snippet со звёздами в Google.
+      try {
+        const statsRes = await fetch(
+          `https://backend.docpats.com/doctor-profile/stats/${doctorId}`,
+        );
+        if (statsRes.ok) {
+          const stats = await statsRes.json();
+          if (stats?.success && stats.reviewCount > 0 && stats.averageRating > 0) {
+            aggregateRating = {
+              "@type": "AggregateRating",
+              ratingValue: stats.averageRating,
+              reviewCount: stats.reviewCount,
+              bestRating: 5,
+              worstRating: 1,
+            };
+          }
+        }
+      } catch {
+        /* без рейтинга — ок */
+      }
     }
 
     const response = await context.next();
@@ -198,6 +220,8 @@ export default async function handler(request, context) {
       inLanguage: locale,
       datePublished: publishedAt || undefined,
       image: imageUrl,
+      aggregateRating:
+        schemaType === "Physician" ? aggregateRating : undefined,
       publisher:
         schemaType !== "Physician"
           ? {
