@@ -381,7 +381,8 @@ export default function ClinicPublicPageSettings() {
     );
   }
 
-  const publicUrl = clinic?.slug ? `/clinics/${clinic.slug}` : null;
+  // Каноничный публичный адрес клиники — корневой /slug (не /clinics/slug).
+  const publicUrl = clinic?.slug ? `/${clinic.slug}` : null;
 
   const fmtDate = (d) => {
     if (!d) return "";
