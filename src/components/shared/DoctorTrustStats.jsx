@@ -58,13 +58,24 @@ export default function DoctorTrustStats({ doctorProfileId }) {
     items.push({ icon: "🗓", big: "", small: tenure });
   }
 
-  if (!items.length && !s.isVerified) return null;
+  const badges = Array.isArray(s.badges) ? s.badges : [];
+
+  if (!items.length && !s.isVerified && !badges.length) return null;
 
   return (
     <div style={wrap}>
-      {s.isVerified && (
-        <div style={verified}>
-          ✔️ {t("trust.verified", { defaultValue: "Проверенный врач" })}
+      {(s.isVerified || badges.length > 0) && (
+        <div style={badgeRow}>
+          {s.isVerified && (
+            <span style={verified}>
+              ✔️ {t("trust.verified", { defaultValue: "Проверенный врач" })}
+            </span>
+          )}
+          {badges.map((b) => (
+            <span key={b.key} style={badgePill}>
+              {b.icon} {t(`badge.${b.key}`, { defaultValue: b.label })}
+            </span>
+          ))}
         </div>
       )}
       {items.length > 0 && (
@@ -92,14 +103,23 @@ const wrap = {
   gap: 12,
   margin: "16px 0",
 };
+const badgeRow = { display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" };
 const verified = {
-  alignSelf: "flex-start",
   background: "#dcfce7",
   color: "#166534",
   fontWeight: 600,
   fontSize: 13,
   padding: "5px 12px",
   borderRadius: 999,
+};
+const badgePill = {
+  background: "#eff6ff",
+  color: "#1d4ed8",
+  fontWeight: 600,
+  fontSize: 13,
+  padding: "5px 12px",
+  borderRadius: 999,
+  border: "1px solid #dbeafe",
 };
 const row = { display: "flex", gap: 20, flexWrap: "wrap", alignItems: "center" };
 const chip = {
