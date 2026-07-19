@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import CommentSection from "../../../../components/shared/CommentSection";
 import DoctorReviews from "../../../../components/shared/DoctorReviews";
+import DoctorTrustStats from "../../../../components/shared/DoctorTrustStats";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaCommentDots } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
@@ -1351,6 +1352,7 @@ export default function DoctorDetails() {
           </div>
 
           {/* Отзывы пациентов о враче */}
+          <DoctorTrustStats doctorProfileId={doctorProfile?._id} />
           <DoctorReviews doctorProfileId={doctorProfile?._id} />
 
           {/* Comments */}
