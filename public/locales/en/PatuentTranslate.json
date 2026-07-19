@@ -177,6 +177,7 @@
           "dateDesc": "Newest first",
           "dateAsc": "Oldest first",
           "reviewsDesc": "By reviews (descending)",
+          "ratingDesc": "By rating (highest first)",
           "articlesDesc": "By article count (descending)",
           "likesDesc": "By likes (descending)",
           "nameAsc": "By name (A→Z)",

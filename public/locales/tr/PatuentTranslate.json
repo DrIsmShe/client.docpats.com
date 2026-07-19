@@ -177,6 +177,7 @@
           "dateDesc": "Önce yeniler",
           "dateAsc": "Önce eskiler",
           "reviewsDesc": "İncelemelere göre (azalan)",
+          "ratingDesc": "Puana göre (önce en iyiler)",
           "articlesDesc": "Makale sayısına göre (azalan)",
           "likesDesc": "Beğenilere göre (azalan)",
           "nameAsc": "İsme göre (A→Z)",

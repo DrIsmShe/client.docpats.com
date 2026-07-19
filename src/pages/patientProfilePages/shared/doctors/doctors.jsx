@@ -1032,6 +1032,8 @@ export default function DoctorsAll() {
           return new Date(A.createdAt) - new Date(B.createdAt);
         case "date_desc":
           return new Date(B.createdAt) - new Date(A.createdAt);
+        case "rating_desc":
+          return ratingOf(B) - ratingOf(A) || reviewsCountOf(B) - reviewsCountOf(A);
         case "reviews_desc":
           return reviewsCountOf(B) - reviewsCountOf(A);
         case "articles_desc":
@@ -1236,6 +1238,11 @@ export default function DoctorsAll() {
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
             >
+              <option value="rating_desc">
+                {t("doctorsAll.filters.fields.sort.ratingDesc", {
+                  defaultValue: "По рейтингу (сначала лучшие)",
+                })}
+              </option>
               <option value="date_desc">
                 {t("doctorsAll.filters.fields.sort.dateDesc")}
               </option>
