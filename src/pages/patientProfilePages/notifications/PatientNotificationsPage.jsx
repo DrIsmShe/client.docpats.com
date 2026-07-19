@@ -14,6 +14,10 @@ import {
 import { FaBell, FaCheckCircle, FaTrashAlt, FaSyncAlt } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { notificationIcon } from "../../../utils/notificationIcon";
+import {
+  notificationCategory,
+  NOTIFICATION_CATEGORIES,
+} from "../../../utils/notificationCategory";
 
 const API_BASE = process.env.REACT_APP_API_URL;
 
@@ -25,6 +29,7 @@ export default function PatientNotificationsPage() {
   const [markingAll, setMarkingAll] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [filter, setFilter] = useState("all"); // all | unread | read
+  const [category, setCategory] = useState("all"); // фильтр по типу
 
   /* ===================== 📩 Загрузка уведомлений ===================== */
   const fetchNotifications = async () => {
@@ -111,10 +116,18 @@ export default function PatientNotificationsPage() {
 
   /* ===================== 📊 Фильтрация ===================== */
   const filteredNotifications = notifications.filter((n) => {
+    if (category !== "all" && notificationCategory(n) !== category) return false;
     if (filter === "unread") return !n.isRead;
     if (filter === "read") return n.isRead;
     return true;
   });
+
+  // Показываем чип категории, только если такие уведомления есть.
+  const presentCategories = NOTIFICATION_CATEGORIES.filter(
+    (c) =>
+      c.key === "all" ||
+      notifications.some((n) => notificationCategory(n) === c.key),
+  );
 
   /* ===================== ⏳ Визуализация ===================== */
   if (loading) return <Spinner animation="border" />;
@@ -185,6 +198,24 @@ export default function PatientNotificationsPage() {
           </ButtonGroup>
         </Col>
       </Row>
+
+      {/* 🔹 Фильтр по типу уведомления */}
+      {presentCategories.length > 1 && (
+        <Row className="mb-3">
+          <Col className="d-flex flex-wrap gap-2 justify-content-center">
+            {presentCategories.map((c) => (
+              <Button
+                key={c.key}
+                size="sm"
+                variant={category === c.key ? "primary" : "outline-secondary"}
+                onClick={() => setCategory(c.key)}
+              >
+                {c.icon} {c.label}
+              </Button>
+            ))}
+          </Col>
+        </Row>
+      )}
 
       {filteredNotifications.length === 0 && (
         <Alert variant="info" className="text-center">

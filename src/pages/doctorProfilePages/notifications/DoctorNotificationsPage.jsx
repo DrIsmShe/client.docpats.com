@@ -21,6 +21,10 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { notificationIcon } from "../../../utils/notificationIcon";
+import {
+  notificationCategory,
+  NOTIFICATION_CATEGORIES,
+} from "../../../utils/notificationCategory";
 
 const API_BASE = process.env.REACT_APP_API_URL;
 export default function DoctorNotificationsPage() {
@@ -31,6 +35,7 @@ export default function DoctorNotificationsPage() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [marking, setMarking] = useState(false);
   const [activeTab, setActiveTab] = useState("all"); // all | unread | read | sent
+  const [category, setCategory] = useState("all"); // фильтр по типу
   const [deleting, setDeleting] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
@@ -135,6 +140,16 @@ export default function DoctorNotificationsPage() {
     fetchNotifications(activeTab);
   }, [activeTab]);
 
+  // ====================== 🔹 Фильтр по типу ======================
+  const visibleNotifications = notifications.filter(
+    (n) => category === "all" || notificationCategory(n) === category,
+  );
+  const presentCategories = NOTIFICATION_CATEGORIES.filter(
+    (c) =>
+      c.key === "all" ||
+      notifications.some((n) => notificationCategory(n) === c.key),
+  );
+
   // ====================== 🔹 UI ======================
   if (loading)
     return (
@@ -219,14 +234,32 @@ export default function DoctorNotificationsPage() {
         </Col>
       </Row>
 
+      {/* 🔸 Фильтр по типу */}
+      {presentCategories.length > 1 && (
+        <Row className="mb-4">
+          <Col className="d-flex flex-wrap gap-2">
+            {presentCategories.map((c) => (
+              <Button
+                key={c.key}
+                size="sm"
+                variant={category === c.key ? "primary" : "outline-secondary"}
+                onClick={() => setCategory(c.key)}
+              >
+                {c.icon} {c.label}
+              </Button>
+            ))}
+          </Col>
+        </Row>
+      )}
+
       {/* 🔸 Список уведомлений */}
-      {notifications.length === 0 ? (
+      {visibleNotifications.length === 0 ? (
         <Card className="p-4 text-center text-muted shadow-sm border-0">
           <FaRedo className="mb-2 fs-4 text-secondary" />
           <div>Нет уведомлений</div>
         </Card>
       ) : (
-        notifications.map((n) => (
+        visibleNotifications.map((n) => (
           <Card
             key={n._id}
             className={`mb-3 shadow-sm border-start ${
