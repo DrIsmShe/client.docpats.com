@@ -25,6 +25,7 @@ import {
   notificationCategory,
   NOTIFICATION_CATEGORIES,
 } from "../../../utils/notificationCategory";
+import PushToggle from "../../../components/shared/PushToggle";
 
 const API_BASE = process.env.REACT_APP_API_URL;
 export default function DoctorNotificationsPage() {
@@ -199,6 +200,13 @@ export default function DoctorNotificationsPage() {
               </>
             )}
           </Button>
+        </Col>
+      </Row>
+
+      {/* 🔔 Пуш-уведомления */}
+      <Row className="mb-3">
+        <Col>
+          <PushToggle />
         </Col>
       </Row>
 
