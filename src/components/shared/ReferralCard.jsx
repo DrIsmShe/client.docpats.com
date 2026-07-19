@@ -46,12 +46,12 @@ export default function ReferralCard() {
       <div style={{ maxWidth: 520 }}>
         <div style={badge}>🎁 {t("referral.badge", { defaultValue: "Бонус" })}</div>
         <h2 style={title}>
-          {t("referral.title", { defaultValue: "Пригласите — получите +30 дней" })}
+          {t("referral.title", { defaultValue: "Пригласите друга — получите бонус" })}
         </h2>
         <p style={pitch}>
           {t("referral.pitch", {
             defaultValue:
-              "Отправьте личную ссылку коллеге или пациенту. Когда он зарегистрируется — вы оба получаете 30 бонус-дней доступа ко всем функциям.",
+              "Отправьте личную ссылку другу или коллеге. Когда он зарегистрируется — вы оба получаете бонус: врачам +30 дней доступа, пациентам +5 AI-консультаций.",
           })}
         </p>
       </div>
@@ -87,9 +87,15 @@ export default function ReferralCard() {
                 <span>{t("referral.invited", { defaultValue: "приглашено" })}</span>
               </div>
               <div style={stat}>
-                <b>+{data.bonusDays ?? 0}</b>
-                <span>{t("referral.bonusDays", { defaultValue: "бонус-дней получено" })}</span>
+                <b>+{data.bonusConsultations ?? 0}</b>
+                <span>{t("referral.bonusConsultations", { defaultValue: "AI-консультаций получено" })}</span>
               </div>
+              {data.bonusDays > 0 && (
+                <div style={stat}>
+                  <b>+{data.bonusDays}</b>
+                  <span>{t("referral.bonusDays", { defaultValue: "бонус-дней получено" })}</span>
+                </div>
+              )}
             </div>
           </div>
         </>

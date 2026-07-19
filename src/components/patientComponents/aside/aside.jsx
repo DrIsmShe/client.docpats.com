@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FaUserFriends, FaUserMd } from "react-icons/fa";
+import { FaUserFriends, FaUserMd, FaGift } from "react-icons/fa";
 import { HiOutlineSparkles } from "react-icons/hi2";
 import { getMyConsentRequests } from "../../../api/patient";
 
@@ -517,6 +517,11 @@ export default function AsidePatient() {
           to: "/patient/consultation-ai",
           icon: <GrArticle />,
           label: t("ai_medical_consultation"), // ✅ было: "Medical Feed"
+        },
+        {
+          to: "/patient/invite",
+          icon: <FaGift />,
+          label: t("AsidePatient.menu.invite", "Пригласить друга"),
         },
       ],
     },
