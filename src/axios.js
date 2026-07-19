@@ -1,3 +1,17 @@
+// ─────────────────────────────────────────────────────────────────────
+//   Общий HTTP-клиент DocPats.
+//
+//   КОНВЕНЦИЯ: новый код делает запросы к бэкенду через этот default-инстанс
+//   (`import api from ".../axios"`), а не через сырой `axios` с ручной сборкой
+//   URL. Инстанс уже несёт baseURL (API_BASE из config.js) и
+//   withCredentials:true — это устраняет два класса багов, что мы ловили:
+//   забытый префикс `/api` и потерянный withCredentials.
+//
+//   baseURL НЕ содержит "/api", поэтому:
+//     api.get("/notifications/...")        // роуты в корне
+//     api.post("/api/payments/subscribe")  // роуты под /api
+// ─────────────────────────────────────────────────────────────────────
+
 import axios from "axios";
 import { API_BASE, NEWS_API_BASE } from "./config";
 
