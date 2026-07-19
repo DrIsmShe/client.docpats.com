@@ -1,5 +1,15 @@
-/* DocPats web-push service worker.
+/* DocPats service worker: web-push + PWA (устанавливаемость).
    Показывает пуш-уведомления и открывает нужную страницу по клику. */
+
+// Активируемся сразу, не ждём закрытия старых вкладок.
+self.addEventListener("install", () => self.skipWaiting());
+self.addEventListener("activate", (event) =>
+  event.waitUntil(self.clients.claim()),
+);
+
+// Пассивный fetch-обработчик — нужен для установочных критериев PWA.
+// Кэширование НЕ делаем (минимальный PWA): запросы идут в сеть как обычно.
+self.addEventListener("fetch", () => {});
 
 self.addEventListener("push", (event) => {
   let data = {};

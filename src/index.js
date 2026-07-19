@@ -25,3 +25,11 @@ root.render(
     </HelmetProvider>
   </Provider>,
 );
+
+// PWA: регистрируем service worker (устанавливаемость «на телефон») —
+// он же обслуживает web-push. Идемпотентно с регистрацией из webPush.js.
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
+}
