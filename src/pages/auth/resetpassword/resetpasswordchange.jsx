@@ -490,10 +490,20 @@ export default function ResetPasswordChange() {
         navigate("/login");
       }, 2000);
     } catch (error) {
-      setErrorMessage(
-        error.response?.data?.message ||
-          t("ResetPasswordDirectChange.errors.unexpected"),
-      );
+      if (error.response?.status === 429) {
+        setErrorMessage(
+          t("ResetPasswordDirectChange.errors.tooMany", {
+            defaultValue:
+              "Слишком много попыток. Подождите ~15 минут и попробуйте снова.",
+          }),
+        );
+      } else {
+        setErrorMessage(
+          error.response?.data?.message ||
+            error.response?.data?.error ||
+            t("ResetPasswordDirectChange.errors.unexpected"),
+        );
+      }
       setSuccessMessage("");
     }
   };
