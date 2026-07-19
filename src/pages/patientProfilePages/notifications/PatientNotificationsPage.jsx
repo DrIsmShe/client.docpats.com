@@ -18,7 +18,7 @@ import {
   notificationCategory,
   NOTIFICATION_CATEGORIES,
 } from "../../../utils/notificationCategory";
-import PushToggle from "../../../components/shared/PushToggle";
+import NotificationSettings from "../../../components/shared/NotificationSettings";
 
 const API_BASE = process.env.REACT_APP_API_URL;
 
@@ -174,10 +174,10 @@ export default function PatientNotificationsPage() {
         </Col>
       </Row>
 
-      {/* 🔔 Пуш-уведомления */}
+      {/* ⚙️ Настройки уведомлений */}
       <Row className="mb-3">
-        <Col className="d-flex justify-content-center">
-          <PushToggle />
+        <Col md={{ span: 8, offset: 2 }}>
+          <NotificationSettings />
         </Col>
       </Row>
 
