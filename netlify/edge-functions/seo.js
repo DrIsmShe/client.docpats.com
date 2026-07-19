@@ -1,6 +1,56 @@
 export default async function handler(request, context) {
   const url = new URL(request.url);
 
+  // ── Главная страница: свои title/description/OG + WebSite JSON-LD ──
+  // SPA-шелл иначе отдаёт боту только статичный <title> без структурных данных.
+  if (url.pathname === "/") {
+    try {
+      const title =
+        "DocPats — медицинская платформа для врачей, пациентов и клиник";
+      const desc =
+        "DocPats — платформа с приоритетом на приватность данных: профили врачей и пациентов, AI-консультации, защищённый чат и видеозвонки, управление клиникой. 5 языков.";
+      const pageUrl = "https://docpats.com/";
+      const image = "https://docpats.com/og-default.jpg";
+
+      const response = await context.next();
+      let html = await response.text();
+      html = html
+        .replace(/<title>.*?<\/title>/gs, "")
+        .replace(/<meta name="description"[^>]*\/?>/gi, "");
+
+      const inject = `
+    <title>${title}</title>
+    <meta name="description" content="${desc}">
+    <link rel="canonical" href="${pageUrl}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="${title}">
+    <meta property="og:description" content="${desc}">
+    <meta property="og:url" content="${pageUrl}">
+    <meta property="og:image" content="${image}">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">${JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "DocPats",
+      url: pageUrl,
+      description: desc,
+      inLanguage: "ru",
+      publisher: {
+        "@type": "Organization",
+        name: "DocPats",
+        url: "https://docpats.com",
+      },
+    })}</script>`;
+
+      html = html.replace("</head>", inject + "</head>");
+      return new Response(html, {
+        headers: { "content-type": "text/html; charset=utf-8" },
+      });
+    } catch {
+      return context.next();
+    }
+  }
+
   const articleMatch = url.pathname.match(
     /^\/articles\/([a-f0-9]{24})(?:\/([a-z]{2}))?$/,
   );
@@ -244,6 +294,7 @@ export default async function handler(request, context) {
 
 export const config = {
   path: [
+    "/",
     "/articles/*",
     "/news/*",
     "/public/doctor-profile/article-detail-for-all/*",

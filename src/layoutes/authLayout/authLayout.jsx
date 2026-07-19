@@ -1093,7 +1093,7 @@ export default function AuthLayout() {
                   <motion.div className="dp-portal-ctas" variants={item}>
                     <button
                       className="dp-portal-btn patient"
-                      onClick={() => navigate("/patient/home-page")}
+                      onClick={() => navigate("/registration?role=patient")}
                     >
                       <div className="dp-portal-icon">👤</div>
                       <div className="dp-portal-info">
@@ -1108,7 +1108,7 @@ export default function AuthLayout() {
                     </button>
                     <button
                       className="dp-portal-btn doctor"
-                      onClick={() => navigate("/doctor/home-page")}
+                      onClick={() => navigate("/registration?role=doctor")}
                     >
                       <div className="dp-portal-icon">👨‍⚕️</div>
                       <div className="dp-portal-info">
@@ -1281,43 +1281,51 @@ export default function AuthLayout() {
                   }}
                 >
                   <div className="dp-stat-hero c-teal">
-                    <div className="dp-stat-hero-icon">🌍</div>
+                    <div className="dp-stat-hero-icon">🔒</div>
                     <div>
-                      <div className="dp-stat-hero-num">2.4M+</div>
+                      <div className="dp-stat-hero-num">HIPAA</div>
                       <div className="dp-stat-hero-label">
-                        {t("stat.patientsServed") || "Patients Worldwide"}
+                        {t("stat.compliant", {
+                          defaultValue: "Безопасность и приватность данных",
+                        })}
                       </div>
                     </div>
                   </div>
                   <div className="dp-stat-hero c-green">
-                    <div className="dp-stat-hero-icon">👩‍⚕️</div>
+                    <div className="dp-stat-hero-icon">🤖</div>
                     <div>
-                      <div className="dp-stat-hero-num">18,000</div>
+                      <div className="dp-stat-hero-num">AI</div>
                       <div className="dp-stat-hero-label">
-                        {t("stat.activeDoctors") || "Verified Doctors"}
+                        {t("stat.aiCare", {
+                          defaultValue: "Консультации и анализ",
+                        })}
                       </div>
                     </div>
                   </div>
                   <div className="dp-stat-row">
                     <div className="dp-stat-mini">
-                      <div className="dp-stat-mini-num">99.9%</div>
+                      <div className="dp-stat-mini-num">5</div>
                       <div className="dp-stat-mini-label">
-                        {t("stat.uptimeSLA") || "Uptime SLA"}
+                        {t("stat.languages", { defaultValue: "языков" })}
                       </div>
                     </div>
                     <div className="dp-stat-mini">
-                      <div className="dp-stat-mini-num">40+</div>
+                      <div className="dp-stat-mini-num">24/7</div>
                       <div className="dp-stat-mini-label">
-                        {t("stat.countries") || "Countries"}
+                        {t("stat.access", { defaultValue: "доступ" })}
                       </div>
                     </div>
                   </div>
                   <div className="dp-stat-hero c-gold">
-                    <div className="dp-stat-hero-icon">⚡</div>
+                    <div className="dp-stat-hero-icon">🚀</div>
                     <div>
-                      <div className="dp-stat-hero-num">&lt; 2 min</div>
+                      <div className="dp-stat-hero-num">
+                        {t("stat.betaNum", { defaultValue: "Бета" })}
+                      </div>
                       <div className="dp-stat-hero-label">
-                        Average Response Time
+                        {t("stat.beta", {
+                          defaultValue: "Открытый запуск — присоединяйтесь первыми",
+                        })}
                       </div>
                     </div>
                   </div>
@@ -1329,17 +1337,17 @@ export default function AuthLayout() {
             <motion.div className="dp-logos-bar" variants={item}>
               <div className="dp-logos-inner">
                 <div className="dp-logos-label">
-                  {t("logosLabel") || "Trusted by"}
+                  {t("logosLabel", { defaultValue: "Что внутри" })}
                 </div>
                 <div className="dp-logos-sep" />
                 <div className="dp-logos-list">
                   {[
-                    "Mayo Clinic",
-                    "Johns Hopkins",
-                    "Charité Berlin",
-                    "NHS Digital",
-                    "Cleveland Clinic",
-                    "Karolinska",
+                    "HIPAA-oriented",
+                    "AES-256 encryption",
+                    "AI consultations",
+                    "Video calls",
+                    "Multi-clinic",
+                    "5 languages",
                   ].map((n) => (
                     <div className="dp-logo-item" key={n}>
                       {n}
@@ -1354,24 +1362,24 @@ export default function AuthLayout() {
               <div className="dp-metrics-inner">
                 {[
                   {
-                    num: "2.4M+",
-                    label: t("metric.patientsGlobally") || "Patients Globally",
-                    sub: "+18% this year",
+                    num: "HIPAA",
+                    label: t("metric.compliance", { defaultValue: "Комплаенс" }),
+                    sub: "Audit + encryption",
                   },
                   {
-                    num: "18K",
-                    label: t("metric.verifiedDoctors") || "Verified Doctors",
-                    sub: "In 40+ countries",
+                    num: "AI",
+                    label: t("metric.aiCare", { defaultValue: "AI-консультации" }),
+                    sub: "Symptom checker + SOAP",
                   },
                   {
-                    num: "<2min",
-                    label: t("metric.avgResponse") || "Avg Response Time",
-                    sub: "Real-time care",
+                    num: "5",
+                    label: t("metric.languages", { defaultValue: "языков" }),
+                    sub: "ru · en · az · tr · ar",
                   },
                   {
-                    num: "99.9%",
-                    label: t("metric.uptime") || "Platform Uptime",
-                    sub: "Enterprise SLA",
+                    num: "AES-256",
+                    label: t("metric.encryption", { defaultValue: "Шифрование" }),
+                    sub: "PHI at rest",
                   },
                 ].map((m) => (
                   <div className="dp-metric-cell" key={m.label}>
