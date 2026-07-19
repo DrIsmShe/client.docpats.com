@@ -5,6 +5,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { useTranslation } from "react-i18next";
+import OnboardingChecklist from "../../../components/shared/OnboardingChecklist";
 
 /* ─────────────────────────── STYLES ─────────────────────────── */
 const styles = `
@@ -1343,6 +1344,8 @@ export default function HomeMainPage() {
   return (
     <div className="hmp">
       <style>{styles}</style>
+
+      <OnboardingChecklist />
 
       {/* ── HERO ── */}
       <div className="hmp-hero">
