@@ -106,7 +106,7 @@
     "currentPlan": "Mevcut",
     "upgradeCta": "Tüm planlar →",
     "trialBanner": {
-      "title": "🎁 6 ay boyunca ücretsiz Doctor Super",
+      "title": "🎁 6 ay boyunca ücretsiz Doctor Growth",
       "text": "Limit — ayda 10 makale. Deneme süresinden sonra otomatik olarak Doctor Basic'e geçer.",
       "cta": "Fiyatlandırmayı görüntüle →"
     },
@@ -119,33 +119,33 @@
       "limit": "Ayda 1 makale"
     },
     "patient_std": {
-      "name": "Patient Standard",
-      "limit": "Ayda 3 makale"
+      "name": "Patient Plus",
+      "limit": "Ayda 5 makale"
     },
     "patient_pro": {
       "name": "Patient Pro",
-      "limit": "Ayda 10 makale"
+      "limit": "Ayda 20 makale"
     },
     "doctor_trial": {
-      "name": "Doctor Trial",
-      "limit": "Ayda 10 makale"
+      "name": "Doctor Growth (trial)",
+      "limit": "Ayda 15 makale"
     },
     "doctor_basic": {
-      "name": "Doctor Basic",
+      "name": "Doctor Start",
       "limit": "Ayda 3 makale"
     },
     "doctor_super": {
-      "name": "Doctor Super",
-      "limit": "Ayda 10 makale"
+      "name": "Doctor Growth",
+      "limit": "Ayda 15 makale"
     },
     "doctor_pro": {
       "name": "Doctor Pro",
-      "limit": "Ayda 30 makale"
+      "limit": "Sınırsız"
     },
     "sectionPatients": "Hastalar için",
     "sectionDoctors": "Doktorlar için",
     "guestTrialBanner": {
-      "title": "🎁 Doktorlar — 6 ay ücretsiz Doctor Super",
+      "title": "🎁 Doktorlar — 6 ay ücretsiz Doctor Growth",
       "text": "Doktor olarak kayıt olduğunuzda — 6 ay boyunca platforma tam erişim ücretsiz.",
       "cta": "Doktor olarak kayıt ol →"
     }

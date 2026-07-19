@@ -40,6 +40,9 @@ export default function StickyHeader() {
         </div>
 
         <nav className="d-flex align-items-center gap-3">
+          <NavLink to="/top-doctors" className="nav-link px-2">
+            Top Doctors
+          </NavLink>
           <NavLink to="/pricing" className="nav-link px-2">
             Pricing
           </NavLink>

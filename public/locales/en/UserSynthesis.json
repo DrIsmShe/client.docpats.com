@@ -106,7 +106,7 @@
     "currentPlan": "Current",
     "upgradeCta": "View all plans →",
     "trialBanner": {
-      "title": "🎁 You have Doctor Super free for 6 months",
+      "title": "🎁 You have Doctor Growth free for 6 months",
       "text": "Limit — 10 articles per month. After trial ends, automatic switch to Doctor Basic.",
       "cta": "View pricing →"
     },
@@ -119,33 +119,33 @@
       "limit": "1 article/mo"
     },
     "patient_std": {
-      "name": "Patient Standard",
-      "limit": "3 articles/mo"
+      "name": "Patient Plus",
+      "limit": "5 articles/mo"
     },
     "patient_pro": {
       "name": "Patient Pro",
-      "limit": "10 articles/mo"
+      "limit": "20 articles/mo"
     },
     "doctor_trial": {
-      "name": "Doctor Trial",
-      "limit": "10 articles/mo"
+      "name": "Doctor Growth (trial)",
+      "limit": "15 articles/mo"
     },
     "doctor_basic": {
-      "name": "Doctor Basic",
+      "name": "Doctor Start",
       "limit": "3 articles/mo"
     },
     "doctor_super": {
-      "name": "Doctor Super",
-      "limit": "10 articles/mo"
+      "name": "Doctor Growth",
+      "limit": "15 articles/mo"
     },
     "doctor_pro": {
       "name": "Doctor Pro",
-      "limit": "30 articles/mo"
+      "limit": "unlimited"
     },
     "sectionPatients": "For patients",
     "sectionDoctors": "For doctors",
     "guestTrialBanner": {
-      "title": "🎁 Doctors — 6 months of Doctor Super free",
+      "title": "🎁 Doctors — 6 months of Doctor Growth free",
       "text": "When you register as a doctor — full platform access for 6 months at no cost.",
       "cta": "Register as a doctor →"
     }

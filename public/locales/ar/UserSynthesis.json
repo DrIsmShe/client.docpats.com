@@ -106,7 +106,7 @@
     "currentPlan": "الحالي",
     "upgradeCta": "كل الخطط →",
     "trialBanner": {
-      "title": "🎁 لديك Doctor Super مجاناً لـ 6 أشهر",
+      "title": "🎁 لديك Doctor Growth مجاناً لـ 6 أشهر",
       "text": "الحد — 10 مقالات شهرياً. بعد انتهاء الفترة التجريبية يتم التحويل تلقائياً إلى Doctor Basic.",
       "cta": "عرض الأسعار →"
     },
@@ -119,33 +119,33 @@
       "limit": "مقالة واحدة/شهر"
     },
     "patient_std": {
-      "name": "Patient Standard",
-      "limit": "3 مقالات/شهر"
+      "name": "Patient Plus",
+      "limit": "5 مقالات/شهر"
     },
     "patient_pro": {
       "name": "Patient Pro",
-      "limit": "10 مقالات/شهر"
+      "limit": "20 مقالة/شهر"
     },
     "doctor_trial": {
-      "name": "Doctor Trial",
-      "limit": "10 مقالات/شهر"
+      "name": "Doctor Growth (trial)",
+      "limit": "15 مقالة/شهر"
     },
     "doctor_basic": {
-      "name": "Doctor Basic",
+      "name": "Doctor Start",
       "limit": "3 مقالات/شهر"
     },
     "doctor_super": {
-      "name": "Doctor Super",
-      "limit": "10 مقالات/شهر"
+      "name": "Doctor Growth",
+      "limit": "15 مقالة/شهر"
     },
     "doctor_pro": {
       "name": "Doctor Pro",
-      "limit": "30 مقالة/شهر"
+      "limit": "غير محدود"
     },
     "sectionPatients": "للمرضى",
     "sectionDoctors": "للأطباء",
     "guestTrialBanner": {
-      "title": "🎁 للأطباء — 6 أشهر Doctor Super مجاناً",
+      "title": "🎁 للأطباء — 6 أشهر Doctor Growth مجاناً",
       "text": "عند التسجيل كطبيب — وصول كامل إلى المنصة لمدة 6 أشهر مجاناً.",
       "cta": "سجّل كطبيب →"
     }

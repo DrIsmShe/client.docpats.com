@@ -112,13 +112,13 @@ function detectLoggedIn(limit) {
   return false;
 }
 
-// ─── Цены в USD синхронизированы с aiPlanLimits.js → PLAN_PRICES.monthly ───
+// ─── Цены в USD, сетка v3 (совпадают с aiPlanLimits.js → PLAN_PRICES.monthly) ─
 const PRICES = {
-  patient_std: 5,
-  patient_pro: 11,
-  doctor_basic: 3.5,
-  doctor_super: 13,
-  doctor_pro: 29,
+  patient_std: 9,
+  patient_pro: 19,
+  doctor_basic: 19,
+  doctor_super: 49,
+  doctor_pro: 99,
 };
 
 // ─── Адаптивный список секций для отображения ───

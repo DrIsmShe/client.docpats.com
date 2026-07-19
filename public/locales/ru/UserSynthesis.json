@@ -106,7 +106,7 @@
     "currentPlan": "Текущий",
     "upgradeCta": "Все тарифы →",
     "trialBanner": {
-      "title": "🎁 У вас Doctor Super на 6 месяцев бесплатно",
+      "title": "🎁 У вас Doctor Growth на 6 месяцев бесплатно",
       "text": "Лимит — 10 статей в месяц. После окончания trial автоматический переход на Doctor Basic.",
       "cta": "Посмотреть тарифы →"
     },
@@ -119,33 +119,33 @@
       "limit": "1 статья/мес"
     },
     "patient_std": {
-      "name": "Patient Standard",
-      "limit": "3 статьи/мес"
+      "name": "Patient Plus",
+      "limit": "5 статей/мес"
     },
     "patient_pro": {
       "name": "Patient Pro",
-      "limit": "10 статей/мес"
+      "limit": "20 статей/мес"
     },
     "doctor_trial": {
-      "name": "Doctor Trial",
-      "limit": "10 статей/мес"
+      "name": "Doctor Growth (trial)",
+      "limit": "15 статей/мес"
     },
     "doctor_basic": {
-      "name": "Doctor Basic",
+      "name": "Doctor Start",
       "limit": "3 статьи/мес"
     },
     "doctor_super": {
-      "name": "Doctor Super",
-      "limit": "10 статей/мес"
+      "name": "Doctor Growth",
+      "limit": "15 статей/мес"
     },
     "doctor_pro": {
       "name": "Doctor Pro",
-      "limit": "30 статей/мес"
+      "limit": "безлимит"
     },
     "sectionPatients": "Для пациентов",
     "sectionDoctors": "Для врачей",
     "guestTrialBanner": {
-      "title": "🎁 Врачам — 6 месяцев Doctor Super бесплатно",
+      "title": "🎁 Врачам — 6 месяцев Doctor Growth бесплатно",
       "text": "При регистрации как врач — полный доступ к платформе на 6 месяцев без оплаты.",
       "cta": "Зарегистрироваться как врач →"
     }

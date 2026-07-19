@@ -106,7 +106,7 @@
     "currentPlan": "Cari",
     "upgradeCta": "Bütün tariflər →",
     "trialBanner": {
-      "title": "🎁 6 ay boyunca pulsuz Doctor Super",
+      "title": "🎁 6 ay boyunca pulsuz Doctor Growth",
       "text": "Limit — ayda 10 məqalə. Sınaq müddətindən sonra avtomatik olaraq Doctor Basic-ə keçir.",
       "cta": "Tarifləri gör →"
     },
@@ -119,33 +119,33 @@
       "limit": "Ayda 1 məqalə"
     },
     "patient_std": {
-      "name": "Patient Standard",
-      "limit": "Ayda 3 məqalə"
+      "name": "Patient Plus",
+      "limit": "Ayda 5 məqalə"
     },
     "patient_pro": {
       "name": "Patient Pro",
-      "limit": "Ayda 10 məqalə"
+      "limit": "Ayda 20 məqalə"
     },
     "doctor_trial": {
-      "name": "Doctor Trial",
-      "limit": "Ayda 10 məqalə"
+      "name": "Doctor Growth (trial)",
+      "limit": "Ayda 15 məqalə"
     },
     "doctor_basic": {
-      "name": "Doctor Basic",
+      "name": "Doctor Start",
       "limit": "Ayda 3 məqalə"
     },
     "doctor_super": {
-      "name": "Doctor Super",
-      "limit": "Ayda 10 məqalə"
+      "name": "Doctor Growth",
+      "limit": "Ayda 15 məqalə"
     },
     "doctor_pro": {
       "name": "Doctor Pro",
-      "limit": "Ayda 30 məqalə"
+      "limit": "Limitsiz"
     },
     "sectionPatients": "Pasientlər üçün",
     "sectionDoctors": "Həkimlər üçün",
     "guestTrialBanner": {
-      "title": "🎁 Həkimlərə — 6 ay pulsuz Doctor Super",
+      "title": "🎁 Həkimlərə — 6 ay pulsuz Doctor Growth",
       "text": "Həkim kimi qeydiyyatdan keçdikdə — 6 ay ərzində platformaya tam giriş pulsuz.",
       "cta": "Həkim kimi qeydiyyatdan keç →"
     }
