@@ -822,6 +822,29 @@ export default function DoctorsAll() {
                         <div className="da-specialty-pill">{spec}</div>
                       )}
 
+                      {doctor?.rating > 0 && (
+                        <div
+                          style={{
+                            color: "#f59e0b",
+                            fontWeight: 700,
+                            fontSize: 14,
+                            marginTop: 4,
+                          }}
+                        >
+                          ⭐ {Number(doctor.rating).toFixed(1)}
+                          <span
+                            style={{
+                              color: "#94a3b8",
+                              fontWeight: 400,
+                              fontSize: 12,
+                              marginLeft: 6,
+                            }}
+                          >
+                            ({doctor.reviewCount || 0})
+                          </span>
+                        </div>
+                      )}
+
                       <div className="da-card-detail">
                         <div className="da-detail-row">
                           <span className="da-detail-label">

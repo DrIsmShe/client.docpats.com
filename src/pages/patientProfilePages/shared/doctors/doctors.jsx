@@ -262,6 +262,8 @@ const reviewsCountOf = (d) => {
   return 0;
 };
 
+const ratingOf = (d) => (typeof d?.rating === "number" ? d.rating : 0);
+
 const likesCountOf = (d) => {
   if (typeof d?.likesCount === "number") return d.likesCount;
   if (typeof d?.articles?.likes === "number") return d.articles.likes;
@@ -1362,6 +1364,15 @@ export default function DoctorsAll() {
               </div>
 
               <div className="da-stats">
+                {ratingOf(doctor) > 0 && (
+                  <span
+                    className="da-stat rating"
+                    title={t("doctorsAll.card.stats.ratingTitle", "Рейтинг")}
+                    style={{ color: "#f59e0b", fontWeight: 700 }}
+                  >
+                    ⭐ {ratingOf(doctor).toFixed(1)}
+                  </span>
+                )}
                 <span
                   className="da-stat date"
                   title={t("doctorsAll.card.stats.dateTitle")}
