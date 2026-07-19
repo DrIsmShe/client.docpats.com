@@ -1246,5 +1246,19 @@
     "submit": "Submit review",
     "empty": "No reviews yet — be the first."
   },
-  "mark_all_read": "Mark all read"
+  "mark_all_read": "Mark all read",
+  "onboarding": {
+    "title": "Set up your profile",
+    "steps": {
+      "avatar": "Upload profile photo",
+      "specialization": "Add your specialization",
+      "verification": "Complete doctor verification",
+      "schedule": "Set up your appointment schedule",
+      "article": "Publish your first article",
+      "invite": "Invite a colleague or patient",
+      "invitePatient": "Invite a friend",
+      "consultation": "Ask the AI doctor a question",
+      "doctor": "Find and book a doctor"
+    }
+  }
 }

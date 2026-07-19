@@ -13,17 +13,19 @@
   "trust3": "SOC 2 النوع الثاني",
   "trust4": "جاهز لـ GDPR",
   "stat": {
-    "patientsServed": "مريض تمت خدمته",
-    "activeDoctors": "طبيب نشط",
-    "uptimeSLA": "وقت التشغيل",
-    "countries": "دولة"
+    "compliant": "أمان البيانات وخصوصيتها",
+    "aiCare": "الاستشارات والتحليل",
+    "languages": "لغات",
+    "access": "وصول",
+    "betaNum": "تجريبي",
+    "beta": "إطلاق مفتوح — كن من الأوائل"
   },
-  "logosLabel": "موثوق من قِبَل كبرى المؤسسات الصحية",
+  "logosLabel": "ماذا يوجد بالداخل",
   "metric": {
-    "patientsGlobally": "مرضى حول العالم",
-    "verifiedDoctors": "طبيب موثّق",
-    "avgResponse": "متوسط وقت الاستجابة",
-    "uptime": "وقت تشغيل المنصة"
+    "compliance": "الامتثال",
+    "aiCare": "استشارات الذكاء الاصطناعي",
+    "languages": "لغات",
+    "encryption": "التشفير"
   },
   "featuresTag": "إمكانيات المنصة",
   "featuresTitle": "مصمَّم لتلبية متطلبات",

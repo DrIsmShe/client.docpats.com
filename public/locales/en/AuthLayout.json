@@ -13,17 +13,19 @@
   "trust3": "SOC 2 Type II",
   "trust4": "GDPR Ready",
   "stat": {
-    "patientsServed": "Patients Served",
-    "activeDoctors": "Active Doctors",
-    "uptimeSLA": "Uptime SLA",
-    "countries": "Countries"
+    "compliant": "Data security and privacy",
+    "aiCare": "Consultations and analysis",
+    "languages": "languages",
+    "access": "access",
+    "betaNum": "Beta",
+    "beta": "Open launch — be among the first"
   },
-  "logosLabel": "Trusted by leading healthcare institutions",
+  "logosLabel": "What's inside",
   "metric": {
-    "patientsGlobally": "Patients Globally",
-    "verifiedDoctors": "Verified Doctors",
-    "avgResponse": "Avg Response Time",
-    "uptime": "Platform Uptime"
+    "compliance": "Compliance",
+    "aiCare": "AI consultations",
+    "languages": "languages",
+    "encryption": "Encryption"
   },
   "featuresTag": "Platform Capabilities",
   "featuresTitle": "Built for the demands",

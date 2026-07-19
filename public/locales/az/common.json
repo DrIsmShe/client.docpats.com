@@ -1352,5 +1352,19 @@
     "submit": "Rəyi göndər",
     "empty": "Hələ rəy yoxdur — ilk siz olun."
   },
-  "mark_all_read": "Hamısını oxunmuş et"
+  "mark_all_read": "Hamısını oxunmuş et",
+  "onboarding": {
+    "title": "Profilinizi qurun",
+    "steps": {
+      "avatar": "Profil şəklini yükləyin",
+      "specialization": "İxtisasınızı qeyd edin",
+      "verification": "Həkim verifikasiyasından keçin",
+      "schedule": "Qəbul cədvəlini qurun",
+      "article": "İlk məqalənizi dərc edin",
+      "invite": "Həmkarı və ya pasiyenti dəvət edin",
+      "invitePatient": "Dostunuzu dəvət edin",
+      "consultation": "AI həkimə sual verin",
+      "doctor": "Həkim tapın və qeydiyyat alın"
+    }
+  }
 }

@@ -1270,5 +1270,19 @@
     "submit": "Yorumu gönder",
     "empty": "Henüz yorum yok — ilk siz olun."
   },
-  "mark_all_read": "Tümünü okundu işaretle"
+  "mark_all_read": "Tümünü okundu işaretle",
+  "onboarding": {
+    "title": "Profilinizi oluşturun",
+    "steps": {
+      "avatar": "Profil fotoğrafı yükleyin",
+      "specialization": "Uzmanlığınızı belirtin",
+      "verification": "Doktor doğrulamasını tamamlayın",
+      "schedule": "Randevu takviminizi ayarlayın",
+      "article": "İlk makalenizi yayınlayın",
+      "invite": "Bir meslektaşı veya hastayı davet edin",
+      "invitePatient": "Bir arkadaşınızı davet edin",
+      "consultation": "AI doktora bir soru sorun",
+      "doctor": "Doktor bulun ve randevu alın"
+    }
+  }
 }

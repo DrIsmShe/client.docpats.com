@@ -13,17 +13,19 @@
   "trust3": "SOC 2 Type II",
   "trust4": "GDPR готово",
   "stat": {
-    "patientsServed": "Пациентов обслужено",
-    "activeDoctors": "Активных врачей",
-    "uptimeSLA": "Время работы",
-    "countries": "Стран"
+    "compliant": "Безопасность и приватность данных",
+    "aiCare": "Консультации и анализ",
+    "languages": "языков",
+    "access": "доступ",
+    "betaNum": "Бета",
+    "beta": "Открытый запуск — присоединяйтесь первыми"
   },
-  "logosLabel": "Доверяют ведущие медицинские учреждения",
+  "logosLabel": "Что внутри",
   "metric": {
-    "patientsGlobally": "Пациентов глобально",
-    "verifiedDoctors": "Верифицированных врачей",
-    "avgResponse": "Среднее время ответа",
-    "uptime": "Время работы платформы"
+    "compliance": "Комплаенс",
+    "aiCare": "AI-консультации",
+    "languages": "языков",
+    "encryption": "Шифрование"
   },
   "featuresTag": "Возможности платформы",
   "featuresTitle": "Создано для требований",

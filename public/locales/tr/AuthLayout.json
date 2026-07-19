@@ -13,17 +13,19 @@
   "trust3": "SOC 2 Type II",
   "trust4": "GDPR Hazır",
   "stat": {
-    "patientsServed": "Hizmet Verilen Hasta",
-    "activeDoctors": "Aktif Doktor",
-    "uptimeSLA": "Çalışma Süresi",
-    "countries": "Ülke"
+    "compliant": "Veri güvenliği ve gizliliği",
+    "aiCare": "Konsültasyon ve analiz",
+    "languages": "dil",
+    "access": "erişim",
+    "betaNum": "Beta",
+    "beta": "Açık lansman — ilk katılanlardan olun"
   },
-  "logosLabel": "Önde gelen sağlık kurumları tarafından güvenilir",
+  "logosLabel": "İçeride ne var",
   "metric": {
-    "patientsGlobally": "Küresel Hasta",
-    "verifiedDoctors": "Doğrulanmış Doktor",
-    "avgResponse": "Ort. Yanıt Süresi",
-    "uptime": "Platform Çalışma Süresi"
+    "compliance": "Uyumluluk",
+    "aiCare": "AI konsültasyonları",
+    "languages": "dil",
+    "encryption": "Şifreleme"
   },
   "featuresTag": "Platform Özellikleri",
   "featuresTitle": "Modern tıbbın",

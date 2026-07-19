@@ -13,17 +13,19 @@
   "trust3": "SOC 2 Type II",
   "trust4": "GDPR Hazır",
   "stat": {
-    "patientsServed": "Xidmət Edilən Xəstə",
-    "activeDoctors": "Aktiv Həkim",
-    "uptimeSLA": "İş Vaxtı",
-    "countries": "Ölkə"
+    "compliant": "Məlumatların təhlükəsizliyi və məxfiliyi",
+    "aiCare": "Konsultasiyalar və analiz",
+    "languages": "dil",
+    "access": "giriş",
+    "betaNum": "Beta",
+    "beta": "Açıq başlanğıc — ilk olanlardan olun"
   },
-  "logosLabel": "Aparıcı səhiyyə müəssisələri tərəfindən etibar edilir",
+  "logosLabel": "İçəridə nə var",
   "metric": {
-    "patientsGlobally": "Qlobal Xəstə",
-    "verifiedDoctors": "Yoxlanılmış Həkim",
-    "avgResponse": "Ort. Cavab Vaxtı",
-    "uptime": "Platforma İş Vaxtı"
+    "compliance": "Uyğunluq",
+    "aiCare": "AI konsultasiyalar",
+    "languages": "dil",
+    "encryption": "Şifrələmə"
   },
   "featuresTag": "Platforma İmkanları",
   "featuresTitle": "Müasir tibbın",
