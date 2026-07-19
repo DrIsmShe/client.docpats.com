@@ -1003,8 +1003,10 @@ export default function AuthLayout() {
         <div className="dp-topbar">
           <span className="dp-topbar-brand">DocPats · MedConnect</span>
           <div className="dp-topbar-right">
-            <span className="dp-topbar-live">Platform Live</span>
-            <span>40+ Countries</span>
+            <span className="dp-topbar-live">
+              {t("platformLive", { defaultValue: "Platform Live" })}
+            </span>
+            <span>{t("topbarCountries", { defaultValue: "40+ Countries" })}</span>
           </div>
         </div>
 
@@ -1097,7 +1099,9 @@ export default function AuthLayout() {
                     >
                       <div className="dp-portal-icon">👤</div>
                       <div className="dp-portal-info">
-                        <div className="dp-portal-label">Portal</div>
+                        <div className="dp-portal-label">
+                          {t("portalLabel", { defaultValue: "Portal" })}
+                        </div>
                         <div className="dp-portal-name">
                           {t("patient") || "Patient Portal"}
                         </div>
@@ -1112,7 +1116,9 @@ export default function AuthLayout() {
                     >
                       <div className="dp-portal-icon">👨‍⚕️</div>
                       <div className="dp-portal-info">
-                        <div className="dp-portal-label">Portal</div>
+                        <div className="dp-portal-label">
+                          {t("portalLabel", { defaultValue: "Portal" })}
+                        </div>
                         <div className="dp-portal-name">
                           {t("doctor") || "Doctor Portal"}
                         </div>
@@ -1139,10 +1145,14 @@ export default function AuthLayout() {
                         <div className="dp-news-card-icon">✍️</div>
                         <div className="dp-news-card-copy">
                           <div className="dp-news-card-tag">
-                            DocPats · AI Synthesis · Бесплатно
+                            {"DocPats · AI Synthesis · "}
+                            {t("freeTag", { defaultValue: "Бесплатно" })}
                           </div>
                           <div className="dp-news-card-text">
-                            Создать научную статью по медицинским источникам
+                            {t("synthesisText", {
+                              defaultValue:
+                                "Создать научную статью по медицинским источникам",
+                            })}
                           </div>
                         </div>
                         <span className="dp-news-card-arrow">
@@ -1168,7 +1178,10 @@ export default function AuthLayout() {
                       <div className="dp-news-card-body">
                         <div className="dp-news-card-icon">⚕</div>
                         <div className="dp-news-card-copy">
-                          <div className="dp-news-card-tag">AI · Бесплатно</div>
+                          <div className="dp-news-card-tag">
+                            {"AI · "}
+                            {t("freeTag", { defaultValue: "Бесплатно" })}
+                          </div>
                           <div className="dp-news-card-text">
                             {t("nav.aiConsult") ||
                               "AI Медицинская Консультация → Эпикриз"}
@@ -1188,7 +1201,9 @@ export default function AuthLayout() {
                         <div className="dp-news-card-icon">📰</div>
                         <div className="dp-news-card-copy">
                           <div className="dp-news-card-tag">
-                            Latest Medical Research
+                            {t("newsResearchTag", {
+                              defaultValue: "Latest Medical Research",
+                            })}
                           </div>
                           <div className="dp-news-card-text">
                             {t("nav.newsLink") ||

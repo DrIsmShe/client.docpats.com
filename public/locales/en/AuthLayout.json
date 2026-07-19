@@ -139,5 +139,14 @@
     "privacy": "Privacy",
     "hipaa": "HIPAA",
     "contact": "Contact"
-  }
+  },
+  "featureAI": "AI Consultation",
+  "featureAIDesc": "Free preliminary medical assessment of symptoms with an epicrisis generated in the international SOAP format.",
+  "freeTag": "Free",
+  "newsResearchTag": "Latest Medical Research",
+  "portalLabel": "Portal",
+  "rolesSub": "Access the right tools for your role, designed for clinicians and patients alike.",
+  "synthesisText": "Create a scientific article from medical sources",
+  "platformLive": "Platform Live",
+  "topbarCountries": "40+ Countries"
 }

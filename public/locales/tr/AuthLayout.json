@@ -139,5 +139,14 @@
     "privacy": "Gizlilik",
     "hipaa": "HIPAA",
     "contact": "İletişim"
-  }
+  },
+  "featureAI": "AI Konsültasyon",
+  "featureAIDesc": "Semptomların ücretsiz ön tıbbi değerlendirmesi ve uluslararası SOAP formatında epikriz oluşturma.",
+  "freeTag": "Ücretsiz",
+  "newsResearchTag": "En Son Tıbbi Araştırmalar",
+  "portalLabel": "Portal",
+  "rolesSub": "Rolünüze uygun araçlara erişin — hem hekimler hem de hastalar için tasarlandı.",
+  "synthesisText": "Tıbbi kaynaklardan bilimsel makale oluşturun",
+  "platformLive": "Platform Aktif",
+  "topbarCountries": "40+ Ülke"
 }
