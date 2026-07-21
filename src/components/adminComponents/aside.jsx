@@ -46,6 +46,33 @@ export default function Aside() {
             </Link>
           </li>
 
+          {/* ─── Тесты и экзамены ─── */}
+          <li className="nav-heading">Тесты и экзамены</li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="education-programs">
+              <i className="bi bi-journal-check"></i>
+              <span>Тесты</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="education-categories">
+              <i className="bi bi-diagram-3"></i>
+              <span>Категории тестов</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="education-import">
+              <i className="bi bi-file-earmark-arrow-up"></i>
+              <span>Загрузить тест из файла</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="education-review">
+              <i className="bi bi-clipboard-check"></i>
+              <span>Ревью вопросов</span>
+            </Link>
+          </li>
+
           {/* ─── Пользователи и врачи ─── */}
           <li className="nav-heading">Пользователи</li>
           <li className="nav-item">

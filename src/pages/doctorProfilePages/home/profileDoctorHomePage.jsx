@@ -1883,6 +1883,30 @@ export default function ProfileDoctorHomePage() {
           </div>
         </div>
 
+        {/* ─── СЕКЦИЯ: ОБУЧЕНИЕ ─── */}
+        <div className="hp-section">
+          <SectionHead
+            color="amber"
+            title={t("education", { defaultValue: "Обучение" })}
+            subtitle={t("doctor_home.sections.education_sub", {
+              defaultValue: "Подготовка к экзаменам и тесты",
+            })}
+          />
+          <div className="hp-grid">
+            <NavCard
+              to="/education"
+              icon={LuGraduationCap}
+              color="amber"
+              title={t("education_prep", {
+                defaultValue: "Подготовка к экзаменам",
+              })}
+              subtitle={t("doctor_home.nav.education_sub", {
+                defaultValue: "Тренировка, пробные экзамены, блоки",
+              })}
+            />
+          </div>
+        </div>
+
         {/* ─── СЕКЦИЯ: AI ДАЙДЖЕСТ ─── */}
         <div className="hp-section">
           <SectionHead

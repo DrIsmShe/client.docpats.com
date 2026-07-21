@@ -1,0 +1,471 @@
+{
+  "shared": {
+    "examTypes": {
+      "licensing": "Təbabətə buraxılış",
+      "residency_entrance": "Rezidenturaya qəbul",
+      "board_certification": "İxtisas üzrə sertifikasiya",
+      "international_certificate": "Beynəlxalq sertifikat",
+      "cme": "Fasiləsiz tibbi təhsil",
+      "university": "Ali məktəb imtahanı",
+      "internal_training": "Daxili təlim"
+    },
+    "langs": {
+      "ru": "Русский",
+      "en": "English",
+      "az": "Azərbaycan",
+      "tr": "Türkçe",
+      "ar": "العربية"
+    },
+    "statuses": {
+      "draft": "Qaralama",
+      "in_review": "Baxışdadır",
+      "published": "Dərc olunub",
+      "rejected": "Rədd edilib",
+      "archived": "Arxivdə"
+    },
+    "sourceKinds": {
+      "original": "Müəllif materialı",
+      "public_government": "Rəsmi açıq material",
+      "licensed": "Lisenziya ilə",
+      "ai_generated": "Süni intellekt tanıyıb"
+    },
+    "difficulty": {
+      "easy": "Asan",
+      "medium": "Orta",
+      "hard": "Çətin"
+    },
+    "modes": {
+      "tutor": "İzahlı məşq",
+      "timed": "Vaxtla",
+      "mock": "Sınaq imtahanı",
+      "drill": "Zəif mövzuların təkrarı"
+    },
+    "importStatuses": {
+      "pending": "Gözləyir",
+      "extracting": "Tanınır",
+      "extracted": "Tanınıb",
+      "imported": "Banka köçürülüb",
+      "failed": "Xəta"
+    },
+    "actions": {
+      "back": "Geri",
+      "cancel": "İmtina",
+      "save": "Yadda saxla",
+      "delete": "Sil",
+      "retry": "Yenidən cəhd et",
+      "loading": "Yüklənir…",
+      "close": "Bağla"
+    }
+  },
+  "adminCategories": {
+    "title": "Test kateqoriyaları",
+    "subtitle": "«İmtahanlara hazırlıq» vitrini bu rubrikalar üzərində qurulur. Kateqoriyalar («Beynəlxalq imtahanlar», «Türkiyə rezidenturası») və onların içində alt kateqoriyalar yaradın. Testlər kateqoriyalara «Testlər» səhifəsində bağlanır.",
+    "empty": "Hələ kateqoriya yoxdur. İlkini yaradın — o, vitrində görünəcək.",
+    "allCategories": "Bütün kateqoriyalar",
+    "form": {
+      "newCategory": "Yeni kateqoriya",
+      "name": "Ad",
+      "namePlaceholder": "Məsələn: Beynəlxalq imtahanlar",
+      "parent": "Valideyn",
+      "topLevel": "— Yuxarı səviyyə (kateqoriya) —",
+      "topLevelEdit": "— Yuxarı səviyyə —",
+      "icon": "İkon (könüllü)",
+      "iconEdit": "İkon (emoji və ya «bi bi-globe»)",
+      "iconPlaceholder": "🌍 və ya bi bi-globe",
+      "order": "Sıra",
+      "description": "Təsvir (könüllü)",
+      "descriptionPlaceholder": "Vitrin üçün qısa izah"
+    },
+    "node": {
+      "directPrograms": "birbaşa {{count}} test",
+      "children": "daxili: {{count}}"
+    },
+    "actions": {
+      "create": "Yarat",
+      "edit": "Dəyiş"
+    },
+    "notices": {
+      "categoryCreated": "«{{name}}» kateqoriyası yaradıldı.",
+      "subcategoryCreated": "«{{name}}» alt kateqoriyası yaradıldı.",
+      "saved": "«{{name}}» yadda saxlanıldı.",
+      "deleted": "«{{name}}» kateqoriyası silindi."
+    },
+    "confirms": {
+      "delete": "«{{name}}» kateqoriyası silinsin? Testlərin özü silinmir, lakin kateqoriya boş olmalıdır."
+    },
+    "errors": {
+      "loadFailed": "Kateqoriyaları yükləmək alınmadı",
+      "nameRequired": "Kateqoriyanın adını daxil edin",
+      "createFailed": "Kateqoriyanı yaratmaq alınmadı",
+      "emptyName": "Ad boş ola bilməz",
+      "saveFailed": "Kateqoriyanı yadda saxlamaq alınmadı",
+      "deleteFailed": "Kateqoriyanı silmək alınmadı"
+    }
+  },
+  "adminImport": {
+    "title": "Testin fayldan yüklənməsi",
+    "subtitle": "Sualları olan faylı yükləyin — PDF, Word, mətn və ya skan. Model sualları və cavab variantlarını çıxarır və özü mövzular üzrə bölüşdürür. Əvvəlcədən heç nəyi işarələməyə ehtiyac yoxdur.",
+    "aiOff": "Faylların tanınması söndürülüb. Serverdə <1>ANTHROPIC_API_KEY</1> və <2>EDUCATION_EXTRACTOR=claude</2> dəyişənləri <3>.env</3> faylında olmalıdır, sonra isə <4>pm2 restart all --update-env</4>. Dəyişənlər təyin olunmayana qədər fayl yükləmə işləməyəcək.",
+    "draftProgramTitle": "İdxal qaralaması: {{name}}",
+    "regions": {
+      "international": "Beynəlxalq",
+      "cis": "MDB",
+      "europe": "Avropa",
+      "mena": "Yaxın Şərq və Şimali Afrika",
+      "asia": "Asiya",
+      "africa": "Afrika",
+      "americas": "Amerika",
+      "oceania": "Okeaniya"
+    },
+    "sourceKindHints": {
+      "public_government": "Hazırlıq üçün istifadəsinə icazə verilən dövlət testi və ya metodik vəsait. Qurumu göstərin — onsuz sualı dərc etmək mümkün olmayacaq.",
+      "original": "Fayl sizin müəllifləriniz tərəfindən hazırlanıb.",
+      "licensed": "Material müqavilə əsasında əldə edilib. İstifadə şərtlərini yazın.",
+      "ai_generated": "Suallar mənbədən çıxarılmayıb, model tərəfindən qurulub."
+    },
+    "form": {
+      "targetLabel": "Suallar hara əlavə olunsun",
+      "newProgramOption": "➕ Yeni test — fayldan qurulsun",
+      "draftSuffix": " (qaralama)",
+      "targetHintNew": "Testin adını və bölmələrini model faylın məzmunundan çıxaracaq — sonra onları düzəltmək olar.",
+      "targetHintExisting": "Suallar mövcud testə əlavə olunacaq. Onun bölmələri artıq təyin edilib və model sualları həmin bölmələr üzrə paylayacaq.",
+      "country": "Ölkə",
+      "countryHint": "İki hərfli ölkə kodu, beynəlxalq testlər üçün isə INT.",
+      "region": "Region",
+      "examType": "İmtahan növü",
+      "sourceKind": "Materialın mənşəyi",
+      "authority": "Qurum / nəşr",
+      "authorityPlaceholder": "Səhiyyə Nazirliyi, ÖSYM, SCFHS…",
+      "sourceUrl": "Orijinala keçid",
+      "sourceUrlHint": "Məcburi deyil. Saytın ünvanı — «https://» olmadan da yazmaq olar. Faylın özü serverdə saxlanmır, ona görə də keçid sonradan orijinalla tutuşdurmaq üçün lazımdır.",
+      "licenseNote": "Lisenziya şərtləri",
+      "licenseNotePlaceholder": "Dəqiq nədən və hansı şərtlərlə istifadəyə icazə verilir",
+      "file": "Fayl",
+      "fileSize": "· {{size}} MB",
+      "chooseAnother": "Başqasını seç",
+      "dropzoneHint": "PDF, Word (.docx), mətn (TXT, MD, CSV, HTML, RTF) və ya şəkil — 25 MB-a qədər",
+      "submit": "Yüklə və tanı",
+      "processing": "Emal olunur…"
+    },
+    "jobs": {
+      "title": "Əvvəlki yükləmələr",
+      "noFile": "fayl yoxdur",
+      "meta": "tanınıb {{detected}} · köçürülüb {{imported}} · {{date}}"
+    },
+    "drafts": {
+      "title": "Tanınmış suallar: {{count}}",
+      "attention": "diqqət tələb edir: {{count}}",
+      "failedLabel": "Tanıma alınmadı:",
+      "langNote": "Sualların dili: <1>{{lang}}</1>. Məhz bu dil testin kartına və kataloqdakı dil filtrinə düşəcək.",
+      "attentionHint": "Bəzi suallar üçün faylda düzgün cavab göstərilməyib və ya ikidən az variant tanınıb. Model onları özündən uydurmur — «düzgün cavab budur» düyməsi ilə doğru variantı işarələyin və ya sualı ləğv edin.",
+      "page": "səh. {{page}}",
+      "confidence": "əminlik {{percent}}%",
+      "tagImported": "köçürülüb",
+      "tagDiscarded": "ləğv edilib",
+      "markCorrect": "düzgün cavab budur",
+      "notesLabel": "Tanıma qeydləri:",
+      "restore": "Qaytar",
+      "discard": "Ləğv et",
+      "importSelected": "Seçilmişləri banka köçür ({{count}})",
+      "doneNotice": "Banka köçürülüb: {{count}}. Daha iki addım qalıb: <1>baxışdan keçirmək</1> və <2>testin özünü dərc etmək</2>. Tələbələr onu yalnız hər ikisindən sonra görəcək."
+    },
+    "stages": {
+      "creatingProgram": "Proqram yaradılır…",
+      "preparingJob": "Tapşırıq hazırlanır…",
+      "extracting": "Model faylı oxuyur — bu, bir neçə dəqiqə çəkə bilər…"
+    },
+    "notices": {
+      "detected": "Tanınmış suallar: {{count}}. Tanınanları yoxlayın və lazım olanları banka köçürün.",
+      "imported": "Banka köçürülüb: {{count}}. Suallar qaralama kimi yaradılıb və baxış gözləyir.",
+      "importedWithSkipped": "Banka köçürülüb: {{count}}. Suallar qaralama kimi yaradılıb və baxış gözləyir. Buraxılıb {{skipped}}: {{list}}"
+    },
+    "errors": {
+      "loadPage": "Səhifəni yükləmək mümkün olmadı",
+      "openJob": "Tapşırığı açmaq mümkün olmadı",
+      "noFile": "Fayl seçin",
+      "sourceUrl": "«Orijinala keçid» sayt ünvanı olmalıdır (məsələn, minzdrav.gov.ru və ya https://…). Keçid yoxdursa, sahəni boş buraxın.",
+      "authorityRequired": "Kənar material üçün qurumu və ya nəşri göstərmək lazımdır — bu olmadan sualları dərc etmək mümkün olmayacaq.",
+      "licenseRequired": "Lisenziya ilə alınan material üçün istifadə şərtlərini göstərin.",
+      "country": "Ölkə kodu iki hərfdən (TR, SA, AZ) və ya INT-dən ibarətdir.",
+      "processFile": "Faylı emal etmək mümkün olmadı",
+      "updateDraft": "Qaralamanı dəyişmək mümkün olmadı",
+      "setCorrectKey": "Cavabı təyin etmək mümkün olmadı",
+      "selectAtLeastOne": "Ən azı bir sual seçin",
+      "importDrafts": "Sualları köçürmək mümkün olmadı"
+    }
+  },
+  "adminPrograms": {
+    "title": "Testlər",
+    "subtitle": "Təhsil alanlar yalnız dərc olunmuş testləri görür. Sualın dərci ilə testin dərci ayrı addımlardır: sualları istədiyiniz qədər toplaya bilərsiniz, testi isə hazır olduqda bir dəfə açırsınız.",
+    "actions": {
+      "importFromFile": "Testi fayldan yüklə",
+      "reviewQuestions": "Sualların baxışı",
+      "restore": "Arxivdən bərpa et",
+      "publish": "Testi dərc et",
+      "publishDisabledHint": "Əvvəlcə ən azı bir sualı dərc edin",
+      "openAsStudent": "Təhsil alan kimi aç",
+      "unpublish": "Dərcdən çıxar",
+      "rename": "Adını dəyiş",
+      "archive": "Arxivə",
+      "hardDelete": "Həmişəlik sil",
+      "hardDeleteHint": "Testi və onun bütün suallarını bərpa imkanı olmadan silir"
+    },
+    "filters": {
+      "searchPlaceholder": "Ad, kod və ya qurum üzrə axtarış…",
+      "statusTitle": "Status",
+      "status": {
+        "active": "Aktiv (arxivsiz)",
+        "published": "Dərc olunmuşlar",
+        "draft": "Qaralamalar",
+        "archived": "Arxivdə",
+        "all": "Bütün statuslar"
+      },
+      "langTitle": "Dil",
+      "allLangs": "Bütün dillər",
+      "sortTitle": "Sıralama",
+      "sort": {
+        "title": "Ada görə",
+        "questionsDesc": "Çox sualı olanlar əvvəl",
+        "questionsAsc": "Az sualı olanlar əvvəl",
+        "newest": "Əvvəlcə yenilər"
+      },
+      "shown": "Göstərilir: {{total}} testdən {{count}}"
+    },
+    "empty": {
+      "noPrograms": "Hələ test yoxdur.",
+      "importFirst": "İlkini fayldan yüklə →",
+      "noMatches": "Seçilmiş filtrlərə uyğun heç nə tapılmadı."
+    },
+    "tags": {
+      "sections": "bölmə: {{count}}",
+      "questions": "sual: {{count}}",
+      "inReview": "baxışda: {{count}}"
+    },
+    "warnings": {
+      "noPublished": "Testdə dərc olunmuş sual yoxdur — dərc etməyə bir şey yoxdur.",
+      "pendingCount": "Baxışda {{count}} sual var:",
+      "pendingLink": "nəzərdən keçir →",
+      "uploadFromFile": "Sualları fayldan yükləyin.",
+      "noBlueprint": "Testin bölmələri yoxdur. O işləyəcək, lakin «sınaq imtahanı» rejimi əlçatan olmayacaq və hazırlıq səviyyəsi mövzular üzrə bölünməyəcək."
+    },
+    "settings": {
+      "category": "Kateqoriya",
+      "noCategory": "— Kateqoriyasız —",
+      "blockSizeLabel": "Bloklara böl, hər blokda",
+      "blockSizePlaceholder": "yox"
+    },
+    "hints": {
+      "noCategories": "Hələ kateqoriya yoxdur —",
+      "noCategoriesLink": "onları yaradın →",
+      "noCategoriesTail": ", ki testlər vitrində qruplaşsın."
+    },
+    "notices": {
+      "published": "«{{title}}» testi dərc olundu — o, təhsil alanların kataloqunda göründü.",
+      "unpublished": "«{{title}}» testi dərcdən çıxarıldı.",
+      "restored": "«{{title}}» testi arxivdən qaralamalara bərpa olundu. Hazır olduqda onu dərc edin.",
+      "archived": "«{{title}}» testi arxivə salındı.",
+      "blockSizeSet": "«{{title}}» testi hər biri {{count}} sualdan ibarət bloklara bölünür.",
+      "blockSizeOff": "«{{title}}» üçün bloklara bölmə söndürüldü.",
+      "hardDeleted": "«{{title}}» testi həmişəlik silindi (silinən sual: {{count}}).",
+      "hardDeletedWithAttempts": "«{{title}}» testi həmişəlik silindi (sual: {{items}}, cəhd: {{attempts}})."
+    },
+    "confirms": {
+      "archive": "«{{title}}» testi arxivə salınsın? Suallar və tamamlanmış cəhdlər saxlanılacaq, lakin test kataloqdan və siyahıdan yox olacaq.",
+      "hardDelete": "«{{title}}» testi bütün sualları ilə birlikdə HƏMİŞƏLİK silinsin? Əməliyyat geri qaytarılmır.",
+      "forceDelete": "Test yenə də cəhdlər tarixçəsi İLƏ BİRLİKDƏ silinsin? Bu, geri qaytarılmazdır."
+    },
+    "errors": {
+      "loadFailed": "Testlərin siyahısını yükləmək alınmadı",
+      "statusFailed": "Testin statusunu dəyişmək alınmadı",
+      "restoreFailed": "Testi bərpa etmək alınmadı",
+      "archiveFailed": "Testi arxivləşdirmək alınmadı",
+      "categoryFailed": "Kateqoriyanı dəyişmək alınmadı",
+      "blockSizeFailed": "Blok ölçüsünü yadda saxlamaq alınmadı",
+      "blockSizeRange": "Blok ölçüsü 1-dən 500-ə qədər rəqəmdir (bölməni söndürmək üçün boş buraxın).",
+      "deleteFailed": "Testi silmək alınmadı",
+      "deleteForbidden": "Silmə qadağandır",
+      "renameFailed": "Testin adını dəyişmək alınmadı",
+      "emptyTitle": "Ad boş ola bilməz"
+    }
+  },
+  "adminReview": {
+    "title": "Sualların baxışı",
+    "subtitle": "Suallar tələbələrə yalnız buradan çatır. İzah yazmaq məcburi deyil — dərhal dərc edib təhlili sonra əlavə etmək olar.",
+    "loadingQueue": "Növbə yüklənir…",
+    "emptyQueue": "Növbə boşdur — hər şey nəzərdən keçirilib.",
+    "emptyQueueLink": "Testi fayldan yüklə →",
+    "queueCount": "Növbədə: {{count}}",
+    "aiTag": "Sİ",
+    "selectPrompt": "Soldakı siyahıdan sual seçin",
+    "programFallback": "Proqram",
+    "machineBanner": "Sual maşın vasitəsilə alınıb. Sualın mətnini, variantları və düzgün cavabı orijinalla tutuşdurun — tanıma zamanı variant itə və ya cavab açarı qarışa bilər.",
+    "machineBannerWithConfidence": "Sual maşın vasitəsilə alınıb (tanıma əminliyi {{percent}}%). Sualın mətnini, variantları və düzgün cavabı orijinalla tutuşdurun — tanıma zamanı variant itə və ya cavab açarı qarışa bilər.",
+    "version": "versiya {{version}}",
+    "optionsLabel": "Cavab variantları",
+    "correctTag": "düzgün",
+    "optionExplanationCorrectPlaceholder": "Bu variant niyə düzgündür",
+    "optionExplanationWrongPlaceholder": "Bu variant niyə səhvdir",
+    "explanationLabel": "Ümumi izah",
+    "explanationOptional": "— məcburi deyil",
+    "explanationPlaceholder": "Düzgün cavab niyə düzgündür: mexanizm, meyar, tövsiyələrə istinad",
+    "blockersTitle": "Dərc etmək olmaz: {{list}}.",
+    "warningsNote": "{{list}}. Bu halda da dərc etmək olar — tələbə düzgün cavabı təhlilsiz görəcək. İzahları sonra əlavə etmək mümkündür, sual dərc olunmuş qalacaq.",
+    "approve": "Dərc et",
+    "saveEdits": "Düzəlişləri yadda saxla",
+    "rejectLabel": "Rədd et və müəllifə qaytar",
+    "rejectPlaceholder": "Səbəb: dəqiq nə düzgün deyil və nə düzəldilməlidir",
+    "reject": "Rədd et",
+    "blockers": {
+      "noCorrectAnswer": "düzgün cavab göstərilməyib",
+      "noAuthority": "mənbə göstərilməyib (qurum və ya nəşr)",
+      "noLicenseNote": "lisenziya şərtləri göstərilməyib"
+    },
+    "warnings": {
+      "noExplanation": "ümumi izah yoxdur",
+      "noOptionExplanations": "variantlara izah yoxdur",
+      "someOptionExplanations": "bu variantlara izah yoxdur: {{keys}}"
+    },
+    "errors": {
+      "loadQueue": "Baxış növbəsini yükləmək mümkün olmadı",
+      "loadItem": "Sualı yükləmək mümkün olmadı",
+      "save": "Düzəlişləri yadda saxlamaq mümkün olmadı",
+      "approve": "Sualı dərc etmək mümkün olmadı",
+      "reject": "Sualı rədd etmək mümkün olmadı",
+      "rejectReasonRequired": "Rədd səbəbini göstərin — o, müəllifə qayıdacaq"
+    },
+    "notices": {
+      "saved": "Düzəlişlər yadda saxlanıldı",
+      "published": "Sual dərc olundu. Testi tələbələrin görməsi üçün «Testlər» bölməsində testin özünü də dərc edin.",
+      "rejected": "Sual rədd edildi və müəllifə qaytarıldı"
+    }
+  },
+  "attempt": {
+    "loading": "Yüklənir…",
+    "toCatalog": "Proqramlar siyahısına",
+    "toProgram": "Proqrama qayıt",
+    "errors": {
+      "load": "Cəhdi yükləmək mümkün olmadı",
+      "finish": "Cəhdi tamamlamaq mümkün olmadı",
+      "submit": "Cavabı göndərmək mümkün olmadı"
+    },
+    "verdict": {
+      "correct": "Doğru",
+      "incorrect": "Səhv",
+      "unanswered": "Cavabsız"
+    },
+    "result": {
+      "score": "{{total}} sualdan {{correct}} doğru",
+      "thresholdPassed": "keçid həddi aşılıb ({{percent}}%)",
+      "thresholdFailed": "keçid həddi aşılmayıb ({{percent}}%)",
+      "expired": "Vaxt bitdiyi üçün cəhd bağlanıb",
+      "byTopic": "Mövzular üzrə",
+      "noTopic": "Mövzusuz"
+    },
+    "review": {
+      "title": "Təhlil",
+      "correctAnswer": "Doğru cavab:"
+    },
+    "explain": {
+      "sources": "Mənbələr:"
+    },
+    "runner": {
+      "progress": "Sual {{current}} / {{total}} · cavablanıb {{answered}}",
+      "sending": "Göndərilir…",
+      "answer": "Cavabla",
+      "next": "Növbəti sual",
+      "toResult": "Nəticəyə keç",
+      "skip": "Ötür",
+      "finish": "Bitir və nəticəyə bax",
+      "finishHint": "Cavablanmamış suallar səhv sayılır."
+    }
+  },
+  "catalog": {
+    "title": "İmtahanlara hazırlıq",
+    "subtitle": "Məşq, sınaq imtahanları və səhvlərin təhlili. Böyük imtahanları bloklar üzrə — bütün sualları birdən yox, hissə-hissə keçmək olar.",
+    "loading": "Kataloq yüklənir…",
+    "allPrograms": "Bütün testlər",
+    "found": "{{total}} testdən {{count}} tapıldı",
+    "errors": {
+      "load": "Kataloqu yükləmək mümkün olmadı"
+    },
+    "search": {
+      "placeholder": "Testi ada, qurumun adına və ya bölməyə görə axtarın…"
+    },
+    "filters": {
+      "category": "Bölmə",
+      "allCategories": "Bütün bölmələr",
+      "lang": "Test dili",
+      "allLangs": "Bütün dillər",
+      "reset": "filtrləri sıfırla"
+    },
+    "card": {
+      "questions": "Sual sayı: {{count}}",
+      "blocks": "{{size}} suallıq bloklar",
+      "free": "Pulsuz"
+    },
+    "empty": {
+      "title": "Hələ dərc olunmuş test yoxdur.",
+      "hint": "Onları admin panelində əlavə edin: «Testlər və imtahanlar» → «Testi fayldan yüklə»."
+    },
+    "noResults": {
+      "withFilters": "Seçilmiş filtrlərlə sorğunuza uyğun heç nə tapılmadı.",
+      "plain": "Sorğunuza uyğun heç nə tapılmadı."
+    },
+    "folder": {
+      "programs": "Test sayı: {{count}}",
+      "subsections": "Yarımbölmə sayı: {{count}}"
+    },
+    "section": {
+      "inThisCategory": "Bu bölmədəki testlər",
+      "uncategorized": "Bölməsiz testlər"
+    },
+    "emptyFolder": {
+      "byLang": "Burada «{{lang}}» dilində test yoxdur.",
+      "plain": "Bu bölmədə hələ test yoxdur."
+    }
+  },
+  "program": {
+    "loading": "Proqram yüklənir…",
+    "allExams": "Bütün testlər",
+    "continue": "Davam et",
+    "errors": {
+      "loadProgram": "Proqramı yükləmək mümkün olmadı",
+      "startAttempt": "Cəhdi başlatmaq mümkün olmadı"
+    },
+    "inProgress": {
+      "title": "Tamamlanmamış cəhdiniz var",
+      "hint": "Bu proqram üzrə yeni cəhdə yalnız cari cəhd tamamlandıqdan sonra başlaya bilərsiniz."
+    },
+    "readiness": {
+      "label": "hazırlıq (mövzu xəritəsindəki çəkilərə görə)",
+      "passingScore": "keçid balı"
+    },
+    "topics": {
+      "title": "Mövzular",
+      "weight": "çəki {{percent}}%",
+      "noData": "məlumat yoxdur",
+      "note": "Mövzu 5 cavabdan sonra yoxlanılmış sayılır. Məlumat az olduğu müddətdə hazırlıq göstəricisi olduğundan aşağı görünür — hazırlığın əvvəlində bu normaldır."
+    },
+    "blocks": {
+      "title": "Bloklar",
+      "hint": "Test hər biri {{blockSize}} sualdan ibarət bloklara bölünüb — bütün {{totalCount}} sualı birdəfəyə deyil, hissə-hissə keçin. Hər bloku ayrıca, sizə rahat olan templə keçmək olar.",
+      "name": "Blok {{number}}",
+      "range": "suallar {{from}}–{{to}} · {{count}} ədəd"
+    },
+    "modeHints": {
+      "tutor": "Hər cavabdan dərhal sonra izah, taymer olmadan",
+      "timed": "Taymer işləyir, izah sonda verilir",
+      "mock": "Tərkib ciddi şəkildə mövzu xəritəsi üzrə, taymer, yekun hesabat",
+      "drill": "Statistikanıza görə ən zəif üç mövzunun təkrarı"
+    },
+    "start": {
+      "title": "Başla",
+      "titleWhole": "Testi bütöv şəkildə keç",
+      "action": "Başla",
+      "preparing": "Hazırlanır…"
+    },
+    "history": {
+      "title": "Keçmiş cəhdlər"
+    }
+  }
+}

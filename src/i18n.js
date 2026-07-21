@@ -19,6 +19,7 @@ i18n
       "Anthropometry",
       "clinic",
       "clinicReviews",
+      "education",
     ],
     defaultNS: "common",
 

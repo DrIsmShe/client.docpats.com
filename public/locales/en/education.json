@@ -1,0 +1,471 @@
+{
+  "shared": {
+    "examTypes": {
+      "licensing": "Practice licensing",
+      "residency_entrance": "Residency entrance",
+      "board_certification": "Board certification",
+      "international_certificate": "International certificate",
+      "cme": "CME",
+      "university": "University exam",
+      "internal_training": "Internal training"
+    },
+    "langs": {
+      "ru": "Русский",
+      "en": "English",
+      "az": "Azərbaycan",
+      "tr": "Türkçe",
+      "ar": "العربية"
+    },
+    "statuses": {
+      "draft": "Draft",
+      "in_review": "In review",
+      "published": "Published",
+      "rejected": "Rejected",
+      "archived": "Archived"
+    },
+    "sourceKinds": {
+      "original": "Original material",
+      "public_government": "Official public material",
+      "licensed": "Licensed",
+      "ai_generated": "Extracted by AI"
+    },
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "modes": {
+      "tutor": "Tutor mode with explanations",
+      "timed": "Timed",
+      "mock": "Mock exam",
+      "drill": "Weak-topic drill"
+    },
+    "importStatuses": {
+      "pending": "Pending",
+      "extracting": "Extracting",
+      "extracted": "Extracted",
+      "imported": "Moved to the bank",
+      "failed": "Failed"
+    },
+    "actions": {
+      "back": "Back",
+      "cancel": "Cancel",
+      "save": "Save",
+      "delete": "Delete",
+      "retry": "Retry",
+      "loading": "Loading…",
+      "close": "Close"
+    }
+  },
+  "adminCategories": {
+    "title": "Exam categories",
+    "subtitle": "These categories drive the “Exam preparation” storefront. Create categories (“International exams”, “Residency in Türkiye”) and subcategories inside them. Exams are assigned to categories on the “Exams” page.",
+    "empty": "No categories yet. Create the first one — it will appear on the storefront.",
+    "allCategories": "All categories",
+    "form": {
+      "newCategory": "New category",
+      "name": "Name",
+      "namePlaceholder": "For example: International exams",
+      "parent": "Parent",
+      "topLevel": "— Top level (category) —",
+      "topLevelEdit": "— Top level —",
+      "icon": "Icon (optional)",
+      "iconEdit": "Icon (emoji or “bi bi-globe”)",
+      "iconPlaceholder": "🌍 or bi bi-globe",
+      "order": "Order",
+      "description": "Description (optional)",
+      "descriptionPlaceholder": "A short note for the storefront"
+    },
+    "node": {
+      "directPrograms": "{{count}} exam(s) directly",
+      "children": "nested: {{count}}"
+    },
+    "actions": {
+      "create": "Create",
+      "edit": "Edit"
+    },
+    "notices": {
+      "categoryCreated": "Category “{{name}}” has been created.",
+      "subcategoryCreated": "Subcategory “{{name}}” has been created.",
+      "saved": "“{{name}}” has been saved.",
+      "deleted": "Category “{{name}}” has been deleted."
+    },
+    "confirms": {
+      "delete": "Delete the category “{{name}}”? Exams themselves are not deleted, but the category must be empty."
+    },
+    "errors": {
+      "loadFailed": "Could not load the categories",
+      "nameRequired": "Enter a category name",
+      "createFailed": "Could not create the category",
+      "emptyName": "The name cannot be empty",
+      "saveFailed": "Could not save the category",
+      "deleteFailed": "Could not delete the category"
+    }
+  },
+  "adminImport": {
+    "title": "Import a test from a file",
+    "subtitle": "Upload a file with questions — PDF, Word, plain text or a scan. The model extracts the questions and answer options and sorts them into topics on its own. Nothing has to be marked up in advance.",
+    "aiOff": "File extraction is switched off. The server needs <1>ANTHROPIC_API_KEY</1> and <2>EDUCATION_EXTRACTOR=claude</2> in <3>.env</3>, then <4>pm2 restart all --update-env</4>. Until these variables are set, file upload will not work.",
+    "draftProgramTitle": "Import draft: {{name}}",
+    "regions": {
+      "international": "International",
+      "cis": "CIS",
+      "europe": "Europe",
+      "mena": "Middle East and North Africa",
+      "asia": "Asia",
+      "africa": "Africa",
+      "americas": "Americas",
+      "oceania": "Oceania"
+    },
+    "sourceKindHints": {
+      "public_government": "A government test or study guide that may be used for exam preparation. Name the issuing authority — without it the question cannot be published.",
+      "original": "The file was prepared by your own authors.",
+      "licensed": "The material was obtained under a contract. Describe the terms of use.",
+      "ai_generated": "The questions were invented by the model rather than extracted from a source."
+    },
+    "form": {
+      "targetLabel": "Where to add the questions",
+      "newProgramOption": "➕ New test — build it from the file",
+      "draftSuffix": " (draft)",
+      "targetHintNew": "The model derives the test title and sections from the file contents — you can adjust them afterwards.",
+      "targetHintExisting": "The questions go into an existing test. Its sections are already defined, and the model will sort the questions into them.",
+      "country": "Country",
+      "countryHint": "A two-letter country code, or INT for international tests.",
+      "region": "Region",
+      "examType": "Exam type",
+      "sourceKind": "Origin of the material",
+      "authority": "Authority / publisher",
+      "authorityPlaceholder": "Ministry of Health, ÖSYM, SCFHS…",
+      "sourceUrl": "Link to the original",
+      "sourceUrlHint": "Optional. A website address — «https://» may be omitted. The file itself is not kept on the server, so the link is what lets you check against the original later.",
+      "licenseNote": "License terms",
+      "licenseNotePlaceholder": "What exactly may be used and under what conditions",
+      "file": "File",
+      "fileSize": "· {{size}} MB",
+      "chooseAnother": "Choose another",
+      "dropzoneHint": "PDF, Word (.docx), text (TXT, MD, CSV, HTML, RTF) or an image — up to 25 MB",
+      "submit": "Upload and extract",
+      "processing": "Processing…"
+    },
+    "jobs": {
+      "title": "Previous uploads",
+      "noFile": "no file",
+      "meta": "extracted {{detected}} · moved {{imported}} · {{date}}"
+    },
+    "drafts": {
+      "title": "Questions extracted: {{count}}",
+      "attention": "need attention: {{count}}",
+      "failedLabel": "Extraction failed:",
+      "langNote": "Question language: <1>{{lang}}</1>. This is the language that goes onto the test card and into the catalogue language filter.",
+      "attentionHint": "For some questions the file gave no correct answer, or fewer than two options were extracted. The model does not guess them — mark the right option with the «this one is correct» button, or discard the question.",
+      "page": "p. {{page}}",
+      "confidence": "confidence {{percent}}%",
+      "tagImported": "moved",
+      "tagDiscarded": "discarded",
+      "markCorrect": "this one is correct",
+      "notesLabel": "Extraction notes:",
+      "restore": "Restore",
+      "discard": "Discard",
+      "importSelected": "Move selected to the bank ({{count}})",
+      "doneNotice": "Moved to the bank: {{count}}. Two steps remain: <1>work through the review queue</1> and <2>publish the test itself</2>. Learners will see it only after both."
+    },
+    "stages": {
+      "creatingProgram": "Creating the program…",
+      "preparingJob": "Preparing the job…",
+      "extracting": "The model is reading the file — this may take a few minutes…"
+    },
+    "notices": {
+      "detected": "Questions extracted: {{count}}. Check what was extracted and move what you need to the bank.",
+      "imported": "Moved to the bank: {{count}}. The questions were created as drafts and are waiting for review.",
+      "importedWithSkipped": "Moved to the bank: {{count}}. The questions were created as drafts and are waiting for review. Skipped {{skipped}}: {{list}}"
+    },
+    "errors": {
+      "loadPage": "Could not load the page",
+      "openJob": "Could not open the job",
+      "noFile": "Choose a file",
+      "sourceUrl": "«Link to the original» must be a website address (for example, minzdrav.gov.ru or https://…). Leave the field empty if there is no link.",
+      "authorityRequired": "For borrowed material you must name the authority or publisher — without it the questions cannot be published.",
+      "licenseRequired": "For licensed material, state the terms of use.",
+      "country": "The country code is two letters (TR, SA, AZ) or INT.",
+      "processFile": "Could not process the file",
+      "updateDraft": "Could not change the draft",
+      "setCorrectKey": "Could not set the correct answer",
+      "selectAtLeastOne": "Select at least one question",
+      "importDrafts": "Could not move the questions"
+    }
+  },
+  "adminPrograms": {
+    "title": "Exams",
+    "subtitle": "Learners only see published exams. Publishing a question and publishing an exam are separate steps: you can build up questions for as long as you like, but you open the exam once, when it is ready.",
+    "actions": {
+      "importFromFile": "Import an exam from a file",
+      "reviewQuestions": "Question review",
+      "restore": "Restore from archive",
+      "publish": "Publish exam",
+      "publishDisabledHint": "Publish at least one question first",
+      "openAsStudent": "Open as a learner",
+      "unpublish": "Unpublish",
+      "rename": "Rename",
+      "archive": "Archive",
+      "hardDelete": "Delete permanently",
+      "hardDeleteHint": "Deletes the exam and all of its questions with no way to restore them"
+    },
+    "filters": {
+      "searchPlaceholder": "Search by title, code or authority…",
+      "statusTitle": "Status",
+      "status": {
+        "active": "Active (excluding archive)",
+        "published": "Published",
+        "draft": "Drafts",
+        "archived": "Archived",
+        "all": "All statuses"
+      },
+      "langTitle": "Language",
+      "allLangs": "All languages",
+      "sortTitle": "Sorting",
+      "sort": {
+        "title": "By title",
+        "questionsDesc": "Most questions first",
+        "questionsAsc": "Fewest questions first",
+        "newest": "Newest first"
+      },
+      "shown": "Shown: {{count}} of {{total}}"
+    },
+    "empty": {
+      "noPrograms": "No exams yet.",
+      "importFirst": "Import the first one from a file →",
+      "noMatches": "Nothing matches the selected filters."
+    },
+    "tags": {
+      "sections": "sections: {{count}}",
+      "questions": "questions: {{count}}",
+      "inReview": "in review: {{count}}"
+    },
+    "warnings": {
+      "noPublished": "The exam has no published questions — there is nothing to publish.",
+      "pendingCount": "{{count}} awaiting review:",
+      "pendingLink": "go through them →",
+      "uploadFromFile": "Import questions from a file.",
+      "noBlueprint": "The exam has no sections. It will work, but the “mock exam” mode will be unavailable and readiness will not break down by topic."
+    },
+    "settings": {
+      "category": "Category",
+      "noCategory": "— No category —",
+      "blockSizeLabel": "Split into blocks of",
+      "blockSizePlaceholder": "none"
+    },
+    "hints": {
+      "noCategories": "There are no categories yet —",
+      "noCategoriesLink": "create them →",
+      "noCategoriesTail": " so that exams are grouped on the storefront."
+    },
+    "notices": {
+      "published": "Exam “{{title}}” is published — it now appears in the learners' catalog.",
+      "unpublished": "Exam “{{title}}” has been unpublished.",
+      "restored": "Exam “{{title}}” has been restored from the archive as a draft. Publish it once it is ready.",
+      "archived": "Exam “{{title}}” has been archived.",
+      "blockSizeSet": "Exam “{{title}}” is split into blocks of {{count}} questions.",
+      "blockSizeOff": "Block splitting for “{{title}}” is turned off.",
+      "hardDeleted": "Exam “{{title}}” has been deleted permanently (questions deleted: {{count}}).",
+      "hardDeletedWithAttempts": "Exam “{{title}}” has been deleted permanently (questions: {{items}}, attempts: {{attempts}})."
+    },
+    "confirms": {
+      "archive": "Archive the exam “{{title}}”? Questions and completed attempts will be kept, but the exam will disappear from the catalog and from this list.",
+      "hardDelete": "Delete the exam “{{title}}” PERMANENTLY together with all of its questions? This cannot be undone.",
+      "forceDelete": "Delete the exam anyway, TOGETHER with its attempt history? This is irreversible."
+    },
+    "errors": {
+      "loadFailed": "Could not load the list of exams",
+      "statusFailed": "Could not change the exam status",
+      "restoreFailed": "Could not restore the exam",
+      "archiveFailed": "Could not archive the exam",
+      "categoryFailed": "Could not change the category",
+      "blockSizeFailed": "Could not save the block size",
+      "blockSizeRange": "Block size must be a number from 1 to 500 (or empty to turn splitting off).",
+      "deleteFailed": "Could not delete the exam",
+      "deleteForbidden": "Deletion is not allowed",
+      "renameFailed": "Could not rename the exam",
+      "emptyTitle": "The title cannot be empty"
+    }
+  },
+  "adminReview": {
+    "title": "Question review",
+    "subtitle": "This is the only route by which questions reach learners. Explanations are not mandatory — you can publish right away and add the rationale later.",
+    "loadingQueue": "Loading the queue…",
+    "emptyQueue": "The queue is empty — everything has been reviewed.",
+    "emptyQueueLink": "Import a test from a file →",
+    "queueCount": "In the queue: {{count}}",
+    "aiTag": "AI",
+    "selectPrompt": "Pick a question from the list on the left",
+    "programFallback": "Program",
+    "machineBanner": "This question came from machine extraction. Check the stem, the options and the correct answer against the original — extraction may have lost an option or mixed up the answer key.",
+    "machineBannerWithConfidence": "This question came from machine extraction (extraction confidence {{percent}}%). Check the stem, the options and the correct answer against the original — extraction may have lost an option or mixed up the answer key.",
+    "version": "version {{version}}",
+    "optionsLabel": "Answer options",
+    "correctTag": "correct",
+    "optionExplanationCorrectPlaceholder": "Why this option is correct",
+    "optionExplanationWrongPlaceholder": "Why this option is wrong",
+    "explanationLabel": "General explanation",
+    "explanationOptional": "— optional",
+    "explanationPlaceholder": "Why the correct answer is correct: mechanism, criterion, reference to the guidelines",
+    "blockersTitle": "Cannot be published: {{list}}.",
+    "warningsNote": "{{list}}. You can publish it as it is — the learner will see the correct answer without a rationale. Explanations can be added later, and the question stays published.",
+    "approve": "Publish",
+    "saveEdits": "Save edits",
+    "rejectLabel": "Reject and return to the author",
+    "rejectPlaceholder": "Reason: what exactly is wrong and what needs fixing",
+    "reject": "Reject",
+    "blockers": {
+      "noCorrectAnswer": "no correct answer is set",
+      "noAuthority": "no source is given (authority or publisher)",
+      "noLicenseNote": "no license terms are given"
+    },
+    "warnings": {
+      "noExplanation": "no general explanation",
+      "noOptionExplanations": "no explanations for the options",
+      "someOptionExplanations": "no explanation for options: {{keys}}"
+    },
+    "errors": {
+      "loadQueue": "Could not load the review queue",
+      "loadItem": "Could not load the question",
+      "save": "Could not save the edits",
+      "approve": "Could not publish the question",
+      "reject": "Could not reject the question",
+      "rejectReasonRequired": "State the reason for rejection — it goes back to the author"
+    },
+    "notices": {
+      "saved": "Edits saved",
+      "published": "The question is published. For learners to see the test, publish the test itself in the «Tests» section.",
+      "rejected": "The question was rejected and returned to the author"
+    }
+  },
+  "attempt": {
+    "loading": "Loading…",
+    "toCatalog": "Back to the program list",
+    "toProgram": "Back to the program",
+    "errors": {
+      "load": "Could not load the attempt",
+      "finish": "Could not finish the attempt",
+      "submit": "Could not submit the answer"
+    },
+    "verdict": {
+      "correct": "Correct",
+      "incorrect": "Incorrect",
+      "unanswered": "No answer"
+    },
+    "result": {
+      "score": "{{correct}} of {{total}} correct",
+      "thresholdPassed": "passing score reached ({{percent}}%)",
+      "thresholdFailed": "passing score not reached ({{percent}}%)",
+      "expired": "The attempt was closed when the time ran out",
+      "byTopic": "By topic",
+      "noTopic": "No topic"
+    },
+    "review": {
+      "title": "Review",
+      "correctAnswer": "Correct answer:"
+    },
+    "explain": {
+      "sources": "Sources:"
+    },
+    "runner": {
+      "progress": "Question {{current}} of {{total}} · answered {{answered}}",
+      "sending": "Submitting…",
+      "answer": "Answer",
+      "next": "Next question",
+      "toResult": "Go to the result",
+      "skip": "Skip",
+      "finish": "Finish and see the result",
+      "finishHint": "Unanswered questions are counted as incorrect."
+    }
+  },
+  "catalog": {
+    "title": "Exam preparation",
+    "subtitle": "Practice, mock exams and answer review. Large exams can be taken in blocks — part by part instead of all questions at once.",
+    "loading": "Loading the catalogue…",
+    "allPrograms": "All tests",
+    "found": "Found: {{count}} of {{total}}",
+    "errors": {
+      "load": "Could not load the catalogue"
+    },
+    "search": {
+      "placeholder": "Search tests by title, awarding body or category…"
+    },
+    "filters": {
+      "category": "Category",
+      "allCategories": "All categories",
+      "lang": "Test language",
+      "allLangs": "All languages",
+      "reset": "reset filters"
+    },
+    "card": {
+      "questions": "Questions: {{count}}",
+      "blocks": "blocks of {{size}}",
+      "free": "Free"
+    },
+    "empty": {
+      "title": "No published tests yet.",
+      "hint": "Add them in the admin panel: “Tests and exams” → “Upload test from file”."
+    },
+    "noResults": {
+      "withFilters": "Nothing found for your query with the selected filters.",
+      "plain": "Nothing found for your query."
+    },
+    "folder": {
+      "programs": "Tests: {{count}}",
+      "subsections": "Subcategories: {{count}}"
+    },
+    "section": {
+      "inThisCategory": "Tests in this category",
+      "uncategorized": "Tests without a category"
+    },
+    "emptyFolder": {
+      "byLang": "There are no tests in “{{lang}}” here.",
+      "plain": "There are no tests in this category yet."
+    }
+  },
+  "program": {
+    "loading": "Loading the program…",
+    "allExams": "All exams",
+    "continue": "Continue",
+    "errors": {
+      "loadProgram": "Could not load the program",
+      "startAttempt": "Could not start the attempt"
+    },
+    "inProgress": {
+      "title": "You have an unfinished attempt",
+      "hint": "You can start a new attempt on this program only after the current one has been finished."
+    },
+    "readiness": {
+      "label": "readiness (weighted by the topic blueprint)",
+      "passingScore": "passing score"
+    },
+    "topics": {
+      "title": "Topics",
+      "weight": "weight {{percent}}%",
+      "noData": "no data",
+      "note": "A topic counts as assessed after 5 answers. While there is little data, readiness looks lower than it is — that is normal at the start of your preparation."
+    },
+    "blocks": {
+      "title": "Blocks",
+      "hint": "The exam is split into blocks of {{blockSize}} questions — work through it piece by piece instead of taking all {{totalCount}} questions at once. Each block can be taken separately, at a pace that suits you.",
+      "name": "Block {{number}}",
+      "range": "questions {{from}}–{{to}} · {{count}} total"
+    },
+    "modeHints": {
+      "tutor": "Explanation right after every answer, no timer",
+      "timed": "The timer runs, explanations at the end",
+      "mock": "Composition strictly follows the topic blueprint, timer, final report",
+      "drill": "Extra practice on your three weakest topics"
+    },
+    "start": {
+      "title": "Start",
+      "titleWhole": "Take the whole exam at once",
+      "action": "Start",
+      "preparing": "Preparing…"
+    },
+    "history": {
+      "title": "Past attempts"
+    }
+  }
+}

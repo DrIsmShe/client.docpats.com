@@ -455,6 +455,17 @@ export default function Aside() {
             </span>
             {t("ai_medical_consultation")}
           </Link>
+
+          <div className="dp2-group">
+            {t("education", { defaultValue: "Обучение" })}
+          </div>
+          <Link className="dp2-item is-chat" to="/education">
+            <span className="dp2-icon">
+              <LuGraduationCap />
+            </span>
+            {t("education_prep", { defaultValue: "Подготовка к экзаменам" })}
+          </Link>
+
           <div className="dp2-group">{t("articles") || "Статьи"}</div>
           <Link className="dp2-item is-chat" to="/doctor/create-my-articles">
             <span className="dp2-icon">

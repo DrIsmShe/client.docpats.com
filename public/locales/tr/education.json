@@ -1,0 +1,471 @@
+{
+  "shared": {
+    "examTypes": {
+      "licensing": "Mesleki yeterlilik",
+      "residency_entrance": "Uzmanlık girişi",
+      "board_certification": "Uzmanlık sertifikasyonu",
+      "international_certificate": "Uluslararası sertifika",
+      "cme": "Sürekli tıp eğitimi",
+      "university": "Üniversite sınavı",
+      "internal_training": "Kurum içi eğitim"
+    },
+    "langs": {
+      "ru": "Русский",
+      "en": "English",
+      "az": "Azərbaycan",
+      "tr": "Türkçe",
+      "ar": "العربية"
+    },
+    "statuses": {
+      "draft": "Taslak",
+      "in_review": "İncelemede",
+      "published": "Yayında",
+      "rejected": "Reddedildi",
+      "archived": "Arşivde"
+    },
+    "sourceKinds": {
+      "original": "Özgün materyal",
+      "public_government": "Resmî açık materyal",
+      "licensed": "Lisanslı",
+      "ai_generated": "Yapay zekâ ile çıkarıldı"
+    },
+    "difficulty": {
+      "easy": "Kolay",
+      "medium": "Orta",
+      "hard": "Zor"
+    },
+    "modes": {
+      "tutor": "Açıklamalı alıştırma",
+      "timed": "Süreli",
+      "mock": "Deneme sınavı",
+      "drill": "Zayıf konu tekrarı"
+    },
+    "importStatuses": {
+      "pending": "Bekliyor",
+      "extracting": "Çıkarılıyor",
+      "extracted": "Çıkarıldı",
+      "imported": "Bankaya aktarıldı",
+      "failed": "Hata"
+    },
+    "actions": {
+      "back": "Geri",
+      "cancel": "İptal",
+      "save": "Kaydet",
+      "delete": "Sil",
+      "retry": "Tekrar dene",
+      "loading": "Yükleniyor…",
+      "close": "Kapat"
+    }
+  },
+  "adminCategories": {
+    "title": "Sınav kategorileri",
+    "subtitle": "“Sınava hazırlık” vitrini bu kategorilere göre oluşturulur. Kategoriler (“Uluslararası sınavlar”, “Türkiye uzmanlık sınavı”) ve bunların içinde alt kategoriler oluşturun. Sınavlar kategorilere “Sınavlar” sayfasında bağlanır.",
+    "empty": "Henüz kategori yok. İlkini oluşturun — vitrinde görünecek.",
+    "allCategories": "Tüm kategoriler",
+    "form": {
+      "newCategory": "Yeni kategori",
+      "name": "Ad",
+      "namePlaceholder": "Örneğin: Uluslararası sınavlar",
+      "parent": "Üst kategori",
+      "topLevel": "— Üst düzey (kategori) —",
+      "topLevelEdit": "— Üst düzey —",
+      "icon": "Simge (isteğe bağlı)",
+      "iconEdit": "Simge (emoji veya “bi bi-globe”)",
+      "iconPlaceholder": "🌍 veya bi bi-globe",
+      "order": "Sıra",
+      "description": "Açıklama (isteğe bağlı)",
+      "descriptionPlaceholder": "Vitrin için kısa açıklama"
+    },
+    "node": {
+      "directPrograms": "doğrudan {{count}} sınav",
+      "children": "alt kategori: {{count}}"
+    },
+    "actions": {
+      "create": "Oluştur",
+      "edit": "Düzenle"
+    },
+    "notices": {
+      "categoryCreated": "“{{name}}” kategorisi oluşturuldu.",
+      "subcategoryCreated": "“{{name}}” alt kategorisi oluşturuldu.",
+      "saved": "“{{name}}” kaydedildi.",
+      "deleted": "“{{name}}” kategorisi silindi."
+    },
+    "confirms": {
+      "delete": "“{{name}}” kategorisi silinsin mi? Sınavlar silinmez, ancak kategorinin boş olması gerekir."
+    },
+    "errors": {
+      "loadFailed": "Kategoriler yüklenemedi",
+      "nameRequired": "Kategori adını girin",
+      "createFailed": "Kategori oluşturulamadı",
+      "emptyName": "Ad boş olamaz",
+      "saveFailed": "Kategori kaydedilemedi",
+      "deleteFailed": "Kategori silinemedi"
+    }
+  },
+  "adminImport": {
+    "title": "Testi dosyadan yükleme",
+    "subtitle": "Soruların bulunduğu dosyayı yükleyin — PDF, Word, metin veya tarama. Model soruları ve cevap seçeneklerini çıkarır ve konulara kendisi dağıtır. Önceden hiçbir şeyi işaretlemeniz gerekmez.",
+    "aiOff": "Dosya çıkarımı kapalı. Sunucuda <1>ANTHROPIC_API_KEY</1> ve <2>EDUCATION_EXTRACTOR=claude</2> değişkenleri <3>.env</3> dosyasında bulunmalı, ardından <4>pm2 restart all --update-env</4> çalıştırılmalıdır. Değişkenler tanımlanmadıkça dosya yükleme çalışmaz.",
+    "draftProgramTitle": "İçe aktarma taslağı: {{name}}",
+    "regions": {
+      "international": "Uluslararası",
+      "cis": "BDT",
+      "europe": "Avrupa",
+      "mena": "Orta Doğu ve Kuzey Afrika",
+      "asia": "Asya",
+      "africa": "Afrika",
+      "americas": "Amerika",
+      "oceania": "Okyanusya"
+    },
+    "sourceKindHints": {
+      "public_government": "Hazırlık amacıyla kullanılmasına izin verilen resmî test veya kılavuz. Kurumu belirtin — belirtilmezse soru yayımlanamaz.",
+      "original": "Dosya kendi yazarlarınız tarafından hazırlanmıştır.",
+      "licensed": "Materyal sözleşme kapsamında edinilmiştir. Kullanım koşullarını açıklayın.",
+      "ai_generated": "Sorular bir kaynaktan çıkarılmadı, model tarafından üretildi."
+    },
+    "form": {
+      "targetLabel": "Sorular nereye eklensin",
+      "newProgramOption": "➕ Yeni test — dosyadan oluştur",
+      "draftSuffix": " (taslak)",
+      "targetHintNew": "Testin adını ve bölümlerini model dosya içeriğinden çıkaracak — sonradan düzeltebilirsiniz.",
+      "targetHintExisting": "Sorular mevcut teste eklenecek. Bölümleri zaten tanımlı ve model soruları bunlara dağıtacak.",
+      "country": "Ülke",
+      "countryHint": "İki harfli ülke kodu ya da uluslararası testler için INT.",
+      "region": "Bölge",
+      "examType": "Sınav türü",
+      "sourceKind": "Materyalin kaynağı",
+      "authority": "Kurum / yayın",
+      "authorityPlaceholder": "Sağlık Bakanlığı, ÖSYM, SCFHS…",
+      "sourceUrl": "Orijinalin bağlantısı",
+      "sourceUrlHint": "Zorunlu değil. Site adresi — «https://» olmadan da yazabilirsiniz. Dosyanın kendisi sunucuda saklanmaz, bu yüzden bağlantı daha sonra orijinalle karşılaştırmak için gereklidir.",
+      "licenseNote": "Lisans koşulları",
+      "licenseNotePlaceholder": "Tam olarak neyin, hangi koşullarla kullanılabileceği",
+      "file": "Dosya",
+      "fileSize": "· {{size}} MB",
+      "chooseAnother": "Başkasını seç",
+      "dropzoneHint": "PDF, Word (.docx), metin (TXT, MD, CSV, HTML, RTF) veya görsel — en fazla 25 MB",
+      "submit": "Yükle ve çıkar",
+      "processing": "İşleniyor…"
+    },
+    "jobs": {
+      "title": "Önceki yüklemeler",
+      "noFile": "dosya yok",
+      "meta": "çıkarılan {{detected}} · aktarılan {{imported}} · {{date}}"
+    },
+    "drafts": {
+      "title": "Çıkarılan soru sayısı: {{count}}",
+      "attention": "dikkat gerektiren: {{count}}",
+      "failedLabel": "Çıkarma başarısız oldu:",
+      "langNote": "Soruların dili: <1>{{lang}}</1>. Test kartına ve katalogdaki dil filtresine bu dil yansıyacak.",
+      "attentionHint": "Bazı sorularda dosyada doğru cevap belirtilmemiş ya da ikiden az seçenek çıkarılmış. Model bunları kendiliğinden tamamlamaz — «doğru olan bu» düğmesiyle doğru seçeneği işaretleyin veya soruyu eleyin.",
+      "page": "s. {{page}}",
+      "confidence": "güven {{percent}}%",
+      "tagImported": "aktarıldı",
+      "tagDiscarded": "elendi",
+      "markCorrect": "doğru olan bu",
+      "notesLabel": "Çıkarma notları:",
+      "restore": "Geri al",
+      "discard": "Ele",
+      "importSelected": "Seçilenleri bankaya aktar ({{count}})",
+      "doneNotice": "Bankaya aktarıldı: {{count}}. Geriye iki adım kaldı: <1>incelemeden geçirmek</1> ve <2>testin kendisini yayımlamak</2>. Öğrenciler testi ancak ikisinden sonra görecek."
+    },
+    "stages": {
+      "creatingProgram": "Program oluşturuluyor…",
+      "preparingJob": "Görev hazırlanıyor…",
+      "extracting": "Model dosyayı okuyor — bu birkaç dakika sürebilir…"
+    },
+    "notices": {
+      "detected": "Çıkarılan soru sayısı: {{count}}. Çıkarılanları gözden geçirin ve gerekenleri bankaya aktarın.",
+      "imported": "Bankaya aktarıldı: {{count}}. Sorular taslak olarak oluşturuldu ve incelemeyi bekliyor.",
+      "importedWithSkipped": "Bankaya aktarıldı: {{count}}. Sorular taslak olarak oluşturuldu ve incelemeyi bekliyor. Atlanan {{skipped}}: {{list}}"
+    },
+    "errors": {
+      "loadPage": "Sayfa yüklenemedi",
+      "openJob": "Görev açılamadı",
+      "noFile": "Bir dosya seçin",
+      "sourceUrl": "«Orijinalin bağlantısı» bir site adresi olmalıdır (örneğin, minzdrav.gov.ru veya https://…). Bağlantı yoksa alanı boş bırakın.",
+      "authorityRequired": "Dışarıdan alınan materyal için kurumu veya yayını belirtmeniz gerekir — bu olmadan sorular yayımlanamaz.",
+      "licenseRequired": "Lisanslı materyal için kullanım koşullarını belirtin.",
+      "country": "Ülke kodu iki harftir (TR, SA, AZ) veya INT.",
+      "processFile": "Dosya işlenemedi",
+      "updateDraft": "Taslak değiştirilemedi",
+      "setCorrectKey": "Cevap işaretlenemedi",
+      "selectAtLeastOne": "En az bir soru seçin",
+      "importDrafts": "Sorular aktarılamadı"
+    }
+  },
+  "adminPrograms": {
+    "title": "Sınavlar",
+    "subtitle": "Öğrenciler yalnızca yayımlanmış sınavları görür. Soruyu yayımlamak ile sınavı yayımlamak ayrı adımlardır: soruları dilediğiniz kadar biriktirebilirsiniz, sınavı ise hazır olduğunda bir kez açarsınız.",
+    "actions": {
+      "importFromFile": "Sınavı dosyadan yükle",
+      "reviewQuestions": "Soru incelemesi",
+      "restore": "Arşivden geri al",
+      "publish": "Sınavı yayımla",
+      "publishDisabledHint": "Önce en az bir soruyu yayımlayın",
+      "openAsStudent": "Öğrenci olarak aç",
+      "unpublish": "Yayından kaldır",
+      "rename": "Yeniden adlandır",
+      "archive": "Arşive",
+      "hardDelete": "Kalıcı olarak sil",
+      "hardDeleteHint": "Sınavı ve tüm sorularını geri alınamaz biçimde siler"
+    },
+    "filters": {
+      "searchPlaceholder": "Ada, koda veya kuruma göre ara…",
+      "statusTitle": "Durum",
+      "status": {
+        "active": "Etkin (arşiv hariç)",
+        "published": "Yayında olanlar",
+        "draft": "Taslaklar",
+        "archived": "Arşivde",
+        "all": "Tüm durumlar"
+      },
+      "langTitle": "Dil",
+      "allLangs": "Tüm diller",
+      "sortTitle": "Sıralama",
+      "sort": {
+        "title": "Ada göre",
+        "questionsDesc": "Çok sorusu olanlar önce",
+        "questionsAsc": "Az sorusu olanlar önce",
+        "newest": "Önce yeniler"
+      },
+      "shown": "Gösterilen: {{total}} sınavdan {{count}}"
+    },
+    "empty": {
+      "noPrograms": "Henüz sınav yok.",
+      "importFirst": "İlkini dosyadan yükle →",
+      "noMatches": "Seçilen filtrelere uyan bir şey bulunamadı."
+    },
+    "tags": {
+      "sections": "bölüm: {{count}}",
+      "questions": "soru: {{count}}",
+      "inReview": "incelemede: {{count}}"
+    },
+    "warnings": {
+      "noPublished": "Sınavda yayımlanmış soru yok — yayımlanacak bir şey bulunmuyor.",
+      "pendingCount": "İncelemede {{count}} soru var:",
+      "pendingLink": "gözden geçir →",
+      "uploadFromFile": "Soruları dosyadan yükleyin.",
+      "noBlueprint": "Sınavın bölümleri yok. Çalışır, ancak “deneme sınavı” modu kullanılamaz ve hazırlık durumu konulara göre ayrışmaz."
+    },
+    "settings": {
+      "category": "Kategori",
+      "noCategory": "— Kategorisiz —",
+      "blockSizeLabel": "Bloklara böl, her blokta",
+      "blockSizePlaceholder": "yok"
+    },
+    "hints": {
+      "noCategories": "Henüz kategori yok —",
+      "noCategoriesLink": "kategori oluşturun →",
+      "noCategoriesTail": " ki sınavlar vitrinde gruplansın."
+    },
+    "notices": {
+      "published": "“{{title}}” sınavı yayımlandı — öğrencilerin kataloğunda görünür oldu.",
+      "unpublished": "“{{title}}” sınavı yayından kaldırıldı.",
+      "restored": "“{{title}}” sınavı arşivden taslaklara geri alındı. Hazır olduğunda yayımlayın.",
+      "archived": "“{{title}}” sınavı arşive alındı.",
+      "blockSizeSet": "“{{title}}” sınavı {{count}} soruluk bloklara bölünüyor.",
+      "blockSizeOff": "“{{title}}” için bloklara bölme kapatıldı.",
+      "hardDeleted": "“{{title}}” sınavı kalıcı olarak silindi (silinen soru: {{count}}).",
+      "hardDeletedWithAttempts": "“{{title}}” sınavı kalıcı olarak silindi (soru: {{items}}, deneme: {{attempts}})."
+    },
+    "confirms": {
+      "archive": "“{{title}}” sınavı arşive alınsın mı? Sorular ve tamamlanmış denemeler saklanır, ancak sınav katalogdan ve listeden kaybolur.",
+      "hardDelete": "“{{title}}” sınavı tüm sorularıyla birlikte KALICI olarak silinsin mi? Bu işlem geri alınamaz.",
+      "forceDelete": "Sınav yine de deneme geçmişiyle BİRLİKTE silinsin mi? Bu işlem geri döndürülemez."
+    },
+    "errors": {
+      "loadFailed": "Sınav listesi yüklenemedi",
+      "statusFailed": "Sınavın durumu değiştirilemedi",
+      "restoreFailed": "Sınav geri alınamadı",
+      "archiveFailed": "Sınav arşivlenemedi",
+      "categoryFailed": "Kategori değiştirilemedi",
+      "blockSizeFailed": "Blok boyutu kaydedilemedi",
+      "blockSizeRange": "Blok boyutu 1 ile 500 arasında bir sayıdır (bölmeyi kapatmak için boş bırakın).",
+      "deleteFailed": "Sınav silinemedi",
+      "deleteForbidden": "Silme işlemine izin verilmiyor",
+      "renameFailed": "Sınav yeniden adlandırılamadı",
+      "emptyTitle": "Ad boş olamaz"
+    }
+  },
+  "adminReview": {
+    "title": "Soru incelemesi",
+    "subtitle": "Sorular öğrencilere yalnızca buradan ulaşır. Açıklama yazmak zorunlu değil — hemen yayımlayıp çözümü sonra ekleyebilirsiniz.",
+    "loadingQueue": "Kuyruk yükleniyor…",
+    "emptyQueue": "Kuyruk boş — her şey incelendi.",
+    "emptyQueueLink": "Testi dosyadan yükle →",
+    "queueCount": "Kuyrukta: {{count}}",
+    "aiTag": "YZ",
+    "selectPrompt": "Soldaki listeden bir soru seçin",
+    "programFallback": "Program",
+    "machineBanner": "Soru makine ile çıkarıldı. Soru kökünü, seçenekleri ve doğru cevabı orijinalle karşılaştırın — çıkarma sırasında bir seçenek kaybolmuş veya cevap anahtarı karışmış olabilir.",
+    "machineBannerWithConfidence": "Soru makine ile çıkarıldı (çıkarma güveni {{percent}}%). Soru kökünü, seçenekleri ve doğru cevabı orijinalle karşılaştırın — çıkarma sırasında bir seçenek kaybolmuş veya cevap anahtarı karışmış olabilir.",
+    "version": "sürüm {{version}}",
+    "optionsLabel": "Cevap seçenekleri",
+    "correctTag": "doğru",
+    "optionExplanationCorrectPlaceholder": "Bu seçenek neden doğru",
+    "optionExplanationWrongPlaceholder": "Bu seçenek neden yanlış",
+    "explanationLabel": "Genel açıklama",
+    "explanationOptional": "— zorunlu değil",
+    "explanationPlaceholder": "Doğru cevabın neden doğru olduğu: mekanizma, ölçüt, kılavuzlara atıf",
+    "blockersTitle": "Yayımlanamaz: {{list}}.",
+    "warningsNote": "{{list}}. Yine de yayımlayabilirsiniz — öğrenci doğru cevabı çözüm olmadan görecek. Açıklamaları sonra ekleyebilirsiniz, soru yayında kalır.",
+    "approve": "Yayımla",
+    "saveEdits": "Düzenlemeleri kaydet",
+    "rejectLabel": "Reddet ve yazara geri gönder",
+    "rejectPlaceholder": "Gerekçe: tam olarak ne yanlış ve ne düzeltilmeli",
+    "reject": "Reddet",
+    "blockers": {
+      "noCorrectAnswer": "doğru cevap belirtilmemiş",
+      "noAuthority": "kaynak belirtilmemiş (kurum veya yayın)",
+      "noLicenseNote": "lisans koşulları belirtilmemiş"
+    },
+    "warnings": {
+      "noExplanation": "genel açıklama yok",
+      "noOptionExplanations": "seçeneklere açıklama yok",
+      "someOptionExplanations": "şu seçenekler için açıklama yok: {{keys}}"
+    },
+    "errors": {
+      "loadQueue": "İnceleme kuyruğu yüklenemedi",
+      "loadItem": "Soru yüklenemedi",
+      "save": "Düzenlemeler kaydedilemedi",
+      "approve": "Soru yayımlanamadı",
+      "reject": "Soru reddedilemedi",
+      "rejectReasonRequired": "Ret gerekçesini belirtin — yazara geri iletilecek"
+    },
+    "notices": {
+      "saved": "Düzenlemeler kaydedildi",
+      "published": "Soru yayımlandı. Testi öğrencilerin görebilmesi için «Testler» bölümünden testin kendisini de yayımlayın.",
+      "rejected": "Soru reddedildi ve yazara geri gönderildi"
+    }
+  },
+  "attempt": {
+    "loading": "Yükleniyor…",
+    "toCatalog": "Program listesine",
+    "toProgram": "Programa dön",
+    "errors": {
+      "load": "Deneme yüklenemedi",
+      "finish": "Deneme tamamlanamadı",
+      "submit": "Cevap gönderilemedi"
+    },
+    "verdict": {
+      "correct": "Doğru",
+      "incorrect": "Yanlış",
+      "unanswered": "Cevapsız"
+    },
+    "result": {
+      "score": "{{total}} soruda {{correct}} doğru",
+      "thresholdPassed": "geçme eşiği aşıldı (%{{percent}})",
+      "thresholdFailed": "geçme eşiği aşılamadı (%{{percent}})",
+      "expired": "Süre dolduğu için deneme kapatıldı",
+      "byTopic": "Konulara göre",
+      "noTopic": "Konusuz"
+    },
+    "review": {
+      "title": "Çözüm analizi",
+      "correctAnswer": "Doğru cevap:"
+    },
+    "explain": {
+      "sources": "Kaynaklar:"
+    },
+    "runner": {
+      "progress": "Soru {{current}} / {{total}} · cevaplanan {{answered}}",
+      "sending": "Gönderiliyor…",
+      "answer": "Cevapla",
+      "next": "Sonraki soru",
+      "toResult": "Sonuca git",
+      "skip": "Atla",
+      "finish": "Bitir ve sonucu gör",
+      "finishHint": "Cevaplanmayan sorular yanlış sayılır."
+    }
+  },
+  "catalog": {
+    "title": "Sınavlara hazırlık",
+    "subtitle": "Alıştırma, deneme sınavları ve hata çözümlemesi. Büyük sınavlar bloklar hâlinde — tüm soruları bir kerede değil, parça parça çözülebilir.",
+    "loading": "Katalog yükleniyor…",
+    "allPrograms": "Tüm testler",
+    "found": "{{total}} testten {{count}} tanesi bulundu",
+    "errors": {
+      "load": "Katalog yüklenemedi"
+    },
+    "search": {
+      "placeholder": "Testi adına, kuruma veya bölüme göre ara…"
+    },
+    "filters": {
+      "category": "Bölüm",
+      "allCategories": "Tüm bölümler",
+      "lang": "Test dili",
+      "allLangs": "Tüm diller",
+      "reset": "filtreleri sıfırla"
+    },
+    "card": {
+      "questions": "Soru sayısı: {{count}}",
+      "blocks": "{{size}} soruluk bloklar",
+      "free": "Ücretsiz"
+    },
+    "empty": {
+      "title": "Henüz yayımlanmış test yok.",
+      "hint": "Bunları yönetim panelinden ekleyin: “Testler ve sınavlar” → “Testi dosyadan yükle”."
+    },
+    "noResults": {
+      "withFilters": "Seçili filtrelerle aramanıza uygun sonuç bulunamadı.",
+      "plain": "Aramanıza uygun sonuç bulunamadı."
+    },
+    "folder": {
+      "programs": "Test sayısı: {{count}}",
+      "subsections": "Alt bölüm sayısı: {{count}}"
+    },
+    "section": {
+      "inThisCategory": "Bu bölümdeki testler",
+      "uncategorized": "Bölümü olmayan testler"
+    },
+    "emptyFolder": {
+      "byLang": "Burada “{{lang}}” dilinde test yok.",
+      "plain": "Bu bölümde henüz test yok."
+    }
+  },
+  "program": {
+    "loading": "Program yükleniyor…",
+    "allExams": "Tüm sınavlar",
+    "continue": "Devam et",
+    "errors": {
+      "loadProgram": "Program yüklenemedi",
+      "startAttempt": "Deneme başlatılamadı"
+    },
+    "inProgress": {
+      "title": "Tamamlanmamış bir denemeniz var",
+      "hint": "Bu programda yeni bir denemeye ancak mevcut deneme tamamlandıktan sonra başlayabilirsiniz."
+    },
+    "readiness": {
+      "label": "hazırlık (konu haritasına göre ağırlıklandırılmış)",
+      "passingScore": "geçme puanı"
+    },
+    "topics": {
+      "title": "Konular",
+      "weight": "ağırlık %{{percent}}",
+      "noData": "veri yok",
+      "note": "Bir konu 5 cevaptan sonra ölçülmüş sayılır. Veri azken hazırlık oranı olduğundan düşük görünür — hazırlığın başında bu normaldir."
+    },
+    "blocks": {
+      "title": "Bloklar",
+      "hint": "Sınav {{blockSize}} soruluk bloklara ayrıldı — {{totalCount}} sorunun tamamını bir kerede değil, parça parça çözün. Her blok ayrı ayrı, size uyan bir hızda çözülebilir.",
+      "name": "Blok {{number}}",
+      "range": "sorular {{from}}–{{to}} · {{count}} adet"
+    },
+    "modeHints": {
+      "tutor": "Her cevaptan hemen sonra açıklama, zamanlayıcı yok",
+      "timed": "Zamanlayıcı çalışır, açıklamalar sonda",
+      "mock": "İçerik tamamen konu haritasına göre, zamanlayıcı, sonuç raporu",
+      "drill": "İstatistiğinize göre en zayıf üç konunun tekrarı"
+    },
+    "start": {
+      "title": "Başla",
+      "titleWhole": "Sınavın tamamını çöz",
+      "action": "Başla",
+      "preparing": "Hazırlanıyor…"
+    },
+    "history": {
+      "title": "Geçmiş denemeler"
+    }
+  }
+}
