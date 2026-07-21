@@ -52,7 +52,7 @@
   "insight4Desc": "Evidence-based recommendations surfaced at the point of care.",
   "rolesTag": "Choose Your Path",
   "rolesTitle": "One platform,",
-  "rolesTitle2": "two experiences",
+  "rolesTitle2": "three roles",
   "roleDoctor": {
     "title": "For Doctors",
     "desc": "A professional-grade workspace for clinicians. Manage your practice, connect with patients, and leverage AI tools — all in one place.",
@@ -145,8 +145,17 @@
   "freeTag": "Free",
   "newsResearchTag": "Latest Medical Research",
   "portalLabel": "Portal",
-  "rolesSub": "Access the right tools for your role, designed for clinicians and patients alike.",
+  "rolesSub": "The right tools for your role — patients, doctors and clinics.",
   "synthesisText": "Create a scientific article from medical sources",
   "platformLive": "Platform Live",
-  "topbarCountries": "40+ Countries"
+  "topbarCountries": "40+ Countries",
+  "roleClinic": {
+    "title": "For Clinics",
+    "desc": "Run the whole clinic: branches, staff and access rights, appointment scheduling and an audit trail over medical data.",
+    "cta": "Clinic Sign-In →"
+  },
+  "clinicPerk1": "Multi-clinic and branches",
+  "clinicPerk2": "Staff roles and permissions",
+  "clinicPerk3": "Scheduling and appointments",
+  "clinicPerk4": "Data access audit"
 }

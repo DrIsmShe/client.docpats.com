@@ -52,7 +52,7 @@
   "insight4Desc": "Yardım nöqtəsində sübutlara əsaslanan tövsiyələr.",
   "rolesTag": "Yolunuzu Seçin",
   "rolesTitle": "Bir platforma,",
-  "rolesTitle2": "iki təcrübə",
+  "rolesTitle2": "üç rol",
   "roleDoctor": {
     "title": "Həkimlər Üçün",
     "desc": "Klinisistlər üçün peşəkar iş mühiti. Praktikanızı idarə edin, xəstələrlə əlaqə saxlayın və AI alətlərindən yararlanın — hamısı bir yerdə.",
@@ -145,8 +145,17 @@
   "freeTag": "Pulsuz",
   "newsResearchTag": "Ən son tibbi araşdırmalar",
   "portalLabel": "Portal",
-  "rolesSub": "Rolunuza uyğun alətlərə çıxış əldə edin — həm həkimlər, həm də pasiyentlər üçün.",
+  "rolesSub": "Rolunuza uyğun alətlər — pasiyentlər, həkimlər və klinikalar üçün.",
   "synthesisText": "Tibbi mənbələr əsasında elmi məqalə yaradın",
   "platformLive": "Platforma onlayn",
-  "topbarCountries": "40+ ölkə"
+  "topbarCountries": "40+ ölkə",
+  "roleClinic": {
+    "title": "Klinikalar üçün",
+    "desc": "Klinikanı bütövlükdə idarə edin: filiallar, əməkdaşlar və giriş hüquqları, qəbul cədvəli və tibbi məlumatlara müraciətin auditi.",
+    "cta": "Klinika girişi →"
+  },
+  "clinicPerk1": "Çoxfiliallı klinika",
+  "clinicPerk2": "Əməkdaş rolları və hüquqları",
+  "clinicPerk3": "Cədvəl və qəbullar",
+  "clinicPerk4": "Məlumat girişinin auditi"
 }

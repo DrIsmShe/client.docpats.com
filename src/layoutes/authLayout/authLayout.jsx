@@ -209,7 +209,8 @@ const STYLES = `
 
   /* ════ HERO ════ */
   .dp-hero {
-    background: linear-gradient(148deg, #0c4a6e 0%, #0f766e 60%, #065f46 100%);
+    /* background: linear-gradient(148deg, #0c4a6e 0%, #0f766e 60%, #065f46 100%); */
+    background: linear-gradient(333deg, #2196F3 0%, #0f766e 60%, #718be3 100%);
     padding: 64px 0 100px;
     position: relative;
     overflow: hidden;
@@ -568,7 +569,7 @@ const STYLES = `
   .dp-roles-bg .dp-section-title em { color: #5eead4; }
   .dp-roles-bg .dp-section-sub { color: rgba(255,255,255,.45); }
 
-  .dp-roles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .dp-roles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .dp-role-card {
     border-radius: 20px; padding: 36px 30px;
     position: relative; overflow: hidden;
@@ -588,6 +589,12 @@ const STYLES = `
     box-shadow: 0 8px 40px rgba(0,0,0,.3);
   }
   .dp-role-card.dp-role-doctor:hover { border-color: rgba(255,255,255,.14); box-shadow: 0 20px 60px rgba(0,0,0,.4); }
+  .dp-role-card.dp-role-clinic {
+    background: linear-gradient(145deg, #134e48 0%, #0f3f3a 60%, #0c2f2c 100%);
+    border: 1.5px solid rgba(94,234,212,.16);
+    box-shadow: 0 8px 40px rgba(12,47,44,.34);
+  }
+  .dp-role-card.dp-role-clinic:hover { border-color: rgba(94,234,212,.3); box-shadow: 0 20px 60px rgba(12,47,44,.44); }
 
   .dp-role-deco {
     position: absolute; top: -60px; right: -60px;
@@ -627,6 +634,7 @@ const STYLES = `
   }
   .dp-role-card.dp-role-patient .dp-role-cta { color: var(--teal); }
   .dp-role-card.dp-role-doctor  .dp-role-cta { color: var(--ink); }
+  .dp-role-card.dp-role-clinic  .dp-role-cta { color: #0f3f3a; }
   .dp-role-cta:hover { transform: translateX(4px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
 
   /* ════ COMPLIANCE ════ */
@@ -941,6 +949,12 @@ export default function AuthLayout() {
     t("patientPerk3"),
     t("patientPerk4"),
   ];
+  const clinicPerks = [
+    t("clinicPerk1"),
+    t("clinicPerk2"),
+    t("clinicPerk3"),
+    t("clinicPerk4"),
+  ];
 
   const Arrow = ({ size = 16 }) => (
     <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
@@ -1006,7 +1020,9 @@ export default function AuthLayout() {
             <span className="dp-topbar-live">
               {t("platformLive", { defaultValue: "Platform Live" })}
             </span>
-            <span>{t("topbarCountries", { defaultValue: "40+ Countries" })}</span>
+            <span>
+              {t("topbarCountries", { defaultValue: "40+ Countries" })}
+            </span>
           </div>
         </div>
 
@@ -1339,7 +1355,8 @@ export default function AuthLayout() {
                       </div>
                       <div className="dp-stat-hero-label">
                         {t("stat.beta", {
-                          defaultValue: "Открытый запуск — присоединяйтесь первыми",
+                          defaultValue:
+                            "Открытый запуск — присоединяйтесь первыми",
                         })}
                       </div>
                     </div>
@@ -1378,12 +1395,16 @@ export default function AuthLayout() {
                 {[
                   {
                     num: "HIPAA",
-                    label: t("metric.compliance", { defaultValue: "Комплаенс" }),
+                    label: t("metric.compliance", {
+                      defaultValue: "Комплаенс",
+                    }),
                     sub: "Audit + encryption",
                   },
                   {
                     num: "AI",
-                    label: t("metric.aiCare", { defaultValue: "AI-консультации" }),
+                    label: t("metric.aiCare", {
+                      defaultValue: "AI-консультации",
+                    }),
                     sub: "Symptom checker + SOAP",
                   },
                   {
@@ -1393,7 +1414,9 @@ export default function AuthLayout() {
                   },
                   {
                     num: "AES-256",
-                    label: t("metric.encryption", { defaultValue: "Шифрование" }),
+                    label: t("metric.encryption", {
+                      defaultValue: "Шифрование",
+                    }),
                     sub: "PHI at rest",
                   },
                 ].map((m) => (
@@ -1592,6 +1615,49 @@ export default function AuthLayout() {
                         }}
                       >
                         {t("roleDoctor.cta") || "Enter Doctor Portal"} <Arrow />
+                      </button>
+                    </div>
+                  </div>
+                  {/* Clinic */}
+                  <div
+                    className="dp-role-card dp-role-clinic"
+                    onClick={() => navigate("/clinic/staff-login")}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    <div className="dp-role-deco" />
+                    <div className="dp-role-inner">
+                      <div className="dp-role-icon-wrap">🏥</div>
+                      <div className="dp-role-label">Clinic Portal</div>
+                      <div className="dp-role-title">
+                        {t("roleClinic.title") || (
+                          <>
+                            For <em>Clinics</em>
+                          </>
+                        )}
+                      </div>
+                      <p className="dp-role-desc">
+                        {t("roleClinic.desc") ||
+                          "Run the whole clinic: branches, staff and access rights, appointment scheduling and an audit trail over medical data."}
+                      </p>
+                      <div className="dp-role-perks">
+                        {clinicPerks.map((p) => (
+                          <div className="dp-role-perk" key={p}>
+                            <div className="dp-role-perk-check">
+                              <Check />
+                            </div>
+                            {p}
+                          </div>
+                        ))}
+                      </div>
+                      <button
+                        className="dp-role-cta"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate("/clinic/staff-login");
+                        }}
+                      >
+                        {t("roleClinic.cta") || "Clinic Sign-In"} <Arrow />
                       </button>
                     </div>
                   </div>

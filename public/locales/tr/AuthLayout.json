@@ -52,7 +52,7 @@
   "insight4Desc": "Bakım noktasında kanıta dayalı öneriler.",
   "rolesTag": "Yolunuzu Seçin",
   "rolesTitle": "Tek platform,",
-  "rolesTitle2": "iki deneyim",
+  "rolesTitle2": "üç rol",
   "roleDoctor": {
     "title": "Doktorlar İçin",
     "desc": "Klinisyenler için profesyonel düzeyde bir çalışma alanı. Uygulamanızı yönetin, hastalarla bağlantı kurun ve yapay zeka araçlarından yararlanın — hepsi tek bir yerde.",
@@ -145,8 +145,17 @@
   "freeTag": "Ücretsiz",
   "newsResearchTag": "En Son Tıbbi Araştırmalar",
   "portalLabel": "Portal",
-  "rolesSub": "Rolünüze uygun araçlara erişin — hem hekimler hem de hastalar için tasarlandı.",
+  "rolesSub": "Rolünüze uygun araçlar — hastalar, hekimler ve klinikler için.",
   "synthesisText": "Tıbbi kaynaklardan bilimsel makale oluşturun",
   "platformLive": "Platform Aktif",
-  "topbarCountries": "40+ Ülke"
+  "topbarCountries": "40+ Ülke",
+  "roleClinic": {
+    "title": "Klinikler için",
+    "desc": "Kliniği bütünüyle yönetin: şubeler, personel ve erişim yetkileri, randevu planlaması ve tıbbi verilere erişim denetimi.",
+    "cta": "Klinik girişi →"
+  },
+  "clinicPerk1": "Çoklu klinik ve şubeler",
+  "clinicPerk2": "Personel rolleri ve yetkileri",
+  "clinicPerk3": "Planlama ve randevular",
+  "clinicPerk4": "Veri erişim denetimi"
 }
