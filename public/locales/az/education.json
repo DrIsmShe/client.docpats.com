@@ -206,7 +206,8 @@
     "notices": {
       "detected": "Tanınmış suallar: {{count}}. Tanınanları yoxlayın və lazım olanları banka köçürün.",
       "imported": "Banka köçürülüb: {{count}}. Suallar qaralama kimi yaradılıb və baxış gözləyir.",
-      "importedWithSkipped": "Banka köçürülüb: {{count}}. Suallar qaralama kimi yaradılıb və baxış gözləyir. Buraxılıb {{skipped}}: {{list}}"
+      "importedWithSkipped": "Banka köçürülüb: {{count}}. Suallar qaralama kimi yaradılıb və baxış gözləyir. Buraxılıb {{skipped}}: {{list}}",
+      "jobDeleted": "Yükləmə siyahıdan silindi."
     },
     "errors": {
       "loadPage": "Səhifəni yükləmək mümkün olmadı",
@@ -220,7 +221,12 @@
       "updateDraft": "Qaralamanı dəyişmək mümkün olmadı",
       "setCorrectKey": "Cavabı təyin etmək mümkün olmadı",
       "selectAtLeastOne": "Ən azı bir sual seçin",
-      "importDrafts": "Sualları köçürmək mümkün olmadı"
+      "importDrafts": "Sualları köçürmək mümkün olmadı",
+      "deleteJob": "Yükləməni silmək mümkün olmadı"
+    },
+    "confirms": {
+      "deleteJob": "«{{name}}» yükləməsi siyahıdan silinsin? Bu tapşırığın tanınmış qaralamaları itəcək.",
+      "deleteJobImported": "«{{name}}» yükləməsi siyahıdan silinsin? Ondan banka artıq köçürülüb: {{count}} sual — onlar qalır, yalnız tanıma qeydi itir."
     }
   },
   "adminPrograms": {

@@ -206,7 +206,8 @@
     "notices": {
       "detected": "Questions extracted: {{count}}. Check what was extracted and move what you need to the bank.",
       "imported": "Moved to the bank: {{count}}. The questions were created as drafts and are waiting for review.",
-      "importedWithSkipped": "Moved to the bank: {{count}}. The questions were created as drafts and are waiting for review. Skipped {{skipped}}: {{list}}"
+      "importedWithSkipped": "Moved to the bank: {{count}}. The questions were created as drafts and are waiting for review. Skipped {{skipped}}: {{list}}",
+      "jobDeleted": "The upload was removed from the list."
     },
     "errors": {
       "loadPage": "Could not load the page",
@@ -220,7 +221,12 @@
       "updateDraft": "Could not change the draft",
       "setCorrectKey": "Could not set the correct answer",
       "selectAtLeastOne": "Select at least one question",
-      "importDrafts": "Could not move the questions"
+      "importDrafts": "Could not move the questions",
+      "deleteJob": "Could not delete the upload"
+    },
+    "confirms": {
+      "deleteJob": "Delete the upload “{{name}}” from the list? The drafts extracted by this job will be lost.",
+      "deleteJobImported": "Delete the upload “{{name}}” from the list? Questions already moved to the bank: {{count}} — they stay, only the extraction record disappears."
     }
   },
   "adminPrograms": {

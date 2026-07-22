@@ -206,7 +206,8 @@
     "notices": {
       "detected": "Çıkarılan soru sayısı: {{count}}. Çıkarılanları gözden geçirin ve gerekenleri bankaya aktarın.",
       "imported": "Bankaya aktarıldı: {{count}}. Sorular taslak olarak oluşturuldu ve incelemeyi bekliyor.",
-      "importedWithSkipped": "Bankaya aktarıldı: {{count}}. Sorular taslak olarak oluşturuldu ve incelemeyi bekliyor. Atlanan {{skipped}}: {{list}}"
+      "importedWithSkipped": "Bankaya aktarıldı: {{count}}. Sorular taslak olarak oluşturuldu ve incelemeyi bekliyor. Atlanan {{skipped}}: {{list}}",
+      "jobDeleted": "Yükleme listeden silindi."
     },
     "errors": {
       "loadPage": "Sayfa yüklenemedi",
@@ -220,7 +221,12 @@
       "updateDraft": "Taslak değiştirilemedi",
       "setCorrectKey": "Cevap işaretlenemedi",
       "selectAtLeastOne": "En az bir soru seçin",
-      "importDrafts": "Sorular aktarılamadı"
+      "importDrafts": "Sorular aktarılamadı",
+      "deleteJob": "Yükleme silinemedi"
+    },
+    "confirms": {
+      "deleteJob": "“{{name}}” yüklemesi listeden silinsin mi? Bu işin çıkarılan taslakları kaybolur.",
+      "deleteJobImported": "“{{name}}” yüklemesi listeden silinsin mi? Bankaya aktarılan soru sayısı: {{count}} — onlar kalır, yalnızca çıkarım kaydı silinir."
     }
   },
   "adminPrograms": {

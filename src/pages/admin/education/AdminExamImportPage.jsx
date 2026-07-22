@@ -20,6 +20,7 @@ import {
   fetchExtractors,
   fetchImportJobs,
   fetchImportJob,
+  deleteImportJob,
   createProgram,
   archiveProgram,
   createImportJob,
@@ -333,6 +334,40 @@ export default function AdminExamImportPage() {
     } finally {
       setBusy(false);
       setStage(null);
+    }
+  }
+
+  // Уборка списка загрузок. Если из задания уже переносили вопросы в банк,
+  // предупреждаем отдельно: сами вопросы останутся, исчезнет только разбор,
+  // по которому видно, откуда они взялись.
+  async function handleDeleteJob(target) {
+    const imported = target.stats?.imported ?? 0;
+    const question = imported
+      ? t("adminImport.confirms.deleteJobImported", {
+          name: target.file?.originalName ?? t("adminImport.jobs.noFile"),
+          count: imported,
+        })
+      : t("adminImport.confirms.deleteJob", {
+          name: target.file?.originalName ?? t("adminImport.jobs.noFile"),
+        });
+    if (!window.confirm(question)) return;
+
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      await deleteImportJob(target._id);
+      setNotice(t("adminImport.notices.jobDeleted"));
+      // Открытую карточку закрываем: она показывала бы удалённое задание.
+      if (job && String(job._id) === String(target._id)) {
+        setJob(null);
+        setSelectedDrafts([]);
+      }
+      setJobs(await fetchImportJobs({ limit: 30 }));
+    } catch (err) {
+      handleApiError(err, t("adminImport.errors.deleteJob"));
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -664,30 +699,52 @@ export default function AdminExamImportPage() {
         <div className="edu-card">
           <h2 className="edu-card-title">{t("adminImport.jobs.title")}</h2>
           {jobs.map((j) => (
-            <button
+            <div
               key={j._id}
-              type="button"
-              className="edu-list-item"
-              style={{ border: "none", borderTop: "1px solid #eef2f7" }}
-              onClick={() => openJob(j._id)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                borderTop: "1px solid #eef2f7",
+              }}
             >
-              <div className="edu-list-item-title">
-                {j.file?.originalName ?? t("adminImport.jobs.noFile")}{" "}
-                <span style={{ color: "#8b9aab" }}>
-                  ·{" "}
-                  {t(`shared.importStatuses.${j.status}`, {
-                    defaultValue: j.status,
+              <button
+                type="button"
+                className="edu-list-item"
+                style={{ border: "none", flex: 1, minWidth: 0 }}
+                onClick={() => openJob(j._id)}
+              >
+                <div className="edu-list-item-title">
+                  {j.file?.originalName ?? t("adminImport.jobs.noFile")}{" "}
+                  <span style={{ color: "#8b9aab" }}>
+                    ·{" "}
+                    {t(`shared.importStatuses.${j.status}`, {
+                      defaultValue: j.status,
+                    })}
+                  </span>
+                </div>
+                <div className="edu-list-item-meta">
+                  {t("adminImport.jobs.meta", {
+                    detected: j.stats?.detected ?? 0,
+                    imported: j.stats?.imported ?? 0,
+                    date: new Date(j.createdAt).toLocaleString(i18n.language),
                   })}
-                </span>
-              </div>
-              <div className="edu-list-item-meta">
-                {t("adminImport.jobs.meta", {
-                  detected: j.stats?.detected ?? 0,
-                  imported: j.stats?.imported ?? 0,
-                  date: new Date(j.createdAt).toLocaleString(i18n.language),
-                })}
-              </div>
-            </button>
+                </div>
+              </button>
+              {/* Пока идёт распознавание, удалять нечего и опасно: бэкенд
+                  такое задание не отдаст (409), поэтому и кнопку прячем. */}
+              {j.status !== "extracting" && (
+                <button
+                  type="button"
+                  className="edu-btn edu-btn--danger"
+                  style={{ padding: "6px 12px", fontSize: 13, flexShrink: 0 }}
+                  disabled={busy}
+                  onClick={() => handleDeleteJob(j)}
+                >
+                  {t("shared.actions.delete")}
+                </button>
+              )}
+            </div>
           ))}
         </div>
       )}

@@ -204,6 +204,16 @@ export async function fetchImportJob(jobId) {
   return data.job;
 }
 
+/**
+ * Удаляет задание импорта. Вопросы, уже перенесённые в банк, остаются:
+ * задание — журнал распознавания, а не сам контент. Пока идёт
+ * распознавание, бэкенд удалять запрещает (409).
+ */
+export async function deleteImportJob(jobId) {
+  const { data } = await axios.delete(`${BASE}/import/jobs/${jobId}`);
+  return data; // { deleted: true, id, importedItems }
+}
+
 export async function createImportJob(payload) {
   const { data } = await axios.post(`${BASE}/import/jobs`, payload);
   return data.job;
