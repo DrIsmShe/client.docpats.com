@@ -25,6 +25,93 @@ import "../../education/education.css";
 
 const EMPTY_FORM = { name: "", parentId: "", description: "", icon: "", order: 0 };
 
+// Иконки рубрик. Раньше класс вписывали руками, и опечатка («bi bi-globus»)
+// давала на витрине пустой кружок — ошибку было видно только там.
+// Значение поля — готовый класс bootstrap-icons: ровно то, что понимает
+// CategoryIcon на витрине (ветка "bi ").
+//
+// Набор академический и медицинско-экзаменационный; все имена проверены по
+// public/assets/vendor/bootstrap-icons (v1.11.1), который отдаёт index.html.
+const ACADEMIC_ICONS = [
+  "mortarboard",
+  "journal-check",
+  "journal-medical",
+  "book",
+  "clipboard-check",
+  "list-check",
+  "patch-check",
+  "award",
+  "trophy",
+  "person-badge",
+  "people-fill",
+  "bank",
+  "building",
+  "hospital",
+  "heart-pulse",
+  "activity",
+  "capsule",
+  "prescription2",
+  "bandaid",
+  "thermometer",
+  "globe",
+  "flag",
+  "stopwatch",
+  "lightbulb",
+  "pencil-square",
+  "graph-up",
+].map((name) => `bi bi-${name}`);
+
+// Иконка рубрики: класс bootstrap-icons или эмодзи (старые категории могли
+// завести эмодзи руками). Пусто — рисуем прочерк, чтобы поле не выглядело
+// сломанным.
+function IconGlyph({ icon, fallback = "—" }) {
+  if (icon && icon.startsWith("bi ")) {
+    return <i className={icon} aria-hidden="true" />;
+  }
+  return <span aria-hidden="true">{icon || fallback}</span>;
+}
+
+// Выпадающий список иконок с живым превью выбранной.
+//
+// В <option> иконку шрифтом не отрисовать — браузер рендерит там только
+// текст, — поэтому в списке названия, а сама иконка показана рядом.
+function IconSelect({ value, onChange, t }) {
+  // Значение, заведённое до появления списка (эмодзи или чужой класс), не
+  // теряем: добавляем отдельным пунктом. Иначе первое же сохранение из
+  // формы редактирования молча стёрло бы иконку.
+  const custom = value && !ACADEMIC_ICONS.includes(value) ? value : null;
+
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <span
+        className="edu-cat-admin-icon"
+        style={{ flex: "0 0 auto" }}
+        title={value || ""}
+      >
+        <IconGlyph icon={value} />
+      </span>
+      <select
+        className="edu-select"
+        style={{ flex: 1, minWidth: 0 }}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        <option value="">{t("adminCategories.form.iconNone")}</option>
+        {custom && (
+          <option value={custom}>
+            {t("adminCategories.form.iconCustom", { icon: custom })}
+          </option>
+        )}
+        {ACADEMIC_ICONS.map((cls) => (
+          <option key={cls} value={cls}>
+            {t(`adminCategories.icons.${cls.replace("bi bi-", "")}`)}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 // Дерево произвольной глубины разворачиваем в плоский список с отступом —
 // для выпадающих списков «Родитель» и рекурсивной отрисовки.
 function flattenTree(nodes, depth = 0, acc = []) {
@@ -224,14 +311,12 @@ export default function AdminExamCategoriesPage() {
           </div>
           <div>
             <div className="edu-field-label" style={{ marginTop: 0 }}>
-              {t("adminCategories.form.iconEdit")}
+              {t("adminCategories.form.icon")}
             </div>
-            <input
-              className="edu-input"
+            <IconSelect
               value={editForm.icon}
-              onChange={(e) =>
-                setEditForm((f) => ({ ...f, icon: e.target.value }))
-              }
+              onChange={(icon) => setEditForm((f) => ({ ...f, icon }))}
+              t={t}
             />
           </div>
           <div>
@@ -292,8 +377,16 @@ export default function AdminExamCategoriesPage() {
             style={depth > 0 ? { paddingLeft: depth * 24 } : undefined}
           >
             <div className="edu-cat-admin-main">
+              {/* Класс bootstrap-icons надо рисовать иконкой, а не печатать
+                  строкой «bi bi-mortarboard» — до этого в списке было видно
+                  именно её. */}
               <span className="edu-cat-admin-icon">
-                {node.icon || (depth > 0 ? "•" : node.name.charAt(0).toUpperCase())}
+                <IconGlyph
+                  icon={node.icon}
+                  fallback={
+                    depth > 0 ? "•" : node.name.charAt(0).toUpperCase()
+                  }
+                />
               </span>
               <div>
                 <div className="edu-cat-admin-name">{node.name}</div>
@@ -392,13 +485,10 @@ export default function AdminExamCategoriesPage() {
               <div className="edu-field-label" style={{ marginTop: 0 }}>
                 {t("adminCategories.form.icon")}
               </div>
-              <input
-                className="edu-input"
-                placeholder={t("adminCategories.form.iconPlaceholder")}
+              <IconSelect
                 value={form.icon}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, icon: e.target.value }))
-                }
+                onChange={(icon) => setForm((f) => ({ ...f, icon }))}
+                t={t}
               />
             </div>
             <div>

@@ -70,11 +70,11 @@
       "topLevel": "— Üst düzey (kategori) —",
       "topLevelEdit": "— Üst düzey —",
       "icon": "Simge (isteğe bağlı)",
-      "iconEdit": "Simge (emoji veya “bi bi-globe”)",
-      "iconPlaceholder": "🌍 veya bi bi-globe",
       "order": "Sıra",
       "description": "Açıklama (isteğe bağlı)",
-      "descriptionPlaceholder": "Vitrin için kısa açıklama"
+      "descriptionPlaceholder": "Vitrin için kısa açıklama",
+      "iconNone": "Simgesiz",
+      "iconCustom": "Özel simge: {{icon}}"
     },
     "node": {
       "directPrograms": "doğrudan {{count}} sınav",
@@ -100,6 +100,34 @@
       "emptyName": "Ad boş olamaz",
       "saveFailed": "Kategori kaydedilemedi",
       "deleteFailed": "Kategori silinemedi"
+    },
+    "icons": {
+      "mortarboard": "Mezuniyet kepi — eğitim",
+      "journal-check": "Onaylı defter — testler",
+      "journal-medical": "Tıbbi defter",
+      "book": "Ders kitabı",
+      "clipboard-check": "Onaylı liste — sınav",
+      "list-check": "Kontrol listesi",
+      "patch-check": "Uygunluk rozeti — sertifikasyon",
+      "award": "Ödül",
+      "trophy": "Kupa",
+      "person-badge": "Kimlik kartı — mesleki yeterlilik",
+      "people-fill": "Grup — kurs",
+      "bank": "Kurum — üniversite",
+      "building": "Bina — kuruluş",
+      "hospital": "Hastane",
+      "heart-pulse": "Nabızlı kalp — kardiyoloji",
+      "activity": "EKG çizgisi — fonksiyonel tanı",
+      "capsule": "Kapsül — farmakoloji",
+      "prescription2": "Reçete",
+      "bandaid": "Yara bandı — cerrahi ve travma",
+      "thermometer": "Termometre — dahiliye",
+      "globe": "Küre — uluslararası sınavlar",
+      "flag": "Bayrak — ülke sınavı",
+      "stopwatch": "Kronometre — süreli sınav",
+      "lightbulb": "Ampul — açıklamalar",
+      "pencil-square": "Kalem — yazılı sınav",
+      "graph-up": "Yükselen grafik — ilerleme"
     }
   },
   "adminImport": {

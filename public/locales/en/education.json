@@ -70,11 +70,11 @@
       "topLevel": "— Top level (category) —",
       "topLevelEdit": "— Top level —",
       "icon": "Icon (optional)",
-      "iconEdit": "Icon (emoji or “bi bi-globe”)",
-      "iconPlaceholder": "🌍 or bi bi-globe",
       "order": "Order",
       "description": "Description (optional)",
-      "descriptionPlaceholder": "A short note for the storefront"
+      "descriptionPlaceholder": "A short note for the storefront",
+      "iconNone": "No icon",
+      "iconCustom": "Custom icon: {{icon}}"
     },
     "node": {
       "directPrograms": "{{count}} exam(s) directly",
@@ -100,6 +100,34 @@
       "emptyName": "The name cannot be empty",
       "saveFailed": "Could not save the category",
       "deleteFailed": "Could not delete the category"
+    },
+    "icons": {
+      "mortarboard": "Mortarboard — education",
+      "journal-check": "Journal with a check — tests",
+      "journal-medical": "Medical journal",
+      "book": "Textbook",
+      "clipboard-check": "Checked clipboard — exam",
+      "list-check": "Checklist",
+      "patch-check": "Verified badge — certification",
+      "award": "Award",
+      "trophy": "Trophy",
+      "person-badge": "ID badge — practice licence",
+      "people-fill": "Group — course",
+      "bank": "Institution — university",
+      "building": "Building — organisation",
+      "hospital": "Hospital",
+      "heart-pulse": "Heart with pulse — cardiology",
+      "activity": "ECG trace — functional diagnostics",
+      "capsule": "Capsule — pharmacology",
+      "prescription2": "Prescription",
+      "bandaid": "Plaster — surgery and trauma",
+      "thermometer": "Thermometer — internal medicine",
+      "globe": "Globe — international exams",
+      "flag": "Flag — national exam",
+      "stopwatch": "Stopwatch — timed exam",
+      "lightbulb": "Lightbulb — explanations",
+      "pencil-square": "Pencil — written exam",
+      "graph-up": "Rising chart — progress"
     }
   },
   "adminImport": {

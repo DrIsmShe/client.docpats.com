@@ -70,11 +70,11 @@
       "topLevel": "— المستوى الأعلى (فئة) —",
       "topLevelEdit": "— المستوى الأعلى —",
       "icon": "الأيقونة (اختياري)",
-      "iconEdit": "الأيقونة (إيموجي أو «bi bi-globe»)",
-      "iconPlaceholder": "🌍 أو bi bi-globe",
       "order": "الترتيب",
       "description": "الوصف (اختياري)",
-      "descriptionPlaceholder": "شرح مختصر للواجهة"
+      "descriptionPlaceholder": "شرح مختصر للواجهة",
+      "iconNone": "بدون أيقونة",
+      "iconCustom": "أيقونة مخصصة: {{icon}}"
     },
     "node": {
       "directPrograms": "{{count}} اختبار مباشرةً",
@@ -100,6 +100,34 @@
       "emptyName": "لا يمكن أن يكون الاسم فارغًا",
       "saveFailed": "تعذّر حفظ الفئة",
       "deleteFailed": "تعذّر حذف الفئة"
+    },
+    "icons": {
+      "mortarboard": "قبعة التخرج — التعليم",
+      "journal-check": "دفتر بعلامة صح — الاختبارات",
+      "journal-medical": "دفتر طبي",
+      "book": "كتاب دراسي",
+      "clipboard-check": "قائمة مُتحقق منها — امتحان",
+      "list-check": "قائمة تحقق",
+      "patch-check": "شارة مطابقة — شهادة",
+      "award": "جائزة",
+      "trophy": "كأس",
+      "person-badge": "بطاقة تعريف — ترخيص المزاولة",
+      "people-fill": "مجموعة — دورة",
+      "bank": "مؤسسة — جامعة",
+      "building": "مبنى — منظمة",
+      "hospital": "مستشفى",
+      "heart-pulse": "قلب بنبض — أمراض القلب",
+      "activity": "تخطيط القلب — التشخيص الوظيفي",
+      "capsule": "كبسولة — علم الأدوية",
+      "prescription2": "وصفة طبية",
+      "bandaid": "لاصق — الجراحة والإصابات",
+      "thermometer": "ميزان حرارة — الطب الباطني",
+      "globe": "كرة أرضية — امتحانات دولية",
+      "flag": "علم — امتحان وطني",
+      "stopwatch": "ساعة إيقاف — امتحان موقوت",
+      "lightbulb": "مصباح — الشروح",
+      "pencil-square": "قلم — امتحان تحريري",
+      "graph-up": "رسم بياني صاعد — التقدّم"
     }
   },
   "adminImport": {

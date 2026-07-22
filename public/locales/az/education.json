@@ -70,11 +70,11 @@
       "topLevel": "— Yuxarı səviyyə (kateqoriya) —",
       "topLevelEdit": "— Yuxarı səviyyə —",
       "icon": "İkon (könüllü)",
-      "iconEdit": "İkon (emoji və ya «bi bi-globe»)",
-      "iconPlaceholder": "🌍 və ya bi bi-globe",
       "order": "Sıra",
       "description": "Təsvir (könüllü)",
-      "descriptionPlaceholder": "Vitrin üçün qısa izah"
+      "descriptionPlaceholder": "Vitrin üçün qısa izah",
+      "iconNone": "İkonsuz",
+      "iconCustom": "Fərdi ikon: {{icon}}"
     },
     "node": {
       "directPrograms": "birbaşa {{count}} test",
@@ -100,6 +100,34 @@
       "emptyName": "Ad boş ola bilməz",
       "saveFailed": "Kateqoriyanı yadda saxlamaq alınmadı",
       "deleteFailed": "Kateqoriyanı silmək alınmadı"
+    },
+    "icons": {
+      "mortarboard": "Məzun papağı — təhsil",
+      "journal-check": "İşarəli jurnal — testlər",
+      "journal-medical": "Tibbi jurnal",
+      "book": "Dərslik",
+      "clipboard-check": "Yoxlanmış siyahı — imtahan",
+      "list-check": "Yoxlama siyahısı",
+      "patch-check": "Uyğunluq nişanı — sertifikasiya",
+      "award": "Mükafat",
+      "trophy": "Kubok",
+      "person-badge": "Vəsiqə — təbabətə buraxılış",
+      "people-fill": "Qrup — kurs",
+      "bank": "Müəssisə — ali məktəb",
+      "building": "Bina — təşkilat",
+      "hospital": "Xəstəxana",
+      "heart-pulse": "Nəbzli ürək — kardiologiya",
+      "activity": "Kardioqramma — funksional diaqnostika",
+      "capsule": "Kapsul — farmakologiya",
+      "prescription2": "Resept",
+      "bandaid": "Plastır — cərrahiyyə və travma",
+      "thermometer": "Termometr — terapiya",
+      "globe": "Qlobus — beynəlxalq imtahanlar",
+      "flag": "Bayraq — ölkə imtahanı",
+      "stopwatch": "Saniyəölçən — vaxtla imtahan",
+      "lightbulb": "Lampa — izah və ipucları",
+      "pencil-square": "Karandaş — yazılı imtahan",
+      "graph-up": "Artan qrafik — irəliləyiş"
     }
   },
   "adminImport": {
