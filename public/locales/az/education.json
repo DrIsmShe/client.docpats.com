@@ -54,7 +54,8 @@
       "delete": "Sil",
       "retry": "Yenidən cəhd et",
       "loading": "Yüklənir…",
-      "close": "Bağla"
+      "close": "Bağla",
+      "toCabinet": "Kabinetə"
     }
   },
   "adminCategories": {

@@ -54,7 +54,8 @@
       "delete": "Sil",
       "retry": "Tekrar dene",
       "loading": "Yükleniyor…",
-      "close": "Kapat"
+      "close": "Kapat",
+      "toCabinet": "Panele dön"
     }
   },
   "adminCategories": {

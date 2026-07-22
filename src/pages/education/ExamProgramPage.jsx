@@ -15,6 +15,7 @@ import {
   readApiError,
   isAuthError,
 } from "../../api/education";
+import BackToCabinet from "./BackToCabinet";
 import "./education.css";
 
 // Названия режимов берём из shared.modes, пояснения — из program.modeHints.
@@ -138,9 +139,22 @@ export default function ExamProgramPage() {
 
   return (
     <div className="edu-page" dir={dir}>
-      <Link to="/education" className="edu-back">
-        ← {t("program.allExams")}
-      </Link>
+      {/* На страницу теста заходят и по прямой ссылке, минуя каталог,
+          поэтому рядом с возвратом в каталог — выход из модуля. */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 12,
+          flexWrap: "wrap",
+        }}
+      >
+        <Link to="/education" className="edu-back">
+          ← {t("program.allExams")}
+        </Link>
+        <BackToCabinet />
+      </div>
 
       {error && <div className="edu-error">{error}</div>}
 

@@ -54,7 +54,8 @@
       "delete": "Удалить",
       "retry": "Повторить",
       "loading": "Загрузка…",
-      "close": "Закрыть"
+      "close": "Закрыть",
+      "toCabinet": "В кабинет"
     }
   },
   "adminCategories": {

@@ -54,7 +54,8 @@
       "delete": "حذف",
       "retry": "إعادة المحاولة",
       "loading": "جارٍ التحميل…",
-      "close": "إغلاق"
+      "close": "إغلاق",
+      "toCabinet": "إلى الحساب"
     }
   },
   "adminCategories": {

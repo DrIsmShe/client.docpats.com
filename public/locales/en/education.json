@@ -54,7 +54,8 @@
       "delete": "Delete",
       "retry": "Retry",
       "loading": "Loading…",
-      "close": "Close"
+      "close": "Close",
+      "toCabinet": "Back to cabinet"
     }
   },
   "adminCategories": {

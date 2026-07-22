@@ -22,6 +22,7 @@ import {
   isAuthError,
 } from "../../api/education";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
+import BackToCabinet from "./BackToCabinet";
 import "./education.css";
 
 // Языки совпадают с EXAM_LANGUAGES на бэкенде (server/modules/education/
@@ -265,9 +266,9 @@ export default function ExamCatalogPage() {
   return (
     <div className="edu-page edu-page--wide" dir={dir}>
       {/* ─── Шапка ─── */}
-      {/* Переключатель языка здесь, потому что у зоны /education нет
-          общего layout с шапкой: без него сменить язык можно только
-          уйдя в другой раздел сайта. */}
+      {/* Возврат в кабинет и переключатель языка живут здесь, потому что у
+          зоны /education нет общего layout с шапкой: без них выйти из
+          модуля и сменить язык можно было только через браузер. */}
       <div
         className="edu-catalog-hero"
         style={{
@@ -283,7 +284,17 @@ export default function ExamCatalogPage() {
             {t("catalog.subtitle")}
           </p>
         </div>
-        <LanguageSwitcher />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            flexShrink: 0,
+          }}
+        >
+          <BackToCabinet />
+          <LanguageSwitcher />
+        </div>
       </div>
 
       {error && <div className="edu-error">{error}</div>}

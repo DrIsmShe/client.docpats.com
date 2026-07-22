@@ -22,6 +22,7 @@ import {
   readApiError,
   isAuthError,
 } from "../../../api/education";
+import LanguageSwitcher from "../../../components/LanguageSwitcher";
 import "../../education/education.css";
 
 // Языки совпадают с EXAM_LANGUAGES на бэкенде и с локалями фронтенда.
@@ -333,8 +334,23 @@ export default function AdminExamProgramsPage() {
 
   return (
     <div className="edu-page edu-page--wide">
-      <h1 className="edu-title">{t("adminPrograms.title")}</h1>
-      <p className="edu-subtitle">{t("adminPrograms.subtitle")}</p>
+      {/* Переключатель языка: сама админка не переведена вовсе, и без
+          него оператор не мог вернуть модуль на русский — значение
+          языка общее для всего сайта и меняется только на витрине. */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          justifyContent: "space-between",
+          gap: 16,
+        }}
+      >
+        <div>
+          <h1 className="edu-title">{t("adminPrograms.title")}</h1>
+          <p className="edu-subtitle">{t("adminPrograms.subtitle")}</p>
+        </div>
+        <LanguageSwitcher />
+      </div>
 
       {error && <div className="edu-error">{error}</div>}
       {notice && <div className="edu-notice">{notice}</div>}
