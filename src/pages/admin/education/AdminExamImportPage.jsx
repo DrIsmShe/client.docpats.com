@@ -174,6 +174,35 @@ export default function AdminExamImportPage() {
     }
   }
 
+  // Ждём, пока сервер закончит распознавание, опрашивая задание.
+  //
+  // Один сетевой сбой в опросе не считаем провалом: распознавание идёт на
+  // сервере и от нашего соединения не зависит — просто пробуем ещё раз.
+  // Ограничение по времени нужно, чтобы вкладка не опрашивала вечно, если
+  // процесс на сервере умер; результат при этом не теряется — задание
+  // остаётся в «Прошлых загрузках».
+  async function waitForExtraction(jobId) {
+    const POLL_MS = 4000;
+    const LIMIT_MS = 20 * 60 * 1000;
+    const startedAt = Date.now();
+    let lastKnown = null;
+
+    while (Date.now() - startedAt < LIMIT_MS) {
+      await new Promise((resolve) => setTimeout(resolve, POLL_MS));
+      try {
+        const current = await fetchImportJob(jobId);
+        lastKnown = current;
+        if (current.status === "extracted" || current.status === "failed") {
+          return current;
+        }
+      } catch (err) {
+        if (isAuthError(err)) throw err;
+      }
+    }
+
+    return lastKnown ?? { status: "extracting" };
+  }
+
   async function handleUpload(e) {
     e.preventDefault();
     if (!file) {
@@ -211,6 +240,9 @@ export default function AdminExamImportPage() {
     // Запоминаем, что программу создали именно мы: при срыве её нужно
     // убрать, а чужую — не трогать.
     let createdProgramId = null;
+    // И запоминаем, дошло ли дело до распознавания: после этого откат
+    // запрещён — сервер работает в фоне и результат ещё будет.
+    let extractionStarted = false;
 
     try {
       // 1. Программа-контейнер. Для нового теста создаём пустую: карту тем
@@ -257,14 +289,28 @@ export default function AdminExamImportPage() {
         },
       });
 
-      // 3. Извлечение. Может занять минуты на многостраничном PDF.
-      setStage(t("adminImport.stages.extracting"));
-      const ran = await runImportJob(created._id, { file });
+      // 3. Извлечение. Сервер отвечает сразу и распознаёт в фоне: ждать
+      //    3–4 минуты в одном запросе нельзя, nginx рвёт соединение раньше
+      //    и браузер показывает «Network Error», хотя работа идёт.
+      await runImportJob(created._id, { file });
+      extractionStarted = true;
 
-      setNotice(
-        t("adminImport.notices.detected", { count: ran.stats?.detected ?? 0 }),
-      );
+      // Дальше следим за заданием опросом. Файл больше не нужен: он уже
+      // в памяти сервера, а на клиенте только мешает повторной загрузке.
       setFile(null);
+      setStage(t("adminImport.stages.extracting"));
+      const finished = await waitForExtraction(created._id);
+
+      if (finished.status === "failed") {
+        setError(finished.error || t("adminImport.errors.processFile"));
+      } else {
+        setNotice(
+          t("adminImport.notices.detected", {
+            count: finished.stats?.detected ?? 0,
+          }),
+        );
+      }
+
       setPrograms(await fetchPrograms({ scope: "all" }));
       setJobs(await fetchImportJobs({ limit: 30 }));
       await openJob(created._id);
@@ -275,7 +321,11 @@ export default function AdminExamImportPage() {
       // Оставлять её значит копить мусор в списке тестов после каждой
       // неудачной попытки. Ошибку отката не показываем — она перекрыла бы
       // настоящую причину сбоя.
-      if (createdProgramId) {
+      //
+      // Но если распознавание уже запущено, программу НЕ трогаем: сервер
+      // продолжает работать, и архивировать живой тест из-за оборвавшегося
+      // опроса значит потерять результат — ровно это и случилось на проде.
+      if (createdProgramId && !extractionStarted) {
         await archiveProgram(createdProgramId).catch(() => {});
       }
 
