@@ -21,6 +21,7 @@ import {
   updateItem,
   submitItemForReview,
   reviewItem,
+  reviewAllProgramItems,
   readApiError,
   isAuthError,
 } from "../../../api/education";
@@ -122,6 +123,56 @@ export default function ExamReviewQueuePage() {
       t("adminReview.programFallback"),
     [programs, t],
   );
+
+  // Очередь по тестам — для пакетного одобрения. Считаем только in_review:
+  // черновики бэкенд в пакет не берёт, и обещать их одобрение нельзя.
+  const bulkGroups = useMemo(() => {
+    const byProgram = new Map();
+    for (const q of queue) {
+      if (q.status !== "in_review") continue;
+      const key = String(q.programId);
+      byProgram.set(key, (byProgram.get(key) ?? 0) + 1);
+    }
+    return [...byProgram.entries()].map(([programId, count]) => ({
+      programId,
+      count,
+    }));
+  }, [queue]);
+
+  async function handleApproveAll(group) {
+    const question = t("adminReview.confirms.approveAll", {
+      name: programTitle(group.programId),
+      count: group.count,
+    });
+    if (!window.confirm(question)) return;
+
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const result = await reviewAllProgramItems(group.programId);
+      setNotice(
+        result.skippedCount
+          ? t("adminReview.notices.bulkApprovedWithSkipped", {
+              count: result.approvedCount,
+              skipped: result.skippedCount,
+            })
+          : t("adminReview.notices.bulkApproved", {
+              count: result.approvedCount,
+            }),
+      );
+      const items = await loadQueue();
+      // Открытый вопрос мог быть только что опубликован — тогда карточка
+      // показывала бы то, чего в очереди уже нет.
+      if (selectedId && !items.some((q) => q._id === selectedId)) {
+        setSelectedId(null);
+      }
+    } catch (err) {
+      handleApiError(err, t("adminReview.errors.approveAll"));
+    } finally {
+      setBusy(false);
+    }
+  }
 
   // ЗАПРЕТЫ — то, без чего публиковать нельзя. Считаем теми же правилами,
   // что и бэкенд, чтобы рецензент видел препятствие до нажатия кнопки.
@@ -296,6 +347,49 @@ export default function ExamReviewQueuePage() {
           <Link to="/admin/education-import">
             {t("adminReview.emptyQueueLink")}
           </Link>
+        </div>
+      )}
+
+      {/* ─── Пакетное одобрение ─── */}
+      {/* Сборник даёт сотню вопросов разом, и по одному это работа на
+          вечер. Группируем по тестам: одобрять «всё вообще» нельзя —
+          рецензент отвечает за конкретный тест. */}
+      {bulkGroups.length > 0 && (
+        <div className="edu-card" style={{ marginBottom: 16 }}>
+          <h2 className="edu-card-title">{t("adminReview.bulk.title")}</h2>
+          <div className="edu-hint" style={{ marginBottom: 10 }}>
+            {t("adminReview.bulk.hint")}
+          </div>
+          {bulkGroups.map((group) => (
+            <div
+              key={group.programId}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 12,
+                padding: "8px 0",
+                borderTop: "1px solid #eef2f7",
+                flexWrap: "wrap",
+              }}
+            >
+              <span>
+                <strong>{programTitle(group.programId)}</strong>{" "}
+                <span style={{ color: "#8b9aab" }}>
+                  · {t("adminReview.bulk.pending", { count: group.count })}
+                </span>
+              </span>
+              <button
+                type="button"
+                className="edu-btn"
+                style={{ padding: "6px 14px", fontSize: 13 }}
+                disabled={busy}
+                onClick={() => handleApproveAll(group)}
+              >
+                {t("adminReview.bulk.approve", { count: group.count })}
+              </button>
+            </div>
+          ))}
         </div>
       )}
 

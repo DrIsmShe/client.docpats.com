@@ -366,12 +366,24 @@
       "save": "Could not save the edits",
       "approve": "Could not publish the question",
       "reject": "Could not reject the question",
-      "rejectReasonRequired": "State the reason for rejection — it goes back to the author"
+      "rejectReasonRequired": "State the reason for rejection — it goes back to the author",
+      "approveAll": "Bulk approval failed"
     },
     "notices": {
       "saved": "Edits saved",
       "published": "The question is published. For learners to see the test, publish the test itself in the «Tests» section.",
-      "rejected": "The question was rejected and returned to the author"
+      "rejected": "The question was rejected and returned to the author",
+      "bulkApproved": "Approved questions: {{count}}.",
+      "bulkApprovedWithSkipped": "Approved questions: {{count}}. Left in the queue: {{skipped}} — they have blockers."
+    },
+    "bulk": {
+      "title": "Approve in bulk",
+      "hint": "Approves every question of the exam that is ready to publish. Questions with blockers — no correct answer, no issuing authority — stay in the queue: they need a human look.",
+      "pending": "in queue: {{count}}",
+      "approve": "Approve ready ({{count}})"
+    },
+    "confirms": {
+      "approveAll": "Approve all ready questions of “{{name}}”? Currently in queue: {{count}}. Questions with blockers will stay unreviewed."
     }
   },
   "attempt": {

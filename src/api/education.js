@@ -177,6 +177,18 @@ export async function reviewItem(itemId, { decision, reason }) {
   return data.item;
 }
 
+/**
+ * Пакетное одобрение очереди одного теста. Одобряет всё, что готово к
+ * публикации; вопросы с блокерами (нет правильного ответа, нет органа для
+ * заимствованного материала) пропускает и возвращает списком.
+ */
+export async function reviewAllProgramItems(programId) {
+  const { data } = await axios.post(
+    `${BASE}/programs/${programId}/review-all`,
+  );
+  return data; // { approvedCount, skippedCount, skipped: [{itemId, reason}] }
+}
+
 /** Отчёт по качеству банка: какие вопросы стоит переписать. */
 export async function fetchItemAnalysis(programId, params = {}) {
   const { data } = await axios.get(

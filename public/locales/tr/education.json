@@ -366,12 +366,24 @@
       "save": "Düzenlemeler kaydedilemedi",
       "approve": "Soru yayımlanamadı",
       "reject": "Soru reddedilemedi",
-      "rejectReasonRequired": "Ret gerekçesini belirtin — yazara geri iletilecek"
+      "rejectReasonRequired": "Ret gerekçesini belirtin — yazara geri iletilecek",
+      "approveAll": "Toplu onay başarısız oldu"
     },
     "notices": {
       "saved": "Düzenlemeler kaydedildi",
       "published": "Soru yayımlandı. Testi öğrencilerin görebilmesi için «Testler» bölümünden testin kendisini de yayımlayın.",
-      "rejected": "Soru reddedildi ve yazara geri gönderildi"
+      "rejected": "Soru reddedildi ve yazara geri gönderildi",
+      "bulkApproved": "Onaylanan soru: {{count}}.",
+      "bulkApprovedWithSkipped": "Onaylanan soru: {{count}}. Kuyrukta kalan: {{skipped}} — yayına engelleri var."
+    },
+    "bulk": {
+      "title": "Toplu onay",
+      "hint": "Sınavın yayına hazır tüm sorularını onaylar. Engeli olan sorular — doğru cevabı ya da kurumu belirtilmeyenler — kuyrukta kalır: onlara gözle bakmak gerekir.",
+      "pending": "kuyrukta: {{count}}",
+      "approve": "Hazır olanları onayla ({{count}})"
+    },
+    "confirms": {
+      "approveAll": "“{{name}}” sınavının hazır tüm soruları onaylansın mı? Şu anda kuyrukta: {{count}}. Engeli olanlar incelenmemiş kalacak."
     }
   },
   "attempt": {

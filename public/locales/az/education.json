@@ -366,12 +366,24 @@
       "save": "Düzəlişləri yadda saxlamaq mümkün olmadı",
       "approve": "Sualı dərc etmək mümkün olmadı",
       "reject": "Sualı rədd etmək mümkün olmadı",
-      "rejectReasonRequired": "Rədd səbəbini göstərin — o, müəllifə qayıdacaq"
+      "rejectReasonRequired": "Rədd səbəbini göstərin — o, müəllifə qayıdacaq",
+      "approveAll": "Toplu təsdiq alınmadı"
     },
     "notices": {
       "saved": "Düzəlişlər yadda saxlanıldı",
       "published": "Sual dərc olundu. Testi tələbələrin görməsi üçün «Testlər» bölməsində testin özünü də dərc edin.",
-      "rejected": "Sual rədd edildi və müəllifə qaytarıldı"
+      "rejected": "Sual rədd edildi və müəllifə qaytarıldı",
+      "bulkApproved": "Təsdiqlənən suallar: {{count}}.",
+      "bulkApprovedWithSkipped": "Təsdiqlənən suallar: {{count}}. Növbədə qalıb: {{skipped}} — onların dərcinə maneə var."
+    },
+    "bulk": {
+      "title": "Toplu təsdiq",
+      "hint": "Testin dərcə hazır bütün suallarını təsdiqləyir. Maneəsi olan suallar — düzgün cavabı və ya qurumu göstərilməyənlər — növbədə qalır: onlara gözlə baxmaq lazımdır.",
+      "pending": "növbədə: {{count}}",
+      "approve": "Hazırları təsdiqlə ({{count}})"
+    },
+    "confirms": {
+      "approveAll": "«{{name}}» testinin bütün hazır sualları təsdiqlənsin? Hazırda növbədə: {{count}}. Maneəsi olanlar yoxlanılmamış qalacaq."
     }
   },
   "attempt": {
