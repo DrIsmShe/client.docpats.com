@@ -3,14 +3,12 @@
     "title": "Tariflər — DocPats",
     "description": "Həkimlər, xəstələr və klinikalar üçün uyğun DocPats planını seçin"
   },
-
   "page": {
     "back": "← Geri",
     "title": "DocPats Tariflər",
     "subtitle": "Xəstələr, həkimlər və ya klinikalar üçün plan seçin",
     "footerSupport": "Bütün tariflərə əsas dəstək daxildir. Sualınız var?"
   },
-
   "period": {
     "monthly": "Aylıq",
     "yearly": "İllik",
@@ -19,34 +17,28 @@
     "perYear": "/ il",
     "approxPerMonth": "≈ ${{amount}}/ay"
   },
-
   "tabs": {
     "patients": "Xəstələr üçün",
     "doctors": "Həkimlər üçün",
     "clinics": "Klinikalar üçün"
   },
-
   "limitBanner": {
     "title": "Limit dolub",
     "subtitle": "Davam etmək üçün tarif seçin"
   },
-
   "guestBanner": {
     "title": "Pulsuz sınayın",
     "text": "Qeydiyyatsız — 1 sınaq məqaləsi. Qeydiyyatdan sonra — daimi pulsuz plan: hər ay 5 AI konsultasiyası.",
     "cta": "Qeydiyyatdan keç"
   },
-
   "doctorBanner": {
     "title": "Yeni həkimlər üçün 6 ay pulsuz",
     "text": "Qeydiyyatdan sonra — 6 ay ərzində bütün Doctor Growth imkanları. Sonra platformada $19/ay ilə qala bilər və ya təcrübənizə uyğun ödənişli plan seçə bilərsiniz.",
     "cta": "Başla"
   },
-
   "patientFooter": "💡 Pulsuz plan həmişəlikdir. Ödənişli funksiyalar ödənişdən dərhal sonra aktivləşir, istənilən vaxt ləğv edə bilərsiniz.",
   "doctorFooter": "💡 Tarif nə qədər yüksəkdirsə — qeydiyyat üçün komissiya o qədər aşağıdır. Doctor Growth ayda 2-3 xəstə ilə, Doctor Pro 4-5 xəstə ilə özünü ödəyir.",
   "clinicFooter": "💡 Enterprise tarifinə şəxsi menecer və klinikanızın ehtiyaclarına uyğun fərdi konfiqurasiya daxildir. Detallar üçün bizimlə əlaqə saxlayın.",
-
   "card": {
     "free": "Pulsuz",
     "recommended": "Tövsiyə olunur",
@@ -55,7 +47,6 @@
     "ctaContact": "Əlaqə saxla",
     "currentPlan": "Cari plan"
   },
-
   "plans": {
     "patient_free": {
       "name": "Free",
@@ -95,7 +86,6 @@
       "desc": "Böyük tibbi mərkəzlər üçün"
     }
   },
-
   "features": {
     "aiConsultations": "Ayda {{count}} AI konsultasiyası",
     "aiConsultationsUnlimited": "Limitsiz AI xəstə konsultasiyası",
@@ -106,15 +96,12 @@
     "aiAnalysesUnlimited": "Limitsiz AI təhlilləri",
     "soapEpicrises": "Ayda {{count}} SOAP epikrizi",
     "soapEpicrisesUnlimited": "Limitsiz SOAP epikrizləri",
-
     "aiPatientConsultations": "{{count}} AI xəstə konsultasiyası",
     "patientsInOffice": "Ofisdə {{count}} xəstə",
     "patientsInOfficeUnlimited": "Limitsiz xəstə",
-
     "videoMinutes": "Ayda {{count}} dəqiqə video/audio",
     "videoMinutesHours": "{{count}} dəqiqə video/audio ({{hours}} saat)",
     "videoMinutesUnlimited": "Limitsiz video qəbulu",
-
     "doctorProfile": "DocPats-da həkim profili",
     "doctorProfilePriority": "Prioritet həkim profili",
     "directPayments": "Birbaşa onlayn ödənişlər",
@@ -122,7 +109,6 @@
     "aiPriority": "AI tövsiyələrində prioritet",
     "anthropometryTools": "Antropometriya alətləri",
     "surgicalSimulation": "Cərrahi simulyasiya",
-
     "viewDocuments": "Bütün öz sənədlərinə baxış — limitsiz",
     "fullHistory": "Tam sənəd tarixçəsi",
     "fullHistoryBackup": "Tam tarixçə + avtomatik ehtiyat",
@@ -135,7 +121,6 @@
     "doctorPriorityQueue": "Həkimlərə prioritet növbə",
     "translateDocs2": "Sənədləri 2 dilə tərcümə",
     "translateDocs5": "Sənədləri 5 dilə tərcümə",
-
     "doctorsInClinic": "Hesabda {{count}} həkimə qədər",
     "doctorsInClinicUnlimited": "Limitsiz sayda həkim",
     "allDoctorsProfiles": "DocPats-da bütün həkimlərin profilləri",
@@ -147,6 +132,23 @@
     "extendedAnalytics": "Genişləndirilmiş analitika və hesabatlar",
     "topInRecommendations": "AI tövsiyələrində ən yuxarıda",
     "personalManager": "Şəxsi menecer",
-    "allAiUnlimited": "Limitsiz AI funksiyalar"
+    "allAiUnlimited": "Limitsiz AI funksiyalar",
+    "examQuestions": "Ayda {{count}} test sualı",
+    "examQuestionsUnlimited": "Limitsiz testlər və imtahanlar"
+  },
+  "examAddon": {
+    "title": "İmtahanlara hazırlıq",
+    "subtitle": "Səhvlərin təhlili ilə testlər. İstənilən tarifə, o cümlədən pulsuza əlavə olunur.",
+    "guestLine": "Qeydiyyatsız — 20 sual",
+    "freeLine": "Qeydiyyatdan sonra — ayda 250 sual",
+    "featureReview": "Hər cavab variantının təhlili",
+    "featureBlocks": "Böyük imtahanlar bloklarla",
+    "featureReadiness": "Mövzular üzrə hazırlıq və səhvlər üzərində iş",
+    "plus": {
+      "name": "Exam Prep Plus"
+    },
+    "unlimited": {
+      "name": "Exam Prep Unlimited"
+    }
   }
 }

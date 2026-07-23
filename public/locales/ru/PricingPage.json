@@ -3,14 +3,12 @@
     "title": "Тарифы — DocPats",
     "description": "Выберите подходящий тариф DocPats для врачей, пациентов и клиник"
   },
-
   "page": {
     "back": "← Назад",
     "title": "Тарифы DocPats",
     "subtitle": "Выберите план для пациентов, врачей или клиник",
     "footerSupport": "Все тарифы включают базовую поддержку. Вопросы?"
   },
-
   "period": {
     "monthly": "Помесячно",
     "yearly": "За год",
@@ -19,34 +17,28 @@
     "perYear": "/ год",
     "approxPerMonth": "≈ {{amount}} $/мес"
   },
-
   "tabs": {
     "patients": "Для пациентов",
     "doctors": "Для врачей",
     "clinics": "Для клиник"
   },
-
   "limitBanner": {
     "title": "Лимит исчерпан",
     "subtitle": "Выберите тариф чтобы продолжить"
   },
-
   "guestBanner": {
     "title": "Попробуй бесплатно",
     "text": "Без регистрации — 1 пробная статья. После регистрации — бесплатный план навсегда: 5 AI-консультаций каждый месяц.",
     "cta": "Зарегистрироваться"
   },
-
   "doctorBanner": {
     "title": "6 месяцев бесплатно для новых врачей",
     "text": "После регистрации — все возможности уровня Doctor Growth на 6 месяцев. Дальше можно остаться на платформе за $19/мес или выбрать платный план под свою практику.",
     "cta": "Начать"
   },
-
   "patientFooter": "💡 Бесплатный план — навсегда. Платные функции активируются сразу после оплаты, отменить можно в любой момент.",
   "doctorFooter": "💡 Чем выше тариф — тем ниже комиссия с каждой записи. Doctor Growth окупается уже с 2-3 пациентов в месяц, Doctor Pro — с 4-5.",
   "clinicFooter": "💡 Тариф Enterprise включает персонального менеджера и индивидуальную настройку под нужды вашей клиники. Свяжитесь с нами для обсуждения деталей.",
-
   "card": {
     "free": "Бесплатно",
     "recommended": "Рекомендуется",
@@ -55,7 +47,6 @@
     "ctaContact": "Связаться",
     "currentPlan": "Текущий план"
   },
-
   "plans": {
     "patient_free": {
       "name": "Free",
@@ -95,7 +86,6 @@
       "desc": "Для крупных медицинских центров"
     }
   },
-
   "features": {
     "aiConsultations": "{{count}} AI-консультаций в месяц",
     "aiConsultationsUnlimited": "Безлимитные AI-консультации пациентов",
@@ -106,15 +96,12 @@
     "aiAnalysesUnlimited": "Безлимитные AI-анализы",
     "soapEpicrises": "{{count}} SOAP-эпикризов в месяц",
     "soapEpicrisesUnlimited": "Безлимитные SOAP-эпикризы",
-
     "aiPatientConsultations": "{{count}} AI-консультаций пациентов",
     "patientsInOffice": "{{count}} пациентов в кабинете",
     "patientsInOfficeUnlimited": "Безлимитные пациенты в кабинете",
-
     "videoMinutes": "{{count}} минут видео/аудио в месяц",
     "videoMinutesHours": "{{count}} минут видео/аудио ({{hours}} ч)",
     "videoMinutesUnlimited": "Безлимитные видео-приёмы",
-
     "doctorProfile": "Профиль врача на DocPats",
     "doctorProfilePriority": "Приоритетный профиль врача",
     "directPayments": "Прямые онлайн-платежи",
@@ -122,7 +109,6 @@
     "aiPriority": "Приоритет в AI-рекомендациях",
     "anthropometryTools": "Инструменты антропометрии",
     "surgicalSimulation": "Хирургическая симуляция",
-
     "viewDocuments": "Просмотр всех своих документов — без лимита",
     "fullHistory": "Полная история документов",
     "fullHistoryBackup": "Полная история + автобэкап",
@@ -135,7 +121,6 @@
     "doctorPriorityQueue": "Приоритетная очередь к врачам",
     "translateDocs2": "Перевод документов на 2 языка",
     "translateDocs5": "Перевод документов на 5 языков",
-
     "doctorsInClinic": "До {{count}} врачей в аккаунте",
     "doctorsInClinicUnlimited": "Неограниченное кол-во врачей",
     "allDoctorsProfiles": "Профили всех врачей на DocPats",
@@ -147,6 +132,23 @@
     "extendedAnalytics": "Расширенная аналитика и отчёты",
     "topInRecommendations": "Топ в рекомендациях AI",
     "personalManager": "Персональный менеджер",
-    "allAiUnlimited": "Безлимитные AI-функции"
+    "allAiUnlimited": "Безлимитные AI-функции",
+    "examQuestions": "{{count}} вопросов тестов в месяц",
+    "examQuestionsUnlimited": "Безлимитные тесты и экзамены"
+  },
+  "examAddon": {
+    "title": "Подготовка к экзаменам",
+    "subtitle": "Тесты с разбором ошибок. Докупается к любому тарифу — в том числе к бесплатному.",
+    "guestLine": "Без регистрации — 20 вопросов",
+    "freeLine": "После регистрации — 250 вопросов в месяц",
+    "featureReview": "Разбор каждого варианта ответа",
+    "featureBlocks": "Прохождение больших экзаменов блоками",
+    "featureReadiness": "Готовность по темам и работа над ошибками",
+    "plus": {
+      "name": "Exam Prep Plus"
+    },
+    "unlimited": {
+      "name": "Exam Prep Unlimited"
+    }
   }
 }

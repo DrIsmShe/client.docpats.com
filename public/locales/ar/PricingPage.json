@@ -3,14 +3,12 @@
     "title": "الأسعار — DocPats",
     "description": "اختر خطة DocPats المناسبة للأطباء والمرضى والعيادات"
   },
-
   "page": {
     "back": "← رجوع",
     "title": "أسعار DocPats",
     "subtitle": "اختر خطة للمرضى أو الأطباء أو العيادات",
     "footerSupport": "تشمل جميع الخطط الدعم الأساسي. لديك أسئلة؟"
   },
-
   "period": {
     "monthly": "شهرياً",
     "yearly": "سنوياً",
@@ -19,34 +17,28 @@
     "perYear": "/ سنة",
     "approxPerMonth": "≈ ${{amount}}/شهر"
   },
-
   "tabs": {
     "patients": "للمرضى",
     "doctors": "للأطباء",
     "clinics": "للعيادات"
   },
-
   "limitBanner": {
     "title": "تم استنفاد الحد",
     "subtitle": "اختر خطة للمتابعة"
   },
-
   "guestBanner": {
     "title": "جرّب مجاناً",
     "text": "بدون تسجيل — مقالة تجريبية واحدة. بعد التسجيل — خطة مجانية للأبد: 5 استشارات AI كل شهر.",
     "cta": "سجّل الآن"
   },
-
   "doctorBanner": {
     "title": "6 أشهر مجاناً للأطباء الجدد",
     "text": "بعد التسجيل — جميع ميزات Doctor Growth لمدة 6 أشهر. بعدها يمكنك البقاء على المنصة بـ $19/شهر أو اختيار خطة مدفوعة تناسب ممارستك.",
     "cta": "ابدأ الآن"
   },
-
   "patientFooter": "💡 الخطة المجانية للأبد. الميزات المدفوعة تُفعّل فور الدفع، يمكن الإلغاء في أي وقت.",
   "doctorFooter": "💡 كلما ارتفعت الخطة — قلّت العمولة لكل حجز. خطة Doctor Growth تغطي تكلفتها بـ 2-3 مرضى شهرياً، وDoctor Pro بـ 4-5.",
   "clinicFooter": "💡 خطة Enterprise تشمل مديراً شخصياً وإعداداً مخصصاً لاحتياجات عيادتك. تواصل معنا للتفاصيل.",
-
   "card": {
     "free": "مجاني",
     "recommended": "موصى به",
@@ -55,7 +47,6 @@
     "ctaContact": "تواصل معنا",
     "currentPlan": "خطتك الحالية"
   },
-
   "plans": {
     "patient_free": {
       "name": "Free",
@@ -95,7 +86,6 @@
       "desc": "للمراكز الطبية الكبيرة"
     }
   },
-
   "features": {
     "aiConsultations": "{{count}} استشارة AI شهرياً",
     "aiConsultationsUnlimited": "استشارات AI غير محدودة للمرضى",
@@ -106,15 +96,12 @@
     "aiAnalysesUnlimited": "تحليلات AI غير محدودة",
     "soapEpicrises": "{{count}} ملخص SOAP شهرياً",
     "soapEpicrisesUnlimited": "ملخصات SOAP غير محدودة",
-
     "aiPatientConsultations": "{{count}} استشارة AI للمرضى",
     "patientsInOffice": "{{count}} مريض في المكتب",
     "patientsInOfficeUnlimited": "مرضى غير محدودين",
-
     "videoMinutes": "{{count}} دقيقة فيديو/صوت شهرياً",
     "videoMinutesHours": "{{count}} دقيقة فيديو/صوت ({{hours}} س)",
     "videoMinutesUnlimited": "مواعيد فيديو غير محدودة",
-
     "doctorProfile": "ملف الطبيب على DocPats",
     "doctorProfilePriority": "ملف طبيب ذو أولوية",
     "directPayments": "مدفوعات مباشرة عبر الإنترنت",
@@ -122,7 +109,6 @@
     "aiPriority": "أولوية في توصيات الذكاء الاصطناعي",
     "anthropometryTools": "أدوات قياسات الجسم",
     "surgicalSimulation": "محاكاة جراحية",
-
     "viewDocuments": "عرض جميع مستنداتك — بدون حد",
     "fullHistory": "السجل الكامل للمستندات",
     "fullHistoryBackup": "السجل الكامل + نسخ احتياطي تلقائي",
@@ -135,7 +121,6 @@
     "doctorPriorityQueue": "أولوية في قائمة الانتظار للأطباء",
     "translateDocs2": "ترجمة المستندات إلى لغتين",
     "translateDocs5": "ترجمة المستندات إلى 5 لغات",
-
     "doctorsInClinic": "حتى {{count}} طبيب في الحساب",
     "doctorsInClinicUnlimited": "عدد غير محدود من الأطباء",
     "allDoctorsProfiles": "ملفات جميع الأطباء على DocPats",
@@ -147,6 +132,23 @@
     "extendedAnalytics": "تحليلات وتقارير موسعة",
     "topInRecommendations": "في قمة توصيات الذكاء الاصطناعي",
     "personalManager": "مدير شخصي",
-    "allAiUnlimited": "ميزات AI غير محدودة"
+    "allAiUnlimited": "ميزات AI غير محدودة",
+    "examQuestions": "{{count}} سؤال اختبار شهرياً",
+    "examQuestionsUnlimited": "اختبارات وامتحانات بلا حدود"
+  },
+  "examAddon": {
+    "title": "التحضير للامتحانات",
+    "subtitle": "اختبارات مع تحليل الأخطاء. تُضاف إلى أي باقة، بما فيها المجانية.",
+    "guestLine": "بدون تسجيل — 20 سؤالاً",
+    "freeLine": "بعد التسجيل — 250 سؤالاً شهرياً",
+    "featureReview": "تحليل لكل خيار إجابة",
+    "featureBlocks": "خوض الامتحانات الكبيرة على كتل",
+    "featureReadiness": "الجاهزية حسب المواضيع ومراجعة الأخطاء",
+    "plus": {
+      "name": "Exam Prep Plus"
+    },
+    "unlimited": {
+      "name": "Exam Prep Unlimited"
+    }
   }
 }

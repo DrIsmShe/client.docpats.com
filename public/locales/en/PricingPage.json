@@ -3,14 +3,12 @@
     "title": "Pricing — DocPats",
     "description": "Choose the right DocPats plan for doctors, patients, and clinics"
   },
-
   "page": {
     "back": "← Back",
     "title": "DocPats Pricing",
     "subtitle": "Choose a plan for patients, doctors, or clinics",
     "footerSupport": "All plans include basic support. Questions?"
   },
-
   "period": {
     "monthly": "Monthly",
     "yearly": "Yearly",
@@ -19,34 +17,28 @@
     "perYear": "/ yr",
     "approxPerMonth": "≈ ${{amount}}/mo"
   },
-
   "tabs": {
     "patients": "For patients",
     "doctors": "For doctors",
     "clinics": "For clinics"
   },
-
   "limitBanner": {
     "title": "Limit reached",
     "subtitle": "Choose a plan to continue"
   },
-
   "guestBanner": {
     "title": "Try for free",
     "text": "No registration — 1 trial article. After signing up — free plan forever: 5 AI consultations every month.",
     "cta": "Sign up"
   },
-
   "doctorBanner": {
     "title": "6 months free for new doctors",
     "text": "After signing up — full Doctor Growth features for 6 months. Then stay on the platform for $19/mo or pick a paid plan that fits your practice.",
     "cta": "Get started"
   },
-
   "patientFooter": "💡 The free plan is forever. Paid features activate immediately after payment, cancel anytime.",
   "doctorFooter": "💡 The higher the tier — the lower the commission per booking. Doctor Growth pays for itself with 2-3 patients a month, Doctor Pro with 4-5.",
   "clinicFooter": "💡 The Enterprise plan includes a dedicated manager and custom configuration tailored to your clinic. Contact us to discuss.",
-
   "card": {
     "free": "Free",
     "recommended": "Recommended",
@@ -55,7 +47,6 @@
     "ctaContact": "Contact us",
     "currentPlan": "Current plan"
   },
-
   "plans": {
     "patient_free": {
       "name": "Free",
@@ -95,7 +86,6 @@
       "desc": "For large medical centers"
     }
   },
-
   "features": {
     "aiConsultations": "{{count}} AI consultations per month",
     "aiConsultationsUnlimited": "Unlimited AI patient consultations",
@@ -106,15 +96,12 @@
     "aiAnalysesUnlimited": "Unlimited AI analyses",
     "soapEpicrises": "{{count}} SOAP epicrises per month",
     "soapEpicrisesUnlimited": "Unlimited SOAP epicrises",
-
     "aiPatientConsultations": "{{count}} AI patient consultations",
     "patientsInOffice": "{{count}} patients in office",
     "patientsInOfficeUnlimited": "Unlimited patients in office",
-
     "videoMinutes": "{{count}} minutes of video/audio per month",
     "videoMinutesHours": "{{count}} minutes of video/audio ({{hours}} h)",
     "videoMinutesUnlimited": "Unlimited video appointments",
-
     "doctorProfile": "Doctor profile on DocPats",
     "doctorProfilePriority": "Priority doctor profile",
     "directPayments": "Direct online payments",
@@ -122,7 +109,6 @@
     "aiPriority": "Priority in AI recommendations",
     "anthropometryTools": "Anthropometry tools",
     "surgicalSimulation": "Surgical simulation",
-
     "viewDocuments": "View all your own documents — unlimited",
     "fullHistory": "Full document history",
     "fullHistoryBackup": "Full history + auto-backup",
@@ -135,7 +121,6 @@
     "doctorPriorityQueue": "Priority queue for doctors",
     "translateDocs2": "Document translation into 2 languages",
     "translateDocs5": "Document translation into 5 languages",
-
     "doctorsInClinic": "Up to {{count}} doctors in account",
     "doctorsInClinicUnlimited": "Unlimited doctors",
     "allDoctorsProfiles": "Profiles of all doctors on DocPats",
@@ -147,6 +132,23 @@
     "extendedAnalytics": "Extended analytics and reports",
     "topInRecommendations": "Top in AI recommendations",
     "personalManager": "Personal manager",
-    "allAiUnlimited": "Unlimited AI features"
+    "allAiUnlimited": "Unlimited AI features",
+    "examQuestions": "{{count}} test questions per month",
+    "examQuestionsUnlimited": "Unlimited tests and exams"
+  },
+  "examAddon": {
+    "title": "Exam preparation",
+    "subtitle": "Practice tests with answer review. Add to any plan — including the free one.",
+    "guestLine": "No sign-up — 20 questions",
+    "freeLine": "After sign-up — 250 questions a month",
+    "featureReview": "Review for every answer option",
+    "featureBlocks": "Large exams taken in blocks",
+    "featureReadiness": "Topic readiness and error review",
+    "plus": {
+      "name": "Exam Prep Plus"
+    },
+    "unlimited": {
+      "name": "Exam Prep Unlimited"
+    }
   }
 }

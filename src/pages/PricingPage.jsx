@@ -18,6 +18,10 @@ const PRICES_USD = {
   clinic_start: { monthly: 99, yearly: 990 },
   clinic: { monthly: 249, yearly: 2490 },
   clinic_pro: { monthly: 499, yearly: 4990 },
+  // Аддон подготовки к экзаменам: покупается ПОВЕРХ любого плана,
+  // включая бесплатный, поэтому в сетке планов его нет.
+  exam_plus: { monthly: 7, yearly: 70 },
+  exam_unlimited: { monthly: 15, yearly: 150 },
 };
 
 // ═════════════════════════════════════════════════════════════════════
@@ -34,6 +38,7 @@ const PATIENT_PLANS = [
     cta: "register",
     ctaPath: "/registration",
     features: [
+      { i18nKey: "features.examQuestions", vars: { count: 250 } },
       { i18nKey: "features.aiConsultations", vars: { count: 5 } },
       { i18nKey: "features.aiArticlesOne" },
       { i18nKey: "features.soapEpicrises", vars: { count: 3 } },
@@ -51,6 +56,7 @@ const PATIENT_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=patient_std",
     features: [
+      { i18nKey: "features.examQuestions", vars: { count: 1000 } },
       { i18nKey: "features.aiConsultations", vars: { count: 30 } },
       { i18nKey: "features.aiArticles", vars: { count: 5 } },
       { i18nKey: "features.soapEpicrises", vars: { count: 20 } },
@@ -68,6 +74,7 @@ const PATIENT_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=patient_pro",
     features: [
+      { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.aiConsultationsUnlimited" },
       { i18nKey: "features.aiArticles", vars: { count: 20 } },
       { i18nKey: "features.soapEpicrisesUnlimited" },
@@ -89,6 +96,7 @@ const DOCTOR_PLANS = [
     ctaPath: "/pricing/checkout?plan=doctor_basic",
     showTrialNote: true,
     features: [
+      { i18nKey: "features.examQuestions", vars: { count: 500 } },
       { i18nKey: "features.doctorProfile" },
       { i18nKey: "features.aiAnalyses", vars: { count: 10 } },
       { i18nKey: "features.aiArticles", vars: { count: 3 } },
@@ -106,6 +114,7 @@ const DOCTOR_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=doctor_super",
     features: [
+      { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.doctorProfile" },
       { i18nKey: "features.aiAnalyses", vars: { count: 50 } },
       { i18nKey: "features.aiArticles", vars: { count: 15 } },
@@ -127,6 +136,7 @@ const DOCTOR_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=doctor_pro",
     features: [
+      { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.doctorProfilePriority" },
       { i18nKey: "features.aiAnalysesUnlimited" },
       { i18nKey: "features.aiArticlesUnlimited" },
@@ -152,6 +162,7 @@ const CLINIC_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=clinic_start",
     features: [
+      { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.doctorsInClinic", vars: { count: 5 } },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedSchedule" },
@@ -171,6 +182,7 @@ const CLINIC_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=clinic",
     features: [
+      { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.doctorsInClinic", vars: { count: 15 } },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedSchedule" },
@@ -193,6 +205,7 @@ const CLINIC_PLANS = [
     cta: "contact",
     ctaPath: "mailto:support@docpats.com?subject=Clinic%20Enterprise",
     features: [
+      { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.doctorsInClinicUnlimited" },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedScheduleCrm" },
@@ -206,6 +219,154 @@ const CLINIC_PLANS = [
     ],
   },
 ];
+
+// ═════════════════════════════════════════════════════════════════════
+//   АДДОН «ПОДГОТОВКА К ЭКЗАМЕНАМ»
+//
+//   Не входит в сетку планов и показывается на всех вкладках: аддон
+//   надстраивается НАД любым планом, включая бесплатный, а не заменяет
+//   его. Поставить его в общий ряд означало бы предложить выбрать одно
+//   из двух — при том что у аудитории раздела (студенты, резиденты)
+//   основного плана может не быть вовсе.
+// ═════════════════════════════════════════════════════════════════════
+const EXAM_ADDONS = [
+  {
+    key: "exam_plus",
+    i18nKey: "examAddon.plus",
+    questions: 2000,
+    highlight: false,
+  },
+  {
+    key: "exam_unlimited",
+    i18nKey: "examAddon.unlimited",
+    questions: null, // null = безлимит
+    highlight: true,
+  },
+];
+
+function ExamAddonSection({ period, t }) {
+  const navigate = useNavigate();
+
+  return (
+    <div className="mt-5 pt-4 border-top">
+      <div className="text-center mb-4">
+        <h3 className="fw-bold mb-2">
+          {t("examAddon.title", { defaultValue: "Подготовка к экзаменам" })}
+        </h3>
+        <p className="text-muted mb-0">
+          {t("examAddon.subtitle", {
+            defaultValue:
+              "Тесты с разбором ошибок. Докупается к любому тарифу — в том числе к бесплатному.",
+          })}
+        </p>
+      </div>
+
+      {/* Что доступно без покупки — чтобы аддон не выглядел единственным
+          способом попасть в раздел. */}
+      <div className="row g-3 justify-content-center mb-4">
+        <div className="col-md-8">
+          <div className="d-flex flex-wrap justify-content-center gap-3 small text-muted">
+            <span>
+              ✓{" "}
+              {t("examAddon.guestLine", {
+                defaultValue: "Без регистрации — 20 вопросов",
+              })}
+            </span>
+            <span>
+              ✓{" "}
+              {t("examAddon.freeLine", {
+                defaultValue: "После регистрации — 250 вопросов в месяц",
+              })}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="row g-4 justify-content-center">
+        {EXAM_ADDONS.map((addon) => {
+          const price = PRICES_USD[addon.key]?.[period];
+          const perLabel =
+            period === "yearly"
+              ? t("period.perYear")
+              : t("period.perMonth");
+
+          return (
+            <div key={addon.key} className="col-md-5 col-lg-4">
+              <div
+                className={`card h-100 border-0 shadow-sm ${
+                  addon.highlight ? "border-primary" : ""
+                }`}
+                style={
+                  addon.highlight ? { boxShadow: "0 0 0 2px #0d6efd" } : undefined
+                }
+              >
+                <div className="card-body p-4">
+                  <h5 className="fw-bold mb-1">
+                    {t(`${addon.i18nKey}.name`, {
+                      defaultValue:
+                        addon.key === "exam_plus"
+                          ? "Exam Prep Plus"
+                          : "Exam Prep Unlimited",
+                    })}
+                  </h5>
+                  <div className="d-flex align-items-baseline gap-2 mb-3">
+                    <span className="fs-3 fw-bold">${price}</span>
+                    <span className="text-muted small">{perLabel}</span>
+                  </div>
+
+                  <ul className="list-unstyled small mb-4">
+                    <li className="mb-2">
+                      ✅{" "}
+                      {addon.questions
+                        ? t("features.examQuestions", {
+                            count: addon.questions,
+                            defaultValue: `${addon.questions} вопросов тестов в месяц`,
+                          })
+                        : t("features.examQuestionsUnlimited", {
+                            defaultValue: "Безлимитные тесты",
+                          })}
+                    </li>
+                    <li className="mb-2">
+                      ✅{" "}
+                      {t("examAddon.featureReview", {
+                        defaultValue: "Разбор каждого варианта ответа",
+                      })}
+                    </li>
+                    <li className="mb-2">
+                      ✅{" "}
+                      {t("examAddon.featureBlocks", {
+                        defaultValue: "Прохождение больших экзаменов блоками",
+                      })}
+                    </li>
+                    <li className="mb-2">
+                      ✅{" "}
+                      {t("examAddon.featureReadiness", {
+                        defaultValue: "Готовность по темам и работа над ошибками",
+                      })}
+                    </li>
+                  </ul>
+
+                  <button
+                    className={`btn w-100 ${
+                      addon.highlight ? "btn-primary" : "btn-outline-primary"
+                    }`}
+                    onClick={() =>
+                      navigate(
+                        `/pricing/checkout?plan=${addon.key}&period=${period}`,
+                      )
+                    }
+                  >
+                    {t("card.ctaSubscribe")}
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 // ═════════════════════════════════════════════════════════════════════
 //                    КАРТОЧКА ТАРИФА
@@ -639,6 +800,7 @@ export default function PricingPage() {
                 </div>
               ))}
             </div>
+            <ExamAddonSection period={period} t={t} />
             <div className="text-center mt-5">
               <p className="text-muted small">{t("patientFooter")}</p>
             </div>
@@ -666,6 +828,7 @@ export default function PricingPage() {
                 </div>
               ))}
             </div>
+            <ExamAddonSection period={period} t={t} />
             <div className="text-center mt-5">
               <p className="text-muted small">{t("doctorFooter")}</p>
             </div>
@@ -692,6 +855,7 @@ export default function PricingPage() {
                 </div>
               ))}
             </div>
+            <ExamAddonSection period={period} t={t} />
             <div className="text-center mt-5">
               <p className="text-muted small">{t("clinicFooter")}</p>
             </div>
