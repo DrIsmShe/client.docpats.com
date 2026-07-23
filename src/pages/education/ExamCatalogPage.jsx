@@ -14,15 +14,13 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   fetchPrograms,
   fetchCategories,
   fetchQuota,
-  fetchGuestPrograms,
-  fetchGuestQuota,
+  isGuestMode,
   readApiError,
-  isAuthError,
 } from "../../api/education";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import BackToCabinet from "./BackToCabinet";
@@ -138,8 +136,8 @@ function QuotaBar({ quota, isGuest, t }) {
               })}
       </p>
 
+      {/* Маршрут регистрации в проекте — /registration (зона AuthLayout). */}
       {exhausted && (
-        {/* Маршрут регистрации в проекте — /registration (зона AuthLayout). */}
         <Link
           to={isGuest ? "/registration" : "/pricing"}
           className="edu-btn edu-quota-cta"
@@ -162,7 +160,6 @@ export default function ExamCatalogPage() {
   // Арабский разворачивает страницу: у зоны /education своего layout нет,
   // а ClinicLayout, который делает это для клиники, сюда не применяется.
   const dir = i18n.language?.startsWith("ar") ? "rtl" : "ltr";
-  const navigate = useNavigate();
   const [programs, setPrograms] = useState([]);
   const [categories, setCategories] = useState([]);
   const [activeId, setActiveId] = useState(""); // "" = корень
@@ -183,6 +180,9 @@ export default function ExamCatalogPage() {
       setLoading(true);
       setError(null);
       try {
+        // Гостя сюда больше не уводит на /login: api-слой сам переходит на
+        // демо-контур при 401 (см. orGuest в api/education.js), и человек
+        // видит витринные тесты вместо формы входа.
         const [list, cats, q] = await Promise.all([
           fetchPrograms(),
           fetchCategories(),
@@ -193,30 +193,9 @@ export default function ExamCatalogPage() {
         setPrograms(list);
         setCategories(cats);
         setQuota(q);
+        setIsGuest(isGuestMode());
       } catch (err) {
         if (cancelled) return;
-
-        // 401 больше не повод уводить на /login: без регистрации человек
-        // видит витринные тесты и может пройти демо из 20 вопросов.
-        // Раньше гость упирался в форму входа, не увидев продукта вообще.
-        if (isAuthError(err)) {
-          try {
-            const [list, q] = await Promise.all([
-              fetchGuestPrograms(),
-              fetchGuestQuota().catch(() => null),
-            ]);
-            if (cancelled) return;
-            setIsGuest(true);
-            setPrograms(list);
-            setCategories([]); // рубрики гостю не нужны: тестов единицы
-            setQuota(q);
-            return;
-          } catch (guestErr) {
-            if (cancelled) return;
-            setError(readApiError(guestErr, t("catalog.errors.load")));
-            return;
-          }
-        }
         setError(readApiError(err, t("catalog.errors.load")));
       } finally {
         if (!cancelled) setLoading(false);
@@ -228,7 +207,7 @@ export default function ExamCatalogPage() {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate]);
+  }, []);
 
   // Разворачиваем дерево любой глубины в индексы: узел по id и его родитель.
   const { nodeById, parentOf } = useMemo(() => {

@@ -12,10 +12,18 @@ const BASE = "/api/v1/education";
 
 // ─── Каталог ──────────────────────────────────────────────────
 
-/** Список программ. Без параметров — опубликованные публичные. */
+/**
+ * Список программ. Без параметров — опубликованные публичные.
+ * Гостю отдаются только витринные тесты (isFree) — см. orGuest ниже.
+ */
 export async function fetchPrograms(params = {}) {
-  const { data } = await axios.get(`${BASE}/programs`, { params });
-  return data.items ?? [];
+  return orGuest(
+    async () => {
+      const { data } = await axios.get(`${BASE}/programs`, { params });
+      return data.items ?? [];
+    },
+    () => fetchGuestPrograms(),
+  );
 }
 
 /** Страны с количеством программ — навигация витрины. */
@@ -30,8 +38,15 @@ export async function fetchCountries() {
  * опубликованные публичные (витрина).
  */
 export async function fetchCategories(params = {}) {
-  const { data } = await axios.get(`${BASE}/categories`, { params });
-  return data.categories ?? [];
+  return orGuest(
+    async () => {
+      const { data } = await axios.get(`${BASE}/categories`, { params });
+      return data.categories ?? [];
+    },
+    // Рубрики гостю не нужны: витринных тестов единицы, дерево над ними
+    // было бы навигацией ради навигации.
+    async () => [],
+  );
 }
 
 export async function createCategory(payload) {
@@ -50,20 +65,40 @@ export async function deleteCategory(categoryId) {
 }
 
 export async function fetchProgram(programId) {
-  const { data } = await axios.get(`${BASE}/programs/${programId}`);
-  return data.program;
+  return orGuest(
+    async () => {
+      const { data } = await axios.get(`${BASE}/programs/${programId}`);
+      return data.program;
+    },
+    () => fetchGuestProgram(programId),
+  );
 }
 
-/** Блоки теста (деление большого экзамена по blockSize вопросов). */
+/**
+ * Блоки теста (деление большого экзамена по blockSize вопросов).
+ * Гостю блоки недоступны: демо — это 20 вопросов тренировки.
+ */
 export async function fetchProgramBlocks(programId) {
-  const { data } = await axios.get(`${BASE}/programs/${programId}/blocks`);
-  return data; // { blockSize, lang, totalCount, blocks: [{ index, from, to, count }] }
+  return orGuest(
+    async () => {
+      const { data } = await axios.get(`${BASE}/programs/${programId}/blocks`);
+      return data; // { blockSize, lang, totalCount, blocks: [...] }
+    },
+    async () => ({ blockSize: null, totalCount: 0, blocks: [] }),
+  );
 }
 
-/** Готовность по темам blueprint. */
+/** Готовность по темам blueprint. У гостя истории нет — и готовности тоже. */
 export async function fetchReadiness(programId) {
-  const { data } = await axios.get(`${BASE}/programs/${programId}/readiness`);
-  return data.readiness;
+  return orGuest(
+    async () => {
+      const { data } = await axios.get(
+        `${BASE}/programs/${programId}/readiness`,
+      );
+      return data.readiness;
+    },
+    async () => null,
+  );
 }
 
 // ─── Квота тарифа ─────────────────────────────────────────────
@@ -72,10 +107,15 @@ export async function fetchReadiness(programId) {
 // демо-контур, но лимит там разовый (20 вопросов, без периода), поэтому
 // запросы разные — см. GUEST ниже.
 
-/** Остаток квоты авторизованного пользователя. */
+/** Остаток квоты: месячной у авторизованного, демо-квоты у гостя. */
 export async function fetchQuota() {
-  const { data } = await axios.get(`${BASE}/quota`);
-  return data;
+  return orGuest(
+    async () => {
+      const { data } = await axios.get(`${BASE}/quota`);
+      return data;
+    },
+    () => fetchGuestQuota(),
+  );
 }
 
 // ─── Демо-доступ без регистрации ──────────────────────────────
@@ -85,6 +125,34 @@ export async function fetchQuota() {
 // withCredentials из общего инстанса здесь так же обязателен.
 
 const GUEST = `${BASE}/guest`;
+
+// Режим гостя выясняется по первому 401 и запоминается до перезагрузки
+// страницы. Иначе каждая страница модуля (витрина → тест → прохождение)
+// была бы обязана сама помнить, авторизован человек или нет, и дублировать
+// разбор 401 в трёх местах. Здесь это одно место, а страницы просто
+// вызывают fetchProgram/startAttempt, как раньше.
+let guestMode = false;
+
+/** Работает ли модуль в демо-режиме без регистрации. */
+export function isGuestMode() {
+  return guestMode;
+}
+
+/**
+ * Вызывает авторизованный вариант, а при 401 — гостевой, и запоминает
+ * выбор. Всё, что не 401 (например 403 «тест не для гостей» или 402
+ * «квота исчерпана»), пробрасывается наверх нетронутым.
+ */
+async function orGuest(authCall, guestCall) {
+  if (guestMode) return guestCall();
+  try {
+    return await authCall();
+  } catch (err) {
+    if (!isAuthError(err)) throw err;
+    guestMode = true;
+    return guestCall();
+  }
+}
 
 /** Витринные тесты, открытые без регистрации (ExamProgram.isFree). */
 export async function fetchGuestPrograms() {
@@ -129,23 +197,46 @@ export async function finishGuestAttempt(attemptId) {
 
 // ─── Попытки ──────────────────────────────────────────────────
 
+/** История попыток. У гостя её нет — отдаём пустой список. */
 export async function fetchAttempts(params = {}) {
-  const { data } = await axios.get(`${BASE}/attempts`, { params });
-  return data.items ?? [];
+  return orGuest(
+    async () => {
+      const { data } = await axios.get(`${BASE}/attempts`, { params });
+      return data.items ?? [];
+    },
+    async () => [],
+  );
 }
 
 /**
  * Начать попытку.
  * @param {object} payload { programId, mode, questionCount, lang, topicCodes }
+ *
+ * Гостю сервер в любом случае соберёт тренировку на 20 вопросов: режим и
+ * длину демо задаёт он, а не клиент.
  */
 export async function startAttempt(payload) {
-  const { data } = await axios.post(`${BASE}/attempts`, payload);
-  return data.attempt;
+  return orGuest(
+    async () => {
+      const { data } = await axios.post(`${BASE}/attempts`, payload);
+      return data.attempt;
+    },
+    () =>
+      startGuestAttempt({
+        programId: payload?.programId,
+        lang: payload?.lang,
+      }),
+  );
 }
 
 export async function fetchAttempt(attemptId) {
-  const { data } = await axios.get(`${BASE}/attempts/${attemptId}`);
-  return data.attempt;
+  return orGuest(
+    async () => {
+      const { data } = await axios.get(`${BASE}/attempts/${attemptId}`);
+      return data.attempt;
+    },
+    () => fetchGuestAttempt(attemptId),
+  );
 }
 
 /**
@@ -153,16 +244,28 @@ export async function fetchAttempt(attemptId) {
  * в остальных — только подтверждение приёма.
  */
 export async function submitAnswer(attemptId, payload) {
-  const { data } = await axios.post(
-    `${BASE}/attempts/${attemptId}/answer`,
-    payload,
+  return orGuest(
+    async () => {
+      const { data } = await axios.post(
+        `${BASE}/attempts/${attemptId}/answer`,
+        payload,
+      );
+      return data;
+    },
+    () => submitGuestAnswer(attemptId, payload),
   );
-  return data;
 }
 
 export async function finishAttempt(attemptId) {
-  const { data } = await axios.post(`${BASE}/attempts/${attemptId}/submit`);
-  return data.attempt;
+  return orGuest(
+    async () => {
+      const { data } = await axios.post(`${BASE}/attempts/${attemptId}/submit`);
+      return data.attempt;
+    },
+    // Демо-контур отдаёт ещё и остаток квоты — странице нужен результат,
+    // поэтому форму ответа приводим к общей.
+    async () => (await finishGuestAttempt(attemptId)).attempt,
+  );
 }
 
 // ─── Редакторский контур: банк вопросов ───────────────────────
