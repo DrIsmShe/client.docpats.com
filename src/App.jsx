@@ -570,10 +570,14 @@ import PharmacyRequisitionsPage from "./pages/clinic/pharmacy/PharmacyRequisitio
 import PharmacyDispensePage from "./pages/clinic/pharmacy/PharmacyDispensePage.jsx";
 import PharmacyReportsPage from "./pages/clinic/pharmacy/PharmacyReportsPage.jsx";
 import PharmacySuppliersPage from "./pages/clinic/pharmacy/PharmacySuppliersPage.jsx";
+import FontSizeControl from "./components/FontSizeControl";
 function App() {
   const currentUserId = useCurrentUserId();
   return (
     <>
+      {/* Регулятор размера текста. Вне BrowserRouter — он не зависит от
+          маршрута и должен быть на любой странице, включая /login. */}
+      <FontSizeControl />
       <GlobalCallProvider currentUserId={currentUserId}>
         <BrowserRouter
           future={{

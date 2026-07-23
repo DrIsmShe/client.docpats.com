@@ -1284,5 +1284,11 @@
       "consultation": "AI doktora bir soru sorun",
       "doctor": "Doktor bulun ve randevu alın"
     }
+  },
+  "fontSize": {
+    "label": "Yazı boyutu",
+    "increase": "Daha büyük yazı",
+    "decrease": "Daha küçük yazı",
+    "reset": "Normal boyut"
   }
 }

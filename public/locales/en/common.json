@@ -1260,5 +1260,11 @@
       "consultation": "Ask the AI doctor a question",
       "doctor": "Find and book a doctor"
     }
+  },
+  "fontSize": {
+    "label": "Text size",
+    "increase": "Larger text",
+    "decrease": "Smaller text",
+    "reset": "Default size"
   }
 }

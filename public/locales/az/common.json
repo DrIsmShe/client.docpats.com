@@ -1366,5 +1366,11 @@
       "consultation": "AI həkimə sual verin",
       "doctor": "Həkim tapın və qeydiyyat alın"
     }
+  },
+  "fontSize": {
+    "label": "Mətn ölçüsü",
+    "increase": "Daha böyük mətn",
+    "decrease": "Daha kiçik mətn",
+    "reset": "Adi ölçü"
   }
 }

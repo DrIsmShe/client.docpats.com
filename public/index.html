@@ -90,6 +90,24 @@
   </head>
 
   <body>
+    <!-- Размер текста, выбранный читателем, восстанавливаем ДО первой
+         отрисовки: если ждать монтирования React, страница успевает
+         мигнуть обычным кеглем. Ключ и диапазон обязаны совпадать с
+         src/components/FontSizeControl.jsx. -->
+    <script>
+      (function () {
+        try {
+          var s = parseFloat(localStorage.getItem("dp-font-scale"));
+          if (s >= 0.9 && s <= 1.5 && s !== 1) {
+            document.documentElement.style.zoom = String(s);
+            document.documentElement.dataset.dpFontScale = String(s);
+          }
+        } catch (e) {
+          /* хранилище недоступно — читаем обычным размером */
+        }
+      })();
+    </script>
+
     <div id="root"></div>
 
     <script>
