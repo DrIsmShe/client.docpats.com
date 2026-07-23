@@ -471,6 +471,14 @@
     "emptyFolder": {
       "byLang": "لا توجد اختبارات بلغة «{{lang}}» هنا.",
       "plain": "لا توجد اختبارات في هذا القسم بعد."
+    },
+    "brand": "الأكاديمية الطبية",
+    "eyebrow": "مركز الامتحانات DocPats",
+    "stats": {
+      "programs": "اختبارات",
+      "sections": "أقسام",
+      "questions": "أسئلة",
+      "langs": "لغات"
     }
   },
   "program": {

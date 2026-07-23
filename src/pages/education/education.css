@@ -4,39 +4,75 @@
  * пересекаться с глобальными стилями проекта.
  */
 
+/* Шрифтовая пара академического набора: Cormorant Garamond — витринный
+ * антиква-шрифт (заголовки), Source Serif 4 — текстовая антиква (названия
+ * тестов, лид). Оба покрывают кириллицу и расширенную латиницу (az/tr).
+ * Интерфейсная мелочь остаётся на гротеске — так набор читается как
+ * журнал, а не как открытка. */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap");
+
 /* ─── Дизайн-токены ──────────────────────────────────────────
  * Один слой на всё оформление модуля: правишь здесь — меняется везде.
- * Стиль «современный чистый»: воздух, крупная типографика, мягкие тени,
- * округлые формы, индиго-акцент.
+ * Стиль «академическое издание»: тёплая бумага, антиква в заголовках,
+ * волосяные линейки вместо теней, оксфордский синий и приглушённое
+ * золото как единственные акценты.
  */
 .edu-page {
-  --edu-surface: #ffffff;
-  --edu-ink: #0f172a;
-  --edu-ink-soft: #64748b;
-  --edu-ink-faint: #94a3b8;
-  --edu-line: #e9edf4;
-  --edu-line-strong: #d7deea;
+  --edu-paper: #f0ece1;
+  --edu-surface: #fffdf9;
+  --edu-ink: #17212b;
+  --edu-ink-soft: #5c6773;
+  --edu-ink-faint: #939caa;
+  --edu-line: #e6e0d4;
+  --edu-line-strong: #cfc7b6;
 
-  --edu-primary: #4f46e5;
-  --edu-primary-strong: #4338ca;
-  --edu-primary-tint: #eef2ff;
-  --edu-primary-tint-2: #e0e7ff;
+  --edu-primary: #1b3a5c;
+  --edu-primary-strong: #122840;
+  --edu-primary-tint: #eceff4;
+  --edu-primary-tint-2: #dde4ed;
+  --edu-gold: #a2802f;
+  --edu-gold-soft: #d8c48c;
 
-  --edu-radius: 16px;
-  --edu-radius-sm: 12px;
+  --edu-serif: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype",
+    Palatino, Georgia, serif;
+  --edu-serif-text: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --edu-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --edu-radius: 5px;
+  --edu-radius-sm: 4px;
   --edu-radius-pill: 999px;
 
-  --edu-shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
-    0 6px 20px rgba(15, 23, 42, 0.05);
-  --edu-shadow-hover: 0 6px 14px rgba(15, 23, 42, 0.06),
-    0 18px 42px rgba(79, 70, 229, 0.12);
+  --edu-shadow: 0 1px 2px rgba(23, 33, 43, 0.05),
+    0 6px 16px rgba(23, 33, 43, 0.035);
+  --edu-shadow-hover: 0 2px 4px rgba(23, 33, 43, 0.04),
+    0 16px 34px rgba(23, 33, 43, 0.08);
 
+  position: relative;
   max-width: 1040px;
   margin: 0 auto;
-  padding: 32px 20px 72px;
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  padding: 32px 20px 96px;
+  font-family: var(--edu-sans);
   color: var(--edu-ink);
   -webkit-font-smoothing: antialiased;
+}
+
+/* Тёплая бумага на весь экран. Отдельной обёртки у зоны /education нет,
+ * а фон нужен за пределами колонки контента — поэтому фиксированный
+ * псевдоэлемент под содержимым страницы. */
+.edu-page::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background: radial-gradient(
+      1100px 560px at 50% -8%,
+      #fdfaf2 0%,
+      rgba(253, 250, 242, 0) 62%
+    ),
+    linear-gradient(180deg, #f6f2e8 0%, var(--edu-paper) 100%);
 }
 
 .edu-back {
@@ -52,18 +88,20 @@
 }
 
 .edu-title {
-  font-size: 34px;
-  font-weight: 780;
-  letter-spacing: -0.025em;
-  line-height: 1.1;
+  font-family: var(--edu-serif);
+  font-size: 42px;
+  font-weight: 600;
+  letter-spacing: 0.004em;
+  line-height: 1.08;
   margin: 0 0 10px;
 }
 
 .edu-subtitle {
+  font-family: var(--edu-serif-text);
   color: var(--edu-ink-soft);
-  font-size: 16px;
+  font-size: 16.5px;
   margin: 0 0 24px;
-  line-height: 1.6;
+  line-height: 1.65;
   max-width: 62ch;
 }
 
@@ -90,31 +128,38 @@
 }
 
 .edu-card-title {
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-family: var(--edu-serif-text);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0;
   margin: 0 0 6px;
 }
 
 .edu-card-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 6px;
+  margin-top: 14px;
 }
 
+/* Метка-«ключевое слово» из журнальной вёрстки: капитель, разрядка,
+ * волосяная рамка вместо заливки. */
 .edu-tag {
-  font-size: 12px;
-  font-weight: 500;
-  padding: 4px 11px;
-  border-radius: var(--edu-radius-pill);
-  background: #f1f5f9;
-  color: #475569;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 9px;
+  border-radius: 2px;
+  border: 1px solid var(--edu-line);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--edu-ink-soft);
   white-space: nowrap;
 }
 .edu-tag--free {
-  background: #dcfce7;
-  color: #15803d;
+  border-color: var(--edu-gold-soft);
+  background: rgba(216, 196, 140, 0.16);
+  color: #7d611f;
 }
 
 /* ─── Кнопки ─────────────────────────────────────────────── */
@@ -129,20 +174,20 @@
   border: 1px solid transparent;
   background: var(--edu-primary);
   color: #fff;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
+  letter-spacing: 0.02em;
   cursor: pointer;
   text-decoration: none;
-  box-shadow: 0 1px 2px rgba(79, 70, 229, 0.2),
-    0 4px 12px rgba(79, 70, 229, 0.18);
+  box-shadow: 0 1px 2px rgba(18, 40, 64, 0.16);
   transition: background 0.15s ease, box-shadow 0.15s ease,
     transform 0.15s ease;
 }
 .edu-btn:hover:not(:disabled) {
   background: var(--edu-primary-strong);
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.22),
-    0 8px 20px rgba(79, 70, 229, 0.22);
+  box-shadow: 0 2px 4px rgba(18, 40, 64, 0.16),
+    0 8px 18px rgba(18, 40, 64, 0.14);
 }
 .edu-btn:disabled {
   opacity: 0.5;
@@ -157,8 +202,8 @@
   box-shadow: none;
 }
 .edu-btn--ghost:hover:not(:disabled) {
-  background: #f8fafc;
-  border-color: var(--edu-primary);
+  background: #fffdf8;
+  border-color: var(--edu-gold);
   color: var(--edu-primary);
   box-shadow: none;
 }
@@ -173,12 +218,13 @@
 /* ─── Состояния ──────────────────────────────────────────── */
 
 .edu-state {
-  padding: 56px 24px;
+  padding: 64px 24px;
   text-align: center;
   color: var(--edu-ink-soft);
-  font-size: 15px;
-  line-height: 1.6;
-  background: var(--edu-surface);
+  font-family: var(--edu-serif-text);
+  font-size: 16px;
+  line-height: 1.7;
+  background: rgba(255, 254, 251, 0.7);
   border: 1px solid var(--edu-line);
   border-radius: var(--edu-radius);
   box-shadow: var(--edu-shadow);
@@ -198,8 +244,10 @@
 /* ─── Готовность ─────────────────────────────────────────── */
 
 .edu-readiness-value {
-  font-size: 40px;
-  font-weight: 680;
+  font-family: var(--edu-serif);
+  font-variant-numeric: lining-nums tabular-nums;
+  font-size: 46px;
+  font-weight: 600;
   line-height: 1;
 }
 .edu-readiness-label {
@@ -233,7 +281,7 @@
 .edu-bar-fill {
   height: 100%;
   border-radius: 4px;
-  background: #2563eb;
+  background: var(--edu-primary);
   transition: width 0.3s;
 }
 .edu-bar-fill--weak {
@@ -263,7 +311,7 @@
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   color: var(--edu-ink);
-  background: #f1f5f9;
+  background: rgba(27, 58, 92, 0.06);
   padding: 4px 12px;
   border-radius: var(--edu-radius-pill);
 }
@@ -274,21 +322,22 @@
 
 .edu-progress {
   height: 8px;
-  background: #eef2f7;
+  background: rgba(27, 58, 92, 0.08);
   border-radius: var(--edu-radius-pill);
   overflow: hidden;
   margin-bottom: 26px;
 }
 .edu-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--edu-primary), #7c74f0);
+  background: linear-gradient(90deg, var(--edu-primary), #46658a);
   border-radius: var(--edu-radius-pill);
   transition: width 0.3s ease;
 }
 
 .edu-stem {
-  font-size: 18px;
-  font-weight: 500;
+  font-family: var(--edu-serif-text);
+  font-size: 19px;
+  font-weight: 400;
   line-height: 1.6;
   margin: 0 0 22px;
 }
@@ -305,8 +354,8 @@
   gap: 13px;
   width: 100%;
   padding: 15px 17px;
-  border: 1.5px solid var(--edu-line-strong);
-  border-radius: 14px;
+  border: 1px solid var(--edu-line-strong);
+  border-radius: var(--edu-radius);
   background: var(--edu-surface);
   text-align: left;
   font-size: 15px;
@@ -367,8 +416,8 @@
   margin-top: 20px;
   padding: 16px 18px;
   border-radius: 10px;
-  border: 1px solid #e3e8ef;
-  background: #fafbfd;
+  border: 1px solid var(--edu-line);
+  background: rgba(255, 255, 255, 0.6);
 }
 .edu-explain-verdict {
   font-weight: 600;
@@ -405,8 +454,10 @@
   padding: 12px 0 4px;
 }
 .edu-score-value {
-  font-size: 52px;
-  font-weight: 700;
+  font-family: var(--edu-serif);
+  font-variant-numeric: lining-nums tabular-nums;
+  font-size: 60px;
+  font-weight: 600;
   line-height: 1;
 }
 .edu-score-value--pass {
@@ -421,13 +472,24 @@
   font-size: 15px;
 }
 
+/* Рубрикационный заголовок: капитель с разрядкой и линейка на всю
+ * ширину — так в книгах отбивают разделы. */
 .edu-section-title {
-  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 11.5px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--edu-ink-faint);
-  margin: 28px 0 14px;
+  letter-spacing: 0.16em;
+  color: var(--edu-ink-soft);
+  margin: 34px 0 18px;
+}
+.edu-section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--edu-line-strong);
 }
 
 .edu-review-item {
@@ -523,8 +585,8 @@
   background: #f5f8fb;
 }
 .edu-list-item--active {
-  background: #f3f7ff;
-  box-shadow: inset 3px 0 0 #2563eb;
+  background: rgba(27, 58, 92, 0.05);
+  box-shadow: inset 3px 0 0 var(--edu-primary);
 }
 .edu-list-item-title {
   font-size: 14px;
@@ -664,18 +726,179 @@
   margin-top: 10px;
 }
 
-/* ─── Витрина: шапка, поиск, рубрики, сетка ──────────────── */
+/* ─── Витрина: колонтитул, шапка, поиск, рубрики, сетка ──── */
 
-.edu-catalog-hero {
-  padding: 4px 0 26px;
+/* Верхний колонтитул: монограмма слева, служебные действия справа,
+ * снизу двойная линейка — типографский приём титульного листа. */
+.edu-masthead {
+  margin-bottom: 34px;
 }
 
+.edu-masthead-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+}
+
+.edu-monogram {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+}
+.edu-monogram-mark {
+  flex: 0 0 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--edu-gold-soft);
+  border-radius: 50%;
+  font-family: var(--edu-serif);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--edu-primary);
+  background: rgba(255, 255, 255, 0.7);
+}
+.edu-monogram-text {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+}
+.edu-monogram-name {
+  font-family: var(--edu-serif);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+/* Подпись в одну строку: переносы «МЕДИЦИНСКАЯ / АКАДЕМИЯ» ломают
+ * выключку колонтитула. На узком экране шапка и так встаёт в столбец. */
+.edu-monogram-sub {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.17em;
+  color: var(--edu-ink-faint);
+  margin-top: 3px;
+}
+
+.edu-masthead-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Двойная линейка (толстая + волосяная) */
+.edu-rule-double {
+  border-top: 2px solid var(--edu-ink);
+  border-bottom: 1px solid var(--edu-line-strong);
+  height: 4px;
+  opacity: 0.85;
+}
+
+/* Титул раздела */
+.edu-catalog-hero {
+  padding: 30px 0 4px;
+  text-align: center;
+}
+.edu-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--edu-gold);
+  margin: 0 0 14px;
+}
+.edu-catalog-hero .edu-title {
+  font-size: clamp(34px, 5.2vw, 54px);
+  margin-bottom: 0;
+}
+/* Наборный орнамент под заголовком: линейка — ромб — линейка. */
+.edu-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 18px auto 16px;
+  max-width: 260px;
+  color: var(--edu-gold-soft);
+}
+.edu-ornament::before,
+.edu-ornament::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--edu-line-strong) 40%,
+    var(--edu-line-strong) 60%,
+    transparent
+  );
+}
+.edu-ornament-mark {
+  font-size: 9px;
+  line-height: 1;
+  color: var(--edu-gold);
+}
+.edu-catalog-hero .edu-subtitle {
+  margin: 0 auto;
+  max-width: 58ch;
+  font-size: 17px;
+  color: var(--edu-ink-soft);
+}
+
+/* Реестр каталога: цифры набора — «богато», но без украшательств. */
+.edu-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  margin: 34px 0 30px;
+  border-top: 1px solid var(--edu-line-strong);
+  border-bottom: 1px solid var(--edu-line-strong);
+}
+.edu-stat {
+  padding: 18px 10px;
+  text-align: center;
+  border-inline-start: 1px solid var(--edu-line);
+}
+.edu-stat:first-child {
+  border-inline-start: none;
+}
+.edu-stat-value {
+  display: block;
+  font-family: var(--edu-serif);
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--edu-primary);
+}
+.edu-stat-label {
+  display: block;
+  margin-top: 7px;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--edu-ink-faint);
+}
+
+/* Поиск — строка с подчёркиванием, а не «пилюля». */
 .edu-search {
   display: flex;
   align-items: center;
   gap: 12px;
   border: 1px solid var(--edu-line-strong);
-  border-radius: 14px;
+  border-radius: var(--edu-radius-sm);
   padding: 0 16px;
   background: var(--edu-surface);
   margin-bottom: 20px;
@@ -683,24 +906,26 @@
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .edu-search:focus-within {
-  border-color: var(--edu-primary);
-  box-shadow: 0 0 0 4px var(--edu-primary-tint);
+  border-color: var(--edu-gold);
+  box-shadow: 0 0 0 3px rgba(216, 196, 140, 0.25);
 }
 .edu-search .bi {
   color: var(--edu-ink-faint);
-  font-size: 17px;
+  font-size: 16px;
 }
 .edu-search-input {
   flex: 1;
   border: none;
   outline: none;
-  padding: 14px 0;
-  font-size: 15.5px;
+  padding: 13px 0;
+  font-family: var(--edu-serif-text);
+  font-size: 16px;
   background: transparent;
   color: var(--edu-ink);
 }
 .edu-search-input::placeholder {
   color: var(--edu-ink-faint);
+  font-style: italic;
 }
 
 /* Категории верхнего уровня — крупные «таблетки» с иконкой и счётчиком */
@@ -728,8 +953,8 @@
   border-color: #9fb2c8;
 }
 .edu-cat-chip--active {
-  background: #2563eb;
-  border-color: #2563eb;
+  background: var(--edu-primary);
+  border-color: var(--edu-primary);
   color: #fff;
 }
 .edu-cat-chip-icon {
@@ -739,8 +964,8 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: rgba(37, 99, 235, 0.12);
-  color: #2563eb;
+  background: rgba(27, 58, 92, 0.08);
+  color: var(--edu-primary);
   font-size: 12px;
   font-weight: 700;
 }
@@ -785,9 +1010,9 @@
   border-color: #b9c6d6;
 }
 .edu-subcat-chip--active {
-  background: #eaf1ff;
-  border-color: #a9c2f5;
-  color: #1c4bb5;
+  background: rgba(27, 58, 92, 0.06);
+  border-color: var(--edu-line-strong);
+  color: var(--edu-primary);
   font-weight: 500;
 }
 .edu-subcat-chip-count {
@@ -814,7 +1039,7 @@
   align-items: center;
   justify-content: center;
   background: #eef2f7;
-  color: #2563eb;
+  color: var(--edu-primary);
   font-size: 18px;
   font-weight: 700;
 }
@@ -832,7 +1057,7 @@
   margin-left: auto;
   border: none;
   background: none;
-  color: #2563eb;
+  color: var(--edu-primary);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
@@ -845,17 +1070,18 @@
 /* Сетка карточек тестов */
 .edu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 18px;
 }
 
 .edu-prog-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   position: relative;
   background: var(--edu-surface);
   border: 1px solid var(--edu-line);
   border-radius: var(--edu-radius);
-  padding: 22px;
+  padding: 24px 24px 22px;
   text-decoration: none;
   color: inherit;
   box-shadow: var(--edu-shadow);
@@ -863,42 +1089,52 @@
     border-color 0.18s ease;
   overflow: hidden;
 }
-/* Тонкая цветная грань слева — «корешок» карточки теста. */
+/* Золотая линейка по верхней кромке — «шапка» карточки-оттиска. */
 .edu-prog-card::before {
   content: "";
   position: absolute;
-  left: 0;
   top: 0;
-  bottom: 0;
-  width: 3px;
-  background: linear-gradient(180deg, var(--edu-primary), #7c74f0);
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--edu-gold),
+    var(--edu-gold-soft) 55%,
+    transparent
+  );
   opacity: 0;
   transition: opacity 0.18s ease;
 }
 .edu-prog-card:hover {
-  border-color: transparent;
+  border-color: var(--edu-line-strong);
   box-shadow: var(--edu-shadow-hover);
-  transform: translateY(-3px);
+  transform: translateY(-2px);
 }
 .edu-prog-card:hover::before {
   opacity: 1;
 }
 .edu-prog-card-title {
-  font-size: 16.5px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-family: var(--edu-serif-text);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: 0;
   margin: 0 0 8px;
-  line-height: 1.35;
+  line-height: 1.34;
 }
 .edu-prog-card-desc {
   color: var(--edu-ink-soft);
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 14.5px;
+  line-height: 1.6;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+.edu-prog-card .edu-card-meta {
+  margin-top: auto;
+  padding-top: 18px;
 }
 
 /* Хлебные крошки (дерево любой глубины) */
@@ -907,8 +1143,13 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 2px;
-  margin-bottom: 16px;
-  font-size: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--edu-line);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 .edu-crumb-wrap {
   display: inline-flex;
@@ -937,47 +1178,62 @@
   color: var(--edu-line-strong);
 }
 
-/* Карточка-папка (подраздел) */
+/* Оглавление разделов: не плитки, а строки реестра — волосяные линейки,
+ * медальон с инициалом рубрики, счётчик справа. Две колонки на широком
+ * экране, одна на узком. */
+.edu-toc {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 0 40px;
+  margin-bottom: 34px;
+  border-top: 1px solid var(--edu-line-strong);
+}
+
 .edu-folder-card {
   display: flex;
   align-items: center;
   gap: 16px;
   text-align: left;
-  background: var(--edu-surface);
-  border: 1px solid var(--edu-line);
-  border-radius: var(--edu-radius);
-  padding: 18px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--edu-line);
+  border-radius: 0;
+  padding: 16px 10px 16px 2px;
   cursor: pointer;
   font: inherit;
   color: inherit;
-  box-shadow: var(--edu-shadow);
-  transition: box-shadow 0.18s ease, transform 0.18s ease,
-    border-color 0.18s ease;
+  box-shadow: none;
+  transition: background 0.16s ease, padding 0.16s ease;
 }
 .edu-folder-card:hover {
-  border-color: transparent;
-  box-shadow: var(--edu-shadow-hover);
-  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.75);
+  padding-left: 8px;
+}
+.edu-folder-card:hover .edu-folder-name {
+  color: var(--edu-primary);
+}
+.edu-folder-card:hover .edu-folder-icon {
+  border-color: var(--edu-gold);
+  color: var(--edu-gold);
 }
 .edu-folder-card:hover .edu-folder-chevron {
-  color: var(--edu-primary);
+  color: var(--edu-gold);
   transform: translateX(3px);
 }
 .edu-folder-icon {
-  flex: 0 0 48px;
-  height: 48px;
-  border-radius: 14px;
+  flex: 0 0 42px;
+  height: 42px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    135deg,
-    var(--edu-primary-tint),
-    var(--edu-primary-tint-2)
-  );
+  border: 1px solid var(--edu-line-strong);
+  background: rgba(255, 255, 255, 0.6);
   color: var(--edu-primary);
-  font-size: 20px;
-  font-weight: 700;
+  font-family: var(--edu-serif);
+  font-size: 18px;
+  font-weight: 600;
+  transition: border-color 0.16s ease, color 0.16s ease;
 }
 .edu-folder-text {
   display: flex;
@@ -986,20 +1242,25 @@
   flex: 1;
 }
 .edu-folder-name {
-  font-size: 16.5px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-family: var(--edu-serif-text);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0;
   line-height: 1.3;
+  transition: color 0.16s ease;
 }
 .edu-folder-meta {
-  font-size: 13px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
   color: var(--edu-ink-faint);
-  margin-top: 3px;
+  margin-top: 5px;
 }
 .edu-folder-chevron {
   color: var(--edu-line-strong);
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 400;
   transition: color 0.18s ease, transform 0.18s ease;
 }
 
@@ -1066,7 +1327,7 @@
   align-items: center;
   justify-content: center;
   background: #eef2f7;
-  color: #2563eb;
+  color: var(--edu-primary);
   font-size: 15px;
   font-weight: 700;
 }
@@ -1130,9 +1391,89 @@
   min-width: 170px;
   flex: 0 0 auto;
   box-shadow: var(--edu-shadow);
-}
-.edu-filter-count {
   font-size: 13.5px;
   color: var(--edu-ink-soft);
-  margin-bottom: 18px;
+}
+.edu-filter-count {
+  font-size: 13px;
+  color: var(--edu-ink-soft);
+  font-family: var(--edu-serif-text);
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+/* ─── Академические частности ────────────────────────────────
+ * Мелочи, которые дочищают общий тон: чужой переключатель языка,
+ * шеврон в RTL и поведение титула на узком экране.
+ */
+
+/* LanguageSwitcher вставляет свои стили сам (синий, скруглённый) —
+ * приглушаем его в границах модуля, чтобы шапка осталась единой. */
+.edu-page .dp-lang-select {
+  border-radius: var(--edu-radius-sm);
+  border-color: var(--edu-line-strong);
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--edu-ink-soft);
+  box-shadow: none;
+}
+.edu-page .dp-lang-select:hover {
+  border-color: var(--edu-gold);
+  background: #fffdf8;
+  color: var(--edu-primary);
+}
+.edu-page .dp-lang-select:focus {
+  border-color: var(--edu-gold);
+  box-shadow: 0 0 0 3px rgba(216, 196, 140, 0.25);
+}
+.edu-page .dp-lang-select-wrap::after {
+  border-top-color: var(--edu-ink-faint);
+}
+.edu-page .dp-lang-select-wrap:hover::after {
+  border-top-color: var(--edu-gold);
+}
+
+.edu-back-link {
+  font-size: 13px;
+}
+
+/* Арабский разворачивает страницу: указатель должен смотреть влево. */
+[dir="rtl"] .edu-folder-chevron {
+  transform: scaleX(-1);
+}
+[dir="rtl"] .edu-folder-card:hover .edu-folder-chevron {
+  transform: scaleX(-1) translateX(3px);
+}
+[dir="rtl"] .edu-folder-card:hover {
+  padding-left: 10px;
+  padding-right: 8px;
+}
+
+@media (max-width: 720px) {
+  .edu-page {
+    padding: 20px 16px 72px;
+  }
+  .edu-masthead-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .edu-catalog-hero {
+    padding-top: 22px;
+    text-align: left;
+  }
+  .edu-ornament {
+    margin-left: 0;
+  }
+  .edu-catalog-hero .edu-subtitle {
+    margin-left: 0;
+  }
+  .edu-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .edu-stat:nth-child(3) {
+    border-inline-start: none;
+  }
+  .edu-stat:nth-child(n + 3) {
+    border-top: 1px solid var(--edu-line);
+  }
 }

@@ -174,6 +174,24 @@ export default function ExamCatalogPage() {
   const langLabel = (code) =>
     t(`shared.langs.${code}`, { defaultValue: code });
 
+  // Цифры реестра в шапке. Считаем по всему каталогу, а не по текущей
+  // выборке: это «выходные данные» издания, а не счётчик фильтра.
+  const stats = useMemo(() => {
+    let sections = 0;
+    const walk = (nodes) => {
+      for (const n of nodes) {
+        sections += 1;
+        walk(n.children || []);
+      }
+    };
+    walk(categories);
+    const questions = programs.reduce(
+      (sum, p) => sum + (p.publishedItemCount ?? 0),
+      0
+    );
+    return { sections, questions };
+  }, [categories, programs]);
+
   const q = query.trim().toLowerCase();
 
   const filtered = useMemo(() => {
@@ -266,36 +284,83 @@ export default function ExamCatalogPage() {
   return (
     <div className="edu-page edu-page--wide" dir={dir}>
       {/* ─── Шапка ─── */}
-      {/* Возврат в кабинет и переключатель языка живут здесь, потому что у
-          зоны /education нет общего layout с шапкой: без них выйти из
-          модуля и сменить язык можно было только через браузер. */}
-      <div
-        className="edu-catalog-hero"
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          justifyContent: "space-between",
-          gap: 16,
-        }}
-      >
-        <div>
+      {/* Титульный лист: колонтитул с монограммой, двойная линейка, титул
+          раздела и реестр цифр. Возврат в кабинет и переключатель языка
+          живут здесь, потому что у зоны /education нет общего layout с
+          шапкой: без них выйти из модуля и сменить язык можно было только
+          через браузер. */}
+      <header className="edu-masthead">
+        <div className="edu-masthead-bar">
+          <div className="edu-monogram">
+            <span className="edu-monogram-mark" aria-hidden="true">
+              DP
+            </span>
+            <span className="edu-monogram-text">
+              <span className="edu-monogram-name">DocPats</span>
+              <span className="edu-monogram-sub">
+                {t("catalog.brand", { defaultValue: "Academia Medica" })}
+              </span>
+            </span>
+          </div>
+          <div className="edu-masthead-actions">
+            <BackToCabinet />
+            <LanguageSwitcher />
+          </div>
+        </div>
+
+        <div className="edu-rule-double" aria-hidden="true" />
+
+        <div className="edu-catalog-hero">
+          {/* Надзаголовок необязателен: в локали его может не быть, и
+              пустая строка оставила бы дыру над титулом. */}
+          {t("catalog.eyebrow", { defaultValue: "" }) && (
+            <p className="edu-eyebrow">{t("catalog.eyebrow")}</p>
+          )}
           <h1 className="edu-title">{t("catalog.title")}</h1>
+          <div className="edu-ornament" aria-hidden="true">
+            <span className="edu-ornament-mark">◆</span>
+          </div>
           <p className="edu-subtitle" style={{ marginBottom: 0 }}>
             {t("catalog.subtitle")}
           </p>
         </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            flexShrink: 0,
-          }}
-        >
-          <BackToCabinet />
-          <LanguageSwitcher />
-        </div>
-      </div>
+
+        {/* Реестр каталога. Показываем, только когда есть что считать. */}
+        {!loading && programs.length > 0 && (
+          <div className="edu-stats">
+            <div className="edu-stat">
+              <span className="edu-stat-value">{programs.length}</span>
+              <span className="edu-stat-label">
+                {t("catalog.stats.programs", { defaultValue: "Tests" })}
+              </span>
+            </div>
+            {stats.sections > 0 && (
+              <div className="edu-stat">
+                <span className="edu-stat-value">{stats.sections}</span>
+                <span className="edu-stat-label">
+                  {t("catalog.stats.sections", { defaultValue: "Sections" })}
+                </span>
+              </div>
+            )}
+            {stats.questions > 0 && (
+              <div className="edu-stat">
+                <span className="edu-stat-value">{stats.questions}</span>
+                <span className="edu-stat-label">
+                  {t("catalog.stats.questions", { defaultValue: "Questions" })}
+                </span>
+              </div>
+            )}
+            {availableLangs.length > 0 && (
+              <div className="edu-stat">
+                <span className="edu-stat-value">{availableLangs.length}</span>
+                <span className="edu-stat-label">
+                  {t("catalog.stats.langs", { defaultValue: "Languages" })}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+      </header>
 
       {error && <div className="edu-error">{error}</div>}
 
@@ -444,7 +509,7 @@ export default function ExamCatalogPage() {
 
           {/* Подпапки текущего раздела */}
           {visibleFolders.length > 0 && (
-            <div className="edu-grid" style={{ marginBottom: 22 }}>
+            <div className="edu-toc">
               {visibleFolders.map((f) => (
                 <button
                   key={f.id}

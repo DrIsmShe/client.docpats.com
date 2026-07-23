@@ -471,6 +471,14 @@
     "emptyFolder": {
       "byLang": "Burada “{{lang}}” dilinde test yok.",
       "plain": "Bu bölümde henüz test yok."
+    },
+    "brand": "Tıp Akademisi",
+    "eyebrow": "DocPats Sınav Merkezi",
+    "stats": {
+      "programs": "Test",
+      "sections": "Bölüm",
+      "questions": "Soru",
+      "langs": "Dil"
     }
   },
   "program": {

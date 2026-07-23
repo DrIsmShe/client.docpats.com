@@ -471,6 +471,14 @@
     "emptyFolder": {
       "byLang": "There are no tests in “{{lang}}” here.",
       "plain": "There are no tests in this category yet."
+    },
+    "brand": "Medical Academy",
+    "eyebrow": "DocPats Examination Centre",
+    "stats": {
+      "programs": "Tests",
+      "sections": "Sections",
+      "questions": "Questions",
+      "langs": "Languages"
     }
   },
   "program": {

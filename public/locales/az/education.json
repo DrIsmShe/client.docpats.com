@@ -471,6 +471,14 @@
     "emptyFolder": {
       "byLang": "Burada «{{lang}}» dilində test yoxdur.",
       "plain": "Bu bölmədə hələ test yoxdur."
+    },
+    "brand": "Tibb Akademiyası",
+    "eyebrow": "DocPats İmtahan Mərkəzi",
+    "stats": {
+      "programs": "Test",
+      "sections": "Bölmə",
+      "questions": "Sual",
+      "langs": "Dil"
     }
   },
   "program": {
