@@ -201,13 +201,15 @@
     "stages": {
       "creatingProgram": "Proqram yaradılır…",
       "preparingJob": "Tapşırıq hazırlanır…",
-      "extracting": "Model faylı oxuyur — bu, bir neçə dəqiqə çəkə bilər…"
+      "extracting": "Model faylı oxuyur — bu, bir neçə dəqiqə çəkə bilər…",
+      "extractingPart": "Tanınır: hissə {{current}} / {{total}}… Böyük fayl hissə-hissə bölünüb emal olunur."
     },
     "notices": {
       "detected": "Tanınmış suallar: {{count}}. Tanınanları yoxlayın və lazım olanları banka köçürün.",
       "imported": "Banka köçürülüb: {{count}}. Suallar qaralama kimi yaradılıb və baxış gözləyir.",
       "importedWithSkipped": "Banka köçürülüb: {{count}}. Suallar qaralama kimi yaradılıb və baxış gözləyir. Buraxılıb {{skipped}}: {{list}}",
-      "jobDeleted": "Yükləmə siyahıdan silindi."
+      "jobDeleted": "Yükləmə siyahıdan silindi.",
+      "partialExtraction": "Hər şey tanınmadı: {{total}} hissədən {{failed}}-i alınmadı (mətn çox sıxdır). Qalanını adi qaydada köçürün, buraxılan səhifələri isə həmin testə ayrıca fayl kimi yükləyin."
     },
     "errors": {
       "loadPage": "Səhifəni yükləmək mümkün olmadı",

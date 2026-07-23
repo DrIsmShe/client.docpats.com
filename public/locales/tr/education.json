@@ -201,13 +201,15 @@
     "stages": {
       "creatingProgram": "Program oluşturuluyor…",
       "preparingJob": "Görev hazırlanıyor…",
-      "extracting": "Model dosyayı okuyor — bu birkaç dakika sürebilir…"
+      "extracting": "Model dosyayı okuyor — bu birkaç dakika sürebilir…",
+      "extractingPart": "Çıkarılıyor: bölüm {{current}} / {{total}}… Büyük dosya parçalara bölünüp işleniyor."
     },
     "notices": {
       "detected": "Çıkarılan soru sayısı: {{count}}. Çıkarılanları gözden geçirin ve gerekenleri bankaya aktarın.",
       "imported": "Bankaya aktarıldı: {{count}}. Sorular taslak olarak oluşturuldu ve incelemeyi bekliyor.",
       "importedWithSkipped": "Bankaya aktarıldı: {{count}}. Sorular taslak olarak oluşturuldu ve incelemeyi bekliyor. Atlanan {{skipped}}: {{list}}",
-      "jobDeleted": "Yükleme listeden silindi."
+      "jobDeleted": "Yükleme listeden silindi.",
+      "partialExtraction": "Her şey çıkarılamadı: {{total}} bölümden {{failed}} tanesi başarısız oldu (metin çok yoğun). Kalanını her zamanki gibi aktarın, atlanan sayfaları aynı sınava ayrı dosya olarak yükleyin."
     },
     "errors": {
       "loadPage": "Sayfa yüklenemedi",

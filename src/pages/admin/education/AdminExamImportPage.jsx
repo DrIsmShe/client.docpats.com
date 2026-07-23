@@ -193,6 +193,17 @@ export default function AdminExamImportPage() {
       try {
         const current = await fetchImportJob(jobId);
         lastKnown = current;
+        // Прогресс по частям — заодно и есть «сообщение о превышении»:
+        // «часть 3 из 12» само говорит, что файл большой и режется.
+        const total = current.progress?.total ?? 0;
+        if (total > 1) {
+          setStage(
+            t("adminImport.stages.extractingPart", {
+              current: current.progress?.current ?? 0,
+              total,
+            }),
+          );
+        }
         if (current.status === "extracted" || current.status === "failed") {
           return current;
         }
@@ -310,6 +321,16 @@ export default function AdminExamImportPage() {
             count: finished.stats?.detected ?? 0,
           }),
         );
+        // Часть файла могла не распознаться (слишком плотный кусок) —
+        // остальное довели, но честно предупреждаем: не всё в разборе.
+        if (finished.progress?.failedChunks > 0) {
+          setError(
+            t("adminImport.notices.partialExtraction", {
+              failed: finished.progress.failedChunks,
+              total: finished.progress.total,
+            }),
+          );
+        }
       }
 
       setPrograms(await fetchPrograms({ scope: "all" }));

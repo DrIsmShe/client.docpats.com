@@ -201,13 +201,15 @@
     "stages": {
       "creatingProgram": "Creating the program…",
       "preparingJob": "Preparing the job…",
-      "extracting": "The model is reading the file — this may take a few minutes…"
+      "extracting": "The model is reading the file — this may take a few minutes…",
+      "extractingPart": "Extracting: part {{current}} of {{total}}… A large file is split and processed in parts."
     },
     "notices": {
       "detected": "Questions extracted: {{count}}. Check what was extracted and move what you need to the bank.",
       "imported": "Moved to the bank: {{count}}. The questions were created as drafts and are waiting for review.",
       "importedWithSkipped": "Moved to the bank: {{count}}. The questions were created as drafts and are waiting for review. Skipped {{skipped}}: {{list}}",
-      "jobDeleted": "The upload was removed from the list."
+      "jobDeleted": "The upload was removed from the list.",
+      "partialExtraction": "Not everything was extracted: {{failed}} of {{total}} parts failed (too dense). Move the rest as usual, and upload the skipped pages as a separate file into the same exam."
     },
     "errors": {
       "loadPage": "Could not load the page",
