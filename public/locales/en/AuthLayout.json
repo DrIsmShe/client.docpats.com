@@ -110,7 +110,8 @@
     "dashboard": "My Cabinet",
     "signIn": "Sign In",
     "aiConsult": "AI Medical Consultation → Epicrisis",
-    "aiConsultTag": "AI · Free"
+    "aiConsultTag": "AI · Free",
+    "examPrep": "Exams"
   },
   "anthem": {
     "playing": "Playing DocPats Soundtrack",
@@ -157,5 +158,7 @@
   "clinicPerk1": "Multi-clinic and branches",
   "clinicPerk2": "Staff roles and permissions",
   "clinicPerk3": "Scheduling and appointments",
-  "clinicPerk4": "Data access audit"
+  "clinicPerk4": "Data access audit",
+  "examPrepTag": "20 questions, no sign-up",
+  "examPrepText": "Exam prep: practice tests with answer review"
 }

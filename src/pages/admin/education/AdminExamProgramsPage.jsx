@@ -221,9 +221,8 @@ export default function AdminExamProgramsPage() {
     }
   }
 
-  // Витринность теста: единственный переключатель, открывающий тест
-  // гостям без регистрации (демо на 20 вопросов). Без него гостевая
-  // витрина пуста, поэтому ставим его рядом с рубрикой и блоками.
+  // Метка «Бесплатно» на карточке теста. На доступ НЕ влияет:
+  // каталог целиком открыт всем, ограничивает только квота вопросов.
   async function handleToggleFree(program, isFree) {
     setBusyId(program._id);
     setError(null);
@@ -624,12 +623,11 @@ export default function AdminExamProgramsPage() {
                 </span>
               </label>
 
-              {/* Демо для гостей. Применимо только к опубликованному
-                  тесту: черновик гостю не покажут в любом случае. */}
+              {/* Только оформление карточки: доступ к тесту метка не меняет. */}
               <label className="edu-prog-setting">
                 <span>
                   {t("adminPrograms.settings.freeLabel", {
-                    defaultValue: "Демо для гостей",
+                    defaultValue: "Метка «Бесплатно»",
                   })}
                 </span>
                 <span className="edu-free-toggle">
@@ -641,7 +639,7 @@ export default function AdminExamProgramsPage() {
                   />
                   <span className="edu-hint" style={{ margin: 0 }}>
                     {t("adminPrograms.settings.freeHint", {
-                      defaultValue: "20 вопросов без регистрации",
+                      defaultValue: "показывать бейдж на карточке",
                     })}
                   </span>
                 </span>

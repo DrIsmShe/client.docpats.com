@@ -290,8 +290,8 @@
       "noCategory": "— No category —",
       "blockSizeLabel": "Split into blocks of",
       "blockSizePlaceholder": "none",
-      "freeLabel": "Guest demo",
-      "freeHint": "20 questions without signing up"
+      "freeLabel": "\"Free\" badge",
+      "freeHint": "show the badge on the card"
     },
     "hints": {
       "noCategories": "There are no categories yet —",
@@ -307,8 +307,8 @@
       "blockSizeOff": "Block splitting for “{{title}}” is turned off.",
       "hardDeleted": "Exam “{{title}}” has been deleted permanently (questions deleted: {{count}}).",
       "hardDeletedWithAttempts": "Exam “{{title}}” has been deleted permanently (questions: {{items}}, attempts: {{attempts}}).",
-      "freeOn": "{{title}} is now open to guests",
-      "freeOff": "{{title}} is hidden from guests"
+      "freeOn": "\"{{title}}\" marked as free",
+      "freeOff": "\"{{title}}\" no longer marked free"
     },
     "confirms": {
       "archive": "Archive the exam “{{title}}”? Questions and completed attempts will be kept, but the exam will disappear from the catalog and from this list.",

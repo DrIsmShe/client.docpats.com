@@ -110,7 +110,8 @@
     "dashboard": "Şəxsi kabinet",
     "signIn": "Daxil ol",
     "aiConsult": "AI Tibbi Konsultasiya → Epikriz",
-    "aiConsultTag": "AI · Pulsuz"
+    "aiConsultTag": "AI · Pulsuz",
+    "examPrep": "Testlər"
   },
   "anthem": {
     "playing": "DocPats Musiqisi Çalınır",
@@ -157,5 +158,7 @@
   "clinicPerk1": "Çoxfiliallı klinika",
   "clinicPerk2": "Əməkdaş rolları və hüquqları",
   "clinicPerk3": "Cədvəl və qəbullar",
-  "clinicPerk4": "Məlumat girişinin auditi"
+  "clinicPerk4": "Məlumat girişinin auditi",
+  "examPrepTag": "qeydiyyatsız 20 sual",
+  "examPrepText": "İmtahana hazırlıq: səhvlərin təhlili ilə testlər"
 }

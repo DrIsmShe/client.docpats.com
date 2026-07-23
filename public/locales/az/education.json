@@ -290,8 +290,8 @@
       "noCategory": "— Kateqoriyasız —",
       "blockSizeLabel": "Bloklara böl, hər blokda",
       "blockSizePlaceholder": "yox",
-      "freeLabel": "Qonaqlar üçün demo",
-      "freeHint": "Qeydiyyatsız 20 sual"
+      "freeLabel": "«Pulsuz» nişanı",
+      "freeHint": "kartda nişanı göstər"
     },
     "hints": {
       "noCategories": "Hələ kateqoriya yoxdur —",
@@ -307,8 +307,8 @@
       "blockSizeOff": "«{{title}}» üçün bloklara bölmə söndürüldü.",
       "hardDeleted": "«{{title}}» testi həmişəlik silindi (silinən sual: {{count}}).",
       "hardDeletedWithAttempts": "«{{title}}» testi həmişəlik silindi (sual: {{items}}, cəhd: {{attempts}}).",
-      "freeOn": "«{{title}}» qonaqlara açıqdır",
-      "freeOff": "«{{title}}» qonaqlardan gizlədildi"
+      "freeOn": "«{{title}}» pulsuz kimi işarələndi",
+      "freeOff": "«{{title}}» üzərindən nişan götürüldü"
     },
     "confirms": {
       "archive": "«{{title}}» testi arxivə salınsın? Suallar və tamamlanmış cəhdlər saxlanılacaq, lakin test kataloqdan və siyahıdan yox olacaq.",

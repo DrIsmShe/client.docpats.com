@@ -207,6 +207,22 @@ const STYLES = `
   }
   .dp-nav-sign-in:hover { background: rgba(255,255,255,.22); border-color: rgba(255,255,255,.4); }
 
+  /* Ссылка в шапке рядом с «Войти»: тише кнопки, но так же заметна. */
+  .dp-nav-link {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.86);
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 8px 4px;
+    transition: color .15s;
+  }
+  .dp-nav-link:hover { color: #fff; }
+  @media (max-width: 520px) { .dp-nav-link { display: none; } }
+
   /* ════ HERO ════ */
   .dp-hero {
     /* background: linear-gradient(148deg, #0c4a6e 0%, #0f766e 60%, #065f46 100%); */
@@ -1047,6 +1063,12 @@ export default function AuthLayout() {
             {/* Right */}
             {/* Right */}
             <div className="dp-nav-right">
+              {/* Подготовка к экзаменам открыта без регистрации: каталог
+                  виден целиком, гостю доступны 20 вопросов на пробу.
+                  Поэтому ссылка стоит до кнопки входа, а не за ней. */}
+              <Link to="/education" className="dp-nav-link">
+                {t("nav.examPrep", { defaultValue: "Тесты" })}
+              </Link>
               <LanguageSwitcher />
               {isAuthenticated ? (
                 <a
@@ -1144,6 +1166,45 @@ export default function AuthLayout() {
                       </span>
                     </button>
                   </motion.div>
+                  {/* Подготовка к экзаменам. Стоит первой в ряду промо-
+                      карточек: это единственный раздел, который можно
+                      попробовать целиком и без регистрации. */}
+                  <motion.div variants={item} style={{ marginBottom: 12 }}>
+                    <Link
+                      to="/education"
+                      className="dp-news-card"
+                      style={{ textDecoration: "none" }}
+                    >
+                      <div
+                        className="dp-news-card-accent"
+                        style={{
+                          background:
+                            "linear-gradient(180deg, #d8c48c, #a2802f)",
+                        }}
+                      />
+                      <div className="dp-news-card-body">
+                        <div className="dp-news-card-icon">🎓</div>
+                        <div className="dp-news-card-copy">
+                          <div className="dp-news-card-tag">
+                            {"DocPats · "}
+                            {t("examPrepTag", {
+                              defaultValue: "20 вопросов без регистрации",
+                            })}
+                          </div>
+                          <div className="dp-news-card-text">
+                            {t("examPrepText", {
+                              defaultValue:
+                                "Подготовка к экзаменам: тесты с разбором ошибок",
+                            })}
+                          </div>
+                        </div>
+                        <span className="dp-news-card-arrow">
+                          <Arrow />
+                        </span>
+                      </div>
+                    </Link>
+                  </motion.div>
+
                   <motion.div variants={item} style={{ marginBottom: 12 }}>
                     <Link
                       to="/public/user-synthesis"

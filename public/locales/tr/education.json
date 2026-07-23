@@ -290,8 +290,8 @@
       "noCategory": "— Kategorisiz —",
       "blockSizeLabel": "Bloklara böl, her blokta",
       "blockSizePlaceholder": "yok",
-      "freeLabel": "Misafir demosu",
-      "freeHint": "Kayıtsız 20 soru"
+      "freeLabel": "«Ücretsiz» rozeti",
+      "freeHint": "kartta rozeti göster"
     },
     "hints": {
       "noCategories": "Henüz kategori yok —",
@@ -307,8 +307,8 @@
       "blockSizeOff": "“{{title}}” için bloklara bölme kapatıldı.",
       "hardDeleted": "“{{title}}” sınavı kalıcı olarak silindi (silinen soru: {{count}}).",
       "hardDeletedWithAttempts": "“{{title}}” sınavı kalıcı olarak silindi (soru: {{items}}, deneme: {{attempts}}).",
-      "freeOn": "«{{title}}» misafirlere açıldı",
-      "freeOff": "«{{title}}» misafirlerden gizlendi"
+      "freeOn": "«{{title}}» ücretsiz olarak işaretlendi",
+      "freeOff": "«{{title}}» işareti kaldırıldı"
     },
     "confirms": {
       "archive": "“{{title}}” sınavı arşive alınsın mı? Sorular ve tamamlanmış denemeler saklanır, ancak sınav katalogdan ve listeden kaybolur.",
