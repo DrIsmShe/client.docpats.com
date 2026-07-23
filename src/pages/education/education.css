@@ -4,62 +4,95 @@
  * пересекаться с глобальными стилями проекта.
  */
 
+/* ─── Дизайн-токены ──────────────────────────────────────────
+ * Один слой на всё оформление модуля: правишь здесь — меняется везде.
+ * Стиль «современный чистый»: воздух, крупная типографика, мягкие тени,
+ * округлые формы, индиго-акцент.
+ */
 .edu-page {
-  max-width: 960px;
+  --edu-surface: #ffffff;
+  --edu-ink: #0f172a;
+  --edu-ink-soft: #64748b;
+  --edu-ink-faint: #94a3b8;
+  --edu-line: #e9edf4;
+  --edu-line-strong: #d7deea;
+
+  --edu-primary: #4f46e5;
+  --edu-primary-strong: #4338ca;
+  --edu-primary-tint: #eef2ff;
+  --edu-primary-tint-2: #e0e7ff;
+
+  --edu-radius: 16px;
+  --edu-radius-sm: 12px;
+  --edu-radius-pill: 999px;
+
+  --edu-shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
+    0 6px 20px rgba(15, 23, 42, 0.05);
+  --edu-shadow-hover: 0 6px 14px rgba(15, 23, 42, 0.06),
+    0 18px 42px rgba(79, 70, 229, 0.12);
+
+  max-width: 1040px;
   margin: 0 auto;
-  padding: 24px 16px 64px;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  color: #1c2430;
+  padding: 32px 20px 72px;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--edu-ink);
+  -webkit-font-smoothing: antialiased;
 }
 
 .edu-back {
   display: inline-block;
   margin-bottom: 16px;
-  color: #5a6b7f;
+  color: var(--edu-ink-soft);
   text-decoration: none;
   font-size: 14px;
+  font-weight: 500;
 }
 .edu-back:hover {
-  color: #1c2430;
+  color: var(--edu-primary);
 }
 
 .edu-title {
-  font-size: 26px;
-  font-weight: 650;
-  margin: 0 0 6px;
+  font-size: 34px;
+  font-weight: 780;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin: 0 0 10px;
 }
 
 .edu-subtitle {
-  color: #5a6b7f;
-  font-size: 15px;
+  color: var(--edu-ink-soft);
+  font-size: 16px;
   margin: 0 0 24px;
-  line-height: 1.5;
+  line-height: 1.6;
+  max-width: 62ch;
 }
 
 /* ─── Карточки ───────────────────────────────────────────── */
 
 .edu-card {
-  background: #fff;
-  border: 1px solid #e3e8ef;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 16px;
+  background: var(--edu-surface);
+  border: 1px solid var(--edu-line);
+  border-radius: var(--edu-radius);
+  padding: 24px;
+  margin-bottom: 18px;
+  box-shadow: var(--edu-shadow);
 }
 
 .edu-card-link {
   display: block;
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
 }
 .edu-card-link:hover {
-  border-color: #b9c6d6;
-  box-shadow: 0 2px 10px rgba(28, 36, 48, 0.06);
+  box-shadow: var(--edu-shadow-hover);
+  transform: translateY(-2px);
 }
 
 .edu-card-title {
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   margin: 0 0 6px;
 }
 
@@ -72,15 +105,16 @@
 
 .edu-tag {
   font-size: 12px;
-  padding: 3px 9px;
-  border-radius: 20px;
-  background: #eef2f7;
-  color: #4a5b70;
+  font-weight: 500;
+  padding: 4px 11px;
+  border-radius: var(--edu-radius-pill);
+  background: #f1f5f9;
+  color: #475569;
   white-space: nowrap;
 }
 .edu-tag--free {
-  background: #e6f6ec;
-  color: #1c7a42;
+  background: #dcfce7;
+  color: #15803d;
 }
 
 /* ─── Кнопки ─────────────────────────────────────────────── */
@@ -90,31 +124,43 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 18px;
-  border-radius: 8px;
+  padding: 11px 20px;
+  border-radius: var(--edu-radius-sm);
   border: 1px solid transparent;
-  background: #2563eb;
+  background: var(--edu-primary);
   color: #fff;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   text-decoration: none;
+  box-shadow: 0 1px 2px rgba(79, 70, 229, 0.2),
+    0 4px 12px rgba(79, 70, 229, 0.18);
+  transition: background 0.15s ease, box-shadow 0.15s ease,
+    transform 0.15s ease;
 }
 .edu-btn:hover:not(:disabled) {
-  background: #1d4ed8;
+  background: var(--edu-primary-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.22),
+    0 8px 20px rgba(79, 70, 229, 0.22);
 }
 .edu-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .edu-btn--ghost {
-  background: #fff;
-  border-color: #d3dbe5;
-  color: #1c2430;
+  background: var(--edu-surface);
+  border-color: var(--edu-line-strong);
+  color: var(--edu-ink);
+  box-shadow: none;
 }
 .edu-btn--ghost:hover:not(:disabled) {
-  background: #f5f8fb;
+  background: #f8fafc;
+  border-color: var(--edu-primary);
+  color: var(--edu-primary);
+  box-shadow: none;
 }
 
 .edu-btn-row {
@@ -127,19 +173,26 @@
 /* ─── Состояния ──────────────────────────────────────────── */
 
 .edu-state {
-  padding: 40px 20px;
+  padding: 56px 24px;
   text-align: center;
-  color: #5a6b7f;
+  color: var(--edu-ink-soft);
+  font-size: 15px;
+  line-height: 1.6;
+  background: var(--edu-surface);
+  border: 1px solid var(--edu-line);
+  border-radius: var(--edu-radius);
+  box-shadow: var(--edu-shadow);
 }
 
 .edu-error {
-  background: #fdecec;
-  border: 1px solid #f5c2c2;
-  color: #9b2222;
-  border-radius: 8px;
-  padding: 12px 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: var(--edu-radius-sm);
+  padding: 13px 16px;
   margin-bottom: 16px;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 /* ─── Готовность ─────────────────────────────────────────── */
@@ -208,89 +261,103 @@
 
 .edu-timer {
   font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  color: #1c2430;
+  font-weight: 700;
+  color: var(--edu-ink);
+  background: #f1f5f9;
+  padding: 4px 12px;
+  border-radius: var(--edu-radius-pill);
 }
 .edu-timer--low {
-  color: #d4483b;
+  color: #dc2626;
+  background: #fef2f2;
 }
 
 .edu-progress {
-  height: 5px;
+  height: 8px;
   background: #eef2f7;
-  border-radius: 3px;
+  border-radius: var(--edu-radius-pill);
   overflow: hidden;
-  margin-bottom: 22px;
+  margin-bottom: 26px;
 }
 .edu-progress-fill {
   height: 100%;
-  background: #2563eb;
-  transition: width 0.25s;
+  background: linear-gradient(90deg, var(--edu-primary), #7c74f0);
+  border-radius: var(--edu-radius-pill);
+  transition: width 0.3s ease;
 }
 
 .edu-stem {
-  font-size: 17px;
+  font-size: 18px;
+  font-weight: 500;
   line-height: 1.6;
-  margin: 0 0 20px;
+  margin: 0 0 22px;
 }
 
 .edu-options {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 11px;
 }
 
 .edu-option {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 13px;
   width: 100%;
-  padding: 14px 16px;
-  border: 1px solid #dde4ec;
-  border-radius: 10px;
-  background: #fff;
+  padding: 15px 17px;
+  border: 1.5px solid var(--edu-line-strong);
+  border-radius: 14px;
+  background: var(--edu-surface);
   text-align: left;
   font-size: 15px;
   line-height: 1.5;
   cursor: pointer;
   color: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease,
+    box-shadow 0.15s ease;
 }
 .edu-option:hover:not(:disabled) {
-  border-color: #9fb2c8;
+  border-color: var(--edu-primary);
+  background: var(--edu-primary-tint);
 }
 .edu-option:disabled {
   cursor: default;
 }
 .edu-option--selected {
-  border-color: #2563eb;
-  background: #f3f7ff;
+  border-color: var(--edu-primary);
+  background: var(--edu-primary-tint);
+  box-shadow: 0 0 0 4px var(--edu-primary-tint);
 }
 .edu-option--correct {
-  border-color: #2f9e5f;
-  background: #eefaf1;
+  border-color: #16a34a;
+  background: #f0fdf4;
 }
 .edu-option--wrong {
-  border-color: #d4483b;
-  background: #fdefee;
+  border-color: #dc2626;
+  background: #fef2f2;
 }
 
 .edu-option-key {
-  flex: 0 0 26px;
-  height: 26px;
+  flex: 0 0 28px;
+  height: 28px;
   border-radius: 50%;
   background: #eef2f7;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
+}
+.edu-option--selected .edu-option-key {
+  background: var(--edu-primary);
+  color: #fff;
 }
 .edu-option--correct .edu-option-key {
-  background: #2f9e5f;
+  background: #16a34a;
   color: #fff;
 }
 .edu-option--wrong .edu-option-key {
-  background: #d4483b;
+  background: #dc2626;
   color: #fff;
 }
 
@@ -343,21 +410,24 @@
   line-height: 1;
 }
 .edu-score-value--pass {
-  color: #1c7a42;
+  color: #16a34a;
 }
 .edu-score-value--fail {
-  color: #d4483b;
+  color: #dc2626;
 }
 .edu-score-caption {
-  color: #5a6b7f;
+  color: var(--edu-ink-soft);
   margin-top: 8px;
   font-size: 15px;
 }
 
 .edu-section-title {
-  font-size: 15px;
-  font-weight: 600;
-  margin: 24px 0 12px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--edu-ink-faint);
+  margin: 28px 0 14px;
 }
 
 .edu-review-item {
@@ -380,25 +450,26 @@
 /* ─── Редакторский контур ────────────────────────────────── */
 
 .edu-page--wide {
-  max-width: 1200px;
+  max-width: 1240px;
 }
 
 .edu-notice {
-  background: #eefaf1;
-  border: 1px solid #bfe6cd;
-  color: #1c7a42;
-  border-radius: 8px;
-  padding: 12px 16px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+  border-radius: var(--edu-radius-sm);
+  padding: 13px 16px;
   margin-bottom: 16px;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .edu-warn {
-  background: #fff7e8;
-  border: 1px solid #f0dbb0;
-  color: #7a5410;
-  border-radius: 8px;
-  padding: 12px 16px;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  color: #92650e;
+  border-radius: var(--edu-radius-sm);
+  padding: 13px 16px;
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 16px;
@@ -478,22 +549,23 @@
 .edu-select {
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 12px;
-  border: 1px solid #d3dbe5;
-  border-radius: 8px;
+  padding: 11px 14px;
+  border: 1px solid var(--edu-line-strong);
+  border-radius: var(--edu-radius-sm);
   font-family: inherit;
   font-size: 14.5px;
   line-height: 1.5;
-  color: #1c2430;
-  background: #fff;
+  color: var(--edu-ink);
+  background: var(--edu-surface);
   resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .edu-textarea:focus,
 .edu-input:focus,
 .edu-select:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  border-color: var(--edu-primary);
+  box-shadow: 0 0 0 4px var(--edu-primary-tint);
 }
 
 .edu-form-row {
@@ -595,31 +667,40 @@
 /* ─── Витрина: шапка, поиск, рубрики, сетка ──────────────── */
 
 .edu-catalog-hero {
-  padding: 8px 0 20px;
+  padding: 4px 0 26px;
 }
 
 .edu-search {
   display: flex;
   align-items: center;
-  gap: 10px;
-  border: 1px solid #d3dbe5;
-  border-radius: 10px;
-  padding: 0 14px;
-  background: #fff;
+  gap: 12px;
+  border: 1px solid var(--edu-line-strong);
+  border-radius: 14px;
+  padding: 0 16px;
+  background: var(--edu-surface);
   margin-bottom: 20px;
+  box-shadow: var(--edu-shadow);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.edu-search:focus-within {
+  border-color: var(--edu-primary);
+  box-shadow: 0 0 0 4px var(--edu-primary-tint);
 }
 .edu-search .bi {
-  color: #8b9aab;
-  font-size: 16px;
+  color: var(--edu-ink-faint);
+  font-size: 17px;
 }
 .edu-search-input {
   flex: 1;
   border: none;
   outline: none;
-  padding: 12px 0;
-  font-size: 15px;
+  padding: 14px 0;
+  font-size: 15.5px;
   background: transparent;
-  color: #1c2430;
+  color: var(--edu-ink);
+}
+.edu-search-input::placeholder {
+  color: var(--edu-ink-faint);
 }
 
 /* Категории верхнего уровня — крупные «таблетки» с иконкой и счётчиком */
@@ -764,35 +845,55 @@
 /* Сетка карточек тестов */
 .edu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
 }
 
 .edu-prog-card {
   display: block;
-  background: #fff;
-  border: 1px solid #e3e8ef;
-  border-radius: 12px;
-  padding: 18px;
+  position: relative;
+  background: var(--edu-surface);
+  border: 1px solid var(--edu-line);
+  border-radius: var(--edu-radius);
+  padding: 22px;
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  box-shadow: var(--edu-shadow);
+  transition: box-shadow 0.18s ease, transform 0.18s ease,
+    border-color 0.18s ease;
+  overflow: hidden;
+}
+/* Тонкая цветная грань слева — «корешок» карточки теста. */
+.edu-prog-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--edu-primary), #7c74f0);
+  opacity: 0;
+  transition: opacity 0.18s ease;
 }
 .edu-prog-card:hover {
-  border-color: #b9c6d6;
-  box-shadow: 0 4px 14px rgba(28, 36, 48, 0.08);
-  transform: translateY(-1px);
+  border-color: transparent;
+  box-shadow: var(--edu-shadow-hover);
+  transform: translateY(-3px);
+}
+.edu-prog-card:hover::before {
+  opacity: 1;
 }
 .edu-prog-card-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0 0 6px;
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
   line-height: 1.35;
 }
 .edu-prog-card-desc {
-  color: #5a6b7f;
-  font-size: 13.5px;
-  line-height: 1.5;
+  color: var(--edu-ink-soft);
+  font-size: 14px;
+  line-height: 1.55;
   margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -817,54 +918,65 @@
 .edu-crumb {
   border: none;
   background: none;
-  color: #2563eb;
+  color: var(--edu-primary);
   font: inherit;
+  font-weight: 500;
   cursor: pointer;
-  padding: 4px 6px;
-  border-radius: 6px;
+  padding: 4px 8px;
+  border-radius: 8px;
 }
 .edu-crumb:hover:not(:disabled) {
-  background: #eef3ff;
+  background: var(--edu-primary-tint);
 }
 .edu-crumb:disabled {
-  color: #1c2430;
-  font-weight: 600;
+  color: var(--edu-ink);
+  font-weight: 700;
   cursor: default;
 }
 .edu-crumb-sep {
-  color: #b9c6d6;
+  color: var(--edu-line-strong);
 }
 
 /* Карточка-папка (подраздел) */
 .edu-folder-card {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   text-align: left;
-  background: #fff;
-  border: 1px solid #e3e8ef;
-  border-radius: 12px;
-  padding: 16px 18px;
+  background: var(--edu-surface);
+  border: 1px solid var(--edu-line);
+  border-radius: var(--edu-radius);
+  padding: 18px 20px;
   cursor: pointer;
   font: inherit;
   color: inherit;
-  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  box-shadow: var(--edu-shadow);
+  transition: box-shadow 0.18s ease, transform 0.18s ease,
+    border-color 0.18s ease;
 }
 .edu-folder-card:hover {
-  border-color: #b9c6d6;
-  box-shadow: 0 4px 14px rgba(28, 36, 48, 0.08);
-  transform: translateY(-1px);
+  border-color: transparent;
+  box-shadow: var(--edu-shadow-hover);
+  transform: translateY(-3px);
+}
+.edu-folder-card:hover .edu-folder-chevron {
+  color: var(--edu-primary);
+  transform: translateX(3px);
 }
 .edu-folder-icon {
-  flex: 0 0 42px;
-  height: 42px;
-  border-radius: 10px;
+  flex: 0 0 48px;
+  height: 48px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #eef2f7;
-  color: #2563eb;
-  font-size: 18px;
+  background: linear-gradient(
+    135deg,
+    var(--edu-primary-tint),
+    var(--edu-primary-tint-2)
+  );
+  color: var(--edu-primary);
+  font-size: 20px;
   font-weight: 700;
 }
 .edu-folder-text {
@@ -874,19 +986,21 @@
   flex: 1;
 }
 .edu-folder-name {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 16.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   line-height: 1.3;
 }
 .edu-folder-meta {
-  font-size: 12.5px;
-  color: #8b9aab;
-  margin-top: 2px;
+  font-size: 13px;
+  color: var(--edu-ink-faint);
+  margin-top: 3px;
 }
 .edu-folder-chevron {
-  color: #b9c6d6;
-  font-size: 22px;
+  color: var(--edu-line-strong);
+  font-size: 24px;
   font-weight: 600;
+  transition: color 0.18s ease, transform 0.18s ease;
 }
 
 /* ─── Блоки на странице теста ────────────────────────────── */
@@ -1007,17 +1121,18 @@
 .edu-filterbar {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 .edu-filter-select {
   width: auto;
-  min-width: 160px;
+  min-width: 170px;
   flex: 0 0 auto;
+  box-shadow: var(--edu-shadow);
 }
 .edu-filter-count {
-  font-size: 13px;
-  color: #8b9aab;
-  margin-bottom: 16px;
+  font-size: 13.5px;
+  color: var(--edu-ink-soft);
+  margin-bottom: 18px;
 }
