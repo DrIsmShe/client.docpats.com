@@ -150,5 +150,14 @@
     "unlimited": {
       "name": "Exam Prep Unlimited"
     }
+  },
+  "waitlist": {
+    "cta": "Başlayınca haber ver",
+    "placeholder": "E-postanız",
+    "submit": "Bana haber ver",
+    "sending": "Gönderiliyor…",
+    "done": "Teşekkürler! Ödeme açıldığı gün yazacağız.",
+    "error": "Gönderilemedi. Tekrar deneyin.",
+    "notice": "Ödeme henüz aktif değil — e-postanızı bırakın, açılışta yazalım."
   }
 }

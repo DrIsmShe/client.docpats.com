@@ -49,6 +49,7 @@ import AdminExamImportPage from "./pages/admin/education/AdminExamImportPage";
 import AdminExamReviewPage from "./pages/admin/education/AdminExamReviewPage";
 import AdminExamProgramsPage from "./pages/admin/education/AdminExamProgramsPage";
 import AdminExamCategoriesPage from "./pages/admin/education/AdminExamCategoriesPage";
+import AdminBillingPage from "./pages/admin/billing/AdminBillingPage";
 import TopDoctorsPage from "./pages/public/TopDoctorsPage";
 import HomeDoctorMainPage from "./pages/doctorProfilePages/home/homeMainPage";
 
@@ -2622,6 +2623,8 @@ function App() {
                 path="education-categories"
                 element={<AdminExamCategoriesPage />}
               />
+              {/* Ручная выдача тарифов и лист ожидания запуска оплаты. */}
+              <Route path="billing" element={<AdminBillingPage />} />
               <Route path="overview" element={<AdminDashboardPage />} />
               <Route path="audit-log" element={<AdminAuditPage />} />
               <Route path="clinics" element={<AdminClinicsPage />} />

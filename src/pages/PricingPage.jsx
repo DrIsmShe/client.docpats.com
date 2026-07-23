@@ -221,6 +221,93 @@ const CLINIC_PLANS = [
 ];
 
 // ═════════════════════════════════════════════════════════════════════
+//   ЛИСТ ОЖИДАНИЯ — заменяет кнопку оплаты, пока касса закрыта
+//
+//   Показывать «Подключить», которая ничего не подключает, — обман;
+//   прятать тарифы целиком — терять спрос. Собираем контакт: кто и каким
+//   тарифом интересуется. К запуску это готовый список для рассылки.
+//
+//   Появление формы определяет сервер (paymentsEnabled), а не флаг в
+//   коде: включение кассы не должно требовать правки этой страницы.
+// ═════════════════════════════════════════════════════════════════════
+function WaitlistButton({ planKey, period, t, className = "" }) {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState("idle"); // idle | sending | done | error
+
+  async function submit(e) {
+    e.preventDefault();
+    setState("sending");
+    try {
+      const r = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/payments/waitlist`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, planKey, period, source: "pricing" }),
+        },
+      );
+      setState(r.ok ? "done" : "error");
+    } catch {
+      setState("error");
+    }
+  }
+
+  if (state === "done") {
+    return (
+      <div className={`alert alert-success py-2 px-3 mb-0 small ${className}`}>
+        ✓{" "}
+        {t("waitlist.done", {
+          defaultValue: "Спасибо! Напишем, как только откроем оплату.",
+        })}
+      </div>
+    );
+  }
+
+  if (!open) {
+    return (
+      <button
+        className={`btn btn-outline-primary w-100 ${className}`}
+        onClick={() => setOpen(true)}
+      >
+        {t("waitlist.cta", { defaultValue: "Сообщить о запуске" })}
+      </button>
+    );
+  }
+
+  return (
+    <form onSubmit={submit} className={className}>
+      <input
+        type="email"
+        required
+        autoFocus
+        className="form-control mb-2"
+        placeholder={t("waitlist.placeholder", { defaultValue: "Ваш email" })}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <button
+        type="submit"
+        className="btn btn-primary w-100"
+        disabled={state === "sending"}
+      >
+        {state === "sending"
+          ? t("waitlist.sending", { defaultValue: "Отправляем…" })
+          : t("waitlist.submit", { defaultValue: "Сообщить мне" })}
+      </button>
+      {state === "error" && (
+        <div className="text-danger small mt-2">
+          {t("waitlist.error", {
+            defaultValue: "Не получилось отправить. Попробуйте ещё раз.",
+          })}
+        </div>
+      )}
+    </form>
+  );
+}
+
+// ═════════════════════════════════════════════════════════════════════
 //   АДДОН «ПОДГОТОВКА К ЭКЗАМЕНАМ»
 //
 //   Не входит в сетку планов и показывается на всех вкладках: аддон
@@ -244,7 +331,7 @@ const EXAM_ADDONS = [
   },
 ];
 
-function ExamAddonSection({ period, t }) {
+function ExamAddonSection({ period, t, paymentsEnabled }) {
   const navigate = useNavigate();
 
   return (
@@ -346,18 +433,22 @@ function ExamAddonSection({ period, t }) {
                     </li>
                   </ul>
 
-                  <button
-                    className={`btn w-100 ${
-                      addon.highlight ? "btn-primary" : "btn-outline-primary"
-                    }`}
-                    onClick={() =>
-                      navigate(
-                        `/pricing/checkout?plan=${addon.key}&period=${period}`,
-                      )
-                    }
-                  >
-                    {t("card.ctaSubscribe")}
-                  </button>
+                  {paymentsEnabled ? (
+                    <button
+                      className={`btn w-100 ${
+                        addon.highlight ? "btn-primary" : "btn-outline-primary"
+                      }`}
+                      onClick={() =>
+                        navigate(
+                          `/pricing/checkout?plan=${addon.key}&period=${period}`,
+                        )
+                      }
+                    >
+                      {t("card.ctaSubscribe")}
+                    </button>
+                  ) : (
+                    <WaitlistButton planKey={addon.key} period={period} t={t} />
+                  )}
                 </div>
               </div>
             </div>
@@ -371,7 +462,7 @@ function ExamAddonSection({ period, t }) {
 // ═════════════════════════════════════════════════════════════════════
 //                    КАРТОЧКА ТАРИФА
 // ═════════════════════════════════════════════════════════════════════
-function PlanCard({ plan, period, t, currentPlanKey }) {
+function PlanCard({ plan, period, t, currentPlanKey, paymentsEnabled }) {
   const navigate = useNavigate();
   const isFree = !!plan.free;
   const isCurrent = !!currentPlanKey && plan.key === currentPlanKey;
@@ -474,6 +565,14 @@ function PlanCard({ plan, period, t, currentPlanKey }) {
             ))}
           </ul>
 
+          {/* Касса закрыта — вместо оплаты собираем контакт. Регистрация
+              на бесплатный тариф при этом работает как обычно: она не про
+              деньги. */}
+          {!paymentsEnabled && !isFree && !isCurrent ? (
+            <div className="mt-auto">
+              <WaitlistButton planKey={plan.key} period={period} t={t} />
+            </div>
+          ) : (
           <button
             disabled={isCurrent}
             className={`btn rounded-3 mt-auto fw-semibold ${
@@ -501,6 +600,7 @@ function PlanCard({ plan, period, t, currentPlanKey }) {
           >
             {isCurrent ? t("card.currentPlan") : t(ctaLabelKey)}
           </button>
+          )}
         </div>
       </div>
     </motion.div>
@@ -577,6 +677,10 @@ export default function PricingPage() {
   const [period, setPeriod] = useState("monthly"); // monthly | yearly
   const [userRole, setUserRole] = useState(null); // null = гость/загрузка
   const [currentPlanKey, setCurrentPlanKey] = useState(null); // активная подписка
+  // Открыта ли касса. Спрашиваем у сервера, а не решаем на фронте: сервер
+  // знает, какой провайдер активен и есть ли у него ключи. В день запуска
+  // достаточно переменной окружения — эта страница не изменится.
+  const [paymentsEnabled, setPaymentsEnabled] = useState(true);
 
   const isRTL = i18n.language === "ar";
 
@@ -618,6 +722,24 @@ export default function PricingPage() {
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
         if (alive && d?.success) setCurrentPlanKey(d.storedPlan || null);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  // Состояние кассы. Если запрос не удался — оставляем true: показать
+  // рабочую кнопку и получить ошибку при оплате честнее, чем объявить
+  // приём денег закрытым из-за одной неудачной загрузки.
+  useEffect(() => {
+    let alive = true;
+    fetch(`${process.env.REACT_APP_API_URL}/api/payments/plans`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (alive && d && typeof d.paymentsEnabled === "boolean") {
+          setPaymentsEnabled(d.paymentsEnabled);
+        }
       })
       .catch(() => {});
     return () => {
@@ -750,6 +872,17 @@ export default function PricingPage() {
           </div>
         </div>
 
+        {/* Пока касса закрыта — говорим об этом прямо, а не оставляем
+            человека выяснять это нажатием на «Подключить». */}
+        {!paymentsEnabled && (
+          <div className="alert alert-warning text-center mb-4" role="status">
+            {t("waitlist.notice", {
+              defaultValue:
+                "Оплата пока не подключена — оставьте email, и мы напишем в день запуска.",
+            })}
+          </div>
+        )}
+
         {/* TABS */}
         {visibleTabs.length > 1 && (
         <div className="d-flex justify-content-center mb-5">
@@ -796,11 +929,12 @@ export default function PricingPage() {
                   period={period}
                   t={t}
                   currentPlanKey={currentPlanKey}
+                  paymentsEnabled={paymentsEnabled}
                 />
                 </div>
               ))}
             </div>
-            <ExamAddonSection period={period} t={t} />
+            <ExamAddonSection period={period} t={t} paymentsEnabled={paymentsEnabled} />
             <div className="text-center mt-5">
               <p className="text-muted small">{t("patientFooter")}</p>
             </div>
@@ -824,11 +958,12 @@ export default function PricingPage() {
                   period={period}
                   t={t}
                   currentPlanKey={currentPlanKey}
+                  paymentsEnabled={paymentsEnabled}
                 />
                 </div>
               ))}
             </div>
-            <ExamAddonSection period={period} t={t} />
+            <ExamAddonSection period={period} t={t} paymentsEnabled={paymentsEnabled} />
             <div className="text-center mt-5">
               <p className="text-muted small">{t("doctorFooter")}</p>
             </div>
@@ -851,11 +986,12 @@ export default function PricingPage() {
                   period={period}
                   t={t}
                   currentPlanKey={currentPlanKey}
+                  paymentsEnabled={paymentsEnabled}
                 />
                 </div>
               ))}
             </div>
-            <ExamAddonSection period={period} t={t} />
+            <ExamAddonSection period={period} t={t} paymentsEnabled={paymentsEnabled} />
             <div className="text-center mt-5">
               <p className="text-muted small">{t("clinicFooter")}</p>
             </div>

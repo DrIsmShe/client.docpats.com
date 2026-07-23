@@ -150,5 +150,14 @@
     "unlimited": {
       "name": "Exam Prep Unlimited"
     }
+  },
+  "waitlist": {
+    "cta": "Başlayanda xəbər ver",
+    "placeholder": "E-poçtunuz",
+    "submit": "Mənə xəbər ver",
+    "sending": "Göndərilir…",
+    "done": "Təşəkkür! Ödəniş açılan gün yazacağıq.",
+    "error": "Göndərmək alınmadı. Yenidən cəhd edin.",
+    "notice": "Ödəniş hələ qoşulmayıb — e-poçt qoyun, başlayanda yazacağıq."
   }
 }

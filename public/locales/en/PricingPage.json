@@ -150,5 +150,14 @@
     "unlimited": {
       "name": "Exam Prep Unlimited"
     }
+  },
+  "waitlist": {
+    "cta": "Notify me at launch",
+    "placeholder": "Your email",
+    "submit": "Notify me",
+    "sending": "Sending…",
+    "done": "Thanks! We will write the day payments open.",
+    "error": "Could not send. Please try again.",
+    "notice": "Payments are not live yet — leave your email and we will write on launch day."
   }
 }
