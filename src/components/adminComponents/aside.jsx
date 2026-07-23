@@ -73,6 +73,15 @@ export default function Aside() {
             </Link>
           </li>
 
+          {/* ─── Тарифы и оплата ─── */}
+          <li className="nav-heading">Тарифы</li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="billing">
+              <i className="bi bi-credit-card"></i>
+              <span>Тарифы и заявки</span>
+            </Link>
+          </li>
+
           {/* ─── Пользователи и врачи ─── */}
           <li className="nav-heading">Пользователи</li>
           <li className="nav-item">
