@@ -516,5 +516,41 @@
     "history": {
       "title": "Geçmiş denemeler"
     }
+  },
+  "adminGenerate": {
+    "title": "Yapay zekâ ile sınav oluştur",
+    "subtitle": "Bir konu ve soru sayısı verin — modeli yazsın. Sorular aynı taslaklara düşer ve incelemeden geçer: insan kontrolü olmadan asla yayınlanmaz.",
+    "aiOff": "Oluşturma kullanılamıyor: sunucuda Anthropic API anahtarı ayarlı değil (dosya çıkarma için kullanılan anahtarın aynısı).",
+    "draftProgramTitle": "Oluşturma: {{topic}}",
+    "form": {
+      "target": "Sorular nereye eklensin",
+      "newProgramOption": "➕ Yeni sınav — konudan oluştur",
+      "topic": "Konu",
+      "topicPlaceholder": "Örn.: tıbbi genetik; karbonhidrat biyokimyası; kalp fizyolojisi",
+      "count": "Kaç soru",
+      "lang": "Dil",
+      "difficulty": "Zorluk",
+      "sourceNote": "Köken notu (isteğe bağlı)",
+      "sourceNotePlaceholder": "Örn.: açık USMLE bankasından esinlenerek",
+      "reviewNote": "Oluşturulan sorular yayından önce her zaman incelemeden geçer — model gerçeklerde yanılabilir.",
+      "submit": "Oluştur",
+      "submitBusy": "Oluşturuluyor…"
+    },
+    "difficulty": {
+      "mixed": "Karışık"
+    },
+    "stages": {
+      "starting": "Oluşturma işi kuyruğa alınıyor…",
+      "generating": "Model soruları yazıyor — bu birkaç dakika sürebilir…"
+    },
+    "notices": {
+      "done": "Oluşturulan soru: {{count}}. Taslakları inceleyin ve istediklerinizi bankaya taşıyın.",
+      "partial": "{{requested}} sorudan {{generated}} tanesi oluşturuldu: bazı gruplar başarısız oldu. Aynı sınava daha fazla oluşturabilirsiniz."
+    },
+    "errors": {
+      "noTopic": "Oluşturmak için bir konu girin",
+      "badCount": "Soru sayısı sıfırdan büyük tam sayı olmalı",
+      "failed": "Sorular oluşturulamadı"
+    }
   }
 }

@@ -226,6 +226,17 @@ export async function deleteImportJob(jobId) {
   return data; // { deleted: true, id, importedItems }
 }
 
+/**
+ * Запускает генерацию вопросов моделью по теме. Возвращает задание сразу
+ * (202), генерация идёт в фоне — следить за ней опросом fetchImportJob,
+ * как за распознаванием файла. Результат ложится в те же черновики.
+ * @param {object} payload { programId, topic, count, lang, difficulty, sourceNote }
+ */
+export async function generateQuestions(payload) {
+  const { data } = await axios.post(`${BASE}/import/generate`, payload);
+  return data.job;
+}
+
 export async function createImportJob(payload) {
   const { data } = await axios.post(`${BASE}/import/jobs`, payload);
   return data.job;

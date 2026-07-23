@@ -24,6 +24,7 @@ import {
   createProgram,
   archiveProgram,
   createImportJob,
+  generateQuestions,
   runImportJob,
   updateImportDraft,
   importJobDrafts,
@@ -123,6 +124,17 @@ export default function AdminExamImportPage() {
   const [file, setFile] = useState(null);
   const [selectedDrafts, setSelectedDrafts] = useState([]);
 
+  // Форма генерации вопросов моделью. Язык здесь выбирает оператор (модель
+  // пишет на нём), в отличие от импорта, где язык определяется по файлу.
+  const [genForm, setGenForm] = useState({
+    programId: NEW_PROGRAM,
+    topic: "",
+    count: 20,
+    lang: "ru",
+    difficulty: "mixed",
+    sourceNote: "",
+  });
+
   const handleApiError = useCallback(
     (err, fallback) => {
       if (isAuthError(err)) {
@@ -213,6 +225,96 @@ export default function AdminExamImportPage() {
     }
 
     return lastKnown ?? { status: "extracting" };
+  }
+
+  // Генерация вопросов моделью. Тест-контейнер создаём так же, как для
+  // импорта: для нового теста — пустая программа, структуру построит модель.
+  // Дальше тот же опрос и те же черновики, что и у загрузки файла.
+  async function handleGenerate(e) {
+    e.preventDefault();
+    const topic = genForm.topic.trim();
+    if (!topic) {
+      setError(t("adminGenerate.errors.noTopic"));
+      return;
+    }
+    const count = Number(genForm.count);
+    if (!Number.isInteger(count) || count < 1) {
+      setError(t("adminGenerate.errors.badCount"));
+      return;
+    }
+
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    let createdProgramId = null;
+    let generationStarted = false;
+
+    try {
+      let programId = genForm.programId;
+      if (genForm.programId === NEW_PROGRAM) {
+        setStage(t("adminImport.stages.creatingProgram"));
+        const created = await createProgram({
+          code: `generated-${Date.now().toString(36)}`,
+          title: t("adminGenerate.draftProgramTitle", { topic }),
+          country: "INT",
+          region: "international",
+          examType: "cme",
+          languages: [genForm.lang],
+          sourcePolicy: "ai_generated",
+          status: "draft",
+        });
+        programId = created._id;
+        createdProgramId = created._id;
+      }
+
+      setStage(t("adminGenerate.stages.starting"));
+      const job = await generateQuestions({
+        programId,
+        topic,
+        count,
+        lang: genForm.lang,
+        difficulty: genForm.difficulty,
+        sourceNote: genForm.sourceNote.trim() || undefined,
+      });
+      generationStarted = true;
+
+      setStage(t("adminGenerate.stages.generating"));
+      const finished = await waitForExtraction(job._id);
+
+      if (finished.status === "failed") {
+        setError(finished.error || t("adminGenerate.errors.failed"));
+      } else {
+        setNotice(
+          t("adminGenerate.notices.done", {
+            count: finished.stats?.detected ?? 0,
+          }),
+        );
+        if (finished.progress?.failedChunks > 0) {
+          setError(
+            t("adminGenerate.notices.partial", {
+              generated: finished.stats?.detected ?? 0,
+              requested: count,
+            }),
+          );
+        }
+      }
+
+      setGenForm((f) => ({ ...f, topic: "", sourceNote: "" }));
+      setPrograms(await fetchPrograms({ scope: "all" }));
+      setJobs(await fetchImportJobs({ limit: 30 }));
+      await openJob(job._id);
+    } catch (err) {
+      handleApiError(err, t("adminGenerate.errors.failed"));
+      // Как и в импорте: пустую программу, созданную под заказ, убираем —
+      // но только если генерация ещё не стартовала (иначе результат в пути).
+      if (createdProgramId && !generationStarted) {
+        await archiveProgram(createdProgramId).catch(() => {});
+      }
+      setJobs(await fetchImportJobs({ limit: 30 }).catch(() => jobs));
+    } finally {
+      setBusy(false);
+      setStage(null);
+    }
   }
 
   async function handleUpload(e) {
@@ -501,6 +603,134 @@ export default function AdminExamImportPage() {
           />
         </div>
       )}
+
+      {/* ─── Генерация вопросов моделью ─── */}
+      {/* Отдельный путь: не из файла, а по теме. Результат идёт в те же
+          черновики и через то же ревью — публиковаться без человека
+          сгенерированные вопросы не могут (это медицина). */}
+      <form className="edu-card" onSubmit={handleGenerate}>
+        <h2 className="edu-card-title">{t("adminGenerate.title")}</h2>
+        <div className="edu-hint" style={{ marginBottom: 12 }}>
+          {t("adminGenerate.subtitle")}
+        </div>
+
+        {!aiReady && (
+          <div className="edu-warn" style={{ marginBottom: 12 }}>
+            {t("adminGenerate.aiOff")}
+          </div>
+        )}
+
+        <div className="edu-field-label" style={{ marginTop: 0 }}>
+          {t("adminGenerate.form.target")}
+        </div>
+        <select
+          className="edu-select"
+          value={genForm.programId}
+          onChange={(e) =>
+            setGenForm((f) => ({ ...f, programId: e.target.value }))
+          }
+        >
+          <option value={NEW_PROGRAM}>
+            {t("adminGenerate.form.newProgramOption")}
+          </option>
+          {programs
+            .filter((p) => p.status !== "archived")
+            .map((p) => (
+              <option key={p._id} value={p._id}>
+                {p.title}
+                {p.status !== "published"
+                  ? t("adminImport.form.draftSuffix")
+                  : ""}
+              </option>
+            ))}
+        </select>
+
+        <div className="edu-field-label">{t("adminGenerate.form.topic")}</div>
+        <input
+          className="edu-input"
+          placeholder={t("adminGenerate.form.topicPlaceholder")}
+          value={genForm.topic}
+          onChange={(e) =>
+            setGenForm((f) => ({ ...f, topic: e.target.value }))
+          }
+        />
+
+        <div className="edu-form-row" style={{ marginTop: 14 }}>
+          <div>
+            <div className="edu-field-label" style={{ marginTop: 0 }}>
+              {t("adminGenerate.form.count")}
+            </div>
+            <input
+              className="edu-input"
+              type="number"
+              min={1}
+              max={500}
+              value={genForm.count}
+              onChange={(e) =>
+                setGenForm((f) => ({ ...f, count: e.target.value }))
+              }
+            />
+          </div>
+          <div>
+            <div className="edu-field-label" style={{ marginTop: 0 }}>
+              {t("adminGenerate.form.lang")}
+            </div>
+            <select
+              className="edu-select"
+              value={genForm.lang}
+              onChange={(e) =>
+                setGenForm((f) => ({ ...f, lang: e.target.value }))
+              }
+            >
+              {["ru", "en", "az", "tr", "ar"].map((code) => (
+                <option key={code} value={code}>
+                  {t(`shared.langs.${code}`)}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <div className="edu-field-label" style={{ marginTop: 0 }}>
+              {t("adminGenerate.form.difficulty")}
+            </div>
+            <select
+              className="edu-select"
+              value={genForm.difficulty}
+              onChange={(e) =>
+                setGenForm((f) => ({ ...f, difficulty: e.target.value }))
+              }
+            >
+              <option value="mixed">{t("adminGenerate.difficulty.mixed")}</option>
+              <option value="easy">{t("shared.difficulty.easy")}</option>
+              <option value="medium">{t("shared.difficulty.medium")}</option>
+              <option value="hard">{t("shared.difficulty.hard")}</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="edu-field-label">
+          {t("adminGenerate.form.sourceNote")}
+        </div>
+        <input
+          className="edu-input"
+          placeholder={t("adminGenerate.form.sourceNotePlaceholder")}
+          value={genForm.sourceNote}
+          onChange={(e) =>
+            setGenForm((f) => ({ ...f, sourceNote: e.target.value }))
+          }
+        />
+        <div className="edu-hint">{t("adminGenerate.form.reviewNote")}</div>
+
+        <div className="edu-btn-row" style={{ marginTop: 14 }}>
+          <button
+            type="submit"
+            className="edu-btn"
+            disabled={busy || !aiReady || !genForm.topic.trim()}
+          >
+            {busy ? (stage ?? t("adminGenerate.form.submitBusy")) : t("adminGenerate.form.submit")}
+          </button>
+        </div>
+      </form>
 
       {/* ─── Загрузка ─── */}
       <form className="edu-card" onSubmit={handleUpload}>

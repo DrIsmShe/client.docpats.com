@@ -516,5 +516,41 @@
     "history": {
       "title": "Keçmiş cəhdlər"
     }
+  },
+  "adminGenerate": {
+    "title": "Süni intellektlə test yarat",
+    "subtitle": "Mövzunu və sualların sayını göstərin — model onları özü yazacaq. Suallar eyni qaralamalara düşür və baxışdan keçir: insan yoxlaması olmadan dərc olunmur.",
+    "aiOff": "Generasiya əlçatan deyil: serverdə Anthropic API açarı təyin olunmayıb (fayl tanıması üçün olan həmin açar).",
+    "draftProgramTitle": "Generasiya: {{topic}}",
+    "form": {
+      "target": "Suallar hara əlavə olunsun",
+      "newProgramOption": "➕ Yeni test — mövzuya görə qur",
+      "topic": "Mövzu",
+      "topicPlaceholder": "Məs.: tibbi genetika; karbohidratların biokimyası; ürək fiziologiyası",
+      "count": "Neçə sual",
+      "lang": "Dil",
+      "difficulty": "Çətinlik",
+      "sourceNote": "Mənşə qeydi (könüllü)",
+      "sourceNotePlaceholder": "Məs.: açıq USMLE bankı əsasında",
+      "reviewNote": "Yaradılan suallar dərcdən əvvəl həmişə baxışdan keçir — model faktlarda yanıla bilər.",
+      "submit": "Yarat",
+      "submitBusy": "Yaradılır…"
+    },
+    "difficulty": {
+      "mixed": "Qarışıq"
+    },
+    "stages": {
+      "starting": "Generasiya tapşırığı növbəyə qoyulur…",
+      "generating": "Model sualları yazır — bu, bir neçə dəqiqə çəkə bilər…"
+    },
+    "notices": {
+      "done": "Yaradılan suallar: {{count}}. Qaralamaları yoxlayın və lazım olanları banka köçürün.",
+      "partial": "{{requested}}-dən {{generated}} yaradıldı: bəzi batçlar alınmadı. Həmin testə əlavə generasiya edə bilərsiniz."
+    },
+    "errors": {
+      "noTopic": "Generasiya üçün mövzu göstərin",
+      "badCount": "Sualların sayı tam və sıfırdan böyük olmalıdır",
+      "failed": "Sualları yaratmaq alınmadı"
+    }
   }
 }

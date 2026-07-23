@@ -516,5 +516,41 @@
     "history": {
       "title": "Past attempts"
     }
+  },
+  "adminGenerate": {
+    "title": "Generate an exam with AI",
+    "subtitle": "Give a topic and a number of questions — the model writes them. They land in the same drafts and go through review: they are never published without a human check.",
+    "aiOff": "Generation is unavailable: the Anthropic API key on the server is not set (the same one used for file extraction).",
+    "draftProgramTitle": "Generated: {{topic}}",
+    "form": {
+      "target": "Where to add the questions",
+      "newProgramOption": "➕ New exam — build from the topic",
+      "topic": "Topic",
+      "topicPlaceholder": "e.g. medical genetics; carbohydrate biochemistry; cardiac physiology",
+      "count": "How many questions",
+      "lang": "Language",
+      "difficulty": "Difficulty",
+      "sourceNote": "Origin note (optional)",
+      "sourceNotePlaceholder": "e.g. inspired by the open USMLE bank",
+      "reviewNote": "Generated questions always go through review before publishing — the model can get facts wrong.",
+      "submit": "Generate",
+      "submitBusy": "Generating…"
+    },
+    "difficulty": {
+      "mixed": "Mixed"
+    },
+    "stages": {
+      "starting": "Queuing the generation job…",
+      "generating": "The model is writing questions — this can take a few minutes…"
+    },
+    "notices": {
+      "done": "Generated questions: {{count}}. Review the drafts and move the ones you want to the bank.",
+      "partial": "Generated {{generated}} of {{requested}}: some batches failed. You can generate more into the same exam."
+    },
+    "errors": {
+      "noTopic": "Enter a topic to generate",
+      "badCount": "The number of questions must be a whole number above zero",
+      "failed": "Could not generate questions"
+    }
   }
 }
