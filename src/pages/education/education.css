@@ -1378,6 +1378,76 @@
   font-size: 13.5px;
 }
 
+/* ─── Остаток квоты тарифа ───────────────────────────────────
+ * Полоса над витриной: сколько вопросов ещё можно пройти. Тон
+ * информационный, а не тревожный — красным становится только при нуле,
+ * когда это уже не сообщение, а призыв к действию.
+ */
+.edu-quota {
+  border: 1px solid var(--edu-line);
+  border-radius: var(--edu-radius);
+  background: var(--edu-surface);
+  box-shadow: var(--edu-shadow);
+  padding: 16px 18px;
+  margin-bottom: 22px;
+}
+.edu-quota--out {
+  border-color: var(--edu-gold-soft);
+  background: rgba(216, 196, 140, 0.1);
+}
+
+.edu-quota-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.edu-quota-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--edu-ink-soft);
+}
+.edu-quota-value {
+  font-family: var(--edu-serif);
+  font-size: 20px;
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--edu-primary);
+}
+.edu-quota--out .edu-quota-value {
+  color: var(--edu-gold);
+}
+
+.edu-quota-track {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(27, 58, 92, 0.08);
+  overflow: hidden;
+}
+.edu-quota-fill {
+  height: 100%;
+  background: var(--edu-primary);
+  transition: width 0.3s ease;
+}
+.edu-quota--out .edu-quota-fill {
+  background: var(--edu-gold);
+}
+
+.edu-quota-note {
+  margin: 10px 0 0;
+  font-family: var(--edu-serif-text);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--edu-ink-soft);
+}
+
+.edu-quota-cta {
+  margin-top: 14px;
+}
+
 /* Панель фильтров списка тестов */
 .edu-filterbar {
   display: flex;
@@ -1476,4 +1546,18 @@
   .edu-stat:nth-child(n + 3) {
     border-top: 1px solid var(--edu-line);
   }
+}
+
+/* Переключатель «демо для гостей» в админке тестов */
+.edu-free-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+}
+.edu-free-toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--edu-primary);
+  cursor: pointer;
 }

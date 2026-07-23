@@ -66,6 +66,67 @@ export async function fetchReadiness(programId) {
   return data.readiness;
 }
 
+// ─── Квота тарифа ─────────────────────────────────────────────
+//
+// Сколько вопросов осталось в этом месяце. Гостю тот же ответ отдаёт
+// демо-контур, но лимит там разовый (20 вопросов, без периода), поэтому
+// запросы разные — см. GUEST ниже.
+
+/** Остаток квоты авторизованного пользователя. */
+export async function fetchQuota() {
+  const { data } = await axios.get(`${BASE}/quota`);
+  return data;
+}
+
+// ─── Демо-доступ без регистрации ──────────────────────────────
+//
+// Отдельный префикс, потому что основной контур закрыт авторизацией и
+// без сессии отдаёт 401. Гость опознаётся по сессионной куке, поэтому
+// withCredentials из общего инстанса здесь так же обязателен.
+
+const GUEST = `${BASE}/guest`;
+
+/** Витринные тесты, открытые без регистрации (ExamProgram.isFree). */
+export async function fetchGuestPrograms() {
+  const { data } = await axios.get(`${GUEST}/programs`);
+  return data.items ?? [];
+}
+
+export async function fetchGuestProgram(programId) {
+  const { data } = await axios.get(`${GUEST}/programs/${programId}`);
+  return data;
+}
+
+/** Остаток демо-квоты (20 вопросов, разово). */
+export async function fetchGuestQuota() {
+  const { data } = await axios.get(`${GUEST}/quota`);
+  return data;
+}
+
+export async function startGuestAttempt(payload) {
+  const { data } = await axios.post(`${GUEST}/attempts`, payload);
+  return data.attempt;
+}
+
+export async function fetchGuestAttempt(attemptId) {
+  const { data } = await axios.get(`${GUEST}/attempts/${attemptId}`);
+  return data.attempt;
+}
+
+export async function submitGuestAnswer(attemptId, payload) {
+  const { data } = await axios.post(
+    `${GUEST}/attempts/${attemptId}/answer`,
+    payload,
+  );
+  return data;
+}
+
+/** Завершает демо-попытку. Возвращает { attempt, quota }. */
+export async function finishGuestAttempt(attemptId) {
+  const { data } = await axios.post(`${GUEST}/attempts/${attemptId}/submit`);
+  return data;
+}
+
 // ─── Попытки ──────────────────────────────────────────────────
 
 export async function fetchAttempts(params = {}) {
@@ -379,4 +440,21 @@ export function normalizeUrl(raw) {
 /** Требуется ли повторный вход (сессия истекла). */
 export function isAuthError(err) {
   return err?.response?.status === 401;
+}
+
+/**
+ * Исчерпана ли квота тарифа.
+ *
+ * 402, а не 403: это не «нельзя», а «нельзя сейчас, но можно после
+ * апгрейда» — экран должен звать к действию, а не показывать ошибку.
+ * В details лежат цифры и подсказка, что предлагать: гостю регистрацию
+ * (upgrade: "register"), остальным аддон (upgrade: "exam_addon").
+ */
+export function isQuotaError(err) {
+  return err?.response?.status === 402;
+}
+
+/** Подробности исчерпанной квоты: { limit, used, upgrade, resetsAt, … }. */
+export function readQuotaDetails(err) {
+  return err?.response?.data?.details ?? null;
 }

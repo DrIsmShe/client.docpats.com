@@ -221,6 +221,36 @@ export default function AdminExamProgramsPage() {
     }
   }
 
+  // Витринность теста: единственный переключатель, открывающий тест
+  // гостям без регистрации (демо на 20 вопросов). Без него гостевая
+  // витрина пуста, поэтому ставим его рядом с рубрикой и блоками.
+  async function handleToggleFree(program, isFree) {
+    setBusyId(program._id);
+    setError(null);
+    setNotice(null);
+    try {
+      await updateProgram(program._id, { isFree });
+      setNotice(
+        isFree
+          ? t("adminPrograms.notices.freeOn", {
+              title: program.title,
+              defaultValue: `«${program.title}» открыт гостям без регистрации`,
+            })
+          : t("adminPrograms.notices.freeOff", {
+              title: program.title,
+              defaultValue: `«${program.title}» скрыт от гостей`,
+            }),
+      );
+      await load();
+    } catch (err) {
+      handleApiError(err, t("adminPrograms.errors.freeFailed", {
+        defaultValue: "Не удалось изменить доступ гостей",
+      }));
+    } finally {
+      setBusyId(null);
+    }
+  }
+
   async function handleSaveBlockSize(program) {
     const raw = (blockDraft[String(program._id)] ?? "").trim();
     let blockSize = null;
@@ -591,6 +621,29 @@ export default function AdminExamProgramsPage() {
                   >
                     {t("shared.actions.save")}
                   </button>
+                </span>
+              </label>
+
+              {/* Демо для гостей. Применимо только к опубликованному
+                  тесту: черновик гостю не покажут в любом случае. */}
+              <label className="edu-prog-setting">
+                <span>
+                  {t("adminPrograms.settings.freeLabel", {
+                    defaultValue: "Демо для гостей",
+                  })}
+                </span>
+                <span className="edu-free-toggle">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(program.isFree)}
+                    disabled={isBusy}
+                    onChange={(e) => handleToggleFree(program, e.target.checked)}
+                  />
+                  <span className="edu-hint" style={{ margin: 0 }}>
+                    {t("adminPrograms.settings.freeHint", {
+                      defaultValue: "20 вопросов без регистрации",
+                    })}
+                  </span>
                 </span>
               </label>
             </div>

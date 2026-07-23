@@ -289,7 +289,9 @@
       "category": "Kateqoriya",
       "noCategory": "— Kateqoriyasız —",
       "blockSizeLabel": "Bloklara böl, hər blokda",
-      "blockSizePlaceholder": "yox"
+      "blockSizePlaceholder": "yox",
+      "freeLabel": "Qonaqlar üçün demo",
+      "freeHint": "Qeydiyyatsız 20 sual"
     },
     "hints": {
       "noCategories": "Hələ kateqoriya yoxdur —",
@@ -304,7 +306,9 @@
       "blockSizeSet": "«{{title}}» testi hər biri {{count}} sualdan ibarət bloklara bölünür.",
       "blockSizeOff": "«{{title}}» üçün bloklara bölmə söndürüldü.",
       "hardDeleted": "«{{title}}» testi həmişəlik silindi (silinən sual: {{count}}).",
-      "hardDeletedWithAttempts": "«{{title}}» testi həmişəlik silindi (sual: {{items}}, cəhd: {{attempts}})."
+      "hardDeletedWithAttempts": "«{{title}}» testi həmişəlik silindi (sual: {{items}}, cəhd: {{attempts}}).",
+      "freeOn": "«{{title}}» qonaqlara açıqdır",
+      "freeOff": "«{{title}}» qonaqlardan gizlədildi"
     },
     "confirms": {
       "archive": "«{{title}}» testi arxivə salınsın? Suallar və tamamlanmış cəhdlər saxlanılacaq, lakin test kataloqdan və siyahıdan yox olacaq.",
@@ -322,7 +326,8 @@
       "deleteFailed": "Testi silmək alınmadı",
       "deleteForbidden": "Silmə qadağandır",
       "renameFailed": "Testin adını dəyişmək alınmadı",
-      "emptyTitle": "Ad boş ola bilməz"
+      "emptyTitle": "Ad boş ola bilməz",
+      "freeFailed": "Qonaq girişini dəyişmək mümkün olmadı"
     }
   },
   "adminReview": {
@@ -479,6 +484,16 @@
       "sections": "Bölmə",
       "questions": "Sual",
       "langs": "Dil"
+    },
+    "quota": {
+      "title": "Bu ay suallar",
+      "guestTitle": "Demo giriş",
+      "hint": "Kvota yalnız cavablandırılmış suallara görə hesablanır.",
+      "guestHint": "Qeydiyyatsız sınaq. Qeydiyyat ayda 250 sual açır.",
+      "out": "Kvota bitdi. Ayın əvvəlində və ya Exam Prep ilə dərhal yenilənir.",
+      "guestOut": "Demo bitdi. Qeydiyyatdan keçin — ayda 250 pulsuz sual.",
+      "upgradeCta": "Exam Prep qoşun",
+      "registerCta": "Pulsuz qeydiyyat"
     }
   },
   "program": {

@@ -289,7 +289,9 @@
       "category": "Category",
       "noCategory": "— No category —",
       "blockSizeLabel": "Split into blocks of",
-      "blockSizePlaceholder": "none"
+      "blockSizePlaceholder": "none",
+      "freeLabel": "Guest demo",
+      "freeHint": "20 questions without signing up"
     },
     "hints": {
       "noCategories": "There are no categories yet —",
@@ -304,7 +306,9 @@
       "blockSizeSet": "Exam “{{title}}” is split into blocks of {{count}} questions.",
       "blockSizeOff": "Block splitting for “{{title}}” is turned off.",
       "hardDeleted": "Exam “{{title}}” has been deleted permanently (questions deleted: {{count}}).",
-      "hardDeletedWithAttempts": "Exam “{{title}}” has been deleted permanently (questions: {{items}}, attempts: {{attempts}})."
+      "hardDeletedWithAttempts": "Exam “{{title}}” has been deleted permanently (questions: {{items}}, attempts: {{attempts}}).",
+      "freeOn": "{{title}} is now open to guests",
+      "freeOff": "{{title}} is hidden from guests"
     },
     "confirms": {
       "archive": "Archive the exam “{{title}}”? Questions and completed attempts will be kept, but the exam will disappear from the catalog and from this list.",
@@ -322,7 +326,8 @@
       "deleteFailed": "Could not delete the exam",
       "deleteForbidden": "Deletion is not allowed",
       "renameFailed": "Could not rename the exam",
-      "emptyTitle": "The title cannot be empty"
+      "emptyTitle": "The title cannot be empty",
+      "freeFailed": "Could not change guest access"
     }
   },
   "adminReview": {
@@ -479,6 +484,16 @@
       "sections": "Sections",
       "questions": "Questions",
       "langs": "Languages"
+    },
+    "quota": {
+      "title": "Questions this month",
+      "guestTitle": "Demo access",
+      "hint": "Only answered questions count against the quota, not opened tests.",
+      "guestHint": "Trial run without signing up. Registration unlocks 250 questions a month.",
+      "out": "Quota used up. It resets at the start of the month, or immediately with Exam Prep.",
+      "guestOut": "Demo finished. Sign up — 250 questions a month, free.",
+      "upgradeCta": "Get Exam Prep",
+      "registerCta": "Sign up free"
     }
   },
   "program": {

@@ -289,7 +289,9 @@
       "category": "Kategori",
       "noCategory": "— Kategorisiz —",
       "blockSizeLabel": "Bloklara böl, her blokta",
-      "blockSizePlaceholder": "yok"
+      "blockSizePlaceholder": "yok",
+      "freeLabel": "Misafir demosu",
+      "freeHint": "Kayıtsız 20 soru"
     },
     "hints": {
       "noCategories": "Henüz kategori yok —",
@@ -304,7 +306,9 @@
       "blockSizeSet": "“{{title}}” sınavı {{count}} soruluk bloklara bölünüyor.",
       "blockSizeOff": "“{{title}}” için bloklara bölme kapatıldı.",
       "hardDeleted": "“{{title}}” sınavı kalıcı olarak silindi (silinen soru: {{count}}).",
-      "hardDeletedWithAttempts": "“{{title}}” sınavı kalıcı olarak silindi (soru: {{items}}, deneme: {{attempts}})."
+      "hardDeletedWithAttempts": "“{{title}}” sınavı kalıcı olarak silindi (soru: {{items}}, deneme: {{attempts}}).",
+      "freeOn": "«{{title}}» misafirlere açıldı",
+      "freeOff": "«{{title}}» misafirlerden gizlendi"
     },
     "confirms": {
       "archive": "“{{title}}” sınavı arşive alınsın mı? Sorular ve tamamlanmış denemeler saklanır, ancak sınav katalogdan ve listeden kaybolur.",
@@ -322,7 +326,8 @@
       "deleteFailed": "Sınav silinemedi",
       "deleteForbidden": "Silme işlemine izin verilmiyor",
       "renameFailed": "Sınav yeniden adlandırılamadı",
-      "emptyTitle": "Ad boş olamaz"
+      "emptyTitle": "Ad boş olamaz",
+      "freeFailed": "Misafir erişimi değiştirilemedi"
     }
   },
   "adminReview": {
@@ -479,6 +484,16 @@
       "sections": "Bölüm",
       "questions": "Soru",
       "langs": "Dil"
+    },
+    "quota": {
+      "title": "Bu ayki sorular",
+      "guestTitle": "Demo erişim",
+      "hint": "Kota yalnızca cevaplanan sorulara göre hesaplanır.",
+      "guestHint": "Kayıt olmadan deneme. Kayıt ayda 250 soru açar.",
+      "out": "Kota doldu. Ay başında ya da Exam Prep ile hemen yenilenir.",
+      "guestOut": "Demo bitti. Kayıt olun — ayda 250 ücretsiz soru.",
+      "upgradeCta": "Exam Prep al",
+      "registerCta": "Ücretsiz kayıt ol"
     }
   },
   "program": {

@@ -18,6 +18,9 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   fetchPrograms,
   fetchCategories,
+  fetchQuota,
+  fetchGuestPrograms,
+  fetchGuestQuota,
   readApiError,
   isAuthError,
 } from "../../api/education";
@@ -79,6 +82,81 @@ function ProgramCard({ program, t }) {
   );
 }
 
+/**
+ * Полоса остатка квоты над витриной.
+ *
+ * Показываем именно остаток, а не «использовано»: человеку важно, сколько
+ * он ещё может пройти. Безлимиту полоса не нужна — тогда ничего не рисуем,
+ * чтобы не превращать преимущество тарифа в шум.
+ */
+function QuotaBar({ quota, isGuest, t }) {
+  if (!quota || quota.unlimited) return null;
+
+  const { limit, used } = quota;
+  const remaining = Math.max(0, limit - used);
+  const pct = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
+  const exhausted = remaining === 0;
+
+  return (
+    <div className={`edu-quota${exhausted ? " edu-quota--out" : ""}`}>
+      <div className="edu-quota-head">
+        <span className="edu-quota-title">
+          {isGuest
+            ? t("catalog.quota.guestTitle", { defaultValue: "Демо-доступ" })
+            : t("catalog.quota.title", {
+                defaultValue: "Вопросов в этом месяце",
+              })}
+        </span>
+        <span className="edu-quota-value">
+          {remaining} / {limit}
+        </span>
+      </div>
+
+      <div className="edu-quota-track">
+        <div className="edu-quota-fill" style={{ width: `${pct}%` }} />
+      </div>
+
+      <p className="edu-quota-note">
+        {exhausted
+          ? isGuest
+            ? t("catalog.quota.guestOut", {
+                defaultValue:
+                  "Демо пройдено. Зарегистрируйтесь — 250 вопросов в месяц бесплатно.",
+              })
+            : t("catalog.quota.out", {
+                defaultValue:
+                  "Квота исчерпана. Она обновится в начале месяца или сразу после подключения Exam Prep.",
+              })
+          : isGuest
+            ? t("catalog.quota.guestHint", {
+                defaultValue:
+                  "Пробный проход без регистрации. Регистрация открывает 250 вопросов в месяц.",
+              })
+            : t("catalog.quota.hint", {
+                defaultValue:
+                  "Расход считается по отвеченным вопросам, а не по открытым тестам.",
+              })}
+      </p>
+
+      {exhausted && (
+        {/* Маршрут регистрации в проекте — /registration (зона AuthLayout). */}
+        <Link
+          to={isGuest ? "/registration" : "/pricing"}
+          className="edu-btn edu-quota-cta"
+        >
+          {isGuest
+            ? t("catalog.quota.registerCta", {
+                defaultValue: "Зарегистрироваться бесплатно",
+              })
+            : t("catalog.quota.upgradeCta", {
+                defaultValue: "Подключить Exam Prep",
+              })}
+        </Link>
+      )}
+    </div>
+  );
+}
+
 export default function ExamCatalogPage() {
   const { t, i18n } = useTranslation("education");
   // Арабский разворачивает страницу: у зоны /education своего layout нет,
@@ -93,6 +171,10 @@ export default function ExamCatalogPage() {
   const [catFilter, setCatFilter] = useState(""); // "" = все разделы
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // Гость смотрит витрину без регистрации: тесты с isFree и 20 вопросов
+  // демо. Флаг влияет на баннер и на то, куда ведут карточки.
+  const [isGuest, setIsGuest] = useState(false);
+  const [quota, setQuota] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -101,18 +183,39 @@ export default function ExamCatalogPage() {
       setLoading(true);
       setError(null);
       try {
-        const [list, cats] = await Promise.all([
+        const [list, cats, q] = await Promise.all([
           fetchPrograms(),
           fetchCategories(),
+          // Квота не критична для витрины: без неё просто нет баннера.
+          fetchQuota().catch(() => null),
         ]);
         if (cancelled) return;
         setPrograms(list);
         setCategories(cats);
+        setQuota(q);
       } catch (err) {
         if (cancelled) return;
+
+        // 401 больше не повод уводить на /login: без регистрации человек
+        // видит витринные тесты и может пройти демо из 20 вопросов.
+        // Раньше гость упирался в форму входа, не увидев продукта вообще.
         if (isAuthError(err)) {
-          navigate("/login");
-          return;
+          try {
+            const [list, q] = await Promise.all([
+              fetchGuestPrograms(),
+              fetchGuestQuota().catch(() => null),
+            ]);
+            if (cancelled) return;
+            setIsGuest(true);
+            setPrograms(list);
+            setCategories([]); // рубрики гостю не нужны: тестов единицы
+            setQuota(q);
+            return;
+          } catch (guestErr) {
+            if (cancelled) return;
+            setError(readApiError(guestErr, t("catalog.errors.load")));
+            return;
+          }
         }
         setError(readApiError(err, t("catalog.errors.load")));
       } finally {
@@ -363,6 +466,8 @@ export default function ExamCatalogPage() {
       </header>
 
       {error && <div className="edu-error">{error}</div>}
+
+      <QuotaBar quota={quota} isGuest={isGuest} t={t} />
 
       {/* ─── Поиск и фильтры ─── */}
       <div className="edu-filterbar">

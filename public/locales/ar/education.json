@@ -289,7 +289,9 @@
       "category": "الفئة",
       "noCategory": "— بدون فئة —",
       "blockSizeLabel": "التقسيم إلى كتل من",
-      "blockSizePlaceholder": "بدون"
+      "blockSizePlaceholder": "بدون",
+      "freeLabel": "عرض تجريبي للزوار",
+      "freeHint": "20 سؤالاً بدون تسجيل"
     },
     "hints": {
       "noCategories": "لا توجد فئات بعد —",
@@ -304,7 +306,9 @@
       "blockSizeSet": "يُقسَّم الاختبار «{{title}}» إلى كتل من {{count}} سؤالًا.",
       "blockSizeOff": "تم إيقاف التقسيم إلى كتل للاختبار «{{title}}».",
       "hardDeleted": "تم حذف الاختبار «{{title}}» نهائيًا (الأسئلة المحذوفة: {{count}}).",
-      "hardDeletedWithAttempts": "تم حذف الاختبار «{{title}}» نهائيًا (الأسئلة: {{items}}، المحاولات: {{attempts}})."
+      "hardDeletedWithAttempts": "تم حذف الاختبار «{{title}}» نهائيًا (الأسئلة: {{items}}، المحاولات: {{attempts}}).",
+      "freeOn": "«{{title}}» متاح الآن للزوار",
+      "freeOff": "«{{title}}» مخفي عن الزوار"
     },
     "confirms": {
       "archive": "هل تريد أرشفة الاختبار «{{title}}»؟ ستبقى الأسئلة والمحاولات المنتهية محفوظة، لكن الاختبار سيختفي من الكتالوج ومن القائمة.",
@@ -322,7 +326,8 @@
       "deleteFailed": "تعذّر حذف الاختبار",
       "deleteForbidden": "الحذف غير مسموح",
       "renameFailed": "تعذّرت إعادة تسمية الاختبار",
-      "emptyTitle": "لا يمكن أن يكون الاسم فارغًا"
+      "emptyTitle": "لا يمكن أن يكون الاسم فارغًا",
+      "freeFailed": "تعذّر تغيير وصول الزوار"
     }
   },
   "adminReview": {
@@ -479,6 +484,16 @@
       "sections": "أقسام",
       "questions": "أسئلة",
       "langs": "لغات"
+    },
+    "quota": {
+      "title": "الأسئلة هذا الشهر",
+      "guestTitle": "وصول تجريبي",
+      "hint": "تُحتسب الحصة على الأسئلة المُجابة فقط.",
+      "guestHint": "تجربة بدون تسجيل. التسجيل يفتح 250 سؤالاً شهرياً.",
+      "out": "انتهت الحصة. تتجدد مع بداية الشهر أو فوراً مع Exam Prep.",
+      "guestOut": "انتهى العرض التجريبي. سجّل — 250 سؤالاً شهرياً مجاناً.",
+      "upgradeCta": "تفعيل Exam Prep",
+      "registerCta": "تسجيل مجاني"
     }
   },
   "program": {
