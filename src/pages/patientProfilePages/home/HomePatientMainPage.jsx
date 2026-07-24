@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import OnboardingChecklist from "../../../components/shared/OnboardingChecklist";
 import PhoneInput from "react-phone-input-2";
 import { useTranslation } from "react-i18next";
 
@@ -1631,8 +1630,6 @@ export default function HomePatientMainPage() {
   return (
     <div className="pp">
       <style>{S}</style>
-
-      <OnboardingChecklist />
 
       {/* ── MODAL ── */}
       {isPatientInClinic === false && authLoaded && (
