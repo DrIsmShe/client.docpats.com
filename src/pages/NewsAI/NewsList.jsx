@@ -532,8 +532,36 @@ export default function NewsList() {
     [appliedSearch, appliedCategory].filter(Boolean).length +
     (appliedSort !== "date_desc" ? 1 : 0);
 
-  const heroItem = feed[0] || null;
-  const gridItems = feed.slice(1);
+  // Ключ материала, устойчивый между перерисовками (тип + _id — тот же,
+  // что и в списке карточек).
+  const itemKey = (it) => (it ? `${it._sourceType}-${it._id}` : null);
+
+  // Первая крупная карточка — СЛУЧАЙНЫЙ материал из всей ленты. Выбор
+  // фиксируется в heroKey и обновляется при каждой загрузке страницы.
+  const [heroKey, setHeroKey] = useState(null);
+
+  // Новый запрос (вкладка, поиск, категория, сортировка, язык) — сбрасываем
+  // выбор, чтобы для нового набора выпал новый случайный материал. При
+  // «Показать ещё» запрос не меняется — карточка остаётся на месте, а не
+  // перепрыгивает на другую при подгрузке.
+  useEffect(() => {
+    setHeroKey(null);
+  }, [type, appliedSearch, appliedCategory, appliedSort, locale]);
+
+  // Как только лента догрузилась — фиксируем случайный элемент. Ждём !loading,
+  // чтобы не выбрать из старого списка, пока едет новый.
+  useEffect(() => {
+    if (heroKey == null && !loading && feed.length > 0) {
+      const pick = feed[Math.floor(Math.random() * feed.length)];
+      setHeroKey(itemKey(pick));
+    }
+  }, [feed, loading, heroKey]);
+
+  // Найденный по ключу материал; запасной вариант — первый в ленте (на
+  // случай, если выбранный уже подрезали фильтром).
+  const heroItem =
+    feed.find((it) => itemKey(it) === heroKey) || feed[0] || null;
+  const gridItems = feed.filter((it) => itemKey(it) !== itemKey(heroItem));
   const heroTitle = appliedSearch ? (
     <>
       {" "}
@@ -1396,7 +1424,7 @@ const CSS = `
 .nl-btn-member{background:rgba(255,255,255,.12);color:white;border:1.5px solid rgba(255,255,255,.25);font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:8px 16px;cursor:pointer;white-space:nowrap;text-decoration:none;border-radius:8px;transition:all .15s;backdrop-filter:blur(8px)}
 .nl-root[dir=rtl] .nl-btn-member{letter-spacing:0}
 .nl-btn-member:hover{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
-.nl-hero{background:linear-gradient(150deg,#0c4a6e 0%,#0f766e 60%,#065f46 100%);padding:44px 0 72px;position:relative;overflow:hidden}
+.nl-hero{background: linear-gradient(150deg, #06324b 0%, #004bb6 60%, #065f46 100%);padding:44px 0 72px;position:relative;overflow:hidden}
 .nl-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 700px 400px at 85% 40%,rgba(20,184,166,.18) 0%,transparent 65%),radial-gradient(ellipse 300px 500px at 5% 110%,rgba(6,95,70,.5) 0%,transparent 60%);pointer-events:none}
 .nl-hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:60px;background:var(--cream);clip-path:ellipse(55% 100% at 50% 100%)}
 .nl-hero-inner{padding:0 40px;position:relative;z-index:1}
