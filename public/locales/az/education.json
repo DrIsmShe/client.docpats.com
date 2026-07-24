@@ -179,7 +179,8 @@
     "jobs": {
       "title": "Əvvəlki yükləmələr",
       "noFile": "fayl yoxdur",
-      "meta": "tanınıb {{detected}} · köçürülüb {{imported}} · {{date}}"
+      "meta": "tanınıb {{detected}} · köçürülüb {{imported}} · {{date}}",
+      "extractingProgress": "tanınır: hissə {{current}} / {{total}}"
     },
     "drafts": {
       "title": "Tanınmış suallar: {{count}}",

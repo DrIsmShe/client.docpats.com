@@ -179,7 +179,8 @@
     "jobs": {
       "title": "Previous uploads",
       "noFile": "no file",
-      "meta": "extracted {{detected}} · moved {{imported}} · {{date}}"
+      "meta": "extracted {{detected}} · moved {{imported}} · {{date}}",
+      "extractingProgress": "recognizing: part {{current}} of {{total}}"
     },
     "drafts": {
       "title": "Questions extracted: {{count}}",

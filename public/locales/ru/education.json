@@ -179,7 +179,8 @@
     "jobs": {
       "title": "Прошлые загрузки",
       "noFile": "без файла",
-      "meta": "распознано {{detected}} · перенесено {{imported}} · {{date}}"
+      "meta": "распознано {{detected}} · перенесено {{imported}} · {{date}}",
+      "extractingProgress": "распознаётся: часть {{current}} из {{total}}"
     },
     "drafts": {
       "title": "Распознано вопросов: {{count}}",

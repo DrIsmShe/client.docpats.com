@@ -166,6 +166,27 @@ export default function AdminExamImportPage() {
     })();
   }, [handleApiError, t]);
 
+  // Пока среди заданий есть активное (распознаётся или ждёт очереди),
+  // сами обновляем список — иначе прогресс замирает: распознавание идёт
+  // фоном НА СЕРВЕРЕ и от этой вкладки не зависит, а фронт про него не
+  // спрашивает. Так прогресс виден и после перезагрузки страницы, и когда
+  // задание запустили из другой вкладки. Останавливаемся, как только
+  // активных не остаётся.
+  useEffect(() => {
+    const active = jobs.some(
+      (j) => j.status === "extracting" || j.status === "pending",
+    );
+    if (!active) return undefined;
+    const timer = setInterval(async () => {
+      try {
+        setJobs(await fetchImportJobs({ limit: 30 }));
+      } catch {
+        // Сетевой сбой одного опроса не важен: попробуем на следующем тике.
+      }
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [jobs]);
+
   const fileExtractor = useMemo(
     () => extractors.find((e) => e.name === FILE_EXTRACTOR),
     [extractors],
@@ -197,7 +218,11 @@ export default function AdminExamImportPage() {
   // остаётся в «Прошлых загрузках».
   async function waitForExtraction(jobId) {
     const POLL_MS = 4000;
-    const LIMIT_MS = 20 * 60 * 1000;
+    // Час: большой плотный сборник режется на полтора-два десятка частей,
+    // и весь проход занимает под час. 20 минут обрывали индикатор на
+    // середине — тогда казалось, что процесс встал. Даже если этот опрос
+    // всё же выйдет по времени, список ниже обновляется своим циклом.
+    const LIMIT_MS = 60 * 60 * 1000;
     const startedAt = Date.now();
     let lastKnown = null;
 
@@ -970,9 +995,19 @@ export default function AdminExamImportPage() {
                   {j.file?.originalName ?? t("adminImport.jobs.noFile")}{" "}
                   <span style={{ color: "#8b9aab" }}>
                     ·{" "}
-                    {t(`shared.importStatuses.${j.status}`, {
-                      defaultValue: j.status,
-                    })}
+                    {/* Идущему заданию показываем прогресс по частям, а не
+                        просто «распознаётся»: на большом файле это минуты, и
+                        «часть 7 из 16» отвечает на вопрос «оно вообще
+                        движется?» — которого статичный статус не снимает. */}
+                    {j.status === "extracting" &&
+                    (j.progress?.total ?? 0) > 1
+                      ? t("adminImport.jobs.extractingProgress", {
+                          current: j.progress?.current ?? 0,
+                          total: j.progress?.total,
+                        })
+                      : t(`shared.importStatuses.${j.status}`, {
+                          defaultValue: j.status,
+                        })}
                   </span>
                 </div>
                 <div className="edu-list-item-meta">

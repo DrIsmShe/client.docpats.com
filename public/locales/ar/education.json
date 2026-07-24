@@ -179,7 +179,8 @@
     "jobs": {
       "title": "عمليات الرفع السابقة",
       "noFile": "بدون ملف",
-      "meta": "مستخرَجة {{detected}} · منقولة {{imported}} · {{date}}"
+      "meta": "مستخرَجة {{detected}} · منقولة {{imported}} · {{date}}",
+      "extractingProgress": "يُتعرّف: الجزء {{current}} من {{total}}"
     },
     "drafts": {
       "title": "الأسئلة المستخرجة: {{count}}",

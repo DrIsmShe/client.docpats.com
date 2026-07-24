@@ -179,7 +179,8 @@
     "jobs": {
       "title": "Önceki yüklemeler",
       "noFile": "dosya yok",
-      "meta": "çıkarılan {{detected}} · aktarılan {{imported}} · {{date}}"
+      "meta": "çıkarılan {{detected}} · aktarılan {{imported}} · {{date}}",
+      "extractingProgress": "tanınıyor: bölüm {{current}} / {{total}}"
     },
     "drafts": {
       "title": "Çıkarılan soru sayısı: {{count}}",
