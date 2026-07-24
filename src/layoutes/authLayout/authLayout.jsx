@@ -44,7 +44,6 @@ const STYLES = `
     font-size: 15px;
     line-height: 1.6;
     overflow-x: hidden;
-    max-width: 100vw;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -1170,41 +1169,41 @@ export default function AuthLayout() {
                   {/* Подготовка к экзаменам — раздел только для врачей: промо-
                       карточку показываем лишь им (гостю и пациенту закрыто). */}
                   {["doctor", "admin", "superadmin"].includes(userRole) && (
-                  <motion.div variants={item} style={{ marginBottom: 12 }}>
-                    <Link
-                      to="/education"
-                      className="dp-news-card"
-                      style={{ textDecoration: "none" }}
-                    >
-                      <div
-                        className="dp-news-card-accent"
-                        style={{
-                          background:
-                            "linear-gradient(180deg, #d8c48c, #a2802f)",
-                        }}
-                      />
-                      <div className="dp-news-card-body">
-                        <div className="dp-news-card-icon">🎓</div>
-                        <div className="dp-news-card-copy">
-                          <div className="dp-news-card-tag">
-                            {"DocPats · "}
-                            {t("examPrepTag", {
-                              defaultValue: "20 вопросов без регистрации",
-                            })}
+                    <motion.div variants={item} style={{ marginBottom: 12 }}>
+                      <Link
+                        to="/education"
+                        className="dp-news-card"
+                        style={{ textDecoration: "none" }}
+                      >
+                        <div
+                          className="dp-news-card-accent"
+                          style={{
+                            background:
+                              "linear-gradient(180deg, #d8c48c, #a2802f)",
+                          }}
+                        />
+                        <div className="dp-news-card-body">
+                          <div className="dp-news-card-icon">🎓</div>
+                          <div className="dp-news-card-copy">
+                            <div className="dp-news-card-tag">
+                              {"DocPats · "}
+                              {t("examPrepTag", {
+                                defaultValue: "20 вопросов без регистрации",
+                              })}
+                            </div>
+                            <div className="dp-news-card-text">
+                              {t("examPrepText", {
+                                defaultValue:
+                                  "Подготовка к экзаменам: тесты с разбором ошибок",
+                              })}
+                            </div>
                           </div>
-                          <div className="dp-news-card-text">
-                            {t("examPrepText", {
-                              defaultValue:
-                                "Подготовка к экзаменам: тесты с разбором ошибок",
-                            })}
-                          </div>
+                          <span className="dp-news-card-arrow">
+                            <Arrow />
+                          </span>
                         </div>
-                        <span className="dp-news-card-arrow">
-                          <Arrow />
-                        </span>
-                      </div>
-                    </Link>
-                  </motion.div>
+                      </Link>
+                    </motion.div>
                   )}
 
                   <motion.div variants={item} style={{ marginBottom: 12 }}>
