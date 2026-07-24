@@ -172,7 +172,7 @@
       "file": "File",
       "fileSize": "· {{size}} MB",
       "chooseAnother": "Choose another",
-      "dropzoneHint": "PDF, Word (.docx), text (TXT, MD, CSV, HTML, RTF) or an image — up to 25 MB",
+      "dropzoneHint": "PDF, Word (.doc, .docx), text (TXT, MD, CSV, HTML, RTF) or an image — up to 25 MB",
       "submit": "Upload and extract",
       "processing": "Processing…"
     },

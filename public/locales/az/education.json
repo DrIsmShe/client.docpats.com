@@ -172,7 +172,7 @@
       "file": "Fayl",
       "fileSize": "· {{size}} MB",
       "chooseAnother": "Başqasını seç",
-      "dropzoneHint": "PDF, Word (.docx), mətn (TXT, MD, CSV, HTML, RTF) və ya şəkil — 25 MB-a qədər",
+      "dropzoneHint": "PDF, Word (.doc, .docx), mətn (TXT, MD, CSV, HTML, RTF) və ya şəkil — 25 MB-a qədər",
       "submit": "Yüklə və tanı",
       "processing": "Emal olunur…"
     },

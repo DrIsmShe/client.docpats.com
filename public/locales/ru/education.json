@@ -172,7 +172,7 @@
       "file": "Файл",
       "fileSize": "· {{size}} МБ",
       "chooseAnother": "Выбрать другой",
-      "dropzoneHint": "PDF, Word (.docx), текст (TXT, MD, CSV, HTML, RTF) или изображение — до 25 МБ",
+      "dropzoneHint": "PDF, Word (.doc, .docx), текст (TXT, MD, CSV, HTML, RTF) или изображение — до 25 МБ",
       "submit": "Загрузить и распознать",
       "processing": "Обрабатываем…"
     },

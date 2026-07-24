@@ -172,7 +172,7 @@
       "file": "Dosya",
       "fileSize": "· {{size}} MB",
       "chooseAnother": "Başkasını seç",
-      "dropzoneHint": "PDF, Word (.docx), metin (TXT, MD, CSV, HTML, RTF) veya görsel — en fazla 25 MB",
+      "dropzoneHint": "PDF, Word (.doc, .docx), metin (TXT, MD, CSV, HTML, RTF) veya görsel — en fazla 25 MB",
       "submit": "Yükle ve çıkar",
       "processing": "İşleniyor…"
     },

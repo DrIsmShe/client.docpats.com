@@ -172,7 +172,7 @@
       "file": "الملف",
       "fileSize": "· {{size}} ميغابايت",
       "chooseAnother": "اختيار ملف آخر",
-      "dropzoneHint": "PDF أو Word‏ (.docx) أو نص (TXT, MD, CSV, HTML, RTF) أو صورة — حتى 25 ميغابايت",
+      "dropzoneHint": "PDF أو Word‏ (.doc, .docx) أو نص (TXT, MD, CSV, HTML, RTF) أو صورة — حتى 25 ميغابايت",
       "submit": "رفع واستخراج",
       "processing": "جارٍ المعالجة…"
     },

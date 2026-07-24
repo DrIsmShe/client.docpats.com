@@ -79,6 +79,7 @@ const NEW_PROGRAM = "__new__";
 const ACCEPTED_EXTENSIONS = [
   ".pdf",
   ".docx",
+  ".doc",
   ".txt",
   ".md",
   ".csv",
