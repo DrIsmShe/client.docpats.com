@@ -62,7 +62,8 @@
     },
     "doctor_lite": {
       "name": "Базовый",
-      "desc": "Половина лимитов тарифа Start за половину цены"
+      "desc": "Треть лимитов тарифа Start за $3 в месяц",
+      "trialNote": "Первые 6 месяцев — бесплатно как Doctor Growth"
     },
     "doctor_basic": {
       "name": "Start",

@@ -62,7 +62,8 @@
     },
     "doctor_lite": {
       "name": "أساسي",
-      "desc": "نصف حدود باقة Start بنصف السعر"
+      "desc": "ثلث حدود باقة Start مقابل 3 دولار شهرياً",
+      "trialNote": "أول 6 أشهر — مجاناً بمستوى Doctor Growth"
     },
     "doctor_basic": {
       "name": "Start",

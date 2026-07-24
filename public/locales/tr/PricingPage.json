@@ -62,7 +62,8 @@
     },
     "doctor_lite": {
       "name": "Temel",
-      "desc": "Start planının limitlerinin yarısı, yarı fiyatına"
+      "desc": "Start planının limitlerinin üçte biri, ayda $3",
+      "trialNote": "İlk 6 ay — Doctor Growth seviyesinde ücretsiz"
     },
     "doctor_basic": {
       "name": "Start",

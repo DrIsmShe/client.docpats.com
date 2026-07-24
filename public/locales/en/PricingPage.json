@@ -62,7 +62,8 @@
     },
     "doctor_lite": {
       "name": "Basic",
-      "desc": "Half of the Start plan's limits at half the price"
+      "desc": "One third of the Start plan's limits for $3 a month",
+      "trialNote": "First 6 months — free, equivalent to Doctor Growth"
     },
     "doctor_basic": {
       "name": "Start",
