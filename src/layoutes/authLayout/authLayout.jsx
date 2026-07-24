@@ -1063,12 +1063,13 @@ export default function AuthLayout() {
             {/* Right */}
             {/* Right */}
             <div className="dp-nav-right">
-              {/* Подготовка к экзаменам открыта без регистрации: каталог
-                  виден целиком, гостю доступны 20 вопросов на пробу.
-                  Поэтому ссылка стоит до кнопки входа, а не за ней. */}
-              <Link to="/education" className="dp-nav-link">
-                {t("nav.examPrep", { defaultValue: "Тесты" })}
-              </Link>
+              {/* Подготовка к экзаменам — раздел только для врачей, поэтому
+                  ссылку показываем лишь им (гостю и пациенту раздел закрыт). */}
+              {["doctor", "admin", "superadmin"].includes(userRole) && (
+                <Link to="/education" className="dp-nav-link">
+                  {t("nav.examPrep", { defaultValue: "Тесты" })}
+                </Link>
+              )}
               <LanguageSwitcher />
               {isAuthenticated ? (
                 <a
@@ -1166,9 +1167,9 @@ export default function AuthLayout() {
                       </span>
                     </button>
                   </motion.div>
-                  {/* Подготовка к экзаменам. Стоит первой в ряду промо-
-                      карточек: это единственный раздел, который можно
-                      попробовать целиком и без регистрации. */}
+                  {/* Подготовка к экзаменам — раздел только для врачей: промо-
+                      карточку показываем лишь им (гостю и пациенту закрыто). */}
+                  {["doctor", "admin", "superadmin"].includes(userRole) && (
                   <motion.div variants={item} style={{ marginBottom: 12 }}>
                     <Link
                       to="/education"
@@ -1204,6 +1205,7 @@ export default function AuthLayout() {
                       </div>
                     </Link>
                   </motion.div>
+                  )}
 
                   <motion.div variants={item} style={{ marginBottom: 12 }}>
                     <Link
