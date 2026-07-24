@@ -391,6 +391,15 @@ export async function deleteImportJob(jobId) {
 }
 
 /**
+ * Останавливает идущее распознавание. Задание не удаляется — помечается
+ * cancelled, и то, что успело распознаться, сохраняется в черновиках.
+ */
+export async function cancelImportJob(jobId) {
+  const { data } = await axios.post(`${BASE}/import/jobs/${jobId}/cancel`);
+  return data; // { cancelled: true, id }
+}
+
+/**
  * Запускает генерацию вопросов моделью по теме. Возвращает задание сразу
  * (202), генерация идёт в фоне — следить за ней опросом fetchImportJob,
  * как за распознаванием файла. Результат ложится в те же черновики.

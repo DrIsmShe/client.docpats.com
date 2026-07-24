@@ -45,7 +45,8 @@
       "extracting": "Çıkarılıyor",
       "extracted": "Çıkarıldı",
       "imported": "Bankaya aktarıldı",
-      "failed": "Hata"
+      "failed": "Hata",
+      "cancelled": "Durduruldu"
     },
     "actions": {
       "back": "Geri",
@@ -180,7 +181,8 @@
       "title": "Önceki yüklemeler",
       "noFile": "dosya yok",
       "meta": "çıkarılan {{detected}} · aktarılan {{imported}} · {{date}}",
-      "extractingProgress": "tanınıyor: bölüm {{current}} / {{total}}"
+      "extractingProgress": "tanınıyor: bölüm {{current}} / {{total}}",
+      "cancel": "Durdur"
     },
     "drafts": {
       "title": "Çıkarılan soru sayısı: {{count}}",
@@ -210,7 +212,8 @@
       "imported": "Bankaya aktarıldı: {{count}}. Sorular taslak olarak oluşturuldu ve incelemeyi bekliyor.",
       "importedWithSkipped": "Bankaya aktarıldı: {{count}}. Sorular taslak olarak oluşturuldu ve incelemeyi bekliyor. Atlanan {{skipped}}: {{list}}",
       "jobDeleted": "Yükleme listeden silindi.",
-      "partialExtraction": "Her şey çıkarılamadı: {{total}} bölümden {{failed}} tanesi başarısız oldu (metin çok yoğun). Kalanını her zamanki gibi aktarın, atlanan sayfaları aynı sınava ayrı dosya olarak yükleyin."
+      "partialExtraction": "Her şey çıkarılamadı: {{total}} bölümden {{failed}} tanesi başarısız oldu (metin çok yoğun). Kalanını her zamanki gibi aktarın, atlanan sayfaları aynı sınava ayrı dosya olarak yükleyin.",
+      "jobCancelled": "Tanıma durduruldu."
     },
     "errors": {
       "loadPage": "Sayfa yüklenemedi",
@@ -225,11 +228,13 @@
       "setCorrectKey": "Cevap işaretlenemedi",
       "selectAtLeastOne": "En az bir soru seçin",
       "importDrafts": "Sorular aktarılamadı",
-      "deleteJob": "Yükleme silinemedi"
+      "deleteJob": "Yükleme silinemedi",
+      "cancelJob": "Tanıma durdurulamadı"
     },
     "confirms": {
       "deleteJob": "“{{name}}” yüklemesi listeden silinsin mi? Bu işin çıkarılan taslakları kaybolur.",
-      "deleteJobImported": "“{{name}}” yüklemesi listeden silinsin mi? Bankaya aktarılan soru sayısı: {{count}} — onlar kalır, yalnızca çıkarım kaydı silinir."
+      "deleteJobImported": "“{{name}}” yüklemesi listeden silinsin mi? Bankaya aktarılan soru sayısı: {{count}} — onlar kalır, yalnızca çıkarım kaydı silinir.",
+      "cancelJob": "Tanıma durdurulsun mu? Tanınan kısım korunur, kalanı yeniden başlatılmalı."
     }
   },
   "adminPrograms": {

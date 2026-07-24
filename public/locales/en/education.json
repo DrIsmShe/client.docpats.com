@@ -45,7 +45,8 @@
       "extracting": "Extracting",
       "extracted": "Extracted",
       "imported": "Moved to the bank",
-      "failed": "Failed"
+      "failed": "Failed",
+      "cancelled": "Stopped"
     },
     "actions": {
       "back": "Back",
@@ -180,7 +181,8 @@
       "title": "Previous uploads",
       "noFile": "no file",
       "meta": "extracted {{detected}} · moved {{imported}} · {{date}}",
-      "extractingProgress": "recognizing: part {{current}} of {{total}}"
+      "extractingProgress": "recognizing: part {{current}} of {{total}}",
+      "cancel": "Stop"
     },
     "drafts": {
       "title": "Questions extracted: {{count}}",
@@ -210,7 +212,8 @@
       "imported": "Moved to the bank: {{count}}. The questions were created as drafts and are waiting for review.",
       "importedWithSkipped": "Moved to the bank: {{count}}. The questions were created as drafts and are waiting for review. Skipped {{skipped}}: {{list}}",
       "jobDeleted": "The upload was removed from the list.",
-      "partialExtraction": "Not everything was extracted: {{failed}} of {{total}} parts failed (too dense). Move the rest as usual, and upload the skipped pages as a separate file into the same exam."
+      "partialExtraction": "Not everything was extracted: {{failed}} of {{total}} parts failed (too dense). Move the rest as usual, and upload the skipped pages as a separate file into the same exam.",
+      "jobCancelled": "Recognition stopped."
     },
     "errors": {
       "loadPage": "Could not load the page",
@@ -225,11 +228,13 @@
       "setCorrectKey": "Could not set the correct answer",
       "selectAtLeastOne": "Select at least one question",
       "importDrafts": "Could not move the questions",
-      "deleteJob": "Could not delete the upload"
+      "deleteJob": "Could not delete the upload",
+      "cancelJob": "Could not stop recognition"
     },
     "confirms": {
       "deleteJob": "Delete the upload “{{name}}” from the list? The drafts extracted by this job will be lost.",
-      "deleteJobImported": "Delete the upload “{{name}}” from the list? Questions already moved to the bank: {{count}} — they stay, only the extraction record disappears."
+      "deleteJobImported": "Delete the upload “{{name}}” from the list? Questions already moved to the bank: {{count}} — they stay, only the extraction record disappears.",
+      "cancelJob": "Stop recognition? What is already recognized will be kept; the rest must be rerun."
     }
   },
   "adminPrograms": {

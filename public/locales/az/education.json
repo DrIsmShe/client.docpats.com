@@ -45,7 +45,8 @@
       "extracting": "Tanınır",
       "extracted": "Tanınıb",
       "imported": "Banka köçürülüb",
-      "failed": "Xəta"
+      "failed": "Xəta",
+      "cancelled": "Dayandırıldı"
     },
     "actions": {
       "back": "Geri",
@@ -180,7 +181,8 @@
       "title": "Əvvəlki yükləmələr",
       "noFile": "fayl yoxdur",
       "meta": "tanınıb {{detected}} · köçürülüb {{imported}} · {{date}}",
-      "extractingProgress": "tanınır: hissə {{current}} / {{total}}"
+      "extractingProgress": "tanınır: hissə {{current}} / {{total}}",
+      "cancel": "Dayandır"
     },
     "drafts": {
       "title": "Tanınmış suallar: {{count}}",
@@ -210,7 +212,8 @@
       "imported": "Banka köçürülüb: {{count}}. Suallar qaralama kimi yaradılıb və baxış gözləyir.",
       "importedWithSkipped": "Banka köçürülüb: {{count}}. Suallar qaralama kimi yaradılıb və baxış gözləyir. Buraxılıb {{skipped}}: {{list}}",
       "jobDeleted": "Yükləmə siyahıdan silindi.",
-      "partialExtraction": "Hər şey tanınmadı: {{total}} hissədən {{failed}}-i alınmadı (mətn çox sıxdır). Qalanını adi qaydada köçürün, buraxılan səhifələri isə həmin testə ayrıca fayl kimi yükləyin."
+      "partialExtraction": "Hər şey tanınmadı: {{total}} hissədən {{failed}}-i alınmadı (mətn çox sıxdır). Qalanını adi qaydada köçürün, buraxılan səhifələri isə həmin testə ayrıca fayl kimi yükləyin.",
+      "jobCancelled": "Tanınma dayandırıldı."
     },
     "errors": {
       "loadPage": "Səhifəni yükləmək mümkün olmadı",
@@ -225,11 +228,13 @@
       "setCorrectKey": "Cavabı təyin etmək mümkün olmadı",
       "selectAtLeastOne": "Ən azı bir sual seçin",
       "importDrafts": "Sualları köçürmək mümkün olmadı",
-      "deleteJob": "Yükləməni silmək mümkün olmadı"
+      "deleteJob": "Yükləməni silmək mümkün olmadı",
+      "cancelJob": "Tanınmanı dayandırmaq mümkün olmadı"
     },
     "confirms": {
       "deleteJob": "«{{name}}» yükləməsi siyahıdan silinsin? Bu tapşırığın tanınmış qaralamaları itəcək.",
-      "deleteJobImported": "«{{name}}» yükləməsi siyahıdan silinsin? Ondan banka artıq köçürülüb: {{count}} sual — onlar qalır, yalnız tanıma qeydi itir."
+      "deleteJobImported": "«{{name}}» yükləməsi siyahıdan silinsin? Ondan banka artıq köçürülüb: {{count}} sual — onlar qalır, yalnız tanıma qeydi itir.",
+      "cancelJob": "Tanınmanı dayandırım? Tanınmış hissə saxlanılacaq, qalanını yenidən başlatmaq lazım olacaq."
     }
   },
   "adminPrograms": {

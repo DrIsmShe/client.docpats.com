@@ -21,6 +21,7 @@ import {
   fetchImportJobs,
   fetchImportJob,
   deleteImportJob,
+  cancelImportJob,
   createProgram,
   archiveProgram,
   createImportJob,
@@ -489,6 +490,38 @@ export default function AdminExamImportPage() {
   // Уборка списка загрузок. Если из задания уже переносили вопросы в банк,
   // предупреждаем отдельно: сами вопросы останутся, исчезнет только разбор,
   // по которому видно, откуда они взялись.
+  async function handleCancelJob(target) {
+    if (
+      !window.confirm(
+        t("adminImport.confirms.cancelJob", {
+          name: target.file?.originalName ?? t("adminImport.jobs.noFile"),
+          defaultValue:
+            "Остановить распознавание? Что успело распознаться — сохранится, остальное придётся запускать заново.",
+        }),
+      )
+    ) {
+      return;
+    }
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      await cancelImportJob(target._id);
+      setNotice(
+        t("adminImport.notices.jobCancelled", {
+          defaultValue: "Распознавание остановлено.",
+        }),
+      );
+      setJobs(await fetchImportJobs({ limit: 30 }));
+    } catch (err) {
+      handleApiError(err, t("adminImport.errors.cancelJob", {
+        defaultValue: "Не удалось остановить распознавание",
+      }));
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function handleDeleteJob(target) {
     const imported = target.stats?.imported ?? 0;
     const question = imported
@@ -1018,9 +1051,20 @@ export default function AdminExamImportPage() {
                   })}
                 </div>
               </button>
-              {/* Пока идёт распознавание, удалять нечего и опасно: бэкенд
-                  такое задание не отдаст (409), поэтому и кнопку прячем. */}
-              {j.status !== "extracting" && (
+              {/* Идущему заданию — «Прекратить» (удалить его нельзя, пока
+                  распознаётся), остальным — «Удалить». Так у оператора
+                  всегда есть выход: передумал — остановил. */}
+              {j.status === "extracting" || j.status === "pending" ? (
+                <button
+                  type="button"
+                  className="edu-btn edu-btn--danger"
+                  style={{ padding: "6px 12px", fontSize: 13, flexShrink: 0 }}
+                  disabled={busy}
+                  onClick={() => handleCancelJob(j)}
+                >
+                  {t("adminImport.jobs.cancel", { defaultValue: "Прекратить" })}
+                </button>
+              ) : (
                 <button
                   type="button"
                   className="edu-btn edu-btn--danger"
