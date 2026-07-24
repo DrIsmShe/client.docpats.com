@@ -159,6 +159,7 @@
   "clinicPerk2": "Əməkdaş rolları və hüquqları",
   "clinicPerk3": "Cədvəl və qəbullar",
   "clinicPerk4": "Məlumat girişinin auditi",
-  "examPrepTag": "qeydiyyatsız 20 sual",
-  "examPrepText": "İmtahana hazırlıq: səhvlərin təhlili ilə testlər"
+  "examPrepTag": "Testlər və imtahanlar · yalnız həkimlər üçün",
+  "examPrepText": "İmtahana hazırlıq: səhvlərin təhlili ilə testlər və imtahanlar",
+  "examPrepDoctorsOnly": "İmtahana hazırlıq bölməsi yalnız həkimlər üçündür. Zəhmət olmasa həkim kimi daxil olun."
 }

@@ -159,6 +159,7 @@
   "clinicPerk2": "Staff roles and permissions",
   "clinicPerk3": "Scheduling and appointments",
   "clinicPerk4": "Data access audit",
-  "examPrepTag": "20 questions, no sign-up",
-  "examPrepText": "Exam prep: practice tests with answer review"
+  "examPrepTag": "Tests & exams · doctors only",
+  "examPrepText": "Exam prep: tests and exams with answer explanations",
+  "examPrepDoctorsOnly": "Exam prep is available to doctors only. Please sign in as a doctor."
 }

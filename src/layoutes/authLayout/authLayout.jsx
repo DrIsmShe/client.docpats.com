@@ -995,6 +995,17 @@ export default function AuthLayout() {
   );
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState("");
+  // Карточка «Подготовка к экзаменам» видна всем (в т.ч. гостю без
+  // регистрации). Врача клик уводит в раздел, остальным показываем заметку,
+  // что доступ только для врачей.
+  const [examNote, setExamNote] = useState(false);
+  const handleExamPrepClick = () => {
+    if (["doctor", "admin", "superadmin"].includes(userRole)) {
+      navigate("/education");
+    } else {
+      setExamNote(true);
+    }
+  };
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
@@ -1166,45 +1177,72 @@ export default function AuthLayout() {
                       </span>
                     </button>
                   </motion.div>
-                  {/* Подготовка к экзаменам — раздел только для врачей: промо-
-                      карточку показываем лишь им (гостю и пациенту закрыто). */}
-                  {["doctor", "admin", "superadmin"].includes(userRole) && (
-                    <motion.div variants={item} style={{ marginBottom: 12 }}>
-                      <Link
-                        to="/education"
-                        className="dp-news-card"
-                        style={{ textDecoration: "none" }}
-                      >
-                        <div
-                          className="dp-news-card-accent"
-                          style={{
-                            background:
-                              "linear-gradient(180deg, #d8c48c, #a2802f)",
-                          }}
-                        />
-                        <div className="dp-news-card-body">
-                          <div className="dp-news-card-icon">🎓</div>
-                          <div className="dp-news-card-copy">
-                            <div className="dp-news-card-tag">
-                              {"DocPats · "}
-                              {t("examPrepTag", {
-                                defaultValue: "20 вопросов без регистрации",
-                              })}
-                            </div>
-                            <div className="dp-news-card-text">
-                              {t("examPrepText", {
-                                defaultValue:
-                                  "Подготовка к экзаменам: тесты с разбором ошибок",
-                              })}
-                            </div>
+                  {/* Подготовка к экзаменам. Карточка видна всем без
+                      регистрации; клик гейтится по роли (см. handleExamPrepClick):
+                      врач → /education, остальным — заметка ниже. */}
+                  <motion.div variants={item} style={{ marginBottom: 12 }}>
+                    <div
+                      className="dp-news-card"
+                      role="button"
+                      tabIndex={0}
+                      style={{ cursor: "pointer" }}
+                      onClick={handleExamPrepClick}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          handleExamPrepClick();
+                        }
+                      }}
+                    >
+                      <div
+                        className="dp-news-card-accent"
+                        style={{
+                          background:
+                            "linear-gradient(180deg, #d8c48c, #a2802f)",
+                        }}
+                      />
+                      <div className="dp-news-card-body">
+                        <div className="dp-news-card-icon">🎓</div>
+                        <div className="dp-news-card-copy">
+                          <div className="dp-news-card-tag">
+                            {"DocPats · "}
+                            {t("examPrepTag", {
+                              defaultValue:
+                                "Тесты и экзамены · только для врачей",
+                            })}
                           </div>
-                          <span className="dp-news-card-arrow">
-                            <Arrow />
-                          </span>
+                          <div className="dp-news-card-text">
+                            {t("examPrepText", {
+                              defaultValue:
+                                "Подготовка к экзаменам: тесты и экзамены с разбором ошибок",
+                            })}
+                          </div>
                         </div>
-                      </Link>
-                    </motion.div>
-                  )}
+                        <span className="dp-news-card-arrow">
+                          <Arrow />
+                        </span>
+                      </div>
+                    </div>
+                    {examNote && (
+                      <div
+                        style={{
+                          marginTop: 8,
+                          padding: "8px 12px",
+                          borderRadius: 10,
+                          background: "rgba(216,196,140,.15)",
+                          border: "1px solid rgba(216,196,140,.4)",
+                          color: "#e6d3a0",
+                          fontSize: 13,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {t("examPrepDoctorsOnly", {
+                          defaultValue:
+                            "Раздел «Подготовка к экзаменам» доступен только врачам. Войдите как врач.",
+                        })}
+                      </div>
+                    )}
+                  </motion.div>
 
                   <motion.div variants={item} style={{ marginBottom: 12 }}>
                     <Link

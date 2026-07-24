@@ -159,6 +159,7 @@
   "clinicPerk2": "Personel rolleri ve yetkileri",
   "clinicPerk3": "Planlama ve randevular",
   "clinicPerk4": "Veri erişim denetimi",
-  "examPrepTag": "kayıtsız 20 soru",
-  "examPrepText": "Sınav hazırlığı: çözümlü deneme testleri"
+  "examPrepTag": "Testler ve sınavlar · yalnızca doktorlar için",
+  "examPrepText": "Sınav hazırlığı: hata çözümlemeli testler ve sınavlar",
+  "examPrepDoctorsOnly": "Sınav hazırlığı bölümü yalnızca doktorlar içindir. Lütfen doktor olarak giriş yapın."
 }
