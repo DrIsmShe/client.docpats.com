@@ -60,6 +60,10 @@
       "name": "Pro",
       "desc": "Maksimum AI imkanları və prioritet"
     },
+    "doctor_lite": {
+      "name": "Baza",
+      "desc": "Start tarifinin limitlərinin yarısı — yarı qiymətə"
+    },
     "doctor_basic": {
       "name": "Start",
       "desc": "Sınaq müddətindən sonra platformada əsas mövcudluq",

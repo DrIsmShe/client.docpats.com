@@ -12,6 +12,7 @@ import LanguageSwitcher from "../components/LanguageSwitcher";
 const PRICES_USD = {
   patient_std: { monthly: 9, yearly: 90 },
   patient_pro: { monthly: 19, yearly: 190 },
+  doctor_lite: { monthly: 9, yearly: 90 },
   doctor_basic: { monthly: 19, yearly: 190 },
   doctor_super: { monthly: 49, yearly: 490 },
   doctor_pro: { monthly: 99, yearly: 990 },
@@ -89,6 +90,27 @@ const PATIENT_PLANS = [
 ];
 
 const DOCTOR_PLANS = [
+  {
+    // «Базовый» — вход для врачей: половина лимитов тарифа Start (doctor_basic)
+    // за половину цены. Только для врачей (вкладка «Для врачей»).
+    key: "doctor_lite",
+    highlight: false,
+    cta: "subscribe",
+    ctaPath: "/pricing/checkout?plan=doctor_lite",
+    showTrialNote: false,
+    features: [
+      { i18nKey: "features.examQuestions", vars: { count: 250 } },
+      { i18nKey: "features.doctorProfile" },
+      { i18nKey: "features.aiAnalyses", vars: { count: 5 } },
+      { i18nKey: "features.aiArticles", vars: { count: 2 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 5 } },
+      { i18nKey: "features.aiPatientConsultations", vars: { count: 3 } },
+      { i18nKey: "features.patientsInOffice", vars: { count: 25 } },
+      { i18nKey: "features.videoMinutes", vars: { count: 60 } },
+      { i18nKey: "features.directPayments" },
+      { i18nKey: "features.commission", vars: { percent: 15 } },
+    ],
+  },
   {
     key: "doctor_basic",
     highlight: false,

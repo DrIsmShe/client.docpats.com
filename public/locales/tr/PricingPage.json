@@ -60,6 +60,10 @@
       "name": "Pro",
       "desc": "Maksimum AI olanakları ve öncelik"
     },
+    "doctor_lite": {
+      "name": "Temel",
+      "desc": "Start planının limitlerinin yarısı, yarı fiyatına"
+    },
     "doctor_basic": {
       "name": "Start",
       "desc": "Deneme süresi sonrası platformda temel varlık",

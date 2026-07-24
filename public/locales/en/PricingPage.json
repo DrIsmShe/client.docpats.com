@@ -60,6 +60,10 @@
       "name": "Pro",
       "desc": "Maximum AI capabilities and priority"
     },
+    "doctor_lite": {
+      "name": "Basic",
+      "desc": "Half of the Start plan's limits at half the price"
+    },
     "doctor_basic": {
       "name": "Start",
       "desc": "Basic presence on the platform after trial",
