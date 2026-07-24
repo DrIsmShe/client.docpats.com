@@ -52,7 +52,10 @@ function applyScale(scale) {
 const STYLES = `
   .dp-fs {
     position: fixed;
-    left: 16px;
+    /* Правый нижний угол: левый низ на всех layout-ах с боковым меню
+       занят сайдбаром (пункт «Выход» оказывался под пилюлей). Справа
+       постоянных фиксированных элементов нет — чат и звонок временные. */
+    right: 16px;
     bottom: 16px;
     z-index: 99998;
     display: inline-flex;
@@ -121,7 +124,7 @@ const STYLES = `
 
   /* На узких экранах проценты убираем — остаются две кнопки. */
   @media (max-width: 520px) {
-    .dp-fs { left: 10px; bottom: 10px; }
+    .dp-fs { right: 10px; bottom: 10px; }
     .dp-fs-value { display: none; }
   }
 
