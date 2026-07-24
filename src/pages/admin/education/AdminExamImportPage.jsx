@@ -583,6 +583,13 @@ export default function AdminExamImportPage() {
     }
   }
 
+  // Перенос идёт ПОРЦИЯМИ. Тысяча вопросов одним запросом упирается в две
+  // стены: серверный валидатор режет список на 500, а сам перенос (создать
+  // вопрос + отправить на ревью, ×1000) идёт десятки секунд и рвётся по
+  // HTTP-таймауту nginx на полпути. Порции по 200 проходят и то, и другое,
+  // а результат копится между запросами.
+  const IMPORT_BATCH = 200;
+
   async function handleImport() {
     if (selectedDrafts.length === 0) {
       setError(t("adminImport.errors.selectAtLeastOne"));
@@ -590,26 +597,56 @@ export default function AdminExamImportPage() {
     }
     setBusy(true);
     setError(null);
+    setNotice(null);
+
+    const ids = [...selectedDrafts];
+    let createdTotal = 0;
+    const skippedAll = [];
+
     try {
-      const result = await importJobDrafts(job._id, selectedDrafts);
-      const skippedList = (result.skipped ?? [])
+      for (let from = 0; from < ids.length; from += IMPORT_BATCH) {
+        const batch = ids.slice(from, from + IMPORT_BATCH);
+        // Прогресс показываем только когда порций больше одной — на малом
+        // числе он лишний шум.
+        if (ids.length > IMPORT_BATCH) {
+          setStage(
+            t("adminImport.stages.importing", {
+              done: Math.min(from + IMPORT_BATCH, ids.length),
+              total: ids.length,
+              defaultValue: `Переносим ${Math.min(
+                from + IMPORT_BATCH,
+                ids.length,
+              )} из ${ids.length}…`,
+            }),
+          );
+        }
+        const result = await importJobDrafts(job._id, batch);
+        createdTotal += result.createdCount ?? 0;
+        if (result.skipped?.length) skippedAll.push(...result.skipped);
+      }
+
+      const skippedList = skippedAll
         .map((s) => `#${s.index + 1} — ${s.reason}`)
         .join("; ");
       setNotice(
-        result.skipped?.length
+        skippedAll.length
           ? t("adminImport.notices.importedWithSkipped", {
-              count: result.createdCount,
-              skipped: result.skipped.length,
+              count: createdTotal,
+              skipped: skippedAll.length,
               list: skippedList,
             })
-          : t("adminImport.notices.imported", { count: result.createdCount }),
+          : t("adminImport.notices.imported", { count: createdTotal }),
       );
       await openJob(job._id);
       setJobs(await fetchImportJobs({ limit: 30 }));
     } catch (err) {
+      // Перенос идёт по частям и на сервере идемпотентен: уже перенесённые
+      // черновики повторно не создаются (imported=true), поэтому после
+      // сбоя можно просто нажать «Перенести» ещё раз — продолжит с места.
       handleApiError(err, t("adminImport.errors.importDrafts"));
     } finally {
       setBusy(false);
+      setStage(null);
     }
   }
 
@@ -1234,17 +1271,22 @@ export default function AdminExamImportPage() {
           })}
 
           {pending.length > 0 && (
-            <div className="edu-btn-row">
+            <div className="edu-btn-row" style={{ alignItems: "center" }}>
               <button
                 type="button"
                 className="edu-btn"
                 disabled={busy || selectedDrafts.length === 0}
                 onClick={handleImport}
               >
-                {t("adminImport.drafts.importSelected", {
-                  count: selectedDrafts.length,
-                })}
+                {busy && stage
+                  ? stage
+                  : t("adminImport.drafts.importSelected", {
+                      count: selectedDrafts.length,
+                    })}
               </button>
+              {/* Порционный перенос идёт десятки секунд — прогресс рядом с
+                  кнопкой, чтобы не казалось, что «ничего не происходит». */}
+              {busy && stage && <span className="edu-hint">{stage}</span>}
             </div>
           )}
 

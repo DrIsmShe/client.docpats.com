@@ -205,7 +205,8 @@
       "creatingProgram": "Proqram yaradılır…",
       "preparingJob": "Tapşırıq hazırlanır…",
       "extracting": "Model faylı oxuyur — bu, bir neçə dəqiqə çəkə bilər…",
-      "extractingPart": "Tanınır: hissə {{current}} / {{total}}… Böyük fayl hissə-hissə bölünüb emal olunur."
+      "extractingPart": "Tanınır: hissə {{current}} / {{total}}… Böyük fayl hissə-hissə bölünüb emal olunur.",
+      "importing": "Köçürülür: {{done}} / {{total}}…"
     },
     "notices": {
       "detected": "Tanınmış suallar: {{count}}. Tanınanları yoxlayın və lazım olanları banka köçürün.",

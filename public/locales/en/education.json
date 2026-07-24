@@ -205,7 +205,8 @@
       "creatingProgram": "Creating the program…",
       "preparingJob": "Preparing the job…",
       "extracting": "The model is reading the file — this may take a few minutes…",
-      "extractingPart": "Extracting: part {{current}} of {{total}}… A large file is split and processed in parts."
+      "extractingPart": "Extracting: part {{current}} of {{total}}… A large file is split and processed in parts.",
+      "importing": "Transferring {{done}} of {{total}}…"
     },
     "notices": {
       "detected": "Questions extracted: {{count}}. Check what was extracted and move what you need to the bank.",

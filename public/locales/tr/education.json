@@ -205,7 +205,8 @@
       "creatingProgram": "Program oluşturuluyor…",
       "preparingJob": "Görev hazırlanıyor…",
       "extracting": "Model dosyayı okuyor — bu birkaç dakika sürebilir…",
-      "extractingPart": "Çıkarılıyor: bölüm {{current}} / {{total}}… Büyük dosya parçalara bölünüp işleniyor."
+      "extractingPart": "Çıkarılıyor: bölüm {{current}} / {{total}}… Büyük dosya parçalara bölünüp işleniyor.",
+      "importing": "Aktarılıyor: {{done}} / {{total}}…"
     },
     "notices": {
       "detected": "Çıkarılan soru sayısı: {{count}}. Çıkarılanları gözden geçirin ve gerekenleri bankaya aktarın.",
