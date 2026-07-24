@@ -62,7 +62,7 @@
     },
     "doctor_lite": {
       "name": "Baza",
-      "desc": "Start tarifinin limitlərinin üçdə biri — ayda $3",
+      "desc": "",
       "trialNote": "İlk 6 ay — Doctor Growth səviyyəsində pulsuz"
     },
     "doctor_basic": {

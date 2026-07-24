@@ -105,6 +105,7 @@ const DOCTOR_PLANS = [
       { i18nKey: "features.aiPatientConsultations", vars: { count: 2 } },
       { i18nKey: "features.patientsInOffice", vars: { count: 17 } },
       { i18nKey: "features.videoMinutes", vars: { count: 40 } },
+      { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.commission", vars: { percent: 15 } },
     ],
@@ -124,6 +125,7 @@ const DOCTOR_PLANS = [
       { i18nKey: "features.aiPatientConsultations", vars: { count: 10 } },
       { i18nKey: "features.patientsInOffice", vars: { count: 100 } },
       { i18nKey: "features.videoMinutes", vars: { count: 240 } },
+      { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.commission", vars: { percent: 13 } },
     ],
@@ -136,14 +138,14 @@ const DOCTOR_PLANS = [
     features: [
       { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.doctorProfile" },
-      { i18nKey: "features.aiAnalyses", vars: { count: 50 } },
-      { i18nKey: "features.aiArticles", vars: { count: 15 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 50 } },
-      { i18nKey: "features.aiPatientConsultations", vars: { count: 50 } },
-      { i18nKey: "features.patientsInOffice", vars: { count: 500 } },
+      { i18nKey: "features.aiAnalyses", vars: { count: 60 } },
+      { i18nKey: "features.aiArticles", vars: { count: 18 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 60 } },
+      { i18nKey: "features.aiPatientConsultations", vars: { count: 60 } },
+      { i18nKey: "features.patientsInOffice", vars: { count: 600 } },
       {
         i18nKey: "features.videoMinutesHours",
-        vars: { count: 600, hours: 10 },
+        vars: { count: 720, hours: 12 },
       },
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
@@ -182,7 +184,6 @@ const CLINIC_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=clinic_start",
     features: [
-      { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.doctorsInClinic", vars: { count: 5 } },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedSchedule" },
@@ -202,7 +203,6 @@ const CLINIC_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=clinic",
     features: [
-      { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.doctorsInClinic", vars: { count: 15 } },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedSchedule" },
@@ -225,7 +225,6 @@ const CLINIC_PLANS = [
     cta: "contact",
     ctaPath: "mailto:support@docpats.com?subject=Clinic%20Enterprise",
     features: [
-      { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.doctorsInClinicUnlimited" },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedScheduleCrm" },
@@ -400,7 +399,11 @@ function PlanCard({ plan, period, t, currentPlanKey, paymentsEnabled }) {
             </div>
           )}
 
-          <p className="text-muted small mb-3">{t(`plans.${plan.key}.desc`)}</p>
+          {t(`plans.${plan.key}.desc`) && (
+            <p className="text-muted small mb-3">
+              {t(`plans.${plan.key}.desc`)}
+            </p>
+          )}
 
           {plan.showTrialNote && (
             <div
