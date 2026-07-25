@@ -74,6 +74,31 @@ const EXAM_TYPES = [
 
 const NEW_PROGRAM = "__new__";
 
+// Метки вариантов для ручного ввода. Ключ варианта — стабильная буква
+// (см. examItem.model.js), а не индекс: correctKeys ссылается на неё.
+// Максимум 10 — столько принимает валидатор manualDraftSchema.
+const LETTERS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+
+// Пустой подвопрос ручной формы. Три варианта по умолчанию — как в
+// типовом клиническом кейсе (A/B/C); лишние оператор уберёт, недостающие
+// добавит. correctIndex — позиция верного варианта в options (не буква:
+// букву присваиваем при отправке, уже после отсева пустых).
+function newManualQuestion() {
+  return {
+    text: "",
+    options: [{ text: "" }, { text: "" }, { text: "" }],
+    correctIndex: null,
+    explanation: "",
+  };
+}
+
+// Кейс = общая вводная + свой набор подвопросов. Кейсов можно добавлять
+// сколько угодно; вводная каждого подставится в начало ЕГО подвопросов.
+// Пустая вводная — просто группа одиночных вопросов.
+function newManualCase() {
+  return { caseText: "", questions: [newManualQuestion()] };
+}
+
 // Держим в синхроне с server/modules/education/education-ingest/extractors/
 // fileTypes.js. Расхождение здесь не критично — сервер всё равно проверит
 // файл сам, — но приводит к неприятному «выбрал файл, получил отказ».
@@ -136,6 +161,26 @@ export default function AdminExamImportPage() {
     difficulty: "mixed",
     sourceNote: "",
   });
+
+  // Ручной ввод. Метаданные (программа, происхождение) — как у загрузки
+  // файла, потому что дальше та же цепочка createProgram → createImportJob →
+  // run. Отличие одно: вопросы приходят готовым массивом (extractor="manual"),
+  // а не извлекаются из файла. Сами кейсы (вводная + подвопросы) — в
+  // manualCases: их можно добавлять сколько угодно.
+  const [manualForm, setManualForm] = useState({
+    programId: NEW_PROGRAM,
+    country: "INT",
+    region: "international",
+    examType: "cme",
+    lang: "ru",
+    // Для набранных руками вопросов дефолт — авторский материал: он не
+    // требует указания органа, в отличие от public_government.
+    sourceKind: "original",
+    authority: "",
+    sourceUrl: "",
+    licenseNote: "",
+  });
+  const [manualCases, setManualCases] = useState([newManualCase()]);
 
   const handleApiError = useCallback(
     (err, fallback) => {
@@ -335,6 +380,254 @@ export default function AdminExamImportPage() {
       // Как и в импорте: пустую программу, созданную под заказ, убираем —
       // но только если генерация ещё не стартовала (иначе результат в пути).
       if (createdProgramId && !generationStarted) {
+        await archiveProgram(createdProgramId).catch(() => {});
+      }
+      setJobs(await fetchImportJobs({ limit: 30 }).catch(() => jobs));
+    } finally {
+      setBusy(false);
+      setStage(null);
+    }
+  }
+
+  // ─── Редактирование ручных кейсов и их подвопросов (иммутабельно) ───
+  // Структура: manualCases[ci].questions[qi].options[oi]. Правки идут через
+  // замену массива целиком — React не увидит мутацию вложенного объекта.
+  // Два адресных helper'а (кейс / подвопрос) убирают дублирование обхода.
+  function mapCase(ci, fn) {
+    setManualCases((prev) => prev.map((c, i) => (i === ci ? fn(c) : c)));
+  }
+
+  function mapQuestion(ci, qi, fn) {
+    mapCase(ci, (c) => ({
+      ...c,
+      questions: c.questions.map((q, j) => (j === qi ? fn(q) : q)),
+    }));
+  }
+
+  function patchCase(ci, patch) {
+    mapCase(ci, (c) => ({ ...c, ...patch }));
+  }
+
+  function patchQuestion(ci, qi, patch) {
+    mapQuestion(ci, qi, (q) => ({ ...q, ...patch }));
+  }
+
+  function patchOption(ci, qi, oi, text) {
+    mapQuestion(ci, qi, (q) => ({
+      ...q,
+      options: q.options.map((o, k) => (k === oi ? { ...o, text } : o)),
+    }));
+  }
+
+  function addOption(ci, qi) {
+    mapQuestion(ci, qi, (q) =>
+      q.options.length < LETTERS.length
+        ? { ...q, options: [...q.options, { text: "" }] }
+        : q,
+    );
+  }
+
+  function removeOption(ci, qi, oi) {
+    mapQuestion(ci, qi, (q) => {
+      if (q.options.length <= 2) return q;
+      const options = q.options.filter((_, k) => k !== oi);
+      // Верный вариант мог сдвинуться или сам удалиться — пересчитываем.
+      let correctIndex = q.correctIndex;
+      if (correctIndex === oi) correctIndex = null;
+      else if (correctIndex != null && correctIndex > oi) correctIndex -= 1;
+      return { ...q, options, correctIndex };
+    });
+  }
+
+  function addQuestion(ci) {
+    mapCase(ci, (c) => ({
+      ...c,
+      questions: [...c.questions, newManualQuestion()],
+    }));
+  }
+
+  function removeQuestion(ci, qi) {
+    mapCase(ci, (c) =>
+      c.questions.length <= 1
+        ? c
+        : { ...c, questions: c.questions.filter((_, j) => j !== qi) },
+    );
+  }
+
+  function addCase() {
+    setManualCases((prev) => [...prev, newManualCase()]);
+  }
+
+  function removeCase(ci) {
+    setManualCases((prev) =>
+      prev.length <= 1 ? prev : prev.filter((_, i) => i !== ci),
+    );
+  }
+
+  // Ручной ввод. Метаданные валидируем как в загрузке файла, вопросы — свои.
+  // Дальше та же цепочка, что у файла: пустая программа под новый тест,
+  // задание импорта с extractor="manual", прогон и опрос. Отличие — вопросы
+  // уходят готовым массивом items, а не файлом.
+  async function handleManualSubmit(e) {
+    e.preventDefault();
+
+    // 1. Кейсы и подвопросы. Каждый подвопрос должен иметь текст, минимум два
+    //    непустых варианта и отмеченный верный. Модель здесь ни при чём —
+    //    проверяет человек, поэтому требования строже, чем к черновику.
+    const totalQuestions = manualCases.reduce(
+      (n, c) => n + c.questions.length,
+      0,
+    );
+    if (totalQuestions === 0) {
+      setError(t("adminManual.errors.noQuestions"));
+      return;
+    }
+    for (let ci = 0; ci < manualCases.length; ci += 1) {
+      const c = manualCases[ci];
+      for (let qi = 0; qi < c.questions.length; qi += 1) {
+        const q = c.questions[qi];
+        const ctx = { case: ci + 1, number: qi + 1 };
+        if (!q.text.trim()) {
+          setError(t("adminManual.errors.emptyQuestion", ctx));
+          return;
+        }
+        if (q.options.filter((o) => o.text.trim()).length < 2) {
+          setError(t("adminManual.errors.fewOptions", ctx));
+          return;
+        }
+        if (q.correctIndex == null || !q.options[q.correctIndex]?.text.trim()) {
+          setError(t("adminManual.errors.noCorrect", ctx));
+          return;
+        }
+      }
+    }
+
+    // 2. Происхождение — те же гейты, что у загрузки файла: без органа
+    //    заимствованный материал потом не опубликовать.
+    const url = normalizeUrl(manualForm.sourceUrl);
+    if (!url.ok) {
+      setError(t("adminImport.errors.sourceUrl"));
+      return;
+    }
+    if (
+      ["public_government", "licensed"].includes(manualForm.sourceKind) &&
+      !manualForm.authority.trim()
+    ) {
+      setError(t("adminImport.errors.authorityRequired"));
+      return;
+    }
+    if (manualForm.sourceKind === "licensed" && !manualForm.licenseNote.trim()) {
+      setError(t("adminImport.errors.licenseRequired"));
+      return;
+    }
+    const manualIsNew = manualForm.programId === NEW_PROGRAM;
+    if (manualIsNew && !/^([A-Z]{2}|INT)$/.test(manualForm.country)) {
+      setError(t("adminImport.errors.country"));
+      return;
+    }
+
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    let createdProgramId = null;
+    let extractionStarted = false;
+
+    try {
+      let programId = manualForm.programId;
+      if (manualIsNew) {
+        setStage(t("adminImport.stages.creatingProgram"));
+        const created = await createProgram({
+          code: `manual-${Date.now().toString(36)}`,
+          title: t("adminManual.draftProgramTitle", {
+            name: t("adminManual.form.newTestName"),
+          }),
+          country: manualForm.country,
+          region: manualForm.region,
+          examType: manualForm.examType,
+          languages: [manualForm.lang],
+          sourcePolicy: manualForm.sourceKind,
+          status: "draft",
+        });
+        programId = created._id;
+        createdProgramId = created._id;
+      }
+
+      // Собираем items: каждый подвопрос каждого кейса → отдельный вопрос
+      // банка, а вводная своего кейса подставляется в начало его stem. Верный
+      // вариант перекладываем в буквенный ключ уже ПОСЛЕ отсева пустых
+      // вариантов, чтобы не осталось дыр в A/B/C.
+      const items = [];
+      for (const c of manualCases) {
+        const caseText = c.caseText.trim();
+        for (const q of c.questions) {
+          const questionText = q.text.trim();
+          const stem = caseText
+            ? `${caseText}\n\n${questionText}`
+            : questionText;
+          const filled = q.options
+            .map((o, idx) => ({ text: o.text.trim(), origIdx: idx }))
+            .filter((o) => o.text);
+          const options = filled.map((o, i) => ({
+            key: LETTERS[i],
+            text: o.text,
+          }));
+          const correctPos = filled.findIndex(
+            (o) => o.origIdx === q.correctIndex,
+          );
+          items.push({
+            stem,
+            options,
+            correctKeys: correctPos >= 0 ? [LETTERS[correctPos]] : [],
+            explanation: q.explanation.trim(),
+          });
+        }
+      }
+
+      setStage(t("adminImport.stages.preparingJob"));
+      const job = await createImportJob({
+        programId,
+        extractor: "manual",
+        defaults: {
+          lang: manualForm.lang,
+          source: {
+            kind: manualForm.sourceKind,
+            authority: manualForm.authority.trim() || null,
+            url: url.value,
+            licenseNote: manualForm.licenseNote.trim() || null,
+          },
+        },
+      });
+
+      setStage(t("adminManual.stages.creating"));
+      // Ручной прогон почти мгновенный, но запускается так же асинхронно, как
+      // распознавание файла (сервер отвечает 202 и работает в фоне) — поэтому
+      // ждём тем же опросом. После него откат программы уже запрещён.
+      await runImportJob(job._id, { items });
+      extractionStarted = true;
+
+      const finished = await waitForExtraction(job._id);
+      if (finished.status === "failed") {
+        setError(finished.error || t("adminManual.errors.failed"));
+      } else {
+        setNotice(
+          t("adminManual.notices.done", {
+            count: finished.stats?.detected ?? 0,
+          }),
+        );
+      }
+
+      // Кейсы очищаем, метаданные (программа, происхождение) оставляем —
+      // удобно вводить серию кейсов подряд в тот же тест.
+      setManualCases([newManualCase()]);
+
+      setPrograms(await fetchPrograms({ scope: "all" }));
+      setJobs(await fetchImportJobs({ limit: 30 }));
+      await openJob(job._id);
+    } catch (err) {
+      handleApiError(err, t("adminManual.errors.failed"));
+      // Как и в импорте: пустую программу под неудавшийся ввод убираем, но
+      // только если прогон ещё не стартовал (иначе результат уже в базе).
+      if (createdProgramId && !extractionStarted) {
         await archiveProgram(createdProgramId).catch(() => {});
       }
       setJobs(await fetchImportJobs({ limit: 30 }).catch(() => jobs));
@@ -1036,6 +1329,394 @@ export default function AdminExamImportPage() {
             {busy
               ? (stage ?? t("adminImport.form.processing"))
               : t("adminImport.form.submit")}
+          </button>
+        </div>
+        {busy && stage && <div className="edu-hint">{stage}</div>}
+      </form>
+
+      {/* ─── Ручной ввод ─── */}
+      {/* Третий путь: ни файла, ни модели — оператор набирает вопросы сам.
+          Можно одиночные (вводная пустая) или клиническим кейсом (вводная +
+          подвопросы). Не зависит от ИИ, поэтому aiReady здесь не проверяем. */}
+      <form className="edu-card" onSubmit={handleManualSubmit}>
+        <h2 className="edu-card-title">{t("adminManual.title")}</h2>
+        <div className="edu-hint" style={{ marginBottom: 12 }}>
+          {t("adminManual.subtitle")}
+        </div>
+
+        <div className="edu-field-label" style={{ marginTop: 0 }}>
+          {t("adminManual.form.target")}
+        </div>
+        <select
+          className="edu-select"
+          value={manualForm.programId}
+          onChange={(e) =>
+            setManualForm((f) => ({ ...f, programId: e.target.value }))
+          }
+        >
+          <option value={NEW_PROGRAM}>
+            {t("adminManual.form.newProgramOption")}
+          </option>
+          {programs
+            .filter((p) => p.status !== "archived")
+            .map((p) => (
+              <option key={p._id} value={p._id}>
+                {p.title}
+                {p.status !== "published"
+                  ? t("adminImport.form.draftSuffix")
+                  : ""}
+              </option>
+            ))}
+        </select>
+
+        {manualForm.programId === NEW_PROGRAM && (
+          <div className="edu-form-row" style={{ marginTop: 14 }}>
+            <div>
+              <div className="edu-field-label" style={{ marginTop: 0 }}>
+                {t("adminImport.form.country")}
+              </div>
+              <input
+                className="edu-input"
+                maxLength={3}
+                placeholder="INT, TR, SA, AZ…"
+                value={manualForm.country}
+                onChange={(e) =>
+                  setManualForm((f) => ({
+                    ...f,
+                    country: e.target.value.toUpperCase(),
+                  }))
+                }
+              />
+            </div>
+            <div>
+              <div className="edu-field-label" style={{ marginTop: 0 }}>
+                {t("adminImport.form.region")}
+              </div>
+              <select
+                className="edu-select"
+                value={manualForm.region}
+                onChange={(e) =>
+                  setManualForm((f) => ({ ...f, region: e.target.value }))
+                }
+              >
+                {REGIONS.map((r) => (
+                  <option key={r} value={r}>
+                    {t(`adminImport.regions.${r}`)}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <div className="edu-field-label" style={{ marginTop: 0 }}>
+                {t("adminImport.form.examType")}
+              </div>
+              <select
+                className="edu-select"
+                value={manualForm.examType}
+                onChange={(e) =>
+                  setManualForm((f) => ({ ...f, examType: e.target.value }))
+                }
+              >
+                {EXAM_TYPES.map((type) => (
+                  <option key={type} value={type}>
+                    {t(`shared.examTypes.${type}`)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        )}
+
+        <div className="edu-form-row" style={{ marginTop: 14 }}>
+          <div>
+            <div className="edu-field-label" style={{ marginTop: 0 }}>
+              {t("adminManual.form.lang")}
+            </div>
+            <select
+              className="edu-select"
+              value={manualForm.lang}
+              onChange={(e) =>
+                setManualForm((f) => ({ ...f, lang: e.target.value }))
+              }
+            >
+              {["ru", "en", "az", "tr", "ar"].map((code) => (
+                <option key={code} value={code}>
+                  {t(`shared.langs.${code}`)}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <div className="edu-field-label" style={{ marginTop: 0 }}>
+              {t("adminImport.form.sourceKind")}
+            </div>
+            <select
+              className="edu-select"
+              value={manualForm.sourceKind}
+              onChange={(e) =>
+                setManualForm((f) => ({ ...f, sourceKind: e.target.value }))
+              }
+            >
+              {SOURCE_KINDS.map((s) => (
+                <option key={s} value={s}>
+                  {t(`shared.sourceKinds.${s}`)}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="edu-hint">
+          {t(`adminImport.sourceKindHints.${manualForm.sourceKind}`)}
+        </div>
+
+        {["public_government", "licensed"].includes(manualForm.sourceKind) && (
+          <div className="edu-form-row" style={{ marginTop: 14 }}>
+            <div>
+              <div className="edu-field-label" style={{ marginTop: 0 }}>
+                {t("adminImport.form.authority")}
+              </div>
+              <input
+                className="edu-input"
+                placeholder={t("adminImport.form.authorityPlaceholder")}
+                value={manualForm.authority}
+                onChange={(e) =>
+                  setManualForm((f) => ({ ...f, authority: e.target.value }))
+                }
+              />
+            </div>
+            <div>
+              <div className="edu-field-label" style={{ marginTop: 0 }}>
+                {t("adminImport.form.sourceUrl")}
+              </div>
+              <input
+                className="edu-input"
+                placeholder="https://…"
+                value={manualForm.sourceUrl}
+                onChange={(e) =>
+                  setManualForm((f) => ({ ...f, sourceUrl: e.target.value }))
+                }
+              />
+            </div>
+          </div>
+        )}
+
+        {manualForm.sourceKind === "licensed" && (
+          <>
+            <div className="edu-field-label">
+              {t("adminImport.form.licenseNote")}
+            </div>
+            <textarea
+              className="edu-textarea"
+              rows={2}
+              placeholder={t("adminImport.form.licenseNotePlaceholder")}
+              value={manualForm.licenseNote}
+              onChange={(e) =>
+                setManualForm((f) => ({ ...f, licenseNote: e.target.value }))
+              }
+            />
+          </>
+        )}
+
+        {/* Кейсы. Каждый — своя вводная + свои подвопросы; кейсов может быть
+            сколько угодно. Пустая вводная = просто одиночные вопросы. */}
+        <div className="edu-field-label">
+          {t("adminManual.form.casesTitle")}
+        </div>
+
+        {manualCases.map((c, ci) => (
+          <div
+            key={ci}
+            style={{
+              border: "1px solid #dbe4ef",
+              borderRadius: 10,
+              padding: 16,
+              marginTop: 12,
+              background: "#f7fafd",
+            }}
+          >
+            <div
+              className="edu-draft-head"
+              style={{ justifyContent: "space-between" }}
+            >
+              <strong>
+                {t("adminManual.form.caseHeader", { number: ci + 1 })}
+              </strong>
+              {manualCases.length > 1 && (
+                <button
+                  type="button"
+                  className="edu-btn edu-btn--danger"
+                  style={{ padding: "2px 10px", fontSize: 12 }}
+                  disabled={busy}
+                  onClick={() => removeCase(ci)}
+                >
+                  {t("adminManual.form.removeCase")}
+                </button>
+              )}
+            </div>
+
+            {/* Вводная этого кейса. Пусто — его вопросы одиночные. */}
+            <div className="edu-field-label" style={{ marginTop: 8 }}>
+              {t("adminManual.form.caseLabel")}
+            </div>
+            <textarea
+              className="edu-textarea"
+              rows={4}
+              placeholder={t("adminManual.form.casePlaceholder")}
+              value={c.caseText}
+              onChange={(e) => patchCase(ci, { caseText: e.target.value })}
+            />
+            <div className="edu-hint">{t("adminManual.form.caseHint")}</div>
+
+            {c.questions.map((q, qi) => (
+              <div key={qi} className="edu-draft" style={{ marginBottom: 14 }}>
+                <div
+                  className="edu-draft-head"
+                  style={{ justifyContent: "space-between" }}
+                >
+                  <strong>
+                    {t("adminManual.form.questionLabel", { number: qi + 1 })}
+                  </strong>
+                  {c.questions.length > 1 && (
+                    <button
+                      type="button"
+                      className="edu-btn edu-btn--ghost"
+                      style={{ padding: "2px 10px", fontSize: 12 }}
+                      disabled={busy}
+                      onClick={() => removeQuestion(ci, qi)}
+                    >
+                      {t("adminManual.form.removeQuestion")}
+                    </button>
+                  )}
+                </div>
+
+                <textarea
+                  className="edu-textarea"
+                  rows={2}
+                  placeholder={t("adminManual.form.questionPlaceholder")}
+                  value={q.text}
+                  onChange={(e) =>
+                    patchQuestion(ci, qi, { text: e.target.value })
+                  }
+                />
+
+                {q.options.map((o, oi) => {
+                  const isCorrect = q.correctIndex === oi;
+                  return (
+                    <div
+                      key={oi}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 8,
+                        marginTop: 8,
+                      }}
+                    >
+                      <strong style={{ width: 18 }}>{LETTERS[oi]}.</strong>
+                      <input
+                        className="edu-input"
+                        style={{ flex: 1, margin: 0 }}
+                        placeholder={t("adminManual.form.optionPlaceholder", {
+                          key: LETTERS[oi],
+                        })}
+                        value={o.text}
+                        onChange={(e) =>
+                          patchOption(ci, qi, oi, e.target.value)
+                        }
+                      />
+                      <button
+                        type="button"
+                        className={`edu-btn ${isCorrect ? "" : "edu-btn--ghost"}`}
+                        style={{
+                          padding: "4px 10px",
+                          fontSize: 12,
+                          flexShrink: 0,
+                        }}
+                        disabled={busy}
+                        onClick={() =>
+                          patchQuestion(ci, qi, { correctIndex: oi })
+                        }
+                        title={t("adminManual.form.correctTag")}
+                      >
+                        {isCorrect
+                          ? `✓ ${t("adminManual.form.markCorrect")}`
+                          : t("adminManual.form.markCorrect")}
+                      </button>
+                      {q.options.length > 2 && (
+                        <button
+                          type="button"
+                          className="edu-btn edu-btn--danger"
+                          style={{
+                            padding: "4px 8px",
+                            fontSize: 12,
+                            flexShrink: 0,
+                          }}
+                          disabled={busy}
+                          onClick={() => removeOption(ci, qi, oi)}
+                          title={t("adminManual.form.removeOption")}
+                        >
+                          ×
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+
+                {q.options.length < LETTERS.length && (
+                  <button
+                    type="button"
+                    className="edu-btn edu-btn--ghost"
+                    style={{ padding: "4px 12px", fontSize: 12, marginTop: 10 }}
+                    disabled={busy}
+                    onClick={() => addOption(ci, qi)}
+                  >
+                    {t("adminManual.form.addOption")}
+                  </button>
+                )}
+
+                <div className="edu-field-label">
+                  {t("adminManual.form.explanationLabel")}
+                </div>
+                <textarea
+                  className="edu-textarea"
+                  rows={2}
+                  placeholder={t("adminManual.form.explanationPlaceholder")}
+                  value={q.explanation}
+                  onChange={(e) =>
+                    patchQuestion(ci, qi, { explanation: e.target.value })
+                  }
+                />
+              </div>
+            ))}
+
+            <div className="edu-btn-row">
+              <button
+                type="button"
+                className="edu-btn edu-btn--ghost"
+                disabled={busy}
+                onClick={() => addQuestion(ci)}
+              >
+                {t("adminManual.form.addQuestion")}
+              </button>
+            </div>
+          </div>
+        ))}
+
+        <div className="edu-btn-row" style={{ marginTop: 14 }}>
+          <button
+            type="button"
+            className="edu-btn edu-btn--ghost"
+            disabled={busy}
+            onClick={addCase}
+          >
+            {t("adminManual.form.addCase")}
+          </button>
+        </div>
+
+        <div className="edu-btn-row" style={{ marginTop: 14 }}>
+          <button type="submit" className="edu-btn" disabled={busy}>
+            {busy
+              ? (stage ?? t("adminManual.form.submitBusy"))
+              : t("adminManual.form.submit")}
           </button>
         </div>
         {busy && stage && <div className="edu-hint">{stage}</div>}
