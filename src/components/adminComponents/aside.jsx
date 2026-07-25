@@ -73,6 +73,33 @@ export default function Aside() {
             </Link>
           </li>
 
+          {/* ─── Лучевая диагностика ─── */}
+          <li className="nav-heading">Лучевая диагностика</li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="radiology">
+              <i className="bi bi-lungs"></i>
+              <span>Кейсы чтения снимков</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="labs">
+              <i className="bi bi-clipboard-data"></i>
+              <span>Кейсы: анализы</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="vp">
+              <i className="bi bi-person-vcard"></i>
+              <span>Виртуальный пациент</span>
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link collapsed" to="arena-analytics">
+              <i className="bi bi-graph-up"></i>
+              <span>Аналитика арены</span>
+            </Link>
+          </li>
+
           {/* ─── Тарифы и оплата ─── */}
           <li className="nav-heading">Тарифы</li>
           <li className="nav-item">

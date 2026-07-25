@@ -1,0 +1,543 @@
+/* client/src/pages/radiology/radiology.css
+   Стили тренажёра чтения снимков. Кнопки/карточки берём из education.css
+   (edu-*), здесь — только раскладка ридера/редактора и сам холст. */
+
+.rad-page {
+  /* Классы edu-* (кнопки, поля, карточки) берут цвета из этих переменных.
+     В education.css они заданы на .edu-page; наши страницы — .rad-page,
+     поэтому переменные нужно продублировать здесь, иначе сплошные .edu-btn
+     остаются без фона (белые по белому). Держим в синхроне с education.css. */
+  --edu-paper: #f0ece1;
+  --edu-surface: #fffdf9;
+  --edu-ink: #17212b;
+  --edu-ink-soft: #5c6773;
+  --edu-ink-faint: #939caa;
+  --edu-line: #e6e0d4;
+  --edu-line-strong: #cfc7b6;
+  --edu-primary: #1b3a5c;
+  --edu-primary-strong: #122840;
+  --edu-primary-tint: #eceff4;
+  --edu-primary-tint-2: #dde4ed;
+  --edu-gold: #a2802f;
+  --edu-gold-soft: #d8c48c;
+  --edu-serif: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype",
+    Palatino, Georgia, serif;
+  --edu-serif-text: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --edu-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --edu-radius: 5px;
+  --edu-radius-sm: 4px;
+  --edu-radius-pill: 999px;
+  --edu-shadow: 0 1px 2px rgba(23, 33, 43, 0.05),
+    0 6px 16px rgba(23, 33, 43, 0.035);
+  --edu-shadow-hover: 0 2px 4px rgba(23, 33, 43, 0.04),
+    0 16px 34px rgba(23, 33, 43, 0.08);
+
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 20px 80px;
+}
+
+.rad-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 1024px) {
+  .rad-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rad-panel {
+  background: #fff;
+  border: 1px solid #e6ecf3;
+  border-radius: 12px;
+  padding: 16px;
+}
+.rad-panel + .rad-panel {
+  margin-top: 16px;
+}
+
+/* ─── Холст ─── */
+.rad-canvas-wrap {
+  position: relative;
+}
+.rad-canvas {
+  position: relative;
+  overflow: hidden;
+  background: #0b1220;
+  border-radius: 12px;
+  border: 1px solid #1e293b;
+  user-select: none;
+}
+.rad-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+.rad-canvas-toolbar {
+  position: absolute;
+  z-index: 5;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+}
+.rad-canvas-toolbar button {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  background: rgba(15, 23, 42, 0.85);
+  color: #e2e8f0;
+  font-size: 16px;
+  cursor: pointer;
+}
+.rad-canvas-toolbar button:hover {
+  background: rgba(30, 41, 59, 0.95);
+}
+
+/* ─── Полоса срезов/проекций ─── */
+.rad-slices {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.rad-slice {
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid #cdd8e6;
+  background: #f6f9fd;
+  cursor: pointer;
+  font-size: 13px;
+}
+.rad-slice--active {
+  border-color: #2563eb;
+  background: #e8f0fe;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+/* ─── Палитра находок / инструменты ─── */
+.rad-tools {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.rad-chip {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #cdd8e6;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+.rad-chip--on {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #fff;
+}
+
+.rad-palette {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 240px;
+  overflow: auto;
+}
+.rad-palette button {
+  text-align: left;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border: 1px solid #e0e7ef;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+.rad-palette button.rad-palette--on {
+  border-color: #2563eb;
+  background: #eef4ff;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+/* ─── Список размеченного ─── */
+.rad-marks {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rad-mark {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid #e6ecf3;
+  border-radius: 8px;
+  font-size: 13px;
+  background: #fbfdff;
+}
+.rad-mark small {
+  color: #8b9aab;
+}
+
+/* ─── Чек-лист ─── */
+.rad-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.rad-checklist label {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 13px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+/* ─── Структурированный осмотр: норма / есть находка ─── */
+.rad-review {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rad-review-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.rad-review-label {
+  font-size: 13px;
+  flex: 1;
+  min-width: 0;
+}
+.rad-review-btns {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.rad-ans {
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid #cdd8e6;
+  background: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.rad-ans--normal {
+  border-color: #15803d;
+  background: #dcfce7;
+  color: #15803d;
+  font-weight: 600;
+}
+.rad-ans--finding {
+  border-color: #b91c1c;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+/* ─── Результат ─── */
+.rad-score-total {
+  font-size: 28px;
+  font-weight: 700;
+}
+.rad-score-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+.rad-bar {
+  font-size: 13px;
+}
+.rad-bar-track {
+  height: 8px;
+  border-radius: 6px;
+  background: #eef2f7;
+  overflow: hidden;
+  margin-top: 3px;
+}
+.rad-bar-fill {
+  height: 100%;
+  background: #2563eb;
+}
+.rad-pass {
+  color: #15803d;
+  font-weight: 600;
+}
+.rad-fail {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+/* ─── Диагностическая арена ─── */
+.arena-hero {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #1b3a5c 0%, #0b1220 100%);
+  color: #e2e8f0;
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin: 16px 0;
+}
+.arena-hero-main {
+  flex: 1;
+  min-width: 240px;
+}
+.arena-rank {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+}
+.arena-xp {
+  font-size: 13px;
+  color: #a2802f;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.arena-bar {
+  height: 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  margin-top: 8px;
+  max-width: 420px;
+}
+.arena-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #a2802f, #d8c48c);
+}
+.arena-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+.arena-hero-stats {
+  display: flex;
+  gap: 22px;
+}
+.arena-stat {
+  text-align: center;
+}
+.arena-stat-num {
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+}
+.arena-stat-cap {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.arena-daily {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.arena-daily-thumb {
+  width: 96px;
+  height: 72px;
+  border-radius: 10px;
+  background: #0b1220 center/cover no-repeat;
+  flex-shrink: 0;
+}
+
+.arena-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 20px;
+  align-items: start;
+  margin-top: 16px;
+}
+@media (max-width: 900px) {
+  .arena-cols {
+    grid-template-columns: 1fr;
+  }
+}
+.arena-board-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  border-top: 1px solid #eef2f7;
+  font-size: 14px;
+}
+.arena-place {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #eef2f7;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ─── Награда и достижения ─── */
+.arena-reward {
+  border: 1px solid #d8c48c;
+  background: linear-gradient(135deg, #fffdf6, #fbf3dd);
+}
+.arena-reward-xp {
+  font-size: 26px;
+  font-weight: 800;
+  color: #a2802f;
+}
+.arena-reward-row {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: #5c6773;
+  margin-top: 4px;
+}
+.arena-reward-rankup {
+  margin-top: 8px;
+  font-weight: 700;
+  color: #15803d;
+}
+.arena-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.arena-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: #eef4ff;
+  border: 1px solid #cdd8e6;
+  font-size: 13px;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+/* ─── Станция «Анализы»: таблица панели ─── */
+.lab-table {
+  display: flex;
+  flex-direction: column;
+}
+.lab-row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr 1.2fr;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 6px;
+  border-top: 1px solid #eef2f7;
+  font-size: 14px;
+}
+.lab-row--head {
+  font-size: 12px;
+  color: #8b9aab;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-top: none;
+}
+.lab-row--significant {
+  background: #fef9f9;
+}
+
+/* ─── Виртуальный пациент: обследования ─── */
+.vp-inv {
+  border: 1px solid #e6ecf3;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+.vp-inv-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.vp-inv-result {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #dbe4ef;
+  font-size: 14px;
+  color: #334155;
+}
+
+/* ─── Аналитика арены ─── */
+.an-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+.an-card {
+  border: 1px solid #e6ecf3;
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+}
+.an-card-num {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1b3a5c;
+}
+.an-card-cap {
+  font-size: 12px;
+  color: #5c6773;
+  margin-top: 2px;
+}
+.an-card-sub {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+.an-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  border-top: 1px solid #eef2f7;
+  font-size: 14px;
+}
+
+/* ─── Сетка каталога ─── */
+.rad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+.rad-card {
+  display: block;
+  border: 1px solid #e6ecf3;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  text-decoration: none;
+  color: inherit;
+}
+.rad-card-thumb {
+  height: 140px;
+  background: #0b1220 center/cover no-repeat;
+}
+.rad-card-body {
+  padding: 12px;
+}
+.rad-tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eef2f7;
+  color: #475569;
+  margin-right: 6px;
+}
