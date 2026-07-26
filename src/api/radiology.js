@@ -63,9 +63,17 @@ export async function aiGenerateCase({ modality, topic, difficulty, hint }) {
  * ИИ-проверка лучевого кейса вторым проходом (роль author).
  * Отдаёт замечания, ничего не правит: { verdict, issues:[{target,severity,issue,suggestion}], errorCount, summary }.
  */
-export async function aiVerifyCase({ modality, draft }) {
-  const { data } = await axios.post(`${BASE}/ai/verify`, { modality, draft });
+export async function aiVerifyCase({ modality, draft, caseId }) {
+  // caseId передаём, если кейс уже сохранён: тогда сервер положит рецензию в
+  // кейс, и гейт публикации переживёт перезагрузку страницы.
+  const { data } = await axios.post(`${BASE}/ai/verify`, { modality, draft, caseId });
   return data.review;
+}
+
+/** Отметки «разобрано» на замечаниях сохранённой рецензии (индексы). */
+export async function dismissCaseAiIssues(caseId, dismissed) {
+  const { data } = await axios.patch(`${BASE}/cases/${caseId}/ai-review/dismissed`, { dismissed });
+  return data.aiReview;
 }
 
 // ─── Диагностическая арена (геймификация) ─────────────────────────────
@@ -196,6 +204,21 @@ export async function generateCaseAiBaseline(caseId) {
   return data.aiBaseline;
 }
 
+/**
+ * ИИ-варианты кейса: тот же диагноз, другие значения. Сохраняются сразу у
+ * кейса — автор дальше правит их как обычные данные. Нужны против передачи
+ * ответов: пересказ «там значимы эти два показателя» перестаёт работать.
+ */
+export async function generateLabVariants(caseId, count = 2) {
+  const { data } = await axios.post(`${BASE}/labs/cases/${caseId}/ai/variants`, { count });
+  return data.variants ?? [];
+}
+
+export async function generateVpVariants(caseId, count = 2) {
+  const { data } = await axios.post(`${BASE}/vp/cases/${caseId}/ai/variants`, { count });
+  return data.variants ?? [];
+}
+
 export async function generateLabAiBaseline(caseId) {
   const { data } = await axios.post(`${BASE}/labs/cases/${caseId}/ai/baseline`);
   return data.aiBaseline;
@@ -276,9 +299,15 @@ export async function aiGenerateLabCase({ topic, difficulty, hint }) {
 }
 
 /** ИИ-проверка кейса «Анализы» вторым проходом (роль author). */
-export async function aiVerifyLabCase({ draft }) {
-  const { data } = await axios.post(`${BASE}/labs/ai/verify`, { draft });
+export async function aiVerifyLabCase({ draft, caseId }) {
+  const { data } = await axios.post(`${BASE}/labs/ai/verify`, { draft, caseId });
   return data.review;
+}
+
+/** Отметки «разобрано» на замечаниях сохранённой рецензии (индексы). */
+export async function dismissLabAiIssues(caseId, dismissed) {
+  const { data } = await axios.patch(`${BASE}/labs/cases/${caseId}/ai-review/dismissed`, { dismissed });
+  return data.aiReview;
 }
 
 export async function createLabCase(payload) {
@@ -373,9 +402,15 @@ export async function aiGenerateVpCase({ topic, difficulty, hint }) {
 }
 
 /** ИИ-проверка сценария «Виртуальный пациент» вторым проходом (роль author). */
-export async function aiVerifyVpCase({ draft }) {
-  const { data } = await axios.post(`${BASE}/vp/ai/verify`, { draft });
+export async function aiVerifyVpCase({ draft, caseId }) {
+  const { data } = await axios.post(`${BASE}/vp/ai/verify`, { draft, caseId });
   return data.review;
+}
+
+/** Отметки «разобрано» на замечаниях сохранённой рецензии (индексы). */
+export async function dismissVpAiIssues(caseId, dismissed) {
+  const { data } = await axios.patch(`${BASE}/vp/cases/${caseId}/ai-review/dismissed`, { dismissed });
+  return data.aiReview;
 }
 
 export async function createVpCase(payload) {

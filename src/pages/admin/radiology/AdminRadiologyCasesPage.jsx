@@ -26,6 +26,7 @@ import {
   aiDraftCase,
   aiGenerateCase,
   aiVerifyCase,
+  dismissCaseAiIssues,
   generateCaseAiBaseline,
 } from "../../../api/radiology";
 import { readApiError, isAuthError } from "../../../api/education";
@@ -153,6 +154,26 @@ export default function AdminRadiologyCasesPage() {
     })();
   }, [navigate]);
 
+  function resetReview() {
+    setReview(null);
+    setDismissed(new Set());
+  }
+
+  // Рецензия, сохранённая у кейса, восстанавливается вместе с ним: гейт
+  // публикации живёт в кейсе, и перезагрузка страницы не должна его открывать.
+  // Если рецензии нет — состояние чистим, иначе на новый кейс перенеслись бы
+  // замечания предыдущего.
+  function restoreReview(doc) {
+    if (!doc?.aiReview?.generatedAt) return resetReview();
+    setReview({
+      verdict: doc.aiReview.verdict,
+      issues: doc.aiReview.issues ?? [],
+      errorCount: doc.aiReview.errorCount ?? 0,
+      summary: doc.aiReview.summary ?? "",
+    });
+    setDismissed(new Set(doc.aiReview.dismissed ?? []));
+  }
+
   async function refreshList() {
     setCases(await fetchCases({ scope: "all" }));
   }
@@ -210,8 +231,7 @@ export default function AdminRadiologyCasesPage() {
       );
       setPlanned([]);
       setArmed(null);
-      setReview(null);
-      setDismissed(new Set());
+      restoreReview(doc);
       setActiveImg(0);
       setActiveLabel(null);
       setNotice(null);
@@ -280,6 +300,21 @@ export default function AdminRadiologyCasesPage() {
       setError(readApiError(err, "Не удалось получить типовой ответ ИИ"));
     } finally {
       setBusy(false);
+    }
+  }
+
+  // Отметка «разобрано» пишется на сервер: гейт публикации живёт в кейсе, и
+  // локальная отметка без записи снова сделала бы его мягким.
+  async function handleDismiss(index) {
+    const next = new Set(dismissed);
+    next.add(index);
+    setDismissed(next);
+    if (selected === "new") return;
+    try {
+      await dismissCaseAiIssues(selected, [...next]);
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось сохранить отметку «разобрано»"));
     }
   }
 
@@ -530,6 +565,7 @@ export default function AdminRadiologyCasesPage() {
     setVerifyBusy(true);
     try {
       const res = await aiVerifyCase({
+        caseId: selected !== "new" ? selected : undefined,
         modality: useForm.modality,
         draft: {
           title: useForm.title.trim() || undefined,
@@ -995,7 +1031,7 @@ export default function AdminRadiologyCasesPage() {
               <AiReviewPanel
                 review={review}
                 dismissed={dismissed}
-                onDismiss={(i) => setDismissed((prev) => new Set(prev).add(i))}
+                onDismiss={handleDismiss}
                 onRecheck={() => runVerify()}
                 busy={verifyBusy}
               />

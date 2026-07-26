@@ -175,6 +175,11 @@ export default function LabReaderPage() {
         </div>
         <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
           <AttemptModeBadge attempt={attempt} />
+          {attempt.variantLabel && (
+            <span className="rules-badge" title="Числовой вариант кейса: те же правила, другие значения">
+              {attempt.variantLabel}
+            </span>
+          )}
           {!submitted && <AttemptTimer deadlineAt={attempt.deadlineAt} />}
           <Link className="edu-btn edu-btn--ghost" to="/radiology">← В арену</Link>
         </div>
@@ -187,7 +192,12 @@ export default function LabReaderPage() {
           <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: 14 }}>
             Условия этой попытки
           </summary>
-          <RulesText station="labs" policy={{ ...policy, timeLimitSec: attempt.timeLimitSec }} />
+          <RulesText station="labs"
+            policy={{
+              ...policy,
+              timeLimitSec: attempt.timeLimitSec,
+              variantCount: caseData.variantCount,
+            }} />
         </details>
       )}
 

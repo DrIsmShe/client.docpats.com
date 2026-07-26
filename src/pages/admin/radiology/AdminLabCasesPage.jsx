@@ -14,7 +14,9 @@ import {
   setLabStatus,
   aiGenerateLabCase,
   aiVerifyLabCase,
+  dismissLabAiIssues,
   generateLabAiBaseline,
+  generateLabVariants,
   fetchReadingConfig,
 } from "../../../api/radiology";
 import { readApiError, isAuthError } from "../../../api/education";
@@ -77,6 +79,9 @@ export default function AdminLabCasesPage() {
   const [rows, setRows] = useState([newRow(), newRow()]);
   // Сохранённый у кейса «типовой ответ чат-бота» (для сигналов добросовестности).
   const [baseline, setBaseline] = useState(null);
+  // Числовые варианты кейса (тот же диагноз, другие значения).
+  const [variants, setVariants] = useState([]);
+  const [variantsBusy, setVariantsBusy] = useState(false);
 
   // ИИ-генерация кейса целиком по теме.
   const [aiEnabled, setAiEnabled] = useState(false);
@@ -118,11 +123,27 @@ export default function AdminLabCasesPage() {
     setDismissed(new Set());
   }
 
+  // Рецензия, сохранённая у кейса, восстанавливается вместе с ним: гейт
+  // публикации живёт в кейсе, и перезагрузка страницы не должна его открывать.
+  // Если рецензии нет — состояние чистим, иначе на новый кейс перенеслись бы
+  // замечания предыдущего.
+  function restoreReview(doc) {
+    if (!doc?.aiReview?.generatedAt) return resetReview();
+    setReview({
+      verdict: doc.aiReview.verdict,
+      issues: doc.aiReview.issues ?? [],
+      errorCount: doc.aiReview.errorCount ?? 0,
+      summary: doc.aiReview.summary ?? "",
+    });
+    setDismissed(new Set(doc.aiReview.dismissed ?? []));
+  }
+
   function startNew() {
     setSelected("new");
     setStatus("draft");
     setForm(BLANK);
     setRows([newRow(), newRow()]);
+    setVariants([]);
     resetReview();
     setNotice(null);
     setError(null);
@@ -150,6 +171,7 @@ export default function AdminLabCasesPage() {
         diagnosisSynonyms: (doc.impression?.diagnosisSynonyms ?? []).join(", "),
       });
       setBaseline(doc.aiBaseline?.generatedAt ? doc.aiBaseline : null);
+      setVariants(doc.variants ?? []);
       setRows(
         (doc.panel?.length ? doc.panel : [newRow(), newRow()]).map((p) => ({
           key: p.key || newKey(),
@@ -160,7 +182,7 @@ export default function AdminLabCasesPage() {
           significant: sig.has(p.key),
         })),
       );
-      resetReview();
+      restoreReview(doc);
       setNotice(null);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
@@ -252,6 +274,7 @@ export default function AdminLabCasesPage() {
     setVerifyBusy(true);
     try {
       const res = await aiVerifyLabCase({
+        caseId: selected !== "new" ? selected : undefined,
         draft: {
           title: useForm.title.trim() || undefined,
           clinicalContext: useForm.clinicalContext.trim() || undefined,
@@ -300,6 +323,7 @@ export default function AdminLabCasesPage() {
       timeLimitSec: limitMin > 0 ? Math.round(limitMin * 60) : null,
       panel,
       significantAbnormal,
+      variants,
       impression: {
         correctText: form.correctText.trim(),
         diagnosisKeys: parseList(form.diagnosisKeys),
@@ -330,6 +354,46 @@ export default function AdminLabCasesPage() {
     } finally {
       setBusy(false);
     }
+  }
+
+  // Отметка «разобрано» пишется на сервер: гейт публикации живёт в кейсе, и
+  // локальная отметка без записи снова сделала бы его мягким.
+  async function handleDismiss(index) {
+    const next = new Set(dismissed);
+    next.add(index);
+    setDismissed(next);
+    if (selected === "new") return;
+    try {
+      await dismissLabAiIssues(selected, [...next]);
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось сохранить отметку «разобрано»"));
+    }
+  }
+
+  // Числовые варианты кейса от ИИ: тот же диагноз, другие значения. Нужны
+  // против передачи ответов между врачами — пересказ «там значимы эти два
+  // показателя» перестаёт работать, если у соседа другие цифры.
+  async function handleVariants() {
+    if (selected === "new") return setError("Сначала сохраните кейс");
+    setVariantsBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const list = await generateLabVariants(selected, 2);
+      setVariants(list);
+      setNotice(`Сохранено вариантов: ${list.length}. Проверьте значения.`);
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось сгенерировать варианты"));
+    } finally {
+      setVariantsBusy(false);
+    }
+  }
+
+  // Удаление варианта — правка кейса как обычно: сохранится по «Сохранить».
+  function removeVariant(index) {
+    setVariants((prev) => prev.filter((_, i) => i !== index));
   }
 
   async function handleSave() {
@@ -543,6 +607,56 @@ export default function AdminLabCasesPage() {
                 </div>
               </div>
 
+{/* Числовые варианты: тот же диагноз, другие значения */}
+              <div className="rad-panel">
+                <div className="edu-card-title" style={{ fontSize: 15 }}>
+                  Числовые варианты кейса
+                </div>
+                <div className="edu-hint">
+                  Тот же диагноз, другие значения. Врачи получают варианты по кругу: первая
+                  попытка — основной кейс, дальше варианты. Пересказ ответа коллеге
+                  перестаёт работать, а повторный зачёт не повторяет тот же текст.
+                  Вариант меняет только значения: набор показателей и диагноз остаются прежними.
+                </div>
+                <div className="edu-btn-row" style={{ marginTop: 8 }}>
+                  <button
+                    type="button"
+                    className="edu-btn edu-btn--ghost"
+                    onClick={handleVariants}
+                    disabled={variantsBusy || selected === "new"}
+                  >
+                    {variantsBusy ? "ИИ считает…" : "Сгенерировать варианты (ИИ)"}
+                  </button>
+                </div>
+                {variants.length === 0 ? (
+                  <div className="edu-hint" style={{ marginTop: 8 }}>
+                    Вариантов нет — все врачи видят одни и те же цифры.
+                  </div>
+                ) : (
+                  <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 8 }}>
+                    {variants.map((v, i) => (
+                      <div key={`${v.label}_${i}`} className="rules-commit" style={{ marginTop: 0 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
+                          <strong>{v.label || `Вариант ${i + 1}`}</strong>
+                          <button
+                            type="button"
+                            className="edu-btn edu-btn--ghost"
+                            style={{ padding: "2px 10px", fontSize: 12 }}
+                            onClick={() => removeVariant(i)}
+                          >
+                            Удалить
+                          </button>
+                        </div>
+                        {v.note && <div className="edu-hint">{v.note}</div>}
+                        <div className="edu-hint" style={{ marginTop: 4 }}>
+                          {(v.panel ?? []).map((p) => `${p.key}: ${p.value}${p.unit ? " " + p.unit : ""}`).join(" · ")}{(v.significantAbnormal ?? []).length > 0 && <> — значимо: {v.significantAbnormal.join(", ")}</>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               {/* Панель показателей */}
               <div className="rad-panel">
                 <div className="edu-card-title" style={{ fontSize: 15 }}>Панель показателей</div>
@@ -570,7 +684,7 @@ export default function AdminLabCasesPage() {
               <AiReviewPanel
                 review={review}
                 dismissed={dismissed}
-                onDismiss={(i) => setDismissed((prev) => new Set(prev).add(i))}
+                onDismiss={handleDismiss}
                 onRecheck={() => runVerify()}
                 busy={verifyBusy}
               />
