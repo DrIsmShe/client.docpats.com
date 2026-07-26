@@ -3592,18 +3592,48 @@ body[data-theme="dark"] {
 .sidebar-nav [data-sec="security"]  { --sec: #dc2626; --sec-ink: #b91c1c; --sec-bg: #fef3f2; }
 .sidebar-nav [data-sec="data"]      { --sec: #c026d3; --sec-ink: #a21caf; --sec-bg: #fdf4ff; }
 
-/* Заголовок раздела: цвет + короткая полоска, чтобы группы читались блоками. */
+/* Заголовок раздела: засечный шрифт, крупный кегль, цвет раздела и разделитель
+ * сверху — чтобы блоки читались как блоки, а не как продолжение списка.
+ *
+ * Засечный против sans-пунктов — намеренный контраст: заголовок отличается не
+ * только размером, но и характером шрифта, поэтому не путается с пунктами
+ * меню. Стек только из системных шрифтов: Georgia есть и в Windows, и в macOS,
+ * дальше идут запасные — веб-шрифт ради восьми строк тянуть не стоит.
+ *
+ * Регистр сброшен: шаблонный uppercase на 16px даёт грузный блок, а строчные
+ * читаются быстрее. Заметность даёт кегль и вес, а не капс.
+ */
 .sidebar-nav .nav-heading[data-sec] {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino,
+    "Times New Roman", serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-transform: none;
   color: var(--sec-ink);
+  /* Отбивка слева через padding, а не margin: тогда разделитель сверху идёт
+     во всю ширину, а текст остаётся выровненным с пунктами. */
+  margin: 18px 0 8px;
+  padding: 14px 8px 0 15px;
+  border-top: 1px solid #eef1f7;
+}
+
+/* Первый заголовок — без верхнего разделителя: отделять нечего. */
+.sidebar-nav .nav-heading[data-sec]:first-child {
+  margin-top: 4px;
+  padding-top: 0;
+  border-top: 0;
 }
 
 .sidebar-nav .nav-heading[data-sec]::before {
   content: "";
-  width: 14px;
-  height: 3px;
+  flex: none;
+  width: 16px;
+  height: 4px;
   border-radius: 2px;
   background: var(--sec);
 }
