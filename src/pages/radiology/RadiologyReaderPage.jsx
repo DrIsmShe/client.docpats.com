@@ -30,11 +30,21 @@ const SCORE_LABELS = {
 
 // Диагноз из свободной строки → ключи: отдельные слова + вся фраза
 // (в нижнем регистре). Сервер сверит их с принятым набором автора.
+// Ключи для быстрой сверки: фраза целиком плюс отдельные слова. Фразу
+// обрезаем по лимиту сервера (400) — развёрнутая клиническая формулировка
+// бывает длиннее, и раньше сдача падала в 400, теряя ответ врача. Сама
+// формулировка уходит отдельным полем diagnosisText и оценивается по
+// вхождению принятого ключа или синонима.
+const KEY_MAX = 400;
+
 function diagnosisToKeys(text) {
   const phrase = String(text ?? "").trim().toLowerCase();
   if (!phrase) return [];
-  const words = phrase.split(/[^\p{L}\p{N}]+/u).filter((w) => w.length >= 2);
-  return [...new Set([phrase, ...words])];
+  const words = phrase
+    .split(/[^\p{L}\p{N}]+/u)
+    .filter((w) => w.length >= 2)
+    .map((w) => w.slice(0, KEY_MAX));
+  return [...new Set([phrase.slice(0, KEY_MAX), ...words])];
 }
 
 export default function RadiologyReaderPage() {
@@ -155,6 +165,7 @@ export default function RadiologyReaderPage() {
         reviewedChecklist: Object.keys(areaStatus).filter((k) => areaStatus[k]),
         impressionText: impressionText.trim(),
         diagnosisKeys: diagnosisToKeys(diagnosis),
+        diagnosisText: diagnosis.trim(),
       });
       setAttempt(result.attempt);
       setReview(result.review);

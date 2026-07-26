@@ -24,11 +24,21 @@ const SCORE_LABELS = {
   reasoning: "Обоснование",
 };
 
+// Ключи для быстрой сверки: фраза целиком плюс отдельные слова. Фразу
+// обрезаем по лимиту сервера (400) — развёрнутая клиническая формулировка
+// бывает длиннее, и раньше сдача падала в 400, теряя ответ врача. Сама
+// формулировка уходит отдельным полем diagnosisText и оценивается по
+// вхождению принятого ключа или синонима.
+const KEY_MAX = 400;
+
 function diagnosisToKeys(text) {
   const phrase = String(text ?? "").trim().toLowerCase();
   if (!phrase) return [];
-  const words = phrase.split(/[^\p{L}\p{N}]+/u).filter((w) => w.length >= 2);
-  return [...new Set([phrase, ...words])];
+  const words = phrase
+    .split(/[^\p{L}\p{N}]+/u)
+    .filter((w) => w.length >= 2)
+    .map((w) => w.slice(0, KEY_MAX));
+  return [...new Set([phrase.slice(0, KEY_MAX), ...words])];
 }
 
 export default function VirtualPatientReaderPage() {
@@ -96,6 +106,7 @@ export default function VirtualPatientReaderPage() {
     try {
       const res = await submitVpAttempt(attempt._id, {
         diagnosisKeys: diagnosisToKeys(diagnosis),
+        diagnosisText: diagnosis.trim(),
         reasoningText: reasoning.trim(),
       });
       setAttempt(res.attempt);
