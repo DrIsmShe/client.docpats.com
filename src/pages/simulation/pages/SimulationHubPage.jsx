@@ -1,13 +1,15 @@
 // client/src/pages/simulation/SimulationHubPage.jsx
 //
-// S.8 Phase 3A — Hub-страница "Моделирование" с выбором типа.
+// Hub-страница "Моделирование" с выбором варианта симулятора.
 //
-// Пользователь видит карточки доступных типов симуляции:
-//   • Лицо (face)         — рабочая
-//   • Грудь (breast)      — рабочая, новая (S.8)
-//   • Талия / Руки / ...  — Coming soon (для будущего)
+// Два варианта одного и того же инструмента: виртуальная пластика лица и
+// других частей тела. Врач выбирает, в каком варианте работать, — поэтому
+// карточки называются «Вариант 1» и «Вариант 2», а не по областям тела.
 //
-// Расширение: добавить новый тип = добавить запись в SIMULATION_TYPES.
+// Карточек «скоро» здесь нет намеренно: обещания в интерфейсе, которые
+// нельзя нажать, только занимают место и вызывают вопросы.
+//
+// Расширение: добавить вариант = добавить запись в SIMULATION_TYPES.
 
 import React from "react";
 import { Link } from "react-router-dom";
@@ -55,11 +57,6 @@ const styles = {
     cursor: "pointer",
     minHeight: 160,
   },
-  cardDisabled: {
-    cursor: "not-allowed",
-    opacity: 0.55,
-    background: "#f4f7f9",
-  },
   cardIcon: {
     width: 48,
     height: 48,
@@ -68,11 +65,12 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: 26,
+    // В плитке теперь номер варианта, а не эмодзи: нужен вес и цвет, иначе
+    // цифра выглядит случайной.
+    fontSize: 22,
+    fontWeight: 700,
+    color: "#0d6b5e",
     marginBottom: 14,
-  },
-  cardIconDisabled: {
-    background: "#e8eaed",
   },
   cardTitle: {
     fontSize: 16,
@@ -86,73 +84,40 @@ const styles = {
     margin: 0,
     lineHeight: 1.45,
   },
-  cardBadge: {
-    display: "inline-block",
-    fontSize: 10,
-    fontWeight: 700,
-    letterSpacing: "0.08em",
-    textTransform: "uppercase",
-    padding: "3px 8px",
-    borderRadius: 100,
-    marginBottom: 10,
-    background: "#fff8e1",
-    color: "#856404",
-    border: "1px solid #ffe082",
-  },
-  cardBadgeAvailable: {
-    background: "#e8f7f5",
-    color: "#0d6b5e",
-    border: "1px solid #a3ddd5",
-  },
 };
 
 /* ──────────────────────────────────────────────────────────────────────────
-   Список доступных типов симуляции.
-   Чтобы добавить новый тип — добавь сюда запись.
+   Варианты симулятора. Описание у них одно и то же — отличается только
+   вариант реализации, и честнее сказать об этом прямо, чем придумывать двум
+   картам разные обещания.
+
+   Маршруты остались прежними (face/breast): это те же две рабочие страницы,
+   поменялась только их подача врачу.
    ────────────────────────────────────────────────────────────────────────── */
+const VARIANT_DESCRIPTION =
+  "Ринопластика, ментопластика, виртуальная пластика лица и других частей " +
+  "тела, симметрия — анализ и симуляция операций.";
+
 const SIMULATION_TYPES = [
   {
-    key: "face",
-    icon: "👤",
-    titleKey: "simulation.hub.face.title",
-    titleDefault: "Моделирование лица",
-    descKey: "simulation.hub.face.description",
-    descDefault:
-      "Ринопластика, ментопластика, симметрия — анализ и симуляция операций на лице",
+    key: "variant1",
+    // Цифра вместо пиктограммы: карточки различаются только номером варианта,
+    // и любая «говорящая» иконка обещала бы разницу, которой нет.
+    icon: "1",
+    titleKey: "simulation.hub.variant1.title",
+    titleDefault: "Вариант 1",
+    descKey: "simulation.hub.variant1.description",
+    descDefault: VARIANT_DESCRIPTION,
     route: "/dp/simulation/face",
-    available: true,
   },
   {
-    key: "breast",
-    icon: "♀",
-    titleKey: "simulation.hub.breast.title",
-    titleDefault: "Моделирование груди",
-    descKey: "simulation.hub.breast.description",
-    descDefault:
-      "Аугментация, редукция, мастопексия — симуляция операций на груди",
+    key: "variant2",
+    icon: "2",
+    titleKey: "simulation.hub.variant2.title",
+    titleDefault: "Вариант 2",
+    descKey: "simulation.hub.variant2.description",
+    descDefault: VARIANT_DESCRIPTION,
     route: "/dp/simulation/breast",
-    available: true,
-    isNew: true,
-  },
-  {
-    key: "abdomen",
-    icon: "⬛",
-    titleKey: "simulation.hub.abdomen.title",
-    titleDefault: "Моделирование талии",
-    descKey: "simulation.hub.abdomen.description",
-    descDefault: "Абдоминопластика, липосакция — скоро",
-    route: "/dp/simulation/abdomen",
-    available: false,
-  },
-  {
-    key: "arms",
-    icon: "💪",
-    titleKey: "simulation.hub.arms.title",
-    titleDefault: "Моделирование рук",
-    descKey: "simulation.hub.arms.description",
-    descDefault: "Брахиопластика — скоро",
-    route: "/dp/simulation/arms",
-    available: false,
   },
 ];
 
@@ -179,27 +144,6 @@ const SimulationHubPage = () => {
             defaultValue: type.descDefault,
           });
 
-          if (!type.available) {
-            return (
-              <div
-                key={type.key}
-                style={{ ...styles.card, ...styles.cardDisabled }}
-                aria-disabled="true"
-              >
-                <div style={{ ...styles.cardIcon, ...styles.cardIconDisabled }}>
-                  {type.icon}
-                </div>
-                <span style={styles.cardBadge}>
-                  {t("simulation.hub.comingSoon", {
-                    defaultValue: "Скоро",
-                  })}
-                </span>
-                <h3 style={styles.cardTitle}>{title}</h3>
-                <p style={styles.cardDescription}>{description}</p>
-              </div>
-            );
-          }
-
           return (
             <Link
               key={type.key}
@@ -218,13 +162,6 @@ const SimulationHubPage = () => {
               }}
             >
               <div style={styles.cardIcon}>{type.icon}</div>
-              {type.isNew && (
-                <span
-                  style={{ ...styles.cardBadge, ...styles.cardBadgeAvailable }}
-                >
-                  {t("simulation.hub.new", { defaultValue: "Новое" })}
-                </span>
-              )}
               <h3 style={styles.cardTitle}>{title}</h3>
               <p style={styles.cardDescription}>{description}</p>
             </Link>

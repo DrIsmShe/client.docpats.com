@@ -5,32 +5,20 @@
   "toggleSidePanel": "Yan paneli aç/kapat",
   "loadingImageRetry": "Görüntü yükleniyor… (deneme {{attempt}} / {{max}})",
   "loadingImageRetryHint": "Yeni yüklenen görüntülerin kullanılabilir hale gelmesi birkaç saniye sürebilir",
-
   "simulation": {
     "hub": {
       "title": "Simülasyon",
       "subtitle": "Simülasyon türünü seçin",
-      "comingSoon": "Yakında",
-      "new": "Yeni",
-      "face": {
-        "title": "Yüz simülasyonu",
-        "description": "Rinoplasti, mentoplasti, simetri — yüz operasyonlarının analizi ve simülasyonu"
+      "variant1": {
+        "title": "Seçenek 1",
+        "description": "Rinoplasti, mentoplasti, yüz ve diğer vücut bölgelerinin sanal plastik cerrahisi, simetri — operasyonların analizi ve simülasyonu."
       },
-      "breast": {
-        "title": "Göğüs simülasyonu",
-        "description": "Augmentasyon, redüksiyon, mastopeksi — göğüs operasyonlarının simülasyonu"
-      },
-      "abdomen": {
-        "title": "Bel simülasyonu",
-        "description": "Abdominoplasti, liposuction — yakında"
-      },
-      "arms": {
-        "title": "Kol simülasyonu",
-        "description": "Brakiyoplasti — yakında"
+      "variant2": {
+        "title": "Seçenek 2",
+        "description": "Rinoplasti, mentoplasti, yüz ve diğer vücut bölgelerinin sanal plastik cerrahisi, simetri — operasyonların analizi ve simülasyonu."
       }
     }
   },
-
   "breast": {
     "backToHub": "Tür seçimine dön",
     "title": "Göğüs simülasyonu",
@@ -93,7 +81,6 @@
       "bottom_up": "Alttan görünüm. İnframammarian katlanma değerlendirmesi için."
     }
   },
-
   "list": {
     "title": "Simülasyon planlarım",
     "empty": "Henüz hiç simülasyon planınız yok",
@@ -114,7 +101,6 @@
       "label": "İsme göre"
     }
   },
-
   "editor": {
     "title": "Plan editörü",
     "placeholderTitle": "Editör geliştiriliyor",
@@ -129,7 +115,6 @@
     "loadingImage": "Görüntü yükleniyor…",
     "imageLoadError": "Görüntü yüklenemedi"
   },
-
   "newPlanModal": {
     "title": "Yeni simülasyon planı",
     "stepUpload": "Adım 1/2 — hasta fotoğrafını yükle",
@@ -147,7 +132,6 @@
     "create": "Plan oluştur",
     "creating": "Oluşturuluyor…"
   },
-
   "deleteModal": {
     "title": "Plan silinsin mi?",
     "body": "Plan arşive taşınacak, görüntü kalıcı olarak silinecek. Bu işlem geri alınamaz.",
@@ -155,13 +139,11 @@
     "confirm": "Sil",
     "deleting": "Siliniyor…"
   },
-
   "itemMenu": {
     "open": "Aç",
     "duplicate": "Kopyala",
     "delete": "Sil"
   },
-
   "errors": {
     "network_error": "Ağ hatası. Bağlantınızı kontrol edin.",
     "validation_error": "Girilen verileri kontrol edin",
@@ -173,7 +155,6 @@
     "mime_mismatch": "Dosya türü içeriğiyle eşleşmiyor",
     "unknown": "Bir hata oluştu"
   },
-
   "toolbar": {
     "zoomIn": "Yakınlaştır",
     "zoomOut": "Uzaklaştır",
@@ -186,7 +167,6 @@
     "undo": "Geri al (Ctrl+Z)",
     "redo": "Yinele (Ctrl+Shift+Z)"
   },
-
   "saveStatus": {
     "idle": "Kaydedildi",
     "dirty": "Kaydedilmemiş değişiklikler var",
@@ -194,7 +174,6 @@
     "saved": "Kaydedildi",
     "error": "Kaydetme hatası"
   },
-
   "points": {
     "propsTitle": "Deformasyon noktası",
     "radius": "Etki yarıçapı",
@@ -202,7 +181,6 @@
     "delete": "Noktayı sil",
     "hint": "Alt + kare sürükleme — merkezi taşı. Del — sil."
   },
-
   "dates": {
     "todayAt": "bugün {{time}}",
     "yesterdayAt": "dün {{time}}",
@@ -210,12 +188,10 @@
     "daysAgo_one": "{{count}} gün önce",
     "daysAgo_other": "{{count}} gün önce"
   },
-
   "tabs": {
     "editor": "Editör",
     "viewer": "Önce / Sonra"
   },
-
   "viewer": {
     "labelBefore": "Önce",
     "labelAfter": "Sonra",
@@ -224,7 +200,6 @@
     "exportError": "Dışa aktarım hazırlanamadı",
     "retry": "Tekrar dene"
   },
-
   "export": {
     "title": "Dışa aktar",
     "mode": "Ne dışa aktarılacak",
@@ -238,7 +213,6 @@
     "download": "İndir",
     "downloading": "Oluşturuluyor…"
   },
-
   "help": {
     "pageTitle": "Yardım",
     "backToList": "Plan listesine dön",
@@ -247,7 +221,6 @@
     "loadError": "Yardım yüklenemedi",
     "headerLink": "Yardım"
   },
-
   "landmarks": {
     "title": "Anatomik noktalar",
     "status": {
@@ -274,7 +247,6 @@
       "right_eyebrow": "Sağ kaş"
     }
   },
-
   "measurements": {
     "title": "Ölçümler",
     "noLandmarks": "Önce anatomik noktaları belirleyin",

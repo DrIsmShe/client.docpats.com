@@ -5,32 +5,20 @@
   "toggleSidePanel": "Yan paneli aç/bağla",
   "loadingImageRetry": "Şəkil yüklənir… (cəhd {{attempt}} / {{max}})",
   "loadingImageRetryHint": "Yeni yüklənmiş şəkillərin əlçatan olması bir neçə saniyə çəkə bilər",
-
   "simulation": {
     "hub": {
       "title": "Modelləşdirmə",
       "subtitle": "Simulyasiya növünü seçin",
-      "comingSoon": "Tezliklə",
-      "new": "Yeni",
-      "face": {
-        "title": "Üz modelləşdirməsi",
-        "description": "Rinoplastika, mentoplastika, simmetriya — üz əməliyyatlarının analizi və simulyasiyası"
+      "variant1": {
+        "title": "Variant 1",
+        "description": "Rinoplastika, mentoplastika, üz və digər bədən nahiyələrinin virtual plastikası, simmetriya — əməliyyatların təhlili və simulyasiyası."
       },
-      "breast": {
-        "title": "Döş modelləşdirməsi",
-        "description": "Augmentasiya, reduksiya, mastopeksiya — döş əməliyyatlarının simulyasiyası"
-      },
-      "abdomen": {
-        "title": "Bel modelləşdirməsi",
-        "description": "Abdominoplastika, liposaksiya — tezliklə"
-      },
-      "arms": {
-        "title": "Qol modelləşdirməsi",
-        "description": "Braxioplastika — tezliklə"
+      "variant2": {
+        "title": "Variant 2",
+        "description": "Rinoplastika, mentoplastika, üz və digər bədən nahiyələrinin virtual plastikası, simmetriya — əməliyyatların təhlili və simulyasiyası."
       }
     }
   },
-
   "breast": {
     "backToHub": "Növ seçiminə qayıt",
     "title": "Döş modelləşdirməsi",
@@ -93,7 +81,6 @@
       "bottom_up": "Aşağıdan görünüş. Submammar büküşün qiymətləndirilməsi üçün."
     }
   },
-
   "list": {
     "title": "Mənim simulyasiya planlarım",
     "empty": "Hələ heç bir simulyasiya planınız yoxdur",
@@ -114,7 +101,6 @@
       "label": "Ada görə"
     }
   },
-
   "editor": {
     "title": "Plan redaktoru",
     "placeholderTitle": "Redaktor hazırlanır",
@@ -129,7 +115,6 @@
     "loadingImage": "Şəkil yüklənir…",
     "imageLoadError": "Şəkili yükləmək mümkün olmadı"
   },
-
   "newPlanModal": {
     "title": "Yeni simulyasiya planı",
     "stepUpload": "Addım 1/2 — pasiyentin şəklini yüklə",
@@ -147,7 +132,6 @@
     "create": "Plan yarat",
     "creating": "Yaradılır…"
   },
-
   "deleteModal": {
     "title": "Plan silinsin?",
     "body": "Plan arxivə köçürüləcək, şəkil həmişəlik silinəcək. Bu əməliyyatı geri qaytarmaq mümkün deyil.",
@@ -155,13 +139,11 @@
     "confirm": "Sil",
     "deleting": "Silinir…"
   },
-
   "itemMenu": {
     "open": "Aç",
     "duplicate": "Kopyala",
     "delete": "Sil"
   },
-
   "errors": {
     "network_error": "Şəbəkə xətası. Bağlantını yoxlayın.",
     "validation_error": "Daxil edilən məlumatları yoxlayın",
@@ -173,7 +155,6 @@
     "mime_mismatch": "Fayl tipi məzmuna uyğun gəlmir",
     "unknown": "Xəta baş verdi"
   },
-
   "toolbar": {
     "zoomIn": "Yaxınlaşdır",
     "zoomOut": "Uzaqlaşdır",
@@ -186,7 +167,6 @@
     "undo": "Geri al (Ctrl+Z)",
     "redo": "Təkrarla (Ctrl+Shift+Z)"
   },
-
   "saveStatus": {
     "idle": "Saxlanıldı",
     "dirty": "Saxlanılmamış dəyişikliklər var",
@@ -194,7 +174,6 @@
     "saved": "Saxlanıldı",
     "error": "Saxlama xətası"
   },
-
   "points": {
     "propsTitle": "Deformasiya nöqtəsi",
     "radius": "Təsir radiusu",
@@ -202,7 +181,6 @@
     "delete": "Nöqtəni sil",
     "hint": "Alt + kvadratı sürüşdür — mərkəzi köçür. Del — sil."
   },
-
   "dates": {
     "todayAt": "bu gün {{time}}",
     "yesterdayAt": "dünən {{time}}",
@@ -210,12 +188,10 @@
     "daysAgo_one": "{{count}} gün əvvəl",
     "daysAgo_other": "{{count}} gün əvvəl"
   },
-
   "tabs": {
     "editor": "Redaktor",
     "viewer": "Əvvəl / Sonra"
   },
-
   "viewer": {
     "labelBefore": "Əvvəl",
     "labelAfter": "Sonra",
@@ -224,7 +200,6 @@
     "exportError": "İxracı hazırlamaq mümkün olmadı",
     "retry": "Yenidən cəhd et"
   },
-
   "export": {
     "title": "İxrac",
     "mode": "Nə ixrac olunacaq",
@@ -238,7 +213,6 @@
     "download": "Yüklə",
     "downloading": "Yaradılır…"
   },
-
   "help": {
     "pageTitle": "Kömək",
     "backToList": "Plan siyahısına qayıt",
@@ -247,7 +221,6 @@
     "loadError": "Köməyi yükləmək mümkün olmadı",
     "headerLink": "Kömək"
   },
-
   "landmarks": {
     "title": "Anatomik nöqtələr",
     "status": {
@@ -274,7 +247,6 @@
       "right_eyebrow": "Sağ qaş"
     }
   },
-
   "measurements": {
     "title": "Ölçmələr",
     "noLandmarks": "Əvvəlcə anatomik nöqtələri müəyyən edin",

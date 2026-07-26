@@ -5,32 +5,20 @@
   "toggleSidePanel": "Open/close side panel",
   "loadingImageRetry": "Loading image… (attempt {{attempt}} of {{max}})",
   "loadingImageRetryHint": "Recently uploaded images may take a few seconds to become available",
-
   "simulation": {
     "hub": {
       "title": "Simulation",
       "subtitle": "Select simulation type",
-      "comingSoon": "Coming soon",
-      "new": "New",
-      "face": {
-        "title": "Facial simulation",
-        "description": "Rhinoplasty, mentoplasty, symmetry — analysis and simulation of facial procedures"
+      "variant1": {
+        "title": "Option 1",
+        "description": "Rhinoplasty, mentoplasty, virtual plastic surgery of the face and other body areas, symmetry — analysis and simulation of procedures."
       },
-      "breast": {
-        "title": "Breast simulation",
-        "description": "Augmentation, reduction, mastopexy — simulation of breast procedures"
-      },
-      "abdomen": {
-        "title": "Waist simulation",
-        "description": "Abdominoplasty, liposuction — coming soon"
-      },
-      "arms": {
-        "title": "Arm simulation",
-        "description": "Brachioplasty — coming soon"
+      "variant2": {
+        "title": "Option 2",
+        "description": "Rhinoplasty, mentoplasty, virtual plastic surgery of the face and other body areas, symmetry — analysis and simulation of procedures."
       }
     }
   },
-
   "breast": {
     "backToHub": "Back to type selection",
     "title": "Breast simulation",
@@ -93,7 +81,6 @@
       "bottom_up": "Bottom-up view. For inframammary fold assessment."
     }
   },
-
   "list": {
     "title": "My simulation plans",
     "empty": "You don't have any simulation plans yet",
@@ -114,7 +101,6 @@
       "label": "By name"
     }
   },
-
   "editor": {
     "title": "Plan editor",
     "placeholderTitle": "Editor in development",
@@ -129,7 +115,6 @@
     "loadingImage": "Loading image…",
     "imageLoadError": "Failed to load image"
   },
-
   "newPlanModal": {
     "title": "New simulation plan",
     "stepUpload": "Step 1 of 2 — upload patient photo",
@@ -147,7 +132,6 @@
     "create": "Create plan",
     "creating": "Creating…"
   },
-
   "deleteModal": {
     "title": "Delete plan?",
     "body": "The plan will be moved to archive, the image will be permanently deleted. This action cannot be undone.",
@@ -155,13 +139,11 @@
     "confirm": "Delete",
     "deleting": "Deleting…"
   },
-
   "itemMenu": {
     "open": "Open",
     "duplicate": "Duplicate",
     "delete": "Delete"
   },
-
   "errors": {
     "network_error": "Network error. Check your connection.",
     "validation_error": "Check the input data",
@@ -173,7 +155,6 @@
     "mime_mismatch": "File type does not match its content",
     "unknown": "An error occurred"
   },
-
   "toolbar": {
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
@@ -186,7 +167,6 @@
     "undo": "Undo (Ctrl+Z)",
     "redo": "Redo (Ctrl+Shift+Z)"
   },
-
   "saveStatus": {
     "idle": "Saved",
     "dirty": "Unsaved changes",
@@ -194,7 +174,6 @@
     "saved": "Saved",
     "error": "Save error"
   },
-
   "points": {
     "propsTitle": "Deformation point",
     "radius": "Effect radius",
@@ -202,7 +181,6 @@
     "delete": "Delete point",
     "hint": "Alt + drag the square — move the center. Del — delete."
   },
-
   "dates": {
     "todayAt": "today at {{time}}",
     "yesterdayAt": "yesterday at {{time}}",
@@ -210,12 +188,10 @@
     "daysAgo_one": "{{count}} day ago",
     "daysAgo_other": "{{count}} days ago"
   },
-
   "tabs": {
     "editor": "Editor",
     "viewer": "Before / After"
   },
-
   "viewer": {
     "labelBefore": "Before",
     "labelAfter": "After",
@@ -224,7 +200,6 @@
     "exportError": "Failed to prepare export",
     "retry": "Retry"
   },
-
   "export": {
     "title": "Export",
     "mode": "What to export",
@@ -238,7 +213,6 @@
     "download": "Download",
     "downloading": "Generating…"
   },
-
   "help": {
     "pageTitle": "Help",
     "backToList": "Back to plan list",
@@ -247,7 +221,6 @@
     "loadError": "Failed to load help",
     "headerLink": "Help"
   },
-
   "landmarks": {
     "title": "Anatomical landmarks",
     "status": {
@@ -274,7 +247,6 @@
       "right_eyebrow": "Right eyebrow"
     }
   },
-
   "measurements": {
     "title": "Measurements",
     "noLandmarks": "Detect anatomical landmarks first",
