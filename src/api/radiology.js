@@ -41,6 +41,24 @@ export async function aiDraftCase({ imageUrl, modality, hint, imageIndex = 0 }) 
   return data.draft;
 }
 
+/**
+ * ИИ-кейс ЦЕЛИКОМ по теме (роль author) — снимка ещё нет.
+ * Возвращает { title, clinicalContext, difficulty,
+ *   plannedFindings:[{label,significance,location,explanation}],
+ *   impression:{correctText,diagnosisKeys,diagnosisSynonyms} }.
+ * plannedFindings — план разметки: что должно быть на снимке и где искать.
+ * Точки на кадре ставит автор, ИИ их не выдумывает.
+ */
+export async function aiGenerateCase({ modality, topic, difficulty, hint }) {
+  const { data } = await axios.post(`${BASE}/ai/generate`, {
+    modality,
+    topic,
+    difficulty,
+    hint,
+  });
+  return data.draft;
+}
+
 // ─── Диагностическая арена (геймификация) ─────────────────────────────
 /** Игровой профиль: xp, ранг, серия дней, статистика. */
 export async function fetchGameProfile() {
@@ -185,6 +203,21 @@ export async function fetchLabCase(caseId) {
   return data; // { case, full }
 }
 
+/**
+ * ИИ-кейс станции «Анализы» ЦЕЛИКОМ по теме (роль author).
+ * @returns {{title, clinicalContext, difficulty,
+ *   panel:Array<{name,value,unit,refRange,significant}>,
+ *   impression:{correctText,diagnosisKeys,diagnosisSynonyms}}}
+ */
+export async function aiGenerateLabCase({ topic, difficulty, hint }) {
+  const { data } = await axios.post(`${BASE}/labs/ai/generate`, {
+    topic,
+    difficulty,
+    hint,
+  });
+  return data.draft;
+}
+
 export async function createLabCase(payload) {
   const { data } = await axios.post(`${BASE}/labs/cases`, payload);
   return data.case;
@@ -259,6 +292,21 @@ export async function fetchVpCases(params = {}) {
 export async function fetchVpCase(caseId) {
   const { data } = await axios.get(`${BASE}/vp/cases/${caseId}`);
   return data; // { case, full }
+}
+
+/**
+ * ИИ-сценарий «Виртуального пациента» ЦЕЛИКОМ по теме (роль author).
+ * @returns {{title, presentation, difficulty,
+ *   investigations:Array<{name,category,resultText,necessary}>,
+ *   diagnosis:{correctText,diagnosisKeys,diagnosisSynonyms}}}
+ */
+export async function aiGenerateVpCase({ topic, difficulty, hint }) {
+  const { data } = await axios.post(`${BASE}/vp/ai/generate`, {
+    topic,
+    difficulty,
+    hint,
+  });
+  return data.draft;
 }
 
 export async function createVpCase(payload) {

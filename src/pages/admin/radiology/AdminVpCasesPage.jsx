@@ -12,6 +12,8 @@ import {
   createVpCase,
   updateVpCase,
   setVpStatus,
+  aiGenerateVpCase,
+  fetchReadingConfig,
 } from "../../../api/radiology";
 import { readApiError, isAuthError } from "../../../api/education";
 import "../../education/education.css";
@@ -57,10 +59,23 @@ export default function AdminVpCasesPage() {
   const [form, setForm] = useState(BLANK);
   const [invs, setInvs] = useState([newInv(), newInv()]);
 
+  // ИИ-генерация сценария целиком по теме.
+  const [aiEnabled, setAiEnabled] = useState(false);
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiTopic, setAiTopic] = useState("");
+  const [aiHint, setAiHint] = useState("");
+  const [aiDifficulty, setAiDifficulty] = useState("medium");
+
   useEffect(() => {
     (async () => {
       try {
-        setCases(await fetchVpCases({ scope: "all" }));
+        // Настроен ли ИИ — тот же флаг, что у авторинга снимков.
+        const [list, cfg] = await Promise.all([
+          fetchVpCases({ scope: "all" }),
+          fetchReadingConfig().catch(() => ({ aiEnabled: false })),
+        ]);
+        setCases(list);
+        setAiEnabled(Boolean(cfg.aiEnabled));
       } catch (err) {
         if (isAuthError(err)) return navigate("/login");
         setError(readApiError(err, "Не удалось загрузить кейсы"));
@@ -116,6 +131,57 @@ export default function AdminVpCasesPage() {
       setError(readApiError(err, "Не удалось открыть кейс"));
     } finally {
       setBusy(false);
+    }
+  }
+
+  // ИИ создаёт сценарий целиком по теме: жалоба, список обследований с
+  // результатами (нужные и лишние) и верный диагноз. Заполняет форму как новый
+  // черновик — сохранение и публикация остаются за автором.
+  async function handleAiGenerate() {
+    if (aiTopic.trim().length < 3) {
+      return setError("Опишите тему сценария для ИИ (хотя бы несколько слов)");
+    }
+    setAiBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const draft = await aiGenerateVpCase({
+        topic: aiTopic.trim(),
+        difficulty: aiDifficulty,
+        hint: aiHint.trim() || undefined,
+      });
+      setSelected("new");
+      setStatus("draft");
+      setForm({
+        ...BLANK,
+        title: draft.title ?? "",
+        presentation: draft.presentation ?? "",
+        difficulty: draft.difficulty ?? aiDifficulty,
+        // Происхождение помечаем честно: материал сгенерирован ИИ.
+        sourceKind: "ai_generated",
+        correctText: draft.diagnosis?.correctText ?? "",
+        diagnosisKeys: (draft.diagnosis?.diagnosisKeys ?? []).join(", "),
+        diagnosisSynonyms: (draft.diagnosis?.diagnosisSynonyms ?? []).join(", "),
+      });
+      setInvs(
+        (draft.investigations ?? []).map((inv, i) => ({
+          key: `ai_${Date.now().toString(36)}_${i}`,
+          name: inv.name ?? "",
+          category: inv.category ?? "",
+          resultText: inv.resultText ?? "",
+          imageUrl: "",
+          necessary: Boolean(inv.necessary),
+        })),
+      );
+      const needed = (draft.investigations ?? []).filter((i) => i.necessary).length;
+      setNotice(
+        `ИИ составил сценарий: обследований ${draft.investigations?.length ?? 0}, из них нужных ${needed}. Это ЧЕРНОВИК — проверьте результаты и диагноз, поправьте и только потом сохраняйте.`,
+      );
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "ИИ не смог сгенерировать сценарий"));
+    } finally {
+      setAiBusy(false);
     }
   }
 
@@ -211,6 +277,54 @@ export default function AdminVpCasesPage() {
 
       {error && <div className="edu-error" style={{ marginTop: 12 }}>{error}</div>}
       {notice && <div className="edu-notice" style={{ marginTop: 12 }}>{notice}</div>}
+
+      {/* ИИ-генерация сценария целиком по теме */}
+      <div className="rad-panel" style={{ marginTop: 16 }}>
+        <div className="edu-card-title" style={{ fontSize: 15 }}>✨ Создать сценарий с помощью ИИ</div>
+        {aiEnabled ? (
+          <>
+            <div className="edu-hint" style={{ marginBottom: 8 }}>
+              Опишите тему — ИИ придумает весь сценарий: жалобу и анамнез, набор обследований
+              с результатами (нужные и лишние — чтобы игроку было из чего выбирать) и верный
+              диагноз. Форма заполнится как новый черновик; вы проверяете и сохраняете.
+            </div>
+            <div className="edu-form-row" style={{ alignItems: "flex-end" }}>
+              <div style={{ flex: 2 }}>
+                <div className="edu-field-label" style={{ marginTop: 0 }}>Тема сценария</div>
+                <input
+                  className="edu-input"
+                  style={{ margin: 0 }}
+                  placeholder="Напр.: одышка и кашель у курильщика 60 лет"
+                  value={aiTopic}
+                  onChange={(e) => setAiTopic(e.target.value)}
+                />
+              </div>
+              <div>
+                <div className="edu-field-label" style={{ marginTop: 0 }}>Сложность</div>
+                <select className="edu-select" value={aiDifficulty} onChange={(e) => setAiDifficulty(e.target.value)}>
+                  {DIFFICULTIES.map((d) => <option key={d.key} value={d.key}>{d.label}</option>)}
+                </select>
+              </div>
+            </div>
+            <input
+              className="edu-input"
+              placeholder="Пожелания (необязательно): напр. «сделай сложным дифдиагноз с ТЭЛА»"
+              value={aiHint}
+              onChange={(e) => setAiHint(e.target.value)}
+            />
+            <div className="edu-btn-row" style={{ marginTop: 10 }}>
+              <button type="button" className="edu-btn" onClick={handleAiGenerate} disabled={aiBusy || busy}>
+                {aiBusy ? "ИИ составляет сценарий…" : "✨ Сгенерировать сценарий целиком"}
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="edu-warn">
+            ИИ выключен: на сервере не задан ANTHROPIC_API_KEY. Сценарии можно создавать вручную.
+            Чтобы включить ИИ — добавьте ключ в .env и перезапустите сервер.
+          </div>
+        )}
+      </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "280px minmax(0,1fr)", gap: 20, marginTop: 16, alignItems: "start" }}>
         <div className="rad-panel">

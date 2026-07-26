@@ -12,6 +12,8 @@ import {
   createLabCase,
   updateLabCase,
   setLabStatus,
+  aiGenerateLabCase,
+  fetchReadingConfig,
 } from "../../../api/radiology";
 import { readApiError, isAuthError } from "../../../api/education";
 import "../../education/education.css";
@@ -65,10 +67,23 @@ export default function AdminLabCasesPage() {
   const [form, setForm] = useState(BLANK);
   const [rows, setRows] = useState([newRow(), newRow()]);
 
+  // ИИ-генерация кейса целиком по теме.
+  const [aiEnabled, setAiEnabled] = useState(false);
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiTopic, setAiTopic] = useState("");
+  const [aiHint, setAiHint] = useState("");
+  const [aiDifficulty, setAiDifficulty] = useState("medium");
+
   useEffect(() => {
     (async () => {
       try {
-        setCases(await fetchLabCases({ scope: "all" }));
+        // Настроен ли ИИ — тот же флаг, что у авторинга снимков.
+        const [list, cfg] = await Promise.all([
+          fetchLabCases({ scope: "all" }),
+          fetchReadingConfig().catch(() => ({ aiEnabled: false })),
+        ]);
+        setCases(list);
+        setAiEnabled(Boolean(cfg.aiEnabled));
       } catch (err) {
         if (isAuthError(err)) return navigate("/login");
         setError(readApiError(err, "Не удалось загрузить кейсы"));
@@ -127,6 +142,57 @@ export default function AdminLabCasesPage() {
       setError(readApiError(err, "Не удалось открыть кейс"));
     } finally {
       setBusy(false);
+    }
+  }
+
+  // ИИ создаёт кейс целиком по теме и заполняет форму как НОВЫЙ черновик:
+  // панель показателей, отметки значимых отклонений, заключение и диагноз.
+  // Ничего не сохраняется — автор проверяет цифры и нажимает «Сохранить».
+  async function handleAiGenerate() {
+    if (aiTopic.trim().length < 3) {
+      return setError("Опишите тему кейса для ИИ (хотя бы несколько слов)");
+    }
+    setAiBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const draft = await aiGenerateLabCase({
+        topic: aiTopic.trim(),
+        difficulty: aiDifficulty,
+        hint: aiHint.trim() || undefined,
+      });
+      setSelected("new");
+      setStatus("draft");
+      setForm({
+        ...BLANK,
+        title: draft.title ?? "",
+        clinicalContext: draft.clinicalContext ?? "",
+        difficulty: draft.difficulty ?? aiDifficulty,
+        // Происхождение помечаем честно: материал сгенерирован ИИ.
+        sourceKind: "ai_generated",
+        correctText: draft.impression?.correctText ?? "",
+        diagnosisKeys: (draft.impression?.diagnosisKeys ?? []).join(", "),
+        diagnosisSynonyms: (draft.impression?.diagnosisSynonyms ?? []).join(", "),
+      });
+      setRows(
+        (draft.panel ?? []).map((p, i) => ({
+          key: `ai_${Date.now().toString(36)}_${i}`,
+          name: p.name ?? "",
+          value: p.value ?? "",
+          unit: p.unit ?? "",
+          refRange: p.refRange ?? "",
+          significant: Boolean(p.significant),
+        })),
+      );
+      const flagged = (draft.panel ?? []).filter((p) => p.significant).length;
+      setNotice(
+        `ИИ составил кейс: показателей ${draft.panel?.length ?? 0}, из них значимо отклонённых ${flagged}. Это ЧЕРНОВИК — проверьте значения, референсы и диагноз, поправьте и только потом сохраняйте.`,
+      );
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "ИИ не смог сгенерировать кейс"));
+    } finally {
+      setAiBusy(false);
     }
   }
 
@@ -235,6 +301,54 @@ export default function AdminLabCasesPage() {
 
       {error && <div className="edu-error" style={{ marginTop: 12 }}>{error}</div>}
       {notice && <div className="edu-notice" style={{ marginTop: 12 }}>{notice}</div>}
+
+      {/* ИИ-генерация кейса целиком по теме */}
+      <div className="rad-panel" style={{ marginTop: 16 }}>
+        <div className="edu-card-title" style={{ fontSize: 15 }}>✨ Создать кейс с помощью ИИ</div>
+        {aiEnabled ? (
+          <>
+            <div className="edu-hint" style={{ marginBottom: 8 }}>
+              Опишите тему — ИИ придумает весь кейс: клинический контекст, панель анализов с
+              референсами, отметки значимых отклонений, эталонное заключение и ключи диагноза.
+              Форма заполнится как новый черновик; вы проверяете и сохраняете.
+            </div>
+            <div className="edu-form-row" style={{ alignItems: "flex-end" }}>
+              <div style={{ flex: 2 }}>
+                <div className="edu-field-label" style={{ marginTop: 0 }}>Тема кейса</div>
+                <input
+                  className="edu-input"
+                  style={{ margin: 0 }}
+                  placeholder="Напр.: железодефицитная анемия у молодой женщины"
+                  value={aiTopic}
+                  onChange={(e) => setAiTopic(e.target.value)}
+                />
+              </div>
+              <div>
+                <div className="edu-field-label" style={{ marginTop: 0 }}>Сложность</div>
+                <select className="edu-select" value={aiDifficulty} onChange={(e) => setAiDifficulty(e.target.value)}>
+                  {DIFFICULTIES.map((d) => <option key={d.key} value={d.key}>{d.label}</option>)}
+                </select>
+              </div>
+            </div>
+            <input
+              className="edu-input"
+              placeholder="Пожелания (необязательно): напр. «добавь отвлекающие показатели в норме»"
+              value={aiHint}
+              onChange={(e) => setAiHint(e.target.value)}
+            />
+            <div className="edu-btn-row" style={{ marginTop: 10 }}>
+              <button type="button" className="edu-btn" onClick={handleAiGenerate} disabled={aiBusy || busy}>
+                {aiBusy ? "ИИ составляет кейс…" : "✨ Сгенерировать кейс целиком"}
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="edu-warn">
+            ИИ выключен: на сервере не задан ANTHROPIC_API_KEY. Кейсы можно создавать вручную.
+            Чтобы включить ИИ — добавьте ключ в .env и перезапустите сервер.
+          </div>
+        )}
+      </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "280px minmax(0,1fr)", gap: 20, marginTop: 16, alignItems: "start" }}>
         {/* Список */}

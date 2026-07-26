@@ -24,6 +24,7 @@ import {
   archiveCase,
   uploadCaseImage,
   aiDraftCase,
+  aiGenerateCase,
 } from "../../../api/radiology";
 import { readApiError, isAuthError } from "../../../api/education";
 import RadiologyCanvas from "../../radiology/components/RadiologyCanvas";
@@ -80,6 +81,14 @@ export default function AdminRadiologyCasesPage() {
   const [aiEnabled, setAiEnabled] = useState(false);
   const [aiBusy, setAiBusy] = useState(false);
   const [aiHint, setAiHint] = useState("");
+  // Генерация кейса ЦЕЛИКОМ по теме (снимка ещё нет).
+  const [aiGenBusy, setAiGenBusy] = useState(false);
+  const [aiTopic, setAiTopic] = useState("");
+  const [aiGenHint, setAiGenHint] = useState("");
+  // План разметки от ИИ: какие находки должны быть на снимке. Координаты ИИ не
+  // выдумывает — автор «заряжает» находку и кликает по кадру.
+  const [planned, setPlanned] = useState([]);
+  const [armed, setArmed] = useState(null); // индекс находки из плана
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -138,6 +147,8 @@ export default function AdminRadiologyCasesPage() {
     setForm(BLANK);
     setImages([{ url: "", label: "" }]);
     setFindings([]);
+    setPlanned([]);
+    setArmed(null);
     setActiveImg(0);
     setActiveLabel(null);
     setNotice(null);
@@ -176,6 +187,8 @@ export default function AdminRadiologyCasesPage() {
           explanation: f.explanation ?? "",
         })),
       );
+      setPlanned([]);
+      setArmed(null);
       setActiveImg(0);
       setActiveLabel(null);
       setNotice(null);
@@ -379,8 +392,82 @@ export default function AdminRadiologyCasesPage() {
     }
   }
 
+  // ИИ-кейс ЦЕЛИКОМ по теме: снимка ещё нет, поэтому ИИ отдаёт текстовую часть
+  // кейса и ПЛАН находок («что должно быть на снимке и где искать»). Форма
+  // заполняется как новый черновик; уже загруженные снимки и разметка нового
+  // черновика сохраняются, чтобы не потерять работу автора.
+  async function handleAiGenerateCase() {
+    if (aiTopic.trim().length < 3) {
+      setError("Опишите тему кейса для ИИ (хотя бы несколько слов)");
+      return;
+    }
+    setAiGenBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const draft = await aiGenerateCase({
+        modality: form.modality,
+        topic: aiTopic.trim(),
+        difficulty: form.difficulty,
+        hint: aiGenHint.trim() || undefined,
+      });
+      const wasNew = selected === "new";
+      setSelected("new");
+      setStatus("draft");
+      setForm((f) => ({
+        ...BLANK,
+        modality: f.modality,
+        title: draft.title ?? "",
+        clinicalContext: draft.clinicalContext ?? "",
+        difficulty: draft.difficulty ?? f.difficulty,
+        // Происхождение помечаем честно: текстовая часть сгенерирована ИИ.
+        sourceKind: "ai_generated",
+        // Деидентификацию подтверждает только человек — и только по снимку.
+        deidentified: wasNew ? f.deidentified : false,
+        correctText: draft.impression?.correctText ?? "",
+        diagnosisKeys: (draft.impression?.diagnosisKeys ?? []).join(", "),
+        diagnosisSynonyms: (draft.impression?.diagnosisSynonyms ?? []).join(", "),
+      }));
+      if (!wasNew) {
+        setImages([{ url: "", label: "" }]);
+        setFindings([]);
+        setActiveImg(0);
+      }
+      setPlanned(draft.plannedFindings ?? []);
+      setArmed(null);
+      setNotice(
+        `ИИ составил кейс. Находок в плане: ${draft.plannedFindings?.length ?? 0}. Осталось загрузить анонимный снимок и разметить эти находки на нём (кнопка «разметить» в плане). Проверьте тексты и диагноз перед отправкой на ревью.`,
+      );
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "ИИ не смог сгенерировать кейс"));
+    } finally {
+      setAiGenBusy(false);
+    }
+  }
+
   // ─── Разметка эталона на холсте ───
   function handleCreate(ann) {
+    // Если «заряжена» находка из плана ИИ — ставим именно её (с её значимостью
+    // и пояснением) и убираем из плана: план — это чек-лист, а не эталон.
+    if (armed !== null && planned[armed]) {
+      const p = planned[armed];
+      setError(null);
+      setFindings((prev) => [
+        ...prev,
+        {
+          key: newKey(),
+          imageIndex: activeImg,
+          label: p.label,
+          significance: p.significance ?? "major",
+          geometry: ann,
+          explanation: p.explanation ?? "",
+        },
+      ]);
+      setPlanned((prev) => prev.filter((_, i) => i !== armed));
+      setArmed(null);
+      return;
+    }
     if (!activeLabel) {
       setError("Сначала выберите находку в палитре, затем отметьте её на снимке");
       return;
@@ -434,6 +521,70 @@ export default function AdminRadiologyCasesPage() {
 
       {error && <div className="edu-error" style={{ marginTop: 12 }}>{error}</div>}
       {notice && <div className="edu-notice" style={{ marginTop: 12 }}>{notice}</div>}
+
+      {/* ИИ-кейс целиком по теме — доступно до выбора кейса, снимок не нужен */}
+      <div className="rad-panel" style={{ marginTop: 16 }}>
+        <div className="edu-card-title" style={{ fontSize: 15 }}>✨ Создать кейс с помощью ИИ (по теме)</div>
+        {aiEnabled ? (
+          <>
+            <div className="edu-hint" style={{ marginBottom: 8 }}>
+              Опишите тему — ИИ придумает весь кейс: клинический контекст, эталонное заключение,
+              ключи диагноза и <b>план находок</b> (что должно быть на снимке и где искать).
+              Точки на кадре ИИ не выдумывает: загрузите анонимный снимок и разметьте находки
+              из плана одним кликом. Если снимок уже есть — используйте «Составить черновик по
+              снимку» ниже: там ИИ смотрит именно на ваше изображение.
+            </div>
+            <div className="edu-form-row" style={{ alignItems: "flex-end" }}>
+              <div style={{ flex: 2 }}>
+                <div className="edu-field-label" style={{ marginTop: 0 }}>Тема кейса</div>
+                <input
+                  className="edu-input"
+                  style={{ margin: 0 }}
+                  placeholder="Напр.: правосторонний спонтанный пневмоторакс у молодого мужчины"
+                  value={aiTopic}
+                  onChange={(e) => setAiTopic(e.target.value)}
+                />
+              </div>
+              <div>
+                <div className="edu-field-label" style={{ marginTop: 0 }}>Модальность</div>
+                <select
+                  className="edu-select"
+                  value={form.modality}
+                  onChange={(e) => setForm((f) => ({ ...f, modality: e.target.value }))}
+                  disabled={selected !== null && selected !== "new"}
+                >
+                  {systems.map((s) => (<option key={s.modality} value={s.modality}>{s.title}</option>))}
+                </select>
+              </div>
+              <div>
+                <div className="edu-field-label" style={{ marginTop: 0 }}>Сложность</div>
+                <select className="edu-select" value={form.difficulty} onChange={(e) => setForm((f) => ({ ...f, difficulty: e.target.value }))}>
+                  {DIFFICULTIES.map((d) => (<option key={d.key} value={d.key}>{d.label}</option>))}
+                </select>
+              </div>
+            </div>
+            <input
+              className="edu-input"
+              placeholder="Пожелания (необязательно): напр. «добавь случайную находку incidental»"
+              value={aiGenHint}
+              onChange={(e) => setAiGenHint(e.target.value)}
+            />
+            <div className="edu-btn-row" style={{ marginTop: 10 }}>
+              <button type="button" className="edu-btn" onClick={handleAiGenerateCase} disabled={aiGenBusy || busy}>
+                {aiGenBusy ? "ИИ составляет кейс…" : "✨ Сгенерировать кейс целиком"}
+              </button>
+              {selected && selected !== "new" && (
+                <span className="edu-hint">Результат откроется как новый черновик — текущий кейс не изменится.</span>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="edu-warn">
+            ИИ выключен: на сервере не задан ANTHROPIC_API_KEY. Кейсы можно создавать вручную.
+            Чтобы включить ИИ — добавьте ключ в .env и перезапустите сервер.
+          </div>
+        )}
+      </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "300px minmax(0,1fr)", gap: 20, marginTop: 16, alignItems: "start" }}>
         {/* ─── Список кейсов ─── */}
@@ -573,6 +724,71 @@ export default function AdminRadiologyCasesPage() {
                 </div>
 
                 <div>
+                  {/* План находок от ИИ: чек-лист, который автор переносит на снимок */}
+                  {planned.length > 0 && (
+                    <div className="rad-panel">
+                      <div className="edu-card-title" style={{ fontSize: 15 }}>
+                        ✨ План находок от ИИ ({planned.length})
+                      </div>
+                      <div className="edu-hint" style={{ marginBottom: 8 }}>
+                        Нажмите «разметить» и кликните по нужному месту на снимке — находка
+                        встанет в эталон вместе со значимостью и пояснением и уйдёт из плана.
+                        Лишнее удаляйте: ИИ мог предложить то, чего на вашем снимке нет.
+                      </div>
+                      <div className="rad-marks">
+                        {planned.map((p, i) => (
+                          <div
+                            key={`${p.label}_${i}`}
+                            style={{
+                              border: armed === i ? "1px solid #2563eb" : "1px solid #e6ecf3",
+                              background: armed === i ? "#eef4ff" : "#fff",
+                              borderRadius: 8,
+                              padding: 8,
+                            }}
+                          >
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+                              <span>
+                                <span style={{ color: sigColor(p.significance) }}>●</span> {labelOf(p.label)}
+                              </span>
+                              <span style={{ display: "flex", gap: 6 }}>
+                                <button
+                                  type="button"
+                                  className="edu-btn edu-btn--ghost"
+                                  style={{ padding: "2px 8px", fontSize: 12 }}
+                                  onClick={() => setArmed(armed === i ? null : i)}
+                                >
+                                  {armed === i ? "отмена" : "разметить"}
+                                </button>
+                                <button
+                                  type="button"
+                                  className="edu-btn edu-btn--danger"
+                                  style={{ padding: "2px 8px", fontSize: 12 }}
+                                  onClick={() => {
+                                    setPlanned((prev) => prev.filter((_, j) => j !== i));
+                                    if (armed === i) setArmed(null);
+                                  }}
+                                >
+                                  ×
+                                </button>
+                              </span>
+                            </div>
+                            {p.location && (
+                              <div className="edu-hint" style={{ marginTop: 4 }}>Где искать: {p.location}</div>
+                            )}
+                            {p.explanation && (
+                              <div className="edu-hint" style={{ marginTop: 2 }}>{p.explanation}</div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      {armed !== null && (
+                        <div className="edu-notice" style={{ marginTop: 8 }}>
+                          Отметьте «{labelOf(planned[armed]?.label)}» на снимке выбранным инструментом.
+                        </div>
+                      )}
+                    </div>
+                  )}
+
                   <div className="rad-panel">
                     <div className="edu-card-title" style={{ fontSize: 15 }}>Находка для разметки</div>
                     <div className="edu-field-label" style={{ marginTop: 0 }}>Значимость</div>
