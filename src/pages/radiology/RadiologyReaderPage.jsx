@@ -11,9 +11,22 @@
 // Эталон приходит с сервера ТОЛЬКО после сдачи (submitAttempt.review) —
 // до этого его на клиенте нет.
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { startAttempt, submitAttempt, aiAnalyzeAttempt, submitDuelResult } from "../../api/radiology";
+import {
+  startAttempt,
+  submitAttempt,
+  aiAnalyzeAttempt,
+  submitDuelResult,
+  fetchAttemptPolicy,
+} from "../../api/radiology";
+import StationBriefing, {
+  AttemptModeBadge,
+  AttemptTimer,
+  AttemptOutcomeNote,
+  RulesText,
+} from "./StationRules";
+import useAttemptIntegrity from "./useAttemptIntegrity";
 import { readApiError, isAuthError } from "../../api/education";
 import RadiologyCanvas from "./components/RadiologyCanvas";
 import { MODALITY_LABELS } from "./RadiologyCatalogPage";
@@ -72,16 +85,23 @@ export default function RadiologyReaderPage() {
   const [aiBusy, setAiBusy] = useState(false);
   const [gameReward, setGameReward] = useState(null);
 
+  // Попытка не начинается при открытии страницы: сначала врач читает условия
+  // (StationBriefing) и выбирает режим — зачётный таймер не должен запускаться
+  // от простого любопытства, а слот «зачёт раз в 24 часа» тратится с начала.
+  const [policy, setPolicy] = useState(null);
+  const [mode, setMode] = useState("learn");
+
   const submitted = Boolean(review);
+  const counted = Boolean(attempt?.counted);
+  const { onPaste, collect } = useAttemptIntegrity({
+    active: Boolean(attempt) && !submitted,
+    blockPaste: counted && !submitted,
+  });
 
   useEffect(() => {
     (async () => {
       try {
-        const { attempt: a, case: c } = await startAttempt(caseId, {
-          mode: "learn",
-        });
-        setAttempt(a);
-        setCaseData(c);
+        setPolicy(await fetchAttemptPolicy(caseId, { mode }));
       } catch (err) {
         if (isAuthError(err)) return navigate("/login");
         setError(readApiError(err, "Не удалось открыть кейс"));
@@ -89,7 +109,26 @@ export default function RadiologyReaderPage() {
         setLoading(false);
       }
     })();
-  }, [caseId, navigate]);
+  }, [caseId, navigate, mode]);
+
+  const handleStart = useCallback(async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      // Дуэль — всегда зачётная: соревноваться тренировочными прогонами,
+      // где разрешён ИИ и разбор уже виден, было бы бессмысленно.
+      const { attempt: a, case: c } = await startAttempt(caseId, {
+        mode: duelId ? "exam" : mode,
+      });
+      setAttempt(a);
+      setCaseData(c);
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось начать попытку"));
+    } finally {
+      setBusy(false);
+    }
+  }, [caseId, mode, duelId, navigate]);
 
   // Ключ находки → человекочитаемый ярлык (для подписей на снимке и в списке).
   const labelOf = useMemo(() => {
@@ -100,13 +139,41 @@ export default function RadiologyReaderPage() {
   }, [caseData]);
 
   if (loading) return <div className="rad-page"><div className="edu-state">Загрузка…</div></div>;
-  if (error && !caseData)
+  if (error && !caseData && !policy)
     return (
       <div className="rad-page">
         <div className="edu-error">{error}</div>
         <Link className="edu-btn edu-btn--ghost" to="/radiology">← К каталогу</Link>
       </div>
     );
+
+  // До старта — экран условий: что считается, что нет, что будет с результатом.
+  if (!attempt) {
+    return (
+      <div className="rad-page">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16 }}>
+          <h1 className="edu-title" style={{ marginBottom: 4 }}>Кейс станции «Снимки»</h1>
+          <Link className="edu-btn edu-btn--ghost" to="/radiology">← К каталогу</Link>
+        </div>
+        {duelId && (
+          <div className="rules-warn" style={{ marginTop: 12 }}>
+            Это дуэль: попытка пойдёт как зачётная, с таймером. Тренировочный режим
+            здесь недоступен — иначе сравнивать результаты было бы нечестно.
+          </div>
+        )}
+        <StationBriefing
+          station="radiology"
+          policy={policy}
+          mode={duelId ? "exam" : mode}
+          onModeChange={duelId ? () => {} : setMode}
+          onStart={handleStart}
+          busy={busy}
+          error={error}
+        />
+      </div>
+    );
+  }
+
   if (!caseData) return null;
 
   const rs = caseData.readingSystem;
@@ -166,6 +233,7 @@ export default function RadiologyReaderPage() {
         impressionText: impressionText.trim(),
         diagnosisKeys: diagnosisToKeys(diagnosis),
         diagnosisText: diagnosis.trim(),
+        integrity: collect(),
       });
       setAttempt(result.attempt);
       setReview(result.review);
@@ -226,8 +294,27 @@ export default function RadiologyReaderPage() {
             {rs?.title}
           </div>
         </div>
-        <Link className="edu-btn edu-btn--ghost" to="/radiology">← К каталогу</Link>
+        <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+          <AttemptModeBadge attempt={attempt} />
+          {!submitted && <AttemptTimer deadlineAt={attempt.deadlineAt} />}
+          <Link className="edu-btn edu-btn--ghost" to="/radiology">← К каталогу</Link>
+        </div>
       </div>
+
+      {/* Условия остаются под рукой во время попытки — свёрнутыми */}
+      {!submitted && (
+        <details className="rad-panel" style={{ marginTop: 12 }}>
+          <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: 14 }}>
+            Условия этой попытки
+          </summary>
+          <RulesText
+            station="radiology"
+            policy={{ ...policy, timeLimitSec: attempt.timeLimitSec }}
+          />
+        </details>
+      )}
+
+      {submitted && <AttemptOutcomeNote attempt={attempt} game={gameReward} />}
 
       {caseData.clinicalContext && (
         <div className="rad-panel" style={{ marginTop: 12 }}>
@@ -392,12 +479,19 @@ export default function RadiologyReaderPage() {
 
               <div className="rad-panel">
                 <div className="edu-card-title" style={{ fontSize: 15 }}>Заключение</div>
+                {counted && (
+                  <div className="edu-hint" style={{ marginBottom: 6 }}>
+                    Зачётная попытка: вставка текста в поля отключена — пишите своими
+                    словами.
+                  </div>
+                )}
                 <textarea
                   className="edu-textarea"
                   rows={4}
                   placeholder="Опишите картину: что видите, где, характер изменений…"
                   value={impressionText}
                   onChange={(e) => setImpressionText(e.target.value)}
+                  onPaste={onPaste}
                 />
                 <div className="edu-field-label">Диагноз</div>
                 <input
@@ -405,6 +499,7 @@ export default function RadiologyReaderPage() {
                   placeholder="Напр.: правосторонний пневмоторакс"
                   value={diagnosis}
                   onChange={(e) => setDiagnosis(e.target.value)}
+                  onPaste={onPaste}
                 />
                 <div className="edu-btn-row" style={{ marginTop: 14 }}>
                   <button type="button" className="edu-btn" onClick={handleSubmit} disabled={busy}>

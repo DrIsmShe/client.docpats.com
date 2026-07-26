@@ -26,6 +26,7 @@ import {
   aiDraftCase,
   aiGenerateCase,
   aiVerifyCase,
+  generateCaseAiBaseline,
 } from "../../../api/radiology";
 import { readApiError, isAuthError } from "../../../api/education";
 import RadiologyCanvas from "../../radiology/components/RadiologyCanvas";
@@ -70,6 +71,8 @@ const BLANK = {
   title: "",
   clinicalContext: "",
   difficulty: "medium",
+  // Лимит зачётной попытки в минутах; пусто — значение по станции.
+  timeLimitMin: "",
   sourceKind: "original",
   authority: "",
   sourceUrl: "",
@@ -109,6 +112,8 @@ export default function AdminRadiologyCasesPage() {
   const [selected, setSelected] = useState(null); // null | "new" | caseId
   const [status, setStatus] = useState(null);
   const [form, setForm] = useState(BLANK);
+  // Сохранённый у кейса «типовой ответ чат-бота» (сигналы добросовестности).
+  const [baseline, setBaseline] = useState(null);
   const [images, setImages] = useState([{ url: "", label: "" }]);
   const [findings, setFindings] = useState([]);
 
@@ -156,6 +161,7 @@ export default function AdminRadiologyCasesPage() {
     setSelected("new");
     setStatus("draft");
     setForm(BLANK);
+    setBaseline(null);
     setImages([{ url: "", label: "" }]);
     setFindings([]);
     setPlanned([]);
@@ -180,6 +186,7 @@ export default function AdminRadiologyCasesPage() {
         title: doc.title ?? "",
         clinicalContext: doc.clinicalContext ?? "",
         difficulty: doc.difficulty ?? "medium",
+        timeLimitMin: doc.timeLimitSec ? String(Math.round(doc.timeLimitSec / 60)) : "",
         sourceKind: doc.source?.kind ?? "original",
         authority: doc.source?.authority ?? "",
         sourceUrl: doc.source?.url ?? "",
@@ -189,6 +196,7 @@ export default function AdminRadiologyCasesPage() {
         diagnosisKeys: (doc.impression?.diagnosisKeys ?? []).join(", "),
         diagnosisSynonyms: (doc.impression?.diagnosisSynonyms ?? []).join(", "),
       });
+      setBaseline(doc.aiBaseline?.generatedAt ? doc.aiBaseline : null);
       setImages(doc.images?.length ? doc.images.map((i) => ({ url: i.url, label: i.label ?? "" })) : [{ url: "", label: "" }]);
       setFindings(
         (doc.findings ?? []).map((f) => ({
@@ -221,6 +229,10 @@ export default function AdminRadiologyCasesPage() {
       title: form.title.trim(),
       clinicalContext: form.clinicalContext.trim(),
       difficulty: form.difficulty,
+      // Лимит зачётной попытки: минуты в форме, секунды в API. Пусто — null,
+      // тогда действует значение по станции из attemptPolicy.
+      timeLimitSec:
+        Number(form.timeLimitMin) > 0 ? Math.round(Number(form.timeLimitMin) * 60) : null,
       images: images
         .filter((i) => i.url.trim())
         .map((i) => ({
@@ -251,6 +263,24 @@ export default function AdminRadiologyCasesPage() {
       },
       deidentified: form.deidentified,
     };
+  }
+
+  // Образец «типового ответа чат-бота» на этот кейс: нужен, чтобы замечать
+  // дословно перенесённые заключения. На оценку не влияет.
+  async function handleAiBaseline() {
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const saved = await generateCaseAiBaseline(selected);
+      setBaseline(saved);
+      setNotice("Типовой ответ ИИ сохранён у кейса.");
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось получить типовой ответ ИИ"));
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function handleSave() {
@@ -742,6 +772,46 @@ export default function AdminRadiologyCasesPage() {
 
                 <div className="edu-field-label">Клинический контекст (виден учащемуся)</div>
                 <textarea className="edu-textarea" rows={2} value={form.clinicalContext} onChange={(e) => setForm((f) => ({ ...f, clinicalContext: e.target.value }))} placeholder="Жалобы, анамнез…" />
+
+                {/* Настройки зачётного режима: лимит времени и образец
+                    «типового ответа чат-бота» для сигналов добросовестности. */}
+                <div className="edu-form-row" style={{ marginTop: 12, alignItems: "flex-end" }}>
+                  <div style={{ maxWidth: 220 }}>
+                    <div className="edu-field-label" style={{ marginTop: 0 }}>
+                      Лимит зачётной попытки, мин
+                    </div>
+                    <input
+                      className="edu-input"
+                      type="number"
+                      min={1}
+                      max={120}
+                      value={form.timeLimitMin}
+                      onChange={(e) => setForm((f) => ({ ...f, timeLimitMin: e.target.value }))}
+                      placeholder="по умолчанию 7"
+                    />
+                  </div>
+                  {selected !== "new" && (
+                    <div style={{ flex: 1 }}>
+                      <button
+                        type="button"
+                        className="edu-btn edu-btn--ghost"
+                        onClick={handleAiBaseline}
+                        disabled={busy}
+                      >
+                        {baseline?.generatedAt ? "Обновить типовой ответ ИИ" : "Сохранить типовой ответ ИИ"}
+                      </button>
+                      <div className="edu-hint" style={{ marginTop: 4 }}>
+                        Один раз спрашиваем у модели, как она ответила бы на этот случай по
+                        текстовому описанию, и храним ответ как образец. Дословное совпадение
+                        заключения врача с ним будет видно в сигналах попытки. На оценку не
+                        влияет.
+                        {baseline?.generatedAt && (
+                          <> Сохранён: {new Date(baseline.generatedAt).toLocaleString("ru-RU")}.</>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Снимки */}

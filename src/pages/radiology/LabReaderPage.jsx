@@ -7,10 +7,17 @@
 // заключение и диагноз → сдача → оценка, награда арены и разбор (какие
 // отклонения были значимы, эталонное заключение).
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { startLabAttempt, submitLabAttempt } from "../../api/radiology";
+import { startLabAttempt, submitLabAttempt, fetchLabPolicy } from "../../api/radiology";
 import { readApiError, isAuthError } from "../../api/education";
+import StationBriefing, {
+  AttemptModeBadge,
+  AttemptTimer,
+  AttemptOutcomeNote,
+  RulesText,
+} from "./StationRules";
+import useAttemptIntegrity from "./useAttemptIntegrity";
 import "../education/education.css";
 import "./radiology.css";
 
@@ -54,14 +61,24 @@ export default function LabReaderPage() {
   const [impressionText, setImpressionText] = useState("");
   const [diagnosis, setDiagnosis] = useState("");
 
+  // Попытка не начинается сама при открытии страницы: сначала врач читает
+  // условия (StationBriefing) и выбирает режим. Так зачётный таймер не
+  // запускается от простого любопытства, а брошенных пустых попыток в базе
+  // больше не появляется.
+  const [policy, setPolicy] = useState(null);
+  const [mode, setMode] = useState("learn");
+
   const submitted = Boolean(review);
+  const counted = Boolean(attempt?.counted);
+  const { onPaste, collect } = useAttemptIntegrity({
+    active: Boolean(attempt) && !submitted,
+    blockPaste: counted && !submitted,
+  });
 
   useEffect(() => {
     (async () => {
       try {
-        const { attempt: a, case: c } = await startLabAttempt(caseId);
-        setAttempt(a);
-        setCaseData(c);
+        setPolicy(await fetchLabPolicy(caseId, { mode }));
       } catch (err) {
         if (isAuthError(err)) return navigate("/login");
         setError(readApiError(err, "Не удалось открыть кейс"));
@@ -69,21 +86,26 @@ export default function LabReaderPage() {
         setLoading(false);
       }
     })();
-  }, [caseId, navigate]);
+    // Режим влияет на условия (лимит времени, зачётность), поэтому политику
+    // перечитываем при его смене — но только пока попытка не начата.
+  }, [caseId, navigate, mode]);
 
-  if (loading) return <div className="rad-page"><div className="edu-state">Загрузка…</div></div>;
-  if (error && !caseData)
-    return (
-      <div className="rad-page">
-        <div className="edu-error">{error}</div>
-        <Link className="edu-btn edu-btn--ghost" to="/radiology">← В арену</Link>
-      </div>
-    );
-  if (!caseData) return null;
+  const handleStart = useCallback(async () => {
+    setBusy(true);
+    setError(null);
+    try {
+      const { attempt: a, case: c } = await startLabAttempt(caseId, { mode });
+      setAttempt(a);
+      setCaseData(c);
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось начать попытку"));
+    } finally {
+      setBusy(false);
+    }
+  }, [caseId, mode, navigate]);
 
-  const abnormalKeys = new Set((review?.significantAbnormal ?? []).map((a) => a.key));
-
-  async function handleSubmit() {
+  const handleSubmit = useCallback(async () => {
     setBusy(true);
     setError(null);
     try {
@@ -92,6 +114,7 @@ export default function LabReaderPage() {
         impressionText: impressionText.trim(),
         diagnosisKeys: diagnosisToKeys(diagnosis),
         diagnosisText: diagnosis.trim(),
+        integrity: collect(),
       });
       setAttempt(res.attempt);
       setReview(res.review);
@@ -102,7 +125,41 @@ export default function LabReaderPage() {
     } finally {
       setBusy(false);
     }
+  }, [attempt, flags, impressionText, diagnosis, collect, navigate]);
+
+  if (loading) return <div className="rad-page"><div className="edu-state">Загрузка…</div></div>;
+  if (error && !caseData && !policy)
+    return (
+      <div className="rad-page">
+        <div className="edu-error">{error}</div>
+        <Link className="edu-btn edu-btn--ghost" to="/radiology">← В арену</Link>
+      </div>
+    );
+
+  // До старта — экран условий: что считается, что нет, что будет с результатом.
+  if (!attempt) {
+    return (
+      <div className="rad-page">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16 }}>
+          <h1 className="edu-title" style={{ marginBottom: 4 }}>Кейс станции «Анализы»</h1>
+          <Link className="edu-btn edu-btn--ghost" to="/radiology">← В арену</Link>
+        </div>
+        <StationBriefing
+          station="labs"
+          policy={policy}
+          mode={mode}
+          onModeChange={setMode}
+          onStart={handleStart}
+          busy={busy}
+          error={error}
+        />
+      </div>
+    );
   }
+
+  if (!caseData) return null;
+
+  const abnormalKeys = new Set((review?.significantAbnormal ?? []).map((a) => a.key));
 
   const score = attempt?.score;
 
@@ -116,8 +173,23 @@ export default function LabReaderPage() {
             {DIFFICULTY_LABELS[caseData.difficulty] ?? caseData.difficulty}
           </div>
         </div>
-        <Link className="edu-btn edu-btn--ghost" to="/radiology">← В арену</Link>
+        <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+          <AttemptModeBadge attempt={attempt} />
+          {!submitted && <AttemptTimer deadlineAt={attempt.deadlineAt} />}
+          <Link className="edu-btn edu-btn--ghost" to="/radiology">← В арену</Link>
+        </div>
       </div>
+
+      {/* Условия остаются доступны во время попытки — свёрнутыми, чтобы не
+          мешать, но чтобы не пришлось вспоминать их по памяти. */}
+      {!submitted && (
+        <details className="rad-panel" style={{ marginTop: 12 }}>
+          <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: 14 }}>
+            Условия этой попытки
+          </summary>
+          <RulesText station="labs" policy={{ ...policy, timeLimitSec: attempt.timeLimitSec }} />
+        </details>
+      )}
 
       {caseData.clinicalContext && (
         <div className="rad-panel" style={{ marginTop: 12 }}>
@@ -127,8 +199,11 @@ export default function LabReaderPage() {
 
       {error && <div className="edu-error" style={{ marginTop: 12 }}>{error}</div>}
 
+      {/* Что стало с попыткой: в зачёт или нет и почему именно столько XP */}
+      {submitted && <AttemptOutcomeNote attempt={attempt} game={game} />}
+
       {/* Награда */}
-      {submitted && game && (
+      {submitted && game && game.pointsAwarded > 0 && (
         <div className="rad-panel arena-reward" style={{ marginTop: 12 }}>
           <div className="arena-reward-xp">+{game.pointsAwarded} XP</div>
           <div className="arena-reward-row">
@@ -225,12 +300,19 @@ export default function LabReaderPage() {
       {!submitted && (
         <div className="rad-panel" style={{ marginTop: 12 }}>
           <div className="edu-card-title" style={{ fontSize: 15 }}>Заключение</div>
+          {counted && (
+            <div className="edu-hint" style={{ marginBottom: 6 }}>
+              Зачётная попытка: вставка текста в поля отключена — пишите своими
+              словами.
+            </div>
+          )}
           <textarea
             className="edu-textarea"
             rows={3}
             placeholder="Интерпретация: какой синдром/картина, чего не хватает…"
             value={impressionText}
             onChange={(e) => setImpressionText(e.target.value)}
+            onPaste={onPaste}
           />
           <div className="edu-field-label">Диагноз</div>
           <input
@@ -238,6 +320,7 @@ export default function LabReaderPage() {
             placeholder="Напр.: железодефицитная анемия"
             value={diagnosis}
             onChange={(e) => setDiagnosis(e.target.value)}
+            onPaste={onPaste}
           />
           <div className="edu-btn-row" style={{ marginTop: 14 }}>
             <button type="button" className="edu-btn" onClick={handleSubmit} disabled={busy}>

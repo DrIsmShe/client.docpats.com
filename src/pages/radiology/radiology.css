@@ -541,3 +541,190 @@
   color: #475569;
   margin-right: 6px;
 }
+
+/* ─── Правила задания (StationRules.jsx) ─────────────────────────────────
+   Экран перед стартом: условия, последствия, возможности. Текст длинный
+   намеренно — зачётная попытка расходует слот и сгорает, если её бросить,
+   и узнать об этом врач должен до, а не после. */
+.rules-wrap {
+  margin-top: 12px;
+}
+.rules-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.rules-best {
+  font-size: 13px;
+  color: #4a5a6a;
+  background: #f4f7fb;
+  border: 1px solid #e3eaf3;
+  border-radius: 8px;
+  padding: 6px 10px;
+  white-space: nowrap;
+}
+.rules-resume {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #2f5d3f;
+  background: #eef8f1;
+  border: 1px solid #cfe8d8;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.rules-choice {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+@media (max-width: 640px) {
+  .rules-choice {
+    grid-template-columns: 1fr;
+  }
+}
+.rules-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  padding: 10px 12px;
+  border: 1.5px solid #e3eaf3;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.rules-pick:hover {
+  border-color: #c7d6e8;
+}
+.rules-pick--on {
+  border-color: #2f6fb5;
+  background: #f5f9ff;
+}
+.rules-pick-h {
+  font-weight: 700;
+  font-size: 14px;
+  color: #1f2d3d;
+}
+.rules-pick-sub {
+  font-size: 12px;
+  color: #7d8b9a;
+}
+.rules-warn {
+  margin-top: 10px;
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  color: #8a5a12;
+  background: #fdf5e6;
+  border: 1px solid #f0dfbc;
+}
+.rules-warn--ok {
+  color: #234b78;
+  background: #f2f7fd;
+  border-color: #d5e4f5;
+}
+.rules {
+  margin-top: 16px;
+  border-top: 1px solid #eef1f7;
+  padding-top: 12px;
+}
+.rules-block + .rules-block {
+  margin-top: 14px;
+}
+.rules-h {
+  font-weight: 700;
+  font-size: 14px;
+  color: #1f2d3d;
+  margin-bottom: 6px;
+}
+.rules-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #4a5a6a;
+}
+.rules-list li + li {
+  margin-top: 4px;
+}
+.rules-note {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #4a5a6a;
+}
+.rules-modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 720px) {
+  .rules-modes {
+    grid-template-columns: 1fr;
+  }
+}
+.rules-mode {
+  border: 1px solid #e8edf4;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fbfcfe;
+}
+.rules-mode--exam {
+  background: #f7faff;
+  border-color: #dde8f6;
+}
+.rules-mode-h {
+  font-weight: 700;
+  font-size: 13px;
+  color: #1f2d3d;
+  margin-bottom: 6px;
+}
+.rules-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 9px;
+  border-radius: 20px;
+  color: #5c6b7a;
+  background: #f1f4f8;
+  border: 1px solid #e3eaf3;
+}
+.rules-badge--exam {
+  color: #1d5c33;
+  background: #eaf7ee;
+  border-color: #c9e6d3;
+}
+.rules-timer {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding: 4px 10px;
+  border-radius: 8px;
+  color: #234b78;
+  background: #eff5fc;
+  border: 1px solid #d5e4f5;
+}
+.rules-timer--low {
+  color: #93331f;
+  background: #fdeeea;
+  border-color: #f3cfc6;
+}
+.rules-outcome {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid #e8edf4;
+  border-radius: 10px;
+  background: #fbfcfe;
+}
+.rules-commit {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1.5px dashed #cbd8e8;
+  border-radius: 10px;
+  background: #f8fbff;
+}

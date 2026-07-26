@@ -14,6 +14,7 @@ import {
   setVpStatus,
   aiGenerateVpCase,
   aiVerifyVpCase,
+  generateVpAiBaseline,
   fetchReadingConfig,
 } from "../../../api/radiology";
 import { readApiError, isAuthError } from "../../../api/education";
@@ -45,6 +46,8 @@ const BLANK = {
   title: "",
   presentation: "",
   difficulty: "medium",
+  // Лимит зачётной попытки в минутах; пусто — значение по станции.
+  timeLimitMin: "",
   sourceKind: "original",
   authority: "",
   correctText: "",
@@ -63,6 +66,8 @@ export default function AdminVpCasesPage() {
   const [selected, setSelected] = useState(null);
   const [status, setStatus] = useState(null);
   const [form, setForm] = useState(BLANK);
+  // Сохранённый у кейса «типовой ответ чат-бота» (сигналы добросовестности).
+  const [baseline, setBaseline] = useState(null);
   const [invs, setInvs] = useState([newInv(), newInv()]);
 
   // ИИ-генерация сценария целиком по теме.
@@ -110,6 +115,7 @@ export default function AdminVpCasesPage() {
     setStatus("draft");
     setForm(BLANK);
     setInvs([newInv(), newInv()]);
+    setBaseline(null);
     resetReview();
     setNotice(null);
     setError(null);
@@ -122,10 +128,12 @@ export default function AdminVpCasesPage() {
       const { case: doc } = await fetchVpCase(id);
       setSelected(id);
       setStatus(doc.status);
+      setBaseline(doc.aiBaseline?.generatedAt ? doc.aiBaseline : null);
       setForm({
         title: doc.title ?? "",
         presentation: doc.presentation ?? "",
         difficulty: doc.difficulty ?? "medium",
+        timeLimitMin: doc.timeLimitSec ? String(Math.round(doc.timeLimitSec / 60)) : "",
         sourceKind: doc.source?.kind ?? "original",
         authority: doc.source?.authority ?? "",
         correctText: doc.diagnosis?.correctText ?? "",
@@ -259,6 +267,7 @@ export default function AdminVpCasesPage() {
       title: form.title.trim(),
       presentation: form.presentation.trim(),
       difficulty: form.difficulty,
+      timeLimitSec: Number(form.timeLimitMin) > 0 ? Math.round(Number(form.timeLimitMin) * 60) : null,
       investigations: invs
         .filter((i) => i.name.trim())
         .map((i) => ({
@@ -276,6 +285,24 @@ export default function AdminVpCasesPage() {
       },
       source: { kind: form.sourceKind, authority: form.authority.trim() || null },
     };
+  }
+
+  // Образец «типового ответа чат-бота» на этот кейс: нужен, чтобы замечать
+  // дословно перенесённые заключения. На оценку не влияет.
+  async function handleAiBaseline() {
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const saved = await generateVpAiBaseline(selected);
+      setBaseline(saved);
+      setNotice("Типовой ответ ИИ сохранён у кейса.");
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось получить типовой ответ ИИ"));
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function handleSave() {
@@ -439,6 +466,45 @@ export default function AdminVpCasesPage() {
                 </div>
                 <div className="edu-field-label">Жалоба и вводная (видны сразу)</div>
                 <textarea className="edu-textarea" rows={3} value={form.presentation} onChange={(e) => setForm((f) => ({ ...f, presentation: e.target.value }))} placeholder="Возраст, пол, жалобы, анамнез…" />
+                {/* Настройки зачётного режима: лимит времени и образец
+                    «типового ответа чат-бота» для сигналов добросовестности. */}
+                <div className="edu-form-row" style={{ marginTop: 12, alignItems: "flex-end" }}>
+                  <div style={{ maxWidth: 220 }}>
+                    <div className="edu-field-label" style={{ marginTop: 0 }}>
+                      Лимит зачётной попытки, мин
+                    </div>
+                    <input
+                      className="edu-input"
+                      type="number"
+                      min={1}
+                      max={120}
+                      value={form.timeLimitMin}
+                      onChange={(e) => setForm((f) => ({ ...f, timeLimitMin: e.target.value }))}
+                      placeholder="по умолчанию 15"
+                    />
+                  </div>
+                  {selected !== "new" && (
+                    <div style={{ flex: 1 }}>
+                      <button
+                        type="button"
+                        className="edu-btn edu-btn--ghost"
+                        onClick={handleAiBaseline}
+                        disabled={busy}
+                      >
+                        {baseline?.generatedAt ? "Обновить типовой ответ ИИ" : "Сохранить типовой ответ ИИ"}
+                      </button>
+                      <div className="edu-hint" style={{ marginTop: 4 }}>
+                        Один раз спрашиваем у модели, как она ответила бы на этот кейс, и
+                        храним ответ как образец. Дословное совпадение заключения врача с
+                        ним будет видно в сигналах попытки. На оценку не влияет.
+                        {baseline?.generatedAt && (
+                          <> Сохранён: {new Date(baseline.generatedAt).toLocaleString("ru-RU")}.</>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
               </div>
 
               {/* Обследования */}

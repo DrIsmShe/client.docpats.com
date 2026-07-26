@@ -14,6 +14,7 @@ import {
   setLabStatus,
   aiGenerateLabCase,
   aiVerifyLabCase,
+  generateLabAiBaseline,
   fetchReadingConfig,
 } from "../../../api/radiology";
 import { readApiError, isAuthError } from "../../../api/education";
@@ -51,6 +52,8 @@ const BLANK = {
   title: "",
   clinicalContext: "",
   difficulty: "medium",
+  // Лимит времени зачётной попытки в минутах; пусто — значение по станции.
+  timeLimitMin: "",
   sourceKind: "original",
   authority: "",
   sourceUrl: "",
@@ -72,6 +75,8 @@ export default function AdminLabCasesPage() {
   const [status, setStatus] = useState(null);
   const [form, setForm] = useState(BLANK);
   const [rows, setRows] = useState([newRow(), newRow()]);
+  // Сохранённый у кейса «типовой ответ чат-бота» (для сигналов добросовестности).
+  const [baseline, setBaseline] = useState(null);
 
   // ИИ-генерация кейса целиком по теме.
   const [aiEnabled, setAiEnabled] = useState(false);
@@ -135,6 +140,7 @@ export default function AdminLabCasesPage() {
         title: doc.title ?? "",
         clinicalContext: doc.clinicalContext ?? "",
         difficulty: doc.difficulty ?? "medium",
+        timeLimitMin: doc.timeLimitSec ? String(Math.round(doc.timeLimitSec / 60)) : "",
         sourceKind: doc.source?.kind ?? "original",
         authority: doc.source?.authority ?? "",
         sourceUrl: doc.source?.url ?? "",
@@ -143,6 +149,7 @@ export default function AdminLabCasesPage() {
         diagnosisKeys: (doc.impression?.diagnosisKeys ?? []).join(", "),
         diagnosisSynonyms: (doc.impression?.diagnosisSynonyms ?? []).join(", "),
       });
+      setBaseline(doc.aiBaseline?.generatedAt ? doc.aiBaseline : null);
       setRows(
         (doc.panel?.length ? doc.panel : [newRow(), newRow()]).map((p) => ({
           key: p.key || newKey(),
@@ -283,10 +290,14 @@ export default function AdminLabCasesPage() {
     const significantAbnormal = rows
       .filter((r) => r.significant && r.name.trim() && r.value.trim())
       .map((r) => r.key);
+    // Лимит времени: минуты в форме, секунды в API. Пусто — null, тогда
+    // применяется значение по станции из attemptPolicy.
+    const limitMin = Number(form.timeLimitMin);
     return {
       title: form.title.trim(),
       clinicalContext: form.clinicalContext.trim(),
       difficulty: form.difficulty,
+      timeLimitSec: limitMin > 0 ? Math.round(limitMin * 60) : null,
       panel,
       significantAbnormal,
       impression: {
@@ -301,6 +312,24 @@ export default function AdminLabCasesPage() {
         licenseNote: form.licenseNote.trim() || null,
       },
     };
+  }
+
+  // Образец «типового ответа чат-бота» на этот кейс: нужен, чтобы замечать
+  // дословно перенесённые заключения. На оценку не влияет.
+  async function handleAiBaseline() {
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const saved = await generateLabAiBaseline(selected);
+      setBaseline(saved);
+      setNotice("Типовой ответ ИИ сохранён у кейса.");
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось получить типовой ответ ИИ"));
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function handleSave() {
@@ -472,6 +501,46 @@ export default function AdminLabCasesPage() {
                 </div>
                 <div className="edu-field-label">Клинический контекст (виден учащемуся)</div>
                 <textarea className="edu-textarea" rows={2} value={form.clinicalContext} onChange={(e) => setForm((f) => ({ ...f, clinicalContext: e.target.value }))} placeholder="Жалобы, анамнез…" />
+
+                {/* Настройки зачётного режима: лимит времени и образец
+                    «типового ответа чат-бота» для сигналов добросовестности. */}
+                <div className="edu-form-row" style={{ marginTop: 12, alignItems: "flex-end" }}>
+                  <div style={{ maxWidth: 220 }}>
+                    <div className="edu-field-label" style={{ marginTop: 0 }}>
+                      Лимит зачётной попытки, мин
+                    </div>
+                    <input
+                      className="edu-input"
+                      type="number"
+                      min={1}
+                      max={120}
+                      value={form.timeLimitMin}
+                      onChange={(e) => setForm((f) => ({ ...f, timeLimitMin: e.target.value }))}
+                      placeholder="по умолчанию 5"
+                    />
+                  </div>
+                  {selected !== "new" && (
+                    <div style={{ flex: 1 }}>
+                      <button
+                        type="button"
+                        className="edu-btn edu-btn--ghost"
+                        onClick={handleAiBaseline}
+                        disabled={busy}
+                      >
+                        {baseline?.generatedAt ? "Обновить типовой ответ ИИ" : "Сохранить типовой ответ ИИ"}
+                      </button>
+                      <div className="edu-hint" style={{ marginTop: 4 }}>
+                        Один раз спрашиваем у модели, как она ответила бы на этот кейс, и
+                        храним ответ как образец. Если заключение врача дословно совпадёт с
+                        ним длинными цепочками, это будет видно в сигналах попытки. На
+                        оценку не влияет.
+                        {baseline?.generatedAt && (
+                          <> Сохранён: {new Date(baseline.generatedAt).toLocaleString("ru-RU")}.</>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Панель показателей */}

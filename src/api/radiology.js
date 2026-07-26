@@ -159,9 +159,57 @@ export async function archiveCase(caseId) {
 
 // ─── Попытки (роль learner) ───────────────────────────────────────────
 /**
+ * Условия попытки ДО старта: пойдёт ли она в зачёт, сколько даётся времени,
+ * когда откроется следующая зачётная, какой был лучший результат. Страница
+ * задания печатает это врачу до первого клика — правила, о которых узнают
+ * после ответа, правилами не являются.
+ * @returns {object} policy
+ */
+export async function fetchAttemptPolicy(caseId, { mode = "learn" } = {}) {
+  const { data } = await axios.get(`${BASE}/cases/${caseId}/policy`, { params: { mode } });
+  return data.policy;
+}
+
+export async function fetchLabPolicy(caseId, { mode = "learn" } = {}) {
+  const { data } = await axios.get(`${BASE}/labs/cases/${caseId}/policy`, { params: { mode } });
+  return data.policy;
+}
+
+export async function fetchVpPolicy(caseId, { mode = "learn" } = {}) {
+  const { data } = await axios.get(`${BASE}/vp/cases/${caseId}/policy`, { params: { mode } });
+  return data.policy;
+}
+
+/**
+ * Зафиксировать предварительный дифдиагноз (VP) — до заказа обследований.
+ * Обратной связи в ответе нет намеренно: иначе это была бы подсказка.
+ */
+export async function commitVpDifferential(attemptId, text) {
+  const { data } = await axios.post(`${BASE}/vp/attempts/${attemptId}/commit`, { text });
+  return data.commitment;
+}
+
+// «Типовой ответ чат-бота» на кейс — образец для сигнала дословного переноса
+// в заключениях врачей. Только автору; на оценку не влияет.
+export async function generateCaseAiBaseline(caseId) {
+  const { data } = await axios.post(`${BASE}/cases/${caseId}/ai/baseline`);
+  return data.aiBaseline;
+}
+
+export async function generateLabAiBaseline(caseId) {
+  const { data } = await axios.post(`${BASE}/labs/cases/${caseId}/ai/baseline`);
+  return data.aiBaseline;
+}
+
+export async function generateVpAiBaseline(caseId) {
+  const { data } = await axios.post(`${BASE}/vp/cases/${caseId}/ai/baseline`);
+  return data.aiBaseline;
+}
+
+/**
  * Начать попытку. Возвращает попытку и санитизованный кейс (снимок,
  * клинический контекст, конфиг системы чтения, палитра находок).
- * @returns {{ attempt: object, case: object }}
+ * @returns {{ attempt: object, case: object, resumed: boolean, secondsLeft: number|null }}
  */
 export async function startAttempt(caseId, { mode = "learn" } = {}) {
   const { data } = await axios.post(`${BASE}/cases/${caseId}/attempts`, { mode });
@@ -248,8 +296,8 @@ export async function setLabStatus(caseId, status) {
   return data.case;
 }
 
-export async function startLabAttempt(caseId) {
-  const { data } = await axios.post(`${BASE}/labs/cases/${caseId}/attempts`);
+export async function startLabAttempt(caseId, { mode = "learn" } = {}) {
+  const { data } = await axios.post(`${BASE}/labs/cases/${caseId}/attempts`, { mode });
   return data; // { attempt, case }
 }
 
@@ -345,8 +393,8 @@ export async function setVpStatus(caseId, status) {
   return data.case;
 }
 
-export async function startVpAttempt(caseId) {
-  const { data } = await axios.post(`${BASE}/vp/cases/${caseId}/attempts`);
+export async function startVpAttempt(caseId, { mode = "learn" } = {}) {
+  const { data } = await axios.post(`${BASE}/vp/cases/${caseId}/attempts`, { mode });
   return data; // { attempt, case }
 }
 
