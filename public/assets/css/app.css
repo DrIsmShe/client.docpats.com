@@ -3561,3 +3561,72 @@ body[data-theme="dark"] {
 .docpats-header .nav-link:hover {
   opacity: 0.7;
 }
+
+/* ─── Сайдбар админки: цвет по смыслу раздела ───────────────────────────
+ *
+ * В шаблоне NiceAdmin все пункты меню одинаковы (текст #012970, иконки
+ * #899bbd), поэтому 26 строк читаются как стена и глазу не за что зацепиться.
+ * Акцент раздела красит ИКОНКУ, ЗАГОЛОВОК и ПОДСВЕТКУ при наведении, а текст
+ * пункта остаётся тёмно-синим: цветной текст в 26 строках снижает читаемость
+ * и усиливает рябь вместо того, чтобы помогать фокусироваться.
+ *
+ * Правки здесь, а не в style.css: тот — вендорный файл шаблона, его правки
+ * теряются при обновлении. app.css подключается последним (см. index.html).
+ *
+ * Цвета разнесены по кругу оттенков, чтобы соседние разделы не путались:
+ * обзор намеренно приглушённо-серый (не конкурирует), клиники — бирюза
+ * (учреждения), тесты — фиалка (учёба), лучевая — небесно-синий (снимки),
+ * тарифы — янтарь (деньги), пользователи — зелёный (люди, «проверен»),
+ * безопасность — красный (тревога), данные — фуксия.
+ *
+ * --sec     — акцент: иконка, полоска, рамка при наведении
+ * --sec-ink — текст заголовка и пункта при наведении (темнее, для контраста)
+ * --sec-bg  — фон пункта при наведении
+ */
+.sidebar-nav [data-sec="overview"]  { --sec: #64748b; --sec-ink: #334155; --sec-bg: #f4f6fa; }
+.sidebar-nav [data-sec="clinics"]   { --sec: #0d9488; --sec-ink: #0f766e; --sec-bg: #eefbf8; }
+.sidebar-nav [data-sec="education"] { --sec: #7c3aed; --sec-ink: #6d28d9; --sec-bg: #f6f2ff; }
+.sidebar-nav [data-sec="radiology"] { --sec: #0284c7; --sec-ink: #0369a1; --sec-bg: #eff8fe; }
+.sidebar-nav [data-sec="billing"]   { --sec: #d97706; --sec-ink: #b45309; --sec-bg: #fff8ed; }
+.sidebar-nav [data-sec="users"]     { --sec: #16a34a; --sec-ink: #15803d; --sec-bg: #f1fdf4; }
+.sidebar-nav [data-sec="security"]  { --sec: #dc2626; --sec-ink: #b91c1c; --sec-bg: #fef3f2; }
+.sidebar-nav [data-sec="data"]      { --sec: #c026d3; --sec-ink: #a21caf; --sec-bg: #fdf4ff; }
+
+/* Заголовок раздела: цвет + короткая полоска, чтобы группы читались блоками. */
+.sidebar-nav .nav-heading[data-sec] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--sec-ink);
+}
+
+.sidebar-nav .nav-heading[data-sec]::before {
+  content: "";
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--sec);
+}
+
+/* Иконка — главный ориентир: по ней раздел узнаётся до чтения текста. */
+.sidebar-nav .nav-item[data-sec] .nav-link.collapsed i {
+  color: var(--sec);
+}
+
+/* Прозрачная рамка держится всегда — иначе при наведении строка дёргается
+   на 3px. */
+.sidebar-nav .nav-item[data-sec] .nav-link.collapsed {
+  border-left: 3px solid transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Наведение: тон раздела вместо общего синего #4154f1. */
+.sidebar-nav .nav-item[data-sec] .nav-link:hover {
+  background: var(--sec-bg);
+  color: var(--sec-ink);
+  border-left-color: var(--sec);
+}
+
+.sidebar-nav .nav-item[data-sec] .nav-link:hover i {
+  color: var(--sec);
+}

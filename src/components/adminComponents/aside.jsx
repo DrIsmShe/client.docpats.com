@@ -11,14 +11,14 @@ export default function Aside() {
       >
         <ul id="sidebar-nav" className="sidebar-nav">
           {/* ─── Обзор ─── */}
-          <li className="nav-heading">Обзор</li>
-          <li className="nav-item">
+          <li className="nav-heading" data-sec="overview">Обзор</li>
+          <li className="nav-item" data-sec="overview">
             <Link className="nav-link collapsed" to="overview">
               <i className="bi bi-speedometer2"></i>
               <span>Обзор платформы</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="overview">
             <Link className="nav-link collapsed" to="system">
               <i className="bi bi-hdd-network"></i>
               <span>Статус системы</span>
@@ -26,20 +26,20 @@ export default function Aside() {
           </li>
 
           {/* ─── Клиники ─── */}
-          <li className="nav-heading">Клиники</li>
-          <li className="nav-item">
+          <li className="nav-heading" data-sec="clinics">Клиники</li>
+          <li className="nav-item" data-sec="clinics">
             <Link className="nav-link collapsed" to="clinics">
               <i className="bi bi-hospital"></i>
               <span>Клиники</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="clinics">
             <Link className="nav-link collapsed" to="features">
               <i className="bi bi-toggles"></i>
               <span>Фичи клиник</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="clinics">
             <Link className="nav-link collapsed" to="reviews">
               <i className="bi bi-star"></i>
               <span>Отзывы</span>
@@ -47,26 +47,26 @@ export default function Aside() {
           </li>
 
           {/* ─── Тесты и экзамены ─── */}
-          <li className="nav-heading">Тесты и экзамены</li>
-          <li className="nav-item">
+          <li className="nav-heading" data-sec="education">Тесты и экзамены</li>
+          <li className="nav-item" data-sec="education">
             <Link className="nav-link collapsed" to="education-programs">
               <i className="bi bi-journal-check"></i>
               <span>Тесты</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="education">
             <Link className="nav-link collapsed" to="education-categories">
               <i className="bi bi-diagram-3"></i>
               <span>Категории тестов</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="education">
             <Link className="nav-link collapsed" to="education-import">
               <i className="bi bi-file-earmark-arrow-up"></i>
               <span>Загрузить тест из файла</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="education">
             <Link className="nav-link collapsed" to="education-review">
               <i className="bi bi-clipboard-check"></i>
               <span>Ревью вопросов</span>
@@ -74,26 +74,26 @@ export default function Aside() {
           </li>
 
           {/* ─── Лучевая диагностика ─── */}
-          <li className="nav-heading">Лучевая диагностика</li>
-          <li className="nav-item">
+          <li className="nav-heading" data-sec="radiology">Лучевая диагностика</li>
+          <li className="nav-item" data-sec="radiology">
             <Link className="nav-link collapsed" to="radiology">
               <i className="bi bi-lungs"></i>
               <span>Кейсы чтения снимков</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="radiology">
             <Link className="nav-link collapsed" to="labs">
               <i className="bi bi-clipboard-data"></i>
               <span>Кейсы: анализы</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="radiology">
             <Link className="nav-link collapsed" to="vp">
               <i className="bi bi-person-vcard"></i>
               <span>Виртуальный пациент</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="radiology">
             <Link className="nav-link collapsed" to="arena-analytics">
               <i className="bi bi-graph-up"></i>
               <span>Аналитика арены</span>
@@ -101,8 +101,8 @@ export default function Aside() {
           </li>
 
           {/* ─── Тарифы и оплата ─── */}
-          <li className="nav-heading">Тарифы</li>
-          <li className="nav-item">
+          <li className="nav-heading" data-sec="billing">Тарифы</li>
+          <li className="nav-item" data-sec="billing">
             <Link className="nav-link collapsed" to="billing">
               <i className="bi bi-credit-card"></i>
               <span>Тарифы и заявки</span>
@@ -110,26 +110,26 @@ export default function Aside() {
           </li>
 
           {/* ─── Пользователи и врачи ─── */}
-          <li className="nav-heading">Пользователи</li>
-          <li className="nav-item">
+          <li className="nav-heading" data-sec="users">Пользователи</li>
+          <li className="nav-item" data-sec="users">
             <Link className="nav-link collapsed" to="users-list">
               <i className="bi bi-people"></i>
               <span>Все пользователи</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="users">
             <Link className="nav-link collapsed" to="doctors">
               <i className="bi bi-person-badge"></i>
               <span>Врачи и приёмы</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="users">
             <Link className="nav-link collapsed" to="verification">
               <i className="bi bi-patch-check"></i>
               <span>Верификация врачей</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="users">
             <Link className="nav-link collapsed" to="polyclinic/get-all">
               <i className="bi bi-clipboard2-pulse"></i>
               <span>Поликлиника</span>
@@ -137,14 +137,14 @@ export default function Aside() {
           </li>
 
           {/* ─── Безопасность ─── */}
-          <li className="nav-heading">Безопасность</li>
-          <li className="nav-item">
+          <li className="nav-heading" data-sec="security">Безопасность</li>
+          <li className="nav-item" data-sec="security">
             <Link className="nav-link collapsed" to="security">
               <i className="bi bi-shield-exclamation"></i>
               <span>Дашборд безопасности</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="security">
             <Link className="nav-link collapsed" to="audit-log">
               <i className="bi bi-shield-lock"></i>
               <span>Аудит-лог</span>
@@ -152,38 +152,38 @@ export default function Aside() {
           </li>
 
           {/* ─── Данные ─── */}
-          <li className="nav-heading">Данные</li>
-          <li className="nav-item">
+          <li className="nav-heading" data-sec="data">Данные</li>
+          <li className="nav-item" data-sec="data">
             <Link className="nav-link collapsed" to="database">
               <i className="bi bi-bar-chart-line"></i>
               <span>База данных (аналитика)</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="data">
             <Link className="nav-link collapsed" to="create-categories-of-my-articles">
               <i className="bi bi-tags"></i>
               <span>Категории статей</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="data">
             <Link className="nav-link collapsed" to="mongodb-database">
               <i className="bi bi-download"></i>
               <span>Экспорт БД</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="data">
             <Link className="nav-link collapsed" to="mongodb-database-import">
               <i className="bi bi-upload"></i>
               <span>Импорт БД</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="data">
             <Link className="nav-link collapsed" to="mongodb">
               <i className="bi bi-download"></i>
               <span>Экспорт коллекций</span>
             </Link>
           </li>
-          <li className="nav-item">
+          <li className="nav-item" data-sec="data">
             <Link className="nav-link collapsed" to="mongodb-database-collection">
               <i className="bi bi-upload"></i>
               <span>Импорт коллекций</span>
