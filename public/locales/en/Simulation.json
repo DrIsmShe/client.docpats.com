@@ -7,15 +7,37 @@
   "loadingImageRetryHint": "Recently uploaded images may take a few seconds to become available",
   "simulation": {
     "hub": {
+      "eyebrow": "Virtual plastic surgery",
       "title": "Simulation",
-      "subtitle": "Select simulation type",
+      "lead": "Rhinoplasty, mentoplasty, facial and body contouring, symmetry assessment — photo-based analysis and simulation of the surgical outcome. Choose how you want to work.",
+      "steps": {
+        "photo": "Upload the patient's photos",
+        "marks": "Place the landmarks",
+        "compare": "Compare before and after"
+      },
+      "open": "Open plans",
+      "note": "A simulation illustrates the surgical plan and is not a guarantee of the result: the outcome depends on anatomy, tissue condition and healing.",
       "variant1": {
-        "title": "Option 1",
-        "description": "Rhinoplasty, mentoplasty, virtual plastic surgery of the face and other body areas, symmetry — analysis and simulation of procedures."
+        "kicker": "Option 1",
+        "title": "Single photo",
+        "lead": "A plan built on one photograph: landmarks, symmetry axes and precise reshaping. For when you need to show the patient the idea quickly.",
+        "chips": [
+          "Rhinoplasty",
+          "Mentoplasty",
+          "Symmetry",
+          "Before / after"
+        ]
       },
       "variant2": {
-        "title": "Option 2",
-        "description": "Rhinoplasty, mentoplasty, virtual plastic surgery of the face and other body areas, symmetry — analysis and simulation of procedures."
+        "kicker": "Option 2",
+        "title": "Multiple views",
+        "lead": "A plan built from several photos of the same patient — front, profile, three-quarter, bottom-up. Volume and contour are visible from every side, plans are grouped per patient.",
+        "chips": [
+          "Several views",
+          "Volume and contour",
+          "Patient history",
+          "Before / after"
+        ]
       }
     }
   },

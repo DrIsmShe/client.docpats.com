@@ -7,15 +7,37 @@
   "loadingImageRetryHint": "Yeni yüklənmiş şəkillərin əlçatan olması bir neçə saniyə çəkə bilər",
   "simulation": {
     "hub": {
+      "eyebrow": "Virtual plastika",
       "title": "Modelləşdirmə",
-      "subtitle": "Simulyasiya növünü seçin",
+      "lead": "Rinoplastika, mentoplastika, üz və bədən plastikası, simmetriyanın qiymətləndirilməsi — fotoya əsasən təhlil və əməliyyat nəticəsinin simulyasiyası. İş üsulunu seçin.",
+      "steps": {
+        "photo": "Xəstənin şəkillərini yükləyin",
+        "marks": "Oriyentirləri qeyd edin",
+        "compare": "«Əvvəl» və «sonra» müqayisə edin"
+      },
+      "open": "Planlara keç",
+      "note": "Simulyasiya əməliyyat planını göstərir və nəticəyə zəmanət vermir: nəticə anatomiyadan, toxumaların vəziyyətindən və sağalmadan asılıdır.",
       "variant1": {
-        "title": "Variant 1",
-        "description": "Rinoplastika, mentoplastika, üz və digər bədən nahiyələrinin virtual plastikası, simmetriya — əməliyyatların təhlili və simulyasiyası."
+        "kicker": "Variant 1",
+        "title": "Bir şəkil",
+        "lead": "Bir fotoya əsasən plan: oriyentirlər, simmetriya oxları və formanın dəqiq korreksiyası. Xəstəyə ideyanı tez göstərmək lazım olduqda.",
+        "chips": [
+          "Rinoplastika",
+          "Mentoplastika",
+          "Simmetriya",
+          "Əvvəl / sonra"
+        ]
       },
       "variant2": {
-        "title": "Variant 2",
-        "description": "Rinoplastika, mentoplastika, üz və digər bədən nahiyələrinin virtual plastikası, simmetriya — əməliyyatların təhlili və simulyasiyası."
+        "kicker": "Variant 2",
+        "title": "Proyeksiyalar seriyası",
+        "lead": "Bir xəstənin bir neçə şəklindən plan — öndən, profildən, üç rüb, aşağıdan. Həcm və kontur hər tərəfdən görünür, planlar xəstə üzrə qruplaşdırılır.",
+        "chips": [
+          "Bir neçə proyeksiya",
+          "Həcm və kontur",
+          "Xəstə tarixçəsi",
+          "Əvvəl / sonra"
+        ]
       }
     }
   },

@@ -7,15 +7,37 @@
   "loadingImageRetryHint": "Yeni yüklenen görüntülerin kullanılabilir hale gelmesi birkaç saniye sürebilir",
   "simulation": {
     "hub": {
-      "title": "Simülasyon",
-      "subtitle": "Simülasyon türünü seçin",
+      "eyebrow": "Sanal plastik cerrahi",
+      "title": "Modelleme",
+      "lead": "Rinoplasti, mentoplasti, yüz ve vücut şekillendirme, simetri değerlendirmesi — fotoğraf üzerinden analiz ve ameliyat sonucunun simülasyonu. Nasıl çalışmak istediğinizi seçin.",
+      "steps": {
+        "photo": "Hastanın fotoğraflarını yükleyin",
+        "marks": "Referans noktalarını yerleştirin",
+        "compare": "Öncesi ve sonrasını karşılaştırın"
+      },
+      "open": "Planlara git",
+      "note": "Simülasyon, ameliyat planını gösterir ve sonucu garanti etmez: sonuç anatomiye, doku durumuna ve iyileşmeye bağlıdır.",
       "variant1": {
-        "title": "Seçenek 1",
-        "description": "Rinoplasti, mentoplasti, yüz ve diğer vücut bölgelerinin sanal plastik cerrahisi, simetri — operasyonların analizi ve simülasyonu."
+        "kicker": "Seçenek 1",
+        "title": "Tek fotoğraf",
+        "lead": "Tek bir fotoğraf üzerinden plan: referans noktaları, simetri eksenleri ve hassas şekil düzenlemesi. Hastaya fikri hızlıca göstermek için.",
+        "chips": [
+          "Rinoplasti",
+          "Mentoplasti",
+          "Simetri",
+          "Öncesi / sonrası"
+        ]
       },
       "variant2": {
-        "title": "Seçenek 2",
-        "description": "Rinoplasti, mentoplasti, yüz ve diğer vücut bölgelerinin sanal plastik cerrahisi, simetri — operasyonların analizi ve simülasyonu."
+        "kicker": "Seçenek 2",
+        "title": "Çoklu projeksiyon",
+        "lead": "Aynı hastanın birkaç fotoğrafından plan — önden, profilden, üç çeyrek, alttan. Hacim ve kontur her yönden görülür, planlar hasta bazında gruplanır.",
+        "chips": [
+          "Birkaç projeksiyon",
+          "Hacim ve kontur",
+          "Hasta geçmişi",
+          "Öncesi / sonrası"
+        ]
       }
     }
   },

@@ -1,172 +1,206 @@
-// client/src/pages/simulation/SimulationHubPage.jsx
+// client/src/pages/simulation/pages/SimulationHubPage.jsx
 //
-// Hub-страница "Моделирование" с выбором варианта симулятора.
+// Витрина раздела «Моделирование»: врач выбирает, каким инструментом работать.
 //
-// Два варианта одного и того же инструмента: виртуальная пластика лица и
-// других частей тела. Врач выбирает, в каком варианте работать, — поэтому
-// карточки называются «Вариант 1» и «Вариант 2», а не по областям тела.
+// Два варианта — это НЕ «старая и новая версия» и не разные области тела. Они
+// отличаются способом работы, и названия отражают именно это:
 //
-// Карточек «скоро» здесь нет намеренно: обещания в интерфейсе, которые
-// нельзя нажать, только занимают место и вызывают вопросы.
+//   Вариант 1 (/dp/simulation/face)   — PlanListPage: план строится по ОДНОМУ
+//     снимку. Ориентиры, оси симметрии, локальное изменение формы.
+//   Вариант 2 (/dp/simulation/breast) — BreastListPage: план собирается из
+//     НЕСКОЛЬКИХ проекций одного пациента (анфас, профиль, 3/4, снизу) и
+//     группируется по пациенту — объём и контур видны со всех сторон.
 //
-// Расширение: добавить вариант = добавить запись в SIMULATION_TYPES.
+// Формулировки взяты из самих страниц, а не придуманы: обещать в витрине то,
+// чего внутри нет, — худший вид «красивого» интерфейса.
+//
+// Карточек «скоро» здесь нет намеренно: кнопка, которую нельзя нажать, только
+// занимает место.
+//
+// Расширение: добавить вариант = запись в VARIANTS + ключи в
+// public/locales/*/Simulation.json.
 
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const styles = {
-  page: {
-    padding: "32px 24px",
-    maxWidth: 1100,
-    margin: "0 auto",
-    fontFamily: "'Inter', system-ui, sans-serif",
-    color: "#1a1d1f",
-  },
-  header: {
-    marginBottom: 28,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 600,
-    margin: 0,
-    color: "#0d6b5e",
-    letterSpacing: "-0.01em",
-  },
-  subtitle: {
-    fontSize: 14,
-    color: "#7089a6",
-    marginTop: 6,
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-    gap: 16,
-  },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    padding: "20px 22px",
-    background: "white",
-    border: "1px solid #dde4ec",
-    borderRadius: 12,
-    textDecoration: "none",
-    color: "inherit",
-    transition: "all 0.2s ease",
-    cursor: "pointer",
-    minHeight: 160,
-  },
-  cardIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 10,
-    background: "linear-gradient(135deg,#e8f7f5 0%,#a3ddd5 100%)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    // В плитке теперь номер варианта, а не эмодзи: нужен вес и цвет, иначе
-    // цифра выглядит случайной.
-    fontSize: 22,
-    fontWeight: 700,
-    color: "#0d6b5e",
-    marginBottom: 14,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: 600,
-    margin: 0,
-    marginBottom: 4,
-  },
-  cardDescription: {
-    fontSize: 13,
-    color: "#7089a6",
-    margin: 0,
-    lineHeight: 1.45,
-  },
-};
+import styles from "./SimulationHubPage.module.css";
 
-/* ──────────────────────────────────────────────────────────────────────────
-   Варианты симулятора. Описание у них одно и то же — отличается только
-   вариант реализации, и честнее сказать об этом прямо, чем придумывать двум
-   картам разные обещания.
+/* ─── Иконки ───────────────────────────────────────────────────────────
+   Линейные SVG вместо эмодзи: эмодзи рисует системный шрифт, и в Windows,
+   macOS и Android одна и та же карточка выглядит по-разному. */
+const IconSinglePhoto = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
+    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="3" y="4" width="18" height="16" rx="3" />
+    <circle cx="12" cy="11" r="3.2" />
+    <path d="M12 4v3.8M12 14.2V20M3 11h5.8M15.2 11H21" strokeDasharray="1.5 2.5" />
+  </svg>
+);
 
-   Маршруты остались прежними (face/breast): это те же две рабочие страницы,
-   поменялась только их подача врачу.
-   ────────────────────────────────────────────────────────────────────────── */
-const VARIANT_DESCRIPTION =
-  "Ринопластика, ментопластика, виртуальная пластика лица и других частей " +
-  "тела, симметрия — анализ и симуляция операций.";
+const IconMultiView = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
+    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="2.5" y="6" width="11" height="13" rx="2.5" />
+    <path d="M16 7.5h3.5a2 2 0 0 1 2 2V17" />
+    <path d="M13.5 4.5h3.2a2 2 0 0 1 2 2v1" opacity="0.55" />
+    <path d="M6 15.5l2.2-2.6 2 2.2 1.6-1.9" />
+  </svg>
+);
 
-const SIMULATION_TYPES = [
+const IconArrow = () => (
+  <svg className={styles.cardArrow} width="16" height="16" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
+    strokeLinejoin="round" aria-hidden="true">
+    <path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5" />
+  </svg>
+);
+
+const IconInfo = () => (
+  <svg className={styles.noteIcon} width="16" height="16" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"
+    aria-hidden="true">
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 11v5.5M12 7.8v.4" />
+  </svg>
+);
+
+/* ─── Варианты ─────────────────────────────────────────────────────────
+   chips — короткие ярлыки возможностей; каждый соответствует тому, что
+   действительно есть внутри соответствующего редактора. */
+const VARIANTS = [
   {
     key: "variant1",
-    // Цифра вместо пиктограммы: карточки различаются только номером варианта,
-    // и любая «говорящая» иконка обещала бы разницу, которой нет.
-    icon: "1",
-    titleKey: "simulation.hub.variant1.title",
-    titleDefault: "Вариант 1",
-    descKey: "simulation.hub.variant1.description",
-    descDefault: VARIANT_DESCRIPTION,
     route: "/dp/simulation/face",
+    Icon: IconSinglePhoto,
+    alt: false,
+    kickerDefault: "Вариант 1",
+    titleDefault: "Один снимок",
+    leadDefault:
+      "План по одной фотографии: ориентиры, оси симметрии и точная правка формы. Когда нужно быстро показать пациенту суть вмешательства.",
+    chipsDefault: ["Ринопластика", "Ментопластика", "Симметрия", "До / после"],
   },
   {
     key: "variant2",
-    icon: "2",
-    titleKey: "simulation.hub.variant2.title",
-    titleDefault: "Вариант 2",
-    descKey: "simulation.hub.variant2.description",
-    descDefault: VARIANT_DESCRIPTION,
     route: "/dp/simulation/breast",
+    Icon: IconMultiView,
+    alt: true,
+    kickerDefault: "Вариант 2",
+    titleDefault: "Серия проекций",
+    leadDefault:
+      "План из нескольких снимков одного пациента — анфас, профиль, три четверти, снизу. Объём и контур видны со всех сторон, планы собраны по пациенту.",
+    chipsDefault: [
+      "Несколько проекций",
+      "Объём и контур",
+      "История по пациенту",
+      "До / после",
+    ],
   },
+];
+
+const STEPS = [
+  { key: "photo", defaultValue: "Загрузите снимки пациента" },
+  { key: "marks", defaultValue: "Расставьте ориентиры" },
+  { key: "compare", defaultValue: "Сравните «до» и «после»" },
 ];
 
 const SimulationHubPage = () => {
   const { t } = useTranslation("Simulation");
 
   return (
-    <div style={styles.page}>
-      <div style={styles.header}>
-        <h1 style={styles.title}>
+    <div className={styles.page}>
+      <section className={styles.hero}>
+        <span className={styles.eyebrow}>
+          {t("simulation.hub.eyebrow", { defaultValue: "Виртуальная пластика" })}
+        </span>
+        <h1 className={styles.heroTitle}>
           {t("simulation.hub.title", { defaultValue: "Моделирование" })}
         </h1>
-        <div style={styles.subtitle}>
-          {t("simulation.hub.subtitle", {
-            defaultValue: "Выберите тип симуляции",
+        <p className={styles.heroLead}>
+          {t("simulation.hub.lead", {
+            defaultValue:
+              "Ринопластика, ментопластика, пластика лица и других частей тела, оценка симметрии — анализ по фотографии и симуляция результата операции. Выберите, как будете работать.",
           })}
-        </div>
-      </div>
+        </p>
 
-      <div style={styles.grid}>
-        {SIMULATION_TYPES.map((type) => {
-          const title = t(type.titleKey, { defaultValue: type.titleDefault });
-          const description = t(type.descKey, {
-            defaultValue: type.descDefault,
+        <div className={styles.steps}>
+          {STEPS.map((step, i) => (
+            <div className={styles.step} key={step.key}>
+              <span className={styles.stepNum}>{i + 1}</span>
+              {t(`simulation.hub.steps.${step.key}`, {
+                defaultValue: step.defaultValue,
+              })}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className={styles.grid}>
+        {VARIANTS.map((v) => {
+          // Ярлыки берём массивом целиком (returnObjects), а не по индексам:
+          // так не зависим от того, как i18next разбирает путь с числом.
+          // Если перевода нет или он не массив — показываем значения по
+          // умолчанию, а не пустую строку.
+          const translated = t(`simulation.hub.${v.key}.chips`, {
+            returnObjects: true,
+            defaultValue: v.chipsDefault,
           });
+          const chips = Array.isArray(translated) ? translated : v.chipsDefault;
 
           return (
             <Link
-              key={type.key}
-              to={type.route}
-              style={styles.card}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#0d6b5e";
-                e.currentTarget.style.boxShadow =
-                  "0 4px 14px rgba(13,107,94,.12)";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#dde4ec";
-                e.currentTarget.style.boxShadow = "none";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
+              key={v.key}
+              to={v.route}
+              className={`${styles.card} ${v.alt ? styles["card--alt"] : ""}`}
             >
-              <div style={styles.cardIcon}>{type.icon}</div>
-              <h3 style={styles.cardTitle}>{title}</h3>
-              <p style={styles.cardDescription}>{description}</p>
+              <div className={styles.cardIcon}>
+                <v.Icon />
+              </div>
+
+              <div className={styles.cardKicker}>
+                {t(`simulation.hub.${v.key}.kicker`, {
+                  defaultValue: v.kickerDefault,
+                })}
+              </div>
+              <h2 className={styles.cardTitle}>
+                {t(`simulation.hub.${v.key}.title`, {
+                  defaultValue: v.titleDefault,
+                })}
+              </h2>
+              <p className={styles.cardLead}>
+                {t(`simulation.hub.${v.key}.lead`, {
+                  defaultValue: v.leadDefault,
+                })}
+              </p>
+
+              <div className={styles.chips}>
+                {chips.map((chip) => (
+                  <span className={styles.chip} key={chip}>
+                    {chip}
+                  </span>
+                ))}
+              </div>
+
+              <span className={styles.cardAction}>
+                {t("simulation.hub.open", { defaultValue: "Перейти к планам" })}
+                <IconArrow />
+              </span>
             </Link>
           );
         })}
+      </div>
+
+      {/* Медицинская оговорка: симуляция показывает замысел операции, а не её
+          исход. Пациент видит эти картинки, и это должно быть написано, а не
+          подразумеваться. */}
+      <div className={styles.note}>
+        <IconInfo />
+        <span>
+          {t("simulation.hub.note", {
+            defaultValue:
+              "Симуляция иллюстрирует план вмешательства и не является гарантией результата: итог зависит от анатомии, состояния тканей и заживления.",
+          })}
+        </span>
       </div>
     </div>
   );

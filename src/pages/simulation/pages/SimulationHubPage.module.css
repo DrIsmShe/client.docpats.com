@@ -1,0 +1,279 @@
+/* client/src/pages/simulation/pages/SimulationHubPage.module.css
+ *
+ * Витрина выбора варианта симулятора. Стили вынесены из инлайна в модуль
+ * (как у HelpPage рядом): нужны hover-состояния, градиентная полоса у карточки
+ * и адаптив — инлайновыми стилями это не выражается.
+ *
+ * Палитра — та же, что в портале врача: тёмно-зелёный #0d6b5e как основной,
+ * мягкий бирюзовый как акцент. Никаких новых фирменных цветов не вводим.
+ */
+
+.page {
+  padding: 36px 24px 56px;
+  max-width: 1080px;
+  margin: 0 auto;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  color: #16211f;
+}
+
+/* ─── Заголовок ─────────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #d9e7e4;
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 140% at 100% 0%, #e9f7f4 0%, rgba(233, 247, 244, 0) 55%),
+    linear-gradient(180deg, #ffffff 0%, #fbfdfd 100%);
+  padding: 28px 30px 24px;
+  margin-bottom: 26px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0d6b5e;
+  background: #e8f7f5;
+  border: 1px solid #bfe3dd;
+  border-radius: 100px;
+  padding: 5px 12px;
+}
+
+.heroTitle {
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 14px 0 0;
+  color: #0d5348;
+  text-wrap: balance;
+}
+
+.heroLead {
+  margin: 10px 0 0;
+  max-width: 66ch;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #5b7a76;
+}
+
+/* Три шага работы: короткая линия, объясняющая порядок действий. */
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid #e7f0ee;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  color: #46635f;
+}
+
+.stepNum {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 100px;
+  background: #0d6b5e;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Карточки вариантов ────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 26px 22px;
+  background: #fff;
+  border: 1px solid #dde7e5;
+  border-radius: 16px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 1px 2px rgba(16, 44, 40, 0.04);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  overflow: hidden;
+}
+
+/* Тонкая цветная полоса сверху — единственное, чем карточки отличаются
+   визуально: разные инструменты, а не разные «уровни доступа». */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: linear-gradient(90deg, #0d6b5e 0%, #58c3b3 100%);
+  opacity: 0.9;
+}
+
+.card--alt::before {
+  background: linear-gradient(90deg, #2f6fb5 0%, #7fb3e8 100%);
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: #b9d8d3;
+  box-shadow: 0 14px 30px rgba(13, 83, 72, 0.12);
+}
+
+.card:focus-visible {
+  outline: 2px solid #0d6b5e;
+  outline-offset: 3px;
+}
+
+.cardIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #e8f7f5 0%, #a9ddd6 100%);
+  color: #0b544a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.card--alt .cardIcon {
+  background: linear-gradient(135deg, #eaf2fc 0%, #b3d3f2 100%);
+  color: #1e4f86;
+}
+
+.cardIcon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.cardKicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8aa5a1;
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 4px 0 0;
+  color: #16211f;
+}
+
+.cardLead {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #5b7a76;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 16px;
+}
+
+.chip {
+  font-size: 12px;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 100px;
+  background: #f2f7f6;
+  border: 1px solid #e2ecea;
+  color: #46635f;
+  white-space: nowrap;
+}
+
+/* Кнопка-подсказка внизу карточки: карточка целиком — ссылка, поэтому это
+   не <button>, а визуальный акцент. */
+.cardAction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0d6b5e;
+}
+
+.card--alt .cardAction {
+  color: #2f6fb5;
+}
+
+.cardArrow {
+  transition: transform 0.18s ease;
+}
+
+.card:hover .cardArrow {
+  transform: translateX(4px);
+}
+
+/* ─── Примечание ────────────────────────────────────────────────────── */
+.note {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: 24px;
+  padding: 14px 16px;
+  border: 1px solid #e7f0ee;
+  border-radius: 12px;
+  background: #fbfdfd;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #5b7a76;
+}
+
+.noteIcon {
+  flex: 0 0 auto;
+  color: #8aa5a1;
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: 22px 16px 40px;
+  }
+  .hero {
+    padding: 22px 20px 20px;
+  }
+  .heroTitle {
+    font-size: 25px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .card {
+    padding: 22px 20px 18px;
+  }
+}
+
+/* RTL: арабский в портале врача включает direction: rtl — стрелка действия
+   должна ехать в сторону чтения, иначе она указывает «назад». */
+[dir="rtl"] .card:hover .cardArrow {
+  transform: translateX(-4px);
+}
+
+[dir="rtl"] .cardArrow {
+  transform: scaleX(-1);
+}
