@@ -13,9 +13,15 @@ import {
   updateVpCase,
   setVpStatus,
   aiGenerateVpCase,
+  aiVerifyVpCase,
   fetchReadingConfig,
 } from "../../../api/radiology";
 import { readApiError, isAuthError } from "../../../api/education";
+import AiReviewPanel, {
+  issuesForRow,
+  AiRowIssues,
+  unresolvedIssues,
+} from "./AiReviewPanel";
 import "../../education/education.css";
 import "../../radiology/radiology.css";
 
@@ -66,6 +72,11 @@ export default function AdminVpCasesPage() {
   const [aiHint, setAiHint] = useState("");
   const [aiDifficulty, setAiDifficulty] = useState("medium");
 
+  // Второй проход: замечания рецензента и отметки «разобрано».
+  const [review, setReview] = useState(null);
+  const [dismissed, setDismissed] = useState(() => new Set());
+  const [verifyBusy, setVerifyBusy] = useState(false);
+
   useEffect(() => {
     (async () => {
       try {
@@ -89,11 +100,17 @@ export default function AdminVpCasesPage() {
     setCases(await fetchVpCases({ scope: "all" }));
   }
 
+  function resetReview() {
+    setReview(null);
+    setDismissed(new Set());
+  }
+
   function startNew() {
     setSelected("new");
     setStatus("draft");
     setForm(BLANK);
     setInvs([newInv(), newInv()]);
+    resetReview();
     setNotice(null);
     setError(null);
   }
@@ -125,6 +142,7 @@ export default function AdminVpCasesPage() {
           necessary: Boolean(i.necessary),
         })),
       );
+      resetReview();
       setNotice(null);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
@@ -150,9 +168,17 @@ export default function AdminVpCasesPage() {
         difficulty: aiDifficulty,
         hint: aiHint.trim() || undefined,
       });
-      setSelected("new");
-      setStatus("draft");
-      setForm({
+      // Форму и запрос на проверку строим из ОДНОГО объекта: иначе легко
+      // получить рецензию не на то, что видит автор.
+      const nextInvs = (draft.investigations ?? []).map((inv, i) => ({
+        key: `ai_${Date.now().toString(36)}_${i}`,
+        name: inv.name ?? "",
+        category: inv.category ?? "",
+        resultText: inv.resultText ?? "",
+        imageUrl: "",
+        necessary: Boolean(inv.necessary),
+      }));
+      const nextForm = {
         ...BLANK,
         title: draft.title ?? "",
         presentation: draft.presentation ?? "",
@@ -162,26 +188,65 @@ export default function AdminVpCasesPage() {
         correctText: draft.diagnosis?.correctText ?? "",
         diagnosisKeys: (draft.diagnosis?.diagnosisKeys ?? []).join(", "),
         diagnosisSynonyms: (draft.diagnosis?.diagnosisSynonyms ?? []).join(", "),
-      });
-      setInvs(
-        (draft.investigations ?? []).map((inv, i) => ({
-          key: `ai_${Date.now().toString(36)}_${i}`,
-          name: inv.name ?? "",
-          category: inv.category ?? "",
-          resultText: inv.resultText ?? "",
-          imageUrl: "",
-          necessary: Boolean(inv.necessary),
-        })),
-      );
+      };
+      setSelected("new");
+      setStatus("draft");
+      setForm(nextForm);
+      setInvs(nextInvs);
+      resetReview();
       const needed = (draft.investigations ?? []).filter((i) => i.necessary).length;
       setNotice(
-        `ИИ составил сценарий: обследований ${draft.investigations?.length ?? 0}, из них нужных ${needed}. Это ЧЕРНОВИК — проверьте результаты и диагноз, поправьте и только потом сохраняйте.`,
+        `ИИ составил сценарий: обследований ${draft.investigations?.length ?? 0}, из них нужных ${needed}. Идёт проверка вторым проходом — замечания появятся ниже. Это ЧЕРНОВИК: проверьте результаты и диагноз перед сохранением.`,
       );
+      // Второй проход запускаем сразу — к моменту чтения замечания уже будут.
+      runVerify(nextInvs, nextForm);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
       setError(readApiError(err, "ИИ не смог сгенерировать сценарий"));
     } finally {
       setAiBusy(false);
+    }
+  }
+
+  // Второй проход отдельным запросом: автор сразу видит заполненную форму,
+  // а сбой проверки не отменяет сгенерированный сценарий. Рецензируется то,
+  // что сейчас в форме, — можно перепроверить после правок.
+  async function runVerify(invsArg, formArg) {
+    const useInvs = invsArg ?? invs;
+    const useForm = formArg ?? form;
+    const investigations = useInvs
+      .filter((i) => i.name.trim())
+      .map((i) => ({
+        name: i.name.trim(),
+        category: i.category.trim() || undefined,
+        resultText: i.resultText.trim() || undefined,
+        necessary: Boolean(i.necessary),
+      }));
+    if (investigations.length < 2) {
+      setError("Для проверки нужно минимум 2 обследования");
+      return;
+    }
+    setVerifyBusy(true);
+    try {
+      const res = await aiVerifyVpCase({
+        draft: {
+          title: useForm.title.trim() || undefined,
+          presentation: useForm.presentation.trim() || undefined,
+          investigations,
+          diagnosis: {
+            correctText: useForm.correctText.trim() || undefined,
+            diagnosisKeys: parseList(useForm.diagnosisKeys),
+            diagnosisSynonyms: parseList(useForm.diagnosisSynonyms),
+          },
+        },
+      });
+      setReview(res);
+      setDismissed(new Set());
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось выполнить проверку ИИ"));
+    } finally {
+      setVerifyBusy(false);
     }
   }
 
@@ -262,6 +327,11 @@ export default function AdminVpCasesPage() {
   if (parseList(form.diagnosisKeys).length === 0) liveBlockers.push("укажите диагноз");
   if (["public_government", "licensed"].includes(form.sourceKind) && !form.authority.trim())
     liveBlockers.push("орган/издание для заимствованного");
+  // Любое неразобранное замечание блокирует публикацию: severity от модели
+  // ненадёжна как предохранитель (см. комментарий в AiReviewPanel).
+  const openIssues = unresolvedIssues(review, dismissed).length;
+  if (openIssues > 0)
+    liveBlockers.push(`разберите замечания рецензента (${openIssues})`);
 
   if (loading) return <div className="rad-page"><div className="edu-state">Загрузка…</div></div>;
 
@@ -313,9 +383,14 @@ export default function AdminVpCasesPage() {
               onChange={(e) => setAiHint(e.target.value)}
             />
             <div className="edu-btn-row" style={{ marginTop: 10 }}>
-              <button type="button" className="edu-btn" onClick={handleAiGenerate} disabled={aiBusy || busy}>
+              <button type="button" className="edu-btn" onClick={handleAiGenerate} disabled={aiBusy || busy || verifyBusy}>
                 {aiBusy ? "ИИ составляет сценарий…" : "✨ Сгенерировать сценарий целиком"}
               </button>
+              {selected && (
+                <button type="button" className="edu-btn edu-btn--ghost" onClick={() => runVerify()} disabled={aiBusy || busy || verifyBusy}>
+                  {verifyBusy ? "рецензент проверяет…" : "🔍 Проверить текущий сценарий"}
+                </button>
+              )}
             </div>
           </>
         ) : (
@@ -383,10 +458,20 @@ export default function AdminVpCasesPage() {
                     </div>
                     <textarea className="edu-textarea" style={{ marginTop: 8 }} rows={2} placeholder="Результат обследования (что показал)" value={inv.resultText} onChange={(e) => patchInv(i, { resultText: e.target.value })} />
                     <input className="edu-input" style={{ marginTop: 6, fontSize: 13 }} placeholder="URL снимка (необязательно, для лучевых)" value={inv.imageUrl} onChange={(e) => patchInv(i, { imageUrl: e.target.value })} />
+                    <AiRowIssues issues={issuesForRow(review, dismissed, inv.name)} />
                   </div>
                 ))}
                 <button type="button" className="edu-btn edu-btn--ghost" onClick={() => setInvs((prev) => [...prev, newInv()])}>Добавить обследование</button>
               </div>
+
+              {/* Замечания второго прохода */}
+              <AiReviewPanel
+                review={review}
+                dismissed={dismissed}
+                onDismiss={(i) => setDismissed((prev) => new Set(prev).add(i))}
+                onRecheck={() => runVerify()}
+                busy={verifyBusy}
+              />
 
               {/* Диагноз */}
               <div className="rad-panel">

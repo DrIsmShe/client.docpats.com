@@ -59,6 +59,15 @@ export async function aiGenerateCase({ modality, topic, difficulty, hint }) {
   return data.draft;
 }
 
+/**
+ * ИИ-проверка лучевого кейса вторым проходом (роль author).
+ * Отдаёт замечания, ничего не правит: { verdict, issues:[{target,severity,issue,suggestion}], errorCount, summary }.
+ */
+export async function aiVerifyCase({ modality, draft }) {
+  const { data } = await axios.post(`${BASE}/ai/verify`, { modality, draft });
+  return data.review;
+}
+
 // ─── Диагностическая арена (геймификация) ─────────────────────────────
 /** Игровой профиль: xp, ранг, серия дней, статистика. */
 export async function fetchGameProfile() {
@@ -218,6 +227,12 @@ export async function aiGenerateLabCase({ topic, difficulty, hint }) {
   return data.draft;
 }
 
+/** ИИ-проверка кейса «Анализы» вторым проходом (роль author). */
+export async function aiVerifyLabCase({ draft }) {
+  const { data } = await axios.post(`${BASE}/labs/ai/verify`, { draft });
+  return data.review;
+}
+
 export async function createLabCase(payload) {
   const { data } = await axios.post(`${BASE}/labs/cases`, payload);
   return data.case;
@@ -307,6 +322,12 @@ export async function aiGenerateVpCase({ topic, difficulty, hint }) {
     hint,
   });
   return data.draft;
+}
+
+/** ИИ-проверка сценария «Виртуальный пациент» вторым проходом (роль author). */
+export async function aiVerifyVpCase({ draft }) {
+  const { data } = await axios.post(`${BASE}/vp/ai/verify`, { draft });
+  return data.review;
 }
 
 export async function createVpCase(payload) {

@@ -25,9 +25,15 @@ import {
   uploadCaseImage,
   aiDraftCase,
   aiGenerateCase,
+  aiVerifyCase,
 } from "../../../api/radiology";
 import { readApiError, isAuthError } from "../../../api/education";
 import RadiologyCanvas from "../../radiology/components/RadiologyCanvas";
+import AiReviewPanel, {
+  issuesForRow,
+  AiRowIssues,
+  unresolvedIssues,
+} from "./AiReviewPanel";
 import { MODALITY_LABELS } from "../../radiology/RadiologyCatalogPage";
 import "../../education/education.css";
 import "../../radiology/radiology.css";
@@ -89,6 +95,11 @@ export default function AdminRadiologyCasesPage() {
   // выдумывает — автор «заряжает» находку и кликает по кадру.
   const [planned, setPlanned] = useState([]);
   const [armed, setArmed] = useState(null); // индекс находки из плана
+
+  // Второй проход: замечания рецензента и отметки «разобрано».
+  const [review, setReview] = useState(null);
+  const [dismissed, setDismissed] = useState(() => new Set());
+  const [verifyBusy, setVerifyBusy] = useState(false);
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -149,6 +160,8 @@ export default function AdminRadiologyCasesPage() {
     setFindings([]);
     setPlanned([]);
     setArmed(null);
+    setReview(null);
+    setDismissed(new Set());
     setActiveImg(0);
     setActiveLabel(null);
     setNotice(null);
@@ -189,6 +202,8 @@ export default function AdminRadiologyCasesPage() {
       );
       setPlanned([]);
       setArmed(null);
+      setReview(null);
+      setDismissed(new Set());
       setActiveImg(0);
       setActiveLabel(null);
       setNotice(null);
@@ -435,6 +450,17 @@ export default function AdminRadiologyCasesPage() {
       }
       setPlanned(draft.plannedFindings ?? []);
       setArmed(null);
+      setReview(null);
+      setDismissed(new Set());
+      // Второй проход сразу — к моменту чтения замечания уже будут.
+      runVerify(draft.plannedFindings ?? [], wasNew ? findings : [], {
+        ...form,
+        title: draft.title ?? "",
+        clinicalContext: draft.clinicalContext ?? "",
+        correctText: draft.impression?.correctText ?? "",
+        diagnosisKeys: (draft.impression?.diagnosisKeys ?? []).join(", "),
+        diagnosisSynonyms: (draft.impression?.diagnosisSynonyms ?? []).join(", "),
+      });
       setNotice(
         `ИИ составил кейс. Находок в плане: ${draft.plannedFindings?.length ?? 0}. Осталось загрузить анонимный снимок и разметить эти находки на нём (кнопка «разметить» в плане). Проверьте тексты и диагноз перед отправкой на ревью.`,
       );
@@ -444,6 +470,65 @@ export default function AdminRadiologyCasesPage() {
     } finally {
       setAiGenBusy(false);
     }
+  }
+
+  // Второй проход. Проверяется медицинская суть: и ещё не размеченные
+  // находки из плана ИИ, и уже поставленные на снимок — координаты
+  // рецензенту не нужны, ему важны состав находок, их значимость и
+  // согласованность с заключением.
+  async function runVerify(plannedArg, findingsArg, formArg) {
+    const usePlanned = plannedArg ?? planned;
+    const useFindings = findingsArg ?? findings;
+    const useForm = formArg ?? form;
+    const all = [
+      ...usePlanned.map((p) => ({
+        label: p.label,
+        significance: p.significance ?? "major",
+        location: p.location || undefined,
+        explanation: p.explanation || undefined,
+      })),
+      ...useFindings.map((f) => ({
+        label: f.label,
+        significance: f.significance ?? "major",
+        explanation: f.explanation?.trim() || undefined,
+      })),
+    ];
+    if (all.length === 0) {
+      setError("Нечего проверять: нет ни находок в плане, ни размеченных");
+      return;
+    }
+    setVerifyBusy(true);
+    try {
+      const res = await aiVerifyCase({
+        modality: useForm.modality,
+        draft: {
+          title: useForm.title.trim() || undefined,
+          clinicalContext: useForm.clinicalContext.trim() || undefined,
+          plannedFindings: all,
+          impression: {
+            correctText: useForm.correctText.trim() || undefined,
+            diagnosisKeys: parseList(useForm.diagnosisKeys),
+            diagnosisSynonyms: parseList(useForm.diagnosisSynonyms),
+          },
+        },
+      });
+      setReview(res);
+      setDismissed(new Set());
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось выполнить проверку ИИ"));
+    } finally {
+      setVerifyBusy(false);
+    }
+  }
+
+  // Замечания к находке: модель может указать target кодом (pneumothorax)
+  // или человеческим ярлыком («Пневмоторакс») — принимаем оба.
+  function issuesForFinding(labelKey) {
+    const byKey = issuesForRow(review, dismissed, labelKey);
+    const byLabel = issuesForRow(review, dismissed, labelOf(labelKey));
+    const seen = new Set(byKey.map((i) => i.index));
+    return [...byKey, ...byLabel.filter((i) => !seen.has(i.index))];
   }
 
   // ─── Разметка эталона на холсте ───
@@ -502,6 +587,11 @@ export default function AdminRadiologyCasesPage() {
     liveBlockers.push("для заимствованного материала не указан орган/издание");
   if (form.sourceKind === "licensed" && !form.licenseNote.trim())
     liveBlockers.push("для лицензионного материала не указаны условия");
+  // Любое неразобранное замечание блокирует отправку на ревью: severity от
+  // модели ненадёжна как предохранитель (см. комментарий в AiReviewPanel).
+  const openIssues = unresolvedIssues(review, dismissed).length;
+  if (openIssues > 0)
+    liveBlockers.push(`разберите замечания рецензента (${openIssues})`);
 
   const editorAnn = findings
     .filter((f) => f.imageIndex === activeImg)
@@ -570,9 +660,14 @@ export default function AdminRadiologyCasesPage() {
               onChange={(e) => setAiGenHint(e.target.value)}
             />
             <div className="edu-btn-row" style={{ marginTop: 10 }}>
-              <button type="button" className="edu-btn" onClick={handleAiGenerateCase} disabled={aiGenBusy || busy}>
+              <button type="button" className="edu-btn" onClick={handleAiGenerateCase} disabled={aiGenBusy || busy || verifyBusy}>
                 {aiGenBusy ? "ИИ составляет кейс…" : "✨ Сгенерировать кейс целиком"}
               </button>
+              {selected && (
+                <button type="button" className="edu-btn edu-btn--ghost" onClick={() => runVerify()} disabled={aiGenBusy || busy || verifyBusy}>
+                  {verifyBusy ? "рецензент проверяет…" : "🔍 Проверить текущий кейс"}
+                </button>
+              )}
               {selected && selected !== "new" && (
                 <span className="edu-hint">Результат откроется как новый черновик — текущий кейс не изменится.</span>
               )}
@@ -778,6 +873,7 @@ export default function AdminRadiologyCasesPage() {
                             {p.explanation && (
                               <div className="edu-hint" style={{ marginTop: 2 }}>{p.explanation}</div>
                             )}
+                            <AiRowIssues issues={issuesForFinding(p.label)} />
                           </div>
                         ))}
                       </div>
@@ -816,6 +912,7 @@ export default function AdminRadiologyCasesPage() {
                               <button type="button" className="edu-btn edu-btn--danger" style={{ padding: "2px 8px", fontSize: 12 }} onClick={() => removeFinding(f.key)}>×</button>
                             </div>
                             <input className="edu-input" style={{ marginTop: 6, fontSize: 13 }} placeholder="Пояснение (почему это патология) — покажется в разборе" value={f.explanation} onChange={(e) => patchFinding(f.key, { explanation: e.target.value })} />
+                            <AiRowIssues issues={issuesForFinding(f.label)} />
                           </div>
                         ))}
                       </div>
@@ -823,6 +920,15 @@ export default function AdminRadiologyCasesPage() {
                   )}
                 </div>
               </div>
+
+              {/* Замечания второго прохода */}
+              <AiReviewPanel
+                review={review}
+                dismissed={dismissed}
+                onDismiss={(i) => setDismissed((prev) => new Set(prev).add(i))}
+                onRecheck={() => runVerify()}
+                busy={verifyBusy}
+              />
 
               {/* Заключение-эталон */}
               <div className="rad-panel">

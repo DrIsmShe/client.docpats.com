@@ -13,9 +13,15 @@ import {
   updateLabCase,
   setLabStatus,
   aiGenerateLabCase,
+  aiVerifyLabCase,
   fetchReadingConfig,
 } from "../../../api/radiology";
 import { readApiError, isAuthError } from "../../../api/education";
+import AiReviewPanel, {
+  issuesForRow,
+  AiRowIssues,
+  unresolvedIssues,
+} from "./AiReviewPanel";
 import "../../education/education.css";
 import "../../radiology/radiology.css";
 
@@ -74,6 +80,11 @@ export default function AdminLabCasesPage() {
   const [aiHint, setAiHint] = useState("");
   const [aiDifficulty, setAiDifficulty] = useState("medium");
 
+  // Второй проход: замечания рецензента и отметки «разобрано».
+  const [review, setReview] = useState(null);
+  const [dismissed, setDismissed] = useState(() => new Set());
+  const [verifyBusy, setVerifyBusy] = useState(false);
+
   useEffect(() => {
     (async () => {
       try {
@@ -97,11 +108,17 @@ export default function AdminLabCasesPage() {
     setCases(await fetchLabCases({ scope: "all" }));
   }
 
+  function resetReview() {
+    setReview(null);
+    setDismissed(new Set());
+  }
+
   function startNew() {
     setSelected("new");
     setStatus("draft");
     setForm(BLANK);
     setRows([newRow(), newRow()]);
+    resetReview();
     setNotice(null);
     setError(null);
   }
@@ -136,6 +153,7 @@ export default function AdminLabCasesPage() {
           significant: sig.has(p.key),
         })),
       );
+      resetReview();
       setNotice(null);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
@@ -161,9 +179,17 @@ export default function AdminLabCasesPage() {
         difficulty: aiDifficulty,
         hint: aiHint.trim() || undefined,
       });
-      setSelected("new");
-      setStatus("draft");
-      setForm({
+      // Форму и запрос на проверку строим из ОДНОГО объекта: иначе легко
+      // получить рецензию не на то, что видит автор.
+      const nextRows = (draft.panel ?? []).map((p, i) => ({
+        key: `ai_${Date.now().toString(36)}_${i}`,
+        name: p.name ?? "",
+        value: p.value ?? "",
+        unit: p.unit ?? "",
+        refRange: p.refRange ?? "",
+        significant: Boolean(p.significant),
+      }));
+      const nextForm = {
         ...BLANK,
         title: draft.title ?? "",
         clinicalContext: draft.clinicalContext ?? "",
@@ -173,26 +199,70 @@ export default function AdminLabCasesPage() {
         correctText: draft.impression?.correctText ?? "",
         diagnosisKeys: (draft.impression?.diagnosisKeys ?? []).join(", "),
         diagnosisSynonyms: (draft.impression?.diagnosisSynonyms ?? []).join(", "),
-      });
-      setRows(
-        (draft.panel ?? []).map((p, i) => ({
-          key: `ai_${Date.now().toString(36)}_${i}`,
-          name: p.name ?? "",
-          value: p.value ?? "",
-          unit: p.unit ?? "",
-          refRange: p.refRange ?? "",
-          significant: Boolean(p.significant),
-        })),
-      );
+      };
+      setSelected("new");
+      setStatus("draft");
+      setForm(nextForm);
+      setRows(nextRows);
+      resetReview();
       const flagged = (draft.panel ?? []).filter((p) => p.significant).length;
       setNotice(
-        `ИИ составил кейс: показателей ${draft.panel?.length ?? 0}, из них значимо отклонённых ${flagged}. Это ЧЕРНОВИК — проверьте значения, референсы и диагноз, поправьте и только потом сохраняйте.`,
+        `ИИ составил кейс: показателей ${draft.panel?.length ?? 0}, из них значимо отклонённых ${flagged}. Идёт проверка вторым проходом — замечания появятся ниже. Это ЧЕРНОВИК: проверьте значения, референсы и диагноз перед сохранением.`,
       );
+      // Второй проход запускаем сразу: автор всё равно должен проверить кейс,
+      // и лучше, чтобы к моменту его чтения замечания уже были.
+      runVerify(nextRows, nextForm);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
       setError(readApiError(err, "ИИ не смог сгенерировать кейс"));
     } finally {
       setAiBusy(false);
+    }
+  }
+
+  // Второй проход: отдельным запросом, а не внутри генерации. Так автор
+  // видит заполненную форму через ~35 с, а не ждёт ~90 с пустой экран, и
+  // сбой проверки не отменяет уже сгенерированный кейс.
+  //
+  // Проверяем ТО, ЧТО СЕЙЧАС В ФОРМЕ: после правок можно перепроверить, и
+  // рецензируется версия автора, а не первоначальная выдача модели.
+  async function runVerify(rowsArg, formArg) {
+    const useRows = rowsArg ?? rows;
+    const useForm = formArg ?? form;
+    const panel = useRows
+      .filter((r) => r.name.trim() && r.value.trim())
+      .map((r) => ({
+        name: r.name.trim(),
+        value: r.value.trim(),
+        unit: r.unit.trim() || undefined,
+        refRange: r.refRange.trim() || undefined,
+        significant: Boolean(r.significant),
+      }));
+    if (panel.length < 2) {
+      setError("Для проверки нужно минимум 2 заполненных показателя");
+      return;
+    }
+    setVerifyBusy(true);
+    try {
+      const res = await aiVerifyLabCase({
+        draft: {
+          title: useForm.title.trim() || undefined,
+          clinicalContext: useForm.clinicalContext.trim() || undefined,
+          panel,
+          impression: {
+            correctText: useForm.correctText.trim() || undefined,
+            diagnosisKeys: parseList(useForm.diagnosisKeys),
+            diagnosisSynonyms: parseList(useForm.diagnosisSynonyms),
+          },
+        },
+      });
+      setReview(res);
+      setDismissed(new Set());
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось выполнить проверку ИИ"));
+    } finally {
+      setVerifyBusy(false);
     }
   }
 
@@ -286,6 +356,11 @@ export default function AdminLabCasesPage() {
   if (parseList(form.diagnosisKeys).length === 0) liveBlockers.push("укажите диагноз");
   if (["public_government", "licensed"].includes(form.sourceKind) && !form.authority.trim())
     liveBlockers.push("орган/издание для заимствованного");
+  // Любое неразобранное замечание блокирует публикацию: severity от модели
+  // ненадёжна как предохранитель (см. комментарий в AiReviewPanel).
+  const openIssues = unresolvedIssues(review, dismissed).length;
+  if (openIssues > 0)
+    liveBlockers.push(`разберите замечания рецензента (${openIssues})`);
 
   if (loading) return <div className="rad-page"><div className="edu-state">Загрузка…</div></div>;
 
@@ -337,9 +412,14 @@ export default function AdminLabCasesPage() {
               onChange={(e) => setAiHint(e.target.value)}
             />
             <div className="edu-btn-row" style={{ marginTop: 10 }}>
-              <button type="button" className="edu-btn" onClick={handleAiGenerate} disabled={aiBusy || busy}>
+              <button type="button" className="edu-btn" onClick={handleAiGenerate} disabled={aiBusy || busy || verifyBusy}>
                 {aiBusy ? "ИИ составляет кейс…" : "✨ Сгенерировать кейс целиком"}
               </button>
+              {selected && (
+                <button type="button" className="edu-btn edu-btn--ghost" onClick={() => runVerify()} disabled={aiBusy || busy || verifyBusy}>
+                  {verifyBusy ? "рецензент проверяет…" : "🔍 Проверить текущий кейс"}
+                </button>
+              )}
             </div>
           </>
         ) : (
@@ -399,7 +479,8 @@ export default function AdminLabCasesPage() {
                 <div className="edu-card-title" style={{ fontSize: 15 }}>Панель показателей</div>
                 <div className="edu-hint" style={{ marginBottom: 8 }}>Отметьте «✓ значимо» у показателей, которые учащийся должен распознать как отклонение.</div>
                 {rows.map((r, i) => (
-                  <div key={r.key} className="edu-form-row" style={{ marginTop: 8, alignItems: "center" }}>
+                  <div key={r.key} style={{ marginTop: 8 }}>
+                  <div className="edu-form-row" style={{ margin: 0, alignItems: "center" }}>
                     <input className="edu-input" style={{ margin: 0, flex: 2 }} placeholder="Показатель (Hb)" value={r.name} onChange={(e) => patchRow(i, { name: e.target.value })} />
                     <input className="edu-input" style={{ margin: 0, maxWidth: 100 }} placeholder="Значение" value={r.value} onChange={(e) => patchRow(i, { value: e.target.value })} />
                     <input className="edu-input" style={{ margin: 0, maxWidth: 80 }} placeholder="ед." value={r.unit} onChange={(e) => patchRow(i, { unit: e.target.value })} />
@@ -410,9 +491,20 @@ export default function AdminLabCasesPage() {
                     </label>
                     {rows.length > 1 && <button type="button" className="edu-btn edu-btn--danger" style={{ padding: "6px 10px" }} onClick={() => setRows((prev) => prev.filter((_, j) => j !== i))}>×</button>}
                   </div>
+                  <AiRowIssues issues={issuesForRow(review, dismissed, r.name)} />
+                  </div>
                 ))}
                 <button type="button" className="edu-btn edu-btn--ghost" style={{ marginTop: 8 }} onClick={() => setRows((prev) => [...prev, newRow()])}>Добавить показатель</button>
               </div>
+
+              {/* Замечания второго прохода */}
+              <AiReviewPanel
+                review={review}
+                dismissed={dismissed}
+                onDismiss={(i) => setDismissed((prev) => new Set(prev).add(i))}
+                onRecheck={() => runVerify()}
+                busy={verifyBusy}
+              />
 
               {/* Эталон */}
               <div className="rad-panel">
