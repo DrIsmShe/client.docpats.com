@@ -20,13 +20,15 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchDuels, createDuel, fetchCases } from "../../api/radiology";
+import { fetchDuels, createDuel, fetchCatalogPage } from "../../api/radiology";
 import { readApiError, isAuthError } from "../../api/education";
 import { MODALITY_LABELS, DIFFICULTY_LABELS } from "./arenaLabels";
 import "../education/education.css";
 import "./radiology.css";
 
 const PAGE = 8;
+// Пауза перед запросом при наборе — как в каталоге хаба.
+const SEARCH_DEBOUNCE_MS = 350;
 
 const pct = (x) => (x == null ? "—" : `${Math.round(x * 100)}%`);
 
@@ -34,24 +36,20 @@ export default function ArenaDuelsPage() {
   const navigate = useNavigate();
   const [open, setOpen] = useState([]);
   const [mine, setMine] = useState([]);
-  const [cases, setCases] = useState([]);
+  const [casePage, setCasePage] = useState({ items: [], total: 0, hasMore: false });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
   const [query, setQuery] = useState("");
-  const [visible, setVisible] = useState(PAGE);
+  const [queryApplied, setQueryApplied] = useState("");
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
-        const [o, m, cs] = await Promise.all([
-          fetchDuels("open"),
-          fetchDuels("mine"),
-          fetchCases(),
-        ]);
+        const [o, m] = await Promise.all([fetchDuels("open"), fetchDuels("mine")]);
         setOpen(o);
         setMine(m);
-        setCases(cs);
       } catch (err) {
         if (isAuthError(err)) return navigate("/login");
         setError(readApiError(err, "Не удалось загрузить дуэли"));
@@ -89,16 +87,44 @@ export default function ArenaDuelsPage() {
   const waiting = useMemo(() => mine.filter((d) => d.status === "open"), [mine]);
   const finished = useMemo(() => mine.filter((d) => d.status === "completed"), [mine]);
 
-  const filteredCases = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return q
-      ? cases.filter((c) => String(c.title ?? "").toLowerCase().includes(q))
-      : cases;
-  }, [cases, query]);
+  // Поиск кейса для вызова идёт на сервере — по той же причине, что и в
+  // каталоге: искать на клиенте можно только среди доехавшего, а доезжает
+  // одна страница. Раньше сюда выгружался весь список кейсов целиком.
+  useEffect(() => {
+    const id = setTimeout(() => setQueryApplied(query), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(id);
+  }, [query]);
 
   useEffect(() => {
-    setVisible(PAGE);
-  }, [query]);
+    let alive = true;
+    fetchCatalogPage("radiology", { q: queryApplied, skip: 0, limit: PAGE })
+      .then((res) => alive && setCasePage(res))
+      .catch((err) => alive && setError(readApiError(err, "Не удалось загрузить кейсы")));
+    return () => {
+      alive = false;
+    };
+  }, [queryApplied]);
+
+  async function loadMoreCases() {
+    if (loadingMore || !casePage.hasMore) return;
+    setLoadingMore(true);
+    try {
+      const res = await fetchCatalogPage("radiology", {
+        q: queryApplied,
+        skip: casePage.items.length,
+        limit: PAGE,
+      });
+      setCasePage((prev) => ({
+        items: [...prev.items, ...res.items],
+        total: res.total,
+        hasMore: res.hasMore,
+      }));
+    } catch (err) {
+      setError(readApiError(err, "Не удалось догрузить кейсы"));
+    } finally {
+      setLoadingMore(false);
+    }
+  }
 
   if (loading) {
     return (
@@ -228,9 +254,7 @@ export default function ArenaDuelsPage() {
           Дуэли идут только по станции снимков.
         </p>
 
-        {cases.length === 0 ? (
-          <p className="edu-hint">Нет опубликованных кейсов снимков.</p>
-        ) : (
+        {(
           <>
             <div className="arena-filters" style={{ marginBottom: 12 }}>
               <input
@@ -240,17 +264,22 @@ export default function ArenaDuelsPage() {
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Поиск кейса по названию"
                 aria-label="Поиск кейса по названию"
+                maxLength={200}
               />
               <span className="edu-hint">
-                {query.trim() ? `найдено ${filteredCases.length}` : `всего ${cases.length}`}
+                {queryApplied.trim() ? `найдено ${casePage.total}` : `всего ${casePage.total}`}
               </span>
             </div>
 
-            {filteredCases.length === 0 ? (
-              <p className="edu-hint">Ничего не найдено — попробуйте другое слово.</p>
+            {casePage.items.length === 0 ? (
+              <p className="edu-hint">
+                {queryApplied.trim()
+                  ? "Ничего не найдено — попробуйте другое слово."
+                  : "Нет опубликованных кейсов снимков."}
+              </p>
             ) : (
               <div className="arena-duel-list">
-                {filteredCases.slice(0, visible).map((c) => (
+                {casePage.items.map((c) => (
                   <div key={c._id} className="arena-duel">
                     <div className="arena-duel-main">
                       <strong className="arena-duel-title">{c.title}</strong>
@@ -274,15 +303,19 @@ export default function ArenaDuelsPage() {
               </div>
             )}
 
-            {filteredCases.length > visible && (
+            {casePage.hasMore && (
               <div className="arena-more">
                 <button
                   type="button"
                   className="edu-btn edu-btn--ghost"
-                  onClick={() => setVisible((v) => v + PAGE)}
+                  onClick={loadMoreCases}
+                  disabled={loadingMore}
                 >
-                  Показать ещё {Math.min(PAGE, filteredCases.length - visible)}
+                  {loadingMore ? "Загружаем…" : "Показать ещё"}
                 </button>
+                <span className="edu-hint">
+                  показано {casePage.items.length} из {casePage.total}
+                </span>
               </div>
             )}
           </>

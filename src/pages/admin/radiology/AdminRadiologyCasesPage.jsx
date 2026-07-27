@@ -15,7 +15,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   fetchReadingConfig,
-  fetchCases,
+  fetchAllCases,
   fetchCase,
   createCase,
   updateCase,
@@ -140,7 +140,7 @@ export default function AdminRadiologyCasesPage() {
       try {
         const [cfg, list] = await Promise.all([
           fetchReadingConfig(),
-          fetchCases({ scope: "all" }),
+          fetchAllCases("radiology", { scope: "all" }).then((r) => r.items),
         ]);
         setSystems(cfg.systems);
         setAiEnabled(cfg.aiEnabled);
@@ -175,7 +175,7 @@ export default function AdminRadiologyCasesPage() {
   }
 
   async function refreshList() {
-    setCases(await fetchCases({ scope: "all" }));
+    setCases(await fetchAllCases("radiology", { scope: "all" }).then((r) => r.items));
   }
 
   function startNew() {

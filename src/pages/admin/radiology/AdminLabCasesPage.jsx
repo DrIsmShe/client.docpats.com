@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  fetchLabCases,
+  fetchAllCases,
   fetchLabCase,
   createLabCase,
   updateLabCase,
@@ -100,7 +100,7 @@ export default function AdminLabCasesPage() {
       try {
         // Настроен ли ИИ — тот же флаг, что у авторинга снимков.
         const [list, cfg] = await Promise.all([
-          fetchLabCases({ scope: "all" }),
+          fetchAllCases("labs", { scope: "all" }).then((r) => r.items),
           fetchReadingConfig().catch(() => ({ aiEnabled: false })),
         ]);
         setCases(list);
@@ -115,7 +115,7 @@ export default function AdminLabCasesPage() {
   }, [navigate]);
 
   async function refresh() {
-    setCases(await fetchLabCases({ scope: "all" }));
+    setCases(await fetchAllCases("labs", { scope: "all" }).then((r) => r.items));
   }
 
   function resetReview() {

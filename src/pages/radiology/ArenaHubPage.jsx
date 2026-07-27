@@ -1,35 +1,27 @@
 // client/src/pages/radiology/ArenaHubPage.jsx
 //
 // «Тренажёр диагностики» — хаб учащегося. Маршрут: /arena
-// (Раньше страница называлась «Диагностическая арена» и жила на /radiology.
-// И название, и путь были неверны: внутри не только радиология, но и анализы,
-// и виртуальный пациент, а станций будет больше.)
 //
-// ГЛАВНОЕ РЕШЕНИЕ ЭТОЙ СТРАНИЦЫ — каталог не растёт вниз.
+// КАТАЛОГ РАБОТАЕТ НА ЛЮБОМ ЧИСЛЕ КЕЙСОВ. Это не украшение, а исправление
+// поломки: раньше страница забирала списки целиком и фильтровала их у себя.
+// Сервер при этом отдавал первые 50 кейсов снимков (и 200 по другим станциям),
+// никак не сообщая, что список обрезан. На семистах кейсах врач видел 50 и
+// подпись «Всего кейсов: 50» — то есть интерфейс уверенно врал. Хуже: поиск
+// искал по этим же 50, поэтому кейс за их пределами было невозможно найти в
+// принципе, и это выглядело как «такого кейса нет».
 //
-// Раньше кейсы выводились тремя списками подряд: все снимки, потом все
-// анализы, потом все виртуальные пациенты. Пока кейсов десяток, это работает;
-// на сотне страница превращается в бесконечную простыню, где невозможно найти
-// ни нужное, ни новое. Причём ломается это не в тот день, когда кейсов стало
-// много, а постепенно и незаметно.
+// Теперь фильтрация, поиск и постраничность — на сервере, а страница показывает
+// total (сколько всего подходит под фильтр) отдельно от того, сколько загружено.
 //
-// Поэтому здесь один каталог с фильтрами: станция, поиск по названию,
-// модальность, сложность — и подгрузка порциями. Тогда число кейсов перестаёт
-// влиять на удобство страницы: и на десяти, и на тысяче видно ровно то, что
-// врач искал.
-//
-// Фильтрация клиентская сознательно: сервер отдаёт списки целиком (до 200 на
-// станцию), и на этом объёме фильтровать запросами — значит ждать сеть на
-// каждое нажатие клавиши. Когда упрёмся в лимит, фильтры уедут в запрос;
-// форма состояния (station/query/modality/difficulty) специально совпадает с
-// параметрами API, чтобы этот переход был механическим.
+// Почему нет вкладки «Все»: станции лежат в разных коллекциях, и честной
+// объединённой постраничности по ним не бывает — либо грузить всё (то, от чего
+// уходим), либо показывать «первые N каждой», что снова обман. Вкладка станции
+// обязательна, а счётчики на вкладках дают ту же общую картину.
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  fetchCases,
-  fetchLabCases,
-  fetchVpCases,
+  fetchCatalogPage,
   fetchGameProfile,
   fetchLeaderboard,
   fetchDailyCase,
@@ -43,117 +35,140 @@ import {
   caseHref,
   MODALITY_LABELS,
   DIFFICULTY_LABELS,
-  DIFFICULTY_ORDER,
 } from "./arenaLabels";
 import "../education/education.css";
 import "./radiology.css";
 
-// Сколько кейсов показываем сразу и сколько добавляем по кнопке.
-const PAGE = 12;
+const PAGE = 24;
+// Пауза перед запросом при наборе. Меньше — и запрос уходит на каждую букву;
+// больше — и поиск ощущается залипшим.
+const SEARCH_DEBOUNCE_MS = 350;
 
 export default function ArenaHubPage() {
   const navigate = useNavigate();
 
-  const [cases, setCases] = useState([]);
-  const [labCases, setLabCases] = useState([]);
-  const [vpCases, setVpCases] = useState([]);
   const [profile, setProfile] = useState(null);
   const [daily, setDaily] = useState(null);
   const [weekly, setWeekly] = useState(null);
   const [reviewDue, setReviewDue] = useState([]);
   const [board, setBoard] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Фильтры каталога.
-  const [station, setStation] = useState("all");
-  const [query, setQuery] = useState("");
-  const [modality, setModality] = useState("");
+  // Каталог.
+  const [station, setStation] = useState("radiology");
+  const [q, setQ] = useState("");
+  const [qApplied, setQApplied] = useState("");
   const [difficulty, setDifficulty] = useState("");
-  const [visible, setVisible] = useState(PAGE);
+  const [modality, setModality] = useState("");
+  const [page, setPage] = useState({ items: [], total: 0, hasMore: false });
+  const [catalogLoading, setCatalogLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [counts, setCounts] = useState({});
 
+  // Ответы приходят не в том порядке, в каком уходили запросы: при быстром
+  // наборе ответ на «пне» может обогнать ответ на «пневмо». Считаем актуальным
+  // только последний отправленный — иначе в каталоге оказывается результат
+  // предыдущего запроса, и выглядит это как «поиск не работает».
+  const requestSeq = useRef(0);
+
+  /* ─── Окружение хаба: профиль, кейс дня, лидерборд ─────────────────── */
   useEffect(() => {
     (async () => {
-      try {
-        // Профиль/лидерборд/кейс дня не должны блокировать каталог, если
-        // геймификация ещё не прогрелась — грузим устойчиво к частичным сбоям.
-        const [list, labs, vp, prof, day, week, rev, lb] = await Promise.all([
-          fetchCases(),
-          fetchLabCases().catch(() => []),
-          fetchVpCases().catch(() => []),
-          fetchGameProfile().catch(() => null),
-          fetchDailyCase().catch(() => null),
-          fetchWeeklyCase().catch(() => null),
-          fetchReviewDue().catch(() => []),
-          fetchLeaderboard({ limit: 10 }).catch(() => []),
-        ]);
-        setCases(list);
-        setLabCases(labs);
-        setVpCases(vp);
-        setProfile(prof);
-        setDaily(day);
-        setWeekly(week);
-        setReviewDue(rev);
-        setBoard(lb);
-      } catch (err) {
-        if (isAuthError(err)) return navigate("/login");
-        setError(readApiError(err, "Не удалось загрузить тренажёр"));
-      } finally {
-        setLoading(false);
-      }
+      const [prof, day, week, rev, lb] = await Promise.all([
+        fetchGameProfile().catch(() => null),
+        fetchDailyCase().catch(() => null),
+        fetchWeeklyCase().catch(() => null),
+        fetchReviewDue().catch(() => []),
+        fetchLeaderboard({ limit: 10 }).catch(() => []),
+      ]);
+      setProfile(prof);
+      setDaily(day);
+      setWeekly(week);
+      setReviewDue(rev);
+      setBoard(lb);
     })();
-  }, [navigate]);
+  }, []);
 
-  // Один каталог из трёх станций: у станций разные модели, но для поиска и
-  // фильтрации важны одни и те же поля.
-  const items = useMemo(
-    () => [
-      ...cases.map((c) => ({ ...c, station: "radiology" })),
-      ...labCases.map((c) => ({ ...c, station: "labs" })),
-      ...vpCases.map((c) => ({ ...c, station: "vp" })),
-    ],
-    [cases, labCases, vpCases],
-  );
-
-  const counts = useMemo(() => {
-    const acc = { all: items.length };
-    for (const s of STATIONS) acc[s.key] = items.filter((i) => i.station === s.key).length;
-    return acc;
-  }, [items]);
-
-  // Модальности только те, что реально есть в кейсах: пустой пункт в фильтре
-  // выглядит как сломанный фильтр.
-  const availableModalities = useMemo(() => {
-    const set = new Set(
-      items.filter((i) => i.station === "radiology" && i.modality).map((i) => i.modality),
-    );
-    return [...set];
-  }, [items]);
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return items
-      .filter((i) => (station === "all" ? true : i.station === station))
-      .filter((i) => (difficulty ? i.difficulty === difficulty : true))
-      .filter((i) => (modality ? i.modality === modality : true))
-      .filter((i) => (q ? String(i.title ?? "").toLowerCase().includes(q) : true))
-      .sort((a, b) => {
-        // Сначала по сложности, внутри — новые выше: сложность важнее для
-        // выбора «чем заняться», дата — для «что появилось».
-        const d = (DIFFICULTY_ORDER[a.difficulty] ?? 9) - (DIFFICULTY_ORDER[b.difficulty] ?? 9);
-        if (d !== 0) return d;
-        return String(b.createdAt ?? "").localeCompare(String(a.createdAt ?? ""));
-      });
-  }, [items, station, difficulty, modality, query]);
-
-  // Любая смена фильтра возвращает к первой порции: иначе после сужения
-  // выборки «показать ещё» осталось бы нажатым от прошлого запроса.
+  /* ─── Счётчики на вкладках ─────────────────────────────────────────── */
   useEffect(() => {
-    setVisible(PAGE);
-  }, [station, query, modality, difficulty]);
+    (async () => {
+      // limit=1: нужен только total. Тянуть ради счётчика целую страницу
+      // кейсов — то же расточительство, от которого уходим.
+      const pairs = await Promise.all(
+        STATIONS.map((s) =>
+          fetchCatalogPage(s.key, { limit: 1 })
+            .then((r) => [s.key, r.total])
+            .catch(() => [s.key, null]),
+        ),
+      );
+      setCounts(Object.fromEntries(pairs));
+    })();
+  }, []);
 
-  const shown = filtered.slice(0, visible);
-  const filtersActive = Boolean(query.trim() || modality || difficulty || station !== "all");
+  /* ─── Поиск: пауза перед запросом ──────────────────────────────────── */
+  useEffect(() => {
+    const id = setTimeout(() => setQApplied(q), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(id);
+  }, [q]);
+
+  /* ─── Первая страница при любой смене условий ──────────────────────── */
+  useEffect(() => {
+    const seq = ++requestSeq.current;
+    setCatalogLoading(true);
+    fetchCatalogPage(station, { q: qApplied, difficulty, modality, skip: 0, limit: PAGE })
+      .then((res) => {
+        if (seq !== requestSeq.current) return; // ответ устарел
+        setPage(res);
+        setError(null);
+      })
+      .catch((err) => {
+        if (seq !== requestSeq.current) return;
+        if (isAuthError(err)) return navigate("/login");
+        setError(readApiError(err, "Не удалось загрузить каталог"));
+        setPage({ items: [], total: 0, hasMore: false });
+      })
+      .finally(() => {
+        if (seq === requestSeq.current) setCatalogLoading(false);
+      });
+  }, [station, qApplied, difficulty, modality, navigate]);
+
+  const loadMore = useCallback(async () => {
+    if (loadingMore || !page.hasMore) return;
+    const seq = requestSeq.current;
+    setLoadingMore(true);
+    try {
+      const res = await fetchCatalogPage(station, {
+        q: qApplied,
+        difficulty,
+        modality,
+        skip: page.items.length,
+        limit: PAGE,
+      });
+      // Условия могли смениться, пока грузилась страница: дописывать её к
+      // другому списку нельзя.
+      if (seq !== requestSeq.current) return;
+      setPage((prev) => ({
+        items: [...prev.items, ...res.items],
+        total: res.total,
+        hasMore: res.hasMore,
+      }));
+    } catch (err) {
+      setError(readApiError(err, "Не удалось догрузить кейсы"));
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [loadingMore, page.hasMore, page.items.length, station, qApplied, difficulty, modality]);
+
+  const filtersActive = Boolean(qApplied.trim() || difficulty || modality);
+  const activeStation = STATION_BY_KEY[station];
+  const modalityOptions = useMemo(() => Object.keys(MODALITY_LABELS), []);
+
+  function resetFilters() {
+    setQ("");
+    setQApplied("");
+    setDifficulty("");
+    setModality("");
+  }
 
   return (
     <div className="rad-page">
@@ -183,15 +198,13 @@ export default function ArenaHubPage() {
 
       {profile && <ArenaHero profile={profile} />}
 
-      {/* Что делать сегодня — три повода зайти, компактной строкой. */}
       {(weekly || daily || reviewDue.length > 0) && (
         <div className="arena-today">
           {reviewDue.length > 0 && (
             <div className="arena-today-card arena-today-card--review">
               <div className="arena-eyebrow">🔁 Работа над ошибками</div>
               <strong className="arena-today-title">
-                {reviewDue.length}{" "}
-                {reviewDue.length === 1 ? "кейс ждёт" : "кейса ждут"} повтора
+                {reviewDue.length} {reviewDue.length === 1 ? "кейс ждёт" : "кейса ждут"} повтора
               </strong>
               <p className="arena-today-note">
                 Вы их не сдали или пропустили находки. Сдадите чисто — интервал вырастет.
@@ -219,19 +232,8 @@ export default function ArenaHubPage() {
 
       <div className="arena-cols">
         <div>
-          {/* ─── Каталог с фильтрами ─────────────────────────────── */}
           <div className="arena-toolbar">
             <div className="arena-tabs" role="tablist" aria-label="Станции тренажёра">
-              <button
-                type="button"
-                role="tab"
-                aria-selected={station === "all"}
-                className={`arena-tab ${station === "all" ? "arena-tab--on" : ""}`}
-                onClick={() => setStation("all")}
-              >
-                Все
-                <span className="arena-tab-count">{counts.all}</span>
-              </button>
               {STATIONS.map((s) => (
                 <button
                   key={s.key}
@@ -240,11 +242,12 @@ export default function ArenaHubPage() {
                   aria-selected={station === s.key}
                   className={`arena-tab ${station === s.key ? "arena-tab--on" : ""}`}
                   onClick={() => setStation(s.key)}
-                  disabled={counts[s.key] === 0}
                   title={s.what}
                 >
                   <span aria-hidden="true">{s.icon}</span> {s.title}
-                  <span className="arena-tab-count">{counts[s.key]}</span>
+                  {counts[s.key] != null && (
+                    <span className="arena-tab-count">{counts[s.key]}</span>
+                  )}
                 </button>
               ))}
             </div>
@@ -253,12 +256,13 @@ export default function ArenaHubPage() {
               <input
                 className="edu-search-input"
                 type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
                 placeholder="Поиск по названию"
                 aria-label="Поиск кейса по названию"
+                maxLength={200}
               />
-              {(station === "all" || station === "radiology") && availableModalities.length > 1 && (
+              {station === "radiology" && (
                 <select
                   className="edu-filter-select"
                   value={modality}
@@ -266,9 +270,9 @@ export default function ArenaHubPage() {
                   aria-label="Модальность"
                 >
                   <option value="">Все модальности</option>
-                  {availableModalities.map((m) => (
+                  {modalityOptions.map((m) => (
                     <option key={m} value={m}>
-                      {MODALITY_LABELS[m] ?? m}
+                      {MODALITY_LABELS[m]}
                     </option>
                   ))}
                 </select>
@@ -285,46 +289,40 @@ export default function ArenaHubPage() {
                 <option value="hard">Сложный</option>
               </select>
               {filtersActive && (
-                <button
-                  type="button"
-                  className="edu-btn edu-btn--ghost"
-                  onClick={() => {
-                    setStation("all");
-                    setQuery("");
-                    setModality("");
-                    setDifficulty("");
-                  }}
-                >
+                <button type="button" className="edu-btn edu-btn--ghost" onClick={resetFilters}>
                   Сбросить
                 </button>
               )}
             </div>
 
-            {station !== "all" && (
-              <p className="arena-station-what">{STATION_BY_KEY[station]?.what}</p>
-            )}
+            <p className="arena-station-what">{activeStation?.what}</p>
           </div>
 
-          {loading ? (
+          {catalogLoading ? (
             <div className="edu-state">Загрузка…</div>
-          ) : filtered.length === 0 ? (
+          ) : page.items.length === 0 ? (
             <div className="edu-state">
-              {items.length === 0
-                ? "Опубликованных кейсов пока нет. Их добавляют в админ-панели."
-                : "Под эти условия ничего не подошло. Снимите часть фильтров."}
+              {filtersActive
+                ? "Под эти условия ничего не подошло. Снимите часть фильтров."
+                : "На этой станции опубликованных кейсов пока нет."}
             </div>
           ) : (
             <>
               <p className="arena-count">
                 {filtersActive
-                  ? `Найдено: ${filtered.length} из ${items.length}`
-                  : `Всего кейсов: ${items.length}`}
+                  ? `Найдено: ${page.total}`
+                  : `Кейсов на станции: ${page.total}`}
+                {page.items.length < page.total && ` · показано ${page.items.length}`}
               </p>
 
               <div className="rad-grid">
-                {shown.map((c) => (
-                  <Link key={`${c.station}-${c._id}`} className="rad-card" to={caseHref(c)}>
-                    {c.station === "radiology" && (
+                {page.items.map((c) => (
+                  <Link
+                    key={c._id}
+                    className="rad-card"
+                    to={caseHref({ ...c, station })}
+                  >
+                    {station === "radiology" && (
                       <div
                         className="rad-card-thumb"
                         style={
@@ -337,9 +335,9 @@ export default function ArenaHubPage() {
                     <div className="rad-card-body">
                       <div style={{ marginBottom: 8 }}>
                         <span className="rad-tag">
-                          {STATION_BY_KEY[c.station]?.icon} {STATION_BY_KEY[c.station]?.title}
+                          {activeStation?.icon} {activeStation?.title}
                         </span>
-                        {c.station === "radiology" && c.modality && (
+                        {station === "radiology" && c.modality && (
                           <span className="rad-tag">
                             {MODALITY_LABELS[c.modality] ?? c.modality}
                           </span>
@@ -362,17 +360,18 @@ export default function ArenaHubPage() {
                 ))}
               </div>
 
-              {filtered.length > visible && (
+              {page.hasMore && (
                 <div className="arena-more">
                   <button
                     type="button"
                     className="edu-btn edu-btn--ghost"
-                    onClick={() => setVisible((v) => v + PAGE)}
+                    onClick={loadMore}
+                    disabled={loadingMore}
                   >
-                    Показать ещё {Math.min(PAGE, filtered.length - visible)}
+                    {loadingMore ? "Загружаем…" : "Показать ещё"}
                   </button>
                   <span className="edu-hint">
-                    показано {shown.length} из {filtered.length}
+                    показано {page.items.length} из {page.total}
                   </span>
                 </div>
               )}
@@ -380,7 +379,6 @@ export default function ArenaHubPage() {
           )}
         </div>
 
-        {/* ─── Правая колонка ───────────────────────────────────── */}
         <div className="rad-panel arena-board">
           <div className="edu-card-title" style={{ fontSize: 16 }}>
             Лидерборд

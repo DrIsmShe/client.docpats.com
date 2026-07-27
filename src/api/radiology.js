@@ -107,6 +107,88 @@ export async function fetchCases(params = {}) {
   return data.items ?? [];
 }
 
+/** Пути списков по станциям — форма запроса у всех одна. */
+const STATION_PATH = {
+  radiology: `${BASE}/cases`,
+  labs: `${BASE}/labs/cases`,
+  vp: `${BASE}/vp/cases`,
+};
+
+/**
+ * Страница каталога станции.
+ *
+ * Отличается от fetchCases* тем, что возвращает не только кейсы, но и total —
+ * сколько ИХ ВСЕГО подходит под фильтр. Без этого числа интерфейс не может
+ * отличить «это весь каталог» от «это первая страница»: раньше он показывал
+ * первые 50 кейсов и подписывал их «всего 50», хотя в базе могло быть 700.
+ *
+ * Поиск и фильтры уходят на сервер — искать на клиенте можно только среди
+ * того, что доехало, а доезжает одна страница.
+ *
+ * @returns {Promise<{items: object[], total: number, hasMore: boolean, skip: number}>}
+ */
+export async function fetchCatalogPage(station, { q, difficulty, modality, skip = 0, limit = 24 } = {}) {
+  const path = STATION_PATH[station];
+  if (!path) throw new Error(`Неизвестная станция: ${station}`);
+
+  const params = { skip, limit };
+  if (q?.trim()) params.q = q.trim();
+  if (difficulty) params.difficulty = difficulty;
+  // Модальность есть только у снимков — на других станциях сервер отклонит
+  // неизвестный параметр.
+  if (modality && station === "radiology") params.modality = modality;
+
+  const { data } = await axios.get(path, { params });
+  return {
+    items: data.items ?? [],
+    total: data.total ?? (data.items?.length ?? 0),
+    skip: data.skip ?? skip,
+    hasMore: Boolean(data.hasMore),
+  };
+}
+
+// Предохранитель для fetchAllCases: 20 страниц по 100 — это 2000 кейсов.
+// Упереться в него означает, что списку нужна настоящая постраничность, а не
+// более высокий предел, поэтому здесь стоит именно предохранитель, а не лимит.
+const MAX_PAGES = 20;
+
+/**
+ * Весь список станции, страницами. Для АДМИНКИ, где нужен полный перечень
+ * (в том числе черновиков), а не витрина.
+ *
+ * Зачем цикл: сервер больше не отдаёт «сколько влезет» — у страницы есть
+ * потолок. Молча получить первую сотню и показать её как весь список — ровно та
+ * ошибка, от которой мы уходили в каталоге, только теперь у редактора: он не
+ * найдёт свой черновик и заведёт второй.
+ *
+ * @param {"radiology"|"labs"|"vp"} station
+ * @param {object} params — те же фильтры плюс scope/status для редактора
+ * @returns {Promise<{items: object[], total: number, truncated: boolean}>}
+ */
+export async function fetchAllCases(station, params = {}) {
+  const path = STATION_PATH[station];
+  if (!path) throw new Error(`Неизвестная станция: ${station}`);
+
+  const items = [];
+  let total = 0;
+  let pages = 0;
+
+  for (;;) {
+    const { data } = await axios.get(path, {
+      params: { ...params, skip: items.length, limit: 100 },
+    });
+    const chunk = data.items ?? [];
+    items.push(...chunk);
+    total = data.total ?? items.length;
+    pages += 1;
+    if (!data.hasMore || chunk.length === 0 || pages >= MAX_PAGES) break;
+  }
+
+  // truncated отдаём наружу, а не прячем: список, обрезанный предохранителем,
+  // обязан быть отличим от полного.
+  return { items, total, truncated: items.length < total };
+}
+
 /**
  * Кейс по id. Админу приходит полный (с эталоном, `full: true`), учащемуся —
  * санитизованный (без находок и заключения).

@@ -7,7 +7,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  fetchVpCases,
+  fetchAllCases,
   fetchVpCase,
   createVpCase,
   updateVpCase,
@@ -92,7 +92,7 @@ export default function AdminVpCasesPage() {
       try {
         // Настроен ли ИИ — тот же флаг, что у авторинга снимков.
         const [list, cfg] = await Promise.all([
-          fetchVpCases({ scope: "all" }),
+          fetchAllCases("vp", { scope: "all" }).then((r) => r.items),
           fetchReadingConfig().catch(() => ({ aiEnabled: false })),
         ]);
         setCases(list);
@@ -107,7 +107,7 @@ export default function AdminVpCasesPage() {
   }, [navigate]);
 
   async function refresh() {
-    setCases(await fetchVpCases({ scope: "all" }));
+    setCases(await fetchAllCases("vp", { scope: "all" }).then((r) => r.items));
   }
 
   function resetReview() {
