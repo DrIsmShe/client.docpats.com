@@ -1,25 +1,30 @@
 // client/src/pages/diagnostics/DiagnosticCasePage.jsx
 //
-// Рабочее место по одному делу. Маршрут: /diagnostics/cases/:caseId
+// Рабочее место по делу. Маршрут: /diagnostics/cases/:caseId
 //
-// Порядок на странице повторяет порядок работы: контекст → материалы → гейты →
-// разбор → выводы → вывод врача. Он же — порядок ответственности, поэтому
-// вывод врача стоит последним и без него дело не закрывается.
+// ОДНА КОЛОНКА, ЧЕТЫРЕ ШАГА. Прошлая версия была правильной, но не простой:
+// три колонки, семь панелей в рамках, и у каждой — объяснение, зачем она.
+// Врачу нужно другое: описать случай, принести материал, запустить разбор,
+// написать своё заключение. Всё, что не помогает пройти эти шаги, мешает.
 //
-// Два места, где интерфейс намеренно неудобен, и это не недоделка:
+// Что убрано и куда:
+//   — правая колонка целиком. Протокол разбора («что проверяется») — справка,
+//     а не работа: открывается ссылкой, когда нужен;
+//   — панель заданий свелась к одной строке состояния;
+//   — кнопка «Сохранить контекст» исчезла: сохраняем при уходе из поля;
+//   — рамки, тени и подпись-объяснение у каждого блока: тонкая линия и
+//     заголовок делают то же самое.
 //
-//   1. Гейты (обезличено / согласие) не запоминаются «навсегда» и не
-//      проставляются сами. Это два разных подтверждения по каждому делу, и
-//      автоматизировать их — значит превратить осознанное действие в галочку
-//      по умолчанию. Материалы уходят внешней модели: врач должен решать это
-//      каждый раз.
-//
-//   2. Закрыть дело можно только собственным текстом. Кнопки «принять разбор
-//      как заключение» нет и не будет: итог по пациенту пишет врач.
+// Что НЕ убрано, хотя добавляет шаг:
+//   — два подтверждения перед отправкой материалов внешней модели. Они
+//     переехали в момент нажатия «Разобрать» — туда, где решение и
+//     принимается, — но остались ДВУМЯ разными утверждениями, и время
+//     подтверждения по-прежнему записывается. Это не оформление, а основание,
+//     на котором данные пациента ушли наружу;
+//   — вывод врача остаётся последним шагом, и дело закрывается только им.
 //
 // Про опрос состояния: пока есть незавершённые задания, страница
-// перезапрашивает дело раз в 4 секунды и останавливается сама. Инференс идёт
-// минутами — держать ради него соединение нельзя, а сокет здесь избыточен.
+// перезапрашивает дело раз в 4 секунды и останавливается сама.
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -46,14 +51,6 @@ import "./diagnostics.css";
 
 const POLL_MS = 4000;
 
-const JOB_LABELS = {
-  queued: "в очереди",
-  running: "разбирается",
-  done: "готово",
-  failed: "сбой",
-  skipped: "пропущено",
-};
-
 const KIND_LABELS = {
   text: "запись",
   report: "заключение",
@@ -76,13 +73,14 @@ export default function DiagnosticCasePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
-  const [openModality, setOpenModality] = useState(null);
 
-  // Черновики полей дела — правятся локально, сохраняются по кнопке.
   const [context, setContext] = useState("");
   const [question, setQuestion] = useState("");
   const [summary, setSummary] = useState("");
   const [dirty, setDirty] = useState(false);
+
+  const [confirming, setConfirming] = useState(false);
+  const [showProtocol, setShowProtocol] = useState(false);
 
   const pollRef = useRef(null);
 
@@ -92,17 +90,14 @@ export default function DiagnosticCasePage() {
         if (!silent) setLoading(true);
         const full = await fetchCase(caseId);
         setData(full);
-        // Черновики не затираем, пока врач печатает: иначе фоновый опрос
-        // состояния съедал бы несохранённый текст.
+        // Черновики не затираем, пока врач печатает: фоновый опрос состояния
+        // иначе съедал бы несохранённый текст.
         setContext((prev) => (dirty ? prev : full.case?.clinicalContext ?? ""));
         setQuestion((prev) => (dirty ? prev : full.case?.question ?? ""));
         setSummary((prev) => (prev ? prev : full.case?.doctorSummary ?? ""));
         setError(null);
       } catch (err) {
-        if (isAuthError(err)) {
-          navigate("/login");
-          return;
-        }
+        if (isAuthError(err)) return navigate("/login");
         setError(readApiError(err, "Не удалось загрузить дело"));
       } finally {
         if (!silent) setLoading(false);
@@ -120,12 +115,11 @@ export default function DiagnosticCasePage() {
       setModalities(guide.modalities ?? []);
       setAnalytes(list);
     });
-    // load намеренно не в зависимостях: он меняется при каждом наборе символа
-    // (зависит от dirty), и дело перезагружалось бы во время печати.
+    // load зависит от dirty и меняется при наборе текста — в зависимости его
+    // класть нельзя, иначе дело перезагружается во время печати.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [caseId]);
 
-  // Опрос, пока есть незавершённые задания.
   const jobsPending = (data?.jobs ?? []).some(
     (j) => j.status === "queued" || j.status === "running",
   );
@@ -143,19 +137,25 @@ export default function DiagnosticCasePage() {
       await fn();
       await load({ silent: true });
     } catch (err) {
-      if (isAuthError(err)) {
-        navigate("/login");
-        return;
-      }
+      if (isAuthError(err)) return navigate("/login");
       setError(readApiError(err, fallbackMessage));
     } finally {
       setBusy(false);
     }
   }
 
+  /** Сохранение при уходе из поля — вместо отдельной кнопки. */
+  function saveContext() {
+    if (!dirty) return;
+    guard(async () => {
+      await updateCase(caseId, { question, clinicalContext: context });
+      setDirty(false);
+    }, "Не удалось сохранить");
+  }
+
   if (loading) {
     return (
-      <div className="dg-page">
+      <div className="dg-page dg-page--narrow">
         <p className="dg-empty">Загружаем дело…</p>
       </div>
     );
@@ -163,7 +163,7 @@ export default function DiagnosticCasePage() {
 
   if (!data?.case) {
     return (
-      <div className="dg-page">
+      <div className="dg-page dg-page--narrow">
         {error && <div className="dg-err">{error}</div>}
         <Link className="edu-btn edu-btn--ghost" to="/diagnostics">
           ← К списку дел
@@ -176,12 +176,24 @@ export default function DiagnosticCasePage() {
   const closed = c.status === "closed";
   const findings = data.findings ?? [];
   const critical = findings.filter((f) => f.severity === "critical");
+  const jobs = data.jobs ?? [];
+  const failedJobs = jobs.filter((j) => j.status === "failed");
+  const doneJobs = jobs.filter((j) => j.status === "done");
+  const gatesReady = Boolean(c.deidentified && c.aiConsent?.confirmed);
+  // Препятствия, не связанные с подтверждениями: их спрашивают отдельно.
+  const otherBlockers = (data.blockers ?? []).filter((b) => !/обезличен|соглас/i.test(b));
+  const modalityTitleOf = (key) => modalities.find((m) => m.key === key)?.title ?? key;
 
-  const modalityTitleOf = (key) =>
-    modalities.find((m) => m.key === key)?.title ?? key;
+  function onAnalyzeClick() {
+    if (!gatesReady) {
+      setConfirming(true);
+      return;
+    }
+    guard(() => analyzeCase(caseId), "Не удалось запустить разбор");
+  }
 
   return (
-    <div className="dg-page">
+    <div className="dg-page dg-page--narrow">
       <div className="arena-back">
         <Link className="edu-back-link" to="/diagnostics">
           ← Все дела
@@ -193,7 +205,6 @@ export default function DiagnosticCasePage() {
 
       <header className="dg-head">
         <div className="dg-head-main">
-          <p className="edu-eyebrow">Второе мнение · дело от {formatDate(c.createdAt)}</p>
           <h1 className="dg-title">{c.title || "Без названия"}</h1>
           <p className="dg-subtitle">
             {[
@@ -212,398 +223,337 @@ export default function DiagnosticCasePage() {
         <CaseStatus status={c.status} />
       </header>
 
-      {data.advisoryNotice && (
-        <div className="dg-advisory">
-          <span className="dg-advisory-mark">!</span>
-          <span>{data.advisoryNotice}</span>
-        </div>
-      )}
-
       {error && <div className="dg-err">{error}</div>}
-
       {critical.length > 0 && (
         <div className="dg-err">
-          В разборе есть {critical.length}{" "}
-          {critical.length === 1 ? "критический вывод" : "критических вывода"} — они показаны
-          первыми и не скрываются.
+          Есть критические выводы ({critical.length}) — они первыми в списке.
         </div>
       )}
 
-      <div className="dg-layout">
-        <div className="dg-col">
-          {/* ─── Клинический контекст ─────────────────────────────── */}
-          <section className="dg-panel">
-            <h2 className="dg-panel-title">Клинический контекст</h2>
-            <p className="dg-panel-note">
-              Возраст, жалобы, динамика, что уже исключено. Разбор без контекста — это разбор
-              строчек, а не пациента.
-            </p>
+      {/* ─── 1. Случай ─────────────────────────────────────────────── */}
+      <section className="dg-sec">
+        <h2 className="dg-sec-title">Случай</h2>
+        <input
+          className="edu-input"
+          value={question}
+          onChange={(e) => {
+            setQuestion(e.target.value);
+            setDirty(true);
+          }}
+          onBlur={saveContext}
+          placeholder="Вопрос: что именно вас смущает?"
+          maxLength={2000}
+          disabled={closed}
+        />
+        <textarea
+          className="edu-textarea"
+          style={{ marginTop: 8 }}
+          rows={4}
+          value={context}
+          onChange={(e) => {
+            setContext(e.target.value);
+            setDirty(true);
+          }}
+          onBlur={saveContext}
+          placeholder="Возраст, жалобы, динамика, что уже исключено."
+          maxLength={20000}
+          disabled={closed}
+        />
+        {!closed && (
+          <p className="dg-muted">{dirty ? "Сохранится, когда выйдете из поля" : "Сохранено"}</p>
+        )}
+      </section>
 
-            <div className="dg-stack">
-              <div>
-                <span className="dg-label">Вопрос</span>
-                <textarea
-                  className="edu-textarea"
-                  rows={2}
-                  value={question}
-                  onChange={(e) => {
-                    setQuestion(e.target.value);
-                    setDirty(true);
-                  }}
-                  maxLength={2000}
-                  disabled={closed}
-                />
-              </div>
-              <div>
-                <span className="dg-label">Данные</span>
-                <textarea
-                  className="edu-textarea"
-                  rows={6}
-                  value={context}
-                  onChange={(e) => {
-                    setContext(e.target.value);
-                    setDirty(true);
-                  }}
-                  maxLength={20000}
-                  disabled={closed}
-                />
-              </div>
-              {!closed && (
-                <div>
-                  <button
-                    className="edu-btn edu-btn--ghost"
-                    type="button"
-                    disabled={busy || !dirty}
-                    onClick={() =>
-                      guard(async () => {
-                        await updateCase(caseId, { question, clinicalContext: context });
-                        setDirty(false);
-                      }, "Не удалось сохранить контекст")
-                    }
-                  >
-                    {dirty ? "Сохранить контекст" : "Сохранено"}
-                  </button>
-                </div>
-              )}
-            </div>
-          </section>
+      {/* ─── 2. Материалы ──────────────────────────────────────────── */}
+      <section className="dg-sec">
+        <h2 className="dg-sec-title">
+          Материалы{data.artifacts.length > 0 ? ` · ${data.artifacts.length}` : ""}
+        </h2>
 
-          {/* ─── Материалы ────────────────────────────────────────── */}
-          <section className="dg-panel">
-            <h2 className="dg-panel-title">Материалы · {data.artifacts.length}</h2>
-            <p className="dg-panel-note">
-              Заключения, анализы, записи. Разбирается то, что здесь лежит, — ничего из
-              карточки пациента модуль сам не подтягивает.
-            </p>
-
-            {data.artifacts.length > 0 && (
-              <div className="dg-artifacts" style={{ marginBottom: 16 }}>
-                {data.artifacts.map((a) => (
-                  <div className="dg-artifact" key={a._id}>
-                    <div className="dg-artifact-main">
-                      <div className="dg-artifact-head">
-                        <span className="dg-artifact-kind">{KIND_LABELS[a.kind] ?? a.kind}</span>
-                        {a.modality && (
-                          <span className="dg-conf">{modalityTitleOf(a.modality)}</span>
-                        )}
-                        {a.structured?.items?.length ? (
-                          <span className="dg-conf">
-                            {a.structured.items.length} показател
-                            {a.structured.items.length === 1 ? "ь" : "ей"}
-                          </span>
-                        ) : null}
-                      </div>
-                      {a.text && <p className="dg-artifact-text">{a.text}</p>}
-                      {a.structured?.items?.length > 0 && (
-                        <p className="dg-artifact-text dg-nums">
-                          {a.structured.items
-                            .map((i) => `${i.name}: ${i.value}${i.unit ? " " + i.unit : ""}`)
-                            .join(" · ")}
-                        </p>
-                      )}
-                      {a.note && <p className="dg-checklist-ref">{a.note}</p>}
-                    </div>
-                    {!closed && (
-                      <button
-                        type="button"
-                        className="edu-btn edu-btn--ghost"
-                        disabled={busy}
-                        onClick={() =>
-                          guard(
-                            () => removeArtifact(caseId, a._id),
-                            "Не удалось убрать материал",
-                          )
-                        }
-                      >
-                        Убрать
-                      </button>
+        {data.artifacts.length > 0 && (
+          <div className="dg-artifacts">
+            {data.artifacts.map((a) => (
+              <div className="dg-artifact" key={a._id}>
+                <div className="dg-artifact-main">
+                  <div className="dg-artifact-head">
+                    <span className="dg-artifact-kind">{KIND_LABELS[a.kind] ?? a.kind}</span>
+                    {a.modality && a.modality !== "clinical" && (
+                      <span className="dg-conf">{modalityTitleOf(a.modality)}</span>
                     )}
                   </div>
-                ))}
-              </div>
-            )}
-
-            {closed ? (
-              <p className="dg-muted">Дело закрыто — материалы не меняются.</p>
-            ) : (
-              <ArtifactComposer
-                caseId={caseId}
-                modalities={modalities}
-                analytes={analytes}
-                disabled={busy}
-                onAdd={(payload) => addArtifact(caseId, payload)}
-              />
-            )}
-          </section>
-
-          {/* ─── Выводы ───────────────────────────────────────────── */}
-          <section className="dg-panel">
-            <h2 className="dg-panel-title">Выводы разбора · {findings.length}</h2>
-            {findings.length === 0 ? (
-              <p className="dg-muted">
-                Пока пусто. Разбор запускается справа — после подтверждения двух условий.
-              </p>
-            ) : (
-              <>
-                <p className="dg-panel-note">
-                  Отсортированы по значимости. Рядом с каждым — вопрос, согласны ли вы: по этим
-                  ответам видно, где разбор ошибается систематически.
-                </p>
-                <div className="dg-findings">
-                  {findings.map((f) => (
-                    <FindingCard
-                      key={f._id}
-                      finding={f}
-                      modalityTitle={modalityTitleOf(f.modality)}
-                      disabled={busy}
-                      onVerdict={async (id, payload) => {
-                        await setFindingVerdict(id, payload);
-                        await load({ silent: true });
-                      }}
-                    />
-                  ))}
+                  {a.text && <p className="dg-artifact-text">{a.text}</p>}
+                  {a.structured?.items?.length > 0 && (
+                    <p className="dg-artifact-text dg-nums">
+                      {a.structured.items
+                        .map((i) => `${i.name}: ${i.value}${i.unit ? " " + i.unit : ""}`)
+                        .join(" · ")}
+                    </p>
+                  )}
                 </div>
-              </>
-            )}
-          </section>
+                {!closed && (
+                  <button
+                    type="button"
+                    className="dg-icon-btn"
+                    disabled={busy}
+                    aria-label="Убрать материал"
+                    onClick={() =>
+                      guard(() => removeArtifact(caseId, a._id), "Не удалось убрать материал")
+                    }
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
 
-          {/* ─── Вывод врача ──────────────────────────────────────── */}
-          <section className="dg-panel">
-            <h2 className="dg-panel-title">Вывод врача</h2>
-            <p className="dg-panel-note">
-              Итог по делу пишете вы. Кнопки «принять разбор как заключение» здесь нет
-              намеренно: ответственность за решение не передаётся программе.
-            </p>
-            <textarea
-              className="edu-textarea"
-              rows={5}
-              value={summary}
-              onChange={(e) => setSummary(e.target.value)}
-              maxLength={20000}
-              disabled={closed}
-              placeholder="К чему вы пришли и что назначено."
+        {closed ? (
+          <p className="dg-muted">Дело закрыто — материалы не меняются.</p>
+        ) : (
+          <ArtifactComposer
+            caseId={caseId}
+            modalities={modalities}
+            analytes={analytes}
+            disabled={busy}
+            onAdd={(payload) => addArtifact(caseId, payload)}
+          />
+        )}
+      </section>
+
+      {/* ─── 3. Разбор ─────────────────────────────────────────────── */}
+      {!closed && (
+        <section className="dg-sec">
+          <h2 className="dg-sec-title">Разбор</h2>
+
+          {confirming && !gatesReady ? (
+            <ConfirmGates
+              caseData={c}
+              busy={busy}
+              onCancel={() => setConfirming(false)}
+              onConfirm={() =>
+                guard(async () => {
+                  await updateCase(caseId, { deidentified: true, aiConsent: true });
+                  await analyzeCase(caseId);
+                  setConfirming(false);
+                }, "Не удалось запустить разбор")
+              }
             />
-            <div className="dg-row" style={{ marginTop: 10 }}>
-              {closed ? (
-                <button
-                  className="edu-btn edu-btn--ghost"
-                  type="button"
-                  disabled={busy}
-                  onClick={() => guard(() => reopenCase(caseId), "Не удалось переоткрыть дело")}
-                >
-                  Переоткрыть дело
-                </button>
-              ) : (
+          ) : (
+            <>
+              <div className="dg-actions">
                 <button
                   className="edu-btn"
                   type="button"
-                  disabled={busy || summary.trim().length < 3}
-                  onClick={() =>
-                    guard(() => closeCase(caseId, summary.trim()), "Не удалось закрыть дело")
-                  }
+                  disabled={busy || jobsPending || otherBlockers.length > 0}
+                  onClick={onAnalyzeClick}
                 >
-                  Закрыть дело
+                  {jobsPending
+                    ? "Разбираем…"
+                    : findings.length
+                      ? "Разобрать заново"
+                      : "Разобрать"}
                 </button>
-              )}
-              {closed && c.closedAt && (
-                <span className="dg-muted">Закрыто {formatDate(c.closedAt)}</span>
-              )}
-            </div>
-          </section>
-        </div>
-
-        {/* ─── Правая колонка: запуск и протокол ──────────────────── */}
-        <aside className="dg-col">
-          <section className="dg-gates">
-            <h2 className="dg-panel-title">Запуск разбора</h2>
-            <p className="dg-panel-note">
-              Материалы уходят на обработку внешней модели. Два подтверждения ниже — про разные
-              вещи, поэтому их два, и они запрашиваются по каждому делу заново.
-            </p>
-
-            <div className="dg-gate">
-              <input
-                id="gate-deid"
-                type="checkbox"
-                checked={Boolean(c.deidentified)}
-                disabled={closed || busy}
-                onChange={(e) =>
-                  guard(
-                    () => updateCase(caseId, { deidentified: e.target.checked }),
-                    "Не удалось сохранить подтверждение",
-                  )
-                }
-              />
-              <div className="dg-gate-body">
-                <label className="dg-gate-label" htmlFor="gate-deid">
-                  Материалы обезличены
-                </label>
-                <p className="dg-gate-why">
-                  В тексте и на бланках нет ФИО, дат рождения, номеров документов и телефонов.
-                  Шапку бланка проверьте отдельно — там имя остаётся чаще всего.
-                </p>
-              </div>
-            </div>
-
-            <div className="dg-gate">
-              <input
-                id="gate-consent"
-                type="checkbox"
-                checked={Boolean(c.aiConsent?.confirmed)}
-                disabled={closed || busy}
-                onChange={(e) =>
-                  guard(
-                    () => updateCase(caseId, { aiConsent: e.target.checked }),
-                    "Не удалось сохранить согласие",
-                  )
-                }
-              />
-              <div className="dg-gate-body">
-                <label className="dg-gate-label" htmlFor="gate-consent">
-                  Согласие на обработку внешней моделью
-                </label>
-                <p className="dg-gate-why">
-                  Подтверждение фиксируется с датой и временем: это часть ответа на вопрос, на
-                  каком основании данные ушли наружу.
-                  {c.aiConsent?.at && ` Подтверждено ${formatDate(c.aiConsent.at)}.`}
-                </p>
-              </div>
-            </div>
-
-            {data.blockers.length > 0 && (
-              <div className="dg-blockers">
-                Разбор не запустится, пока не сделано:
-                <ul>
-                  {data.blockers.map((b, i) => (
-                    <li key={i}>{b}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div className="dg-row" style={{ marginTop: 14 }}>
-              <button
-                className="edu-btn"
-                type="button"
-                disabled={busy || !data.canAnalyze || jobsPending}
-                onClick={() => guard(() => analyzeCase(caseId), "Не удалось запустить разбор")}
-              >
-                {jobsPending ? "Идёт разбор…" : "Разобрать материалы"}
-              </button>
-            </div>
-            <p className="dg-muted" style={{ marginTop: 9 }}>
-              Направления выбираются по составу материалов. Занимает минуты — страницу можно
-              закрыть, результат сохранится в деле.
-            </p>
-          </section>
-
-          {data.jobs.length > 0 && (
-            <section className="dg-panel">
-              <h2 className="dg-panel-title">Задания</h2>
-              <div className="dg-jobs">
-                {data.jobs.map((j) => (
-                  <div className="dg-job" key={j._id}>
-                    <div style={{ minWidth: 0 }}>
-                      <div className="dg-job-name">{j.modalityTitle}</div>
-                      {j.message && <div className="dg-job-msg">{j.message}</div>}
-                      {j.provenance?.model && (
-                        <div className="dg-job-msg">
-                          {j.provenance.model} · {j.findingsCount ?? 0} выводов
-                        </div>
-                      )}
-                    </div>
-                    <div className={`dg-job-state dg-job-state--${j.status}`}>
-                      {(j.status === "queued" || j.status === "running") && (
-                        <span className="dg-spinner" aria-hidden="true" />
-                      )}
-                      {JOB_LABELS[j.status] ?? j.status}
-                      {j.status === "failed" && !closed && (
-                        <button
-                          type="button"
-                          className="edu-btn edu-btn--ghost"
-                          style={{ marginLeft: 8 }}
-                          disabled={busy}
-                          onClick={() =>
-                            guard(() => rerunJob(j._id), "Не удалось перезапустить задание")
-                          }
-                        >
-                          Ещё раз
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
-
-          <section className="dg-panel">
-            <h2 className="dg-panel-title">Протокол разбора</h2>
-            <p className="dg-panel-note">
-              По этим пунктам идёт проверка материала. Открыто до отправки — скрытый протокол
-              означал бы доверие вслепую.
-            </p>
-            {modalities.map((m) => (
-              <div className="dg-mod" key={m.key}>
                 <button
                   type="button"
-                  className="dg-mod-head"
-                  onClick={() => setOpenModality(openModality === m.key ? null : m.key)}
-                  aria-expanded={openModality === m.key}
+                  className="dg-link-btn"
+                  onClick={() => setShowProtocol((v) => !v)}
                 >
-                  <span className="dg-mod-name">{m.title}</span>
-                  <span className="dg-mod-cap">{openModality === m.key ? "скрыть" : "протокол"}</span>
+                  {showProtocol ? "Скрыть протокол" : "Что проверяется"}
                 </button>
-                {openModality === m.key && (
-                  <div className="dg-mod-body">
-                    <p className="dg-mod-purpose">{m.purpose}</p>
-                    {m.checklist?.length > 0 && (
-                      <>
-                        <p className="dg-finding-sub">Проверяется</p>
+              </div>
+
+              <p className="dg-muted">
+                {jobsPending
+                  ? `Готово ${doneJobs.length} из ${jobs.length}. Занимает минуты — страницу можно закрыть.`
+                  : otherBlockers.length > 0
+                    ? otherBlockers[0]
+                    : gatesReady
+                      ? "Направления выбираются по составу материалов."
+                      : "Материалы уйдут внешней модели — перед первым запуском спросим подтверждение."}
+              </p>
+
+              {failedJobs.length > 0 && (
+                <div className="dg-blockers">
+                  Не удалось разобрать: {failedJobs.map((j) => j.modalityTitle).join(", ")}.
+                  {failedJobs[0].message && (
+                    <div className="dg-muted">{failedJobs[0].message}</div>
+                  )}
+                  <button
+                    type="button"
+                    className="dg-link-btn"
+                    style={{ marginTop: 8 }}
+                    disabled={busy}
+                    onClick={() =>
+                      guard(
+                        () => Promise.all(failedJobs.map((j) => rerunJob(j._id))),
+                        "Не удалось перезапустить",
+                      )
+                    }
+                  >
+                    Попробовать ещё раз
+                  </button>
+                </div>
+              )}
+
+              {showProtocol && (
+                <div className="dg-protocol">
+                  <p className="dg-muted">
+                    По этим пунктам идёт проверка. Открыто до отправки: скрытый протокол
+                    означал бы доверие вслепую.
+                  </p>
+                  {modalities.map((m) => (
+                    <details key={m.key}>
+                      <summary>{m.title}</summary>
+                      {m.checklist?.length > 0 && (
                         <ol>
                           {m.checklist.map((item, i) => (
                             <li key={i}>{item}</li>
                           ))}
                         </ol>
-                      </>
-                    )}
-                    {m.redFlags?.length > 0 && (
-                      <>
-                        <p className="dg-finding-sub">Нельзя пропустить</p>
+                      )}
+                      {m.redFlags?.length > 0 && (
                         <ul className="dg-mod-flags">
                           {m.redFlags.map((item, i) => (
                             <li key={i}>{item}</li>
                           ))}
                         </ul>
-                      </>
-                    )}
-                    {m.binaryNote && <p className="dg-artifact-note">{m.binaryNote}</p>}
-                  </div>
-                )}
-              </div>
+                      )}
+                      {m.binaryNote && <p className="dg-artifact-note">{m.binaryNote}</p>}
+                    </details>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </section>
+      )}
+
+      {/* ─── 4. Выводы ─────────────────────────────────────────────── */}
+      {findings.length > 0 && (
+        <section className="dg-sec">
+          <h2 className="dg-sec-title">
+            Выводы · {findings.length}
+            {data.advisoryNotice && <span className="dg-sec-note">{data.advisoryNotice}</span>}
+          </h2>
+          <div className="dg-findings">
+            {findings.map((f) => (
+              <FindingCard
+                key={f._id}
+                finding={f}
+                modalityTitle={modalityTitleOf(f.modality)}
+                disabled={busy}
+                onVerdict={async (id, payload) => {
+                  await setFindingVerdict(id, payload);
+                  await load({ silent: true });
+                }}
+              />
             ))}
-          </section>
-        </aside>
+          </div>
+        </section>
+      )}
+
+      {/* ─── 5. Вывод врача ────────────────────────────────────────── */}
+      <section className="dg-sec">
+        <h2 className="dg-sec-title">Ваш вывод</h2>
+        <textarea
+          className="edu-textarea"
+          rows={4}
+          value={summary}
+          onChange={(e) => setSummary(e.target.value)}
+          maxLength={20000}
+          disabled={closed}
+          placeholder="К чему вы пришли и что назначено."
+        />
+        <div className="dg-actions">
+          {closed ? (
+            <>
+              <button
+                className="edu-btn edu-btn--ghost"
+                type="button"
+                disabled={busy}
+                onClick={() => guard(() => reopenCase(caseId), "Не удалось переоткрыть")}
+              >
+                Переоткрыть
+              </button>
+              {c.closedAt && <span className="dg-muted">Закрыто {formatDate(c.closedAt)}</span>}
+            </>
+          ) : (
+            <>
+              <button
+                className="edu-btn"
+                type="button"
+                disabled={busy || summary.trim().length < 3}
+                onClick={() =>
+                  guard(() => closeCase(caseId, summary.trim()), "Не удалось закрыть")
+                }
+              >
+                Закрыть дело
+              </button>
+              <span className="dg-muted">Итог по делу пишет врач</span>
+            </>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/**
+ * Подтверждение перед первой отправкой материалов наружу.
+ *
+ * Раньше это были две галочки, постоянно висевшие в правой колонке. Теперь они
+ * стоят там, где решение принимается — в момент нажатия «Разобрать», — и
+ * спрашиваются один раз на дело.
+ *
+ * Утверждений по-прежнему ДВА, и это не формальность: «я убрал персональные
+ * данные» и «я согласен на внешнюю обработку» — разные вещи и разная
+ * ответственность. Свести их в одну галочку значило бы, что одно из двух врач
+ * подтвердил не думая.
+ */
+function ConfirmGates({ caseData, busy, onCancel, onConfirm }) {
+  const [deid, setDeid] = useState(Boolean(caseData.deidentified));
+  const [consent, setConsent] = useState(Boolean(caseData.aiConsent?.confirmed));
+
+  return (
+    <div className="dg-confirm">
+      <p className="dg-confirm-lead">
+        Материалы уйдут на обработку внешней модели. Подтвердите два условия — спросим один
+        раз для этого дела.
+      </p>
+
+      <label className="dg-confirm-item">
+        <input type="checkbox" checked={deid} onChange={(e) => setDeid(e.target.checked)} />
+        <span>
+          <strong>Материалы обезличены.</strong> Нет ФИО, дат рождения, номеров документов и
+          телефонов. Шапку бланка проверьте отдельно — там имя остаётся чаще всего.
+        </span>
+      </label>
+
+      <label className="dg-confirm-item">
+        <input
+          type="checkbox"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+        />
+        <span>
+          <strong>Согласие на обработку внешней моделью.</strong> Время подтверждения
+          записывается — это часть ответа на вопрос, на каком основании данные ушли наружу.
+        </span>
+      </label>
+
+      <div className="dg-actions">
+        <button
+          className="edu-btn"
+          type="button"
+          disabled={busy || !deid || !consent}
+          onClick={onConfirm}
+        >
+          {busy ? "Запускаем…" : "Подтверждаю и запускаю"}
+        </button>
+        <button type="button" className="dg-link-btn" onClick={onCancel} disabled={busy}>
+          Отмена
+        </button>
       </div>
     </div>
   );

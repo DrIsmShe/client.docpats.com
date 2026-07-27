@@ -1,39 +1,29 @@
 // client/src/pages/diagnostics/components/ArtifactComposer.jsx
 //
-// Добавление материала в дело: текст/заключение или лабораторная панель.
+// Добавление материала в дело. ОДНО поле ввода вместо формы.
 //
-// Панель вводится ПОКАЗАТЕЛЯМИ, а не сплошным текстом, потому что на сервере
-// цифры считает код, а не модель: сравнение с референсом и пороги критических
-// значений должны быть воспроизводимыми. Текстом можно тоже — тогда разбор
-// пойдёт по словам, и врачу это сказано прямо, а не умолчано.
+// Прошлая версия спрашивала четыре вещи до того, как врач напишет хоть слово:
+// что добавляем, какое направление, текст, пометка. Плюс таблица показателей
+// на виду. Формально всё было нужно — на деле это форма, которую заполняют
+// вместо работы.
 //
-// Референсы вводит врач с бланка и не обязан их знать наизусть: лаборатории
-// отличаются, и подставлять «общепринятые» интервалы вместо напечатанных —
-// прямой путь к неверному выводу. Без референса показатель помечается
-// неинтерпретируемым, а не сравнивается с выдуманной нормой.
+// Здесь одно поле и кнопка. Всё остальное убрано в две необязательные
+// возможности: прикрепить файл (распознать) и ввести показателями. Обе нужны
+// не всегда, поэтому и не показываются всегда.
+//
+// Направление (модальность) спрашивается ОДНИМ выпадающим списком рядом с
+// кнопкой, а не отдельным блоком с подписью: чаще всего подходит значение по
+// умолчанию, и заставлять выбирать его каждый раз — трата внимания.
+//
+// Панель показателей осталась ровно потому, зачем была: цифры сравнивает код,
+// а не модель, и пороги критических значений работают по ключу показателя.
+// Но теперь она открывается по требованию — тем, кому нужна точность, а не
+// всем подряд.
 
 import { useMemo, useRef, useState } from "react";
 
 import { extractDocument } from "../../../api/diagnostics";
 import { readApiError } from "../../../api/education";
-
-const KINDS = [
-  {
-    key: "text",
-    label: "Запись врача",
-    hint: "Анамнез, жалобы, ваши наблюдения — всё, что не является готовым документом.",
-  },
-  {
-    key: "report",
-    label: "Текст заключения",
-    hint: "Расшифровка КТ/МРТ/УЗИ/ЭКГ. Разбирается по протоколу выбранного направления.",
-  },
-  {
-    key: "lab_panel",
-    label: "Лабораторная панель",
-    hint: "Показателями — тогда сравнение с референсом и пороги считает код, а не модель.",
-  },
-];
 
 function emptyRow() {
   return { key: "", name: "", value: "", unit: "", refLow: "", refHigh: "" };
@@ -41,13 +31,12 @@ function emptyRow() {
 
 export default function ArtifactComposer({ caseId, modalities, analytes, disabled, onAdd }) {
   const fileRef = useRef(null);
+  const [text, setText] = useState("");
+  const [modality, setModality] = useState("clinical");
+  const [panelOpen, setPanelOpen] = useState(false);
+  const [rows, setRows] = useState([emptyRow()]);
   const [reading, setReading] = useState(false);
   const [recognized, setRecognized] = useState(null);
-  const [kind, setKind] = useState("text");
-  const [modality, setModality] = useState("clinical");
-  const [text, setText] = useState("");
-  const [note, setNote] = useState("");
-  const [rows, setRows] = useState([emptyRow()]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
 
@@ -55,8 +44,6 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
     () => Object.fromEntries((analytes ?? []).map((a) => [a.key, a])),
     [analytes],
   );
-
-  const kindInfo = KINDS.find((k) => k.key === kind);
   const activeModality = modalities.find((m) => m.key === modality) ?? null;
 
   function setRow(i, patch) {
@@ -65,80 +52,9 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
 
   function pickAnalyte(i, key) {
     const a = analyteByKey[key];
-    // Подставляем название и единицу выбранного показателя, но НЕ референс:
-    // он берётся с конкретного бланка, а не из головы интерфейса.
-    setRow(i, {
-      key,
-      name: a ? a.label : "",
-      unit: a ? a.unit : "",
-    });
+    // Название и единицу подставляем, референс — нет: он с конкретного бланка.
+    setRow(i, { key, name: a ? a.label : "", unit: a ? a.unit : "" });
   }
-
-  function addRow() {
-    setRows((prev) => [...prev, emptyRow()]);
-  }
-
-  function removeRow(i) {
-    setRows((prev) => (prev.length === 1 ? [emptyRow()] : prev.filter((_, idx) => idx !== i)));
-  }
-
-  function buildPayload() {
-    if (kind === "lab_panel") {
-      const items = rows
-        .filter((r) => String(r.value).trim() !== "" && (r.key || r.name.trim()))
-        .map((r, idx) => ({
-          // Ключ из справочника, если выбран. Свой показатель получает
-          // технический ключ: он попадёт в разбор, но без порогов и связок.
-          key: r.key || `custom${idx + 1}`,
-          name: r.name.trim() || r.key || `Показатель ${idx + 1}`,
-          value: String(r.value).trim(),
-          unit: r.unit.trim() || undefined,
-          refLow: r.refLow === "" ? null : Number(String(r.refLow).replace(",", ".")),
-          refHigh: r.refHigh === "" ? null : Number(String(r.refHigh).replace(",", ".")),
-        }));
-      if (!items.length) throw new Error("Заполните хотя бы один показатель со значением");
-      return {
-        kind: "lab_panel",
-        modality: "labs",
-        structured: { items },
-        note: note.trim() || undefined,
-      };
-    }
-
-    if (!text.trim()) throw new Error("Текст пуст");
-    return {
-      kind,
-      modality: modality || undefined,
-      text: text.trim(),
-      note: note.trim() || undefined,
-    };
-  }
-
-  async function submit(e) {
-    e.preventDefault();
-    if (busy || disabled) return;
-    setError(null);
-    let payload;
-    try {
-      payload = buildPayload();
-    } catch (err) {
-      setError(err.message);
-      return;
-    }
-    setBusy(true);
-    try {
-      await onAdd(payload);
-      setText("");
-      setNote("");
-      setRows([emptyRow()]);
-    } catch (err) {
-      setError(err?.message ?? "Не удалось добавить материал");
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  const unknownRows = rows.filter((r) => !r.key && r.name.trim());
 
   async function pickFile(file) {
     if (!file || reading || disabled) return;
@@ -146,13 +62,10 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
     setError(null);
     setRecognized(null);
     try {
-      const res = await extractDocument(caseId, file, note.trim());
-      // Текст кладём в поле ввода: врач правит его прямо здесь, до того как
-      // материал попадёт в дело. Автоматически добавлять нельзя — ошибка в
-      // одной цифре анализа меняет вывод, а сверить может только человек с
-      // оригиналом перед глазами.
-      setKind("report");
-      setText(res.text);
+      const res = await extractDocument(caseId, file);
+      // Распознанное кладём в то же поле ввода: врач правит его здесь и
+      // добавляет сам. Автоматически нельзя — ошибка в цифре меняет вывод.
+      setText((prev) => (prev.trim() ? `${prev.trim()}\n\n${res.text}` : res.text));
       setRecognized(res);
     } catch (err) {
       setError(readApiError(err, "Не удалось распознать документ"));
@@ -162,94 +75,239 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
     }
   }
 
+  async function submit(e) {
+    e.preventDefault();
+    if (busy || disabled) return;
+    setError(null);
+
+    let payload;
+    if (panelOpen) {
+      const items = rows
+        .filter((r) => String(r.value).trim() !== "" && (r.key || r.name.trim()))
+        .map((r, idx) => ({
+          key: r.key || `custom${idx + 1}`,
+          name: r.name.trim() || r.key || `Показатель ${idx + 1}`,
+          value: String(r.value).trim(),
+          unit: r.unit.trim() || undefined,
+          refLow: r.refLow === "" ? null : Number(String(r.refLow).replace(",", ".")),
+          refHigh: r.refHigh === "" ? null : Number(String(r.refHigh).replace(",", ".")),
+        }));
+      if (!items.length) {
+        setError("Заполните хотя бы один показатель со значением");
+        return;
+      }
+      payload = { kind: "lab_panel", modality: "labs", structured: { items } };
+    } else {
+      if (!text.trim()) {
+        setError("Добавьте текст или прикрепите документ");
+        return;
+      }
+      payload = {
+        // Заключение или запись — различие для протокола разбора; определяем
+        // по выбранному направлению, а не отдельным вопросом врачу.
+        kind: modality === "clinical" ? "text" : "report",
+        modality,
+        text: text.trim(),
+      };
+    }
+
+    setBusy(true);
+    try {
+      await onAdd(payload);
+      setText("");
+      setRows([emptyRow()]);
+      setRecognized(null);
+      setPanelOpen(false);
+    } catch (err) {
+      setError(err?.message ?? "Не удалось добавить материал");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const unknownRows = rows.filter((r) => !r.key && r.name.trim());
+
   return (
-    <form className="dg-stack" onSubmit={submit}>
-      {/* ─── Распознавание документа ───────────────────────────────── */}
-      <div className="dg-scan">
-        <div className="dg-scan-head">
-          <span className="dg-label" style={{ marginBottom: 0 }}>
-            Есть фото бланка или PDF?
-          </span>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="image/jpeg,image/png,image/webp,application/pdf"
-            style={{ display: "none" }}
-            onChange={(e) => pickFile(e.target.files?.[0])}
+    <form onSubmit={submit}>
+      {!panelOpen ? (
+        <>
+          <textarea
+            className="edu-textarea"
+            rows={5}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Вставьте текст заключения или опишите случай. Можно прикрепить фото бланка — распознаем."
+            maxLength={60000}
             disabled={disabled || reading}
           />
+
+          {recognized && (
+            <div className="dg-scan-result">
+              <strong>Распознано{recognized.pages > 1 ? ` · ${recognized.pages} стр.` : ""}.</strong>{" "}
+              Сверьте числа и единицы — считать будем по ним.
+              {recognized.unreadable.length > 0 && (
+                <div className="dg-artifact-note">
+                  Не прочиталось: {recognized.unreadable.join("; ")} — впишите вручную.
+                </div>
+              )}
+              {recognized.hasPatientIdentity && (
+                <div className="dg-artifact-note">
+                  Видны данные пациента — уберите их из текста.
+                </div>
+              )}
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="dg-panel-rows">
+          {rows.map((r, i) => (
+            <div className="dg-row" key={i} style={{ gap: 6, alignItems: "flex-end" }}>
+              <div className="dg-grow">
+                <select
+                  className="edu-select"
+                  value={r.key}
+                  onChange={(e) => pickAnalyte(i, e.target.value)}
+                  disabled={disabled}
+                  aria-label="Показатель"
+                >
+                  <option value="">— свой показатель —</option>
+                  {(analytes ?? []).map((a) => (
+                    <option key={a.key} value={a.key}>
+                      {a.label}
+                      {a.critical ? " ●" : ""}
+                    </option>
+                  ))}
+                </select>
+                {!r.key && (
+                  <input
+                    className="edu-input"
+                    style={{ marginTop: 5 }}
+                    value={r.name}
+                    onChange={(e) => setRow(i, { name: e.target.value })}
+                    placeholder="Название"
+                    maxLength={160}
+                    disabled={disabled}
+                  />
+                )}
+              </div>
+              <input
+                className="edu-input dg-nums"
+                style={{ width: 92 }}
+                value={r.value}
+                onChange={(e) => setRow(i, { value: e.target.value })}
+                placeholder="значение"
+                maxLength={60}
+                disabled={disabled}
+                aria-label="Значение"
+              />
+              <input
+                className="edu-input"
+                style={{ width: 78 }}
+                value={r.unit}
+                onChange={(e) => setRow(i, { unit: e.target.value })}
+                placeholder="ед."
+                maxLength={40}
+                disabled={disabled}
+                aria-label="Единица"
+              />
+              <input
+                className="edu-input dg-nums"
+                style={{ width: 76 }}
+                value={r.refLow}
+                onChange={(e) => setRow(i, { refLow: e.target.value })}
+                placeholder="норма от"
+                disabled={disabled}
+                aria-label="Норма от"
+              />
+              <input
+                className="edu-input dg-nums"
+                style={{ width: 62 }}
+                value={r.refHigh}
+                onChange={(e) => setRow(i, { refHigh: e.target.value })}
+                placeholder="до"
+                disabled={disabled}
+                aria-label="Норма до"
+              />
+              <button
+                type="button"
+                className="dg-icon-btn"
+                onClick={() =>
+                  setRows((prev) =>
+                    prev.length === 1 ? [emptyRow()] : prev.filter((_, idx) => idx !== i),
+                  )
+                }
+                disabled={disabled}
+                aria-label="Убрать показатель"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+
           <button
             type="button"
-            className="edu-btn edu-btn--ghost"
-            onClick={() => fileRef.current?.click()}
-            disabled={disabled || reading}
+            className="dg-link-btn"
+            onClick={() => setRows((prev) => [...prev, emptyRow()])}
+            disabled={disabled}
           >
-            {reading ? "Распознаём…" : "Распознать документ"}
+            + показатель
           </button>
+
+          <p className="dg-muted">
+            Норму переписывайте с бланка — у лабораторий она разная. Без неё сравнивать не с
+            чем. Точкой ● отмечены показатели с порогом немедленных действий; свои показатели
+            разбираются, но без порогов.
+            {unknownRows.length > 0 && " Сейчас таких: " + unknownRows.length + "."}
+          </p>
         </div>
-        <p className="dg-muted" style={{ marginTop: 8 }}>
-          Файл не сохраняется: он уходит на распознавание и забывается, а в дело попадает
-          только текст — после того как вы его проверите. До 12 МБ, PDF до 20 страниц.
-        </p>
+      )}
 
-        {recognized && (
-          <div className="dg-scan-result">
-            <p className="dg-scan-title">
-              Распознано: {recognized.fileName || "документ"}
-              {recognized.pages > 1 ? ` · ${recognized.pages} стр.` : ""}
-            </p>
-            <p className="dg-muted">
-              Сверьте с оригиналом — особенно числа, единицы и референсы. Программа считает
-              именно по ним.
-            </p>
-            {recognized.unreadable.length > 0 && (
-              <div className="dg-blockers" style={{ marginTop: 10 }}>
-                Не прочиталось — впишите вручную:
-                <ul>
-                  {recognized.unreadable.map((u, i) => (
-                    <li key={i}>{u}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {recognized.hasPatientIdentity && (
-              <p className="dg-artifact-note">
-                На документе видны данные пациента. Уберите их из текста ниже перед
-                добавлением в дело: обезличивание вы подтвердили сами.
-              </p>
-            )}
-          </div>
-        )}
-      </div>
+      {error && <div className="dg-err" style={{ margin: "10px 0 0" }}>{error}</div>}
 
-      <div>
-        <span className="dg-label">Что добавляем</span>
-        <div className="dg-verdict-btns">
-          {KINDS.map((k) => (
+      {/* Действия одной строкой — то, что делают часто, и то, что изредка. */}
+      <div className="dg-actions">
+        <button className="edu-btn" type="submit" disabled={busy || disabled || reading}>
+          {busy ? "Добавляем…" : "Добавить в дело"}
+        </button>
+
+        {!panelOpen && (
+          <>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,application/pdf"
+              style={{ display: "none" }}
+              onChange={(e) => pickFile(e.target.files?.[0])}
+              disabled={disabled || reading}
+            />
             <button
-              key={k.key}
               type="button"
-              className={`dg-vbtn ${kind === k.key ? "dg-vbtn--on" : ""}`}
-              onClick={() => setKind(k.key)}
-              disabled={disabled}
+              className="dg-link-btn"
+              onClick={() => fileRef.current?.click()}
+              disabled={disabled || reading}
+              title="Фото бланка или PDF. Файл не сохраняется — в дело попадёт только текст."
             >
-              {k.label}
+              {reading ? "Распознаём…" : "Прикрепить документ"}
             </button>
-          ))}
-        </div>
-        <p className="dg-muted" style={{ marginTop: 7 }}>
-          {kindInfo?.hint}
-        </p>
-      </div>
+          </>
+        )}
 
-      {kind !== "lab_panel" && (
-        <div>
-          <span className="dg-label">Направление</span>
+        <button
+          type="button"
+          className="dg-link-btn"
+          onClick={() => setPanelOpen((v) => !v)}
+          disabled={disabled}
+        >
+          {panelOpen ? "Вернуться к тексту" : "Ввести показателями"}
+        </button>
+
+        {!panelOpen && (
           <select
-            className="edu-select"
+            className="edu-select dg-inline-select"
             value={modality}
             onChange={(e) => setModality(e.target.value)}
             disabled={disabled}
+            aria-label="Направление"
           >
             {modalities.map((m) => (
               <option key={m.key} value={m.key}>
@@ -257,161 +315,14 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
               </option>
             ))}
           </select>
-          {activeModality?.binaryNote && (
-            <p className="dg-artifact-note">{activeModality.binaryNote}</p>
-          )}
-        </div>
-      )}
-
-      {kind === "lab_panel" ? (
-        <div>
-          <span className="dg-label">Показатели</span>
-          <div className="dg-stack" style={{ gap: 7 }}>
-            {rows.map((r, i) => (
-              <div className="dg-row" key={i} style={{ gap: 7, alignItems: "flex-end" }}>
-                <div className="dg-grow">
-                  <select
-                    className="edu-select"
-                    value={r.key}
-                    onChange={(e) => pickAnalyte(i, e.target.value)}
-                    disabled={disabled}
-                    aria-label="Показатель"
-                  >
-                    <option value="">— свой показатель —</option>
-                    {(analytes ?? []).map((a) => (
-                      <option key={a.key} value={a.key}>
-                        {a.label}
-                        {a.critical ? " ●" : ""}
-                      </option>
-                    ))}
-                  </select>
-                  {!r.key && (
-                    <input
-                      className="edu-input"
-                      style={{ marginTop: 6 }}
-                      value={r.name}
-                      onChange={(e) => setRow(i, { name: e.target.value })}
-                      placeholder="Название показателя"
-                      maxLength={160}
-                      disabled={disabled}
-                    />
-                  )}
-                </div>
-                <input
-                  className="edu-input dg-nums"
-                  style={{ width: 100 }}
-                  value={r.value}
-                  onChange={(e) => setRow(i, { value: e.target.value })}
-                  placeholder="значение"
-                  maxLength={60}
-                  disabled={disabled}
-                  aria-label="Значение"
-                />
-                <input
-                  className="edu-input"
-                  style={{ width: 90 }}
-                  value={r.unit}
-                  onChange={(e) => setRow(i, { unit: e.target.value })}
-                  placeholder="ед."
-                  maxLength={40}
-                  disabled={disabled}
-                  aria-label="Единица измерения"
-                />
-                <input
-                  className="edu-input dg-nums"
-                  style={{ width: 84 }}
-                  value={r.refLow}
-                  onChange={(e) => setRow(i, { refLow: e.target.value })}
-                  placeholder="норма от"
-                  disabled={disabled}
-                  aria-label="Референс, нижняя граница"
-                />
-                <input
-                  className="edu-input dg-nums"
-                  style={{ width: 84 }}
-                  value={r.refHigh}
-                  onChange={(e) => setRow(i, { refHigh: e.target.value })}
-                  placeholder="до"
-                  disabled={disabled}
-                  aria-label="Референс, верхняя граница"
-                />
-                <button
-                  type="button"
-                  className="edu-btn edu-btn--ghost"
-                  onClick={() => removeRow(i)}
-                  disabled={disabled}
-                  aria-label="Убрать показатель"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
-
-          <div className="dg-row" style={{ marginTop: 9 }}>
-            <button
-              type="button"
-              className="edu-btn edu-btn--ghost"
-              onClick={addRow}
-              disabled={disabled}
-            >
-              + показатель
-            </button>
-          </div>
-
-          <p className="dg-muted" style={{ marginTop: 9 }}>
-            Референс переписывайте с бланка: у лабораторий он разный. Без референса показатель
-            попадёт в разбор, но сравнивать его будет не с чем — норму сервер не выдумывает.
-            Точкой ● отмечены показатели, у которых есть порог немедленных действий.
-          </p>
-          {unknownRows.length > 0 && (
-            <p className="dg-artifact-note">
-              Показатели не из списка ({unknownRows.map((r) => r.name).join(", ")}) будут разобраны
-              относительно вашего референса, но пороги критических значений и связки к ним не
-              применяются — сервер их не узнаёт.
-            </p>
-          )}
-        </div>
-      ) : (
-        <div>
-          <span className="dg-label">
-            {kind === "report" ? "Текст заключения" : "Запись"}
-          </span>
-          <textarea
-            className="edu-textarea"
-            rows={7}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder={
-              kind === "report"
-                ? "Вставьте текст заключения целиком, включая описание, а не только вывод: расхождение между описанием и выводом — частая и дорогая ошибка, и разбор её ищет."
-                : "Анамнез, жалобы, динамика, что уже исключено."
-            }
-            maxLength={60000}
-            disabled={disabled}
-          />
-        </div>
-      )}
-
-      <div>
-        <span className="dg-label">Пометка к материалу (необязательно)</span>
-        <input
-          className="edu-input"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          placeholder="Например: снимок от 12.03, до лечения"
-          maxLength={2000}
-          disabled={disabled}
-        />
+        )}
       </div>
 
-      {error && <div className="dg-err" style={{ marginBottom: 0 }}>{error}</div>}
-
-      <div>
-        <button className="edu-btn" type="submit" disabled={busy || disabled}>
-          {busy ? "Добавляем…" : "Добавить в дело"}
-        </button>
-      </div>
+      {activeModality?.binaryNote && !panelOpen && modality !== "clinical" && (
+        <p className="dg-muted" style={{ marginTop: 8 }}>
+          {activeModality.binaryNote}
+        </p>
+      )}
     </form>
   );
 }
