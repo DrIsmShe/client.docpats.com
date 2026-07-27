@@ -81,6 +81,10 @@ export default function DiagnosticCasePage() {
 
   const [confirming, setConfirming] = useState(false);
   const [showProtocol, setShowProtocol] = useState(false);
+  // Действие, которое ждёт подтверждения. Наружу материалы уходят из двух
+  // мест — распознавание документа и разбор, — и спросить нужно там, где
+  // врач нажал, а не только на шаге «Разбор».
+  const pendingRef = useRef(null);
 
   const pollRef = useRef(null);
 
@@ -184,12 +188,45 @@ export default function DiagnosticCasePage() {
   const otherBlockers = (data.blockers ?? []).filter((b) => !/обезличен|соглас/i.test(b));
   const modalityTitleOf = (key) => modalities.find((m) => m.key === key)?.title ?? key;
 
+  /**
+   * Шлюз наружу: выполнить действие, спросив подтверждения, если их ещё нет.
+   *
+   * Раньше подтверждения спрашивались только при нажатии «Разобрать». Врач,
+   * начавший естественнее — сначала прикрепить документ, — упирался в отказ
+   * сервера, и дать согласие ему было НЕГДЕ: галочек на странице нет, а до
+   * кнопки разбора он ещё не дошёл. Тупик создавался ровно тем упрощением,
+   * которое убрало постоянные галочки, — поэтому шлюз общий для обоих путей.
+   */
+  function requireGates(action) {
+    if (gatesReady) return action();
+    pendingRef.current = action;
+    setConfirming(true);
+    return undefined;
+  }
+
   function onAnalyzeClick() {
-    if (!gatesReady) {
-      setConfirming(true);
-      return;
+    requireGates(() => guard(() => analyzeCase(caseId), "Не удалось запустить разбор"));
+  }
+
+  async function confirmGates() {
+    setBusy(true);
+    setError(null);
+    try {
+      await updateCase(caseId, { deidentified: true, aiConsent: true });
+      setConfirming(false);
+      await load({ silent: true });
+      const next = pendingRef.current;
+      pendingRef.current = null;
+      // Продолжаем ровно то действие, ради которого спрашивали: врач нажал
+      // «Прикрепить документ» — после подтверждения документ и прикрепится,
+      // а не отправит его обратно искать кнопку.
+      if (next) await next();
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось сохранить подтверждение"));
+    } finally {
+      setBusy(false);
     }
-    guard(() => analyzeCase(caseId), "Не удалось запустить разбор");
   }
 
   return (
@@ -316,6 +353,7 @@ export default function DiagnosticCasePage() {
             modalities={modalities}
             analytes={analytes}
             disabled={busy}
+            requireGates={requireGates}
             onAdd={(payload) => addArtifact(caseId, payload)}
           />
         )}
@@ -326,20 +364,7 @@ export default function DiagnosticCasePage() {
         <section className="dg-sec">
           <h2 className="dg-sec-title">Разбор</h2>
 
-          {confirming && !gatesReady ? (
-            <ConfirmGates
-              caseData={c}
-              busy={busy}
-              onCancel={() => setConfirming(false)}
-              onConfirm={() =>
-                guard(async () => {
-                  await updateCase(caseId, { deidentified: true, aiConsent: true });
-                  await analyzeCase(caseId);
-                  setConfirming(false);
-                }, "Не удалось запустить разбор")
-              }
-            />
-          ) : (
+          {(
             <>
               <div className="dg-actions">
                 <button
@@ -429,6 +454,20 @@ export default function DiagnosticCasePage() {
         </section>
       )}
 
+      {/* Подтверждение показывается поверх страницы: спрашивают его из двух
+          разных мест, и оно не должно зависеть от того, докуда доскроллено. */}
+      {confirming && (
+        <ConfirmGates
+          caseData={c}
+          busy={busy}
+          onCancel={() => {
+            pendingRef.current = null;
+            setConfirming(false);
+          }}
+          onConfirm={confirmGates}
+        />
+      )}
+
       {/* ─── 4. Выводы ─────────────────────────────────────────────── */}
       {findings.length > 0 && (
         <section className="dg-sec">
@@ -516,7 +555,8 @@ function ConfirmGates({ caseData, busy, onCancel, onConfirm }) {
   const [consent, setConsent] = useState(Boolean(caseData.aiConsent?.confirmed));
 
   return (
-    <div className="dg-confirm">
+    <div className="dg-modal" role="dialog" aria-modal="true" aria-label="Подтверждение отправки">
+      <div className="dg-confirm">
       <p className="dg-confirm-lead">
         Материалы уйдут на обработку внешней модели. Подтвердите два условия — спросим один
         раз для этого дела.
@@ -554,6 +594,7 @@ function ConfirmGates({ caseData, busy, onCancel, onConfirm }) {
         <button type="button" className="dg-link-btn" onClick={onCancel} disabled={busy}>
           Отмена
         </button>
+      </div>
       </div>
     </div>
   );

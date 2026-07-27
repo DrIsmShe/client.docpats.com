@@ -29,7 +29,7 @@ function emptyRow() {
   return { key: "", name: "", value: "", unit: "", refLow: "", refHigh: "" };
 }
 
-export default function ArtifactComposer({ caseId, modalities, analytes, disabled, onAdd }) {
+export default function ArtifactComposer({ caseId, modalities, analytes, disabled, requireGates, onAdd }) {
   const fileRef = useRef(null);
   const [text, setText] = useState("");
   const [modality, setModality] = useState("clinical");
@@ -58,6 +58,14 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
 
   async function pickFile(file) {
     if (!file || reading || disabled) return;
+    // Файл уходит внешней модели — значит нужны те же подтверждения, что и для
+    // разбора. Спрашиваем ЗДЕСЬ, а не отсылаем врача к кнопке «Разобрать»:
+    // прикрепить документ до запуска разбора — естественный порядок работы.
+    if (requireGates) return requireGates(() => runExtract(file));
+    return runExtract(file);
+  }
+
+  async function runExtract(file) {
     setReading(true);
     setError(null);
     setRecognized(null);

@@ -858,3 +858,26 @@
 .dg-newcase .dg-grow {
   flex: 1 1 260px;
 }
+
+/* Окно подтверждения. Поверх страницы, потому что спрашивают его из двух
+   разных мест — при распознавании документа и при запуске разбора, — и оно
+   не должно зависеть от того, докуда доскроллено. */
+.dg-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(23, 33, 43, 0.45);
+  overflow-y: auto;
+}
+.dg-modal .dg-confirm {
+  max-width: 560px;
+  width: 100%;
+  background: var(--edu-surface);
+  box-shadow: 0 24px 60px rgba(23, 33, 43, 0.28);
+  max-height: 90vh;
+  overflow-y: auto;
+}
