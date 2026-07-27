@@ -1,6 +1,6 @@
 // client/src/pages/radiology/RadiologyReaderPage.jsx
 //
-// Ридер учащегося. Маршрут: /radiology/cases/:caseId
+// Ридер учащегося. Маршрут: /arena/cases/:caseId
 //
 // Поток: старт попытки → осмотр снимка по протоколу → разметка находок
 // (выбрал ярлык слева, отметил на снимке) → чек-лист → заключение и
@@ -29,7 +29,7 @@ import StationBriefing, {
 import useAttemptIntegrity from "./useAttemptIntegrity";
 import { readApiError, isAuthError } from "../../api/education";
 import RadiologyCanvas from "./components/RadiologyCanvas";
-import { MODALITY_LABELS } from "./RadiologyCatalogPage";
+import { MODALITY_LABELS } from "./arenaLabels";
 import "../education/education.css";
 import "./radiology.css";
 
@@ -143,7 +143,7 @@ export default function RadiologyReaderPage() {
     return (
       <div className="rad-page">
         <div className="edu-error">{error}</div>
-        <Link className="edu-btn edu-btn--ghost" to="/radiology">← К каталогу</Link>
+        <Link className="edu-btn edu-btn--ghost" to="/arena">← К каталогу</Link>
       </div>
     );
 
@@ -153,7 +153,7 @@ export default function RadiologyReaderPage() {
       <div className="rad-page">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16 }}>
           <h1 className="edu-title" style={{ marginBottom: 4 }}>Кейс станции «Снимки»</h1>
-          <Link className="edu-btn edu-btn--ghost" to="/radiology">← К каталогу</Link>
+          <Link className="edu-btn edu-btn--ghost" to="/arena">← К каталогу</Link>
         </div>
         {duelId && (
           <div className="rules-warn" style={{ marginTop: 12 }}>
@@ -297,7 +297,7 @@ export default function RadiologyReaderPage() {
         <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
           <AttemptModeBadge attempt={attempt} />
           {!submitted && <AttemptTimer deadlineAt={attempt.deadlineAt} />}
-          <Link className="edu-btn edu-btn--ghost" to="/radiology">← К каталогу</Link>
+          <Link className="edu-btn edu-btn--ghost" to="/arena">← К каталогу</Link>
         </div>
       </div>
 
@@ -366,7 +366,7 @@ export default function RadiologyReaderPage() {
           {submitted && duelNote && (
             <div className="rad-panel" style={{ borderColor: "#a2802f", background: "#fbf3dd" }}>
               <strong style={{ fontSize: 16 }}>{duelNote}</strong>
-              <div style={{ marginTop: 6 }}><Link className="edu-btn edu-btn--ghost" to="/radiology/duels">К дуэлям</Link></div>
+              <div style={{ marginTop: 6 }}><Link className="edu-btn edu-btn--ghost" to="/arena/duels">К дуэлям</Link></div>
             </div>
           )}
 
@@ -513,7 +513,7 @@ export default function RadiologyReaderPage() {
           {submitted && (
             <div className="rad-panel">
               <div className="edu-btn-row">
-                <Link className="edu-btn" to="/radiology">К другим кейсам</Link>
+                <Link className="edu-btn" to="/arena">К другим кейсам</Link>
               </div>
             </div>
           )}

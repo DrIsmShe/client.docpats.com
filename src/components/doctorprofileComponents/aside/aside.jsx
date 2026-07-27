@@ -21,6 +21,7 @@ import {
   LuLogOut,
   LuBuilding2,
   LuCirclePlus,
+  LuStethoscope,
 } from "react-icons/lu";
 import { TbStethoscope } from "react-icons/tb";
 
@@ -456,6 +457,19 @@ export default function Aside() {
             {t("ai_medical_consultation")}
           </Link>
 
+          {/* Второе мнение — работа с материалами РЕАЛЬНОГО пациента
+              (modules/diagnostics). Стоит рядом с ИИ-консультацией, то есть
+              среди клинических инструментов, и намеренно НЕ в группе
+              «Обучение»: врач не должен путать разбор своего пациента с
+              тренажёром. По той же причине названия разведены по смыслу —
+              «Второе мнение» против «Тренажёра диагностики». */}
+          <Link className="dp2-item is-chat" to="/diagnostics">
+            <span className="dp2-icon">
+              <LuStethoscope />
+            </span>
+            {t("diagnostics_second_opinion", { defaultValue: "Второе мнение" })}
+          </Link>
+
           <div className="dp2-group">
             {t("education", { defaultValue: "Обучение" })}
           </div>
@@ -465,9 +479,9 @@ export default function Aside() {
             </span>
             {t("education_prep", { defaultValue: "Подготовка к экзаменам" })}
           </Link>
-          <Link className="dp2-item is-chat" to="/radiology">
+          <Link className="dp2-item is-chat" to="/arena">
             <span className="dp2-icon">🎯</span>
-            {t("radiology_arena", { defaultValue: "Диагностическая арена" })}
+            {t("arena_trainer", { defaultValue: "Тренажёр диагностики" })}
           </Link>
 
           <div className="dp2-group">{t("articles") || "Статьи"}</div>

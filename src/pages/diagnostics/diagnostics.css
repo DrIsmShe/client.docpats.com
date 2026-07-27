@@ -653,3 +653,12 @@
 .dg-nums {
   font-variant-numeric: tabular-nums;
 }
+
+/* Возврат в кабинет врача. Правило своё, а не из radiology.css: два раздела
+   не должны зависеть друг от друга через таблицу стилей. */
+.dg-page .arena-back {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 10px;
+}

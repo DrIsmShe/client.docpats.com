@@ -1,6 +1,6 @@
 // client/src/pages/radiology/VirtualPatientReaderPage.jsx
 //
-// Режим «Виртуальный пациент». Маршрут: /radiology/vp/cases/:caseId
+// Режим «Виртуальный пациент». Маршрут: /arena/vp/cases/:caseId
 //
 // Поток: условия попытки → жалоба → ПРЕДВАРИТЕЛЬНЫЙ дифряд (в зачёте
 // обязателен до обследований) → игрок НАЗНАЧАЕТ обследования (результат
@@ -140,7 +140,7 @@ export default function VirtualPatientReaderPage() {
     return (
       <div className="rad-page">
         <div className="edu-error">{error}</div>
-        <Link className="edu-btn edu-btn--ghost" to="/radiology">← В арену</Link>
+        <Link className="edu-btn edu-btn--ghost" to="/arena">← В тренажёр</Link>
       </div>
     );
 
@@ -150,7 +150,7 @@ export default function VirtualPatientReaderPage() {
       <div className="rad-page">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16 }}>
           <h1 className="edu-title" style={{ marginBottom: 4 }}>Сценарий «Виртуальный пациент»</h1>
-          <Link className="edu-btn edu-btn--ghost" to="/radiology">← В арену</Link>
+          <Link className="edu-btn edu-btn--ghost" to="/arena">← В тренажёр</Link>
         </div>
         <StationBriefing
           station="vp"
@@ -224,7 +224,7 @@ export default function VirtualPatientReaderPage() {
             </span>
           )}
           {!submitted && <AttemptTimer deadlineAt={attempt.deadlineAt} />}
-          <Link className="edu-btn edu-btn--ghost" to="/radiology">← В арену</Link>
+          <Link className="edu-btn edu-btn--ghost" to="/arena">← В тренажёр</Link>
         </div>
       </div>
 
@@ -445,7 +445,7 @@ export default function VirtualPatientReaderPage() {
 
       {submitted && (
         <div className="rad-panel" style={{ marginTop: 12 }}>
-          <div className="edu-btn-row"><Link className="edu-btn" to="/radiology">В арену</Link></div>
+          <div className="edu-btn-row"><Link className="edu-btn" to="/arena">В тренажёр</Link></div>
         </div>
       )}
     </div>

@@ -1,7 +1,7 @@
 // client/src/pages/radiology/LabReaderPage.jsx
 //
 // Станция «Анализы» — прохождение (учащийся). Маршрут:
-// /radiology/labs/cases/:caseId
+// /arena/labs/cases/:caseId
 //
 // Поток: старт → по каждому показателю отметить «норма» или «отклонение» →
 // заключение и диагноз → сдача → оценка, награда арены и разбор (какие
@@ -132,7 +132,7 @@ export default function LabReaderPage() {
     return (
       <div className="rad-page">
         <div className="edu-error">{error}</div>
-        <Link className="edu-btn edu-btn--ghost" to="/radiology">← В арену</Link>
+        <Link className="edu-btn edu-btn--ghost" to="/arena">← В тренажёр</Link>
       </div>
     );
 
@@ -142,7 +142,7 @@ export default function LabReaderPage() {
       <div className="rad-page">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16 }}>
           <h1 className="edu-title" style={{ marginBottom: 4 }}>Кейс станции «Анализы»</h1>
-          <Link className="edu-btn edu-btn--ghost" to="/radiology">← В арену</Link>
+          <Link className="edu-btn edu-btn--ghost" to="/arena">← В тренажёр</Link>
         </div>
         <StationBriefing
           station="labs"
@@ -181,7 +181,7 @@ export default function LabReaderPage() {
             </span>
           )}
           {!submitted && <AttemptTimer deadlineAt={attempt.deadlineAt} />}
-          <Link className="edu-btn edu-btn--ghost" to="/radiology">← В арену</Link>
+          <Link className="edu-btn edu-btn--ghost" to="/arena">← В тренажёр</Link>
         </div>
       </div>
 
@@ -342,7 +342,7 @@ export default function LabReaderPage() {
 
       {submitted && (
         <div className="rad-panel" style={{ marginTop: 12 }}>
-          <div className="edu-btn-row"><Link className="edu-btn" to="/radiology">В арену</Link></div>
+          <div className="edu-btn-row"><Link className="edu-btn" to="/arena">В тренажёр</Link></div>
         </div>
       )}
     </div>

@@ -1284,5 +1284,7 @@
     "increase": "تكبير النص",
     "decrease": "تصغير النص",
     "reset": "الحجم الافتراضي"
-  }
+  },
+  "arena_trainer": "مدرّب التشخيص",
+  "diagnostics_second_opinion": "رأي ثانٍ"
 }

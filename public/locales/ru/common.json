@@ -1341,5 +1341,7 @@
     "increase": "Крупнее текст",
     "decrease": "Мельче текст",
     "reset": "Обычный размер"
-  }
+  },
+  "arena_trainer": "Тренажёр диагностики",
+  "diagnostics_second_opinion": "Второе мнение"
 }

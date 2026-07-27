@@ -182,15 +182,18 @@ export default function DiagnosticCasePage() {
 
   return (
     <div className="dg-page">
-      <div className="edu-back">
+      <div className="arena-back">
         <Link className="edu-back-link" to="/diagnostics">
           ← Все дела
+        </Link>
+        <Link className="edu-back-link" to="/doctor/home-page">
+          В кабинет
         </Link>
       </div>
 
       <header className="dg-head">
         <div className="dg-head-main">
-          <p className="edu-eyebrow">Дело · {formatDate(c.createdAt)}</p>
+          <p className="edu-eyebrow">Второе мнение · дело от {formatDate(c.createdAt)}</p>
           <h1 className="dg-title">{c.title || "Без названия"}</h1>
           <p className="dg-subtitle">
             {[

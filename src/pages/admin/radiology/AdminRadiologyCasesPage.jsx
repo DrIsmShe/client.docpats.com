@@ -36,7 +36,7 @@ import AiReviewPanel, {
   AiRowIssues,
   unresolvedIssues,
 } from "./AiReviewPanel";
-import { MODALITY_LABELS } from "../../radiology/RadiologyCatalogPage";
+import { MODALITY_LABELS } from "../../radiology/arenaLabels";
 import "../../education/education.css";
 import "../../radiology/radiology.css";
 

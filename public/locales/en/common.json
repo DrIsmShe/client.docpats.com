@@ -1266,5 +1266,7 @@
     "increase": "Larger text",
     "decrease": "Smaller text",
     "reset": "Default size"
-  }
+  },
+  "arena_trainer": "Diagnostic Trainer",
+  "diagnostics_second_opinion": "Second Opinion"
 }

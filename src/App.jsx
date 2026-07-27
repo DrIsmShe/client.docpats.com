@@ -50,12 +50,16 @@ import AdminExamImportPage from "./pages/admin/education/AdminExamImportPage";
 import AdminExamReviewPage from "./pages/admin/education/AdminExamReviewPage";
 import AdminExamProgramsPage from "./pages/admin/education/AdminExamProgramsPage";
 import AdminExamCategoriesPage from "./pages/admin/education/AdminExamCategoriesPage";
-// Лучевая диагностика (modules/radiology на бэкенде)
-import RadiologyCatalogPage from "./pages/radiology/RadiologyCatalogPage";
+// Тренажёр диагностики (modules/radiology на бэкенде). Зона /arena: внутри не
+// только радиология, но и анализы с виртуальным пациентом, поэтому и раздел, и
+// путь называются по сути, а не по первой станции. Имя «radiology» осталось в
+// путях к файлам и в API — врачу оно нигде не показывается.
+import ArenaHubPage from "./pages/radiology/ArenaHubPage";
 import RadiologyReaderPage from "./pages/radiology/RadiologyReaderPage";
 import LabReaderPage from "./pages/radiology/LabReaderPage";
 import VirtualPatientReaderPage from "./pages/radiology/VirtualPatientReaderPage";
-import RadiologyDuelsPage from "./pages/radiology/RadiologyDuelsPage";
+import ArenaDuelsPage from "./pages/radiology/ArenaDuelsPage";
+import RadiologyLegacyRedirect from "./pages/radiology/RadiologyLegacyRedirect";
 import AdminRadiologyCasesPage from "./pages/admin/radiology/AdminRadiologyCasesPage";
 import AdminLabCasesPage from "./pages/admin/radiology/AdminLabCasesPage";
 import AdminVpCasesPage from "./pages/admin/radiology/AdminVpCasesPage";
@@ -2328,17 +2332,18 @@ function App() {
                 </DoctorOnlyRoute>
               }
             />
-            {/* Тренажёр чтения снимков — тоже только для врачей. */}
+            {/* Тренажёр диагностики — только для врачей. Станции: снимки,
+                анализы, виртуальный пациент. */}
             <Route
-              path="/radiology"
+              path="/arena"
               element={
                 <DoctorOnlyRoute>
-                  <RadiologyCatalogPage />
+                  <ArenaHubPage />
                 </DoctorOnlyRoute>
               }
             />
             <Route
-              path="/radiology/cases/:caseId"
+              path="/arena/cases/:caseId"
               element={
                 <DoctorOnlyRoute>
                   <RadiologyReaderPage />
@@ -2346,7 +2351,7 @@ function App() {
               }
             />
             <Route
-              path="/radiology/labs/cases/:caseId"
+              path="/arena/labs/cases/:caseId"
               element={
                 <DoctorOnlyRoute>
                   <LabReaderPage />
@@ -2354,7 +2359,7 @@ function App() {
               }
             />
             <Route
-              path="/radiology/vp/cases/:caseId"
+              path="/arena/vp/cases/:caseId"
               element={
                 <DoctorOnlyRoute>
                   <VirtualPatientReaderPage />
@@ -2362,13 +2367,18 @@ function App() {
               }
             />
             <Route
-              path="/radiology/duels"
+              path="/arena/duels"
               element={
                 <DoctorOnlyRoute>
-                  <RadiologyDuelsPage />
+                  <ArenaDuelsPage />
                 </DoctorOnlyRoute>
               }
             />
+            {/* Старые адреса /radiology/* — раздел переехал на /arena.
+                Перенаправление с сохранением остатка пути: у врачей остались
+                закладки и ссылки в переписке, а «страница не найдена» вместо
+                кейса выглядит как поломка продукта, а не как переименование. */}
+            <Route path="/radiology/*" element={<RadiologyLegacyRedirect />} />
             {/* Диагностическая помощь: разбор материалов живого пациента.
                 Только врачи — на бэкенде тот же список ролей
                 (diagnostics/middlewares/diagnosticsAuth.js). Пациентов сюда не

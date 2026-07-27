@@ -728,3 +728,314 @@
   border-radius: 10px;
   background: #f8fbff;
 }
+
+/* ─── Хаб тренажёра: шапка, «сегодня», фильтры каталога ──────────────────
+   Добавлено при переводе страницы с «Диагностической арены» (/radiology) на
+   «Тренажёр диагностики» (/arena). Главное здесь — панель фильтров: каталог
+   больше не растёт вниз тремя списками, а фильтруется по станции, названию,
+   модальности и сложности с подгрузкой порциями. */
+
+.arena-back {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.arena-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.arena-head-main {
+  min-width: 0;
+}
+
+/* Что делать сегодня: три повода зайти, в одну строку на широком экране. */
+.arena-today {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 16px 0 22px;
+}
+.arena-today-card {
+  border: 1px solid var(--edu-line);
+  border-radius: var(--edu-radius);
+  background: var(--edu-surface);
+  padding: 14px 16px;
+  box-shadow: var(--edu-shadow);
+  display: flex;
+  flex-direction: column;
+}
+.arena-today-card--week {
+  border-color: var(--edu-gold-soft);
+  background: #fbf6e9;
+}
+.arena-today-card--review {
+  border-color: #e7b4b4;
+  background: #fff5f5;
+}
+.arena-today-thumb {
+  height: 96px;
+  margin: 8px 0;
+  border-radius: var(--edu-radius-sm);
+  background: var(--edu-primary-tint-2) center/cover no-repeat;
+}
+.arena-today-title {
+  font-size: 16px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.arena-today-note {
+  color: var(--edu-ink-soft);
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin: 6px 0 0;
+}
+.arena-today-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 9px;
+}
+.arena-today-link {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 13.5px;
+  color: var(--edu-primary);
+  text-decoration: none;
+  padding: 5px 8px;
+  border-radius: var(--edu-radius-sm);
+  background: rgba(255, 255, 255, 0.7);
+}
+.arena-today-link:hover {
+  background: #fff;
+  text-decoration: underline;
+}
+.arena-today-score {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  color: var(--edu-ink-faint);
+  font-size: 12.5px;
+}
+
+/* Панель управления каталогом. */
+.arena-toolbar {
+  border: 1px solid var(--edu-line);
+  border-radius: var(--edu-radius);
+  background: var(--edu-surface);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  box-shadow: var(--edu-shadow);
+}
+
+.arena-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 11px;
+}
+.arena-tab {
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: var(--edu-radius-pill);
+  border: 1px solid var(--edu-line-strong);
+  background: #fff;
+  color: var(--edu-ink-soft);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.arena-tab:hover:not(:disabled) {
+  border-color: var(--edu-primary);
+  color: var(--edu-primary);
+}
+.arena-tab:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.arena-tab--on {
+  background: var(--edu-primary);
+  border-color: var(--edu-primary);
+  color: #fff;
+}
+.arena-tab--on:hover:not(:disabled) {
+  color: #fff;
+}
+.arena-tab-count {
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: var(--edu-radius-pill);
+  background: var(--edu-primary-tint-2);
+  color: var(--edu-primary-strong);
+}
+.arena-tab--on .arena-tab-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.arena-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.arena-filters .edu-search-input {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.arena-station-what {
+  color: var(--edu-ink-soft);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 10px 0 0;
+}
+.arena-count {
+  color: var(--edu-ink-faint);
+  font-size: 13px;
+  margin: 0 0 10px;
+  font-variant-numeric: tabular-nums;
+}
+.arena-card-stats {
+  color: var(--edu-ink-faint);
+  font-size: 12px;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.arena-more {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+/* ─── Дуэли ────────────────────────────────────────────────────────────
+   Порядок разделов — по действию: сначала то, где ход за врачом. */
+
+.arena-duel-section {
+  margin-top: 20px;
+  border: 1px solid var(--edu-line);
+  border-radius: var(--edu-radius);
+  background: var(--edu-surface);
+  padding: 15px 17px;
+  box-shadow: var(--edu-shadow);
+}
+.arena-duel-head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.arena-badge-count {
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding: 2px 9px;
+  border-radius: var(--edu-radius-pill);
+  background: var(--edu-primary);
+  color: #fff;
+}
+
+.arena-duel-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.arena-duel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border: 1px solid var(--edu-line);
+  border-left: 3px solid var(--edu-line-strong);
+  border-radius: var(--edu-radius-sm);
+  background: #fff;
+}
+/* Ход за врачом — единственный акцент на странице. */
+.arena-duel--turn {
+  border-left-color: var(--edu-primary);
+  background: var(--edu-primary-tint);
+}
+.arena-duel--win {
+  border-left-color: #2f6b46;
+}
+.arena-duel--loss {
+  border-left-color: #9d2235;
+}
+.arena-duel--draw {
+  border-left-color: var(--edu-gold);
+}
+
+.arena-duel-main {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+.arena-duel-title {
+  display: block;
+  font-size: 15px;
+  line-height: 1.3;
+  margin-bottom: 5px;
+  overflow-wrap: anywhere;
+}
+.arena-duel-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  align-items: center;
+  color: var(--edu-ink-soft);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+/* Счёт: два числа рядом — то, ради чего заходят на страницу. */
+.arena-duel-score {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+.arena-duel-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 64px;
+}
+.arena-duel-name {
+  font-size: 11.5px;
+  color: var(--edu-ink-faint);
+  max-width: 96px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.arena-duel-num {
+  font-size: 19px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--edu-ink);
+}
+.arena-duel-vs {
+  font-size: 18px;
+  color: var(--edu-ink-faint);
+}
+.arena-duel-verdict {
+  flex: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  min-width: 96px;
+  text-align: right;
+}

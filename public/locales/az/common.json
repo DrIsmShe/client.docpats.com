@@ -1372,5 +1372,7 @@
     "increase": "Daha böyük mətn",
     "decrease": "Daha kiçik mətn",
     "reset": "Adi ölçü"
-  }
+  },
+  "arena_trainer": "Diaqnostika trenajoru",
+  "diagnostics_second_opinion": "İkinci fikir"
 }
