@@ -12,7 +12,10 @@
 // прямой путь к неверному выводу. Без референса показатель помечается
 // неинтерпретируемым, а не сравнивается с выдуманной нормой.
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+
+import { extractDocument } from "../../../api/diagnostics";
+import { readApiError } from "../../../api/education";
 
 const KINDS = [
   {
@@ -36,7 +39,10 @@ function emptyRow() {
   return { key: "", name: "", value: "", unit: "", refLow: "", refHigh: "" };
 }
 
-export default function ArtifactComposer({ modalities, analytes, disabled, onAdd }) {
+export default function ArtifactComposer({ caseId, modalities, analytes, disabled, onAdd }) {
+  const fileRef = useRef(null);
+  const [reading, setReading] = useState(false);
+  const [recognized, setRecognized] = useState(null);
   const [kind, setKind] = useState("text");
   const [modality, setModality] = useState("clinical");
   const [text, setText] = useState("");
@@ -134,8 +140,88 @@ export default function ArtifactComposer({ modalities, analytes, disabled, onAdd
 
   const unknownRows = rows.filter((r) => !r.key && r.name.trim());
 
+  async function pickFile(file) {
+    if (!file || reading || disabled) return;
+    setReading(true);
+    setError(null);
+    setRecognized(null);
+    try {
+      const res = await extractDocument(caseId, file, note.trim());
+      // Текст кладём в поле ввода: врач правит его прямо здесь, до того как
+      // материал попадёт в дело. Автоматически добавлять нельзя — ошибка в
+      // одной цифре анализа меняет вывод, а сверить может только человек с
+      // оригиналом перед глазами.
+      setKind("report");
+      setText(res.text);
+      setRecognized(res);
+    } catch (err) {
+      setError(readApiError(err, "Не удалось распознать документ"));
+    } finally {
+      setReading(false);
+      if (fileRef.current) fileRef.current.value = "";
+    }
+  }
+
   return (
     <form className="dg-stack" onSubmit={submit}>
+      {/* ─── Распознавание документа ───────────────────────────────── */}
+      <div className="dg-scan">
+        <div className="dg-scan-head">
+          <span className="dg-label" style={{ marginBottom: 0 }}>
+            Есть фото бланка или PDF?
+          </span>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,application/pdf"
+            style={{ display: "none" }}
+            onChange={(e) => pickFile(e.target.files?.[0])}
+            disabled={disabled || reading}
+          />
+          <button
+            type="button"
+            className="edu-btn edu-btn--ghost"
+            onClick={() => fileRef.current?.click()}
+            disabled={disabled || reading}
+          >
+            {reading ? "Распознаём…" : "Распознать документ"}
+          </button>
+        </div>
+        <p className="dg-muted" style={{ marginTop: 8 }}>
+          Файл не сохраняется: он уходит на распознавание и забывается, а в дело попадает
+          только текст — после того как вы его проверите. До 12 МБ, PDF до 20 страниц.
+        </p>
+
+        {recognized && (
+          <div className="dg-scan-result">
+            <p className="dg-scan-title">
+              Распознано: {recognized.fileName || "документ"}
+              {recognized.pages > 1 ? ` · ${recognized.pages} стр.` : ""}
+            </p>
+            <p className="dg-muted">
+              Сверьте с оригиналом — особенно числа, единицы и референсы. Программа считает
+              именно по ним.
+            </p>
+            {recognized.unreadable.length > 0 && (
+              <div className="dg-blockers" style={{ marginTop: 10 }}>
+                Не прочиталось — впишите вручную:
+                <ul>
+                  {recognized.unreadable.map((u, i) => (
+                    <li key={i}>{u}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {recognized.hasPatientIdentity && (
+              <p className="dg-artifact-note">
+                На документе видны данные пациента. Уберите их из текста ниже перед
+                добавлением в дело: обезличивание вы подтвердили сами.
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+
       <div>
         <span className="dg-label">Что добавляем</span>
         <div className="dg-verdict-btns">

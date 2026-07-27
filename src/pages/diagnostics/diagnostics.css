@@ -662,3 +662,32 @@
   align-items: center;
   margin-bottom: 10px;
 }
+
+/* ─── Распознавание документа ────────────────────────────────────────────
+   Блок стоит ПЕРВЫМ в форме добавления материала, потому что это самый
+   частый вход: у врача на руках бланк, а не набранный текст. */
+
+.dg-scan {
+  border: 1px dashed var(--edu-line-strong);
+  border-radius: var(--edu-radius);
+  background: var(--edu-primary-tint);
+  padding: 14px 16px;
+}
+.dg-scan-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.dg-scan-result {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--edu-line);
+}
+.dg-scan-title {
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0 0 5px;
+  overflow-wrap: anywhere;
+}

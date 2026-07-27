@@ -347,6 +347,7 @@ export default function DiagnosticCasePage() {
               <p className="dg-muted">Дело закрыто — материалы не меняются.</p>
             ) : (
               <ArtifactComposer
+                caseId={caseId}
                 modalities={modalities}
                 analytes={analytes}
                 disabled={busy}

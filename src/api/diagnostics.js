@@ -109,6 +109,39 @@ export async function removeArtifact(caseId, artifactId) {
   return data;
 }
 
+/* ─── Распознавание документа ─────────────────────────────────────────── */
+
+/**
+ * Фото бланка или PDF → текст.
+ *
+ * Файл НЕ сохраняется ни на сервере, ни в хранилище: он уходит в модель и
+ * забывается, а в дело попадает только текст — отдельным действием врача,
+ * после того как тот его проверил. Поэтому здесь нет ни ссылки на файл, ни
+ * идентификатора: возвращать нечего, кроме распознанного.
+ *
+ * @returns {Promise<{text: string, docKind: string, unreadable: string[],
+ *   hasPatientIdentity: boolean, fileName: string, pages: number}>}
+ */
+export async function extractDocument(caseId, file, hint = "") {
+  const form = new FormData();
+  form.append("file", file);
+  if (hint) form.append("hint", hint);
+
+  const { data } = await axios.post(`${BASE}/cases/${caseId}/extract`, form, {
+    // Content-Type не задаём: его должен выставить браузер вместе с boundary.
+    // Заданный вручную заголовок ломает разбор multipart на сервере.
+    timeout: 180000,
+  });
+  return {
+    text: data.text ?? "",
+    docKind: data.docKind ?? "other",
+    unreadable: data.unreadable ?? [],
+    hasPatientIdentity: Boolean(data.hasPatientIdentity),
+    fileName: data.fileName ?? "",
+    pages: data.pages ?? 1,
+  };
+}
+
 /* ─── Разбор ──────────────────────────────────────────────────────────── */
 
 /**
