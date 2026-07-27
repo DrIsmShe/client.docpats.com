@@ -60,6 +60,11 @@ import AdminRadiologyCasesPage from "./pages/admin/radiology/AdminRadiologyCases
 import AdminLabCasesPage from "./pages/admin/radiology/AdminLabCasesPage";
 import AdminVpCasesPage from "./pages/admin/radiology/AdminVpCasesPage";
 import AdminArenaAnalyticsPage from "./pages/admin/radiology/AdminArenaAnalyticsPage";
+// Диагностическая помощь (modules/diagnostics на бэкенде). НЕ путать с
+// radiology выше: там учебная арена с выдуманными кейсами, здесь — материалы
+// живых пациентов, другие коллекции и другая ответственность.
+import DiagnosticsCasesPage from "./pages/diagnostics/DiagnosticsCasesPage";
+import DiagnosticCasePage from "./pages/diagnostics/DiagnosticCasePage";
 import AdminBillingPage from "./pages/admin/billing/AdminBillingPage";
 import TopDoctorsPage from "./pages/public/TopDoctorsPage";
 import HomeDoctorMainPage from "./pages/doctorProfilePages/home/homeMainPage";
@@ -2361,6 +2366,27 @@ function App() {
               element={
                 <DoctorOnlyRoute>
                   <RadiologyDuelsPage />
+                </DoctorOnlyRoute>
+              }
+            />
+            {/* Диагностическая помощь: разбор материалов живого пациента.
+                Только врачи — на бэкенде тот же список ролей
+                (diagnostics/middlewares/diagnosticsAuth.js). Пациентов сюда не
+                пускаем сознательно: разбор без врача превращается в
+                самодиагностику по интернету, только убедительнее по тону. */}
+            <Route
+              path="/diagnostics"
+              element={
+                <DoctorOnlyRoute>
+                  <DiagnosticsCasesPage />
+                </DoctorOnlyRoute>
+              }
+            />
+            <Route
+              path="/diagnostics/cases/:caseId"
+              element={
+                <DoctorOnlyRoute>
+                  <DiagnosticCasePage />
                 </DoctorOnlyRoute>
               }
             />

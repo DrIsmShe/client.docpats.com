@@ -1,0 +1,655 @@
+/* client/src/pages/diagnostics/diagnostics.css
+   Раздел диагностической помощи (/diagnostics). Кнопки, поля и карточки берём
+   из education.css (edu-*), здесь — раскладка рабочего места врача и то, чего
+   там нет: гейты перед отправкой, значимость вывода, вердикты.
+
+   Про цвет: значимость вывода нигде не передаётся ТОЛЬКО цветом. У каждого
+   уровня есть подпись и своя полоса слева. Врач с нарушением цветовосприятия
+   не должен пропустить критическое — это не про доступность вообще, это про
+   конкретную цену ошибки. */
+
+.dg-page {
+  /* Переменные продублированы из education.css: классы edu-* берут цвета
+     отсюда, а заданы они там на .edu-page. Держим в синхроне. */
+  --edu-paper: #f0ece1;
+  --edu-surface: #fffdf9;
+  --edu-ink: #17212b;
+  --edu-ink-soft: #5c6773;
+  --edu-ink-faint: #939caa;
+  --edu-line: #e6e0d4;
+  --edu-line-strong: #cfc7b6;
+  --edu-primary: #1b3a5c;
+  --edu-primary-strong: #122840;
+  --edu-primary-tint: #eceff4;
+  --edu-primary-tint-2: #dde4ed;
+  --edu-gold: #a2802f;
+  --edu-gold-soft: #d8c48c;
+  --edu-serif: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype",
+    Palatino, Georgia, serif;
+  --edu-serif-text: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --edu-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --edu-radius: 5px;
+  --edu-radius-sm: 4px;
+  --edu-radius-pill: 999px;
+  --edu-shadow: 0 1px 2px rgba(23, 33, 43, 0.05),
+    0 6px 16px rgba(23, 33, 43, 0.035);
+  --edu-shadow-hover: 0 2px 4px rgba(23, 33, 43, 0.04),
+    0 16px 34px rgba(23, 33, 43, 0.08);
+
+  /* Свои — только для этого раздела. */
+  --dg-critical: #9d2235;
+  --dg-critical-bg: #fbf0f1;
+  --dg-important: #a2802f;
+  --dg-important-bg: #faf6ec;
+  --dg-note: #5c6773;
+  --dg-note-bg: #f4f5f7;
+  --dg-ok: #2f6b46;
+
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 20px 80px;
+  font-family: var(--edu-sans);
+  color: var(--edu-ink);
+}
+
+/* ─── Шапка ──────────────────────────────────────────────────────────── */
+
+.dg-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.dg-head-main {
+  min-width: 0;
+}
+.dg-title {
+  font-family: var(--edu-serif);
+  font-size: 34px;
+  line-height: 1.15;
+  margin: 0 0 6px;
+  text-wrap: balance;
+}
+.dg-subtitle {
+  color: var(--edu-ink-soft);
+  margin: 0;
+  max-width: 68ch;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+/* ─── Оговорка. Одна на весь модуль, текст приходит с сервера ────────── */
+
+.dg-advisory {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  border: 1px solid var(--edu-line-strong);
+  border-left: 3px solid var(--edu-primary);
+  background: var(--edu-primary-tint);
+  border-radius: var(--edu-radius);
+  padding: 12px 14px;
+  margin: 18px 0 24px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.dg-advisory-mark {
+  font-weight: 700;
+  color: var(--edu-primary);
+  flex: none;
+}
+
+/* ─── Раскладка рабочего места ───────────────────────────────────────── */
+
+.dg-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 1024px) {
+  .dg-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dg-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.dg-panel {
+  background: var(--edu-surface);
+  border: 1px solid var(--edu-line);
+  border-radius: var(--edu-radius);
+  box-shadow: var(--edu-shadow);
+  padding: 16px 18px;
+}
+.dg-panel-title {
+  font-family: var(--edu-serif);
+  font-size: 20px;
+  margin: 0 0 4px;
+}
+.dg-panel-note {
+  color: var(--edu-ink-soft);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 14px;
+}
+
+/* ─── Список дел ─────────────────────────────────────────────────────── */
+
+.dg-cases {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+.dg-case-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 15px;
+  border: 1px solid var(--edu-line);
+  border-radius: var(--edu-radius);
+  background: var(--edu-surface);
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.dg-case-row:hover {
+  border-color: var(--edu-line-strong);
+  box-shadow: var(--edu-shadow-hover);
+}
+.dg-case-main {
+  min-width: 0;
+}
+.dg-case-title {
+  font-weight: 600;
+  font-size: 15.5px;
+  margin: 0 0 3px;
+  overflow-wrap: anywhere;
+}
+.dg-case-meta {
+  color: var(--edu-ink-faint);
+  font-size: 12.5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+.dg-case-side {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ─── Статусы ────────────────────────────────────────────────────────── */
+
+.dg-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 3px 10px;
+  border-radius: var(--edu-radius-pill);
+  border: 1px solid var(--edu-line-strong);
+  background: #fff;
+  color: var(--edu-ink-soft);
+  white-space: nowrap;
+}
+.dg-status--analyzing {
+  border-color: var(--dg-important);
+  color: var(--dg-important);
+  background: var(--dg-important-bg);
+}
+.dg-status--ready {
+  border-color: var(--edu-primary);
+  color: var(--edu-primary);
+  background: var(--edu-primary-tint);
+}
+.dg-status--closed {
+  border-color: var(--dg-ok);
+  color: var(--dg-ok);
+  background: #f0f5f2;
+}
+
+/* ─── Гейты ──────────────────────────────────────────────────────────── */
+
+.dg-gates {
+  border: 1px solid var(--edu-line-strong);
+  border-radius: var(--edu-radius);
+  background: var(--edu-surface);
+  padding: 16px 18px;
+}
+.dg-gate {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-top: 1px solid var(--edu-line);
+}
+.dg-gate:first-of-type {
+  border-top: 0;
+}
+.dg-gate input[type="checkbox"] {
+  margin-top: 3px;
+  width: 17px;
+  height: 17px;
+  flex: none;
+  accent-color: var(--edu-primary);
+  cursor: pointer;
+}
+.dg-gate-body {
+  min-width: 0;
+}
+.dg-gate-label {
+  font-weight: 600;
+  font-size: 14.5px;
+  display: block;
+  cursor: pointer;
+  margin-bottom: 3px;
+}
+.dg-gate-why {
+  color: var(--edu-ink-soft);
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.dg-blockers {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border: 1px solid var(--dg-important);
+  border-left: 3px solid var(--dg-important);
+  background: var(--dg-important-bg);
+  border-radius: var(--edu-radius);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.dg-blockers ul {
+  margin: 6px 0 0;
+  padding-left: 20px;
+}
+.dg-blockers li {
+  margin: 3px 0;
+}
+
+/* ─── Материалы ──────────────────────────────────────────────────────── */
+
+.dg-artifacts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dg-artifact {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 11px 13px;
+  border: 1px solid var(--edu-line);
+  border-radius: var(--edu-radius-sm);
+  background: #fff;
+}
+.dg-artifact-main {
+  min-width: 0;
+}
+.dg-artifact-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.dg-artifact-kind {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--edu-primary);
+  background: var(--edu-primary-tint);
+  border-radius: var(--edu-radius-sm);
+  padding: 2px 7px;
+}
+.dg-artifact-text {
+  color: var(--edu-ink-soft);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.dg-artifact-note {
+  font-size: 12.5px;
+  color: var(--dg-important);
+  margin: 5px 0 0;
+  line-height: 1.5;
+}
+
+/* ─── Задания разбора ────────────────────────────────────────────────── */
+
+.dg-jobs {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.dg-job {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 9px 12px;
+  border: 1px solid var(--edu-line);
+  border-radius: var(--edu-radius-sm);
+  background: #fff;
+}
+.dg-job-name {
+  font-weight: 600;
+}
+.dg-job-msg {
+  color: var(--edu-ink-faint);
+  font-size: 12.5px;
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+.dg-job-state {
+  flex: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--edu-ink-soft);
+  white-space: nowrap;
+}
+.dg-job-state--failed {
+  color: var(--dg-critical);
+}
+.dg-job-state--done {
+  color: var(--dg-ok);
+}
+
+.dg-spinner {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--edu-line-strong);
+  border-top-color: var(--edu-primary);
+  border-radius: 50%;
+  animation: dg-spin 0.8s linear infinite;
+  vertical-align: -1px;
+  margin-right: 6px;
+}
+@keyframes dg-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dg-spinner {
+    animation-duration: 2.4s;
+  }
+}
+
+/* ─── Выводы ─────────────────────────────────────────────────────────── */
+
+.dg-findings {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dg-finding {
+  border: 1px solid var(--edu-line);
+  border-left: 4px solid var(--dg-note);
+  border-radius: var(--edu-radius);
+  background: var(--edu-surface);
+  padding: 15px 17px;
+  box-shadow: var(--edu-shadow);
+}
+.dg-finding--critical {
+  border-left-color: var(--dg-critical);
+  background: var(--dg-critical-bg);
+}
+.dg-finding--important {
+  border-left-color: var(--dg-important);
+}
+
+.dg-finding-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 7px;
+}
+.dg-sev {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: var(--edu-radius-sm);
+  border: 1px solid currentColor;
+  color: var(--dg-note);
+  background: var(--dg-note-bg);
+}
+.dg-sev--critical {
+  color: var(--dg-critical);
+  background: #fff;
+}
+.dg-sev--important {
+  color: var(--dg-important);
+  background: var(--dg-important-bg);
+}
+.dg-conf {
+  font-size: 12px;
+  color: var(--edu-ink-faint);
+}
+
+.dg-finding-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 6px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.dg-finding-detail {
+  font-family: var(--edu-serif-text);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0 0 10px;
+  overflow-wrap: anywhere;
+}
+.dg-finding-sub {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--edu-ink-faint);
+  margin: 12px 0 5px;
+}
+.dg-finding-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.dg-finding-list li {
+  margin: 3px 0;
+}
+
+.dg-checklist-ref {
+  font-size: 12.5px;
+  color: var(--edu-ink-faint);
+  margin: 8px 0 0;
+}
+
+/* Вердикт врача */
+.dg-verdict {
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px dashed var(--edu-line-strong);
+}
+.dg-verdict-q {
+  font-size: 13px;
+  color: var(--edu-ink-soft);
+  margin: 0 0 8px;
+}
+.dg-verdict-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.dg-vbtn {
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: var(--edu-radius-pill);
+  border: 1px solid var(--edu-line-strong);
+  background: #fff;
+  color: var(--edu-ink-soft);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.dg-vbtn:hover:not(:disabled) {
+  border-color: var(--edu-primary);
+  color: var(--edu-primary);
+}
+.dg-vbtn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.dg-vbtn--on {
+  background: var(--edu-primary);
+  border-color: var(--edu-primary);
+  color: #fff;
+}
+.dg-vbtn--on:hover:not(:disabled) {
+  color: #fff;
+}
+.dg-verdict-done {
+  font-size: 12.5px;
+  color: var(--dg-ok);
+  margin: 9px 0 0;
+}
+
+/* ─── Справочник модальностей ────────────────────────────────────────── */
+
+.dg-mod {
+  border-top: 1px solid var(--edu-line);
+  padding: 12px 0;
+}
+.dg-mod:first-of-type {
+  border-top: 0;
+  padding-top: 4px;
+}
+.dg-mod-head {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+.dg-mod-name {
+  font-weight: 600;
+  font-size: 14.5px;
+}
+.dg-mod-cap {
+  flex: none;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--edu-ink-faint);
+}
+.dg-mod-purpose {
+  color: var(--edu-ink-soft);
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 4px 0 0;
+}
+.dg-mod-body {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.dg-mod-body ol,
+.dg-mod-body ul {
+  margin: 5px 0 0;
+  padding-left: 19px;
+}
+.dg-mod-body li {
+  margin: 3px 0;
+}
+.dg-mod-flags {
+  color: var(--dg-critical);
+}
+
+/* ─── Мелочи ─────────────────────────────────────────────────────────── */
+
+.dg-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.dg-grow {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.dg-muted {
+  color: var(--edu-ink-faint);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.dg-empty {
+  color: var(--edu-ink-faint);
+  font-size: 14px;
+  padding: 18px 0;
+  text-align: center;
+}
+.dg-err {
+  border: 1px solid var(--dg-critical);
+  border-left: 3px solid var(--dg-critical);
+  background: var(--dg-critical-bg);
+  color: var(--dg-critical);
+  border-radius: var(--edu-radius);
+  padding: 11px 14px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+.dg-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dg-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--edu-ink-faint);
+  margin-bottom: 5px;
+}
+.dg-nums {
+  font-variant-numeric: tabular-nums;
+}
