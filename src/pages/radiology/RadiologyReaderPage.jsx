@@ -27,19 +27,12 @@ import StationBriefing, {
   RulesText,
 } from "./StationRules";
 import useAttemptIntegrity from "./useAttemptIntegrity";
+import { Trans, useTranslation } from "react-i18next";
 import { readApiError, isAuthError } from "../../api/education";
 import RadiologyCanvas from "./components/RadiologyCanvas";
-import { MODALITY_LABELS } from "./arenaLabels";
+import { modalityLabel } from "./arenaLabels";
 import "../education/education.css";
 import "./radiology.css";
-
-const SCORE_LABELS = {
-  detection: "Обнаружение находок",
-  classification: "Правильность названий",
-  checklist: "Полнота осмотра",
-  diagnosis: "Диагноз",
-  aiImpression: "Заключение (текст)",
-};
 
 // Диагноз из свободной строки → ключи: отдельные слова + вся фраза
 // (в нижнем регистре). Сервер сверит их с принятым набором автора.
@@ -61,6 +54,8 @@ function diagnosisToKeys(text) {
 }
 
 export default function RadiologyReaderPage() {
+  const { t, i18n } = useTranslation("arena");
+  const dir = i18n.language?.startsWith("ar") ? "rtl" : "ltr";
   const { caseId } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -104,12 +99,12 @@ export default function RadiologyReaderPage() {
         setPolicy(await fetchAttemptPolicy(caseId, { mode }));
       } catch (err) {
         if (isAuthError(err)) return navigate("/login");
-        setError(readApiError(err, "Не удалось открыть кейс"));
+        setError(readApiError(err, t("reader.openFailed")));
       } finally {
         setLoading(false);
       }
     })();
-  }, [caseId, navigate, mode]);
+  }, [caseId, navigate, mode, t]);
 
   const handleStart = useCallback(async () => {
     setBusy(true);
@@ -124,11 +119,11 @@ export default function RadiologyReaderPage() {
       setCaseData(c);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
-      setError(readApiError(err, "Не удалось начать попытку"));
+      setError(readApiError(err, t("reader.startFailed")));
     } finally {
       setBusy(false);
     }
-  }, [caseId, mode, duelId, navigate]);
+  }, [caseId, mode, duelId, navigate, t]);
 
   // Ключ находки → человекочитаемый ярлык (для подписей на снимке и в списке).
   const labelOf = useMemo(() => {
@@ -138,27 +133,31 @@ export default function RadiologyReaderPage() {
     return (key) => map.get(key) ?? key;
   }, [caseData]);
 
-  if (loading) return <div className="rad-page"><div className="edu-state">Загрузка…</div></div>;
+  if (loading)
+    return (
+      <div className="rad-page" dir={dir}>
+        <div className="edu-state">{t("loading")}</div>
+      </div>
+    );
   if (error && !caseData && !policy)
     return (
-      <div className="rad-page">
+      <div className="rad-page" dir={dir}>
         <div className="edu-error">{error}</div>
-        <Link className="edu-btn edu-btn--ghost" to="/arena">← К каталогу</Link>
+        <Link className="edu-btn edu-btn--ghost" to="/arena">← {t("rad.backToCatalog")}</Link>
       </div>
     );
 
   // До старта — экран условий: что считается, что нет, что будет с результатом.
   if (!attempt) {
     return (
-      <div className="rad-page">
+      <div className="rad-page" dir={dir}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16 }}>
-          <h1 className="edu-title" style={{ marginBottom: 4 }}>Кейс станции «Снимки»</h1>
-          <Link className="edu-btn edu-btn--ghost" to="/arena">← К каталогу</Link>
+          <h1 className="edu-title" style={{ marginBottom: 4 }}>{t("rad.caseTitle")}</h1>
+          <Link className="edu-btn edu-btn--ghost" to="/arena">← {t("rad.backToCatalog")}</Link>
         </div>
         {duelId && (
           <div className="rules-warn" style={{ marginTop: 12 }}>
-            Это дуэль: попытка пойдёт как зачётная, с таймером. Тренировочный режим
-            здесь недоступен — иначе сравнивать результаты было бы нечестно.
+            {t("rad.duelWarn")}
           </div>
         )}
         <StationBriefing
@@ -197,7 +196,7 @@ export default function RadiologyReaderPage() {
   function handleCreate(ann) {
     if (submitted) return;
     if (!activeLabel) {
-      setError("Сначала выберите находку из списка справа, затем отметьте её на снимке");
+      setError(t("rad.pickFindingFirst"));
       return;
     }
     setError(null);
@@ -249,13 +248,13 @@ export default function RadiologyReaderPage() {
               (duel.winner === "opponent" && duel.opponent.isMe);
             setDuelNote(
               duel.winner === "draw"
-                ? "⚔️ Дуэль: ничья!"
+                ? `⚔️ ${t("rad.duelDraw")}`
                 : meWon
-                  ? "🏆 Дуэль: победа! (+40 XP)"
-                  : "⚔️ Дуэль: поражение.",
+                  ? `🏆 ${t("rad.duelWin")}`
+                  : `⚔️ ${t("rad.duelLoss")}`,
             );
           } else {
-            setDuelNote("⚔️ Результат засчитан в дуэль. Ждём соперника.");
+            setDuelNote(`⚔️ ${t("rad.duelPending")}`);
           }
         } catch {
           /* засчёт в дуэль не критичен для результата */
@@ -263,7 +262,7 @@ export default function RadiologyReaderPage() {
       }
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
-      setError(readApiError(err, "Не удалось сдать попытку"));
+      setError(readApiError(err, t("reader.submitFailed")));
     } finally {
       setBusy(false);
     }
@@ -276,7 +275,7 @@ export default function RadiologyReaderPage() {
       setAiAnalysis(await aiAnalyzeAttempt(attempt._id));
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
-      setError(readApiError(err, "ИИ не смог составить разбор"));
+      setError(readApiError(err, t("rad.aiFailed")));
     } finally {
       setAiBusy(false);
     }
@@ -285,19 +284,19 @@ export default function RadiologyReaderPage() {
   const score = attempt?.score;
 
   return (
-    <div className="rad-page">
+    <div className="rad-page" dir={dir}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16 }}>
         <div>
           <h1 className="edu-title" style={{ marginBottom: 4 }}>{caseData.title}</h1>
           <div className="edu-subtitle">
-            <span className="rad-tag">{MODALITY_LABELS[caseData.modality] ?? caseData.modality}</span>
+            <span className="rad-tag">{modalityLabel(t, caseData.modality)}</span>
             {rs?.title}
           </div>
         </div>
         <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
           <AttemptModeBadge attempt={attempt} />
           {!submitted && <AttemptTimer deadlineAt={attempt.deadlineAt} />}
-          <Link className="edu-btn edu-btn--ghost" to="/arena">← К каталогу</Link>
+          <Link className="edu-btn edu-btn--ghost" to="/arena">← {t("rad.backToCatalog")}</Link>
         </div>
       </div>
 
@@ -305,7 +304,7 @@ export default function RadiologyReaderPage() {
       {!submitted && (
         <details className="rad-panel" style={{ marginTop: 12 }}>
           <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: 14 }}>
-            Условия этой попытки
+            {t("reader.conditions")}
           </summary>
           <RulesText
             station="radiology"
@@ -318,7 +317,7 @@ export default function RadiologyReaderPage() {
 
       {caseData.clinicalContext && (
         <div className="rad-panel" style={{ marginTop: 12 }}>
-          <strong>Клинический контекст.</strong> {caseData.clinicalContext}
+          <strong>{t("reader.clinicalContext")}</strong> {caseData.clinicalContext}
         </div>
       )}
 
@@ -329,9 +328,9 @@ export default function RadiologyReaderPage() {
         <div>
           <div className="rad-panel">
             <div className="rad-tools">
-              <button type="button" className={`rad-chip ${tool === "pan" ? "rad-chip--on" : ""}`} onClick={() => setTool("pan")}>✋ Перемещать</button>
-              <button type="button" className={`rad-chip ${tool === "point" ? "rad-chip--on" : ""}`} onClick={() => setTool("point")} disabled={submitted}>• Точка</button>
-              <button type="button" className={`rad-chip ${tool === "rect" ? "rad-chip--on" : ""}`} onClick={() => setTool("rect")} disabled={submitted}>▭ Область</button>
+              <button type="button" className={`rad-chip ${tool === "pan" ? "rad-chip--on" : ""}`} onClick={() => setTool("pan")}>✋ {t("rad.toolPan")}</button>
+              <button type="button" className={`rad-chip ${tool === "point" ? "rad-chip--on" : ""}`} onClick={() => setTool("point")} disabled={submitted}>• {t("rad.toolPoint")}</button>
+              <button type="button" className={`rad-chip ${tool === "rect" ? "rad-chip--on" : ""}`} onClick={() => setTool("rect")} disabled={submitted}>▭ {t("rad.toolRect")}</button>
             </div>
 
             <RadiologyCanvas
@@ -348,14 +347,18 @@ export default function RadiologyReaderPage() {
               <div className="rad-slices">
                 {images.map((img, i) => (
                   <button key={i} type="button" className={`rad-slice ${i === activeImg ? "rad-slice--active" : ""}`} onClick={() => setActiveImg(i)}>
-                    {img.label || `Снимок ${i + 1}`}
+                    {img.label || t("rad.sliceLabel", { n: i + 1 })}
                   </button>
                 ))}
               </div>
             )}
             {submitted && (
               <div className="edu-hint" style={{ marginTop: 10 }}>
-                Синим — ваши отметки, <span style={{ color: "#f59e0b" }}>янтарным пунктиром</span> — эталон эксперта.
+                <Trans
+                  t={t}
+                  i18nKey="rad.legend"
+                  components={{ amber: <span style={{ color: "#f59e0b" }} /> }}
+                />
               </div>
             )}
           </div>
@@ -366,7 +369,7 @@ export default function RadiologyReaderPage() {
           {submitted && duelNote && (
             <div className="rad-panel" style={{ borderColor: "#a2802f", background: "#fbf3dd" }}>
               <strong style={{ fontSize: 16 }}>{duelNote}</strong>
-              <div style={{ marginTop: 6 }}><Link className="edu-btn edu-btn--ghost" to="/arena/duels">К дуэлям</Link></div>
+              <div style={{ marginTop: 6 }}><Link className="edu-btn edu-btn--ghost" to="/arena/duels">{t("rad.toDuels")}</Link></div>
             </div>
           )}
 
@@ -376,37 +379,37 @@ export default function RadiologyReaderPage() {
 
           {submitted && (
             <div className="rad-panel">
-              <div className="edu-card-title" style={{ fontSize: 15 }}>Разбор с ИИ</div>
+              <div className="edu-card-title" style={{ fontSize: 15 }}>{t("rad.aiH")}</div>
               {!aiAnalysis ? (
                 <>
                   <div className="edu-hint" style={{ marginBottom: 8 }}>
-                    ИИ прочитает снимок, сверит с эталоном и вашим ответом и даст диагноз, грамотное заключение и разбор.
+                    {t("rad.aiIntro")}
                   </div>
                   <button type="button" className="edu-btn" onClick={handleAiAnalysis} disabled={aiBusy}>
-                    {aiBusy ? "ИИ разбирает снимок…" : "🔎 Получить разбор от ИИ"}
+                    {aiBusy ? t("rad.aiBusy") : `🔎 ${t("rad.aiBtn")}`}
                   </button>
                 </>
               ) : (
                 <>
                   {aiAnalysis.diagnosis && (
                     <div style={{ marginBottom: 10 }}>
-                      <strong>Диагноз ИИ:</strong> {aiAnalysis.diagnosis}
+                      <strong>{t("rad.aiDiagnosis")}</strong> {aiAnalysis.diagnosis}
                     </div>
                   )}
                   {aiAnalysis.conclusion && (
                     <div style={{ marginBottom: 10 }}>
-                      <strong>Заключение:</strong>
+                      <strong>{t("rad.aiConclusion")}</strong>
                       <div className="edu-hint" style={{ marginTop: 4, whiteSpace: "pre-wrap" }}>{aiAnalysis.conclusion}</div>
                     </div>
                   )}
                   {aiAnalysis.analysis && (
                     <div>
-                      <strong>Разбор вашего ответа:</strong>
+                      <strong>{t("rad.aiAnalysisH")}</strong>
                       <div className="edu-hint" style={{ marginTop: 4, whiteSpace: "pre-wrap" }}>{aiAnalysis.analysis}</div>
                     </div>
                   )}
                   <div className="edu-hint" style={{ marginTop: 10, fontStyle: "italic" }}>
-                    ИИ-разбор — вспомогательный, не заменяет заключение врача.
+                    {t("rad.aiDisclaimer")}
                   </div>
                 </>
               )}
@@ -416,9 +419,9 @@ export default function RadiologyReaderPage() {
           {!submitted && (
             <>
               <div className="rad-panel">
-                <div className="edu-card-title" style={{ fontSize: 15 }}>Находки</div>
+                <div className="edu-card-title" style={{ fontSize: 15 }}>{t("rad.findingsH")}</div>
                 <div className="edu-hint" style={{ marginBottom: 8 }}>
-                  Выберите находку и отметьте её на снимке. Если патологии нет — поставьте «Норма».
+                  {t("rad.findingsHint")}
                 </div>
                 <div className="rad-palette">
                   {(caseData.findingPalette ?? []).map((t) => (
@@ -438,7 +441,12 @@ export default function RadiologyReaderPage() {
                     {findings.map((f, i) => (
                       <div key={i} className="rad-mark">
                         <span>
-                          {labelOf(f.label)} <small>· {images[f.imageIndex]?.label || `снимок ${f.imageIndex + 1}`}</small>
+                          {labelOf(f.label)}{" "}
+                          <small>
+                            ·{" "}
+                            {images[f.imageIndex]?.label ||
+                              t("rad.sliceLabelInline", { n: f.imageIndex + 1 })}
+                          </small>
                         </span>
                         <button type="button" className="edu-btn edu-btn--danger" style={{ padding: "2px 8px", fontSize: 12 }} onClick={() => removeFinding(i)}>×</button>
                       </div>
@@ -448,9 +456,9 @@ export default function RadiologyReaderPage() {
               </div>
 
               <div className="rad-panel">
-                <div className="edu-card-title" style={{ fontSize: 15 }}>Систематический осмотр</div>
+                <div className="edu-card-title" style={{ fontSize: 15 }}>{t("rad.checklistH")}</div>
                 <div className="edu-hint" style={{ marginBottom: 8 }}>
-                  По каждой области дайте ответ: норма или есть находка. Патологию отметьте ещё и на снимке выше.
+                  {t("rad.checklistHint")}
                 </div>
                 <div className="rad-review">
                   {(rs?.checklist ?? []).map((c) => (
@@ -462,14 +470,14 @@ export default function RadiologyReaderPage() {
                           className={`rad-ans ${areaStatus[c.key] === "normal" ? "rad-ans--normal" : ""}`}
                           onClick={() => setArea(c.key, "normal")}
                         >
-                          Норма
+                          {t("rad.btnNormal")}
                         </button>
                         <button
                           type="button"
                           className={`rad-ans ${areaStatus[c.key] === "finding" ? "rad-ans--finding" : ""}`}
                           onClick={() => setArea(c.key, "finding")}
                         >
-                          Есть находка
+                          {t("rad.btnFinding")}
                         </button>
                       </div>
                     </div>
@@ -478,32 +486,29 @@ export default function RadiologyReaderPage() {
               </div>
 
               <div className="rad-panel">
-                <div className="edu-card-title" style={{ fontSize: 15 }}>Заключение</div>
+                <div className="edu-card-title" style={{ fontSize: 15 }}>{t("rad.impressionH")}</div>
                 {counted && (
-                  <div className="edu-hint" style={{ marginBottom: 6 }}>
-                    Зачётная попытка: вставка текста в поля отключена — пишите своими
-                    словами.
-                  </div>
+                  <div className="edu-hint" style={{ marginBottom: 6 }}>{t("reader.examPasteOff")}</div>
                 )}
                 <textarea
                   className="edu-textarea"
                   rows={4}
-                  placeholder="Опишите картину: что видите, где, характер изменений…"
+                  placeholder={t("rad.impressionPlaceholder")}
                   value={impressionText}
                   onChange={(e) => setImpressionText(e.target.value)}
                   onPaste={onPaste}
                 />
-                <div className="edu-field-label">Диагноз</div>
+                <div className="edu-field-label">{t("reader.diagnosis")}</div>
                 <input
                   className="edu-input"
-                  placeholder="Напр.: правосторонний пневмоторакс"
+                  placeholder={t("rad.diagnosisPlaceholder")}
                   value={diagnosis}
                   onChange={(e) => setDiagnosis(e.target.value)}
                   onPaste={onPaste}
                 />
                 <div className="edu-btn-row" style={{ marginTop: 14 }}>
                   <button type="button" className="edu-btn" onClick={handleSubmit} disabled={busy}>
-                    {busy ? "Проверяем…" : "Сдать и посмотреть разбор"}
+                    {busy ? t("reader.checking") : t("reader.submitReview")}
                   </button>
                 </div>
               </div>
@@ -513,7 +518,7 @@ export default function RadiologyReaderPage() {
           {submitted && (
             <div className="rad-panel">
               <div className="edu-btn-row">
-                <Link className="edu-btn" to="/arena">К другим кейсам</Link>
+                <Link className="edu-btn" to="/arena">{t("rad.toOtherCases")}</Link>
               </div>
             </div>
           )}
@@ -525,19 +530,22 @@ export default function RadiologyReaderPage() {
 
 // ─── Панель награды «Диагностической арены» ───
 function RewardPanel({ game }) {
+  const { t } = useTranslation("arena");
   return (
     <div className="rad-panel arena-reward">
       <div className="arena-reward-xp">+{game.pointsAwarded} XP</div>
       <div className="arena-reward-row">
-        <span>🔥 Серия: {game.streak} дн.</span>
-        <span>Ранг: {game.rank?.title}</span>
+        <span>🔥 {t("reader.streakDays", { n: game.streak })}</span>
+        <span>{t("reader.rank", { title: game.rank?.title })}</span>
       </div>
       {game.rankedUp && (
-        <div className="arena-reward-rankup">🎉 Новый ранг: {game.rank?.title}!</div>
+        <div className="arena-reward-rankup">
+          🎉 {t("reader.rankedUp", { title: game.rank?.title })}
+        </div>
       )}
       {(game.unlocked?.length ?? 0) > 0 && (
         <div style={{ marginTop: 8 }}>
-          <strong>Новые достижения:</strong>
+          <strong>{t("rad.newAchievements")}</strong>
           <div className="arena-badges" style={{ marginTop: 6 }}>
             {game.unlocked.map((a) => (
               <span key={a.key} className="arena-badge" title={a.title}>
@@ -553,15 +561,16 @@ function RewardPanel({ game }) {
 
 // ─── Панель результата и разбора ───
 function ScorePanel({ score, attempt, labelOf, review }) {
+  const { t } = useTranslation("arena");
   const pct = Math.round((score.total ?? 0) * 100);
   const components = ["detection", "classification", "checklist", "diagnosis", "aiImpression"];
 
   return (
     <div className="rad-panel">
-      <div className="edu-card-title" style={{ fontSize: 15 }}>Результат</div>
+      <div className="edu-card-title" style={{ fontSize: 15 }}>{t("rad.resultH")}</div>
       <div className="rad-score-total">
         {pct}% <span className={score.passed ? "rad-pass" : "rad-fail"} style={{ fontSize: 15 }}>
-          {score.passed ? "— зачёт" : "— не сдано"}
+          {score.passed ? t("reader.passed") : t("reader.notPassed")}
         </span>
       </div>
 
@@ -570,7 +579,7 @@ function ScorePanel({ score, attempt, labelOf, review }) {
           score[k] == null ? null : (
             <div key={k} className="rad-bar">
               <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <span>{SCORE_LABELS[k]}</span>
+                <span>{t(`rad.comp.${k}`)}</span>
                 <span>{Math.round(score[k] * 100)}%</span>
               </div>
               <div className="rad-bar-track">
@@ -582,13 +591,13 @@ function ScorePanel({ score, attempt, labelOf, review }) {
       </div>
 
       <div className="edu-hint" style={{ marginTop: 12 }}>
-        Ложных отметок (где патологии нет): {attempt.falseAlarms ?? 0}
+        {t("rad.falseAlarms", { n: attempt.falseAlarms ?? 0 })}
       </div>
 
       {/* Что нашли / что пропустили */}
       {(attempt.matches ?? []).length > 0 && (
         <div style={{ marginTop: 12 }}>
-          <strong>Находки эксперта</strong>
+          <strong>{t("rad.expertFindingsH")}</strong>
           <div className="rad-marks" style={{ marginTop: 6 }}>
             {attempt.matches.map((m, i) => (
               <div key={i} className="rad-mark">
@@ -597,7 +606,11 @@ function ScorePanel({ score, attempt, labelOf, review }) {
                   <small>· {m.significance}</small>
                 </span>
                 <span className={m.outcome === "hit" ? "rad-pass" : "rad-fail"}>
-                  {m.outcome === "hit" ? (m.labelCorrect ? "найдено ✓" : "найдено, но не так названо") : "пропущено"}
+                  {m.outcome === "hit"
+                    ? m.labelCorrect
+                      ? t("rad.hit")
+                      : t("rad.hitWrongLabel")
+                    : t("rad.missed")}
                 </span>
               </div>
             ))}
@@ -608,7 +621,7 @@ function ScorePanel({ score, attempt, labelOf, review }) {
       {/* Пояснения эксперта */}
       {(review.findings ?? []).some((f) => f.explanation) && (
         <div style={{ marginTop: 12 }}>
-          <strong>Разбор находок</strong>
+          <strong>{t("rad.findingsReviewH")}</strong>
           {review.findings.filter((f) => f.explanation).map((f, i) => (
             <div key={i} className="edu-hint" style={{ marginTop: 6 }}>
               <b>{labelOf(f.label)}:</b> {f.explanation}
@@ -619,14 +632,14 @@ function ScorePanel({ score, attempt, labelOf, review }) {
 
       {review.impression?.correctText && (
         <div style={{ marginTop: 12 }}>
-          <strong>Эталонное заключение</strong>
+          <strong>{t("reader.referenceImpression")}</strong>
           <div className="edu-hint" style={{ marginTop: 6 }}>{review.impression.correctText}</div>
         </div>
       )}
 
       {attempt.aiFeedback?.rationale && (
         <div className="edu-hint" style={{ marginTop: 12 }}>
-          <b>По вашему заключению:</b> {attempt.aiFeedback.rationale}
+          <b>{t("rad.onYourImpression")}</b> {attempt.aiFeedback.rationale}
         </div>
       )}
     </div>

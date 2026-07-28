@@ -9,6 +9,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { startLabAttempt, submitLabAttempt, fetchLabPolicy } from "../../api/radiology";
 import { readApiError, isAuthError } from "../../api/education";
 import StationBriefing, {
@@ -20,13 +21,6 @@ import StationBriefing, {
 import useAttemptIntegrity from "./useAttemptIntegrity";
 import "../education/education.css";
 import "./radiology.css";
-
-const DIFFICULTY_LABELS = { easy: "Лёгкий", medium: "Средний", hard: "Сложный" };
-const SCORE_LABELS = {
-  detection: "Выделение отклонений",
-  diagnosis: "Диагноз",
-  impression: "Заключение (текст)",
-};
 
 // Ключи для быстрой сверки: фраза целиком плюс отдельные слова. Фразу
 // обрезаем по лимиту сервера (400) — развёрнутая клиническая формулировка
@@ -48,6 +42,8 @@ function diagnosisToKeys(text) {
 export default function LabReaderPage() {
   const { caseId } = useParams();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation("arena");
+  const dir = i18n.language?.startsWith("ar") ? "rtl" : "ltr";
 
   const [attempt, setAttempt] = useState(null);
   const [caseData, setCaseData] = useState(null);
@@ -81,14 +77,14 @@ export default function LabReaderPage() {
         setPolicy(await fetchLabPolicy(caseId, { mode }));
       } catch (err) {
         if (isAuthError(err)) return navigate("/login");
-        setError(readApiError(err, "Не удалось открыть кейс"));
+        setError(readApiError(err, t("reader.openFailed")));
       } finally {
         setLoading(false);
       }
     })();
     // Режим влияет на условия (лимит времени, зачётность), поэтому политику
     // перечитываем при его смене — но только пока попытка не начата.
-  }, [caseId, navigate, mode]);
+  }, [caseId, navigate, mode, t]);
 
   const handleStart = useCallback(async () => {
     setBusy(true);
@@ -99,11 +95,11 @@ export default function LabReaderPage() {
       setCaseData(c);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
-      setError(readApiError(err, "Не удалось начать попытку"));
+      setError(readApiError(err, t("reader.startFailed")));
     } finally {
       setBusy(false);
     }
-  }, [caseId, mode, navigate]);
+  }, [caseId, mode, navigate, t]);
 
   const handleSubmit = useCallback(async () => {
     setBusy(true);
@@ -121,28 +117,37 @@ export default function LabReaderPage() {
       setGame(res.game ?? null);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
-      setError(readApiError(err, "Не удалось сдать попытку"));
+      setError(readApiError(err, t("reader.submitFailed")));
     } finally {
       setBusy(false);
     }
-  }, [attempt, flags, impressionText, diagnosis, collect, navigate]);
+  }, [attempt, flags, impressionText, diagnosis, collect, navigate, t]);
 
-  if (loading) return <div className="rad-page"><div className="edu-state">Загрузка…</div></div>;
+  if (loading)
+    return (
+      <div className="rad-page" dir={dir}>
+        <div className="edu-state">{t("loading")}</div>
+      </div>
+    );
   if (error && !caseData && !policy)
     return (
-      <div className="rad-page">
+      <div className="rad-page" dir={dir}>
         <div className="edu-error">{error}</div>
-        <Link className="edu-btn edu-btn--ghost" to="/arena">← В тренажёр</Link>
+        <Link className="edu-btn edu-btn--ghost" to="/arena">
+          ← {t("backToArena")}
+        </Link>
       </div>
     );
 
   // До старта — экран условий: что считается, что нет, что будет с результатом.
   if (!attempt) {
     return (
-      <div className="rad-page">
+      <div className="rad-page" dir={dir}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16 }}>
-          <h1 className="edu-title" style={{ marginBottom: 4 }}>Кейс станции «Анализы»</h1>
-          <Link className="edu-btn edu-btn--ghost" to="/arena">← В тренажёр</Link>
+          <h1 className="edu-title" style={{ marginBottom: 4 }}>{t("lab.caseTitle")}</h1>
+          <Link className="edu-btn edu-btn--ghost" to="/arena">
+            ← {t("backToArena")}
+          </Link>
         </div>
         <StationBriefing
           station="labs"
@@ -164,24 +169,26 @@ export default function LabReaderPage() {
   const score = attempt?.score;
 
   return (
-    <div className="rad-page">
+    <div className="rad-page" dir={dir}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16 }}>
         <div>
           <h1 className="edu-title" style={{ marginBottom: 4 }}>{caseData.title}</h1>
           <div className="edu-subtitle">
-            <span className="rad-tag">Анализы</span>
-            {DIFFICULTY_LABELS[caseData.difficulty] ?? caseData.difficulty}
+            <span className="rad-tag">{t("stationLabs")}</span>
+            {t(caseData.difficulty, caseData.difficulty)}
           </div>
         </div>
         <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
           <AttemptModeBadge attempt={attempt} />
           {attempt.variantLabel && (
-            <span className="rules-badge" title="Числовой вариант кейса: те же правила, другие значения">
+            <span className="rules-badge" title={t("reader.variantTitle")}>
               {attempt.variantLabel}
             </span>
           )}
           {!submitted && <AttemptTimer deadlineAt={attempt.deadlineAt} />}
-          <Link className="edu-btn edu-btn--ghost" to="/arena">← В тренажёр</Link>
+          <Link className="edu-btn edu-btn--ghost" to="/arena">
+            ← {t("backToArena")}
+          </Link>
         </div>
       </div>
 
@@ -190,7 +197,7 @@ export default function LabReaderPage() {
       {!submitted && (
         <details className="rad-panel" style={{ marginTop: 12 }}>
           <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: 14 }}>
-            Условия этой попытки
+            {t("reader.conditions")}
           </summary>
           <RulesText station="labs"
             policy={{
@@ -203,7 +210,7 @@ export default function LabReaderPage() {
 
       {caseData.clinicalContext && (
         <div className="rad-panel" style={{ marginTop: 12 }}>
-          <strong>Клинический контекст.</strong> {caseData.clinicalContext}
+          <strong>{t("reader.clinicalContext")}</strong> {caseData.clinicalContext}
         </div>
       )}
 
@@ -217,10 +224,14 @@ export default function LabReaderPage() {
         <div className="rad-panel arena-reward" style={{ marginTop: 12 }}>
           <div className="arena-reward-xp">+{game.pointsAwarded} XP</div>
           <div className="arena-reward-row">
-            <span>🔥 Серия: {game.streak} дн.</span>
-            <span>Ранг: {game.rank?.title}</span>
+            <span>🔥 {t("reader.streakDays", { n: game.streak })}</span>
+            <span>{t("reader.rank", { title: game.rank?.title })}</span>
           </div>
-          {game.rankedUp && <div className="arena-reward-rankup">🎉 Новый ранг: {game.rank?.title}!</div>}
+          {game.rankedUp && (
+            <div className="arena-reward-rankup">
+              🎉 {t("reader.rankedUp", { title: game.rank?.title })}
+            </div>
+          )}
           {(game.unlocked?.length ?? 0) > 0 && (
             <div className="arena-badges" style={{ marginTop: 8 }}>
               {game.unlocked.map((a) => (
@@ -237,7 +248,7 @@ export default function LabReaderPage() {
           <div className="rad-score-total">
             {Math.round(score.total * 100)}%{" "}
             <span className={score.passed ? "rad-pass" : "rad-fail"} style={{ fontSize: 15 }}>
-              {score.passed ? "— зачёт" : "— не сдано"}
+              {score.passed ? t("reader.passed") : t("reader.notPassed")}
             </span>
           </div>
           <div className="rad-score-bars">
@@ -245,7 +256,7 @@ export default function LabReaderPage() {
               score[k] == null ? null : (
                 <div key={k} className="rad-bar">
                   <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <span>{SCORE_LABELS[k]}</span>
+                    <span>{t(`lab.comp.${k}`)}</span>
                     <span>{Math.round(score[k] * 100)}%</span>
                   </div>
                   <div className="rad-bar-track"><div className="rad-bar-fill" style={{ width: `${Math.round(score[k] * 100)}%` }} /></div>
@@ -253,10 +264,12 @@ export default function LabReaderPage() {
               ),
             )}
           </div>
-          <div className="edu-hint" style={{ marginTop: 10 }}>Ложных отметок: {attempt.falsePositives ?? 0}</div>
+          <div className="edu-hint" style={{ marginTop: 10 }}>
+            {t("lab.falsePositives", { n: attempt.falsePositives ?? 0 })}
+          </div>
           {review.impression?.correctText && (
             <div style={{ marginTop: 12 }}>
-              <strong>Эталонное заключение</strong>
+              <strong>{t("reader.referenceImpression")}</strong>
               <div className="edu-hint" style={{ marginTop: 4 }}>{review.impression.correctText}</div>
             </div>
           )}
@@ -265,16 +278,16 @@ export default function LabReaderPage() {
 
       {/* Панель анализов */}
       <div className="rad-panel" style={{ marginTop: 12 }}>
-        <div className="edu-card-title" style={{ fontSize: 15 }}>Лабораторная панель</div>
+        <div className="edu-card-title" style={{ fontSize: 15 }}>{t("lab.panel")}</div>
         {!submitted && (
-          <div className="edu-hint" style={{ marginBottom: 8 }}>Отметьте показатели со значимым отклонением.</div>
+          <div className="edu-hint" style={{ marginBottom: 8 }}>{t("lab.flagHint")}</div>
         )}
         <div className="lab-table">
           <div className="lab-row lab-row--head">
-            <span>Показатель</span>
-            <span>Значение</span>
-            <span>Референс</span>
-            <span style={{ textAlign: "right" }}>Ваша оценка</span>
+            <span>{t("lab.colName")}</span>
+            <span>{t("lab.colValue")}</span>
+            <span>{t("lab.colRef")}</span>
+            <span style={{ textAlign: "end" }}>{t("lab.colYours")}</span>
           </div>
           {caseData.panel.map((p) => {
             const flagged = Boolean(flags[p.key]);
@@ -284,11 +297,11 @@ export default function LabReaderPage() {
                 <span>{p.name}</span>
                 <span><strong>{p.value}</strong> {p.unit}</span>
                 <span style={{ color: "#8b9aab" }}>{p.refRange || "—"}</span>
-                <span style={{ textAlign: "right" }}>
+                <span style={{ textAlign: "end" }}>
                   {submitted ? (
                     <>
-                      {flagged ? "отмечено" : "норма"}
-                      {isSignificant && <span className="rad-fail"> · значимо ✓</span>}
+                      {flagged ? t("lab.flagged") : t("lab.notFlagged")}
+                      {isSignificant && <span className="rad-fail"> · {t("lab.significant")}</span>}
                     </>
                   ) : (
                     <button
@@ -296,7 +309,7 @@ export default function LabReaderPage() {
                       className={`rad-ans ${flagged ? "rad-ans--finding" : "rad-ans--normal"}`}
                       onClick={() => setFlags((f) => ({ ...f, [p.key]: !f[p.key] }))}
                     >
-                      {flagged ? "Отклонение" : "Норма"}
+                      {flagged ? t("lab.btnDeviation") : t("lab.btnNormal")}
                     </button>
                   )}
                 </span>
@@ -309,32 +322,29 @@ export default function LabReaderPage() {
       {/* Заключение */}
       {!submitted && (
         <div className="rad-panel" style={{ marginTop: 12 }}>
-          <div className="edu-card-title" style={{ fontSize: 15 }}>Заключение</div>
+          <div className="edu-card-title" style={{ fontSize: 15 }}>{t("lab.impressionH")}</div>
           {counted && (
-            <div className="edu-hint" style={{ marginBottom: 6 }}>
-              Зачётная попытка: вставка текста в поля отключена — пишите своими
-              словами.
-            </div>
+            <div className="edu-hint" style={{ marginBottom: 6 }}>{t("reader.examPasteOff")}</div>
           )}
           <textarea
             className="edu-textarea"
             rows={3}
-            placeholder="Интерпретация: какой синдром/картина, чего не хватает…"
+            placeholder={t("lab.impressionPlaceholder")}
             value={impressionText}
             onChange={(e) => setImpressionText(e.target.value)}
             onPaste={onPaste}
           />
-          <div className="edu-field-label">Диагноз</div>
+          <div className="edu-field-label">{t("reader.diagnosis")}</div>
           <input
             className="edu-input"
-            placeholder="Напр.: железодефицитная анемия"
+            placeholder={t("lab.diagnosisPlaceholder")}
             value={diagnosis}
             onChange={(e) => setDiagnosis(e.target.value)}
             onPaste={onPaste}
           />
           <div className="edu-btn-row" style={{ marginTop: 14 }}>
             <button type="button" className="edu-btn" onClick={handleSubmit} disabled={busy}>
-              {busy ? "Проверяем…" : "Сдать и посмотреть разбор"}
+              {busy ? t("reader.checking") : t("reader.submitReview")}
             </button>
           </div>
         </div>
@@ -342,7 +352,9 @@ export default function LabReaderPage() {
 
       {submitted && (
         <div className="rad-panel" style={{ marginTop: 12 }}>
-          <div className="edu-btn-row"><Link className="edu-btn" to="/arena">В тренажёр</Link></div>
+          <div className="edu-btn-row">
+            <Link className="edu-btn" to="/arena">{t("backToArena")}</Link>
+          </div>
         </div>
       )}
     </div>

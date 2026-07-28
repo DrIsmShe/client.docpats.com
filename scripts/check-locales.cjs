@@ -29,6 +29,21 @@ const NAMESPACES = ["diagnostics", "arena"];
 const read = (lang, ns) =>
   JSON.parse(fs.readFileSync(path.join(LOCALES, lang, `${ns}.json`), "utf8"));
 
+// Словари вложенные (rules.exam2, vp.comp.workup), а сравнивать нужно листья.
+// По верхнему уровню проверка была бы обманчивой: наличие ветки «rules» ничего
+// не говорит о том, что внутри неё есть exam2, а именно там лежит условие
+// расхода зачётной попытки. Плюс на объекте String(v).trim() даёт
+// «[object Object]» — непустую строку, и проверка на пустые значения молча
+// пропускала бы целые ветки.
+function flatten(value, prefix = "", out = {}) {
+  for (const [key, item] of Object.entries(value)) {
+    const name = `${prefix}${key}`;
+    if (item && typeof item === "object" && !Array.isArray(item)) flatten(item, `${name}.`, out);
+    else out[name] = item;
+  }
+  return out;
+}
+
 const languages = fs
   .readdirSync(LOCALES, { withFileTypes: true })
   .filter((d) => d.isDirectory())
@@ -37,7 +52,7 @@ const languages = fs
 let problems = 0;
 
 for (const ns of NAMESPACES) {
-  const reference = read(REFERENCE, ns);
+  const reference = flatten(read(REFERENCE, ns));
   const referenceKeys = Object.keys(reference);
   console.log(`\n${ns}: эталон ${REFERENCE}, ключей ${referenceKeys.length}`);
 
@@ -51,7 +66,7 @@ for (const ns of NAMESPACES) {
       continue;
     }
 
-    const data = read(lang, ns);
+    const data = flatten(read(lang, ns));
     const missing = referenceKeys.filter((k) => !(k in data));
     const extra = Object.keys(data).filter((k) => !(k in reference));
     const empty = Object.entries(data)
