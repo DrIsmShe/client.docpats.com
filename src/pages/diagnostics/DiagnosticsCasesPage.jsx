@@ -57,8 +57,9 @@ export function formatDate(value) {
 export default function DiagnosticsCasesPage() {
   const navigate = useNavigate();
 
-  const [cases, setCases] = useState([]);
+  const [page, setPage] = useState({ items: [], total: 0, hasMore: false });
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState("");
 
@@ -69,7 +70,7 @@ export default function DiagnosticsCasesPage() {
   const load = useCallback(async () => {
     try {
       setLoading(true);
-      setCases(await fetchCases(filter ? { status: filter } : {}));
+      setPage(await fetchCases(filter ? { status: filter } : {}));
       setError(null);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
@@ -78,6 +79,26 @@ export default function DiagnosticsCasesPage() {
       setLoading(false);
     }
   }, [filter, navigate]);
+
+  async function loadMore() {
+    if (loadingMore || !page.hasMore) return;
+    setLoadingMore(true);
+    try {
+      const next = await fetchCases({
+        ...(filter ? { status: filter } : {}),
+        skip: page.items.length,
+      });
+      setPage((prev) => ({
+        items: [...prev.items, ...next.items],
+        total: next.total,
+        hasMore: next.hasMore,
+      }));
+    } catch (err) {
+      setError(readApiError(err, "Не удалось догрузить дела"));
+    } finally {
+      setLoadingMore(false);
+    }
+  }
 
   useEffect(() => {
     load();
@@ -169,13 +190,13 @@ export default function DiagnosticsCasesPage() {
 
         {loading ? (
           <p className="dg-empty">Загружаем…</p>
-        ) : cases.length === 0 ? (
+        ) : page.items.length === 0 ? (
           <p className="dg-empty">
             {filter ? "Таких дел нет." : "Дел пока нет — заведите первое."}
           </p>
         ) : (
           <div className="dg-cases">
-            {cases.map((c) => (
+            {page.items.map((c) => (
               <Link key={c._id} className="dg-case-row" to={`/diagnostics/cases/${c._id}`}>
                 <div className="dg-case-main">
                   <p className="dg-case-title">{c.title || "Без названия"}</p>
@@ -189,6 +210,32 @@ export default function DiagnosticsCasesPage() {
                 <CaseStatus status={c.status} />
               </Link>
             ))}
+          </div>
+        )}
+
+        {page.items.length > 0 && (
+          <div className="dg-actions">
+            {page.hasMore ? (
+              <>
+                <button
+                  type="button"
+                  className="dg-link-btn"
+                  onClick={loadMore}
+                  disabled={loadingMore}
+                >
+                  {loadingMore ? "Загружаем…" : "Показать ещё"}
+                </button>
+                <span className="dg-muted">
+                  показано {page.items.length} из {page.total}
+                </span>
+              </>
+            ) : (
+              <span className="dg-muted">
+                {page.total === page.items.length
+                  ? `Всего дел: ${page.total}`
+                  : `Показано ${page.items.length} из ${page.total}`}
+              </span>
+            )}
           </div>
         )}
       </section>

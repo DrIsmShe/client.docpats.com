@@ -41,6 +41,7 @@ import {
   analyzeCase,
   rerunJob,
   setFindingVerdict,
+  exportCase,
 } from "../../api/diagnostics";
 import { readApiError, isAuthError } from "../../api/education";
 import FindingCard from "./components/FindingCard";
@@ -544,6 +545,14 @@ export default function DiagnosticCasePage() {
               >
                 Переоткрыть
               </button>
+              <button
+                type="button"
+                className="dg-link-btn"
+                disabled={busy}
+                onClick={() => guard(() => exportCase(caseId), "Не удалось выгрузить")}
+              >
+                Скачать протокол
+              </button>
               {c.closedAt && <span className="dg-muted">Закрыто {formatDate(c.closedAt)}</span>}
             </>
           ) : (
@@ -557,6 +566,14 @@ export default function DiagnosticCasePage() {
                 }
               >
                 Закрыть дело
+              </button>
+              <button
+                type="button"
+                className="dg-link-btn"
+                disabled={busy}
+                onClick={() => guard(() => exportCase(caseId), "Не удалось выгрузить")}
+              >
+                Скачать протокол
               </button>
               <span className="dg-muted">Итог по делу пишет врач</span>
             </>

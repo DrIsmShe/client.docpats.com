@@ -48,12 +48,24 @@ export async function fetchAnalytes() {
 
 /* ─── Дела ────────────────────────────────────────────────────────────── */
 
-export async function fetchCases({ status, limit } = {}) {
-  const params = {};
+/**
+ * Дела врача — страницей.
+ *
+ * total обязателен: без него интерфейс не отличает «это все дела» от «это
+ * первая страница». Раньше сервер отдавал первые 50 без признака усечения, и
+ * на 200+ делах врач переставал видеть часть своих, не узнав об этом.
+ *
+ * @returns {Promise<{items: object[], total: number, hasMore: boolean}>}
+ */
+export async function fetchCases({ status, skip = 0, limit = 24 } = {}) {
+  const params = { skip, limit };
   if (status) params.status = status;
-  if (limit) params.limit = limit;
   const { data } = await axios.get(`${BASE}/cases`, { params });
-  return data.items ?? [];
+  return {
+    items: data.items ?? [],
+    total: data.total ?? (data.items?.length ?? 0),
+    hasMore: Boolean(data.hasMore),
+  };
 }
 
 /**
@@ -157,6 +169,33 @@ export async function analyzeCase(caseId, modalities = []) {
 export async function rerunJob(jobId) {
   const { data } = await axios.post(`${BASE}/jobs/${jobId}/rerun`);
   return data.job;
+}
+
+/* ─── Выгрузка ────────────────────────────────────────────────────────── */
+
+/**
+ * Скачать протокол разбора одним файлом.
+ *
+ * Не открываем ссылку напрямую (window.open): запрос должен уйти с
+ * сессионной кукой через общий axios-инстанс, а сервер отдаёт файл
+ * вложением — ссылка в новой вкладке потеряла бы и то, и другое.
+ */
+export async function exportCase(caseId) {
+  const res = await axios.get(`${BASE}/cases/${caseId}/export`, { responseType: "blob" });
+
+  const disposition = res.headers?.["content-disposition"] ?? "";
+  const match = /filename="?([^";]+)"?/i.exec(disposition);
+  const fileName = match ? match[1] : `razbor-${caseId}.html`;
+
+  const url = URL.createObjectURL(res.data);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+  return fileName;
 }
 
 /* ─── Обратная связь врача ────────────────────────────────────────────── */
