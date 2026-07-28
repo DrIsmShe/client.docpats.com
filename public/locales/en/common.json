@@ -129,7 +129,7 @@
   "patient_profile": "Patient Profile",
   "specialization": "Specialization",
   "experience": "Experience",
-  "education": "Education",
+  "education": "Learning",
   "create_scientific_article": "Create scientific article",
   "my_scientific_articles": "My scientific articles",
   "scientific_articles": "Scientific articles",
@@ -1268,5 +1268,6 @@
     "reset": "Default size"
   },
   "arena_trainer": "Diagnostic Trainer",
-  "diagnostics_second_opinion": "Second Opinion"
+  "diagnostics_second_opinion": "Second Opinion",
+  "education_prep": "Exam preparation"
 }

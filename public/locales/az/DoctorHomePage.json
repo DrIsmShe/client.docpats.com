@@ -60,7 +60,8 @@
       "colleagues_sub": "Həkim icması",
       "doctors": "həkim",
       "feed": "Günün lenti",
-      "feed_sub": "Platformanın ən yeni materialları"
+      "feed_sub": "Platformanın ən yeni materialları",
+      "education_sub": "İmtahanlara hazırlıq, trenajor və halların təhlili"
     },
     "nav": {
       "chat_sub": "Xəstələrlə mesajlaşma",
@@ -78,7 +79,12 @@
       "create_sci_sub": "Elmi məqalə yarat",
       "my_sci_sub": "Elmi nəşrlər",
       "colleagues_sub": "Platformadakı bütün həkimlər",
-      "friends_sub": "Dostlar və həmkarlar"
+      "friends_sub": "Dostlar və həmkarlar",
+      "education_sub": "Məşq, sınaq imtahanları, bloklar",
+      "arena": "Diaqnostika trenajoru",
+      "arena_sub": "Təsvirlər, analizlər, virtual pasiyent",
+      "second_opinion": "İkinci rəy",
+      "second_opinion_sub": "Pasiyent materiallarının təhlili"
     },
     "news": {
       "title": "Xəbərlər",
@@ -107,5 +113,7 @@
   "my_scientific_articles": "Elmi işlərim",
   "colleagues": "Bütün həmkarlar",
   "my_friends_colleagues": "Əlaqələrim",
-  "close": "Bağla"
+  "close": "Bağla",
+  "education": "Təhsil",
+  "education_prep": "İmtahanlara hazırlıq"
 }

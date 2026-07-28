@@ -25,6 +25,8 @@ import {
   LuFlaskConical,
   LuFileText,
   LuGraduationCap,
+  LuTarget,
+  LuStethoscope,
   LuUsers,
   LuUserCheck,
   LuHospital,
@@ -1904,6 +1906,21 @@ export default function ProfileDoctorHomePage() {
                 defaultValue: "Тренировка, пробные экзамены, блоки",
               })}
             />
+            {/* Тренажёр диагностики — учебные случаи: снимки, анализы,
+                виртуальный пациент. Стоит в «Обучении», а не рядом со
+                «Вторым мнением», хотя названия похожи: там выдуманные
+                кейсы, здесь материалы живого пациента, и путать их нельзя. */}
+            <NavCard
+              to="/arena"
+              icon={LuTarget}
+              color="amber"
+              title={t("doctor_home.nav.arena", {
+                defaultValue: "Тренажёр диагностики",
+              })}
+              subtitle={t("doctor_home.nav.arena_sub", {
+                defaultValue: "Снимки, анализы, виртуальный пациент",
+              })}
+            />
           </div>
         </div>
 
@@ -1945,6 +1962,20 @@ export default function ProfileDoctorHomePage() {
               })}
               subtitle={t("doctor_home.nav.consult_sub", {
                 defaultValue: "Диагностический помощник",
+              })}
+            />
+            {/* Второе мнение — материалы РЕАЛЬНОГО пациента. Стоит среди
+                клинических инструментов, а не в «Обучении»: врач не должен
+                путать разбор своего пациента с тренажёром. */}
+            <NavCard
+              to="/diagnostics"
+              icon={LuStethoscope}
+              color="violet"
+              title={t("doctor_home.nav.second_opinion", {
+                defaultValue: "Второе мнение",
+              })}
+              subtitle={t("doctor_home.nav.second_opinion_sub", {
+                defaultValue: "Разбор материалов пациента",
               })}
             />
             <NavCard

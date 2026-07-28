@@ -60,7 +60,8 @@
       "colleagues_sub": "مجتمع الأطباء",
       "doctors": "طبيب",
       "feed": "تغذية اليوم",
-      "feed_sub": "أحدث محتوى المنصة"
+      "feed_sub": "أحدث محتوى المنصة",
+      "education_sub": "التحضير للامتحانات، المدرّب، وتحليل الحالات"
     },
     "nav": {
       "chat_sub": "رسائل مع المرضى",
@@ -78,7 +79,12 @@
       "create_sci_sub": "إنشاء بحث علمي",
       "my_sci_sub": "المنشورات العلمية",
       "colleagues_sub": "جميع أطباء المنصة",
-      "friends_sub": "الأصدقاء والزملاء"
+      "friends_sub": "الأصدقاء والزملاء",
+      "education_sub": "تدريب، امتحانات تجريبية، وحدات",
+      "arena": "مدرّب التشخيص",
+      "arena_sub": "الصور، التحاليل، المريض الافتراضي",
+      "second_opinion": "رأي ثانٍ",
+      "second_opinion_sub": "تحليل مواد المريض"
     },
     "news": {
       "title": "الأخبار",
@@ -107,5 +113,7 @@
   "my_scientific_articles": "أبحاثي",
   "colleagues": "جميع الزملاء",
   "my_friends_colleagues": "جهات اتصالي",
-  "close": "إغلاق"
+  "close": "إغلاق",
+  "education": "التعليم",
+  "education_prep": "التحضير للامتحانات"
 }

@@ -60,7 +60,8 @@
       "colleagues_sub": "Doctor community",
       "doctors": "doctors",
       "feed": "Today's feed",
-      "feed_sub": "Latest platform content"
+      "feed_sub": "Latest platform content",
+      "education_sub": "Exam preparation, trainer and case review"
     },
     "nav": {
       "chat_sub": "Messages with patients",
@@ -78,7 +79,12 @@
       "create_sci_sub": "Create research paper",
       "my_sci_sub": "Scientific publications",
       "colleagues_sub": "All platform doctors",
-      "friends_sub": "Friends and colleagues"
+      "friends_sub": "Friends and colleagues",
+      "education_sub": "Practice, mock exams, question blocks",
+      "arena": "Diagnostic Trainer",
+      "arena_sub": "Images, lab results, virtual patient",
+      "second_opinion": "Second Opinion",
+      "second_opinion_sub": "Review of patient materials"
     },
     "news": {
       "title": "News",
@@ -107,5 +113,7 @@
   "my_scientific_articles": "My research",
   "colleagues": "All colleagues",
   "my_friends_colleagues": "My contacts",
-  "close": "Close"
+  "close": "Close",
+  "education": "Learning",
+  "education_prep": "Exam preparation"
 }

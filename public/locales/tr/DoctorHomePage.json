@@ -60,7 +60,8 @@
       "colleagues_sub": "Doktor topluluğu",
       "doctors": "doktor",
       "feed": "Günün akışı",
-      "feed_sub": "En yeni platform içeriği"
+      "feed_sub": "En yeni platform içeriği",
+      "education_sub": "Sınav hazırlığı, antrenör ve olgu değerlendirmesi"
     },
     "nav": {
       "chat_sub": "Hastalarla mesajlaşma",
@@ -78,7 +79,12 @@
       "create_sci_sub": "Bilimsel makale oluştur",
       "my_sci_sub": "Bilimsel yayınlar",
       "colleagues_sub": "Platformdaki tüm doktorlar",
-      "friends_sub": "Arkadaşlar ve meslektaşlar"
+      "friends_sub": "Arkadaşlar ve meslektaşlar",
+      "education_sub": "Alıştırma, deneme sınavları, bloklar",
+      "arena": "Tanı Antrenörü",
+      "arena_sub": "Görüntüler, tahliller, sanal hasta",
+      "second_opinion": "İkinci Görüş",
+      "second_opinion_sub": "Hasta materyallerinin değerlendirilmesi"
     },
     "news": {
       "title": "Haberler",
@@ -107,5 +113,7 @@
   "my_scientific_articles": "Araştırmalarım",
   "colleagues": "Tüm meslektaşlar",
   "my_friends_colleagues": "Kişilerim",
-  "close": "Kapat"
+  "close": "Kapat",
+  "education": "Eğitim",
+  "education_prep": "Sınav hazırlığı"
 }

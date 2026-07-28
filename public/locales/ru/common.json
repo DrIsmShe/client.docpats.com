@@ -174,7 +174,7 @@
   "patient_profile": "Профиль пациента",
   "specialization": "Специализация",
   "experience": "Опыт",
-  "education": "Образование",
+  "education": "Обучение",
   "create_scientific_article": "Создать научную статью",
   "my_scientific_articles": "Мои научные статьи",
   "scientific_articles": "Научные статьи",
@@ -1343,5 +1343,6 @@
     "reset": "Обычный размер"
   },
   "arena_trainer": "Тренажёр диагностики",
-  "diagnostics_second_opinion": "Второе мнение"
+  "diagnostics_second_opinion": "Второе мнение",
+  "education_prep": "Подготовка к экзаменам"
 }
