@@ -57,7 +57,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "cross-env NODE_OPTIONS=--max_old_space_size=16384 GENERATE_SOURCEMAP=false CI=false react-scripts build",
+    "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 GENERATE_SOURCEMAP=false CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
