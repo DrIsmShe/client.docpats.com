@@ -570,3 +570,36 @@ export function isQuotaError(err) {
 export function readQuotaDetails(err) {
   return err?.response?.data?.details ?? null;
 }
+
+// ─── Переводы вопросов ────────────────────────────────────────────────
+// Перевод — это отдельный вопрос с другим lang и ссылкой на оригинал, поэтому
+// отдельного «объекта перевода» на фронте нет: сервер отдаёт состояние по
+// языкам, включая те, где перевода ещё нет.
+
+export async function fetchItemTranslations(itemId) {
+  const { data } = await axios.get(`${BASE}/items/${itemId}/translations`);
+  return data;
+}
+
+/**
+ * Запускает перевод. sync: true — дождаться результата (кнопка «перевести
+ * сейчас»: редактор нажал и хочет увидеть текст, а не «принято в очередь»).
+ */
+export async function translateItem(itemId, { langs = null, force = false, sync = true } = {}) {
+  const { data } = await axios.post(`${BASE}/items/${itemId}/translations`, {
+    ...(langs ? { langs } : {}),
+    force,
+    sync,
+  });
+  return data;
+}
+
+export async function updateItemTranslation(translationId, patch) {
+  const { data } = await axios.patch(`${BASE}/translations/${translationId}`, patch);
+  return data;
+}
+
+export async function unreviewItemTranslation(translationId) {
+  const { data } = await axios.post(`${BASE}/translations/${translationId}/unreview`);
+  return data;
+}

@@ -582,5 +582,7 @@
       "badCount": "Sualların sayı tam və sıfırdan böyük olmalıdır",
       "failed": "Sualları yaratmaq alınmadı"
     }
-  }
+  },
+  "machineTranslated": "Maşın tərcüməsi",
+  "machineTranslatedHint": "Bu sual orijinal dildən avtomatik tərcümə olunub. Cavab variantları və düzgün cavab orijinaldakı ilə eynidir."
 }

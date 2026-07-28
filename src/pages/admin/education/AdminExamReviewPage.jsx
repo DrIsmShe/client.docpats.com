@@ -14,6 +14,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ItemTranslationsPanel from "./ItemTranslationsPanel";
 import {
   fetchItems,
   fetchItem,
@@ -578,6 +579,13 @@ export default function ExamReviewQueuePage() {
                   </button>
                 </div>
               </div>
+            )}
+
+            {/* Переводы. Показываем только у оригиналов: у вопроса-перевода
+                translationOf заполнен, и переводить его не с чего — правится
+                он здесь же, в панели своего оригинала. */}
+            {!item.translationOf && (
+              <ItemTranslationsPanel itemId={item._id} itemStatus={item.status} />
             )}
           </div>
         </div>

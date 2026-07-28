@@ -582,5 +582,7 @@
       "badCount": "Soru sayısı sıfırdan büyük tam sayı olmalı",
       "failed": "Sorular oluşturulamadı"
     }
-  }
+  },
+  "machineTranslated": "Makine çevirisi",
+  "machineTranslatedHint": "Bu soru orijinal dilinden otomatik olarak çevrildi. Seçenekler ve doğru cevap orijinaldekiyle aynıdır."
 }

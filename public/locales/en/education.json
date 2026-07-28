@@ -582,5 +582,7 @@
       "badCount": "The number of questions must be a whole number above zero",
       "failed": "Could not generate questions"
     }
-  }
+  },
+  "machineTranslated": "Machine translation",
+  "machineTranslatedHint": "This question was translated automatically from the original language. The options and the correct answer are the same as in the original."
 }

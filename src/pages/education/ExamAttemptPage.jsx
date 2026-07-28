@@ -386,6 +386,16 @@ export default function ExamAttemptPage() {
 
       {question && (
         <div className="edu-card">
+          {/* Пометка машинного перевода. Врач должен знать, что читает не
+              оригинал: если формулировка кажется странной, дело может быть в
+              переводе, а не в его знаниях. У выправленных человеком переводов
+              (translationStatus: "reviewed") пометки нет — там уже отвечает
+              редактор, а не модель. */}
+          {question.translationStatus === "auto" && (
+            <div className="edu-machine-note" title={t("machineTranslatedHint")}>
+              {t("machineTranslated")}
+            </div>
+          )}
           <p className="edu-stem">{question.stem}</p>
           {question.stemImageUrl && (
             <img
