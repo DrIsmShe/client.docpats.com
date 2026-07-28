@@ -50,6 +50,11 @@ import "../education/education.css";
 import "./diagnostics.css";
 
 const POLL_MS = 4000;
+// Сколько всего ждём результата, опрашивая сервер. Разбор занимает минуты;
+// двадцать — с запасом. Раньше предела не было вовсе, и вкладка, открытая на
+// зависшем деле, стучалась на сервер сутки: пятнадцать тысяч запросов, каждый
+// из которых расшифровывает дело целиком.
+const POLL_LIMIT_MS = 20 * 60 * 1000;
 
 const KIND_LABELS = {
   text: "запись",
@@ -79,6 +84,7 @@ export default function DiagnosticCasePage() {
   const [summary, setSummary] = useState("");
   const [dirty, setDirty] = useState(false);
 
+  const [pollExpired, setPollExpired] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [showProtocol, setShowProtocol] = useState(false);
   // Действие, которое ждёт подтверждения. Наружу материалы уходят из двух
@@ -129,8 +135,23 @@ export default function DiagnosticCasePage() {
   );
   useEffect(() => {
     clearInterval(pollRef.current);
-    if (!jobsPending) return undefined;
-    pollRef.current = setInterval(() => load({ silent: true }), POLL_MS);
+    if (!jobsPending) {
+      setPollExpired(false);
+      return undefined;
+    }
+    const startedAt = Date.now();
+    pollRef.current = setInterval(() => {
+      // Опрос обязан заканчиваться сам. Если за отведённое время задания не
+      // закрылись, значит их некому закрыть — сервер починит состояние при
+      // следующем открытии дела, а страница перестаёт стучаться и говорит
+      // врачу прямо, что ждать больше нечего.
+      if (Date.now() - startedAt > POLL_LIMIT_MS) {
+        clearInterval(pollRef.current);
+        setPollExpired(true);
+        return;
+      }
+      load({ silent: true });
+    }, POLL_MS);
     return () => clearInterval(pollRef.current);
   }, [jobsPending, load]);
 
@@ -387,6 +408,14 @@ export default function DiagnosticCasePage() {
                   {showProtocol ? "Скрыть протокол" : "Что проверяется"}
                 </button>
               </div>
+
+              {pollExpired && (
+                <div className="dg-blockers">
+                  Разбор не отвечает дольше обычного. Скорее всего, он оборвался — обновите
+                  страницу: незавершённые задания будут помечены сбойными, и их можно будет
+                  запустить заново.
+                </div>
+              )}
 
               <p className="dg-muted">
                 {jobsPending
