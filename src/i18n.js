@@ -20,6 +20,8 @@ i18n
       "clinic",
       "clinicReviews",
       "education",
+      "diagnostics",
+      "arena",
     ],
     defaultNS: "common",
 

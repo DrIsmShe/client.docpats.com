@@ -21,6 +21,7 @@
 // всем подряд.
 
 import { useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { extractDocument } from "../../../api/diagnostics";
 import { readApiError } from "../../../api/education";
@@ -30,6 +31,7 @@ function emptyRow() {
 }
 
 export default function ArtifactComposer({ caseId, modalities, analytes, disabled, requireGates, onAdd }) {
+  const { t } = useTranslation("diagnostics");
   const fileRef = useRef(null);
   const [text, setText] = useState("");
   const [modality, setModality] = useState("clinical");
@@ -76,7 +78,7 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
       setText((prev) => (prev.trim() ? `${prev.trim()}\n\n${res.text}` : res.text));
       setRecognized(res);
     } catch (err) {
-      setError(readApiError(err, "Не удалось распознать документ"));
+      setError(readApiError(err, t("recognizeFailed")));
     } finally {
       setReading(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -94,20 +96,20 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
         .filter((r) => String(r.value).trim() !== "" && (r.key || r.name.trim()))
         .map((r, idx) => ({
           key: r.key || `custom${idx + 1}`,
-          name: r.name.trim() || r.key || `Показатель ${idx + 1}`,
+          name: r.name.trim() || r.key || `${t("analyteName")} ${idx + 1}`,
           value: String(r.value).trim(),
           unit: r.unit.trim() || undefined,
           refLow: r.refLow === "" ? null : Number(String(r.refLow).replace(",", ".")),
           refHigh: r.refHigh === "" ? null : Number(String(r.refHigh).replace(",", ".")),
         }));
       if (!items.length) {
-        setError("Заполните хотя бы один показатель со значением");
+        setError(t("fillOneAnalyte"));
         return;
       }
       payload = { kind: "lab_panel", modality: "labs", structured: { items } };
     } else {
       if (!text.trim()) {
-        setError("Добавьте текст или прикрепите документ");
+        setError(t("addTextOrFile"));
         return;
       }
       payload = {
@@ -127,7 +129,7 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
       setRecognized(null);
       setPanelOpen(false);
     } catch (err) {
-      setError(err?.message ?? "Не удалось добавить материал");
+      setError(err?.message ?? t("addFailed"));
     } finally {
       setBusy(false);
     }
@@ -144,23 +146,27 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
             rows={5}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Вставьте текст заключения или опишите случай. Можно прикрепить фото бланка — распознаем."
+            placeholder={t("addWhat")}
             maxLength={60000}
             disabled={disabled || reading}
           />
 
           {recognized && (
             <div className="dg-scan-result">
-              <strong>Распознано{recognized.pages > 1 ? ` · ${recognized.pages} стр.` : ""}.</strong>{" "}
-              Сверьте числа и единицы — считать будем по ним.
+              <strong>
+                {recognized.pages > 1
+                  ? t("recognizedPages", { count: recognized.pages })
+                  : t("recognized")}
+              </strong>{" "}
+              {t("checkNumbers")}
               {recognized.unreadable.length > 0 && (
                 <div className="dg-artifact-note">
-                  Не прочиталось: {recognized.unreadable.join("; ")} — впишите вручную.
+                  {t("unreadable", { list: recognized.unreadable.join("; ") })}
                 </div>
               )}
               {recognized.hasPatientIdentity && (
                 <div className="dg-artifact-note">
-                  Видны данные пациента — уберите их из текста.
+                  {t("identityVisible")}
                 </div>
               )}
             </div>
@@ -176,9 +182,9 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
                   value={r.key}
                   onChange={(e) => pickAnalyte(i, e.target.value)}
                   disabled={disabled}
-                  aria-label="Показатель"
+                  aria-label={t("analyteName")}
                 >
-                  <option value="">— свой показатель —</option>
+                  <option value="">{t("ownAnalyte")}</option>
                   {(analytes ?? []).map((a) => (
                     <option key={a.key} value={a.key}>
                       {a.label}
@@ -192,7 +198,7 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
                     style={{ marginTop: 5 }}
                     value={r.name}
                     onChange={(e) => setRow(i, { name: e.target.value })}
-                    placeholder="Название"
+                    placeholder={t("analyteName")}
                     maxLength={160}
                     disabled={disabled}
                   />
@@ -203,38 +209,38 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
                 style={{ width: 92 }}
                 value={r.value}
                 onChange={(e) => setRow(i, { value: e.target.value })}
-                placeholder="значение"
+                placeholder={t("value")}
                 maxLength={60}
                 disabled={disabled}
-                aria-label="Значение"
+                aria-label={t("value")}
               />
               <input
                 className="edu-input"
                 style={{ width: 78 }}
                 value={r.unit}
                 onChange={(e) => setRow(i, { unit: e.target.value })}
-                placeholder="ед."
+                placeholder={t("unit")}
                 maxLength={40}
                 disabled={disabled}
-                aria-label="Единица"
+                aria-label={t("unit")}
               />
               <input
                 className="edu-input dg-nums"
                 style={{ width: 76 }}
                 value={r.refLow}
                 onChange={(e) => setRow(i, { refLow: e.target.value })}
-                placeholder="норма от"
+                placeholder={t("refFrom")}
                 disabled={disabled}
-                aria-label="Норма от"
+                aria-label={t("refFrom")}
               />
               <input
                 className="edu-input dg-nums"
                 style={{ width: 62 }}
                 value={r.refHigh}
                 onChange={(e) => setRow(i, { refHigh: e.target.value })}
-                placeholder="до"
+                placeholder={t("refTo")}
                 disabled={disabled}
-                aria-label="Норма до"
+                aria-label={t("refTo")}
               />
               <button
                 type="button"
@@ -245,7 +251,7 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
                   )
                 }
                 disabled={disabled}
-                aria-label="Убрать показатель"
+                aria-label={t("removeAnalyte")}
               >
                 ×
               </button>
@@ -258,14 +264,12 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
             onClick={() => setRows((prev) => [...prev, emptyRow()])}
             disabled={disabled}
           >
-            + показатель
+            {t("addAnalyte")}
           </button>
 
           <p className="dg-muted">
-            Норму переписывайте с бланка — у лабораторий она разная. Без неё сравнивать не с
-            чем. Точкой ● отмечены показатели с порогом немедленных действий; свои показатели
-            разбираются, но без порогов.
-            {unknownRows.length > 0 && " Сейчас таких: " + unknownRows.length + "."}
+            {t("panelNote")}
+            {unknownRows.length > 0 && ` ${t("unknownAnalytes", { count: unknownRows.length })}`}
           </p>
         </div>
       )}
@@ -275,7 +279,7 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
       {/* Действия одной строкой — то, что делают часто, и то, что изредка. */}
       <div className="dg-actions">
         <button className="edu-btn" type="submit" disabled={busy || disabled || reading}>
-          {busy ? "Добавляем…" : "Добавить в дело"}
+          {busy ? t("adding") : t("addToCase")}
         </button>
 
         {!panelOpen && (
@@ -293,9 +297,9 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
               className="dg-link-btn"
               onClick={() => fileRef.current?.click()}
               disabled={disabled || reading}
-              title="Фото бланка или PDF. Файл не сохраняется — в дело попадёт только текст."
+              title={t("attachHint")}
             >
-              {reading ? "Распознаём…" : "Прикрепить документ"}
+              {reading ? t("recognizing") : t("attachDocument")}
             </button>
           </>
         )}
@@ -306,7 +310,7 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
           onClick={() => setPanelOpen((v) => !v)}
           disabled={disabled}
         >
-          {panelOpen ? "Вернуться к тексту" : "Ввести показателями"}
+          {panelOpen ? t("backToText") : t("enterAsPanel")}
         </button>
 
         {!panelOpen && (
@@ -315,7 +319,7 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
             value={modality}
             onChange={(e) => setModality(e.target.value)}
             disabled={disabled}
-            aria-label="Направление"
+            aria-label={t("analysis")}
           >
             {modalities.map((m) => (
               <option key={m.key} value={m.key}>

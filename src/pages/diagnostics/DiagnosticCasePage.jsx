@@ -28,6 +28,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import {
   fetchCase,
@@ -46,7 +47,7 @@ import {
 import { readApiError, isAuthError } from "../../api/education";
 import FindingCard from "./components/FindingCard";
 import ArtifactComposer from "./components/ArtifactComposer";
-import { CaseStatus, formatDate } from "./DiagnosticsCasesPage";
+import { CaseStatus, formatDate, useDir } from "./DiagnosticsCasesPage";
 import "../education/education.css";
 import "./diagnostics.css";
 
@@ -57,21 +58,23 @@ const POLL_MS = 4000;
 // из которых расшифровывает дело целиком.
 const POLL_LIMIT_MS = 20 * 60 * 1000;
 
-const KIND_LABELS = {
-  text: "запись",
-  report: "заключение",
-  lab_panel: "панель",
-  image: "снимок",
-  dicom: "DICOM",
-  document: "документ",
-  video: "видео",
-  audio: "аудио",
-  signal: "сигнал",
+// Ключи словаря вместо готовых подписей: раздел переводится на пять языков.
+const KIND_KEY = {
+  text: "kindText",
+  report: "kindReport",
+  lab_panel: "kindLabPanel",
+  image: "kindImage",
+  document: "kindDocument",
+  video: "kindVideo",
+  audio: "kindAudio",
+  signal: "kindSignal",
 };
 
 export default function DiagnosticCasePage() {
   const { caseId } = useParams();
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation("diagnostics");
+  const dir = useDir();
 
   const [data, setData] = useState(null);
   const [modalities, setModalities] = useState([]);
@@ -109,12 +112,12 @@ export default function DiagnosticCasePage() {
         setError(null);
       } catch (err) {
         if (isAuthError(err)) return navigate("/login");
-        setError(readApiError(err, "Не удалось загрузить дело"));
+        setError(readApiError(err, t("caseNotFound")));
       } finally {
         if (!silent) setLoading(false);
       }
     },
-    [caseId, dirty, navigate],
+    [caseId, dirty, navigate, t],
   );
 
   useEffect(() => {
@@ -176,13 +179,13 @@ export default function DiagnosticCasePage() {
     guard(async () => {
       await updateCase(caseId, { question, clinicalContext: context });
       setDirty(false);
-    }, "Не удалось сохранить");
+    }, t("loadFailed"));
   }
 
   if (loading) {
     return (
       <div className="dg-page dg-page--narrow">
-        <p className="dg-empty">Загружаем дело…</p>
+        <p className="dg-empty">{t("loading")}</p>
       </div>
     );
   }
@@ -192,7 +195,7 @@ export default function DiagnosticCasePage() {
       <div className="dg-page dg-page--narrow">
         {error && <div className="dg-err">{error}</div>}
         <Link className="edu-btn edu-btn--ghost" to="/diagnostics">
-          ← К списку дел
+          ← {t("allCases")}
         </Link>
       </div>
     );
@@ -227,7 +230,7 @@ export default function DiagnosticCasePage() {
   }
 
   function onAnalyzeClick() {
-    requireGates(() => guard(() => analyzeCase(caseId), "Не удалось запустить разбор"));
+    requireGates(() => guard(() => analyzeCase(caseId), t("catalogFailed")));
   }
 
   async function confirmGates() {
@@ -252,31 +255,31 @@ export default function DiagnosticCasePage() {
   }
 
   return (
-    <div className="dg-page dg-page--narrow">
+    <div className="dg-page dg-page--narrow" dir={dir}>
       <div className="arena-back">
         <Link className="edu-back-link" to="/diagnostics">
-          ← Все дела
+          ← {t("allCases")}
         </Link>
         <Link className="edu-back-link" to="/doctor/home-page">
-          В кабинет
+          {t("backToCabinet")}
         </Link>
       </div>
 
       <header className="dg-head">
         <div className="dg-head-main">
-          <h1 className="dg-title">{c.title || "Без названия"}</h1>
+          <h1 className="dg-title">{c.title || t("untitled")}</h1>
           <p className="dg-subtitle">
             {[
               c.patient?.label,
-              c.patient?.ageYears ? `${c.patient.ageYears} лет` : null,
+              c.patient?.ageYears ? t("years", { count: c.patient.ageYears }) : null,
               c.patient?.sex === "male"
-                ? "мужчина"
+                ? t("sexMale")
                 : c.patient?.sex === "female"
-                  ? "женщина"
+                  ? t("sexFemale")
                   : null,
             ]
               .filter(Boolean)
-              .join(" · ") || "Пациент не описан"}
+              .join(" · ") || t("patientNotDescribed")}
           </p>
         </div>
         <CaseStatus status={c.status} />
@@ -285,13 +288,13 @@ export default function DiagnosticCasePage() {
       {error && <div className="dg-err">{error}</div>}
       {critical.length > 0 && (
         <div className="dg-err">
-          Есть критические выводы ({critical.length}) — они первыми в списке.
+          {t("criticalNotice", { count: critical.length })}
         </div>
       )}
 
       {/* ─── 1. Случай ─────────────────────────────────────────────── */}
       <section className="dg-sec">
-        <h2 className="dg-sec-title">Случай</h2>
+        <h2 className="dg-sec-title">{t("caseSection")}</h2>
         <input
           className="edu-input"
           value={question}
@@ -300,7 +303,7 @@ export default function DiagnosticCasePage() {
             setDirty(true);
           }}
           onBlur={saveContext}
-          placeholder="Вопрос: что именно вас смущает?"
+          placeholder={t("questionPlaceholder")}
           maxLength={2000}
           disabled={closed}
         />
@@ -314,19 +317,20 @@ export default function DiagnosticCasePage() {
             setDirty(true);
           }}
           onBlur={saveContext}
-          placeholder="Возраст, жалобы, динамика, что уже исключено."
+          placeholder={t("contextPlaceholder")}
           maxLength={20000}
           disabled={closed}
         />
         {!closed && (
-          <p className="dg-muted">{dirty ? "Сохранится, когда выйдете из поля" : "Сохранено"}</p>
+          <p className="dg-muted">{dirty ? t("savedOnBlur") : t("saved")}</p>
         )}
       </section>
 
       {/* ─── 2. Материалы ──────────────────────────────────────────── */}
       <section className="dg-sec">
         <h2 className="dg-sec-title">
-          Материалы{data.artifacts.length > 0 ? ` · ${data.artifacts.length}` : ""}
+          {t("materials")}
+          {data.artifacts.length > 0 ? ` · ${data.artifacts.length}` : ""}
         </h2>
 
         {data.artifacts.length > 0 && (
@@ -335,7 +339,7 @@ export default function DiagnosticCasePage() {
               <div className="dg-artifact" key={a._id}>
                 <div className="dg-artifact-main">
                   <div className="dg-artifact-head">
-                    <span className="dg-artifact-kind">{KIND_LABELS[a.kind] ?? a.kind}</span>
+                    <span className="dg-artifact-kind">{KIND_KEY[a.kind] ? t(KIND_KEY[a.kind]) : a.kind}</span>
                     {a.modality && a.modality !== "clinical" && (
                       <span className="dg-conf">{modalityTitleOf(a.modality)}</span>
                     )}
@@ -354,9 +358,9 @@ export default function DiagnosticCasePage() {
                     type="button"
                     className="dg-icon-btn"
                     disabled={busy}
-                    aria-label="Убрать материал"
+                    aria-label={t("removeMaterial")}
                     onClick={() =>
-                      guard(() => removeArtifact(caseId, a._id), "Не удалось убрать материал")
+                      guard(() => removeArtifact(caseId, a._id), t("addFailed"))
                     }
                   >
                     ×
@@ -368,7 +372,7 @@ export default function DiagnosticCasePage() {
         )}
 
         {closed ? (
-          <p className="dg-muted">Дело закрыто — материалы не меняются.</p>
+          <p className="dg-muted">{t("materialsClosed")}</p>
         ) : (
           <ArtifactComposer
             caseId={caseId}
@@ -384,7 +388,7 @@ export default function DiagnosticCasePage() {
       {/* ─── 3. Разбор ─────────────────────────────────────────────── */}
       {!closed && (
         <section className="dg-sec">
-          <h2 className="dg-sec-title">Разбор</h2>
+          <h2 className="dg-sec-title">{t("analysis")}</h2>
 
           {(
             <>
@@ -396,41 +400,39 @@ export default function DiagnosticCasePage() {
                   onClick={onAnalyzeClick}
                 >
                   {jobsPending
-                    ? "Разбираем…"
+                    ? t("analyzing")
                     : findings.length
-                      ? "Разобрать заново"
-                      : "Разобрать"}
+                      ? t("analyzeAgain")
+                      : t("analyze")}
                 </button>
                 <button
                   type="button"
                   className="dg-link-btn"
                   onClick={() => setShowProtocol((v) => !v)}
                 >
-                  {showProtocol ? "Скрыть протокол" : "Что проверяется"}
+                  {showProtocol ? t("hideProtocol") : t("whatIsChecked")}
                 </button>
               </div>
 
               {pollExpired && (
                 <div className="dg-blockers">
-                  Разбор не отвечает дольше обычного. Скорее всего, он оборвался — обновите
-                  страницу: незавершённые задания будут помечены сбойными, и их можно будет
-                  запустить заново.
+                  {t("analysisStalled")}
                 </div>
               )}
 
               <p className="dg-muted">
                 {jobsPending
-                  ? `Готово ${doneJobs.length} из ${jobs.length}. Занимает минуты — страницу можно закрыть.`
+                  ? t("analysisProgress", { done: doneJobs.length, total: jobs.length })
                   : otherBlockers.length > 0
                     ? otherBlockers[0]
                     : gatesReady
-                      ? "Направления выбираются по составу материалов."
-                      : "Материалы уйдут внешней модели — перед первым запуском спросим подтверждение."}
+                      ? t("analysisByMaterials")
+                      : t("analysisWillSend")}
               </p>
 
               {failedJobs.length > 0 && (
                 <div className="dg-blockers">
-                  Не удалось разобрать: {failedJobs.map((j) => j.modalityTitle).join(", ")}.
+                  {t("jobsFailed", { list: failedJobs.map((j) => j.modalityTitle).join(", ") })}
                   {failedJobs[0].message && (
                     <div className="dg-muted">{failedJobs[0].message}</div>
                   )}
@@ -442,11 +444,11 @@ export default function DiagnosticCasePage() {
                     onClick={() =>
                       guard(
                         () => Promise.all(failedJobs.map((j) => rerunJob(j._id))),
-                        "Не удалось перезапустить",
+                        t("tryAgain"),
                       )
                     }
                   >
-                    Попробовать ещё раз
+                    {t("tryAgain")}
                   </button>
                 </div>
               )}
@@ -454,8 +456,7 @@ export default function DiagnosticCasePage() {
               {showProtocol && (
                 <div className="dg-protocol">
                   <p className="dg-muted">
-                    По этим пунктам идёт проверка. Открыто до отправки: скрытый протокол
-                    означал бы доверие вслепую.
+                    {t("protocolNote")}
                   </p>
                   {modalities.map((m) => (
                     <details key={m.key}>
@@ -502,7 +503,7 @@ export default function DiagnosticCasePage() {
       {findings.length > 0 && (
         <section className="dg-sec">
           <h2 className="dg-sec-title">
-            Выводы · {findings.length}
+            {t("findings")} · {findings.length}
             {data.advisoryNotice && <span className="dg-sec-note">{data.advisoryNotice}</span>}
           </h2>
           <div className="dg-findings">
@@ -524,7 +525,7 @@ export default function DiagnosticCasePage() {
 
       {/* ─── 5. Вывод врача ────────────────────────────────────────── */}
       <section className="dg-sec">
-        <h2 className="dg-sec-title">Ваш вывод</h2>
+        <h2 className="dg-sec-title">{t("doctorConclusion")}</h2>
         <textarea
           className="edu-textarea"
           rows={4}
@@ -532,7 +533,7 @@ export default function DiagnosticCasePage() {
           onChange={(e) => setSummary(e.target.value)}
           maxLength={20000}
           disabled={closed}
-          placeholder="К чему вы пришли и что назначено."
+          placeholder={t("conclusionPlaceholder")}
         />
         <div className="dg-actions">
           {closed ? (
@@ -541,19 +542,23 @@ export default function DiagnosticCasePage() {
                 className="edu-btn edu-btn--ghost"
                 type="button"
                 disabled={busy}
-                onClick={() => guard(() => reopenCase(caseId), "Не удалось переоткрыть")}
+                onClick={() => guard(() => reopenCase(caseId), t("loadFailed"))}
               >
-                Переоткрыть
+                {t("reopen")}
               </button>
               <button
                 type="button"
                 className="dg-link-btn"
                 disabled={busy}
-                onClick={() => guard(() => exportCase(caseId), "Не удалось выгрузить")}
+                onClick={() => guard(() => exportCase(caseId), t("loadFailed"))}
               >
-                Скачать протокол
+                {t("downloadReport")}
               </button>
-              {c.closedAt && <span className="dg-muted">Закрыто {formatDate(c.closedAt)}</span>}
+              {c.closedAt && (
+                <span className="dg-muted">
+                  {t("closedAt", { date: formatDate(c.closedAt, i18n.language) })}
+                </span>
+              )}
             </>
           ) : (
             <>
@@ -562,20 +567,20 @@ export default function DiagnosticCasePage() {
                 type="button"
                 disabled={busy || summary.trim().length < 3}
                 onClick={() =>
-                  guard(() => closeCase(caseId, summary.trim()), "Не удалось закрыть")
+                  guard(() => closeCase(caseId, summary.trim()), t("loadFailed"))
                 }
               >
-                Закрыть дело
+                {t("closeCase")}
               </button>
               <button
                 type="button"
                 className="dg-link-btn"
                 disabled={busy}
-                onClick={() => guard(() => exportCase(caseId), "Не удалось выгрузить")}
+                onClick={() => guard(() => exportCase(caseId), t("loadFailed"))}
               >
-                Скачать протокол
+                {t("downloadReport")}
               </button>
-              <span className="dg-muted">Итог по делу пишет врач</span>
+              <span className="dg-muted">{t("conclusionByDoctor")}</span>
             </>
           )}
         </div>
@@ -597,22 +602,21 @@ export default function DiagnosticCasePage() {
  * подтвердил не думая.
  */
 function ConfirmGates({ caseData, busy, onCancel, onConfirm }) {
+  const { t } = useTranslation("diagnostics");
   const [deid, setDeid] = useState(Boolean(caseData.deidentified));
   const [consent, setConsent] = useState(Boolean(caseData.aiConsent?.confirmed));
 
   return (
-    <div className="dg-modal" role="dialog" aria-modal="true" aria-label="Подтверждение отправки">
+    <div className="dg-modal" role="dialog" aria-modal="true" aria-label={t("confirmAndRun")}>
       <div className="dg-confirm">
       <p className="dg-confirm-lead">
-        Материалы уйдут на обработку внешней модели. Подтвердите два условия — спросим один
-        раз для этого дела.
+        {t("confirmLead")}
       </p>
 
       <label className="dg-confirm-item">
         <input type="checkbox" checked={deid} onChange={(e) => setDeid(e.target.checked)} />
         <span>
-          <strong>Материалы обезличены.</strong> Нет ФИО, дат рождения, номеров документов и
-          телефонов. Шапку бланка проверьте отдельно — там имя остаётся чаще всего.
+          <strong>{t("gateDeidentified")}</strong> {t("gateDeidentifiedWhy")}
         </span>
       </label>
 
@@ -623,8 +627,7 @@ function ConfirmGates({ caseData, busy, onCancel, onConfirm }) {
           onChange={(e) => setConsent(e.target.checked)}
         />
         <span>
-          <strong>Согласие на обработку внешней моделью.</strong> Время подтверждения
-          записывается — это часть ответа на вопрос, на каком основании данные ушли наружу.
+          <strong>{t("gateConsent")}</strong> {t("gateConsentWhy")}
         </span>
       </label>
 
@@ -635,10 +638,10 @@ function ConfirmGates({ caseData, busy, onCancel, onConfirm }) {
           disabled={busy || !deid || !consent}
           onClick={onConfirm}
         >
-          {busy ? "Запускаем…" : "Подтверждаю и запускаю"}
+          {busy ? t("starting") : t("confirmAndRun")}
         </button>
         <button type="button" className="dg-link-btn" onClick={onCancel} disabled={busy}>
-          Отмена
+          {t("cancel")}
         </button>
       </div>
       </div>

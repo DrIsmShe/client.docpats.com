@@ -17,26 +17,25 @@
 //    нельзя понять ничего.
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-const SEVERITY_LABELS = {
-  critical: "Критично",
-  important: "Важно",
-  note: "Замечание",
+// Ключи словаря, а не готовые подписи: раздел переводится на пять языков.
+const SEVERITY_KEY = {
+  critical: "severityCritical",
+  important: "severityImportant",
+  note: "severityNote",
 };
 
-const CONFIDENCE_LABELS = {
-  high: "уверенность высокая",
-  moderate: "уверенность средняя",
-  low: "уверенность низкая",
+const CONFIDENCE_KEY = {
+  high: "confidenceHigh",
+  moderate: "confidenceModerate",
+  low: "confidenceLow",
 };
 
-const VERDICTS = [
-  { key: "agree", label: "Согласен" },
-  { key: "partly", label: "Частично" },
-  { key: "disagree", label: "Не согласен" },
-];
+const VERDICTS = ["agree", "partly", "disagree"];
 
 export default function FindingCard({ finding, modalityTitle, disabled, onVerdict }) {
+  const { t } = useTranslation("diagnostics");
   const [correction, setCorrection] = useState(finding.correction ?? "");
   const [pending, setPending] = useState(false);
   const [openCorrection, setOpenCorrection] = useState(
@@ -54,7 +53,7 @@ export default function FindingCard({ finding, modalityTitle, disabled, onVerdic
       await onVerdict(finding._id, { verdict, correction: correction.trim() });
       if (verdict === "partly" || verdict === "disagree") setOpenCorrection(true);
     } catch (err) {
-      setError(err?.message ?? "Не удалось сохранить вердикт");
+      setError(err?.message ?? t("verdictFailed"));
     } finally {
       setPending(false);
     }
@@ -63,8 +62,12 @@ export default function FindingCard({ finding, modalityTitle, disabled, onVerdic
   return (
     <article className={`dg-finding dg-finding--${severity}`}>
       <div className="dg-finding-head">
-        <span className={`dg-sev dg-sev--${severity}`}>{SEVERITY_LABELS[severity] ?? severity}</span>
-        <span className="dg-conf">{CONFIDENCE_LABELS[finding.confidence] ?? ""}</span>
+        <span className={`dg-sev dg-sev--${severity}`}>
+          {SEVERITY_KEY[severity] ? t(SEVERITY_KEY[severity]) : severity}
+        </span>
+        <span className="dg-conf">
+          {CONFIDENCE_KEY[finding.confidence] ? t(CONFIDENCE_KEY[finding.confidence]) : ""}
+        </span>
         {modalityTitle && <span className="dg-conf">· {modalityTitle}</span>}
       </div>
 
@@ -73,7 +76,7 @@ export default function FindingCard({ finding, modalityTitle, disabled, onVerdic
 
       {finding.recommendations?.length > 0 && (
         <>
-          <p className="dg-finding-sub">Что сделать</p>
+          <p className="dg-finding-sub">{t("whatToDo")}</p>
           <ul className="dg-finding-list">
             {finding.recommendations.map((r, i) => (
               <li key={i}>{r}</li>
@@ -84,14 +87,14 @@ export default function FindingCard({ finding, modalityTitle, disabled, onVerdic
 
       {finding.citations?.length > 0 && (
         <>
-          <p className="dg-finding-sub">Основание</p>
+          <p className="dg-finding-sub">{t("basis")}</p>
           <ul className="dg-finding-list">
             {finding.citations.map((c, i) => (
               <li key={i}>
                 {c.source}
                 {c.note ? ` — ${c.note}` : ""}
                 {!c.verified && (
-                  <span className="dg-conf"> (ссылка не проверена — сверьтесь с источником)</span>
+                  <span className="dg-conf"> {t("citationUnverified")}</span>
                 )}
               </li>
             ))}
@@ -100,26 +103,24 @@ export default function FindingCard({ finding, modalityTitle, disabled, onVerdic
       )}
 
       {finding.checklistItem && (
-        <p className="dg-checklist-ref">Пункт протокола: {finding.checklistItem}</p>
+        <p className="dg-checklist-ref">{t("protocolItem", { item: finding.checklistItem })}</p>
       )}
 
       <div className="dg-verdict">
         <p className="dg-verdict-q">
-          {finding.verdict === "pending"
-            ? "Согласны с этим выводом? Ответ нужен не для отчётности — по нему видно, где разбор ошибается."
-            : "Ваш вердикт:"}
+          {finding.verdict === "pending" ? t("verdictQuestion") : t("yourVerdict")}
         </p>
 
         <div className="dg-verdict-btns">
-          {VERDICTS.map((v) => (
+          {VERDICTS.map((key) => (
             <button
-              key={v.key}
+              key={key}
               type="button"
-              className={`dg-vbtn ${finding.verdict === v.key ? "dg-vbtn--on" : ""}`}
-              onClick={() => send(v.key)}
+              className={`dg-vbtn ${finding.verdict === key ? "dg-vbtn--on" : ""}`}
+              onClick={() => send(key)}
               disabled={pending || disabled}
             >
-              {v.label}
+              {t(key)}
             </button>
           ))}
           {!openCorrection && (
@@ -129,20 +130,20 @@ export default function FindingCard({ finding, modalityTitle, disabled, onVerdic
               onClick={() => setOpenCorrection(true)}
               disabled={disabled}
             >
-              Дополнить
+              {t("addCorrection")}
             </button>
           )}
         </div>
 
         {openCorrection && (
           <div style={{ marginTop: 10 }}>
-            <span className="dg-label">Как правильно</span>
+            <span className="dg-label">{t("howItShouldBe")}</span>
             <textarea
               className="edu-textarea"
               rows={3}
               value={correction}
               onChange={(e) => setCorrection(e.target.value)}
-              placeholder="В чём вывод неверен или неполон. Пишите как коллеге — это увидит редактор модуля, а не пациент."
+              placeholder={t("correctionPlaceholder")}
               maxLength={4000}
               disabled={disabled}
             />
@@ -153,7 +154,7 @@ export default function FindingCard({ finding, modalityTitle, disabled, onVerdic
                 onClick={() => send(finding.verdict === "pending" ? "partly" : finding.verdict)}
                 disabled={pending || disabled || !correction.trim()}
               >
-                {pending ? "Сохраняем…" : "Сохранить поправку"}
+                {pending ? t("saving") : t("saveCorrection")}
               </button>
             </div>
           </div>
@@ -162,7 +163,7 @@ export default function FindingCard({ finding, modalityTitle, disabled, onVerdic
         {error && <p className="dg-err" style={{ marginTop: 10, marginBottom: 0 }}>{error}</p>}
 
         {finding.verdict !== "pending" && !error && (
-          <p className="dg-verdict-done">Учтено. Вердикт можно изменить в любой момент.</p>
+          <p className="dg-verdict-done">{t("verdictSaved")}</p>
         )}
       </div>
     </article>

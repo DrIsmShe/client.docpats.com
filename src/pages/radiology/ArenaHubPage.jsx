@@ -20,6 +20,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   fetchCatalogPage,
   fetchGameProfile,
@@ -33,8 +34,8 @@ import {
   STATIONS,
   STATION_BY_KEY,
   caseHref,
-  MODALITY_LABELS,
-  DIFFICULTY_LABELS,
+  MODALITIES,
+  modalityLabel,
 } from "./arenaLabels";
 import "../education/education.css";
 import "./radiology.css";
@@ -46,6 +47,10 @@ const SEARCH_DEBOUNCE_MS = 350;
 
 export default function ArenaHubPage() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation("arena");
+  // Арабский — письмо справа налево. Раздел открывается вне клиникового
+  // макета, который выставляет направление сам.
+  const dir = i18n.language?.startsWith("ar") ? "rtl" : "ltr";
 
   const [profile, setProfile] = useState(null);
   const [daily, setDaily] = useState(null);
@@ -124,7 +129,7 @@ export default function ArenaHubPage() {
       .catch((err) => {
         if (seq !== requestSeq.current) return;
         if (isAuthError(err)) return navigate("/login");
-        setError(readApiError(err, "Не удалось загрузить каталог"));
+        setError(readApiError(err, t("catalogFailed")));
         setPage({ items: [], total: 0, hasMore: false });
       })
       .finally(() => {
@@ -153,7 +158,7 @@ export default function ArenaHubPage() {
         hasMore: res.hasMore,
       }));
     } catch (err) {
-      setError(readApiError(err, "Не удалось догрузить кейсы"));
+      setError(readApiError(err, t("loadMoreFailed")));
     } finally {
       setLoadingMore(false);
     }
@@ -161,7 +166,7 @@ export default function ArenaHubPage() {
 
   const filtersActive = Boolean(qApplied.trim() || difficulty || modality);
   const activeStation = STATION_BY_KEY[station];
-  const modalityOptions = useMemo(() => Object.keys(MODALITY_LABELS), []);
+  const modalityOptions = useMemo(() => MODALITIES, []);
 
   function resetFilters() {
     setQ("");
@@ -171,26 +176,25 @@ export default function ArenaHubPage() {
   }
 
   return (
-    <div className="rad-page">
+    <div className="rad-page" dir={dir}>
       <div className="arena-back">
         <Link className="edu-back-link" to="/doctor/home-page">
-          ← В кабинет
+          ← {t("backToCabinet")}
         </Link>
       </div>
 
       <div className="arena-head">
         <div className="arena-head-main">
-          <p className="edu-eyebrow">Тренировка · без реальных пациентов</p>
+          <p className="edu-eyebrow">{t("eyebrow")}</p>
           <h1 className="edu-title" style={{ marginBottom: 4 }}>
-            Тренажёр диагностики
+            {t("title")}
           </h1>
           <p className="edu-subtitle" style={{ maxWidth: "68ch" }}>
-            Учебные случаи как в жизни: найти патологию на снимке, разобрать анализы, довести
-            виртуального пациента до диагноза. За точность — очки и ранг.
+            {t("subtitle")}
           </p>
         </div>
         <Link className="edu-btn edu-btn--ghost" to="/arena/duels">
-          ⚔️ Дуэли 1×1
+          ⚔️ {t("duels")}
         </Link>
       </div>
 
@@ -202,13 +206,11 @@ export default function ArenaHubPage() {
         <div className="arena-today">
           {reviewDue.length > 0 && (
             <div className="arena-today-card arena-today-card--review">
-              <div className="arena-eyebrow">🔁 Работа над ошибками</div>
+              <div className="arena-eyebrow">🔁 {t("reviewDue")}</div>
               <strong className="arena-today-title">
-                {reviewDue.length} {reviewDue.length === 1 ? "кейс ждёт" : "кейса ждут"} повтора
+                {t("reviewDueCount", { count: reviewDue.length })}
               </strong>
-              <p className="arena-today-note">
-                Вы их не сдали или пропустили находки. Сдадите чисто — интервал вырастет.
-              </p>
+              <p className="arena-today-note">{t("reviewDueNote")}</p>
               <div className="arena-today-list">
                 {reviewDue.slice(0, 3).map((r) => (
                   <Link key={r._id} className="arena-today-link" to={`/arena/cases/${r.caseId}`}>
@@ -219,7 +221,9 @@ export default function ArenaHubPage() {
                   </Link>
                 ))}
                 {reviewDue.length > 3 && (
-                  <span className="arena-today-note">и ещё {reviewDue.length - 3}</span>
+                  <span className="arena-today-note">
+                    {t("andMore", { count: reviewDue.length - 3 })}
+                  </span>
                 )}
               </div>
             </div>
@@ -233,7 +237,7 @@ export default function ArenaHubPage() {
       <div className="arena-cols">
         <div>
           <div className="arena-toolbar">
-            <div className="arena-tabs" role="tablist" aria-label="Станции тренажёра">
+            <div className="arena-tabs" role="tablist" aria-label={t("stations")}>
               {STATIONS.map((s) => (
                 <button
                   key={s.key}
@@ -242,9 +246,9 @@ export default function ArenaHubPage() {
                   aria-selected={station === s.key}
                   className={`arena-tab ${station === s.key ? "arena-tab--on" : ""}`}
                   onClick={() => setStation(s.key)}
-                  title={s.what}
+                  title={t(s.whatKey)}
                 >
-                  <span aria-hidden="true">{s.icon}</span> {s.title}
+                  <span aria-hidden="true">{s.icon}</span> {t(s.titleKey)}
                   {counts[s.key] != null && (
                     <span className="arena-tab-count">{counts[s.key]}</span>
                   )}
@@ -258,8 +262,8 @@ export default function ArenaHubPage() {
                 type="search"
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Поиск по названию"
-                aria-label="Поиск кейса по названию"
+                placeholder={t("searchPlaceholder")}
+                aria-label={t("searchPlaceholder")}
                 maxLength={200}
               />
               {station === "radiology" && (
@@ -267,12 +271,12 @@ export default function ArenaHubPage() {
                   className="edu-filter-select"
                   value={modality}
                   onChange={(e) => setModality(e.target.value)}
-                  aria-label="Модальность"
+                  aria-label={t("allModalities")}
                 >
-                  <option value="">Все модальности</option>
+                  <option value="">{t("allModalities")}</option>
                   {modalityOptions.map((m) => (
                     <option key={m} value={m}>
-                      {MODALITY_LABELS[m]}
+                      {modalityLabel(t, m)}
                     </option>
                   ))}
                 </select>
@@ -281,38 +285,37 @@ export default function ArenaHubPage() {
                 className="edu-filter-select"
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value)}
-                aria-label="Сложность"
+                aria-label={t("anyDifficulty")}
               >
-                <option value="">Любая сложность</option>
-                <option value="easy">Лёгкий</option>
-                <option value="medium">Средний</option>
-                <option value="hard">Сложный</option>
+                <option value="">{t("anyDifficulty")}</option>
+                <option value="easy">{t("easy")}</option>
+                <option value="medium">{t("medium")}</option>
+                <option value="hard">{t("hard")}</option>
               </select>
               {filtersActive && (
                 <button type="button" className="edu-btn edu-btn--ghost" onClick={resetFilters}>
-                  Сбросить
+                  {t("reset")}
                 </button>
               )}
             </div>
 
-            <p className="arena-station-what">{activeStation?.what}</p>
+            <p className="arena-station-what">{t(activeStation?.whatKey ?? "")}</p>
           </div>
 
           {catalogLoading ? (
-            <div className="edu-state">Загрузка…</div>
+            <div className="edu-state">{t("loading")}</div>
           ) : page.items.length === 0 ? (
             <div className="edu-state">
-              {filtersActive
-                ? "Под эти условия ничего не подошло. Снимите часть фильтров."
-                : "На этой станции опубликованных кейсов пока нет."}
+              {filtersActive ? t("nothingMatches") : t("noCasesOnStation")}
             </div>
           ) : (
             <>
               <p className="arena-count">
                 {filtersActive
-                  ? `Найдено: ${page.total}`
-                  : `Кейсов на станции: ${page.total}`}
-                {page.items.length < page.total && ` · показано ${page.items.length}`}
+                  ? t("found", { total: page.total })
+                  : t("casesOnStation", { total: page.total })}
+                {page.items.length < page.total &&
+                  ` · ${t("shown", { shown: page.items.length })}`}
               </p>
 
               <div className="rad-grid">
@@ -335,24 +338,19 @@ export default function ArenaHubPage() {
                     <div className="rad-card-body">
                       <div style={{ marginBottom: 8 }}>
                         <span className="rad-tag">
-                          {activeStation?.icon} {activeStation?.title}
+                          {activeStation?.icon} {t(activeStation?.titleKey ?? "")}
                         </span>
                         {station === "radiology" && c.modality && (
-                          <span className="rad-tag">
-                            {MODALITY_LABELS[c.modality] ?? c.modality}
-                          </span>
+                          <span className="rad-tag">{modalityLabel(t, c.modality)}</span>
                         )}
-                        <span className="rad-tag">
-                          {DIFFICULTY_LABELS[c.difficulty] ?? c.difficulty}
-                        </span>
+                        <span className="rad-tag">{t(c.difficulty, c.difficulty)}</span>
                       </div>
                       <strong>{c.title}</strong>
                       {c.stats?.attempts > 0 && (
                         <div className="arena-card-stats">
-                          {c.stats.attempts}{" "}
-                          {c.stats.attempts === 1 ? "прохождение" : "прохождений"}
+                          {t("attempts", { count: c.stats.attempts })}
                           {c.stats.avgScore != null &&
-                            ` · средний балл ${Math.round(c.stats.avgScore * 100)}%`}
+                            ` · ${t("avgScore", { score: Math.round(c.stats.avgScore * 100) })}`}
                         </div>
                       )}
                     </div>
@@ -368,10 +366,10 @@ export default function ArenaHubPage() {
                     onClick={loadMore}
                     disabled={loadingMore}
                   >
-                    {loadingMore ? "Загружаем…" : "Показать ещё"}
+                    {loadingMore ? t("loadingMore") : t("showMore")}
                   </button>
                   <span className="edu-hint">
-                    показано {page.items.length} из {page.total}
+                    {t("shownOf", { shown: page.items.length, total: page.total })}
                   </span>
                 </div>
               )}
@@ -381,10 +379,10 @@ export default function ArenaHubPage() {
 
         <div className="rad-panel arena-board">
           <div className="edu-card-title" style={{ fontSize: 16 }}>
-            Лидерборд
+            {t("leaderboard")}
           </div>
           {board.length === 0 ? (
-            <div className="edu-hint">Пока никто не набрал очков. Будьте первым!</div>
+            <div className="edu-hint">{t("leaderboardEmpty")}</div>
           ) : (
             board.map((p) => (
               <div key={p.place} className="arena-board-row">
@@ -400,7 +398,10 @@ export default function ArenaHubPage() {
           {profile && profile.achievements?.length > 0 && (
             <>
               <div className="edu-card-title" style={{ fontSize: 15, marginTop: 18 }}>
-                Достижения {profile.achievements.length} из {profile.achievementsTotal}
+                {t("achievements", {
+                  have: profile.achievements.length,
+                  total: profile.achievementsTotal,
+                })}
               </div>
               <div className="arena-badges">
                 {profile.achievements.map((a) => (
@@ -419,27 +420,31 @@ export default function ArenaHubPage() {
 
 /** Кейс дня/недели — одинаковая карточка, разная подпись. */
 function TodayCase({ item, kind }) {
+  const { t } = useTranslation("arena");
   const isWeek = kind === "week";
   return (
     <div className={`arena-today-card ${isWeek ? "arena-today-card--week" : ""}`}>
-      <div className="arena-eyebrow">{isWeek ? "⭐ Кейс недели" : "Кейс дня"}</div>
+      <div className="arena-eyebrow">
+        {isWeek ? `⭐ ${t("caseOfWeek")}` : t("caseOfDay")}
+      </div>
       <div
         className="arena-today-thumb"
         style={item.thumb ? { backgroundImage: `url(${item.thumb})` } : undefined}
       />
       <strong className="arena-today-title">{item.title}</strong>
       <div style={{ marginTop: 6, marginBottom: 10 }}>
-        <span className="rad-tag">{MODALITY_LABELS[item.modality] ?? item.modality}</span>
-        <span className="rad-tag">{DIFFICULTY_LABELS[item.difficulty] ?? item.difficulty}</span>
+        <span className="rad-tag">{modalityLabel(t, item.modality)}</span>
+        <span className="rad-tag">{t(item.difficulty, item.difficulty)}</span>
       </div>
       <Link className="edu-btn" to={`/arena/cases/${item._id}`}>
-        Пройти →
+        {t("play")}
       </Link>
     </div>
   );
 }
 
 function ArenaHero({ profile }) {
+  const { t } = useTranslation("arena");
   const r = profile.rank;
   const toNext = r.nextAt != null ? Math.max(0, r.nextAt - profile.xp) : 0;
   return (
@@ -454,21 +459,21 @@ function ArenaHero({ profile }) {
           />
         </div>
         <div className="arena-eyebrow" style={{ marginTop: 6 }}>
-          {r.nextTitle ? `До ранга «${r.nextTitle}»: ${toNext} XP` : "Максимальный ранг достигнут"}
+          {r.nextTitle ? t("rankNext", { rank: r.nextTitle, xp: toNext }) : t("rankMax")}
         </div>
       </div>
       <div className="arena-hero-stats">
         <div className="arena-stat">
           <div className="arena-stat-num">🔥 {profile.streak}</div>
-          <div className="arena-stat-cap">дней подряд</div>
+          <div className="arena-stat-cap">{t("streak")}</div>
         </div>
         <div className="arena-stat">
           <div className="arena-stat-num">{profile.casesCompleted}</div>
-          <div className="arena-stat-cap">кейсов пройдено</div>
+          <div className="arena-stat-cap">{t("casesDone")}</div>
         </div>
         <div className="arena-stat">
           <div className="arena-stat-num">{Math.round((profile.bestScore || 0) * 100)}%</div>
-          <div className="arena-stat-cap">лучший балл</div>
+          <div className="arena-stat-cap">{t("bestScore")}</div>
         </div>
       </div>
     </div>

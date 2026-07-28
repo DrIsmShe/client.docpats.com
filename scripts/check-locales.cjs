@@ -1,0 +1,77 @@
+#!/usr/bin/env node
+// client/scripts/check-locales.js
+//
+// Сверяет состав словарей между языками: npm run check:locales
+//
+// ЗАЧЕМ. Отсутствующий ключ в переводе не ломает сборку и не бросает ошибку —
+// i18next молча покажет сам ключ («deleteConfirm» вместо «Удалить безвозвратно»)
+// или текст языка по умолчанию. То есть турецкая версия может месяцами стоять
+// наполовину русской, и заметит это только турецкий врач.
+//
+// Пустая строка не лучше отсутствия: подпись исчезает, кнопка остаётся без
+// текста. Поэтому пустые значения тоже считаются расхождением.
+//
+// Эталон — русский: раздел пишется на нём, остальные догоняют.
+
+// CommonJS: у клиента нет "type": "module" в package.json, и ESM-скрипт
+// падал бы с SyntaxError при запуске через node.
+const fs = require("node:fs");
+const path = require("node:path");
+
+const LOCALES = path.join(process.cwd(), "public", "locales");
+const REFERENCE = "ru";
+
+// Проверяем только те пространства имён, которые ведём по-настоящему
+// синхронно. Остальные исторически расходятся, и падать на них — значит
+// приучить всех запускать проверку с закрытыми глазами.
+const NAMESPACES = ["diagnostics", "arena"];
+
+const read = (lang, ns) =>
+  JSON.parse(fs.readFileSync(path.join(LOCALES, lang, `${ns}.json`), "utf8"));
+
+const languages = fs
+  .readdirSync(LOCALES, { withFileTypes: true })
+  .filter((d) => d.isDirectory())
+  .map((d) => d.name);
+
+let problems = 0;
+
+for (const ns of NAMESPACES) {
+  const reference = read(REFERENCE, ns);
+  const referenceKeys = Object.keys(reference);
+  console.log(`\n${ns}: эталон ${REFERENCE}, ключей ${referenceKeys.length}`);
+
+  for (const lang of languages) {
+    if (lang === REFERENCE) continue;
+
+    const file = path.join(LOCALES, lang, `${ns}.json`);
+    if (!fs.existsSync(file)) {
+      console.log(`  ${lang}: файла нет`);
+      problems += 1;
+      continue;
+    }
+
+    const data = read(lang, ns);
+    const missing = referenceKeys.filter((k) => !(k in data));
+    const extra = Object.keys(data).filter((k) => !(k in reference));
+    const empty = Object.entries(data)
+      .filter(([, v]) => !String(v).trim())
+      .map(([k]) => k);
+
+    if (!missing.length && !extra.length && !empty.length) {
+      console.log(`  ${lang}: ок`);
+      continue;
+    }
+
+    problems += 1;
+    if (missing.length) console.log(`  ${lang}: нет ключей — ${missing.join(", ")}`);
+    if (extra.length) console.log(`  ${lang}: лишние ключи — ${extra.join(", ")}`);
+    if (empty.length) console.log(`  ${lang}: пустые значения — ${empty.join(", ")}`);
+  }
+}
+
+if (problems) {
+  console.error(`\nРасхождений: ${problems}`);
+  process.exit(1);
+}
+console.log("\nВсе словари согласованы.");

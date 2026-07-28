@@ -20,9 +20,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { fetchDuels, createDuel, fetchCatalogPage } from "../../api/radiology";
 import { readApiError, isAuthError } from "../../api/education";
-import { MODALITY_LABELS, DIFFICULTY_LABELS } from "./arenaLabels";
+import { modalityLabel } from "./arenaLabels";
 import "../education/education.css";
 import "./radiology.css";
 
@@ -34,6 +35,8 @@ const pct = (x) => (x == null ? "—" : `${Math.round(x * 100)}%`);
 
 export default function ArenaDuelsPage() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation("arena");
+  const dir = i18n.language?.startsWith("ar") ? "rtl" : "ltr";
   const [open, setOpen] = useState([]);
   const [mine, setMine] = useState([]);
   const [casePage, setCasePage] = useState({ items: [], total: 0, hasMore: false });
@@ -52,7 +55,7 @@ export default function ArenaDuelsPage() {
         setMine(m);
       } catch (err) {
         if (isAuthError(err)) return navigate("/login");
-        setError(readApiError(err, "Не удалось загрузить дуэли"));
+        setError(readApiError(err, t("duelsFailed")));
       } finally {
         setLoading(false);
       }
@@ -69,7 +72,7 @@ export default function ArenaDuelsPage() {
       navigate(`/arena/cases/${caseId}?duel=${duel._id}`);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
-      setError(readApiError(err, "Не удалось создать дуэль"));
+      setError(readApiError(err, t("duelCreateFailed")));
       setBusy(false);
     }
   }
@@ -99,7 +102,7 @@ export default function ArenaDuelsPage() {
     let alive = true;
     fetchCatalogPage("radiology", { q: queryApplied, skip: 0, limit: PAGE })
       .then((res) => alive && setCasePage(res))
-      .catch((err) => alive && setError(readApiError(err, "Не удалось загрузить кейсы")));
+      .catch((err) => alive && setError(readApiError(err, t("catalogFailed"))));
     return () => {
       alive = false;
     };
@@ -120,7 +123,7 @@ export default function ArenaDuelsPage() {
         hasMore: res.hasMore,
       }));
     } catch (err) {
-      setError(readApiError(err, "Не удалось догрузить кейсы"));
+      setError(readApiError(err, t("loadMoreFailed")));
     } finally {
       setLoadingMore(false);
     }
@@ -129,31 +132,30 @@ export default function ArenaDuelsPage() {
   if (loading) {
     return (
       <div className="rad-page">
-        <div className="edu-state">Загрузка…</div>
+        <div className="edu-state">{t("loading")}</div>
       </div>
     );
   }
 
   return (
-    <div className="rad-page">
+    <div className="rad-page" dir={dir}>
       <div className="arena-back">
         <Link className="edu-back-link" to="/arena">
-          ← В тренажёр
+          ← {t("backToArena")}
         </Link>
         <Link className="edu-back-link" to="/doctor/home-page">
-          В кабинет
+          {t("backToCabinet")}
         </Link>
       </div>
 
       <div className="arena-head">
         <div className="arena-head-main">
-          <p className="edu-eyebrow">Тренажёр диагностики · дуэли</p>
+          <p className="edu-eyebrow">{t("duelsEyebrow")}</p>
           <h1 className="edu-title" style={{ marginBottom: 4 }}>
-            Дуэли 1×1
+            {t("duelsTitle")}
           </h1>
           <p className="edu-subtitle" style={{ maxWidth: "68ch" }}>
-            Один и тот же кейс проходят двое, вслепую друг от друга. У кого балл выше — тот
-            победил; победа даёт бонус к XP. Соперник не видит ваш результат, пока не сдаст свой.
+            {t("duelsSubtitle")}
           </p>
         </div>
       </div>
@@ -164,14 +166,14 @@ export default function ArenaDuelsPage() {
       <section className="arena-duel-section">
         <div className="arena-duel-head">
           <h2 className="edu-card-title" style={{ fontSize: 17, margin: 0 }}>
-            Ваш ход
+            {t("yourTurn")}
           </h2>
           {myTurn.length > 0 && <span className="arena-badge-count">{myTurn.length}</span>}
         </div>
 
         {myTurn.length === 0 ? (
           <p className="edu-hint">
-            Ничего не требуется. Бросьте вызов ниже или примите чужой, когда появится.
+            {t("yourTurnEmpty")}
           </p>
         ) : (
           <div className="arena-duel-list">
@@ -180,19 +182,21 @@ export default function ArenaDuelsPage() {
                 <div className="arena-duel-main">
                   <strong className="arena-duel-title">{d.caseTitle}</strong>
                   <div className="arena-duel-meta">
-                    <span className="rad-tag">{MODALITY_LABELS[d.modality] ?? d.modality}</span>
+                    <span className="rad-tag">{modalityLabel(t, d.modality)}</span>
                     {d.action === "accept" ? (
                       <span>
-                        вызов от <strong>{d.challenger?.name}</strong> · его результат{" "}
-                        {pct(d.challenger?.score)}
+                        {t("challengeFrom", {
+                          name: d.challenger?.name,
+                          score: pct(d.challenger?.score),
+                        })}
                       </span>
                     ) : (
-                      <span>вы создали вызов — сначала пройдите кейс сами</span>
+                      <span>{t("playYourOwn")}</span>
                     )}
                   </div>
                 </div>
                 <Link className="edu-btn" to={`/arena/cases/${d.caseId}?duel=${d._id}`}>
-                  {d.action === "accept" ? "Принять вызов" : "Пройти кейс"}
+                  {d.action === "accept" ? t("acceptChallenge") : t("playCase")}
                 </Link>
               </div>
             ))}
@@ -205,7 +209,7 @@ export default function ArenaDuelsPage() {
         <section className="arena-duel-section">
           <div className="arena-duel-head">
             <h2 className="edu-card-title" style={{ fontSize: 17, margin: 0 }}>
-              Ждут соперника
+              {t("waitingOpponent")}
             </h2>
             <span className="arena-badge-count">{waiting.length}</span>
           </div>
@@ -215,8 +219,8 @@ export default function ArenaDuelsPage() {
                 <div className="arena-duel-main">
                   <strong className="arena-duel-title">{d.caseTitle}</strong>
                   <div className="arena-duel-meta">
-                    <span className="rad-tag">{MODALITY_LABELS[d.modality] ?? d.modality}</span>
-                    <span>ваш результат {pct(d.challenger?.score)} — ждём, кто ответит</span>
+                    <span className="rad-tag">{modalityLabel(t, d.modality)}</span>
+                    <span>{t("waitingNote", { score: pct(d.challenger?.score) })}</span>
                   </div>
                 </div>
               </div>
@@ -230,7 +234,7 @@ export default function ArenaDuelsPage() {
         <section className="arena-duel-section">
           <div className="arena-duel-head">
             <h2 className="edu-card-title" style={{ fontSize: 17, margin: 0 }}>
-              Завершённые
+              {t("finished")}
             </h2>
             <span className="arena-badge-count">{finished.length}</span>
           </div>
@@ -246,12 +250,11 @@ export default function ArenaDuelsPage() {
       <section className="arena-duel-section">
         <div className="arena-duel-head">
           <h2 className="edu-card-title" style={{ fontSize: 17, margin: 0 }}>
-            Бросить вызов
+            {t("challengeSomeone")}
           </h2>
         </div>
         <p className="edu-hint" style={{ marginBottom: 10 }}>
-          Выберите кейс — вы пройдёте его первым, затем вызов станет доступен соперникам.
-          Дуэли идут только по станции снимков.
+          {t("challengeNote")}
         </p>
 
         {(
@@ -262,20 +265,20 @@ export default function ArenaDuelsPage() {
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Поиск кейса по названию"
-                aria-label="Поиск кейса по названию"
+                placeholder={t("searchCase")}
+                aria-label={t("searchCase")}
                 maxLength={200}
               />
               <span className="edu-hint">
-                {queryApplied.trim() ? `найдено ${casePage.total}` : `всего ${casePage.total}`}
+                {queryApplied.trim()
+                  ? t("foundShort", { count: casePage.total })
+                  : t("totalShort", { count: casePage.total })}
               </span>
             </div>
 
             {casePage.items.length === 0 ? (
               <p className="edu-hint">
-                {queryApplied.trim()
-                  ? "Ничего не найдено — попробуйте другое слово."
-                  : "Нет опубликованных кейсов снимков."}
+                {queryApplied.trim() ? t("nothingFound") : t("noPublishedCases")}
               </p>
             ) : (
               <div className="arena-duel-list">
@@ -284,10 +287,8 @@ export default function ArenaDuelsPage() {
                     <div className="arena-duel-main">
                       <strong className="arena-duel-title">{c.title}</strong>
                       <div className="arena-duel-meta">
-                        <span className="rad-tag">{MODALITY_LABELS[c.modality] ?? c.modality}</span>
-                        <span className="rad-tag">
-                          {DIFFICULTY_LABELS[c.difficulty] ?? c.difficulty}
-                        </span>
+                        <span className="rad-tag">{modalityLabel(t, c.modality)}</span>
+                        <span className="rad-tag">{t(c.difficulty, c.difficulty)}</span>
                       </div>
                     </div>
                     <button
@@ -296,7 +297,7 @@ export default function ArenaDuelsPage() {
                       disabled={busy}
                       onClick={() => challenge(c._id)}
                     >
-                      Вызвать
+                      {t("challenge")}
                     </button>
                   </div>
                 ))}
@@ -311,10 +312,10 @@ export default function ArenaDuelsPage() {
                   onClick={loadMoreCases}
                   disabled={loadingMore}
                 >
-                  {loadingMore ? "Загружаем…" : "Показать ещё"}
+                  {loadingMore ? t("loadingMore") : t("showMore")}
                 </button>
                 <span className="edu-hint">
-                  показано {casePage.items.length} из {casePage.total}
+                  {t("shownOf", { shown: casePage.items.length, total: casePage.total })}
                 </span>
               </div>
             )}
@@ -327,6 +328,7 @@ export default function ArenaDuelsPage() {
 
 /** Завершённая дуэль: два числа рядом и исход словом. */
 function DuelResult({ duel: d }) {
+  const { t } = useTranslation("arena");
   const meWon =
     (d.winner === "challenger" && d.challenger?.isMe) ||
     (d.winner === "opponent" && d.opponent?.isMe);
@@ -339,28 +341,28 @@ function DuelResult({ duel: d }) {
       <div className="arena-duel-main">
         <strong className="arena-duel-title">{d.caseTitle}</strong>
         <div className="arena-duel-meta">
-          <span className="rad-tag">{MODALITY_LABELS[d.modality] ?? d.modality}</span>
+          <span className="rad-tag">{modalityLabel(t, d.modality)}</span>
         </div>
       </div>
 
       <div className="arena-duel-score">
         <div className="arena-duel-side">
           <span className="arena-duel-name">
-            {d.challenger?.isMe ? "Вы" : d.challenger?.name}
+            {d.challenger?.isMe ? t("you") : d.challenger?.name}
           </span>
           <span className="arena-duel-num">{pct(d.challenger?.score)}</span>
         </div>
         <span className="arena-duel-vs">:</span>
         <div className="arena-duel-side">
           <span className="arena-duel-name">
-            {d.opponent?.isMe ? "Вы" : d.opponent?.name || "—"}
+            {d.opponent?.isMe ? t("you") : d.opponent?.name || "—"}
           </span>
           <span className="arena-duel-num">{pct(d.opponent?.score)}</span>
         </div>
       </div>
 
       <div className="arena-duel-verdict">
-        {draw ? "Ничья" : meWon ? "Победа 🏆" : "Поражение"}
+        {draw ? t("draw") : meWon ? t("win") : t("loss")}
       </div>
     </div>
   );

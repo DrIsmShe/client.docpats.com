@@ -104,6 +104,18 @@ export async function closeCase(caseId, summary) {
   return data.case;
 }
 
+/**
+ * Удалить дело со всем содержимым.
+ *
+ * Удаление настоящее: материалы, задания и выводы уходят вместе с делом.
+ * Отменить нельзя — поэтому в интерфейсе это отдельное подтверждение, а не
+ * крестик «на всякий случай».
+ */
+export async function deleteCase(caseId) {
+  const { data } = await axios.delete(`${BASE}/cases/${caseId}`);
+  return data;
+}
+
 export async function reopenCase(caseId) {
   const { data } = await axios.post(`${BASE}/cases/${caseId}/reopen`);
   return data.case;

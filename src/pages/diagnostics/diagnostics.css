@@ -881,3 +881,41 @@
   max-height: 90vh;
   overflow-y: auto;
 }
+
+/* Строка дела: ссылка занимает всё свободное место, кнопка удаления стоит
+   отдельно. Раньше ссылкой была вся строка — кнопку внутрь ссылки поместить
+   нельзя, нажатие уходило бы на переход. */
+.dg-case-link {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+}
+.dg-case-link:hover .dg-case-title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Направление письма: в арабском строки и подписи идут справа налево.
+   Раздел открывается вне клиникового макета, который делает это сам. */
+.dg-page[dir="rtl"] .dg-finding,
+.dg-page[dir="rtl"] .dg-artifact,
+.dg-page[dir="rtl"] .dg-confirm,
+.dg-page[dir="rtl"] .dg-blockers,
+.dg-page[dir="rtl"] .dg-advisory,
+.dg-page[dir="rtl"] .dg-err {
+  border-left: 0;
+  border-right: 3px solid var(--edu-line-strong);
+}
+.dg-page[dir="rtl"] .dg-finding-list,
+.dg-page[dir="rtl"] .dg-blockers ul,
+.dg-page[dir="rtl"] .dg-protocol ol,
+.dg-page[dir="rtl"] .dg-protocol ul {
+  padding-left: 0;
+  padding-right: 20px;
+}
+.dg-page[dir="rtl"] .dg-inline-select {
+  margin-left: 0;
+  margin-right: auto;
+}
