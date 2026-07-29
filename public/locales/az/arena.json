@@ -327,5 +327,91 @@
     "missed": "buraxılıb",
     "findingsReviewH": "Tapıntıların təhlili",
     "onYourImpression": "Sizin rəyinizə dair:"
+  },
+  "finding": {
+    "normal": "Norma / patologiya yoxdur",
+    "consolidation": "Konsolidasiya / infiltrat",
+    "nodule": "Ocaq / düyün (<3 sm)",
+    "mass": "Kütlə (≥3 sm)",
+    "pleural_effusion": "Plevral efüzyon",
+    "pneumothorax": "Pnevmotoraks",
+    "atelectasis": "Atelektaz",
+    "cardiomegaly": "Kardiomeqaliya",
+    "hilar_lymphadenopathy": "Ağciyər kökü limfadenopatiyası",
+    "pneumoperitoneum": "Diafraqma altında sərbəst qaz",
+    "rib_fracture": "Qabırğa sınığı",
+    "pulmonary_edema": "Ağciyər ödemi",
+    "cavity": "Boşluq / destruksiya",
+    "cyst": "Kista",
+    "free_fluid": "Sərbəst maye",
+    "calcification": "Kalsifikasiya",
+    "hemorrhage": "Qansızma",
+    "edema": "Ödem / kütlə effekti",
+    "infarct": "İnfarkt / işemiya zonası",
+    "ms_lesion": "Demielinizasiya ocağı",
+    "lymphadenopathy": "Limfadenopatiya",
+    "gallstone": "Konkrement (daş)",
+    "hydronephrosis": "Hidronefroz",
+    "st_elevation": "ST seqmentinin elevasiyası",
+    "st_depression": "ST seqmentinin depressiyası",
+    "t_inversion": "T dişinin inversiyası",
+    "peaked_t": "Yüksək sivri T dişi",
+    "pathological_q": "Patoloji Q dişi",
+    "af": "Qulaqcıq fibrilyasiyası",
+    "aflutter": "Qulaqcıq çırpıntısı",
+    "av_block": "AV blokada",
+    "lbbb": "Hiss dəstəsinin sol ayaqcığının blokadası",
+    "rbbb": "Hiss dəstəsinin sağ ayaqcığının blokadası",
+    "vt": "Mədəcik taxikardiyası",
+    "pvc": "Mədəcik ekstrasistolu",
+    "lvh": "Sol mədəcik hipertrofiyası",
+    "long_qt": "QT intervalının uzanması",
+    "sinus_tachy": "Sinus taxikardiyası",
+    "sinus_brady": "Sinus bradikardiyası"
+  },
+  "checkArea": {
+    "cxr": {
+      "airway": "A — tənəffüs yolları: traxeya orta xətdə, bronxlar",
+      "breathing": "B — ağciyər sahələri: şəffaflıq, ocaqlar, simmetriya",
+      "circulation": "C — ürək və mediastinum: ölçülər, konturlar",
+      "diaphragm": "D — diafraqma və qabırğa-diafraqma sinusları",
+      "everything": "E — sümüklər və yumşaq toxumalar: qabırğalar, körpücük sümükləri",
+      "devices": "Borular/kateterlər/yad cisimlər (varsa)"
+    },
+    "ct": {
+      "windows": "Lazımi pəncərələrdə baxış (ağciyər/yumşaq toxuma/sümük)",
+      "parenchyma": "Orqan parenximası (ağciyər/qaraciyər/beyin — zonaya görə)",
+      "vessels": "Damarlar və mediastinum/retroperitoneal sahə",
+      "cavities": "Boşluqlar və sərbəst maye/qaz",
+      "lymph": "Limfa düyünləri",
+      "bones": "Sümük strukturları"
+    },
+    "ecg": {
+      "rhythm": "Ritm: sinus yoxsa deyil",
+      "rate": "Tezlik (ürək vurğu sayı)",
+      "axis": "Ürəyin elektrik oxu",
+      "p_wave": "P dişləri (forma, mövcudluq)",
+      "pr": "PR intervalı",
+      "qrs": "QRS kompleksi (en, forma)",
+      "st": "ST seqmenti (elevasiya/depressiya)",
+      "t_wave": "T dişləri",
+      "qt": "QT intervalı"
+    },
+    "mri": {
+      "sequences": "Ardıcıllıqlar üzrə qiymətləndirmə (T1/T2/DWI/FLAIR)",
+      "symmetry": "Strukturların simmetriyası",
+      "focal": "Ocaqlı dəyişikliklər",
+      "signal": "Patoloji siqnal / kontrast toplanması",
+      "mass_effect": "Ödem və kütlə effekti",
+      "vessels": "Damar strukturları"
+    },
+    "us": {
+      "structure": "Orqanın strukturu: konturlar, ölçülər",
+      "echogenicity": "Parenximanın exogenliyi",
+      "focal": "Ocaqlı törəmələr",
+      "fluid": "Sərbəst maye",
+      "ducts": "Axarlar / boşluq sistemi",
+      "doppler": "Qan axını (Doppler, lazım olarsa)"
+    }
   }
 }

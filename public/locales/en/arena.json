@@ -327,5 +327,91 @@
     "missed": "missed",
     "findingsReviewH": "Review of the findings",
     "onYourImpression": "On your impression:"
+  },
+  "finding": {
+    "normal": "Normal / no abnormality",
+    "consolidation": "Consolidation / infiltrate",
+    "nodule": "Nodule (<3 cm)",
+    "mass": "Mass (≥3 cm)",
+    "pleural_effusion": "Pleural effusion",
+    "pneumothorax": "Pneumothorax",
+    "atelectasis": "Atelectasis",
+    "cardiomegaly": "Cardiomegaly",
+    "hilar_lymphadenopathy": "Hilar lymphadenopathy",
+    "pneumoperitoneum": "Free air under the diaphragm",
+    "rib_fracture": "Rib fracture",
+    "pulmonary_edema": "Pulmonary oedema",
+    "cavity": "Cavity / destruction",
+    "cyst": "Cyst",
+    "free_fluid": "Free fluid",
+    "calcification": "Calcification",
+    "hemorrhage": "Haemorrhage",
+    "edema": "Oedema / mass effect",
+    "infarct": "Infarct / ischaemic area",
+    "ms_lesion": "Demyelinating lesion",
+    "lymphadenopathy": "Lymphadenopathy",
+    "gallstone": "Calculus (stone)",
+    "hydronephrosis": "Hydronephrosis",
+    "st_elevation": "ST-segment elevation",
+    "st_depression": "ST-segment depression",
+    "t_inversion": "T-wave inversion",
+    "peaked_t": "Peaked T wave",
+    "pathological_q": "Pathological Q wave",
+    "af": "Atrial fibrillation",
+    "aflutter": "Atrial flutter",
+    "av_block": "AV block",
+    "lbbb": "Left bundle branch block",
+    "rbbb": "Right bundle branch block",
+    "vt": "Ventricular tachycardia",
+    "pvc": "Ventricular ectopic beat",
+    "lvh": "Left ventricular hypertrophy",
+    "long_qt": "Prolonged QT interval",
+    "sinus_tachy": "Sinus tachycardia",
+    "sinus_brady": "Sinus bradycardia"
+  },
+  "checkArea": {
+    "cxr": {
+      "airway": "A — airway: trachea midline, bronchi",
+      "breathing": "B — lung fields: lucency, lesions, symmetry",
+      "circulation": "C — heart and mediastinum: size, contours",
+      "diaphragm": "D — diaphragm and costophrenic angles",
+      "everything": "E — bones and soft tissue: ribs, clavicles, tissues",
+      "devices": "Tubes / catheters / foreign bodies (if any)"
+    },
+    "ct": {
+      "windows": "Review in the appropriate windows (lung / soft tissue / bone)",
+      "parenchyma": "Organ parenchyma (lung / liver / brain — by region)",
+      "vessels": "Vessels and mediastinum / retroperitoneum",
+      "cavities": "Cavities and free fluid / gas",
+      "lymph": "Lymph nodes",
+      "bones": "Bony structures"
+    },
+    "ecg": {
+      "rhythm": "Rhythm: sinus or not",
+      "rate": "Rate (heart rate)",
+      "axis": "Cardiac electrical axis",
+      "p_wave": "P waves (present, morphology)",
+      "pr": "PR interval",
+      "qrs": "QRS complex (width, morphology)",
+      "st": "ST segment (elevation / depression)",
+      "t_wave": "T waves",
+      "qt": "QT interval"
+    },
+    "mri": {
+      "sequences": "Assessment across sequences (T1/T2/DWI/FLAIR)",
+      "symmetry": "Symmetry of structures",
+      "focal": "Focal changes",
+      "signal": "Abnormal signal / contrast enhancement",
+      "mass_effect": "Oedema and mass effect",
+      "vessels": "Vascular structures"
+    },
+    "us": {
+      "structure": "Organ structure: contours, size",
+      "echogenicity": "Parenchymal echogenicity",
+      "focal": "Focal lesions",
+      "fluid": "Free fluid",
+      "ducts": "Ducts / collecting system",
+      "doppler": "Blood flow (Doppler, if needed)"
+    }
   }
 }

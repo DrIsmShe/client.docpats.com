@@ -327,5 +327,91 @@
     "missed": "atlandı",
     "findingsReviewH": "Bulguların değerlendirmesi",
     "onYourImpression": "Sizin sonucunuza dair:"
+  },
+  "finding": {
+    "normal": "Normal / patoloji yok",
+    "consolidation": "Konsolidasyon / infiltrasyon",
+    "nodule": "Nodül (<3 cm)",
+    "mass": "Kitle (≥3 cm)",
+    "pleural_effusion": "Plevral efüzyon",
+    "pneumothorax": "Pnömotoraks",
+    "atelectasis": "Atelektazi",
+    "cardiomegaly": "Kardiyomegali",
+    "hilar_lymphadenopathy": "Hiler lenfadenopati",
+    "pneumoperitoneum": "Diyafragma altında serbest hava",
+    "rib_fracture": "Kaburga kırığı",
+    "pulmonary_edema": "Akciğer ödemi",
+    "cavity": "Kavite / destrüksiyon",
+    "cyst": "Kist",
+    "free_fluid": "Serbest sıvı",
+    "calcification": "Kalsifikasyon",
+    "hemorrhage": "Kanama",
+    "edema": "Ödem / kitle etkisi",
+    "infarct": "Enfarkt / iskemi alanı",
+    "ms_lesion": "Demiyelinizan lezyon",
+    "lymphadenopathy": "Lenfadenopati",
+    "gallstone": "Taş (kalkül)",
+    "hydronephrosis": "Hidronefroz",
+    "st_elevation": "ST segment elevasyonu",
+    "st_depression": "ST segment depresyonu",
+    "t_inversion": "T dalga inversiyonu",
+    "peaked_t": "Sivri T dalgası",
+    "pathological_q": "Patolojik Q dalgası",
+    "af": "Atriyal fibrilasyon",
+    "aflutter": "Atriyal flutter",
+    "av_block": "AV blok",
+    "lbbb": "Sol dal bloğu",
+    "rbbb": "Sağ dal bloğu",
+    "vt": "Ventriküler taşikardi",
+    "pvc": "Ventriküler erken vuru",
+    "lvh": "Sol ventrikül hipertrofisi",
+    "long_qt": "Uzun QT aralığı",
+    "sinus_tachy": "Sinüs taşikardisi",
+    "sinus_brady": "Sinüs bradikardisi"
+  },
+  "checkArea": {
+    "cxr": {
+      "airway": "A — hava yolu: trakea orta hatta, bronşlar",
+      "breathing": "B — akciğer alanları: havalanma, lezyonlar, simetri",
+      "circulation": "C — kalp ve mediasten: boyut, konturlar",
+      "diaphragm": "D — diyafragma ve kostofrenik sinüsler",
+      "everything": "E — kemikler ve yumuşak doku: kaburgalar, klavikulalar",
+      "devices": "Tüpler/kateterler/yabancı cisimler (varsa)"
+    },
+    "ct": {
+      "windows": "Uygun pencerelerde inceleme (akciğer/yumuşak doku/kemik)",
+      "parenchyma": "Organ parankimi (akciğer/karaciğer/beyin — bölgeye göre)",
+      "vessels": "Damarlar ve mediasten/retroperiton",
+      "cavities": "Kaviteler ve serbest sıvı/gaz",
+      "lymph": "Lenf düğümleri",
+      "bones": "Kemik yapılar"
+    },
+    "ecg": {
+      "rhythm": "Ritim: sinüs mü değil mi",
+      "rate": "Hız (kalp hızı)",
+      "axis": "Kalbin elektriksel ekseni",
+      "p_wave": "P dalgaları (varlık, morfoloji)",
+      "pr": "PR aralığı",
+      "qrs": "QRS kompleksi (genişlik, morfoloji)",
+      "st": "ST segmenti (elevasyon/depresyon)",
+      "t_wave": "T dalgaları",
+      "qt": "QT aralığı"
+    },
+    "mri": {
+      "sequences": "Sekanslara göre değerlendirme (T1/T2/DWI/FLAIR)",
+      "symmetry": "Yapıların simetrisi",
+      "focal": "Fokal değişiklikler",
+      "signal": "Patolojik sinyal / kontrast tutulumu",
+      "mass_effect": "Ödem ve kitle etkisi",
+      "vessels": "Vasküler yapılar"
+    },
+    "us": {
+      "structure": "Organ yapısı: konturlar, boyutlar",
+      "echogenicity": "Parankim ekojenitesi",
+      "focal": "Fokal lezyonlar",
+      "fluid": "Serbest sıvı",
+      "ducts": "Kanallar / toplayıcı sistem",
+      "doppler": "Kan akımı (Doppler, gerekirse)"
+    }
   }
 }

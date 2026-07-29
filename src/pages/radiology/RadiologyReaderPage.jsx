@@ -126,12 +126,20 @@ export default function RadiologyReaderPage() {
   }, [caseId, mode, duelId, navigate, t]);
 
   // Ключ находки → человекочитаемый ярлык (для подписей на снимке и в списке).
+  // Подписи находок — из словаря по ключу, а не из палитры сервера.
+  //
+  // Палитра приходит с русскими подписями: это константы модуля (lexicon.js),
+  // общие для всех кейсов модальности, а не текст кейса. Держать их в словаре
+  // интерфейса дешевле и точнее, чем гонять через модель на каждый кейс:
+  // список обозримый, а перевод одного и того же термина в соседних кейсах
+  // иначе разъезжался бы. Серверная подпись остаётся запасным вариантом —
+  // новый термин появится в коде раньше, чем в словаре.
   const labelOf = useMemo(() => {
     const map = new Map(
-      (caseData?.findingPalette ?? []).map((t) => [t.key, t.label]),
+      (caseData?.findingPalette ?? []).map((item) => [item.key, item.label]),
     );
-    return (key) => map.get(key) ?? key;
-  }, [caseData]);
+    return (key) => t(`finding.${key}`, { defaultValue: map.get(key) ?? key });
+  }, [caseData, t]);
 
   if (loading)
     return (
@@ -463,7 +471,15 @@ export default function RadiologyReaderPage() {
                 <div className="rad-review">
                   {(rs?.checklist ?? []).map((c) => (
                     <div key={c.key} className="rad-review-row">
-                      <span className="rad-review-label">{c.label}</span>
+                      {/* Область осмотра — по модальности: ключи между
+                          системами чтения не уникальны (vessels в КТ и МРТ
+                          означают разное), плоский словарь подменил бы одно
+                          другим. */}
+                      <span className="rad-review-label">
+                        {t(`checkArea.${rs?.modality ?? caseData.modality}.${c.key}`, {
+                          defaultValue: c.label,
+                        })}
+                      </span>
                       <div className="rad-review-btns">
                         <button
                           type="button"
