@@ -72,7 +72,9 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
     setError(null);
     setRecognized(null);
     try {
-      const res = await extractDocument(caseId, file);
+      // Модальность выбрана врачом в форме — отдаём её распознаванию, чтобы
+      // осмотр снимка шёл по протоколу этого исследования, а не вообще.
+      const res = await extractDocument(caseId, file, "", modality);
       // Распознанное кладём в то же поле ввода: врач правит его здесь и
       // добавляет сам. Автоматически нельзя — ошибка в цифре меняет вывод.
       setText((prev) => (prev.trim() ? `${prev.trim()}\n\n${res.text}` : res.text));

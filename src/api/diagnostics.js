@@ -146,10 +146,14 @@ export async function removeArtifact(caseId, artifactId) {
  * @returns {Promise<{text: string, docKind: string, unreadable: string[],
  *   hasPatientIdentity: boolean, fileName: string, pages: number}>}
  */
-export async function extractDocument(caseId, file, hint = "") {
+export async function extractDocument(caseId, file, hint = "", modality = "") {
   const form = new FormData();
   form.append("file", file);
   if (hint) form.append("hint", hint);
+  // Модальность нужна серверу, чтобы вести осмотр снимка по протоколу именно
+  // этого исследования. Без неё снимок всё равно прочитается — сервер поймёт
+  // по факту отсутствия текста, — но осмотр будет общим, а не по чек-листу.
+  if (modality) form.append("modality", modality);
 
   const { data } = await axios.post(`${BASE}/cases/${caseId}/extract`, form, {
     // Content-Type не задаём: его должен выставить браузер вместе с boundary.
