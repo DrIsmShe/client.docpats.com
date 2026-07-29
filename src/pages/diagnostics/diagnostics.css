@@ -919,3 +919,16 @@
   margin-left: 0;
   margin-right: auto;
 }
+
+/* «Чего не хватает в описании». Намеренно тише выводов: это подсказка автору
+   записи, а не клинический вывод. Если оформить наравне — врач снова начнёт
+   читать список замечаний вместо разбора. */
+.dg-gaps-list {
+  margin: 6px 0 0;
+  padding-inline-start: 20px;
+  color: #6b7785;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.dg-gaps-list li { margin-bottom: 3px; }
+.dg-sec-title--quiet { color: #6b7785; font-weight: 600; }

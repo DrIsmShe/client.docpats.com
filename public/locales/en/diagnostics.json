@@ -138,5 +138,7 @@
   "jobRunning": "running",
   "jobDone": "done",
   "jobFailed": "failed",
-  "jobSkipped": "skipped"
+  "jobSkipped": "skipped",
+  "dataGaps": "What is missing from the description",
+  "dataGapsHint": "These are not findings about the patient — they are what to add so the review can go further."
 }

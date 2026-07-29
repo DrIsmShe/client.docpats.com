@@ -138,5 +138,7 @@
   "jobRunning": "təhlil edilir",
   "jobDone": "hazır",
   "jobFailed": "xəta",
-  "jobSkipped": "ötürülüb"
+  "jobSkipped": "ötürülüb",
+  "dataGaps": "Təsvirdə nə çatışmır",
+  "dataGapsHint": "Bunlar pasiyent haqqında nəticələr deyil — təhlilin daha dolğun olması üçün əlavə edilməli olanlardır."
 }

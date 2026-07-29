@@ -499,7 +499,26 @@ export default function DiagnosticCasePage() {
         />
       )}
 
-      {/* ─── 4. Выводы ─────────────────────────────────────────────── */}
+      {/* ─── 4. Чего не хватает в описании ─────────────────────────── */}
+      {/* Отдельно от выводов и намеренно тише их: это не про пациента, а про
+          то, что дописать, чтобы разбор стал полнее. Пока такого блока не
+          было, пробелы попадали в список выводов наравне с клиническими
+          версиями — и главное тонуло среди замечаний о полноте записи. */}
+      {(data.dataGaps ?? []).length > 0 && (
+        <section className="dg-sec dg-gaps">
+          <h2 className="dg-sec-title dg-sec-title--quiet">
+            {t("dataGaps")} · {data.dataGaps.length}
+            <span className="dg-sec-note">{t("dataGapsHint")}</span>
+          </h2>
+          <ul className="dg-gaps-list">
+            {data.dataGaps.map((g, i) => (
+              <li key={i}>{g}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* ─── 5. Выводы ─────────────────────────────────────────────── */}
       {findings.length > 0 && (
         <section className="dg-sec">
           <h2 className="dg-sec-title">
