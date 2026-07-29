@@ -144,7 +144,8 @@ export async function removeArtifact(caseId, artifactId) {
  * идентификатора: возвращать нечего, кроме распознанного.
  *
  * @returns {Promise<{text: string, docKind: string, unreadable: string[],
- *   hasPatientIdentity: boolean, fileName: string, pages: number}>}
+ *   hasPatientIdentity: boolean, phiFields: string[], dicom: object|null,
+ *   fileName: string, pages: number}>}
  */
 export async function extractDocument(caseId, file, hint = "", modality = "") {
   const form = new FormData();
@@ -165,6 +166,13 @@ export async function extractDocument(caseId, file, hint = "", modality = "") {
     docKind: data.docKind ?? "other",
     unreadable: data.unreadable ?? [],
     hasPatientIdentity: Boolean(data.hasPatientIdentity),
+    // Ключи полей, а не готовые строки: подписи переводятся на клиенте.
+    // Для DICOM это единственный способ узнать, ЧТО именно лежит в тегах —
+    // на самой картинке этих данных не видно.
+    phiFields: data.phiFields ?? [],
+    // Технические данные DICOM: сколько кадров в файле и какие показаны.
+    // Нужны, чтобы честно сказать врачу, что прочитана выборка, а не серия.
+    dicom: data.dicom ?? null,
     fileName: data.fileName ?? "",
     pages: data.pages ?? 1,
   };

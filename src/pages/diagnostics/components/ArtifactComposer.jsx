@@ -166,9 +166,37 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
                   {t("unreadable", { list: recognized.unreadable.join("; ") })}
                 </div>
               )}
-              {recognized.hasPatientIdentity && (
+              {/* Личные данные ВНУТРИ файла (теги DICOM) — принципиально
+                  другой случай, чем видимые на картинке. Врач их не видит и
+                  убрать из текста не может: старое «уберите их из текста»
+                  здесь было невыполнимой инструкцией. Поэтому отдельный
+                  текст и перечень полей — чтобы было понятно, что именно
+                  лежит в файле и что с этим делать. */}
+              {recognized.phiFields.length > 0 ? (
+                <div className="dg-artifact-note dg-artifact-note--warn">
+                  {t("identityInTags", {
+                    // Ключи плоские, без точки: словари этого модуля плоские,
+                    // а keySeparator у i18next по умолчанию — точка, и
+                    // «phiField.patientName» он искал бы как вложенный объект.
+                    list: recognized.phiFields
+                      .map((f) => t(`phi_${f}`, { defaultValue: f }))
+                      .join(", "),
+                  })}
+                </div>
+              ) : (
+                recognized.hasPatientIdentity && (
+                  <div className="dg-artifact-note">{t("identityVisible")}</div>
+                )
+              )}
+
+              {/* Прочитана выборка срезов, а не серия. Молчать об этом нельзя:
+                  врач иначе решит, что модель посмотрела всё исследование. */}
+              {recognized.dicom?.layout && (
                 <div className="dg-artifact-note">
-                  {t("identityVisible")}
+                  {t("dicomSampled", {
+                    shown: recognized.dicom.layout.shown.length,
+                    total: recognized.dicom.frames,
+                  })}
                 </div>
               )}
             </div>

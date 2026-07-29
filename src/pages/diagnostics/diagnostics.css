@@ -336,6 +336,14 @@
   margin: 5px 0 0;
   line-height: 1.5;
 }
+/* Личные данные в тегах файла. Заметнее обычного замечания намеренно: врач
+   их не видит глазами, и подтвердить обезличивание вслепую он не может. */
+.dg-artifact-note--warn {
+  color: var(--dg-critical, #b3261e);
+  font-weight: 600;
+  border-inline-start: 3px solid currentColor;
+  padding-inline-start: 8px;
+}
 
 /* ─── Задания разбора ────────────────────────────────────────────────── */
 
