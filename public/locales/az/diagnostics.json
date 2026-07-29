@@ -140,5 +140,7 @@
   "jobFailed": "xəta",
   "jobSkipped": "ötürülüb",
   "dataGaps": "Təsvirdə nə çatışmır",
-  "dataGapsHint": "Bunlar pasiyent haqqında nəticələr deyil — təhlilin daha dolğun olması üçün əlavə edilməli olanlardır."
+  "dataGapsHint": "Bunlar pasiyent haqqında nəticələr deyil — təhlilin daha dolğun olması üçün əlavə edilməli olanlardır.",
+  "answer": "Qısaca hal üzrə",
+  "answerHint": "Aşağıda bənd-bənd təhlil: nəyi təsdiqləmək, nəyi istisna etmək, nə çatışmır."
 }

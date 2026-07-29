@@ -932,3 +932,10 @@
 }
 .dg-gaps-list li { margin-bottom: 3px; }
 .dg-sec-title--quiet { color: #6b7785; font-weight: 600; }
+
+/* Ответ на вопрос врача — первое, что читают. Выделен фоном, но без красного:
+   это не тревога, а итог. Тревога — в выводах ниже. */
+.dg-answer { background: #f6f9fc; border: 1px solid #dbe6f0; border-radius: 12px; padding: 14px 16px; }
+.dg-answer-item { margin-bottom: 8px; }
+.dg-answer-mod { display: block; font-size: 12px; color: #6b7785; margin-bottom: 2px; }
+.dg-answer-text { margin: 0; font-size: 15px; line-height: 1.6; color: #1f2933; }

@@ -140,5 +140,7 @@
   "jobFailed": "hata",
   "jobSkipped": "atlandı",
   "dataGaps": "Açıklamada eksik olanlar",
-  "dataGapsHint": "Bunlar hasta hakkında bulgular değil — değerlendirmenin daha kapsamlı olması için eklenmesi gerekenlerdir."
+  "dataGapsHint": "Bunlar hasta hakkında bulgular değil — değerlendirmenin daha kapsamlı olması için eklenmesi gerekenlerdir.",
+  "answer": "Olguya dair özet",
+  "answerHint": "Aşağıda madde madde değerlendirme: neyi doğrulamalı, neyi dışlamalı, ne eksik."
 }

@@ -140,5 +140,7 @@
   "jobFailed": "failed",
   "jobSkipped": "skipped",
   "dataGaps": "What is missing from the description",
-  "dataGapsHint": "These are not findings about the patient — they are what to add so the review can go further."
+  "dataGapsHint": "These are not findings about the patient — they are what to add so the review can go further.",
+  "answer": "Case in brief",
+  "answerHint": "Below is the point-by-point review: what to confirm, what to rule out, what is missing."
 }
