@@ -1,0 +1,186 @@
+{
+  "clinical": {
+    "title": "Klinik olgu",
+    "purpose": "Olgunun bütünüyle değerlendirilmesi: şikâyetler, öykü, muayene, mevcut veriler",
+    "binaryNote": "Belgeler ve ses kayıtları olguda saklanır, ancak içerikleri değerlendirmeye girmez: PDF'den metin çıkarma ve konuşma çözümleme henüz bağlanmadı. Önemli noktaları metin olarak aktarın.",
+    "checklist": [
+      "Şikâyetler ve zaman içindeki seyri",
+      "Hastalık öyküsü: nasıl başladı, neler değişti",
+      "Özgeçmiş, eşlik eden hastalıklar, ameliyatlar",
+      "İlaçlar, alerjiler, intoleranslar",
+      "Muayene bulguları ve vital bulgular",
+      "Daha önce yapılmış tetkikler ve sonuçları",
+      "Temel tetkiklerden hangisi atlanmış"
+    ],
+    "redFlags": [
+      "Saatler içinde yaşamı tehdit eden bir durumun belirtileri",
+      "Malignitenin dışlanmasını gerektiren semptomlar",
+      "Reçetedeki ilaç etkileşimleri ve kontrendikasyonlar",
+      "Şikâyetlerin ağırlığı ile tetkik kapsamı arasındaki uyumsuzluk"
+    ]
+  },
+  "labs": {
+    "title": "Laboratuvar tetkikleri",
+    "purpose": "Panellerin yorumu: hangisi anlamlı sapmış, hangisi ikincil, neyin tekrarı gerekli",
+    "binaryNote": "Formun fotoğrafı veya PDF'i olguda saklanır ancak değerlendirmeye girmez: form tanıma henüz bağlanmadı. Değerleri panel olarak girin veya sonucu metin olarak yapıştırın.",
+    "checklist": [
+      "Her değerin laboratuvarın referans aralığı ile karşılaştırılması",
+      "Sapmanın anlamı: klinik olarak önemli mi, sınırda mı",
+      "Değerlerin birbiriyle tutarlılığı",
+      "Varsa önceki tetkiklerle karşılaştırmalı seyir",
+      "İlaç kullanımı ve örnekleme koşullarının sonuca etkisi",
+      "Neyin tekrarlanması veya eklenmesi gerektiği"
+    ],
+    "redFlags": [
+      "Acil müdahale gerektiren kritik değerler",
+      "Akut böbrek veya karaciğer yetmezliği belirtileri",
+      "Hemoglobin, trombosit veya nötrofillerde ani düşüş",
+      "Kalp için tehlikeli elektrolit bozuklukları"
+    ]
+  },
+  "xray": {
+    "title": "Radyografi",
+    "purpose": "Röntgen tetkikinin değerlendirilmesi: tanım, rapor, netleştirilecekler",
+    "binaryNote": "Görüntü model tarafından okunur: ne gördüğünü ve neyin kontrol edilmesi gerektiğini tanımlar. Bu bir ikinci görüştür, radyolog raporu değildir; görünür değişiklik olmaması patoloji olmadığı anlamına gelmez.",
+    "checklist": [
+      "Kalite ve pozisyon: görüntü sonuç çıkarmaya uygun mu",
+      "Yalnızca bulgunun değil, bölgelerin tam tanımlanması",
+      "Raporun tanımdan çıkıp çıkmadığı",
+      "Klinik tablo ile örtüşme",
+      "Ek grafi veya başka bir tetkik gerekli mi",
+      "Önceki grafilerle karşılaştırma"
+    ],
+    "redFlags": [
+      "Pnömotoraks, serbest hava, akut patoloji belirtileri",
+      "Tanımda yer alan ancak raporda bulunmayan bir bulgu",
+      "Tanımdaki hiçbir şeyle desteklenmeyen bir rapor"
+    ]
+  },
+  "ct": {
+    "title": "Bilgisayarlı tomografi",
+    "purpose": "BT değerlendirmesi: protokolün tamlığı, raporun tanımla uyumu, ileri tetkik gereksinimi",
+    "binaryNote": "Gönderilen TEK görüntü okunur — tek pencerede tek rekonstrüksiyon, üstelik yoğunluk verisi (HU) olmadan. Bu bir parçadır, tetkik değildir: model seriyi kaydıramaz, yoğunluk ölçemez ve rekonstrüksiyon yapamaz.",
+    "checklist": [
+      "Protokol: kontrast fazları, çekim bölgesi, kesit kalınlığı",
+      "Yalnızca hedefin değil, bölgedeki tüm organların tanımlanması",
+      "Bulguların boyut ve yerleşiminin belirtilmiş ve tekrarlanabilir olması",
+      "Raporun tanımdan çıkıp çıkmadığı",
+      "Önceki tetkiklerle karşılaştırma ve seyir",
+      "Kontrast endikasyonu ve böbrek fonksiyonunun dikkate alınması"
+    ],
+    "redFlags": [
+      "Kanama, iskemi, perforasyon, tromboemboli belirtileri",
+      "İleri planı belirtilmemiş kitle lezyonu",
+      "Tedavi eden hekimle acil iletişim gerektiren bulgu"
+    ]
+  },
+  "mri": {
+    "title": "Manyetik rezonans görüntüleme",
+    "purpose": "MR değerlendirmesi: sekanslar, klinikle uyum, netleştirilecekler",
+    "binaryNote": "Gönderilen TEK görüntü okunur. Model sekans serisini (T1/T2/DWI/FLAIR) ve bunlar arasındaki karşılaştırmayı görmez — tek bir kadraja bakar.",
+    "checklist": [
+      "Sekanslar ve modlar: soruyu yanıtlamaya yeterli mi",
+      "Kontrast kullanımı ve gerekçesi",
+      "İlgi alanının ve komşu yapıların tam tanımlanması",
+      "Raporun tanımdan çıkıp çıkmadığı",
+      "Klinik ve nörolojik durumla ilişkilendirme",
+      "Önceki tetkiklere göre seyir"
+    ],
+    "redFlags": [
+      "Akut serebrovasküler olay belirtileri",
+      "Spinal kord veya kauda ekina basısı",
+      "Kitle etkisi olan yer kaplayıcı süreç"
+    ]
+  },
+  "us": {
+    "title": "Ultrasonografi",
+    "purpose": "USG değerlendirmesi: protokolün tamlığı, ölçümler, netleştirilmesi gerekenler",
+    "binaryNote": "Gönderilen tek kare okunur. Model döngüleri ve hareketi görmez — video kaydının kare kare değerlendirilmesi ayrı bir model ve validasyon gerektirir.",
+    "checklist": [
+      "Protokolün organ ve yapılar bazında tamlığı",
+      "Ölçümlerin varlığı ve normla karşılaştırılabilirliği",
+      "Gerekli yerlerde kan akımının değerlendirilmesi",
+      "Tetkikin kısıtları: akustik pencereler, hasta hazırlığı",
+      "Raporun tanımdan çıkıp çıkmadığı",
+      "Önceki tetkiklerle karşılaştırma"
+    ],
+    "redFlags": [
+      "Batın veya perikart boşluğunda serbest sıvı",
+      "Derin ven trombozu belirtileri",
+      "Cerrahi değerlendirme gerektiren akut patoloji"
+    ]
+  },
+  "ecg": {
+    "title": "Elektrokardiyografi",
+    "purpose": "Tanım ve parametrelerden EKG değerlendirmesi: ritim, iletim, iskemi",
+    "binaryNote": "Kayıt model tarafından bir görüntü olarak okunur: ritim, akslar ve intervaller gözle, resim üzerinden değerlendirilir. Bu sinyal analizi değildir: milisaniyeleri ve amplitüdleri cihaz ölçer, fotoğraf değil.",
+    "checklist": [
+      "Ritim, hız, düzenlilik",
+      "Elektriksel aks ve rotasyonlar",
+      "PQ, QRS ve düzeltilmiş QT intervalleri",
+      "İskemi, hasar, skar belirtileri",
+      "Kalp boşluklarında yüklenme belirtileri",
+      "Önceki kayıtla ve şikâyetlerle karşılaştırma"
+    ],
+    "redFlags": [
+      "ST elevasyonu ve akut enfarktüsün diğer belirtileri",
+      "Yaşamı tehdit eden ritim bozuklukları",
+      "İlaç tedavisi açısından tehlikeli QT uzaması",
+      "Bradikardi ile birlikte tam blok"
+    ]
+  },
+  "endoscopy": {
+    "title": "Endoskopi",
+    "purpose": "Endoskopi raporunun değerlendirilmesi: incelemenin tamlığı, biyopsiler, izlem",
+    "binaryNote": "Gönderilen tek kare okunur. Video kaydının kare kare değerlendirilmesi bağlanmadı — model işlemi değil, donmuş bir kareyi görür.",
+    "checklist": [
+      "İncelemenin tamlığı: nereye kadar ulaşıldı, ne görüldü",
+      "Hazırlık kalitesi ve görüş netliği",
+      "Bulguların yerleşim ve boyutla tanımlanması",
+      "Endike olan yerlerde biyopsi alınmış mı",
+      "İzlem planı ve kontrol tetkikinin zamanlaması",
+      "Raporun tanımdan çıkıp çıkmadığı"
+    ],
+    "redFlags": [
+      "Aktif kanama belirtileri",
+      "Biyopsi alınmadan malignite şüphesi",
+      "İşlem komplikasyonları"
+    ]
+  },
+  "histology": {
+    "title": "Histoloji ve sitoloji",
+    "purpose": "Patoloji raporunun değerlendirilmesi: tamlık, evreleme, netleştirilecekler",
+    "binaryNote": "Gönderilen mikrofotoğraf okunur: bu büyütmede kadrajda ne görüldüğü. Bu bir patoloji raporu değildir — tanıyı, tüm preparata bakarak patolog koyar.",
+    "checklist": [
+      "Materyalin türü ve sonuç için yeterliliği",
+      "Histolojik tip ve diferansiyasyon derecesi",
+      "Rezeksiyon sınırları ve durumu",
+      "Vasküler invazyon, perinöral invazyon, lenf düğümleri",
+      "İmmünhistokimya ve moleküler belirteçler: gerekli olanlar yapılmış mı",
+      "Evreleme için verilerin tamlığı"
+    ],
+    "redFlags": [
+      "Rezeksiyon sınırları belirtilmemiş malign süreç",
+      "Gözden geçirme planı olmadan yetersiz kabul edilen materyal",
+      "Klinik ve radyolojik tanı ile uyumsuzluk"
+    ]
+  },
+  "derm": {
+    "title": "Dermatoloji",
+    "purpose": "Deri lezyonu tanımının ve dermatoskopinin değerlendirilmesi: neler kuşku uyandırıyor",
+    "binaryNote": "Görüntünün model tarafından değerlendirilmesi bilinçli olarak bağlanmadı: melanomda hata bedeli, doğrulanmamış bir model için fazla yüksektir.",
+    "checklist": [
+      "Lezyonun yerleşimi, boyutu, şekli ve sınırları",
+      "Rengi ve renk heterojenliği",
+      "Zaman içindeki değişimi",
+      "Yapıldıysa dermatoskopik özellikler",
+      "Eşlik eden risk faktörleri ve aile öyküsü",
+      "Biyopsi veya onkoloğa sevk endikasyonları"
+    ],
+    "redFlags": [
+      "Melanom açısından kuşku uyandıran ABCDE özellikleri",
+      "Hızlı büyüme, kanama, ülserleşme",
+      "Uzun süredir var olan bir lezyonda değişiklik"
+    ]
+  }
+}

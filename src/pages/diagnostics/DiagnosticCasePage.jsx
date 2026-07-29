@@ -29,6 +29,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useModalityText } from "./useModalityText";
 
 import {
   fetchCase,
@@ -74,6 +75,9 @@ export default function DiagnosticCasePage() {
   const { caseId } = useParams();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation("diagnostics");
+  // Справочник модальностей приходит с сервера по-русски (там он же служит
+  // протоколом в промпте). Подписи для врача переводим при показе.
+  const localizeModality = useModalityText();
   const dir = useDir();
 
   const [data, setData] = useState(null);
@@ -211,7 +215,10 @@ export default function DiagnosticCasePage() {
   const gatesReady = Boolean(c.deidentified && c.aiConsent?.confirmed);
   // Препятствия, не связанные с подтверждениями: их спрашивают отдельно.
   const otherBlockers = (data.blockers ?? []).filter((b) => !/обезличен|соглас/i.test(b));
-  const modalityTitleOf = (key) => modalities.find((m) => m.key === key)?.title ?? key;
+  const modalityTitleOf = (key) => {
+    const m = modalities.find((x) => x.key === key);
+    return m ? localizeModality(m).title : key;
+  };
 
   /**
    * Шлюз наружу: выполнить действие, спросив подтверждения, если их ещё нет.
@@ -458,26 +465,29 @@ export default function DiagnosticCasePage() {
                   <p className="dg-muted">
                     {t("protocolNote")}
                   </p>
-                  {modalities.map((m) => (
-                    <details key={m.key}>
-                      <summary>{m.title}</summary>
-                      {m.checklist?.length > 0 && (
-                        <ol>
-                          {m.checklist.map((item, i) => (
-                            <li key={i}>{item}</li>
-                          ))}
-                        </ol>
-                      )}
-                      {m.redFlags?.length > 0 && (
-                        <ul className="dg-mod-flags">
-                          {m.redFlags.map((item, i) => (
-                            <li key={i}>{item}</li>
-                          ))}
-                        </ul>
-                      )}
-                      {m.binaryNote && <p className="dg-artifact-note">{m.binaryNote}</p>}
-                    </details>
-                  ))}
+                  {modalities.map((raw) => {
+                    const m = localizeModality(raw);
+                    return (
+                      <details key={m.key}>
+                        <summary>{m.title}</summary>
+                        {m.checklist?.length > 0 && (
+                          <ol>
+                            {m.checklist.map((item, i) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ol>
+                        )}
+                        {m.redFlags?.length > 0 && (
+                          <ul className="dg-mod-flags">
+                            {m.redFlags.map((item, i) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ul>
+                        )}
+                        {m.binaryNote && <p className="dg-artifact-note">{m.binaryNote}</p>}
+                      </details>
+                    );
+                  })}
                 </div>
               )}
             </>

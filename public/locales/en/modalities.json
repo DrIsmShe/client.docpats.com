@@ -1,0 +1,186 @@
+{
+  "clinical": {
+    "title": "Clinical case",
+    "purpose": "Review of the whole case: complaints, history, examination, data already available",
+    "binaryNote": "Documents and audio recordings are kept in the case, but their content does not reach the analysis: text extraction from PDF and speech transcription are not connected yet. Transfer the key points as text.",
+    "checklist": [
+      "Complaints and how they changed over time",
+      "History of the present illness: how it started, what changed",
+      "Past medical history, comorbidities, operations",
+      "Medications, allergies, intolerances",
+      "Examination findings and vital signs",
+      "Investigations already performed and their results",
+      "What part of the basic work-up is missing"
+    ],
+    "redFlags": [
+      "Signs of a condition life-threatening within hours",
+      "Symptoms requiring malignancy to be ruled out",
+      "Drug interactions and contraindications in the prescriptions",
+      "Mismatch between severity of complaints and extent of the work-up"
+    ]
+  },
+  "labs": {
+    "title": "Laboratory tests",
+    "purpose": "Interpretation of panels: what deviates significantly, what is secondary, what to recheck",
+    "binaryNote": "A photo or PDF of the form is kept in the case but does not reach the analysis: form recognition is not connected yet. Enter the values as a panel or paste the result as text.",
+    "checklist": [
+      "Checking every value against the laboratory reference interval",
+      "Significance of the deviation: clinically important or borderline",
+      "Consistency of the values with one another",
+      "Trend compared with previous tests, if available",
+      "Effect of medication and sampling conditions on the result",
+      "What should be rechecked or added"
+    ],
+    "redFlags": [
+      "Critical values requiring immediate action",
+      "Signs of acute renal or hepatic failure",
+      "Sharp fall in haemoglobin, platelets or neutrophils",
+      "Electrolyte disturbances dangerous to the heart"
+    ]
+  },
+  "xray": {
+    "title": "Radiography",
+    "purpose": "Review of a radiographic study: description, report, what to clarify",
+    "binaryNote": "The image is read by a model: it describes what it sees and what is worth checking. This is a second opinion, not a radiologist's report; the absence of visible changes does not mean the absence of pathology.",
+    "checklist": [
+      "Quality and positioning: is the image suitable for conclusions",
+      "Completeness of the description by region, not only of the finding",
+      "Whether the report follows from the description",
+      "Correlation with the clinical picture",
+      "Whether additional projections or another study are needed",
+      "Comparison with previous images"
+    ],
+    "redFlags": [
+      "Signs of pneumothorax, free gas, acute pathology",
+      "A description containing a finding that is absent from the report",
+      "A report not supported by anything in the description"
+    ]
+  },
+  "ct": {
+    "title": "Computed tomography",
+    "purpose": "CT review: completeness of the protocol, whether the report follows the description, what to investigate further",
+    "binaryNote": "ONE submitted image is read — one reconstruction in one window, already without density data (HU). This is a fragment, not a study: the model cannot scroll the series, measure density or build reconstructions.",
+    "checklist": [
+      "Protocol: contrast phases, scanned region, slice thickness",
+      "Completeness of the description for all organs in the region, not only the target",
+      "Sizes and locations of findings stated and reproducible",
+      "Whether the report follows from the description",
+      "Comparison with previous studies and the trend",
+      "Indications for contrast and account of renal function"
+    ],
+    "redFlags": [
+      "Signs of bleeding, ischaemia, perforation, thromboembolism",
+      "A mass lesion with no further plan",
+      "A finding requiring urgent contact with the treating physician"
+    ]
+  },
+  "mri": {
+    "title": "Magnetic resonance imaging",
+    "purpose": "MRI review: sequences, correlation with the clinical picture, what to clarify",
+    "binaryNote": "ONE submitted image is read. The model does not see the series of sequences (T1/T2/DWI/FLAIR) or the comparison between them — it looks at a single frame.",
+    "checklist": [
+      "Sequences and modes: are they sufficient for the question",
+      "Use of contrast and its justification",
+      "Completeness of the description of the region of interest and adjacent structures",
+      "Whether the report follows from the description",
+      "Correlation with the clinical and neurological status",
+      "Trend relative to previous studies"
+    ],
+    "redFlags": [
+      "Signs of acute cerebrovascular accident",
+      "Compression of the spinal cord or cauda equina",
+      "A space-occupying process with mass effect"
+    ]
+  },
+  "us": {
+    "title": "Ultrasound",
+    "purpose": "Ultrasound review: completeness of the protocol, measurements, what needs clarification",
+    "binaryNote": "A single submitted frame is read. The model does not see loops or motion — frame-by-frame review of a video recording requires a separate model and validation.",
+    "checklist": [
+      "Completeness of the protocol by organs and structures",
+      "Presence of measurements and their comparability with the norm",
+      "Assessment of blood flow where it is needed",
+      "Limitations of the study: acoustic windows, patient preparation",
+      "Whether the report follows from the description",
+      "Comparison with previous studies"
+    ],
+    "redFlags": [
+      "Free fluid in the abdominal or pericardial cavity",
+      "Signs of deep vein thrombosis",
+      "Acute pathology requiring surgical assessment"
+    ]
+  },
+  "ecg": {
+    "title": "Electrocardiography",
+    "purpose": "ECG review from the description and parameters: rhythm, conduction, ischaemia",
+    "binaryNote": "The tracing is read by the model as an image: rhythm, axes and intervals are judged by eye, from the picture. This is not signal analysis: milliseconds and amplitudes are measured by the device, not by a photograph.",
+    "checklist": [
+      "Rhythm, rate, regularity",
+      "Electrical axis and rotations",
+      "PQ, QRS and corrected QT intervals",
+      "Signs of ischaemia, injury, scar",
+      "Signs of chamber overload",
+      "Comparison with the previous tracing and with the complaints"
+    ],
+    "redFlags": [
+      "ST elevation and other signs of acute infarction",
+      "Life-threatening arrhythmias",
+      "QT prolongation dangerous for drug therapy",
+      "Complete block with bradycardia"
+    ]
+  },
+  "endoscopy": {
+    "title": "Endoscopy",
+    "purpose": "Review of an endoscopy report: completeness of the examination, biopsies, follow-up",
+    "binaryNote": "A single submitted frame is read. Frame-by-frame review of a video recording is not connected — the model sees a still, not the procedure.",
+    "checklist": [
+      "Completeness of the examination: how far it reached, what was inspected",
+      "Quality of preparation and visibility",
+      "Description of findings with location and size",
+      "Whether biopsies were taken where indicated",
+      "Follow-up plan and timing of the repeat study",
+      "Whether the report follows from the description"
+    ],
+    "redFlags": [
+      "Signs of active bleeding",
+      "Suspicion of malignancy without biopsy",
+      "Complications of the procedure"
+    ]
+  },
+  "histology": {
+    "title": "Histology and cytology",
+    "purpose": "Review of a pathology report: completeness, staging, what to clarify",
+    "binaryNote": "The submitted microphotograph is read: what is visible in the frame at this magnification. This is not a pathology report — the diagnosis is made by the pathologist from the whole specimen.",
+    "checklist": [
+      "Type of specimen and its adequacy for a conclusion",
+      "Histological type and grade of differentiation",
+      "Resection margins and their status",
+      "Vascular invasion, perineural invasion, lymph nodes",
+      "Immunohistochemistry and molecular markers: were the required ones done",
+      "Completeness of the data for staging"
+    ],
+    "redFlags": [
+      "A malignant process with no statement of resection margins",
+      "Specimen declared non-informative with no plan for review",
+      "Discrepancy with the clinical and imaging diagnosis"
+    ]
+  },
+  "derm": {
+    "title": "Dermatology",
+    "purpose": "Review of the description of a skin lesion and dermatoscopy: what is concerning",
+    "binaryNote": "Image assessment by a model is deliberately not connected: the cost of an error in melanoma is too high for an unvalidated model.",
+    "checklist": [
+      "Location, size, shape and borders of the lesion",
+      "Colour and its heterogeneity",
+      "Change over time",
+      "Dermatoscopic features, if dermatoscopy was performed",
+      "Associated risk factors and family history",
+      "Indications for biopsy or referral to an oncologist"
+    ],
+    "redFlags": [
+      "ABCDE features concerning for melanoma",
+      "Rapid growth, bleeding, ulceration",
+      "Change in a long-standing lesion"
+    ]
+  }
+}

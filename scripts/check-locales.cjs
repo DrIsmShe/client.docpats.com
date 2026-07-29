@@ -24,7 +24,7 @@ const REFERENCE = "ru";
 // Проверяем только те пространства имён, которые ведём по-настоящему
 // синхронно. Остальные исторически расходятся, и падать на них — значит
 // приучить всех запускать проверку с закрытыми глазами.
-const NAMESPACES = ["diagnostics", "arena"];
+const NAMESPACES = ["diagnostics", "arena", "modalities"];
 
 const read = (lang, ns) =>
   JSON.parse(fs.readFileSync(path.join(LOCALES, lang, `${ns}.json`), "utf8"));
@@ -73,7 +73,16 @@ for (const ns of NAMESPACES) {
       .filter(([, v]) => !String(v).trim())
       .map(([k]) => k);
 
-    if (!missing.length && !extra.length && !empty.length) {
+    // Списки (checklist, redFlags) — это протокол разбора, который врач читает
+    // перед отправкой материала. Одного наличия ключа мало: если в русском
+    // семь пунктов, а в турецком шесть, ключ на месте, проверка молчит, а
+    // турецкий врач просто не увидит один пункт протокола.
+    const shortLists = referenceKeys
+      .filter((k) => Array.isArray(reference[k]))
+      .filter((k) => !Array.isArray(data[k]) || data[k].length !== reference[k].length)
+      .map((k) => `${k} (${reference[k].length} → ${Array.isArray(data[k]) ? data[k].length : "не список"})`);
+
+    if (!missing.length && !extra.length && !empty.length && !shortLists.length) {
       console.log(`  ${lang}: ок`);
       continue;
     }
@@ -82,6 +91,7 @@ for (const ns of NAMESPACES) {
     if (missing.length) console.log(`  ${lang}: нет ключей — ${missing.join(", ")}`);
     if (extra.length) console.log(`  ${lang}: лишние ключи — ${extra.join(", ")}`);
     if (empty.length) console.log(`  ${lang}: пустые значения — ${empty.join(", ")}`);
+    if (shortLists.length) console.log(`  ${lang}: списки разной длины — ${shortLists.join(", ")}`);
   }
 }
 

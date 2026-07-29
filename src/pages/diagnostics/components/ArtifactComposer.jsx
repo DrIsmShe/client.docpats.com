@@ -22,6 +22,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useModalityText } from "../useModalityText";
 
 import { extractDocument } from "../../../api/diagnostics";
 import { readApiError } from "../../../api/education";
@@ -32,6 +33,9 @@ function emptyRow() {
 
 export default function ArtifactComposer({ caseId, modalities, analytes, disabled, requireGates, onAdd }) {
   const { t } = useTranslation("diagnostics");
+  // Справочник модальностей приходит с сервера по-русски (там он же служит
+  // протоколом в промпте). Подписи для врача переводим здесь.
+  const localizeModality = useModalityText();
   const fileRef = useRef(null);
   const [text, setText] = useState("");
   const [modality, setModality] = useState("clinical");
@@ -46,7 +50,8 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
     () => Object.fromEntries((analytes ?? []).map((a) => [a.key, a])),
     [analytes],
   );
-  const activeModality = modalities.find((m) => m.key === modality) ?? null;
+  const rawActiveModality = modalities.find((m) => m.key === modality) ?? null;
+  const activeModality = rawActiveModality ? localizeModality(rawActiveModality) : null;
 
   function setRow(i, patch) {
     setRows((prev) => prev.map((r, idx) => (idx === i ? { ...r, ...patch } : r)));
@@ -353,7 +358,7 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
           >
             {modalities.map((m) => (
               <option key={m.key} value={m.key}>
-                {m.title}
+                {localizeModality(m).title}
               </option>
             ))}
           </select>

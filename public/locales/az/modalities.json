@@ -1,0 +1,186 @@
+{
+  "clinical": {
+    "title": "Klinik hal",
+    "purpose": "Halın bütövlükdə təhlili: şikayətlər, anamnez, müayinə, mövcud məlumatlar",
+    "binaryNote": "Sənədlər və səs yazıları işdə saxlanılır, lakin məzmunu təhlilə düşmür: PDF-dən mətnin çıxarılması və nitqin deşifrəsi hələ qoşulmayıb. Əsas məqamları mətn şəklində köçürün.",
+    "checklist": [
+      "Şikayətlər və onların zaman içindəki dinamikası",
+      "Xəstəliyin anamnezi: nədən başladı, nə dəyişdi",
+      "Həyat anamnezi, yanaşı xəstəliklər, əməliyyatlar",
+      "Dərmanlar, allergiyalar, dözümsüzlüklər",
+      "Müayinə məlumatları və həyati göstəricilər",
+      "Artıq aparılmış müayinələr və onların nəticələri",
+      "Baza müayinələrindən nəyin buraxıldığı"
+    ],
+    "redFlags": [
+      "Yaxın saatlarda həyat üçün təhlükəli vəziyyətin əlamətləri",
+      "Onkoloji prosesin istisna edilməsini tələb edən simptomlar",
+      "Təyinatlarda dərman qarşılıqlı təsirləri və əks göstərişlər",
+      "Şikayətlərin ağırlığı ilə müayinə həcmi arasındakı uyğunsuzluq"
+    ]
+  },
+  "labs": {
+    "title": "Laborator analizlər",
+    "purpose": "Panellərin şərhi: nə əhəmiyyətli dərəcədə sapıb, nə ikincidir, nəyi yenidən yoxlamaq lazımdır",
+    "binaryNote": "Blankın şəkli və ya PDF-i işdə saxlanılır, lakin təhlilə düşmür: blankların tanınması hələ qoşulmayıb. Göstəriciləri panel şəklində daxil edin və ya nəticəni mətn kimi yapışdırın.",
+    "checklist": [
+      "Hər göstəricinin laboratoriyanın referens intervalı ilə tutuşdurulması",
+      "Sapmanın əhəmiyyəti: klinik vacib, yoxsa sərhəd həddində",
+      "Göstəricilərin bir-biri ilə uzlaşması",
+      "Varsa, əvvəlki analizlərlə müqayisədə dinamika",
+      "Dərman qəbulunun və nümunə götürmə şəraitinin nəticəyə təsiri",
+      "Nəyi yenidən yoxlamaq və ya əlavə etmək lazımdır"
+    ],
+    "redFlags": [
+      "Dərhal tədbir tələb edən kritik dəyərlər",
+      "Kəskin böyrək və ya qaraciyər çatışmazlığının əlamətləri",
+      "Hemoqlobin, trombosit və ya neytrofillərin kəskin düşməsi",
+      "Ürək üçün təhlükəli elektrolit pozğunluqları"
+    ]
+  },
+  "xray": {
+    "title": "Rentgenoqrafiya",
+    "purpose": "Rentgen müayinəsinin təhlili: təsvir, rəy, dəqiqləşdiriləcəklər",
+    "binaryNote": "Şəkil model tərəfindən oxunur: o, nə gördüyünü və nəyin yoxlanmalı olduğunu təsvir edir. Bu ikinci rəydir, radioloqun rəyi deyil; görünən dəyişikliyin olmaması patologiyanın olmaması demək deyil.",
+    "checklist": [
+      "Keyfiyyət və vəziyyət: şəkil nəticə çıxarmaq üçün yararlıdırmı",
+      "Yalnız tapıntının deyil, nahiyələr üzrə təsvirin tamlığı",
+      "Rəyin təsvirdən çıxıb-çıxmadığı",
+      "Klinik mənzərə ilə uzlaşma",
+      "Əlavə proyeksiyalar və ya başqa müayinə lazımdırmı",
+      "Əvvəlki şəkillərlə müqayisə"
+    ],
+    "redFlags": [
+      "Pnevmotoraks, sərbəst qaz, kəskin patologiya əlamətləri",
+      "Təsvirdə olan, lakin rəydə olmayan tapıntı",
+      "Təsvirdə heç nə ilə təsdiqlənməyən rəy"
+    ]
+  },
+  "ct": {
+    "title": "Kompüter tomoqrafiyası",
+    "purpose": "KT təhlili: protokolun tamlığı, rəyin təsvirlə uyğunluğu, əlavə müayinə ehtiyacı",
+    "binaryNote": "Göndərilən BİR şəkil oxunur — bir pəncərədə bir rekonstruksiya, özü də sıxlıq məlumatı (HU) olmadan. Bu fraqmentdir, müayinə deyil: model seriyanı vərəqləyə, sıxlığı ölçə və rekonstruksiya edə bilmir.",
+    "checklist": [
+      "Protokol: kontrastlaşma fazaları, müayinə zonası, kəsiklərin qalınlığı",
+      "Yalnız hədəfin deyil, zonadakı bütün orqanlar üzrə təsvirin tamlığı",
+      "Tapıntıların ölçü və yerləşməsinin göstərilməsi və təkrar oluna bilməsi",
+      "Rəyin təsvirdən çıxıb-çıxmadığı",
+      "Əvvəlki müayinələrlə müqayisə və dinamika",
+      "Kontrasta göstərişlər və böyrək funksiyasının nəzərə alınması"
+    ],
+    "redFlags": [
+      "Qanaxma, işemiya, perforasiya, tromboemboliya əlamətləri",
+      "Sonrakı planı göstərilməyən həcmli törəmə",
+      "Müalicə həkimi ilə təcili əlaqə tələb edən tapıntı"
+    ]
+  },
+  "mri": {
+    "title": "Maqnit-rezonans tomoqrafiya",
+    "purpose": "MRT təhlili: ardıcıllıqlar, klinika ilə uyğunluq, dəqiqləşdiriləcəklər",
+    "binaryNote": "Göndərilən BİR şəkil oxunur. Model ardıcıllıqlar seriyasını (T1/T2/DWI/FLAIR) və onlar arasındakı müqayisəni görmür — o, bir kadra baxır.",
+    "checklist": [
+      "Ardıcıllıqlar və rejimlər: sual üçün kifayətdirmi",
+      "Kontrastdan istifadə və onun əsaslandırılması",
+      "Maraq zonasının və qonşu strukturların təsvirinin tamlığı",
+      "Rəyin təsvirdən çıxıb-çıxmadığı",
+      "Klinika və nevroloji statusla əlaqələndirmə",
+      "Əvvəlki müayinələrə nisbətən dinamika"
+    ],
+    "redFlags": [
+      "Kəskin beyin qan dövranı pozğunluğunun əlamətləri",
+      "Onurğa beyninin və ya at quyruğunun sıxılması",
+      "Kütlə effekti olan həcmli proses"
+    ]
+  },
+  "us": {
+    "title": "Ultrasəs müayinəsi",
+    "purpose": "USM təhlili: protokolun tamlığı, ölçmələr, dəqiqləşdirilməli olanlar",
+    "binaryNote": "Göndərilən ayrıca kadr oxunur. Model döngüləri və hərəkəti görmür — video yazının kadr-kadr təhlili ayrıca model və validasiya tələb edir.",
+    "checklist": [
+      "Protokolun orqan və strukturlar üzrə tamlığı",
+      "Ölçmələrin mövcudluğu və norma ilə müqayisə olunabilməsi",
+      "Lazım olan yerlərdə qan axınının qiymətləndirilməsi",
+      "Müayinənin məhdudiyyətləri: akustik pəncərələr, pasiyentin hazırlığı",
+      "Rəyin təsvirdən çıxıb-çıxmadığı",
+      "Əvvəlki müayinələrlə müqayisə"
+    ],
+    "redFlags": [
+      "Qarın və ya perikard boşluğunda sərbəst maye",
+      "Dərin vena trombozunun əlamətləri",
+      "Cərrahi qiymətləndirmə tələb edən kəskin patologiya"
+    ]
+  },
+  "ecg": {
+    "title": "Elektrokardioqrafiya",
+    "purpose": "Təsvir və parametrlərə görə EKQ təhlili: ritm, keçiricilik, işemiya",
+    "binaryNote": "Lent model tərəfindən şəkil kimi oxunur: ritm, oxlar, intervallar — gözəyarı, şəkil üzrə. Bu siqnalın deşifrəsi deyil: millisaniyələri və amplitudları cihaz ölçür, fotoşəkil yox.",
+    "checklist": [
+      "Ritm, tezlik, müntəzəmlik",
+      "Elektrik oxu və dönmələr",
+      "PQ, QRS və düzəlişli QT intervalları",
+      "İşemiya, zədələnmə, çapıq əlamətləri",
+      "Ürək kameralarının yüklənmə əlamətləri",
+      "Əvvəlki yazı və şikayətlərlə tutuşdurma"
+    ],
+    "redFlags": [
+      "ST seqmentinin qalxması və kəskin infarktın digər əlamətləri",
+      "Həyat üçün təhlükəli ritm pozğunluqları",
+      "Dərman terapiyası üçün təhlükəli QT uzanması",
+      "Bradikardiya ilə tam blokada"
+    ]
+  },
+  "endoscopy": {
+    "title": "Endoskopiya",
+    "purpose": "Endoskopiya protokolunun təhlili: baxışın tamlığı, biopsiyalar, müşahidə",
+    "binaryNote": "Göndərilən ayrıca kadr oxunur. Video yazının kadr-kadr təhlili qoşulmayıb — model prosedura deyil, dayandırılmış kadra baxır.",
+    "checklist": [
+      "Baxışın tamlığı: hansı səviyyəyə qədər gedilib, nə baxılıb",
+      "Hazırlığın keyfiyyəti və görünüş",
+      "Tapıntıların yerləşmə və ölçü ilə təsviri",
+      "Göstəriş olan yerlərdə biopsiya götürülübmü",
+      "Müşahidə planı və təkrar müayinənin vaxtı",
+      "Rəyin təsvirdən çıxıb-çıxmadığı"
+    ],
+    "redFlags": [
+      "Aktiv qanaxma əlamətləri",
+      "Biopsiyasız bədxassəli proses şübhəsi",
+      "Prosedurun ağırlaşmaları"
+    ]
+  },
+  "histology": {
+    "title": "Histologiya və sitologiya",
+    "purpose": "Morfoloji rəyin təhlili: tamlıq, mərhələləndirmə, dəqiqləşdiriləcəklər",
+    "binaryNote": "Göndərilən mikroşəkil oxunur: bu böyütmədə kadrda nə görünür. Bu morfoloji rəy deyil — diaqnozu bütün preparata baxaraq patoloq qoyur.",
+    "checklist": [
+      "Materialın növü və nəticə üçün adekvatlığı",
+      "Histoloji tip və diferensiasiya dərəcəsi",
+      "Rezeksiya kənarları və onların vəziyyəti",
+      "Damar invaziyası, perinevral invaziya, limfa düyünləri",
+      "İmmunohistokimya və molekulyar markerlər: lazım olanlar edilibmi",
+      "Mərhələləndirmə üçün məlumatların tamlığı"
+    ],
+    "redFlags": [
+      "Rezeksiya kənarları göstərilməyən bədxassəli proses",
+      "Yenidən baxış planı olmadan qeyri-informativ sayılan material",
+      "Klinik və şüa diaqnozu ilə uyğunsuzluq"
+    ]
+  },
+  "derm": {
+    "title": "Dermatologiya",
+    "purpose": "Dəri elementinin təsvirinin və dermatoskopiyanın təhlili: nə narahatlıq doğurur",
+    "binaryNote": "Şəklin model tərəfindən qiymətləndirilməsi qəsdən qoşulmayıb: melanomada səhvin qiyməti attestasiyadan keçməmiş model üçün həddindən artıq yüksəkdir.",
+    "checklist": [
+      "Elementin yerləşməsi, ölçüsü, forması və sərhədləri",
+      "Rəngi və onun qeyri-bircinsliyi",
+      "Dinamika: zamanla necə dəyişib",
+      "Aparılıbsa, dermatoskopik əlamətlər",
+      "Yanaşı risk amilləri və ailə anamnezi",
+      "Biopsiyaya və ya onkoloqa göndərişə göstərişlər"
+    ],
+    "redFlags": [
+      "Melanom baxımından narahatlıq doğuran ABCDE əlamətləri",
+      "Sürətli böyümə, qanaxma, xoralaşma",
+      "Çoxdan mövcud olan elementdə dəyişiklik"
+    ]
+  }
+}
