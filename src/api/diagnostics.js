@@ -11,8 +11,9 @@
 // Тонкий слой на общем axios-инстансе: он несёт baseURL и withCredentials,
 // без которых сессионная кука не уходит на бэкенд. baseURL не содержит "/api",
 // поэтому путь пишем полностью.
-
 import axios from "../axios";
+// Язык врача уходит на сервер вместе с разбором: модель пишет выводы на нём.
+import i18n from "../i18n";
 
 const BASE = "/api/v1/diagnostics";
 
@@ -155,6 +156,9 @@ export async function extractDocument(caseId, file, hint = "", modality = "") {
   // этого исследования. Без неё снимок всё равно прочитается — сервер поймёт
   // по факту отсутствия текста, — но осмотр будет общим, а не по чек-листу.
   if (modality) form.append("modality", modality);
+  // Описание снимка модель пишет сразу на языке врача — оно кладётся в дело
+  // текстом и потом уже не переводится.
+  form.append("lang", i18n.language);
 
   const { data } = await axios.post(`${BASE}/cases/${caseId}/extract`, form, {
     // Content-Type не задаём: его должен выставить браузер вместе с boundary.
@@ -186,12 +190,24 @@ export async function extractDocument(caseId, file, hint = "", modality = "") {
  * время инференса нельзя.
  */
 export async function analyzeCase(caseId, modalities = []) {
-  const { data } = await axios.post(`${BASE}/cases/${caseId}/analyze`, { modalities });
+  // Язык врача едет вместе с заданием и сохраняется в нём: разбор выполняет
+  // фоновый воркер, где ни запроса, ни языка интерфейса уже нет.
+  const { data } = await axios.post(`${BASE}/cases/${caseId}/analyze`, {
+    modalities,
+    lang: i18n.language,
+  });
   return { jobs: data.jobs ?? [], message: data.message ?? "" };
 }
 
+/**
+ * Перезапуск задания. Язык передаётся текущий — это единственный способ
+ * получить уже разобранное дело на другом языке: выводы лежат в базе готовым
+ * текстом и задним числом не переводятся.
+ */
 export async function rerunJob(jobId) {
-  const { data } = await axios.post(`${BASE}/jobs/${jobId}/rerun`);
+  const { data } = await axios.post(`${BASE}/jobs/${jobId}/rerun`, {
+    lang: i18n.language,
+  });
   return data.job;
 }
 
