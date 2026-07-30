@@ -17,6 +17,10 @@
   status = 200
   
 [[edge_functions]]
+  path = "/docs/*"
+  function = "seo"
+
+[[edge_functions]]
   path = "/articles/*"
   function = "seo"
 

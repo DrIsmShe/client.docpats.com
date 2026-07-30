@@ -51,6 +51,75 @@ export default async function handler(request, context) {
     }
   }
 
+  // ── Раздел документации: /docs/<раздел> ──
+  const docsMatch = url.pathname.match(/^\/docs\/([a-z0-9-]+)\/?$/);
+  if (docsMatch) {
+    try {
+      const section = docsMatch[1];
+
+      // Русский — язык оригинала корпуса. Все языки живут по одному адресу,
+      // поэтому в индекс попадает одна версия; отдельные адреса на язык и
+      // hreflang — следующий шаг, если раздел начнёт приводить трафик.
+      const mdRes = await fetch(`${url.origin}/docs/${section}/ru.md`);
+      if (!mdRes.ok) return context.next();
+
+      const md = await mdRes.text();
+      // Netlify отдаёт index.html со статусом 200 на несуществующий путь,
+      // поэтому ok здесь ничего не доказывает.
+      if (md.trimStart().startsWith("<")) return context.next();
+
+      const heading = titleFromMarkdown(md);
+      const desc = descriptionFromMarkdown(md);
+      if (!heading || !desc) return context.next();
+
+      const title = `${heading} — DocPats`;
+      const pageUrl = `https://docpats.com/docs/${section}`;
+      const image = "https://docpats.com/og-default.jpg";
+
+      const response = await context.next();
+      let html = await response.text();
+      html = html
+        .replace(/<title>.*?<\/title>/gs, "")
+        .replace(/<meta name="description"[^>]*\/?>/gi, "");
+
+      const inject = `
+    <title>${escAttr(title)}</title>
+    <meta name="description" content="${escAttr(desc)}">
+    <link rel="canonical" href="${pageUrl}">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="${escAttr(title)}">
+    <meta property="og:description" content="${escAttr(desc)}">
+    <meta property="og:url" content="${pageUrl}">
+    <meta property="og:image" content="${image}">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">${JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: heading,
+      description: desc,
+      url: pageUrl,
+      inLanguage: "ru",
+      isPartOf: {
+        "@type": "WebSite",
+        name: "DocPats",
+        url: "https://docpats.com",
+      },
+      publisher: {
+        "@type": "Organization",
+        name: "DocPats",
+        url: "https://docpats.com",
+      },
+    })}</script>`;
+
+      html = html.replace("</head>", inject + "</head>");
+      return new Response(html, {
+        headers: { "content-type": "text/html; charset=utf-8" },
+      });
+    } catch {
+      return context.next();
+    }
+  }
+
   const articleMatch = url.pathname.match(
     /^\/articles\/([a-f0-9]{24})(?:\/([a-z]{2}))?$/,
   );
@@ -292,9 +361,66 @@ export default async function handler(request, context) {
   }
 }
 
+/* ── Документация: /docs/<раздел> ─────────────────────────────────────
+ *
+ * Тексты корпуса лежат статикой (public/docs/<раздел>/<язык>.md) и рендерятся
+ * на клиенте, поэтому боту без этой ветки достаётся пустой SPA-шелл. А это
+ * ровно те страницы, которые должны приводить людей из поиска: «почему врачу
+ * стоит работать здесь» и то же самое для пациента. Страница, которая не
+ * индексируется, работает только по прямой ссылке — то есть не работает.
+ *
+ * Заголовок и описание берутся из самого markdown, а не задаются здесь
+ * списком: иначе правка текста и правка мета-тегов разъезжаются, и в выдаче
+ * годами висит описание раздела, которого уже нет.
+ */
+
+/** Экранирование для подстановки в атрибут HTML. */
+function escAttr(s) {
+  return String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** Первый заголовок первого уровня. */
+function titleFromMarkdown(md) {
+  const line = md.split("\n").find((l) => l.startsWith("# "));
+  return line ? line.slice(2).trim() : null;
+}
+
+/**
+ * Первый содержательный абзац как описание. Пропускаем заголовки, списки,
+ * разделители и цитаты — из них получается описание вида «— **Видеоприём**».
+ *
+ * Нумерованные строки отсеиваются отдельно: в руководствах сразу за
+ * заголовком идёт оглавление, и без этого в описание уезжало «1. Что такое…
+ * 2. Рабочий процесс… 3. Создание нового плана».
+ */
+function descriptionFromMarkdown(md, limit = 160) {
+  const paragraph = md
+    .split(/\n{2,}/)
+    .map((p) => p.trim())
+    .find((p) => p && !/^(\d+[.)]\s|[#>\-*|])/.test(p) && !/^---/.test(p));
+  if (!paragraph) return null;
+
+  const plain = paragraph
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/\*(.+?)\*/g, "$1")
+    .replace(/`(.+?)`/g, "$1")
+    .replace(/\[(.+?)\]\(.+?\)/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (plain.length <= limit) return plain;
+  const cut = plain.slice(0, limit - 1);
+  return cut.slice(0, cut.lastIndexOf(" ")).trim() + "…";
+}
+
 export const config = {
   path: [
     "/",
+    "/docs/*",
     "/articles/*",
     "/news/*",
     "/public/doctor-profile/article-detail-for-all/*",
