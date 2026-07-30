@@ -25,6 +25,7 @@ import AiReviewPanel, {
   AiRowIssues,
   unresolvedIssues,
 } from "./AiReviewPanel";
+import CaseTranslationsPanel from "./CaseTranslationsPanel";
 import "../../education/education.css";
 import "../../radiology/radiology.css";
 
@@ -722,6 +723,9 @@ export default function AdminLabCasesPage() {
                   </div>
                 </div>
               </div>
+
+              {/* Переводы: у нового кейса панель не рисуется */}
+              <CaseTranslationsPanel caseType="labs" caseId={selected} />
 
               {/* Действия */}
               <div className="rad-panel">

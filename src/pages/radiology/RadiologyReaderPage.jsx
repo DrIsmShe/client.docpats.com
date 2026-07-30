@@ -432,14 +432,23 @@ export default function RadiologyReaderPage() {
                   {t("rad.findingsHint")}
                 </div>
                 <div className="rad-palette">
-                  {(caseData.findingPalette ?? []).map((t) => (
+                  {/*
+                    Подпись — через labelOf, как во всех остальных местах
+                    страницы (отметки, разбор, панель баллов). Раньше здесь
+                    рисовался item.label, то есть русская подпись с сервера:
+                    параметр map назывался t и ЗАТЕНЯЛ функцию перевода, из-за
+                    чего словарь не участвовал вообще. Врач с азербайджанским
+                    интерфейсом видел русскую палитру рядом с переведённым
+                    чек-листом.
+                  */}
+                  {(caseData.findingPalette ?? []).map((item) => (
                     <button
-                      key={t.key}
+                      key={item.key}
                       type="button"
-                      className={activeLabel === t.key ? "rad-palette--on" : ""}
-                      onClick={() => setActiveLabel(t.key)}
+                      className={activeLabel === item.key ? "rad-palette--on" : ""}
+                      onClick={() => setActiveLabel(item.key)}
                     >
-                      {t.label}
+                      {labelOf(item.key)}
                     </button>
                   ))}
                 </div>

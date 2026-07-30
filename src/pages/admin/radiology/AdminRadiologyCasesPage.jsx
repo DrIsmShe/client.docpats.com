@@ -36,6 +36,7 @@ import AiReviewPanel, {
   AiRowIssues,
   unresolvedIssues,
 } from "./AiReviewPanel";
+import CaseTranslationsPanel from "./CaseTranslationsPanel";
 import { MODALITY_LABELS } from "../../radiology/arenaLabels";
 import "../../education/education.css";
 import "../../radiology/radiology.css";
@@ -1084,6 +1085,9 @@ export default function AdminRadiologyCasesPage() {
                   <span>Подтверждаю: снимки деидентифицированы (без ПД пациента). Без этого публикация запрещена.</span>
                 </label>
               </div>
+
+              {/* Переводы: у нового кейса панель не рисуется */}
+              <CaseTranslationsPanel caseType="radiology" caseId={selected} />
 
               {/* Действия */}
               <div className="rad-panel">

@@ -530,3 +530,47 @@ export async function fetchVpAttempt(attemptId) {
   const { data } = await axios.get(`${BASE}/vp/attempts/${attemptId}`);
   return data;
 }
+
+// ─── Переводы кейсов (редактор) ────────────────────────────────────────
+//
+// Врачу эти вызовы не нужны: у него кейс приходит на его языке сам —
+// перевод запускается при публикации, а пропущенное догоняется при первом
+// открытии. Здесь редакторский инструмент: увидеть состояние по каждому
+// языку и вмешаться, если модель отказала или перевод неточен.
+//
+// caseType: "radiology" | "labs" | "vp".
+
+/** Состояние переводов кейса: по языку — missing | auto | stale | reviewed. */
+export async function fetchCaseTranslations(caseType, caseId) {
+  const { data } = await axios.get(`${BASE}/translations/${caseType}/${caseId}`);
+  return data; // { caseType, caseId, sourceLang, languages: [...] }
+}
+
+/**
+ * Перевести кейс. langs пусто — все языки, кроме языка оригинала.
+ * force перезаписывает и проверенный человеком перевод — единственный способ.
+ */
+export async function translateCaseNow(caseType, caseId, { langs = null, force = false } = {}) {
+  const { data } = await axios.post(`${BASE}/translations/${caseType}/${caseId}/translate`, {
+    langs,
+    force,
+  });
+  return data.report; // { created, updated, skipped, failed }
+}
+
+/** Ручная правка перевода. Помечает его «проверено». */
+export async function saveCaseTranslation(caseType, caseId, lang, patch) {
+  const { data } = await axios.put(
+    `${BASE}/translations/${caseType}/${caseId}/${lang}`,
+    patch, // { fields?, diagnosisKeys?, diagnosisSynonyms? }
+  );
+  return data.translation;
+}
+
+/** Снять «проверено», чтобы автоперевод снова мог обновлять текст. */
+export async function unreviewCaseTranslation(caseType, caseId, lang) {
+  const { data } = await axios.post(
+    `${BASE}/translations/${caseType}/${caseId}/${lang}/unreview`,
+  );
+  return data.translation;
+}

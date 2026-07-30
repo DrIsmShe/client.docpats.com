@@ -14,6 +14,7 @@
 
 import axios from "axios";
 import { API_BASE, NEWS_API_BASE } from "./config";
+import i18n from "./i18n";
 
 const instance = axios.create({
   baseURL: API_BASE,
@@ -24,6 +25,47 @@ const API_NEWS_AI = axios.create({
   baseURL: NEWS_API_BASE,
   withCredentials: true,
 });
+
+// ─────────────────────────────────────────────────────────────────────
+//   ЯЗЫК ВРАЧА В КАЖДОМ ЗАПРОСЕ.
+//
+//   Accept-Language ставит браузер, из локали системы, и к выбору языка в
+//   интерфейсе он отношения не имеет: врач с русской Windows, переключивший
+//   сайт на турецкий, продолжал присылать "ru-RU". Сервер верил заголовку и
+//   отдавал русские кейсы — выглядело это как отсутствующий перевод, хотя
+//   перевод лежал в базе.
+//
+//   Поэтому язык, выбранный в интерфейсе, уезжает явным X-Language. Accept-
+//   Language дублируем тем же значением: часть эндпоинтов читает его.
+//
+//   Заголовок берётся на момент запроса, а не при создании инстанса: язык
+//   переключают на ходу, и запомненное при старте значение устарело бы после
+//   первого же переключения.
+// ─────────────────────────────────────────────────────────────────────
+
+function currentLang() {
+  const fromI18n = String(i18n?.language ?? "").slice(0, 2).toLowerCase();
+  if (fromI18n) return fromI18n;
+  // Часть переключателей пишет выбор в localStorage — оттуда же его берёт
+  // i18n при инициализации.
+  return String(localStorage.getItem("lang") ?? "ru").slice(0, 2).toLowerCase();
+}
+
+function attachLanguage(client) {
+  client.interceptors.request.use((config) => {
+    const lang = currentLang();
+    if (!config.headers) config.headers = {};
+    // Явно заданный в конкретном вызове заголовок не перебиваем: у отдельных
+    // страниц (статьи, новости) свои правила выбора локали контента.
+    if (!config.headers["X-Language"]) config.headers["X-Language"] = lang;
+    if (!config.headers["Accept-Language"]) config.headers["Accept-Language"] = lang;
+    return config;
+  });
+  return client;
+}
+
+attachLanguage(instance);
+attachLanguage(API_NEWS_AI);
 
 /*
 ========================
