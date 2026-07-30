@@ -1293,5 +1293,19 @@
   },
   "arena_trainer": "Tanı antrenörü",
   "diagnostics_second_opinion": "İkinci görüş",
-  "education_prep": "Sınav hazırlığı"
+  "education_prep": "Sınav hazırlığı",
+  "guide": {
+    "title": "Platform rehberi",
+    "subtitle": "Dokümantasyona göre yanıtlar. Sağlık soruları hekime.",
+    "empty": "Platformanın ne yaptığını ve nasıl kullanıldığını sorun.",
+    "placeholder": "Sorunuz…",
+    "send": "Sor",
+    "close": "Kapat",
+    "thinking": "Düşünüyorum…",
+    "failed": "Yanıt verilemedi. Lütfen tekrar deneyin.",
+    "tooMany": "Arka arkaya çok fazla soru. Bir dakika sonra deneyin.",
+    "starter1": "Platform hekime ne sağlıyor?",
+    "starter2": "Tıbbi geçmişimi kim görebiliyor?",
+    "starter3": "Ücreti nedir?"
+  }
 }

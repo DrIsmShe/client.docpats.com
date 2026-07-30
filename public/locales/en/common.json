@@ -1269,5 +1269,19 @@
   },
   "arena_trainer": "Diagnostic Trainer",
   "diagnostics_second_opinion": "Second Opinion",
-  "education_prep": "Exam preparation"
+  "education_prep": "Exam preparation",
+  "guide": {
+    "title": "Platform guide",
+    "subtitle": "Answers from the documentation. Health questions go to a physician.",
+    "empty": "Ask what the platform does and how to use it.",
+    "placeholder": "Your question…",
+    "send": "Ask",
+    "close": "Close",
+    "thinking": "Thinking…",
+    "failed": "Could not answer. Please try again.",
+    "tooMany": "Too many questions in a row. Try again in a minute.",
+    "starter1": "What does the platform give a physician?",
+    "starter2": "Who can see my medical history?",
+    "starter3": "How much does it cost?"
+  }
 }

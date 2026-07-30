@@ -73,6 +73,7 @@ import DiagnosticCasePage from "./pages/diagnostics/DiagnosticCasePage";
 import AdminBillingPage from "./pages/admin/billing/AdminBillingPage";
 import TopDoctorsPage from "./pages/public/TopDoctorsPage";
 import DocsPage from "./pages/public/DocsPage";
+import GuideWidget from "./components/guide/GuideWidget";
 import HomeDoctorMainPage from "./pages/doctorProfilePages/home/homeMainPage";
 
 import ProfileDoctorHomePage from "./pages/doctorProfilePages/home/profileDoctorHomePage.jsx";
@@ -2826,6 +2827,10 @@ function App() {
 
             <Route path="*" element={<Pagenotfound />} />
           </Routes>
+          {/* Помощник по продукту — на всех страницах, кроме экранов-
+              редакторов (список в самом компоненте). Внутри BrowserRouter:
+              ему нужен текущий адрес, чтобы понять зону и роль. */}
+          <GuideWidget />
           <ToastContainer position="bottom-right" autoClose={5000} />
         </BrowserRouter>
       </GlobalCallProvider>

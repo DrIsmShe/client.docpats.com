@@ -1,0 +1,257 @@
+/* client/src/components/guide/GuideWidget.module.css
+ *
+ * Помощник висит поверх всего приложения, поэтому здесь важнее обычного:
+ * ничего не наследуется от страницы (шрифт и размер заданы явно), и ничто
+ * не выходит за пределы своего контейнера.
+ *
+ * z-index 1200 — выше шапок и подвалов, но НИЖЕ модальных окон приложения:
+ * помощник не должен закрывать диалог подтверждения.
+ */
+
+.root {
+  position: fixed;
+  bottom: 20px;
+  inset-inline-start: 20px; /* слева в LTR, справа в RTL — правый угол занят тостами */
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+/* ── кнопка ───────────────────────────────────────────── */
+.fab {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: #0f2440;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(15, 36, 64, 0.28);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.fab:hover {
+  background: #1554a8;
+  transform: translateY(-1px);
+}
+
+.fab:focus-visible {
+  outline: 3px solid #1554a8;
+  outline-offset: 2px;
+}
+
+/* ── панель ───────────────────────────────────────────── */
+.panel {
+  width: min(380px, calc(100vw - 40px));
+  height: min(540px, calc(100vh - 120px));
+  background: #fff;
+  border: 1px solid #dbe2ea;
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(15, 36, 64, 0.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: rise 0.16s ease-out;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel { animation: none; }
+  .fab { transition: none; }
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 14px 12px;
+  border-bottom: 1px solid #eaeff4;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 650;
+  color: #0f2440;
+}
+
+.sub {
+  font-size: 12px;
+  color: #6b7f96;
+  margin-top: 2px;
+}
+
+.close {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  color: #6b7f96;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.close:focus-visible {
+  outline: 2px solid #1554a8;
+  outline-offset: 2px;
+}
+
+/* ── лента ────────────────────────────────────────────── */
+.feed {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hint {
+  margin: 0;
+  font-size: 13px;
+  color: #6b7f96;
+  line-height: 1.5;
+}
+
+.starters {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.starter {
+  text-align: start;
+  border: 1px solid #dbe2ea;
+  background: #f7f9fc;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: #16324f;
+  cursor: pointer;
+}
+
+.starter:hover { border-color: #1554a8; }
+.starter:focus-visible { outline: 2px solid #1554a8; outline-offset: 1px; }
+
+.mine,
+.theirs {
+  font-size: 14px;
+  line-height: 1.55;
+  padding: 9px 12px;
+  border-radius: 12px;
+  max-width: 88%;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.mine {
+  align-self: flex-end;
+  background: #0f2440;
+  color: #fff;
+  border-end-end-radius: 4px;
+}
+
+.theirs {
+  align-self: flex-start;
+  background: #f1f5f9;
+  color: #16324f;
+  border-end-start-radius: 4px;
+}
+
+.error {
+  font-size: 13px;
+  color: #b42318;
+  background: #fef3f2;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+/* Три точки «печатает». Анимация одна на всех, без библиотеки. */
+.dots {
+  display: inline-block;
+  width: 28px;
+  height: 8px;
+  background:
+    radial-gradient(circle 3px at 4px 4px, #93a4b8 99%, transparent) 0 0/12px 8px repeat-x;
+  animation: blink 1s infinite steps(3);
+}
+
+@keyframes blink {
+  0% { width: 8px; }
+  50% { width: 20px; }
+  100% { width: 28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dots { animation: none; width: 28px; }
+}
+
+/* ── ввод ─────────────────────────────────────────────── */
+.composer {
+  border-top: 1px solid #eaeff4;
+  padding: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.input {
+  flex: 1;
+  resize: none;
+  border: 1px solid #dbe2ea;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #16324f;
+}
+
+.input:focus-visible {
+  outline: 2px solid #1554a8;
+  outline-offset: -1px;
+  border-color: #1554a8;
+}
+
+.send {
+  border: none;
+  background: #0f2440;
+  color: #fff;
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.send:disabled {
+  background: #b9c4d1;
+  cursor: default;
+}
+
+.send:focus-visible {
+  outline: 3px solid #1554a8;
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .root {
+    inset-inline-start: 12px;
+    bottom: 12px;
+  }
+  .panel {
+    width: calc(100vw - 24px);
+    height: min(70vh, 520px);
+  }
+}

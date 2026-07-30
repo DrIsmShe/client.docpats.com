@@ -1375,5 +1375,19 @@
   },
   "arena_trainer": "Diaqnostika trenajoru",
   "diagnostics_second_opinion": "İkinci fikir",
-  "education_prep": "İmtahanlara hazırlıq"
+  "education_prep": "İmtahanlara hazırlıq",
+  "guide": {
+    "title": "Platforma bələdçisi",
+    "subtitle": "Sənədlərə əsasən cavab verir. Sağlamlıq sualları — həkimə.",
+    "empty": "Platformanın nə etdiyini və necə istifadə olunduğunu soruşun.",
+    "placeholder": "Sualınız…",
+    "send": "Soruş",
+    "close": "Bağla",
+    "thinking": "Düşünürəm…",
+    "failed": "Cavab vermək alınmadı. Yenidən cəhd edin.",
+    "tooMany": "Ardıcıl çox sual. Bir dəqiqədən sonra yenidən cəhd edin.",
+    "starter1": "Platforma həkimə nə verir?",
+    "starter2": "Tibbi tariximi kim görür?",
+    "starter3": "Bu nə qədər dəyər?"
+  }
 }
