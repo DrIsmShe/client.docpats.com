@@ -1,0 +1,97 @@
+/* client/src/pages/public/DocsPage.module.css
+ *
+ * Оформление страницы документации. Задача одна — читаемость длинного текста:
+ * ограниченная строка, спокойный контраст, воздух между разделами. Ширина
+ * держится в районе 70 знаков, потому что на всю ширину монитора глаз теряет
+ * начало следующей строки.
+ */
+
+.page {
+  min-height: 60vh;
+  padding: 48px 20px 96px;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+}
+
+.doc {
+  width: 100%;
+  max-width: 760px;
+  color: #16324f;
+  font-size: 17px;
+  line-height: 1.68;
+}
+
+.doc :global(h1) {
+  font-size: clamp(28px, 4.5vw, 38px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 24px;
+}
+
+.doc :global(h2) {
+  font-size: 23px;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 44px 0 14px;
+  padding-top: 22px;
+  border-top: 1px solid #e3e9f0;
+}
+
+.doc :global(h3) {
+  font-size: 18px;
+  margin: 28px 0 10px;
+}
+
+.doc :global(p) {
+  margin: 0 0 16px;
+}
+
+.doc :global(ul),
+.doc :global(ol) {
+  margin: 0 0 18px;
+  padding-inline-start: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.doc :global(li) {
+  margin: 0;
+}
+
+.doc :global(strong) {
+  color: #0d2440;
+}
+
+.doc :global(a) {
+  color: #1554a8;
+}
+
+.doc :global(hr) {
+  border: 0;
+  border-top: 1px solid #e3e9f0;
+  margin: 36px 0;
+}
+
+.doc :global(code) {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.88em;
+  background: #f1f5f9;
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+.note {
+  color: #63748a;
+  font-size: 16px;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 28px 16px 64px;
+  }
+  .doc {
+    font-size: 16px;
+  }
+}
