@@ -1,625 +1,627 @@
 # DocPats Surgical Simulation — Kullanıcı Kılavuzu
 
-**Belge sürümü:** 1.0 (MVP)
-**Hedef kitle:** Uygulamalı plastik cerrahlar, KBB uzmanları, estetik hekimler
+**Doküman sürümü:** 1.0 (MVP)
+**Kimler için:** Uygulayıcı plastik cerrahlar, ENT uzmanları, kozmetologlar
 
 ---
 
 ## İçindekiler
 
-1. [Surgical Simulation Nedir](#surgical-simulation-nedir)
-2. [2 Dakikalık İş Akışı](#2-dakikalık-iş-akışı)
-3. [Yeni Plan Oluşturma](#yeni-plan-oluşturma)
-4. [Hasta Fotoğrafı Gereksinimleri](#hasta-fotoğrafı-gereksinimleri)
-5. [Editör Arayüzü](#editör-arayüzü)
-6. [Kontrol Noktalarıyla Çalışma](#kontrol-noktalarıyla-çalışma)
-7. [Gelişmiş Deformasyon Teknikleri](#gelişmiş-deformasyon-teknikleri)
-8. [Hasta Konsültasyonu](#hasta-konsültasyonu)
-9. [Dışa Aktarma ve Dokümantasyon](#dışa-aktarma-ve-dokümantasyon)
-10. [Kaydetme, Kopyalama, Silme](#kaydetme-kopyalama-silme)
-11. [Klavye Kısayolları](#klavye-kısayolları)
+1. [Surgical Simulation nedir](#surgical-simulation-nedir)
+2. [2 dakikada iş akışı](#2-dakikada-iş-akışı)
+3. [Yeni plan oluşturma](#yeni-plan-oluşturma)
+4. [Hasta fotoğrafı gereksinimleri](#hasta-fotoğrafı-gereksinimleri)
+5. [Editör arayüzü](#editör-arayüzü)
+6. [Control points ile çalışma](#control-points-ile-çalışma)
+7. [İleri düzey deformasyon teknikleri](#ileri-düzey-deformasyon-teknikleri)
+8. [Hasta ile konsültasyon](#hasta-ile-konsültasyon)
+9. [Dışa aktarma ve dokümantasyon](#dışa-aktarma-ve-dokümantasyon)
+10. [Kaydetme, kopyalar, silme](#kaydetme-kopyalar-silme)
+11. [Kısayol tuşları](#kısayol-tuşları)
 12. [Gizlilik ve PHI](#gizlilik-ve-phi)
-13. [Sorun Giderme](#sorun-giderme)
-14. [İş Akışı Önerileri](#iş-akışı-önerileri)
-15. [Sürüm Yol Haritası](#sürüm-yol-haritası)
+13. [Sorun giderme](#sorun-giderme)
+14. [Workflow önerileri](#workflow-önerileri)
+15. [Sürüm yol haritası](#sürüm-yol-haritası)
 
 ---
 
-## Surgical Simulation Nedir
+## Surgical Simulation nedir
 
-Surgical Simulation modülü, cerrahi girişim öncesinde hastanın fotoğrafı üzerinde öngörülen operasyon sonucunu görselleştirmeye yarayan bir araçtır. Fotoğrafı yükler, planlanan düzeltme bölgelerine kontrol noktaları yerleştirir ve bunları istenen konuma sürüklersiniz; görüntü gerçek zamanlı olarak deforme olarak beklenen sonucu gösterir.
+Surgical Simulation modülü, plastik cerrahi girişiminin öngörülen sonucunu, müdahale öncesinde hastanın fotoğrafı üzerinde görselleştirmeye yönelik bir araçtır. Fotoğrafı yüklersiniz, planlanan düzeltme bölgelerine control points yerleştirirsiniz, bunları istenen konuma sürüklersiniz — görüntü gerçek zamanlı olarak deforme olur ve beklenen sonucu gösterir.
 
-Araç, Radial Basis Function ve Gaussian filtresi kullanılarak gerçekleştirilen 2B deformasyon (liquify / mesh warp) teknolojisi üzerine kuruludur. Tüm hesaplamalar WebWorker aracılığıyla tarayıcı içinde gerçekleştirilir; hasta verileri, plan DocPats güvenli sunucusuna kaydedilene kadar cihazınızı terk etmez.
+Araç, Radial Basis Function ve Gaussian filtresi uygulanan 2D deformasyon (liquify / mesh warp) temelinde çalışır. Tüm hesaplamalar WebWorker kullanılarak tarayıcıda gerçekleştirilir; hasta verileri, plan korumalı DocPats sunucusuna kaydedilene kadar cihazınızdan ayrılmaz.
 
 **Bu modülü şu amaçlarla kullanın:**
 
-- Operasyon kararı öncesinde hasta konsültasyonu
-- Beklenti yönetimi (expectation management)
-- Preoperatif planın dokümante edilmesi
-- Hasta onamı (informed consent) için görsel materyal oluşturma
-- Klinik ekibi içi seçeneklerin tartışılması
+- Ameliyat kararı verilmeden önce hasta ile konsültasyon
+- Beklentilerin netleştirilmesi (expectation management)
+- Preoperatif planın belgelenmesi
+- Hastanın onamı (informed consent) için görsel materyal oluşturulması
+- Klinik ekibi içinde seçeneklerin tartışılması
 
-**Bu modülün yerini alamayacağı uygulamalar:**
+**Modül şunların yerini almaz:**
 
 - Hastanın klinik değerlendirmesi
 - Radyolojik planlama
-- 3B tarama (endike olduğu durumlarda)
-- Hukuken geçerli tıbbi rapor
+- 3D tarama (endikasyon varsa)
+- Hukuken bağlayıcı tıbbi rapor
 
-Simülasyon sonucu, **yönlendirici bir görselleştirmedir**; belirli bir operasyon çıktısının garantisi değildir.
-
----
-
-## 2 Dakikalık İş Akışı
-
-**Adım 1.** Ana menü → "Simülasyon" → sağ üst köşedeki `+ Yeni Plan` düğmesi.
-
-**Adım 2.** Açılan pencerede hasta fotoğrafını sürükleyin veya yükleme alanına tıklayın. Desteklenen formatlar: JPG, PNG, WebP. Maksimum boyut: 20 MB. Minimum çözünürlük: 200×200 px.
-
-**Adım 3.** Modal pencerenin 2. adımında plan adını girin (örneğin: "Yılmaz A. — rinoplasti, varyant 1") ve isteğe bağlı olarak hasta kimliğini ekleyin. "Oluştur" düğmesine tıklayın.
-
-**Adım 4.** Editör açılacaktır. Üst paneldeki `+●` simgesine tıklayarak "Nokta Ekle" moduna geçin. Planlanan düzeltme bölgelerine tıklayın; kontrol noktaları oluşacaktır.
-
-**Adım 5.** Ok-imleç simgesine tıklayarak "Seçim" moduna geçin. Her noktanın mavi dairesini istenen konuma sürükleyin. Görüntü gerçek zamanlı olarak deforme olur.
-
-**Adım 6.** Sonuç operasyon planına uygun göründüğünde sağ üst köşedeki "Önce / Sonra" sekmesine geçin. Kaydırıcı karşılaştırmayı gösterir.
-
-**Adım 7.** "Dışa Aktar" panelinde formatı (JPG/PNG), modu (önce / sonra / side-by-side) seçin ve "İndir" düğmesine tıklayın. Dosya yerel olarak kaydedilir.
-
-Tüm değişiklikler her 2 saniyede bir otomatik olarak kaydedilir. Kaydetme göstergesi toolbar'ın sağ tarafında yer almaktadır.
+Simülasyon sonucu **yaklaşık bir görselleştirmedir**, belirli bir ameliyat sonucunun garantisi değildir.
 
 ---
 
-## Yeni Plan Oluşturma
+## 2 dakikada iş akışı
 
-### Plan Adlandırma
+**Adım 1.** Ana menü → "Simülasyon" → sağ üst köşedeki `+ Yeni plan` düğmesi.
 
-Plan adı veri tabanında şifrelenerek yalnızca size görünür olacaktır. Önerilen adlandırma yapısı:
+**Adım 2.** Açılan pencerede hastanın fotoğrafını sürükleyin veya yükleme alanına tıklayın. Kabul edilen formatlar: JPG, PNG, WebP. Maksimum boyut: 20 MB. Minimum çözünürlük: 200×200 px.
 
-`[Soyadı A.O.] — [operasyon türü], [varyant]`
+**Adım 3.** Modal pencerenin 2. adımında plan adını girin (örneğin: "İvanov İ.A. — rinoplasti, seçenek 1") ve isteğe bağlı olarak hasta kimliğini yazın. "Oluştur"a basın.
+
+**Adım 4.** Editör açılır. Modu "Nokta ekle" olarak değiştirin (üst paneldeki `+●` simgesi). Planlanan düzeltme bölgelerine tıklayın — control points görünecektir.
+
+**Adım 5.** "Seçim" moduna geçin (imleç-ok simgesi). Her noktanın mavi dairesini istenen konuma sürükleyin. Görüntü gerçek zamanlı olarak deforme olur.
+
+**Adım 6.** Sonuç ameliyat planına uygun hâle geldiğinde sağ üst köşedeki "Önce / Sonra" sekmesine geçin. Kaydırıcı karşılaştırmayı gösterir.
+
+**Adım 7.** "Dışa aktarma" panelinde formatı (JPG/PNG) ve modu (önce / sonra / side-by-side) seçip "İndir"e basın. Dosya yerel olarak kaydedilir.
+
+Tüm değişiklikler her 2 saniyede bir otomatik olarak kaydedilir. Kaydetme göstergesi toolbar'ın sağ kısmında yer alır.
+
+---
+
+## Yeni plan oluşturma
+
+### Planın adlandırılması
+
+Plan adı veritabanında şifrelenir ve yalnızca sizin erişiminize açıktır. Önerilen ad yapısı:
+
+`[Soyadı A.S.] — [ameliyat tipi], [seçenek]`
 
 Örnekler:
 
-- `Demir A.B. — rinoplasti, konservatif`
-- `Demir A.B. — rinoplasti, agresif`
-- `Kaya V.K. — blepharoplasty, her iki göz`
+- `Petrova A.B. — rinoplasti, konservatif`
+- `Petrova A.B. — rinoplasti, agresif`
+- `Sidorov V.K. — blepharoplasty, her iki göz`
 
-Aynı hasta için **seçenekleri** (konservatif / orta / agresif) tartışırken birden fazla plan oluşturun. Bu, hastanın konsültasyon sırasında bunları karşılaştırmasına olanak tanır.
+**Seçenekleri** tartışıyorsanız — konservatif / ılımlı / agresif — aynı hasta için birden fazla plan oluşturun. Bu, hastanın konsültasyonda bunları karşılaştırmasına olanak tanır.
 
-### Hasta Kimliği
+### Hasta kimliği
 
-Alan isteğe bağlıdır. Şunlar kullanılabilir:
+Bu alan isteğe bağlıdır. Şunları kullanabilirsiniz:
 
-- Klinik tıbbi kayıt numarası
-- Ad-soyadın baş harfleri
+- Kliniğin tıbbi dosya numarası
+- Baş harfler
 - Dahili kod
 
-Bu alan da şifrelenmektedir. Klinik GDPR/HIPAA gereksinimleri kapsamında faaliyet gösteriyorsa, tam ad yerine kayıt numarasını kullanmak yeterlidir.
+Bu alan da şifrelenir. Klinik GDPR/HIPAA gerekliliklerine tabi çalışıyorsa tam ad-soyad kullanmayın — dosya numarası yeterlidir.
 
-### Plan Arama ve Sıralama
+### Planlarda arama ve sıralama
 
-Plan listesinde şunlar kullanılabilir:
+Plan listesinde şunlar mevcuttur:
 
-- **Arama:** plan adına veya hasta kimliğine göre (büyük/küçük harf duyarsız)
-- **Sıralama:** en yeniden en eskiye, en eskiden en yeniye, alfabetik
-
----
-
-## Hasta Fotoğrafı Gereksinimleri
-
-Simülasyonun doğruluğu, girdi fotoğrafının kalitesine kritik düzeyde bağlıdır.
-
-### Zorunlu Koşullar
-
-**Çözünürlük.** Kısa kenar için minimum 1000×1500 px. Optimum 2000×3000 px. Normal modda çekilen akıllı telefon fotoğrafı uygundur. Selfie ve web kamerası fotoğrafları, geniş açılı objektifin yol açtığı perspektif bozulması nedeniyle önerilmez.
-
-**Aydınlatma.** Önden eşit, yüzde sert gölge olmaksızın. Karşı yönden gelen bright sunlight ışıktan kaçının. Optimum aydınlatma: stüdyo softbox'ı veya pencereden gelen dağınık gün ışığı.
-
-**Kameraya mesafe.** En az 1,5 metre. Bu, burun ve çene bölgesindeki perspective distortion'ı en aza indirir. 50-85 mm odak uzaklığı eşdeğeri kullanın (iPhone'da wide değil, 2× telephoto objektif).
-
-**Nötr yüz ifadesi.** Hasta gülümsemez, dudaklar kapalı ancak sıkılmamış. Gözler açık, kameraya bakıyor. Mimik kasılması yok.
-
-**Saç.** Yüzden uzakta. Alnı, kulakları, çene hattını kapatmamalı. İdeal olarak arkaya toplanmış.
-
-**Takı ve makyaj.** Çıkarılmış. Piercing, büyük küpeler, parlak ruj — bunların tümü referansı bozar.
-
-**Nötr arka plan.** Açık, tek renkli (gri, beyaz, açık mavi). Kafa arkasında herhangi bir desen, doku veya parlak nesne olmamalı.
-
-### Çekim Açıları
-
-Kapsamlı planlama için tek hastadan üç fotoğraf bulunması önerilir:
-
-1. **Frontal** (önden) — simetri, burun kanatlarının genişliği, dudak şeklini değerlendirmek için
-2. **Profil** (sol ve sağ profil) — açı, burun sırtı, burun ucu, çeneyi değerlendirmek için
-3. **3/4** (yarım profil) — orta yüz hacmini, elmacık kemiklerini değerlendirmek için
-
-**Önemli:** Mevcut sürümde (MVP) her fotoğraf ayrı bir plan olarak işlenir. Bir sonraki sürümde (v2) tek plan içinde çok görüş (multi-view) özelliği planlanmaktadır.
-
-### Fotoğraf Gereksinimleri Karşılamıyorsa Ne Yapmalı
-
-Yüklemeyin. Hastadan yeniden fotoğraf çektirmesini isteyin ya da klinikte kendiniz çekin. Kalitesiz fotoğraf üzerindeki deformasyon yanlış beklentilere yol açar ve bu durum operasyon sonrasında çatışmaya neden olabilir.
+- Plan adına veya hasta kimliğine göre **arama** (büyük/küçük harf duyarsız)
+- **Sıralama**: yeniden eskiye, eskiden yeniye, alfabetik
 
 ---
 
-## Editör Arayüzü
+## Hasta fotoğrafı gereksinimleri
 
-### Sayfa Başlığı
+Simülasyonun doğruluğu, girdi fotoğrafının kalitesine kritik ölçüde bağlıdır.
 
-- **"← Plan Listesine" geri oku** — tüm planların listesine geri dönüş.
-- **Plan adı ve hasta kimliği** — okun altında görüntülenir.
-- **"Editör / Önce-Sonra" sekmeleri** — çalışma modu değiştirme.
+### Zorunlu koşullar
 
-### Editör Üst Paneli (Toolbar)
+**Çözünürlük.** Kısa kenarda en az 1000×1500 px. Optimum 2000×3000 px. Akıllı telefonun standart modunda çekilen fotoğraf uygundur. Selfie ve web kamerası fotoğrafları, geniş açılı objektifin yol açtığı perspektif bozulması nedeniyle önerilmez.
 
-Canvas'ın sağ üst köşesinde yer alır. Soldan sağa öğeler:
+**Aydınlatma.** Önden ve homojen olmalı, yüzde keskin gölge bulunmamalıdır. Bright sunlight kontra aydınlatmadan kaçının. Optimum olan stüdyo softbox'ı veya pencereden gelen dağınık gün ışığıdır.
 
-**1. "Seçim" modu** (ok-imleç simgesi). Aktifken mavi renkte vurgulanır. Bu modda:
+**Kameraya uzaklık.** 1.5 metreden yakın olmamalıdır. Bu, burun ve çenenin perspective distortion'unu en aza indirir. 50-85 mm focal length eşdeğerini kullanın (iPhone'da wide değil, 2× telephoto objektif).
 
-- Canvas arka planına tıklayıp sürükleme — kaydırma (pan)
-- Noktanın mavi dairesine tıklama — seçim ve sürükleme (drag)
-- Sarı kareye tıklama — noktayı seçme
-- Alt + sarı kareyi sürükleme — anchor'ı taşıma
+**Nötr yüz ifadesi.** Hasta gülümsemez, dudaklar kapalı ancak sıkılmamış olmalıdır. Gözler açık ve kameraya bakmalıdır. Hiçbir mimik kasılması olmamalıdır.
 
-**2. "Nokta Ekle" modu** (`+●` simgesi). Aktifken mavi. Bu modda fotoğrafa tıklamak yeni kontrol noktası oluşturur.
+**Saçlar.** Yüzden uzaklaştırılmış olmalıdır. Alnı, kulakları ve mandibula hattını kapatmamalıdır. İdeal olarak arkada toplanmış olmalıdır.
 
-**3. Geri Al / Yinele** (↶ / ↷ simgeleri). Son işlemi geri alma ve yeniden uygulama. Geri alınacak işlem yoksa pasif kalır. Kısayol: Ctrl+Z / Ctrl+Shift+Z (Ctrl+Y).
+**Takı ve makyaj.** Çıkarılmış olmalıdır. Piercing, büyük küpeler, parlak ruj — hepsi referansı bozar.
 
-**4. Zoom −** / yüzde / **Zoom +**. Görüntüyü küçültme ve büyütme. Mevcut yüzde ortada görüntülenir. Fare tekerleği ile de kullanılabilir — zoom imlece bağlıdır (Figma'daki gibi).
+**Nötr arka plan.** Açık ve tek renkli (gri, beyaz, soluk mavi). Baş arkasında desen, doku veya parlak nesne olmamalıdır.
 
-**5. "Fit"** — fotoğrafı canvas boyutuna sığdır.
+### Çekim açıları
 
-**6. "1:1"** — zoom'u %100'e sıfırla, fotoğrafı ortala.
+Tam kapsamlı planlama için aynı hastanın üç fotoğrafının bulunması tercih edilir:
 
-**7. Kaydetme göstergesi** — sağdaki son öğe:
+1. **Frontal** (önden) — simetri, nazal ala genişliği ve dudak formunun değerlendirilmesi için
+2. **Profile** (profil, sol ve sağ) — nazofasiyal açı, nazal dorsum, nazal tip ve çenenin değerlendirilmesi için
+3. **3/4** (yarım profil) — orta yüz bölgesi volümü ve zigomanın değerlendirilmesi için
 
-- `●` mavi titreşimli — kaydediliyor
+**Önemli:** mevcut sürümde (MVP) her fotoğraf = ayrı bir plan. Sonraki sürümde (v2) tek plan içinde multi-view desteği planlanmaktadır.
+
+### Fotoğraf gereksinimleri karşılamıyorsa ne yapmalı
+
+Yüklemeyin. Hastadan yeniden çekmesini isteyin veya klinikte kendiniz çekin. Kötü bir fotoğraf üzerindeki deformasyon yanlış beklenti oluşturur ve bu da ameliyat sonrası anlaşmazlığa yol açar.
+
+---
+
+## Editör arayüzü
+
+### Sayfa başlığı
+
+- **"← Plan listesine" oku** — tüm planların listesine dönüş.
+- **Plan adı ve hasta ID'si** — okun altında gösterilir.
+- **"Editör / Önce-Sonra" sekmeleri** — çalışma modunun değiştirilmesi.
+
+### Editörün üst paneli (toolbar)
+
+Canvas'ın sağ üst köşesinde yer alır. Öğeler soldan sağa:
+
+**1. "Seçim" modu** (imleç-ok simgesi). Etkin olduğunda mavi vurgulanır. Bu modda:
+
+- Canvas arka planına tıklayıp sürükleme — panoramik kaydırma (pan)
+- Noktanın mavi dairesine tıklama — seçim + sürükleme (drag)
+- Sarı kareye tıklama — noktanın seçimi
+- Alt + sarı kareyi sürükleme — anchor'ın taşınması
+
+**2. "Nokta ekle" modu** (`+●` simgesi). Etkin olduğunda mavi. Bu modda fotoğrafa tıklamak yeni bir control point oluşturur.
+
+**3. Undo / Redo** (↶ / ↷ simgeleri). Son işlemin geri alınması ve yeniden uygulanması. Geri alınacak bir şey yoksa etkin değildir. Kısayol: Ctrl+Z / Ctrl+Shift+Z (Ctrl+Y).
+
+**4. Zoom −** / yüzde / **Zoom +**. Ölçeğin küçültülmesi ve büyütülmesi. Geçerli yüzde ortada gösterilir. Fare tekerleğiyle de kullanılabilir — zoom imlece bağlıdır (Figma'daki gibi).
+
+**5. "Fit"** — fotoğrafı canvas boyutuna sığdırma.
+
+**6. "1:1"** — zoom'u %100'e sıfırlama, fotoğrafı ortalama.
+
+**7. Kaydetme göstergesi** — en sağdaki öğe:
+
+- `●` mavi ve yanıp sönüyor — kaydetme sürüyor
 - `✓` yeşil — kaydedildi
 - `✕` kırmızı — kaydetme hatası (internet bağlantısını kontrol edin)
 
-### Alt Bilgi Çubuğu
+### Alt bilgi şeridi
 
 Sol alt köşede şunları gösterir:
 
-- Fotoğraf çözünürlüğü (örnek: `677×1200`)
+- Fotoğrafın çözünürlüğü (örnek: `677×1200`)
 - Deformasyon noktalarının sayısı
 
-### Nokta Özellikleri Paneli
+### Nokta özellikleri paneli
 
-Herhangi bir nokta seçildiğinde sağ alt köşede belirir. İçeriği:
+Herhangi bir nokta seçildiğinde sağ alt köşede görünür. İçeriği:
 
-- **Radius (Etki Yarıçapı)** — %1–50 aralığında kaydırıcı. Noktanın çevresindeki deformasyon bölgesini belirler. Radius ne kadar küçükse değişiklik o kadar lokalize olur. Değer, görüntünün uzun kenarının yüzdesi olarak gösterilir. Canvas üzerindeki noktalı çember radius'u görselleştirir.
+- **Radius (Etki yarıçapı)** — 1–50% kaydırıcısı. Nokta çevresindeki deformasyon bölgesini belirler. Radius küçüldükçe değişim daha lokal olur. Değer, görüntünün uzun kenarına göre yüzde olarak gösterilir. Canvas üzerindeki kesikli çember radius'u görselleştirir.
 
-- **Strength (Kuvvet)** — −1,00 ile +1,00 arasında kaydırıcı. 1,00'de nokta pikselleri kaydırma yönünde tam kuvvetle çeker. 0,50'de yarım kuvvette. Negatif değerlerde nokta pikselleri kaydırmanın tersine **iter** (ters düzeltme efektleri için kullanılır).
+- **Strength (Güç)** — −1.00 ile +1.00 arasında kaydırıcı. 1.00 değerinde nokta pikselleri yer değiştirme yönünde tam güçle çeker. 0.50'de ise yarım güçle. Negatif değerlerde nokta pikselleri yer değiştirmeden **iter** (ters yönlü düzeltme etkileri için kullanılır).
 
-- **Başlıktaki × işareti** — noktayı sil.
+- **Başlıktaki × işareti** — noktanın silinmesi.
 
-- **Panel altındaki ipuçları:**
-  - `Alt + kare sürükleme — merkezi kaydır`
+- Panelin altındaki **ipuçları**:
+  - `Alt + kareyi sürükleme — merkezi kaydırma`
   - `Del — sil`
 
 ---
 
-## Kontrol Noktalarıyla Çalışma
+## Control points ile çalışma
 
-### Kontrol Noktasının Anatomisi
+### Bir control point'in anatomisi
 
 Her nokta dört öğeden oluşur:
 
 1. **Sarı kare (Anchor)** — deformasyonun başlangıç merkezi. Genellikle ilk tıklama noktasıyla çakışır. Varsayılan olarak hareket etmez.
 
-2. **Mavi daire (Current)** — hedef nokta. Anchor konumundaki pikseli "nereye taşımak istediğinizi" gösterir. Sürükleme için kullanılan temel öğedir.
+2. **Mavi daire (Current)** — hedef nokta. Anchor konumunda bulunan pikseli "taşımak istediğiniz" yer. Sürükleme için kullanılan temel öğedir.
 
-3. **Anchor ile current arasındaki noktalı çizgi** — kaydırma vektörü. Deformasyonun yönünü ve büyüklüğünü gösterir.
+3. Anchor ile current arasındaki **kesikli çizgi** — yer değiştirme vektörü. Deformasyonun yönünü ve büyüklüğünü gösterir.
 
-4. **Anchor etrafındaki noktalı çember** — noktanın etki bölgesi. Piksel merkezden uzaklaştıkça kaydırma azalır. Çember dışında deformasyon yoktur.
+4. Anchor çevresindeki **kesikli çember** — noktanın etki bölgesi. Piksel merkezden uzaklaştıkça yer değiştirmesi azalır. Çemberin dışında deformasyon yoktur.
 
-### Nokta Ekleme
+### Nokta ekleme
 
 1. `+●` moduna geçin.
-2. Düzeltme planlandığı bölgelere tıklayın. Her tıklama yeni nokta oluşturur.
-3. Oluşturulduğunda nokta anchor = current durumundadır (yani kaydırma sıfırdır). Varsayılan radius %8, strength 1,00'dir.
+2. Düzeltme planlanan bölgelere tıklayın. Her tıklama yeni bir nokta oluşturur.
+3. Oluşturulduğunda noktanın anchor'ı = current'ıdır (yani yer değiştirme sıfırdır). Varsayılan radius 8%, strength 1.00'dir.
 
-### Nokta Taşıma
+### Noktayı taşıma
 
 1. "Seçim" moduna geçin.
-2. Sol fare düğmesiyle mavi daireyi basılı tutun ve istenen konuma sürükleyin.
-3. Hareket sırasında fotoğraf gerçek zamanlı olarak deforme olur.
+2. Farenin sol tuşuyla mavi daireyi basılı tutup istenen konuma sürükleyin.
+3. Fotoğraf hareket boyunca gerçek zamanlı olarak deforme olur.
 
-### İnce Ayar
+### İnce ayar
 
-1. Noktayı seçin (mavi daire veya sarı kareye tıklayın).
+1. Noktayı seçin (mavi daireye veya sarı kareye tıklayın).
 2. Sağ alt panelde şunları düzenleyin:
    - Radius — etki bölgesinin genişliği
-   - Strength — deformasyon kuvveti
+   - Strength — deformasyonun gücü
 
-### Nokta Silme
+### Noktayı silme
 
-Üç yöntem:
+Üç yol:
 
-- Noktayı seçin → özellikler panelindeki × düğmesine tıklayın
-- Noktayı seçin → klavyede Delete veya Backspace tuşuna basın
-- Noktayı seçin → Escape seçimi iptal eder (silmez)
+- Noktayı seçin → özellikler panelinde × işaretine basın
+- Noktayı seçin → klavyeden Delete veya Backspace
+- Noktayı seçin → Escape seçimi kaldırır (silmez)
 
-### Nokta Limiti
+### Nokta sınırı
 
-Teknik maksimum: plan başına 200 nokta. Pratikte kaliteli bir rinoplasti için 10–25 nokta yeterlidir; daha karmaşık girişimler (tam yüz rekonstrüksiyonu) için 50–70 noktaya kadar çıkılabilir.
-
----
-
-## Gelişmiş Deformasyon Teknikleri
-
-Mevcut MVP motoru global RBF deformasyonu kullanmaktadır. Bu yaklaşım lokal değişiklikler için iyi sonuçlar vermekle birlikte, hassas kontrol için belirli tekniklerin uygulanmasını gerektirir.
-
-### Teknik 1 — Lokal Değişiklikler için Küçük Noktalar
-
-Sorun: büyük radius yalnızca hedef bölgeyi değil, komşu yapıları da deforme eder. Çözüm — hassas değişiklikler için küçük radius (%2-4) kullanmak.
-
-**Örnek: burun hörgücünü düzleştirme**
-
-1. Hörgücün tam tepesine bir nokta oluşturun.
-2. Radius = %2-3 olarak ayarlayın.
-3. Strength = 1,00.
-4. Mavi daireyi **dikey olarak aşağı** doğru 3-5 piksel sürükleyin.
-5. Hörgüç düzleşir, burun sırtının komşu bölümleri neredeyse hareket etmez.
-
-### Teknik 2 — Çizgi Boyunca Nokta Zincirleri
-
-Sorun: tek nokta dairesel (radyal) bozulma yaratır. **Lineer** bir yapının düzeltilmesi için (burun sırtı, çene hattı, dudak hattı) nokta zinciri gereklidir.
-
-**Örnek: burun sırtını düzleştirme**
-
-1. Burun sırtı boyunca, burun uzunluğunun %10-15'i aralıklarla 4-5 nokta oluşturun.
-2. Her nokta için radius %2-3.
-3. Mavi daireleri istenen düz çizgi üzerinde hizalanacak şekilde sürükleyin.
-4. Sonuç: burun sırtı düzleşir, yüzün geri kalanı etkilenmez.
-
-### Teknik 3 — Ankraj Noktaları (Anchors)
-
-Sorun: bir bölge deforme edildiğinde komşu bölge (örneğin burun yanındaki yanak) RBF alanının yayılması nedeniyle de hafifçe hareket eder.
-
-Çözüm — düzeltme bölgesinin çevresine **ankraj noktaları** yerleştirmek. Ankraj noktalarında anchor = current konumundadır (mavi daire hareket ettirilmez), ancak warp hesaplamasına dahil olarak komşu piksellerin kaymasını engeller.
-
-**Örnek: dudaklar hareket etmeden burun ucunu düzeltme**
-
-1. Burun ucuna çalışma noktası oluşturun, radius %5, yukarı sürükleyin.
-2. Filtrum üzerine (burun ile dudak arasına) radius %4 olan bir ankraj noktası oluşturun, **hareket ettirmeyin**.
-3. Burun kanatlarının her iki yanına radius %3 olan ankraj noktaları oluşturun, **hareket ettirmeyin**.
-4. Burun ucu yükselir, filtrum ve dudak yerinde kalır.
-
-### Teknik 4 — "Genişletme" için Negatif Strength
-
-Bazen bir noktayı kaydırmak yerine bölgeyi "genişletmek" gerekebilir (daha geniş burun kanatları, daha dolgun dudaklar).
-
-1. İstenen genişleme bölgesinin merkezine bir nokta oluşturun.
-2. Mavi daireyi istenen sınırın **ötesine** sürükleyin.
-3. Strength değerini **−0,3 ile −0,5** arasında ayarlayın (negatif değer).
-4. Radius = %5-10.
-5. Bölge noktadan itilir = genişleme etkisi oluşur.
-
-### Teknik 5 — Kopyalar Aracılığıyla Çoklu Varyantlar
-
-Konsültasyon için aynı operasyonun birkaç varyantına sahip olmak pratiktir. Plan listesindeki "Kopyala" işlevini kullanın:
-
-1. "Demir A.B. — rinoplasti, varyant 1 (konservatif)" planı oluşturun.
-2. Düzenleyin: küçük kaydırmalar, ince değişiklikler.
-3. Plan listesinde → bu planın "Kopyala" düğmesine tıklayın.
-4. Kopyayı yeniden adlandırın: "Demir A.B. — rinoplasti, varyant 2 (orta)".
-5. Açın, deformasyonları artırın.
-6. "Varyant 3 (agresif)" için tekrarlayın.
-
-Konsültasyonda hastaya üç varyantı sırayla gösterin.
-
-### Kaçınılması Gerekenler
-
-**Büyük radius ve büyük kaydırmayı aynı anda kullanmayın.** Bu durum arka planda ve saç çizgisinde dalga artefaktları oluşturur.
-
-**Arka planı deforme etmeyin.** Saç çizgisi / kulak / omuz radius içine giriyorsa bunlar da bozulur. Arka planı "kilitlemek" için çevreye ankraj noktaları yerleştirin.
-
-**Çok uzaktan (zoom out) çalışmayın.** Hassas nokta yerleştirme için %100 veya daha fazla zoom gereklidir. Toolbar'daki `+` ve `1:1` düğmelerini kullanın.
-
-**Simetriyi göz ardı etmeyin.** Hasta burun düzeltmesi istiyorsa her iki tarafı uyumlu şekilde deforme edin. Mevcut MVP'de bu işlem manuel olarak yapılmaktadır (mirror modu v2'de eklenecektir).
+Teknik maksimum plan başına 200 noktadır. Pratikte kaliteli bir rinoplasti için 10–25 nokta yeterlidir; daha karmaşık girişimlerde (tam yüz rekonstrüksiyonu) 50–70'e kadar çıkabilir.
 
 ---
 
-## Hasta Konsültasyonu
+## İleri düzey deformasyon teknikleri
 
-"Önce / Sonra" sekmesi **hastaya gösterim** amacıyla tasarlanmıştır. Teknik öğeler en aza indirilmiş, görsel karşılaştırma ön plana çıkarılmıştır.
+Mevcut MVP motoru global RBF deformasyonu kullanır. Bu, lokal değişimlerde iyi sonuç verir ancak hassas kontrol için belirli bir teknik gerektirir.
 
-### Bölücü Kaydırıcı
+### Teknik 1 — Lokal değişimler için küçük noktalar
 
-Merkezi görüntü, yuvarlak tutacaklı dikey bir çizgiyle ikiye bölünmüştür. Sola veya sağa sürükleyerek hasta şunları görebilir:
+Sorun: büyük radius yalnızca hedef bölgeyi değil, komşu yapıları da deforme eder. Çözüm — hassas değişiklikler için küçük radius (2-4%) kullanmak.
 
-- Sol bölüm — "Önce" fotoğrafı (orijinal)
-- Sağ bölüm — "Sonra" fotoğrafı (deformasyon uygulanmış)
+**Örnek: nazal hump'ın alınması**
+
+1. Doğrudan hump'ın tepesine bir nokta oluşturun.
+2. radius = 2-3% olarak ayarlayın.
+3. Strength = 1.00.
+4. Mavi daireyi 3-5 piksel **dikey olarak aşağı** sürükleyin.
+5. Hump düzleşir, nazal dorsumun komşu bölümleri neredeyse hiç hareket etmez.
+
+### Teknik 2 — Bir hat boyunca nokta zincirleri
+
+Sorun: tek nokta dairesel (radyal) bir bozulma oluşturur. **Doğrusal** bir yapının (nazal dorsum, mandibula hattı, dudak hattı) düzeltilmesi için nokta zinciri gerekir.
+
+**Örnek: nazal dorsumun düzeltilmesi**
+
+1. Nazal dorsum boyunca, burun uzunluğunun 10-15%'i aralıklarla 4-5 nokta oluşturun.
+2. Her nokta için radius 2-3%.
+3. Mavi daireleri, istenen düz hat üzerinde dizilecek şekilde sürükleyin.
+4. Sonuç: nazal dorsum düzleştirilir, yüzün geri kalanı etkilenmez.
+
+### Teknik 3 — Sabitleme noktaları (anchors)
+
+Sorun: bir bölge deforme edilirken komşu bölge (örneğin burnun yanındaki yanaklar) da RBF alanının yayılması nedeniyle biraz hareket eder.
+
+Çözüm — düzeltme bölgesinin çevresine **sabitleme noktaları** yerleştirmek. Sabitleme noktalarında anchor = current'tır (mavi daire hareket ettirilmez) ancak bunlar warp hesaplamasına dahil olur ve komşu pikselleri hareketten alıkoyar.
+
+**Örnek: dudaklar hareket etmeden nazal tip düzeltmesi**
+
+1. Nazal tip üzerinde çalışma noktası oluşturun, radius 5%, yukarı sürükleyin.
+2. Filtrum üzerinde (burun ile dudak arasında) bir sabitleme noktası oluşturun, radius 4%, **hareket ettirmeyin**.
+3. Nazal alaların her iki yanında sabitleme noktaları oluşturun, radius 3%, **hareket ettirmeyin**.
+4. Nazal tip yükselir, filtrum ve dudak yerinde kalır.
+
+### Teknik 4 — "Şişirme" için negatif strength
+
+Bazen noktayı kaydırmak değil, bir alanı "şişirmek" gerekir (daha geniş nazal ala, daha dolgun dudaklar).
+
+1. İstenen genişleme bölgesinin merkezinde bir nokta oluşturun.
+2. Mavi daireyi istenen sınırın **dışına** sürükleyin.
+3. Strength'i **−0.3 ile −0.5** arasına (negatif değere) ayarlayın.
+4. Radius = 5-10%.
+5. Bölge noktadan itilir = genişleme etkisi.
+
+### Teknik 5 — Kopyalar aracılığıyla çoklu seçenekler
+
+Konsültasyon için aynı ameliyatın birkaç seçeneğine sahip olmak elverişlidir. Plan listesindeki "Kopyala" işlevini kullanın:
+
+1. "Petrova A.B. — rinoplasti, seçenek 1 (konservatif)" planını oluşturun.
+2. Düzenleyin: küçük yer değiştirmeler, ince değişiklikler.
+3. Plan listesinde → bu plandaki "Kopyala" düğmesi.
+4. Kopyayı yeniden adlandırın: "Petrova A.B. — rinoplasti, seçenek 2 (ılımlı)".
+5. Açın, deformasyonları güçlendirin.
+6. "Seçenek 3 (agresif)" için tekrarlayın.
+
+Konsültasyonda hastaya üç seçeneğin tümünü sırayla gösterin.
+
+### Kaçınılması gerekenler
+
+**Çok büyük radius ile çok büyük yer değiştirmeleri aynı anda kullanmayın.** Bu, arka planda ve saç çizgisinde dalga artefaktları oluşturur.
+
+**Arka planı deforme etmeyin.** Saç çizgisi / kulak / omuz radius içine giriyorsa bunlar da bozulur. Arka planı "kilitlemek" için çevreye sabitleme noktaları yerleştirin.
+
+**Aşırı uzaklaştırılmış zoom ile çalışmayın.** Noktaların hassas yerleştirilmesi 100% veya daha yüksek zoom gerektirir. Toolbar'daki `+` ve `1:1` düğmelerini kullanın.
+
+**Simetriyi göz ardı etmeyin.** Hasta burun düzeltmesi istiyorsa her iki tarafı uyumlu şekilde deforme edin. Mevcut MVP'de bu manuel olarak yapılır (mirror mode v2'de gelecektir).
+
+---
+
+## Hasta ile konsültasyon
+
+"Önce / Sonra" sekmesi **hastaya gösterim** için tasarlanmıştır. Bu sekmede teknik öğe minimumda, görsel karşılaştırma maksimumdadır.
+
+### Bölücü kaydırıcı
+
+Merkezdeki görüntü, yuvarlak tutamaklı dikey bir çizgiyle ayrılmıştır. Hasta bunu sola-sağa sürüklerken şunları görür:
+
+- Sol kısım — "Önce" fotoğrafı (orijinal)
+- Sağ kısım — "Sonra" fotoğrafı (deformasyon uygulanmış)
 
 Karışıklık olmaması için köşelerde "ÖNCE" ve "SONRA" etiketleri bulunur.
 
-### Önerilen Konsültasyon Senaryosu
+### Önerilen konsültasyon senaryosu
 
-1. Planı tam ekranda açın (tam ekran için tarayıcıda F11).
-2. Hastaya "Editör" sekmesini gösterin — noktaları görsel işaretçi olarak kullanarak ne planladığınızı açıklayın.
-3. "Önce / Sonra" sekmesine geçin, kaydırıcıyı hastanın kendisinin kullanmasına izin verin.
-4. Bunun beklentileriyle örtüşüp örtüşmediğini tartışın.
-5. Başka varyantlar varsa (konservatif / agresif) mevcut planı kapatın, bir sonrakini açın.
-6. Sonuç olarak bir varyantı nihai olarak seçin.
-7. Aydınlatılmış onam formuna eklemek üzere PDF (veya JPG+baskı) formatında dışa aktarın.
+1. Planı fullscreen olarak açın (tam ekran için tarayıcıda F11).
+2. Hastaya "Editör" sekmesini gösterin — noktaları görsel işaretleyici olarak kullanarak tam olarak neyi değiştirmeyi planladığınızı açıklayın.
+3. "Önce / Sonra"ya geçin, kaydırıcıyı hastanın kendisinin oynatmasına izin verin.
+4. Tartışın — bu, hastanın beklentilerine uyuyor mu.
+5. Başka seçenekler varsa (konservatif / agresif) — mevcut planı kapatın, sonraki planı açın.
+6. Sonuç olarak tek bir seçeneği nihai olarak belirleyin.
+7. Bilgilendirilmiş onama eklenmek üzere PDF (veya JPG + baskı) olarak dışa aktarın.
 
-### Hastaya Söylenmesi Gerekenler
+### Hastaya söylenmesi önemli olanlar
 
-Simülasyon, **beklenen sonucun görselleştirmesidir, bir garanti değildir**. Gerçek operasyon sonucu şu faktörlere bağlıdır:
+Simülasyon, **beklenen sonucun görselleştirmesidir, garanti değildir**. Ameliyatın gerçek sonucu şunlara bağlıdır:
 
-- Doku özellikleri (cilt kalınlığı, elastikiyet, kıkırdak kalınlığı)
-- İyileşme ve skar oluşum süreci
+- Dokuların bireysel özellikleri (cilt kalınlığı, elastikiyet, kartilaj kalınlığı)
+- İyileşme ve skarlaşma süreci
 - Cerrahın tekniği
 - Hastanın postoperatif rejime uyumu
 
-Simülasyondan ±%10-20 oranında sapma normaldir ve operasyon kusuru sayılmaz. Bu ifadeyi aydınlatılmış onam belgesinde kullanın.
+Simülasyondan ±10-20% sapmalar normaldir ve ameliyatın kusuru sayılmaz. Bu ifadeyi bilgilendirilmiş onamda kullanın.
 
 ---
 
-## Dışa Aktarma ve Dokümantasyon
+## Dışa aktarma ve dokümantasyon
 
-### "Dışa Aktar" Paneli
+### "Dışa aktarma" paneli
 
-"Önce / Sonra" sekmesinin sağ tarafında yer alır.
+"Önce / Sonra" sekmesinde sağda yer alır.
 
-### Ne Dışa Aktarılmalı
+### Neler dışa aktarılabilir
 
-**1. Operasyon öncesi (orijinal)** — deformasyon uygulanmamış hastanın orijinal fotoğrafı. Tıbbi kayıt için ve sonuçla karşılaştırılacak "öncesi" belgesi olarak kullanılır.
+**1. Ameliyat öncesi (orijinal)** — hastanın deformasyon uygulanmamış özgün fotoğrafı. Medical record için ve sonuçla karşılaştırmada "önce durumu" olarak kullanılır.
 
-**2. Operasyon sonrası (deformasyonlu)** — warp uygulanmış fotoğraf. Hastaya gösterim ve plan dokümantasyonu için kullanılır.
+**2. Ameliyat sonrası (deformasyonlu)** — warp uygulanmış fotoğraf. Hastaya gösterim ve plan dokümantasyonu için kullanılır.
 
-**3. Yan yana: Önce ve Sonra** — "ÖNCE" ve "SONRA" etiketleriyle tek görüntüde side-by-side kompozisyon. Baskı almak ve aydınlatılmış onam için en pratik formattır.
+**3. Yan yana: Önce ve Sonra** — "ÖNCE" ve "SONRA" etiketleriyle tek bir görüntüde side-by-side kompozisyon. Baskı ve bilgilendirilmiş onam için en elverişli format.
 
 ### Format
 
-**JPG** — çoğu durum için önerilir. Küçük dosya boyutu, %85-92'de kabul edilebilir kalite.
+**JPG** — çoğu durumda önerilir. Küçük dosya boyutu, 85-92%'de kabul edilebilir kalite.
 
-**PNG** — sıkıştırmasız, maksimum kalite. Sonucun Photoshop'ta düzenleneceği veya büyük formatta baskı alınacağı durumlarda kullanın.
+**PNG** — sıkıştırmasız, maksimum kalite. Sonuç daha sonra Photoshop'ta düzenlenecekse veya büyük formatta basılacaksa kullanın.
 
-### JPG Kalitesi
+### JPG kalitesi
 
-%40-100 arasında kaydırıcı. Öneriler:
+40-100% kaydırıcısı. Öneriler:
 
-- %60-70 — e-posta ve mesajlaşma uygulamaları için
-- %80-90 — belge baskısı standardı
-- %95-100 — arşiv ve yayın için
+- 60-70% — e-posta ve mesajlaşma uygulamaları için
+- 80-90% — document print için standart
+- 95-100% — arşiv ve yayın için
 
 ### İndirme
 
-Parametreleri ayarladıktan sonra "İndir" düğmesine tıklayın. Dosya, tarayıcınızın İndirilenler klasörüne `plan-2026-04-24-rinoplasti.jpg` biçiminde bir adla kaydedilir.
+Parametreleri ayarladıktan sonra "İndir"e basın. Dosya, tarayıcınızın Downloads klasörüne `plan-2026-04-24-rinoplasti.jpg` biçiminde bir adla kaydedilir.
 
-### Dokümantasyon Önerisi
+### Dokümantasyon önerisi
 
-Her operasyon için hastanın elektronik kayıtlarına şunları kaydedin:
+Her ameliyat için hastanın elektronik dosyasına şunları kaydedin:
 
 1. Orijinal fotoğraf ("Önce" dışa aktarımı)
-2. Sonuç simülasyonu ("Sonra" dışa aktarımı)
-3. Yan yana karşılaştırma ("Yan Yana" dışa aktarımı)
-4. Neyin planlandığını anlamak için görünür kontrol noktalarıyla editörün ekran görüntüsü (Print Screen ile)
+2. Sonucun simülasyonu ("Sonra" dışa aktarımı)
+3. Side-by-side ("Yan yana" dışa aktarımı)
+4. Control points görünür durumdaki editörün ekran görüntüsü (Print Screen ile) — tam olarak neyin planlandığının anlaşılması için
 
-Bu, preoperatif planlama için eksiksiz bir dokümantasyon oluşturur ve hasta ile postoperatif anlaşmazlıklara karşı koruma sağlar.
+Bu, pre-op planlamanın tam dokümantasyonunu oluşturur ve hastayla post-op anlaşmazlıklara karşı koruma sağlar.
 
 ---
 
-## Kaydetme, Kopyalama, Silme
+## Kaydetme, kopyalar, silme
 
-### Otomatik Kaydetme
+### Otomatik kaydetme
 
-Tüm değişiklikler (nokta ekleme/silme, parametrelerini değiştirme, sürükleme) son işlemden **2 saniye sonra otomatik olarak** kaydedilir. Manuel bir işlem gerekmez.
+Tüm değişiklikler (nokta ekleme/silme, parametrelerinin değiştirilmesi, sürükleme) son işlemden **2 saniye sonra otomatik olarak** kaydedilir. Elle bir şey yapmanız gerekmez.
 
-Üst toolbar'daki kaydetme göstergesi mevcut durumu gösterir:
+Üst toolbar'daki kaydetme göstergesi geçerli durumu gösterir:
 
-- `●` mavi titreşimli — kaydediliyor
+- `●` mavi ve yanıp sönüyor — kaydetme sürüyor
 - `✓` yeşil — kaydedildi
-- `✕` kırmızı — hata (internet bağlantısını kontrol edin)
+- `✕` kırmızı — hata (internet bağlantınızı kontrol edin)
 
-Sayfa kapatıldığında veya başka bir sekmeye geçildiğinde — zorunlu kaydetme gerçekleşir. Veriler kaybolmaz.
+Sayfa kapatıldığında veya başka bir sekmeye geçildiğinde kaydetme zorunlu olarak yapılır. Veriler kaybolmaz.
 
-### Plan Kopyalama
+### Planın kopyalanması
 
-Plan listesinde her kartın üç düğmesi bulunur: "Aç", "Kopyala", "Sil".
+Plan listesinde her kartta üç düğme bulunur: "Aç", "Kopyala", "Sil".
 
-**Kopyala** işlevi, aynı fotoğraf ve tüm kontrol noktalarıyla planın tam bir kopyasını oluşturur. Kopya listenin en üstünde görünür. Düzenlemeden önce yeniden adlandırın (örneğin adın sonuna "(varyant 2)" ekleyin).
+**Kopyala**, aynı fotoğraf ve tüm control points ile planın tam bir kopyasını oluşturur. Kopya listenin en üstünde görünür. Düzenlemeye başlamadan önce yeniden adlandırın (örneğin adına "(seçenek 2)" ekleyin).
 
 Şu amaçlarla kullanılır:
 
-- Operasyonun birden fazla varyantını oluşturma
-- Deneysel değişikliklerden önce planı yedekleme
-- Benzer anatomiye sahip hastalara ayarları aktarma
+- Ameliyatın birkaç seçeneğinin oluşturulması
+- Deneysel değişiklikler öncesinde planın backup'ı
+- Ayarların benzer anatomiye aktarılması
 
-### Plan Silme
+### Planın silinmesi
 
-"Sil" düğmesi onay ister. Onaylandıktan sonra:
+"Sil" düğmesi onay ister. Onay verildikten sonra:
 
-- Plan veritabanında silindi olarak işaretlenir (soft delete)
-- Hastanın fotoğrafı, R2 deposundan 24 saat içinde silinir (bu fotoğrafa kopyalardan başka bağlantı yoksa)
+- Plan veritabanında silinmiş olarak işaretlenir (soft delete)
+- Hastanın fotoğrafı 24 saat içinde R2 deposundan silinir (kopyalardan bu fotoğrafa başka referans yoksa)
 - Plan listeden kaybolur
 
-**Uyarı:** Silme işlemi geri alınamaz. Güvence gerekiyorsa orijinali silmeden önce planı kopyalayın.
+**Dikkat:** silme işlemi geri alınamaz. Güvence gerekiyorsa — orijinali silmeden önce planı kopyalayın.
 
 ---
 
-## Klavye Kısayolları
+## Kısayol tuşları
 
 Giriş alanları dışında sayfanın her yerinde çalışır.
 
-- **`Ctrl + Z`** — Geri Al (Undo)
-- **`Ctrl + Shift + Z`** veya **`Ctrl + Y`** — Yinele (Redo)
+- **`Ctrl + Z`** — Undo (geri alma)
+- **`Ctrl + Shift + Z`** veya **`Ctrl + Y`** — Redo (yeniden uygulama)
 - **`Delete`** veya **`Backspace`** — Seçili noktayı sil
-- **`Escape`** — Seçimi iptal et ve "Seçim" moduna geç
-- **`Fare tekerleği`** — İmleç konumuna zoom
-- **`Alt + sarı kare sürükleme`** — Seçili noktanın anchor'ını taşı
+- **`Escape`** — Seçimi kaldır + "Seçim" moduna geç
+- **`Fare tekerleği`** — İmleç konumuna göre zoom
+- **`Alt + sarı kareyi sürükleme`** — Seçili noktanın anchor'ını taşıma
 
 Sonraki sürümlerde şunların eklenmesi planlanmaktadır:
 
 - `V` — "Seçim" modu
 - `A` — "Ekle" modu
 - `+` / `−` — zoom
-- `0` — görünüme sığdır
-- `1` — %100 zoom
-- `Space + sürükleme` — geçici pan modu
+- `0` — fit to view
+- `1` — 100% zoom
+- `Space + drag` — geçici pan modu
 
 ---
 
 ## Gizlilik ve PHI
 
-DocPats Surgical Simulation, hasta tıbbi verileri bakımından HIPAA (ABD) ve GDPR (AB) gereksinimlerine uygun şekilde tasarlanmıştır.
+DocPats Surgical Simulation, hasta tıbbi verilerine ilişkin HIPAA (ABD) ve GDPR (AB) gereklilikleri gözetilerek geliştirilmiştir.
 
-### Şifrelenenler
+### Neler şifrelenir
 
-- **Plan adı** — AES-256-GCM, veri tabanında şifrelenir
-- **Hasta kimliği** — AES-256-GCM, veri tabanında şifrelenir
-- **Fotoğraf** — R2'de sunucu taraflı şifrelemeyle depolanır, yalnızca yetkili oturum aracılığıyla erişilebilir
+- **Plan adı** — AES-256-GCM, veritabanında şifrelenir
+- **Hasta kimliği** — AES-256-GCM, veritabanında şifrelenir
+- **Fotoğraf** — R2'de sunucu tarafı şifreleme ile saklanır, erişim yalnızca yetkilendirilmiş session ile sağlanır
 
-### Şifrelenmeyenler
+### Neler şifrelenmez
 
-- Kontrol noktaları (koordinatlar, radius, strength) — bunlar HIPAA kapsamında PHI sayılmaz; zira fotoğraf ve meta verilerden bağımsız olarak hastayı tanımlamazlar
-- Plan oluşturma/güncelleme tarihleri
+- Control points (koordinatlar, radius, strength) — bunlar HIPAA anlamında PHI değildir, çünkü fotoğraf ve üstverilerden bağımsız olarak hastayı tanımlamazlar
+- Planın oluşturulma/güncellenme tarihleri
 
 ### Erişim
 
-- Yalnızca DocPats hesabının sahibi olarak siz kendi planlarınıza erişebilirsiniz
-- Ne Anthropic ne de DocPats ekibi planlarınızın içeriğini okuyabilir
-- Mahkeme talebi durumunda — şifrelenmiş veriler sunulur, anahtar kliniktedir
+- Planlarınıza yalnızca DocPats hesap sahibi olarak siz erişebilirsiniz
+- Ne Anthropic ne de DocPats ekibi planlarınızın içeriğini okuyamaz
+- Mahkeme talebi hâlinde şifrelenmiş veriler sunulur, anahtar klinikte kalır
 
 ### Öneriler
 
-**DocPats hesabınız için güçlü parola ve 2FA kullanın.** Hesabınızın ele geçirilmesi hasta PHI'sinin ifşası anlamına gelir.
+**DocPats hesabınız için karmaşık şifreler ve 2FA kullanın.** Hesabınızın ele geçirilmesi = hastaların PHI'sinin ifşası.
 
-**Ekran görüntülerini PIN/parola koruması olmayan yerel diske kaydetmeyin.** Dışa aktarılan JPG/PNG dosyaları otomatik olarak şifrelenmez.
+**Ekran görüntülerini PIN/şifre olmadan korumasız local disk'e kaydetmeyin.** Dışa aktarılan JPG/PNG dosyaları otomatik olarak şifrelenmez.
 
-**Klinik bilgisayarı elden çıkarmadan önce** tarayıcı önbelleğinin fotoğraf kopyaları içermediğinden emin olun. Tarayıcı gizlilik araçlarını kullanın (örneğin Chrome'da Önbelleği Temizle).
+**Kliniğin bilgisayarını hizmet dışı bırakmadan önce** tarayıcı cache'inde fotoğraf kopyalarının bulunmadığından emin olun. Browser privacy tools kullanın (örneğin Chrome'da Cleanup Cache).
 
-**Avrupalı hastalarla çalışırken** (GDPR) — fotoğrafı sisteme yüklemeden **önce** biyometrik veri işleme için yazılı onam alın.
+**Avrupalı hastalarla çalışırken** (GDPR) — fotoğrafı sisteme yüklemeden **önce** biyometrik verilerin işlenmesi için yazılı onam alın.
 
 ---
 
-## Sorun Giderme
+## Sorun giderme
 
-### Fotoğraf yüklenmiyor, "Görsel okunamadı" veya "Image cannot be read" hatası görünüyor
+### Fotoğraf yüklenmiyor, "Görsel okunamadı" veya "Image cannot be read" görünüyor
 
-**Neden 1:** Format desteklenmiyor. Yalnızca JPG, PNG, WebP desteklenmektedir. HEIC (iPhone yerel formatı) **çalışmaz**.
+**Neden 1:** Format desteklenmiyor. Yalnızca JPG, PNG, WebP desteklenir. HEIC (iPhone native) **çalışmaz**.
 
-**Çözüm:** HEIC'i JPG'ye dönüştürün (Mac'te Fotoğraflar uygulaması veya çevrimiçi dönüştürücü).
+**Çözüm:** HEIC'i JPG'ye dönüştürün (Mac'te Photos, çevrimiçi dönüştürücü).
 
 **Neden 2:** Fotoğraf 200×200 px'den küçük.
 
-**Çözüm:** Küçük resim (thumbnail) veya önizleme yerine orijinal fotoğrafı kullanın.
+**Çözüm:** Thumbnail veya preview değil, orijinal fotoğrafı kullanın.
 
-**Neden 3:** Dosya bozuk ya da gerçek bir görüntü dosyası değil (örneğin .docx'ten yeniden adlandırılmış .jpg).
+**Neden 3:** Dosya bozuk veya gerçek bir görüntü değil (örneğin .docx'ten .jpg olarak yeniden adlandırılmış).
 
-**Çözüm:** Dosyayı standart görüntüleyicide açın (Fotoğraflar, Preview). Açılmıyorsa dosya bozuktur; başka bir dosya kullanın.
+**Çözüm:** Dosyayı standart görüntüleyicide açın (Photos, Preview). Açılmıyorsa dosya bozuktur, başka bir dosya kullanın.
 
 ### Editör yükleniyor ancak canvas boş
 
-**Neden:** R2 deposundan fotoğraf yüklenirken CORS hatası. Genellikle Cloudflare'in doğru header'ları henüz önbelleğe almadığı ilk yüklemede yaşanır.
+**Neden:** Fotoğraf R2 deposundan yüklenirken CORS hatası. Genellikle Cloudflare doğru header'ları henüz önbelleğe almadığında, ilk yüklemede meydana gelir.
 
 **Çözüm:** 30 saniye bekleyin, Hard Refresh yapın (Ctrl+Shift+R). Sorun devam ederse DocPats teknik desteğine bildirin.
 
-### Noktalar görünüyor ancak sürüklenemiyor
+### Noktalar görünüyor ancak sürüklenmiyor
 
-**Neden:** Tarayıcı pointer capture event'larını almıyor. Çoğunlukla eski tarayıcı veya tablet/stylus'a özgü ayardan kaynaklanır.
+**Neden:** Tarayıcı pointer capture event'lerini almıyor. Bu genellikle eski bir tarayıcıdan veya tablet/stylus'a özgü bir ayardan kaynaklanır.
 
-**Çözüm:** Tarayıcıyı son sürüme güncelleyin (Chrome 120+, Firefox 115+, Edge 120+, Safari 17+). Dokunmatik yüzeyde (touchpad) — fare kullanın.
+**Çözüm:** Tarayıcıyı en son sürüme güncelleyin (Chrome 120+, Firefox 115+, Edge 120+, Safari 17+). Touchpad'de fare kullanın.
 
 ### Deformasyon fotoğrafa uygulanmıyor (noktalar hareket ediyor ancak fotoğraf değişmiyor)
 
-**Neden:** WebWorker yüklenmemiş. Chrome, cihaz belleği yetersizse worker'ı engelleyebilir.
+**Neden:** WebWorker yüklenmemiş. Chrome, cihaz belleği düşük olduğunda worker'ı engelleyebilir.
 
-**Çözüm:** Gereksiz sekmeleri kapatın, editörü yeniden yükleyin (F5). Sorun tekrarlarsa başka bir tarayıcı veya 8 GB+ RAM'li bilgisayar kullanın.
+**Çözüm:** Gereksiz sekmeleri kapatın, editörü yeniden yükleyin (F5). Tekrarlanıyorsa başka bir tarayıcı veya 8GB+ RAM'e sahip bir bilgisayar kullanın.
 
 ### Kaydetme göstergesi kırmızı (✕)
 
-**Neden:** DocPats sunucusuna bağlantı yok ya da oturum süresi dolmuş.
+**Neden:** DocPats sunucusuyla bağlantı yok veya session süresi dolmuş.
 
-**Çözüm:** İnternet bağlantısını kontrol edin. Her şey normalse sayfayı yeniden yükleyin (son 2 saniyedeki değişiklikler kaybolabilir, geri kalan her şey kaydedilmiştir).
+**Çözüm:** İnterneti kontrol edin. Her şey normalse sayfayı yeniden yükleyin (son 2 saniyedeki değişiklikler kaybolabilir, geri kalan her şey kaydedilmiştir).
 
-### Plan listesi boş, oysa planlar oluşturmuştum
+### Plan oluşturduğum hâlde plan listesi boş
 
-**Neden:** Farklı bir hesapla oturum açtınız ya da yanlışlıkla geliştirme/test ortamına geçiş yaptınız.
+**Neden:** Başka bir hesapla oturum açmışsınız veya yanlışlıkla dev/staging ortamına geçmişsiniz.
 
-**Çözüm:** URL'yi (klinikteki production URL'si olmalı) ve hesap ayarlarındaki e-posta adresini kontrol edin.
+**Çözüm:** URL'yi (kliniğin production-URL'si olmalıdır) ve hesap ayarlarındaki e-postayı kontrol edin.
 
 ### Fotoğraf düşük çözünürlükte dışa aktarılıyor
 
-**Neden:** Tam çözünürlüklü orijinal yerine önizleme sürümünü (maks. 1200 px) kullanıyorsunuz.
+**Neden:** Full-resolution orijinal yerine fotoğrafın preview sürümünü (maksimum 1200 px) kullanıyorsunuz.
 
-**Çözüm:** Dışa aktarma sırasında sistem warp'ı otomatik olarak tam çözünürlüğe uygular — dışa aktarma panelinin sağ üst köşesindeki yükleme göstergesi kaybolana kadar bekleyin. Beklemeden "İndir" düğmesine tıklamayın.
+**Çözüm:** Dışa aktarma sırasında sistem warp'ı otomatik olarak tam çözünürlüğe uygular — yükleme göstergesi kaybolana kadar bekleyin (dışa aktarma panelinin sağ üst köşesinde). Beklemeden "İndir"e basmayın.
 
 ### Editör yavaş çalışıyor, takılıyor
 
-**Neden:** 50+ nokta ve 4000×6000 px fotoğraf içeren planlarda deformasyon, düşük donanımlı cihazlar için ağır hale gelir.
+**Neden:** 50+ noktalı ve 4000×6000 px fotoğraflı planlarda deformasyon, low-end cihazlar için ağır hâle gelir.
 
 **Çözüm:**
 
-- Fit modunda çalışın (daha küçük önizleme hesaplama açısından daha ekonomiktir)
-- Nokta sayısını azaltın (yakın noktaları birleştirin)
-- Dedicated GPU'lu cihaz kullanın
+- Fit modunda çalışın (küçük preview hesaplama açısından daha hafiftir)
+- Nokta sayısını azaltın (birbirine yakın olanları birleştirin)
+- Dedicated GPU'ya sahip bir cihaz kullanın
 
 ---
 
-## İş Akışı Önerileri
+## Workflow önerileri
 
-Kullanım deneyiminden elde edilen optimum konsültasyon iş akışı:
+Kullanım pratiğinden yola çıkarak, konsültasyon için en uygun workflow:
 
-### Hasta Gelmeden Önce (10-15 dakika)
+### Hasta gelmeden önce (10-15 dakika)
 
-1. Hastanın fotoğrafını açın (önceden e-posta ile alınmış veya ön ziyarette çekilmiş).
-2. DocPats'te 2-3 varyant planı oluşturun:
+1. Hastanın fotoğrafını açın (önceden e-posta ile alınmış veya ön muayenede çekilmiş).
+2. DocPats'te 2-3 seçenek planı oluşturun:
    - `[Hasta] — konservatif`
-   - `[Hasta] — orta`
+   - `[Hasta] — ılımlı`
    - `[Hasta] — agresif`
-3. Her birinde noktaları önceden yerleştirin, kaydedin.
+3. Her birinde noktaları önceden yerleştirin ve kaydedin.
 
-### Konsültasyon Sırasında (30-40 dakika)
+### Konsültasyon sırasında (30-40 dakika)
 
-1. Görselleştirme olmaksızın operasyonun olanaklarını ve sınırlılıklarını hastaya açıklayın.
-2. DocPats'i büyük monitörde açın (minimum 24").
-3. Yerleştirilmiş noktalarla **editörü** gösterin — anatomisini açıklayın.
-4. **Önce/Sonra** sekmesine geçin — kaydırıcıyı hastanın kendisinin kullanmasına izin verin.
-5. **3 varyantı** sırayla gösterin. Her birini tartışmak için 5-10 dakika ayırın.
-6. Hastanın beklentilerini ve kaygılarını tartışın.
-7. Nihai varyantı birlikte seçin.
+1. Hastaya ameliyatın olanaklarını ve sınırlılıklarını görselleştirme olmadan açıklayın.
+2. DocPats'i büyük bir monitörde açın (en az 24").
+3. Noktaların yerleştirilmiş olduğu **editörü** gösterin — anatomiyi açıklayın.
+4. **Önce/Sonra**'ya geçin — hastanın kaydırıcıyla oynamasına izin verin.
+5. **3 seçeneğin tümünü** sırayla gösterin. Her biri için 5-10 dakika tartışma süresi ayırın.
+6. Hastanın beklentilerini ve tereddütlerini tartışın.
+7. Nihai seçeneği birlikte belirleyin.
 
-### Konsültasyon Sonrasında (5 dakika)
+### Konsültasyondan sonra (5 dakika)
 
-1. Nihai planı %90 JPG kalitesinde 3 formatta dışa aktarın (önce / sonra / side-by-side).
-2. Hastanın elektronik tıbbi kayıtlarına kaydedin.
-3. Hastanın fiziksel klasörü için side-by-side baskı alın.
-4. Aydınlatılmış onam formuna hasta imzasıyla ekleyin: "_Beklenen sonucun simülasyonunu gördüm ve bunun yaklaşık bir görselleştirme olduğunu anlıyorum_".
-5. Operasyon günü (veya bir gün önce) — ekiple taze bir tekrar inceleme için DocPats'te nihai planı açın.
+1. Nihai planı 3 formatta (önce / sonra / side-by-side) JPG 90% olarak dışa aktarın.
+2. Hastanın electronic medical record'una kaydedin.
+3. Hastanın fiziksel dosyası için side-by-side görüntüyü yazdırın.
+4. Hastanın imzasıyla bilgilendirilmiş onama ekleyin: "_Beklenen sonucun simülasyonunu gördüm ve bunun yaklaşık bir görselleştirme olduğunu anlıyorum_".
+5. Ameliyat günü (veya bir gün öncesinde) — ekiple birlikte güncel bir kez daha gözden geçirmek için nihai planı DocPats'te açın.
 
 ---
 
-## Sürüm Yol Haritası
+## Sürüm yol haritası
 
-Mevcut sürüm (MVP) — temel işlev seti.
+Mevcut sürüm (MVP) — temel işlev kümesi.
 
-### v2.0 "Assisted" (önümüzdeki 3-4 haftada planlanıyor)
+### v2.0 "Assisted" (önümüzdeki 3-4 hafta içinde planlanıyor)
 
-- **MediaPipe Face Mesh aracılığıyla otomatik yüz işaretlemesi** — plan açıldığında 468 anatomik landmark otomatik olarak belirir
-- **Nokta grupları** — burun / dudaklar / gözler / kaşlar ayrı ayrı göster/gizle
-- **Kalibrasyon** — pupillalar arası mesafeyi belirterek tüm ölçümleri milimetre cinsinden alma
-- **Tıbbi ölçümler** — nasofrontal açı, nazolabiyal açı, burun ucu projeksiyonu (Goode oranı), alar taban genişliği
-- **Symmetry lock** — sağ yarıyı sol yarıya yansıtma
-- **Nazal cerrahi ön ayarları (presets)** — hump reduction / tip refinement / nostril narrowing için önceden yapılandırılmış nokta setleri
-- **Maske koruması** — deformasyon saç ve arka planı otomatik olarak etkilemez
+- MediaPipe Face Mesh aracılığıyla **otomatik yüz işaretlemesi** — plan açıldığında 468 anatomical landmark otomatik olarak görünür
+- **Nokta grupları** — burun / dudaklar / gözler / kaşları ayrı ayrı gösterme/gizleme
+- **Kalibrasyon** — pupiller arası mesafeyi girerek tüm ölçümleri milimetre cinsinden alma
+- **Tıbbi ölçümler** — nasofrontal angle, nasolabial angle, tip projection (Goode's ratio), alar base width
+- **Symmetry lock** — sağ yarının sol yarıya yansıtılması
+- **Nasal surgery presets** — hump reduction / tip refinement / nostril narrowing için pre-configured nokta setleri
+- **Mask protection** — deformation saçları ve arka planı otomatik olarak etkilemez
 
 ### v3.0 "Professional"
 
-- **Liquify brush** — noktalara ek olarak Photoshop tarzı interaktif araç
-- **Referans kütüphanesi** — hızlı eşleştirme için "hedef burun" veritabanı
-- **Multi-view** — tek planda 3-5 çekim açısı, eş zamanlı deformasyon
-- **Hasta için PDF raporu** — klinik logosu, ölçümler ve onam metniyle
-- **Konsültasyon modu** — sunum için tam ekran kullanıcı arayüzü
+- **Liquify brush** — noktalara ek olarak etkileşimli Photoshop-style araç
+- **Reference library** — hızlı matching için "hedef burunlar" veritabanı
+- **Multi-view** — tek planda 3-5 çekim açısı, senkron deformasyon
+- Hasta için klinik logosu, measurements ve consent text içeren **PDF rapor**
+- **Consultation mode** — sunum için fullscreen UI
 
 ### v4.0 "3D"
 
-- Makine öğrenmesi ile 2B'den 3B'ye yeniden yapılandırma
-- 3B mesh düzenleme
-- Hastanın akıllı telefonunda AR önizleme
+- ML aracılığıyla 2D→3D reconstruction
+- 3D mesh editing
+- Hastanın akıllı telefonunda AR preview
 
 ---
 
-_Belge, DocPats editörlüğü tarafından Dr. İsmail'in gözetiminde hazırlanmıştır, Nisan 2026._
+_Bu doküman, Dr. İsmailov'un yönetiminde DocPats yayın kurulu tarafından hazırlanmıştır, Nisan 2026._
+
+<!-- translated-from-ru: 65848d708c47ec27f7c2babbb9fcaac9b390bb72 -->

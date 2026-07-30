@@ -24,6 +24,14 @@ export default function Aside() {
               <span>Статус системы</span>
             </Link>
           </li>
+          {/* Тексты для пользователей: что написано и что отстало по языкам.
+              Не привязано к модулю — корпус описывает платформу целиком. */}
+          <li className="nav-item" data-sec="overview">
+            <Link className="nav-link collapsed" to="docs">
+              <i className="bi bi-journal-text"></i>
+              <span>Документация</span>
+            </Link>
+          </li>
 
           {/* ─── Клиники ─── */}
           <li className="nav-heading" data-sec="clinics">Клиники</li>

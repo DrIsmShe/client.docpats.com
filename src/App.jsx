@@ -61,6 +61,7 @@ import VirtualPatientReaderPage from "./pages/radiology/VirtualPatientReaderPage
 import ArenaDuelsPage from "./pages/radiology/ArenaDuelsPage";
 import RadiologyLegacyRedirect from "./pages/radiology/RadiologyLegacyRedirect";
 import AdminRadiologyCasesPage from "./pages/admin/radiology/AdminRadiologyCasesPage";
+import AdminDocsPage from "./pages/admin/docs/AdminDocsPage";
 import AdminLabCasesPage from "./pages/admin/radiology/AdminLabCasesPage";
 import AdminVpCasesPage from "./pages/admin/radiology/AdminVpCasesPage";
 import AdminArenaAnalyticsPage from "./pages/admin/radiology/AdminArenaAnalyticsPage";
@@ -2731,6 +2732,7 @@ function App() {
                 element={<AdminExamCategoriesPage />}
               />
               {/* Лучевая диагностика — авторинг и ревью кейсов чтения снимков. */}
+              <Route path="docs" element={<AdminDocsPage />} />
               <Route path="radiology" element={<AdminRadiologyCasesPage />} />
               {/* Станция «Анализы» — авторинг лабораторных кейсов. */}
               <Route path="labs" element={<AdminLabCasesPage />} />

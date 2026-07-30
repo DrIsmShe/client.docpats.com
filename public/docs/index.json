@@ -1,0 +1,86 @@
+{
+  "generatedAt": "2026-07-30T17:31:29.267Z",
+  "sections": [
+    {
+      "name": "for-doctors",
+      "title": "DocPats для врача",
+      "sourceHash": "cd1b5b73fed154043d6e29985cf1c606aaee37f7",
+      "languages": {
+        "ru": {
+          "status": "source",
+          "bytes": 5685
+        },
+        "en": {
+          "status": "fresh",
+          "bytes": 6589
+        },
+        "tr": {
+          "status": "fresh",
+          "bytes": 6199
+        },
+        "az": {
+          "status": "fresh",
+          "bytes": 5928
+        },
+        "ar": {
+          "status": "fresh",
+          "bytes": 5339
+        }
+      }
+    },
+    {
+      "name": "for-patients",
+      "title": "DocPats для пациента",
+      "sourceHash": "68d0f11496bde91d050991aae6667a7f316ce7f3",
+      "languages": {
+        "ru": {
+          "status": "source",
+          "bytes": 4143
+        },
+        "en": {
+          "status": "fresh",
+          "bytes": 4703
+        },
+        "tr": {
+          "status": "fresh",
+          "bytes": 4597
+        },
+        "az": {
+          "status": "fresh",
+          "bytes": 4574
+        },
+        "ar": {
+          "status": "fresh",
+          "bytes": 3728
+        }
+      }
+    },
+    {
+      "name": "simulation",
+      "title": "DocPats Surgical Simulation — Руководство пользователя",
+      "sourceHash": "65848d708c47ec27f7c2babbb9fcaac9b390bb72",
+      "languages": {
+        "ru": {
+          "status": "source",
+          "bytes": 25969
+        },
+        "en": {
+          "status": "fresh",
+          "bytes": 27045
+        },
+        "tr": {
+          "status": "fresh",
+          "bytes": 26649
+        },
+        "az": {
+          "status": "fresh",
+          "bytes": 27218
+        },
+        "ar": {
+          "status": "fresh",
+          "bytes": 23258
+        }
+      }
+    }
+  ]
+}
