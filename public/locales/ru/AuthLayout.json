@@ -132,6 +132,8 @@
     "isoDesc": "Управление ИБ"
   },
   "footer": {
+    "forDoctors": "Врачам",
+    "forPatients": "Пациентам",
     "aiConsult": "AI Консультация",
     "about": "О редакции",
     "staffLogin": "Вход для клиник",

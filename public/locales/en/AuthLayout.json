@@ -132,6 +132,8 @@
     "isoDesc": "Info security mgmt"
   },
   "footer": {
+    "forDoctors": "For physicians",
+    "forPatients": "For patients",
     "aiConsult": "AI Consultation",
     "about": "Editorial",
     "staffLogin": "Clinic Login",

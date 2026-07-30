@@ -132,6 +132,8 @@
     "isoDesc": "Bilgi güvenliği yönetimi"
   },
   "footer": {
+    "forDoctors": "Hekimler için",
+    "forPatients": "Hastalar için",
     "aiConsult": "AI Konsültasyon",
     "about": "Editör",
     "staffLogin": "Klinik Girişi",

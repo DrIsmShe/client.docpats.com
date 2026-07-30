@@ -1964,6 +1964,15 @@ export default function AuthLayout() {
                 </div>
               </a>
               <div className="dp-footer-links">
+                {/* Разделы про продукт идут первыми: это то, зачем сюда
+                    приходит человек, который ещё не зарегистрировался.
+                    Тексты — client/public/docs/for-{doctors,patients}/ */}
+                <Link className="dp-footer-link" to="/docs/for-doctors">
+                  {t("footer.forDoctors") || "Врачам"}
+                </Link>
+                <Link className="dp-footer-link" to="/docs/for-patients">
+                  {t("footer.forPatients") || "Пациентам"}
+                </Link>
                 <a className="dp-footer-link" href="/consultation">
                   {t("footer.aiConsult") || "AI Консультация"}
                 </a>
