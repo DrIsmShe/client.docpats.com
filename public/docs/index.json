@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T08:20:57.316Z",
+  "generatedAt": "2026-07-31T08:32:54.891Z",
   "sections": [
     {
       "name": "clinic",
@@ -25,6 +25,33 @@
         "ar": {
           "status": "fresh",
           "bytes": 5128
+        }
+      }
+    },
+    {
+      "name": "clinic-workflows",
+      "title": "Клиника: кто что делает",
+      "sourceHash": "b45ae52b9a61ae2c1157b8761f80af45f310d5a9",
+      "languages": {
+        "ru": {
+          "status": "source",
+          "bytes": 4167
+        },
+        "en": {
+          "status": "fresh",
+          "bytes": 5252
+        },
+        "tr": {
+          "status": "fresh",
+          "bytes": 4514
+        },
+        "az": {
+          "status": "fresh",
+          "bytes": 4507
+        },
+        "ar": {
+          "status": "fresh",
+          "bytes": 4255
         }
       }
     },
