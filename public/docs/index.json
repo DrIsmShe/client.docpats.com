@@ -1,6 +1,33 @@
 {
-  "generatedAt": "2026-07-31T07:56:51.187Z",
+  "generatedAt": "2026-07-31T08:05:41.655Z",
   "sections": [
+    {
+      "name": "clinic",
+      "title": "Клиника",
+      "sourceHash": "8aa4b76798723b01abccfa5dc5d1e527f4b19eb9",
+      "languages": {
+        "ru": {
+          "status": "source",
+          "bytes": 3349
+        },
+        "en": {
+          "status": "fresh",
+          "bytes": 3827
+        },
+        "tr": {
+          "status": "fresh",
+          "bytes": 3596
+        },
+        "az": {
+          "status": "fresh",
+          "bytes": 3770
+        },
+        "ar": {
+          "status": "fresh",
+          "bytes": 3462
+        }
+      }
+    },
     {
       "name": "doctor-diagnostics",
       "title": "Разбор материала ИИ",
