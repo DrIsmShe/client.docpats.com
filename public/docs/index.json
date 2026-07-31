@@ -1,6 +1,33 @@
 {
-  "generatedAt": "2026-07-30T17:31:29.267Z",
+  "generatedAt": "2026-07-31T06:57:52.276Z",
   "sections": [
+    {
+      "name": "doctor-patients",
+      "title": "Пациенты в кабинете врача",
+      "sourceHash": "6dc02c2e379dca99d56422b318f23c229fc1b6ef",
+      "languages": {
+        "ru": {
+          "status": "source",
+          "bytes": 4301
+        },
+        "en": {
+          "status": "fresh",
+          "bytes": 4977
+        },
+        "tr": {
+          "status": "fresh",
+          "bytes": 4589
+        },
+        "az": {
+          "status": "fresh",
+          "bytes": 4686
+        },
+        "ar": {
+          "status": "fresh",
+          "bytes": 3962
+        }
+      }
+    },
     {
       "name": "for-doctors",
       "title": "DocPats для врача",

@@ -21,8 +21,13 @@ import { useTranslation } from "react-i18next";
 import { askGuide, fetchGuideRole } from "../../api/guide";
 import styles from "./GuideWidget.module.css";
 
-// Зоны, где кнопка мешает: угол занят инструментами.
-const HIDDEN = ["/dp/", "/simulation", "/surgery", "/arena/", "/radiology/reader"];
+// Экраны-редакторы: угол занят инструментами, кнопка поверх них мешает работе.
+//
+// Перечислены ИМЕННО редакторы, а не вся зона /dp: там же живёт поликлиника —
+// список пациентов, добавление, карта, — то есть ровно те страницы, где вопрос
+// «а как это сделать» возникает чаще всего. Пряча всю зону, помощника убирали
+// оттуда, где он нужнее всего.
+const HIDDEN = ["/dp/simulation", "/dp/surgery", "/arena/", "/radiology/reader"];
 
 function sectionForPath(pathname) {
   const m = pathname.match(/^\/docs\/([a-z0-9-]+)/);
