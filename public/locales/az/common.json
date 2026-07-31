@@ -1386,8 +1386,27 @@
     "thinking": "Düşünürəm…",
     "failed": "Cavab vermək alınmadı. Yenidən cəhd edin.",
     "tooMany": "Ardıcıl çox sual. Bir dəqiqədən sonra yenidən cəhd edin.",
-    "starter1": "Platforma həkimə nə verir?",
-    "starter2": "Tibbi tariximi kim görür?",
-    "starter3": "Bu nə qədər dəyər?"
+    "starters": {
+      "guest": [
+        "Platforma həkimə nə verir?",
+        "Tibbi tariximi kim görür?",
+        "Bu nə qədər dəyər?"
+      ],
+      "doctor": [
+        "Sınaq dövrünə nə daxildir?",
+        "Süni intellekt analizlərin təhlilində necə kömək edir?",
+        "Pasiyent kartıma girişi necə açır?"
+      ],
+      "patient": [
+        "Xəstəlik tariximi kim görür?",
+        "Tibbi köməkçi nə edə bilir?",
+        "Video qəbul necə keçir?"
+      ],
+      "clinic": [
+        "Platforma klinikaya nə verir?",
+        "İşçilər üçün hansı rollar var?",
+        "Klinikanın saytında nə qurmaq olar?"
+      ]
+    }
   }
 }

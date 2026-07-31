@@ -117,11 +117,30 @@ export default function GuideWidget() {
     }
   }
 
-  const starters = [
-    t("guide.starter1", { defaultValue: "Что даёт платформа врачу?" }),
-    t("guide.starter2", { defaultValue: "Кто видит мою медицинскую историю?" }),
-    t("guide.starter3", { defaultValue: "Сколько это стоит?" }),
-  ];
+  // Подсказки под того, кто спрашивает: врачу в кабинете незачем предлагать
+  // «кто видит мою историю болезни» — это вопрос пациента.
+  //
+  // ВАЖНО: подсказка обязана быть отвечаемой по корпусу. Кнопка, которая
+  // приводит к «я не знаю», хуже отсутствия кнопки — она обещает и обманывает.
+  // Поэтому набора ровно четыре, по числу аудиторий, которые корпус покрывает.
+  const audience = roleForPath(pathname);
+  const group =
+    audience === "doctor"
+      ? "doctor"
+      : audience === "patient"
+        ? "patient"
+        : audience === "clinic_admin" || audience === "clinic_staff"
+          ? "clinic"
+          : "guest";
+
+  const fromLocale = t(`guide.starters.${group}`, { returnObjects: true });
+  const starters = Array.isArray(fromLocale)
+    ? fromLocale
+    : [
+        "Что даёт платформа врачу?",
+        "Кто видит мою медицинскую историю?",
+        "Сколько это стоит?",
+      ];
 
   return (
     <div className={styles.root} dir={rtl ? "rtl" : "ltr"}>

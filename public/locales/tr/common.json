@@ -1304,8 +1304,27 @@
     "thinking": "Düşünüyorum…",
     "failed": "Yanıt verilemedi. Lütfen tekrar deneyin.",
     "tooMany": "Arka arkaya çok fazla soru. Bir dakika sonra deneyin.",
-    "starter1": "Platform hekime ne sağlıyor?",
-    "starter2": "Tıbbi geçmişimi kim görebiliyor?",
-    "starter3": "Ücreti nedir?"
+    "starters": {
+      "guest": [
+        "Platform hekime ne sağlıyor?",
+        "Tıbbi geçmişimi kim görebiliyor?",
+        "Ücreti nedir?"
+      ],
+      "doctor": [
+        "Deneme süresine neler dahil?",
+        "Yapay zekâ tahlil yorumunda nasıl yardımcı oluyor?",
+        "Hasta bana erişimi nasıl açıyor?"
+      ],
+      "patient": [
+        "Hastalık geçmişimi kim görüyor?",
+        "Tıbbi asistan neler yapabiliyor?",
+        "Video muayene nasıl işliyor?"
+      ],
+      "clinic": [
+        "Platform kliniğe ne sağlıyor?",
+        "Personel için hangi roller var?",
+        "Klinik web sitesinde neler kurulabilir?"
+      ]
+    }
   }
 }

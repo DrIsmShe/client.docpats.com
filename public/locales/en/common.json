@@ -1280,8 +1280,27 @@
     "thinking": "Thinking…",
     "failed": "Could not answer. Please try again.",
     "tooMany": "Too many questions in a row. Try again in a minute.",
-    "starter1": "What does the platform give a physician?",
-    "starter2": "Who can see my medical history?",
-    "starter3": "How much does it cost?"
+    "starters": {
+      "guest": [
+        "What does the platform give a physician?",
+        "Who can see my medical history?",
+        "How much does it cost?"
+      ],
+      "doctor": [
+        "What is included in the trial period?",
+        "How does the AI help with test results?",
+        "How does a patient grant me access?"
+      ],
+      "patient": [
+        "Who can see my medical history?",
+        "What can the medical assistant do?",
+        "How does a video appointment work?"
+      ],
+      "clinic": [
+        "What does the platform give a clinic?",
+        "What staff roles are there?",
+        "What can you build on the clinic website?"
+      ]
+    }
   }
 }
