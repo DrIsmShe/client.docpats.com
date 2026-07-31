@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T07:13:22.462Z",
+  "generatedAt": "2026-07-31T07:26:07.496Z",
   "sections": [
     {
       "name": "doctor-diagnostics",
@@ -52,6 +52,33 @@
         "ar": {
           "status": "fresh",
           "bytes": 3962
+        }
+      }
+    },
+    {
+      "name": "doctor-records",
+      "title": "История болезни и шаблоны осмотров",
+      "sourceHash": "c35d98297e0ec0d214bae77ef68c134e1f715409",
+      "languages": {
+        "ru": {
+          "status": "source",
+          "bytes": 3539
+        },
+        "en": {
+          "status": "fresh",
+          "bytes": 3891
+        },
+        "tr": {
+          "status": "fresh",
+          "bytes": 3734
+        },
+        "az": {
+          "status": "fresh",
+          "bytes": 3766
+        },
+        "ar": {
+          "status": "fresh",
+          "bytes": 3568
         }
       }
     },
