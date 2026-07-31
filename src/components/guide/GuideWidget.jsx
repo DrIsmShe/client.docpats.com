@@ -18,35 +18,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { askGuide } from "../../api/guide";
+import { askGuide, fetchGuideRole } from "../../api/guide";
 import styles from "./GuideWidget.module.css";
 
 // Зоны, где кнопка мешает: угол занят инструментами.
 const HIDDEN = ["/dp/", "/simulation", "/surgery", "/arena/", "/radiology/reader"];
 
-function roleForPath(pathname) {
-  if (pathname.startsWith("/doctor") || pathname.startsWith("/dp")) return "doctor";
-  if (pathname.startsWith("/patient")) return "patient";
-  if (pathname.startsWith("/clinic/employee")) return "clinic_staff";
-  if (pathname.startsWith("/clinic")) return "clinic_admin";
-  if (pathname.startsWith("/admin")) return "admin";
-  return undefined;
-}
-
 function sectionForPath(pathname) {
   const m = pathname.match(/^\/docs\/([a-z0-9-]+)/);
   return m ? m[1] : undefined;
-}
-
-/** Мягкий признак входа: точного клиент не знает, а 401 обрабатывается. */
-function looksAuthenticated() {
-  try {
-    return Boolean(
-      sessionStorage.getItem("userId") || localStorage.getItem("userId"),
-    );
-  } catch {
-    return false;
-  }
 }
 
 export default function GuideWidget() {
@@ -58,6 +38,9 @@ export default function GuideWidget() {
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  // Кто спрашивает — по сессии, с сервера. До ответа считаем гостем: подсказки
+  // для гостя подходят всем, а подсказки врача пациенту — нет.
+  const [role, setRole] = useState("guest");
 
   const inputRef = useRef(null);
   const feedRef = useRef(null);
@@ -66,6 +49,15 @@ export default function GuideWidget() {
 
   useEffect(() => {
     if (open) inputRef.current?.focus();
+  }, [open]);
+
+  // Роль спрашивается один раз, при первом открытии: до этого помощник — просто
+  // кнопка, и ходить за сессией на каждой странице незачем.
+  const roleAsked = useRef(false);
+  useEffect(() => {
+    if (!open || roleAsked.current) return;
+    roleAsked.current = true;
+    fetchGuideRole().then(setRole);
   }, [open]);
 
   useEffect(() => {
@@ -97,8 +89,8 @@ export default function GuideWidget() {
     try {
       const res = await askGuide({
         messages: next,
-        authed: looksAuthenticated(),
-        role: roleForPath(pathname),
+        // Гостю незачем ходить в авторизованный вход и получать 401.
+        authed: role !== "guest",
         section: sectionForPath(pathname),
       });
       setMessages([...next, { role: "assistant", content: res.answer }]);
@@ -123,13 +115,12 @@ export default function GuideWidget() {
   // ВАЖНО: подсказка обязана быть отвечаемой по корпусу. Кнопка, которая
   // приводит к «я не знаю», хуже отсутствия кнопки — она обещает и обманывает.
   // Поэтому набора ровно четыре, по числу аудиторий, которые корпус покрывает.
-  const audience = roleForPath(pathname);
   const group =
-    audience === "doctor"
+    role === "doctor"
       ? "doctor"
-      : audience === "patient"
+      : role === "patient"
         ? "patient"
-        : audience === "clinic_admin" || audience === "clinic_staff"
+        : role === "clinic_admin" || role === "clinic_staff"
           ? "clinic"
           : "guest";
 

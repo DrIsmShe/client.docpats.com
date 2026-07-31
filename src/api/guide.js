@@ -8,17 +8,38 @@ import axios from "../axios";
 
 const GUEST_URL = "/api/v1/public/guide/ask";
 const AUTHED_URL = "/api/v1/guide/ask";
+const CONTEXT_URL = "/api/v1/guide/context";
+
+/**
+ * Кто спрашивает — по сессии, спрашиваем у сервера.
+ *
+ * Раньше роль угадывалась на клиенте по префиксу адреса, и это было неверно:
+ * врач, открывший помощника на лендинге, считался гостем. Роль — свойство
+ * человека, а не страницы.
+ *
+ * Не бросает: не ответил сервер — значит гость, и помощник всё равно работает.
+ */
+export async function fetchGuideRole() {
+  try {
+    const { data } = await axios.get(CONTEXT_URL);
+    return data?.role || "guest";
+  } catch {
+    return "guest";
+  }
+}
 
 /**
  * @param {object} p
  * @param {{role:"user"|"assistant", content:string}[]} p.messages
  * @param {boolean} [p.authed]  пробовать авторизованный вход
- * @param {string}  [p.role]    doctor | patient | clinic_staff | ...
  * @param {string}  [p.section] раздел документации, если пользователь в нём
  * @returns {Promise<{answer:string, refused:boolean, truncated:boolean}>}
+ *
+ * Роль здесь не передаётся: её определяет сервер по сессии. Присланной
+ * браузером верить незачем, а угаданной по адресу — тем более.
  */
-export async function askGuide({ messages, authed = false, role, section }) {
-  const body = { messages, role, section };
+export async function askGuide({ messages, authed = false, section }) {
+  const body = { messages, section };
 
   if (authed) {
     try {
