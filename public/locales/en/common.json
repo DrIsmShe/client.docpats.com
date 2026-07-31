@@ -1284,22 +1284,34 @@
       "guest": [
         "What does the platform give a physician?",
         "Who can see my medical history?",
-        "How much does it cost?"
+        "How much does it cost?",
+        "Can I try it without registering?",
+        "Which languages does the platform support?",
+        "What does the AI do — and what does it not do?"
       ],
       "doctor": [
         "What is included in the trial period?",
         "How does the AI help with test results?",
-        "How does a patient grant me access?"
+        "How does a patient grant me access?",
+        "What is the platform commission?",
+        "What goes into a patient record?",
+        "How do patients find me?"
       ],
       "patient": [
         "Who can see my medical history?",
         "What can the medical assistant do?",
-        "How does a video appointment work?"
+        "How does a video appointment work?",
+        "What is an epicrisis and why do I need one?",
+        "Can I export my own data?",
+        "How much does it cost for a patient?"
       ],
       "clinic": [
         "What does the platform give a clinic?",
         "What staff roles are there?",
-        "What can you build on the clinic website?"
+        "What can you build on the clinic website?",
+        "Do I need to migrate data when I grow into a clinic?",
+        "How is patient data protected?",
+        "How does the AI help the clinic physicians?"
       ]
     }
   }

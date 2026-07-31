@@ -1308,22 +1308,34 @@
       "guest": [
         "Platform hekime ne sağlıyor?",
         "Tıbbi geçmişimi kim görebiliyor?",
-        "Ücreti nedir?"
+        "Ücreti nedir?",
+        "Kayıt olmadan deneyebilir miyim?",
+        "Platform hangi dilleri destekliyor?",
+        "Yapay zekâ ne yapar, ne yapmaz?"
       ],
       "doctor": [
         "Deneme süresine neler dahil?",
         "Yapay zekâ tahlil yorumunda nasıl yardımcı oluyor?",
-        "Hasta bana erişimi nasıl açıyor?"
+        "Hasta bana erişimi nasıl açıyor?",
+        "Randevudan alınan komisyon nedir?",
+        "Hasta kartında neler tutulur?",
+        "Hastalar beni nasıl buluyor?"
       ],
       "patient": [
         "Hastalık geçmişimi kim görüyor?",
         "Tıbbi asistan neler yapabiliyor?",
-        "Video muayene nasıl işliyor?"
+        "Video muayene nasıl işliyor?",
+        "Epikriz nedir, ne işe yarar?",
+        "Kendi verilerimi dışa aktarabilir miyim?",
+        "Hasta için ücreti nedir?"
       ],
       "clinic": [
         "Platform kliniğe ne sağlıyor?",
         "Personel için hangi roller var?",
-        "Klinik web sitesinde neler kurulabilir?"
+        "Klinik web sitesinde neler kurulabilir?",
+        "Kliniğe geçerken veri taşımak gerekir mi?",
+        "Hasta verileri nasıl korunuyor?",
+        "Yapay zekâ klinik hekimlerine nasıl yardımcı olur?"
       ]
     }
   }

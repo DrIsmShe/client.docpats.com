@@ -1390,22 +1390,34 @@
       "guest": [
         "Platforma həkimə nə verir?",
         "Tibbi tariximi kim görür?",
-        "Bu nə qədər dəyər?"
+        "Bu nə qədər dəyər?",
+        "Qeydiyyatsız yoxlaya bilərəm?",
+        "Platforma hansı dilləri dəstəkləyir?",
+        "Süni intellekt nə edir, nə etmir?"
       ],
       "doctor": [
         "Sınaq dövrünə nə daxildir?",
         "Süni intellekt analizlərin təhlilində necə kömək edir?",
-        "Pasiyent kartıma girişi necə açır?"
+        "Pasiyent kartıma girişi necə açır?",
+        "Qəbuldan komissiya nə qədərdir?",
+        "Pasiyent kartında nələr saxlanılır?",
+        "Pasiyentlər məni necə tapır?"
       ],
       "patient": [
         "Xəstəlik tariximi kim görür?",
         "Tibbi köməkçi nə edə bilir?",
-        "Video qəbul necə keçir?"
+        "Video qəbul necə keçir?",
+        "Epikriz nədir və nəyə lazımdır?",
+        "Öz məlumatlarımı ixrac edə bilərəm?",
+        "Pasiyent üçün qiymət nə qədərdir?"
       ],
       "clinic": [
         "Platforma klinikaya nə verir?",
         "İşçilər üçün hansı rollar var?",
-        "Klinikanın saytında nə qurmaq olar?"
+        "Klinikanın saytında nə qurmaq olar?",
+        "Klinikaya keçəndə məlumatları köçürmək lazımdır?",
+        "Pasiyent məlumatları necə qorunur?",
+        "Süni intellekt klinikanın həkimlərinə necə kömək edir?"
       ]
     }
   }
