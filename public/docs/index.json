@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T07:34:48.158Z",
+  "generatedAt": "2026-07-31T07:56:51.187Z",
   "sections": [
     {
       "name": "doctor-diagnostics",
@@ -187,6 +187,33 @@
         "ar": {
           "status": "fresh",
           "bytes": 3728
+        }
+      }
+    },
+    {
+      "name": "patient-cabinet",
+      "title": "Кабинет пациента",
+      "sourceHash": "f52cfd86425a346d1f8e0f46520c2bafbe599ebf",
+      "languages": {
+        "ru": {
+          "status": "source",
+          "bytes": 3651
+        },
+        "en": {
+          "status": "fresh",
+          "bytes": 4168
+        },
+        "tr": {
+          "status": "fresh",
+          "bytes": 4047
+        },
+        "az": {
+          "status": "fresh",
+          "bytes": 3970
+        },
+        "ar": {
+          "status": "fresh",
+          "bytes": 3707
         }
       }
     },
