@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-07-31T08:05:41.655Z",
+  "generatedAt": "2026-07-31T08:20:57.316Z",
   "sections": [
     {
       "name": "clinic",
       "title": "Клиника",
-      "sourceHash": "8aa4b76798723b01abccfa5dc5d1e527f4b19eb9",
+      "sourceHash": "eed93cd79b0b44eabd76fa019afc9e5959646060",
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 3349
+          "bytes": 5429
         },
         "en": {
           "status": "fresh",
-          "bytes": 3827
+          "bytes": 6143
         },
         "tr": {
           "status": "fresh",
-          "bytes": 3596
+          "bytes": 5957
         },
         "az": {
           "status": "fresh",
-          "bytes": 3770
+          "bytes": 5895
         },
         "ar": {
           "status": "fresh",
-          "bytes": 3462
+          "bytes": 5128
         }
       }
     },
