@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T07:26:07.496Z",
+  "generatedAt": "2026-07-31T07:34:48.158Z",
   "sections": [
     {
       "name": "doctor-diagnostics",
@@ -106,6 +106,33 @@
         "ar": {
           "status": "fresh",
           "bytes": 3574
+        }
+      }
+    },
+    {
+      "name": "exams",
+      "title": "Подготовка к экзаменам",
+      "sourceHash": "b2e4897921f9ee7efe043e7720a32410876fe380",
+      "languages": {
+        "ru": {
+          "status": "source",
+          "bytes": 3149
+        },
+        "en": {
+          "status": "fresh",
+          "bytes": 3642
+        },
+        "tr": {
+          "status": "fresh",
+          "bytes": 3277
+        },
+        "az": {
+          "status": "fresh",
+          "bytes": 3204
+        },
+        "ar": {
+          "status": "fresh",
+          "bytes": 2909
         }
       }
     },
