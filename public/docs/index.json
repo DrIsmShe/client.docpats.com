@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T06:57:52.276Z",
+  "generatedAt": "2026-07-31T07:06:12.703Z",
   "sections": [
     {
       "name": "doctor-patients",
@@ -25,6 +25,33 @@
         "ar": {
           "status": "fresh",
           "bytes": 3962
+        }
+      }
+    },
+    {
+      "name": "doctor-schedule",
+      "title": "Приёмы и расписание врача",
+      "sourceHash": "f4758353cd7de6e2ccf588e9e72f5905824cbbf2",
+      "languages": {
+        "ru": {
+          "status": "source",
+          "bytes": 3710
+        },
+        "en": {
+          "status": "fresh",
+          "bytes": 4449
+        },
+        "tr": {
+          "status": "fresh",
+          "bytes": 4238
+        },
+        "az": {
+          "status": "fresh",
+          "bytes": 4106
+        },
+        "ar": {
+          "status": "fresh",
+          "bytes": 3574
         }
       }
     },
