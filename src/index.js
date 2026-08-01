@@ -14,6 +14,12 @@ import { ThemeProvider } from "./theme/ThemeContext";
 // requests fire — hence importing it at the application root.
 import "./api/provisionalInterceptor";
 
+// Счётчик продуктовых событий. Без REACT_APP_POSTHOG_KEY не делает ничего и
+// не тянет библиотеку — импорт внутри initAnalytics динамический.
+import { initAnalytics } from "./lib/analytics";
+
+initAnalytics();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(

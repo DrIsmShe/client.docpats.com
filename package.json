@@ -28,6 +28,7 @@
     "jspdf": "^2.5.2",
     "libphonenumber-js": "^1.12.29",
     "lucide-react": "^0.484.0",
+    "posthog-js": "^1.409.5",
     "qrcode.react": "^4.2.0",
     "quill": "^2.0.2",
     "react": "^18.3.1",

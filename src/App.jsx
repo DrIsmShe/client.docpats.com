@@ -1,4 +1,5 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import AnalyticsRouteTracker from "./lib/AnalyticsRouteTracker";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GlobalCallProvider } from "./pages/communication/context/GlobalCallProvider";
@@ -609,6 +610,9 @@ function App() {
             v7_startTransition: true,
           }}
         >
+          {/* Счётчик просмотров экранов. Ничего не рисует; без ключа
+              REACT_APP_POSTHOG_KEY вообще ничего не делает. */}
+          <AnalyticsRouteTracker />
           <Routes>
             <Route path="/consultation" element={<ConsultationPage />} />
             <Route
