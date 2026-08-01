@@ -12,6 +12,7 @@ import {
   createLabCase,
   updateLabCase,
   setLabStatus,
+  deleteLabCasePermanently,
   aiGenerateLabCase,
   aiVerifyLabCase,
   dismissLabAiIssues,
@@ -425,6 +426,28 @@ export default function AdminLabCasesPage() {
     }
   }
 
+  // Удаление насовсем — в том числе для ночных автокейсов. Отказ сервера
+  // (опубликован / есть попытки врачей) показываем как есть: там объяснено,
+  // что делать вместо удаления.
+  async function handleDeleteForever() {
+    const name = form.title.trim() || "кейс без названия";
+    if (!window.confirm(`Удалить «${name}» навсегда? Отменить это будет нельзя.`)) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await deleteLabCasePermanently(selected);
+      setSelected(null);
+      setStatus(null);
+      setNotice(`Кейс «${name}» удалён.`);
+      await refresh();
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось удалить кейс"));
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function changeStatus(next) {
     setBusy(true);
     setError(null);
@@ -533,7 +556,10 @@ export default function AdminLabCasesPage() {
             {cases.map((c) => (
               <button key={c._id} type="button" className="edu-list-item" style={{ border: "1px solid #eef2f7", borderRadius: 8, textAlign: "left", background: selected === c._id ? "#eef4ff" : "#fff" }} onClick={() => openCase(c._id)}>
                 <div className="edu-list-item-title">{c.title || "Без названия"}</div>
-                <div className="edu-list-item-meta">{STATUS_LABELS[c.status] ?? c.status}</div>
+                <div className="edu-list-item-meta">
+                  {c.autoGen?.isAuto && <span className="rad-tag" title={c.autoGen.autoPublished ? "Создан и опубликован ночной автогенерацией" : "Создан ночной автогенерацией"}>🤖 авто</span>}
+                  {STATUS_LABELS[c.status] ?? c.status}
+                </div>
               </button>
             ))}
           </div>
@@ -739,6 +765,19 @@ export default function AdminLabCasesPage() {
                   )}
                   {selected !== "new" && status !== "archived" && (
                     <button type="button" className="edu-btn edu-btn--ghost" onClick={() => changeStatus("archived")} disabled={busy}>В архив</button>
+                  )}
+                  {/* Опубликованный кейс сервер удалить не даст — кнопку не
+                      показываем, чтобы она не отвечала одним отказом. */}
+                  {selected !== "new" && status !== "published" && (
+                    <button
+                      type="button"
+                      className="edu-btn edu-btn--danger"
+                      onClick={handleDeleteForever}
+                      disabled={busy}
+                      title="Стереть кейс без следа. Если по нему уже есть попытки врачей — сервер откажет, используйте архив."
+                    >
+                      Удалить навсегда
+                    </button>
                   )}
                 </div>
                 {liveBlockers.length > 0 && (

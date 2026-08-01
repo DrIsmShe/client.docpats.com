@@ -22,6 +22,9 @@ import {
   submitCaseForReview,
   reviewCase,
   archiveCase,
+  deleteCasePermanently,
+  runRadiologyAutogen,
+  fetchRadiologyAutogenState,
   uploadCaseImage,
   aiDraftCase,
   aiGenerateCase,
@@ -100,6 +103,9 @@ export default function AdminRadiologyCasesPage() {
   // выдумывает — автор «заряжает» находку и кликает по кадру.
   const [planned, setPlanned] = useState([]);
   const [armed, setArmed] = useState(null); // индекс находки из плана
+  // Ночная автогенерация: метка у открытого кейса и ручной запуск.
+  const [autoGen, setAutoGen] = useState(null);
+  const [autoBusy, setAutoBusy] = useState(false);
 
   // Второй проход: замечания рецензента и отметки «разобрано».
   const [review, setReview] = useState(null);
@@ -188,6 +194,7 @@ export default function AdminRadiologyCasesPage() {
     setFindings([]);
     setPlanned([]);
     setArmed(null);
+    setAutoGen(null);
     setReview(null);
     setDismissed(new Set());
     setActiveImg(0);
@@ -230,8 +237,18 @@ export default function AdminRadiologyCasesPage() {
           explanation: f.explanation ?? "",
         })),
       );
-      setPlanned([]);
+      // План находок теперь хранится в кейсе: у ночного автокейса он и есть
+      // главное содержимое — чек-лист того, что предстоит разметить.
+      setPlanned(
+        (doc.plannedFindings ?? []).map((p) => ({
+          label: p.label,
+          significance: p.significance ?? "major",
+          location: p.location ?? "",
+          explanation: p.explanation ?? "",
+        })),
+      );
       setArmed(null);
+      setAutoGen(doc.autoGen?.isAuto ? doc.autoGen : null);
       restoreReview(doc);
       setActiveImg(0);
       setActiveLabel(null);
@@ -270,6 +287,14 @@ export default function AdminRadiologyCasesPage() {
         geometry: f.geometry,
         required: true,
         explanation: f.explanation?.trim() || undefined,
+      })),
+      // Неразмеченный остаток плана сохраняем вместе с кейсом: работу над
+      // автокейсом почти всегда доделывают не за один заход.
+      plannedFindings: planned.map((p) => ({
+        label: p.label,
+        significance: p.significance || undefined,
+        location: p.location?.trim() || undefined,
+        explanation: p.explanation?.trim() || undefined,
       })),
       impression: {
         correctText: form.correctText.trim(),
@@ -319,9 +344,12 @@ export default function AdminRadiologyCasesPage() {
     }
   }
 
+  // Снимок для сохранения ЧЕРНОВИКА не требуется: у кейса, придуманного ИИ по
+  // теме (и у ночного автокейса), его ещё нет, а терять текстовую часть из-за
+  // этого нельзя. Отсутствие кадра остаётся в liveBlockers — оно не пускает
+  // кейс на ревью и в публикацию, но не мешает сохранить работу.
   async function handleSave() {
     if (!form.title.trim()) return setError("Введите название кейса");
-    if (!images.some((i) => i.url.trim())) return setError("Добавьте хотя бы один снимок (URL)");
     setBusy(true);
     setError(null);
     setNotice(null);
@@ -396,6 +424,80 @@ export default function AdminRadiologyCasesPage() {
       setError(readApiError(err, "Не удалось архивировать"));
     } finally {
       setBusy(false);
+    }
+  }
+
+  // Удаление НАСОВСЕМ. Отдельно от архива и с явным подтверждением: архив
+  // прячет кейс, а это стирает его вместе с переводами. Сервер не даст
+  // удалить опубликованный кейс и кейс с попытками врачей — его отказ
+  // показываем как есть, там объяснено, что делать вместо удаления.
+  async function handleDeleteForever() {
+    const name = form.title.trim() || "кейс без названия";
+    if (!window.confirm(`Удалить «${name}» навсегда? Отменить это будет нельзя.`)) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await deleteCasePermanently(selected);
+      setSelected(null);
+      setStatus(null);
+      setNotice(`Кейс «${name}» удалён.`);
+      await refreshList();
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось удалить кейс"));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  // Итог прогона человеческим языком.
+  function describeRun(run) {
+    if (!run) return "Прогон завершён.";
+    const parts = [`создано черновиков: ${run.created?.length ?? 0}`];
+    if (run.skipped?.length) {
+      parts.push(
+        `пропущено: ${run.skipped.map((s) => `${MODALITY_LABELS[s.modality] ?? s.modality} (${s.reason})`).join(", ")}`,
+      );
+    }
+    if (run.failed?.length) {
+      parts.push(
+        `не получилось: ${run.failed.map((f) => `${MODALITY_LABELS[f.modality] ?? f.modality} — ${f.message}`).join("; ")}`,
+      );
+    }
+    if (run.error) parts.push(`прогон прерван: ${run.error}`);
+    return parts.join(". ") + ".";
+  }
+
+  // Ручной запуск ночной автогенерации. Сервер отвечает сразу и работает в
+  // фоне (пять запросов к модели — это минуты, соединение столько не живёт),
+  // поэтому итог забираем опросом состояния.
+  async function handleRunAutogen() {
+    if (!window.confirm("Сгенерировать по кейсу-черновику на каждую модальность? Это займёт несколько минут.")) return;
+    setAutoBusy(true);
+    setError(null);
+    setNotice("🤖 Прогон запущен, ИИ работает. Можно не ждать на этой странице — черновики появятся в списке.");
+    try {
+      await runRadiologyAutogen();
+      // Опрос до окончания. Ограничение по числу попыток — страховка от
+      // бесконечного цикла, если процесс на сервере перезапустится.
+      for (let i = 0; i < 120; i += 1) {
+        await new Promise((r) => setTimeout(r, 5000));
+        const state = await fetchRadiologyAutogenState();
+        if (!state.running) {
+          await refreshList();
+          setNotice(describeRun(state.lastRun));
+          return;
+        }
+        setNotice(
+          `🤖 ИИ работает… готово модальностей: ${state.lastRun?.created?.length ?? 0}.`,
+        );
+      }
+      setNotice("🤖 Прогон идёт дольше обычного — обновите страницу позже, чтобы увидеть итог.");
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось выполнить автогенерацию"));
+    } finally {
+      setAutoBusy(false);
     }
   }
 
@@ -679,6 +781,36 @@ export default function AdminRadiologyCasesPage() {
       {error && <div className="edu-error" style={{ marginTop: 12 }}>{error}</div>}
       {notice && <div className="edu-notice" style={{ marginTop: 12 }}>{notice}</div>}
 
+      {/* Ночная автогенерация: что делает робот и как вмешаться руками. */}
+      {aiEnabled && (
+        <div className="rad-panel" style={{ marginTop: 16 }}>
+          <div className="edu-card-title" style={{ fontSize: 15 }}>🤖 Автокейсы арены: каждую ночь по очередной теме</div>
+          <div className="edu-hint">
+            Ночью ИИ заводит по кейсу <b>на каждую модальность</b> (рентген, КТ, МРТ, УЗИ, ЭКГ)
+            и по кейсу на станции <b>«Анализы»</b> и <b>«Виртуальный пациент»</b>, каждый раз беря
+            следующую тему из программы. Всё проходит вторым проходом — ИИ-рецензентом.
+            <br />
+            <b>Станции без снимков</b> публикуются сами, если рецензент не нашёл замечаний;
+            публикация тут же запускает перевод на все языки. Есть хоть одно замечание — кейс
+            ждёт вас черновиком.
+            <br />
+            <b>Лучевые кейсы</b> всегда остаются черновиками: снимок ИИ не рисует. В черновике уже
+            есть контекст, заключение, ключи диагноза и <b>план находок</b> — загрузите анонимный
+            кадр и перенесите находки на холст. Галочку «снимки деидентифицированы» машина не
+            ставит никогда: подтвердить это может только человек, который снимок видел.
+            <br />
+            Автокейсы помечены <span className="rad-tag">🤖 авто</span> в списках; любой можно
+            править или удалить навсегда. Выключатели — в <code>.env</code> сервера
+            (<code>RADIOLOGY_AUTOGEN</code>, <code>RADIOLOGY_AUTOGEN_PUBLISH</code>).
+          </div>
+          <div className="edu-btn-row" style={{ marginTop: 10 }}>
+            <button type="button" className="edu-btn edu-btn--ghost" onClick={handleRunAutogen} disabled={autoBusy || busy || aiGenBusy}>
+              {autoBusy ? "ИИ работает, это займёт минуты…" : "🤖 Сгенерировать партию сейчас"}
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ИИ-кейс целиком по теме — доступно до выбора кейса, снимок не нужен */}
       <div className="rad-panel" style={{ marginTop: 16 }}>
         <div className="edu-card-title" style={{ fontSize: 15 }}>✨ Создать кейс с помощью ИИ (по теме)</div>
@@ -765,6 +897,7 @@ export default function AdminRadiologyCasesPage() {
                 <div className="edu-list-item-title">{c.title || "Без названия"}</div>
                 <div className="edu-list-item-meta">
                   <span className="rad-tag">{MODALITY_LABELS[c.modality] ?? c.modality}</span>
+                  {c.autoGen?.isAuto && <span className="rad-tag" title="Создан ночной автогенерацией">🤖 авто</span>}
                   {STATUS_LABELS[c.status] ?? c.status}
                 </div>
               </button>
@@ -785,6 +918,14 @@ export default function AdminRadiologyCasesPage() {
                   </div>
                   {liveBlockers.length > 0 && <span className="rad-fail" style={{ fontSize: 12 }}>к публикации: {liveBlockers.length} замечаний</span>}
                 </div>
+                {autoGen && (
+                  <div className="edu-hint" style={{ marginTop: 8 }}>
+                    🤖 Создан автоматически{autoGen.generatedAt ? ` ${new Date(autoGen.generatedAt).toLocaleDateString("ru-RU")}` : ""}
+                    {autoGen.model ? ` (${autoGen.model})` : ""}. Это черновик от машины: проверьте
+                    тексты и диагноз, загрузите снимок и разметьте план находок. Не подошёл — правьте
+                    как обычный кейс или удалите навсегда.
+                  </div>
+                )}
                 {liveBlockers.length > 0 && (
                   <div className="edu-warn" style={{ marginTop: 8 }}>Опубликовать нельзя: {liveBlockers.join("; ")}.</div>
                 )}
@@ -1112,6 +1253,20 @@ export default function AdminRadiologyCasesPage() {
                   )}
                   {selected !== "new" && status !== "archived" && (
                     <button type="button" className="edu-btn edu-btn--ghost" onClick={handleArchive} disabled={busy}>В архив</button>
+                  )}
+                  {/* Удаление насовсем. Для опубликованного кейса не
+                      показываем вовсе: сервер его всё равно не удалит, а
+                      кнопка, которая всегда отвечает отказом, только мешает. */}
+                  {selected !== "new" && status !== "published" && (
+                    <button
+                      type="button"
+                      className="edu-btn edu-btn--danger"
+                      onClick={handleDeleteForever}
+                      disabled={busy}
+                      title="Стереть кейс без следа. Если по нему уже есть попытки врачей — сервер откажет, используйте архив."
+                    >
+                      Удалить навсегда
+                    </button>
                   )}
                 </div>
                 {editable && liveBlockers.length > 0 && (

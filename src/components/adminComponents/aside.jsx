@@ -81,8 +81,12 @@ export default function Aside() {
             </Link>
           </li>
 
-          {/* ─── Лучевая диагностика ─── */}
-          <li className="nav-heading" data-sec="radiology">Лучевая диагностика</li>
+          {/* ─── Диагностическая арена ─── */}
+          {/* Раздел давно шире лучевой диагностики: снимки — лишь одна из трёх
+              станций, рядом «Анализы», «Виртуальный пациент» и аналитика.
+              «Диагностическая арена» — то же имя, под которым продукт уже
+              приходит врачу в уведомлениях (jobs/radiologyWeeklyCase.job.js). */}
+          <li className="nav-heading" data-sec="radiology">Диагностическая арена</li>
           <li className="nav-item" data-sec="radiology">
             <Link className="nav-link collapsed" to="radiology">
               <i className="bi bi-lungs"></i>

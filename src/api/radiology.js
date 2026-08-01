@@ -247,6 +247,37 @@ export async function archiveCase(caseId) {
   return data.case;
 }
 
+/**
+ * Удаление кейса НАСОВСЕМ (в отличие от archiveCase, который прячет его в
+ * архив). Сервер откажет для опубликованного кейса и для кейса, по которому
+ * есть попытки врачей: на такой ссылаются разборы и статистика.
+ * @returns {{ deleted: true, id: string }}
+ */
+export async function deleteCasePermanently(caseId) {
+  const { data } = await axios.delete(`${BASE}/cases/${caseId}/permanent`);
+  return data;
+}
+
+/**
+ * Ручной запуск ночной автогенерации: по кейсу-черновику на каждую
+ * модальность. Работа идёт минуты, поэтому сервер отвечает СРАЗУ, не дожидаясь
+ * конца, — за результатом ходите в fetchRadiologyAutogenState.
+ * @returns {{ running: boolean, enabled: boolean, lastRun: object|null }}
+ */
+export async function runRadiologyAutogen() {
+  const { data } = await axios.post(`${BASE}/autogen/run`);
+  return data;
+}
+
+/**
+ * Состояние автогенерации: идёт ли прогон сейчас и чем кончился прошлый
+ * (created / skipped / failed по модальностям).
+ */
+export async function fetchRadiologyAutogenState() {
+  const { data } = await axios.get(`${BASE}/autogen/state`);
+  return data;
+}
+
 // ─── Попытки (роль learner) ───────────────────────────────────────────
 /**
  * Условия попытки ДО старта: пойдёт ли она в зачёт, сколько даётся времени,
@@ -402,6 +433,15 @@ export async function updateLabCase(caseId, patch) {
   return data.case;
 }
 
+/**
+ * Удаление кейса «Анализов» НАСОВСЕМ. Сервер откажет для опубликованного и
+ * для кейса с попытками врачей — им положен архив.
+ */
+export async function deleteLabCasePermanently(caseId) {
+  const { data } = await axios.delete(`${BASE}/labs/cases/${caseId}/permanent`);
+  return data;
+}
+
 export async function setLabStatus(caseId, status) {
   const { data } = await axios.post(`${BASE}/labs/cases/${caseId}/status`, { status });
   return data.case;
@@ -503,6 +543,12 @@ export async function createVpCase(payload) {
 export async function updateVpCase(caseId, patch) {
   const { data } = await axios.patch(`${BASE}/vp/cases/${caseId}`, patch);
   return data.case;
+}
+
+/** Удаление сценария «Виртуального пациента» НАСОВСЕМ (см. лаб-аналог). */
+export async function deleteVpCasePermanently(caseId) {
+  const { data } = await axios.delete(`${BASE}/vp/cases/${caseId}/permanent`);
+  return data;
 }
 
 export async function setVpStatus(caseId, status) {

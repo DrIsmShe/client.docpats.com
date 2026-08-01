@@ -12,6 +12,7 @@ import {
   createVpCase,
   updateVpCase,
   setVpStatus,
+  deleteVpCasePermanently,
   aiGenerateVpCase,
   aiVerifyVpCase,
   dismissVpAiIssues,
@@ -396,6 +397,27 @@ export default function AdminVpCasesPage() {
     }
   }
 
+  // Удаление насовсем — в том числе для ночных автосценариев. Отказ сервера
+  // (опубликован / есть попытки врачей) показываем как есть.
+  async function handleDeleteForever() {
+    const name = form.title.trim() || "сценарий без названия";
+    if (!window.confirm(`Удалить «${name}» навсегда? Отменить это будет нельзя.`)) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await deleteVpCasePermanently(selected);
+      setSelected(null);
+      setStatus(null);
+      setNotice(`Сценарий «${name}» удалён.`);
+      await refresh();
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось удалить сценарий"));
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function changeStatus(next) {
     setBusy(true);
     setError(null);
@@ -501,7 +523,10 @@ export default function AdminVpCasesPage() {
             {cases.map((c) => (
               <button key={c._id} type="button" className="edu-list-item" style={{ border: "1px solid #eef2f7", borderRadius: 8, textAlign: "left", background: selected === c._id ? "#eef4ff" : "#fff" }} onClick={() => openCase(c._id)}>
                 <div className="edu-list-item-title">{c.title || "Без названия"}</div>
-                <div className="edu-list-item-meta">{STATUS_LABELS[c.status] ?? c.status}</div>
+                <div className="edu-list-item-meta">
+                  {c.autoGen?.isAuto && <span className="rad-tag" title={c.autoGen.autoPublished ? "Создан и опубликован ночной автогенерацией" : "Создан ночной автогенерацией"}>🤖 авто</span>}
+                  {STATUS_LABELS[c.status] ?? c.status}
+                </div>
               </button>
             ))}
           </div>
@@ -703,6 +728,18 @@ export default function AdminVpCasesPage() {
                   )}
                   {selected !== "new" && status !== "archived" && (
                     <button type="button" className="edu-btn edu-btn--ghost" onClick={() => changeStatus("archived")} disabled={busy}>В архив</button>
+                  )}
+                  {/* Опубликованный сценарий сервер удалить не даст. */}
+                  {selected !== "new" && status !== "published" && (
+                    <button
+                      type="button"
+                      className="edu-btn edu-btn--danger"
+                      onClick={handleDeleteForever}
+                      disabled={busy}
+                      title="Стереть сценарий без следа. Если по нему уже есть попытки врачей — сервер откажет, используйте архив."
+                    >
+                      Удалить навсегда
+                    </button>
                   )}
                 </div>
                 {liveBlockers.length > 0 && <div className="edu-hint" style={{ marginTop: 8 }}>Для публикации: {liveBlockers.join("; ")}.</div>}
