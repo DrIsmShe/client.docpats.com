@@ -1149,6 +1149,36 @@
   "avatar_choose": {
     "chooseAvatar": "Avatar seç"
   },
+  "dictation": {
+    "title": "Muayeneyi dikte et",
+    "subIdle": "Çözümleme form alanlarına yerleşecek — kontrol edin ve her zamanki gibi kaydedin.",
+    "subRecording": "Kayıt sürüyor. Dosyaya dikte ettiğiniz gibi konuşun.",
+    "record": "Kaydet",
+    "sending": "Gönderiliyor…",
+    "finish": "Bitti",
+    "cancel": "İptal",
+    "statusUploaded": "Kayıt alındı, işlenmeyi bekliyor…",
+    "statusTranscribing": "Konuşma çözümleniyor…",
+    "statusTranscribed": "Konuşma çözümlendi, bölümlere ayrılıyor…",
+    "statusStructuring": "Bölümlere ayrılıyor…",
+    "statusBusy": "İşleniyor…",
+    "keepWorking": "Formu doldurmaya devam edebilirsiniz — taslak burada kendiliğinden görünecek.",
+    "retry": "Kaldır ve yeniden kaydet",
+    "nothingFound": "Bu kayıtta dosya bölümlerine yerleştirilebilecek bir şey bulunamadı. Hiçbir şey uydurulmaz — daha ayrıntılı dikte edin.",
+    "toField": "→ alana",
+    "inForm": "✓ formda",
+    "skipped": "Zaten bir şey yazdığınız için dokunulmadı: {{fields}}. Bölümün yanındaki «→ alana» düğmesi metni değiştirir.",
+    "applyEmpty": "Boş alanlara aktar",
+    "close": "Bitti, kaydı kaldır",
+    "icdCode": "ICD-10",
+    "errConnection": "Sunucu bağlantısı koptu",
+    "errUpload": "Kayıt gönderilemedi. Bağlantınızı kontrol edip tekrar deneyin.",
+    "errTooShort": "Kayıt çok kısa — muayeneyi baştan sona dikte edin.",
+    "errMicDenied": "Tarayıcı mikrofona erişim vermedi. Site ayarlarından izin verin.",
+    "errMicUnavailable": "Mikrofon kullanılamıyor. Bağlı olduğundan ve başka bir programın kullanmadığından emin olun.",
+    "noteCodeFromSpeech": "ICD-10 kodu konuşmadan alındı, resmî başlığı yok. Resmî başlığın gelmesi için kodu arama alanında onaylayın.",
+    "noteTextNeedsCode": "Tanı metni aktarılmadı: alan yalnızca ICD-10 kodu seçildikten sonra görünür. Bir kod seçin ve «→ alana» düğmesine tekrar basın."
+  },
   "medicalHistoryForm": {
     "labels": {
       "complaints": "Şikayetler",

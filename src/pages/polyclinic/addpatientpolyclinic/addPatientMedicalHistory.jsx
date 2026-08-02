@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Modal from "react-modal";
 import ICD10Autocomplete from "../../../components/ICD10Autocomplete";
+import DictationPanel from "../../../components/dictation/DictationPanel";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
@@ -365,6 +366,123 @@ export default function AddPatientMedicalHistory() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  /* ────────────────── Голосовая надиктовка ──────────────────
+     Панель отдаёт разложенный по разделам черновик, а форма решает, что с
+     ним делать. Правило одно: НЕ затирать написанное врачом. «Перенести»
+     заполняет только пустые поля, замена возможна лишь отдельной кнопкой у
+     конкретного раздела.
+  */
+
+  // Разделы, которые ложатся в форму один в один.
+  const DICTATION_DIRECT = [
+    "complaints",
+    "anamnesisMorbi",
+    "anamnesisVitae",
+    "statusPreasens",
+    "statusLocalis",
+    "recommendations",
+    "ctScanResults",
+    "mriResults",
+    "ultrasoundResults",
+    "laboratoryTestResults",
+  ];
+
+  // Код из надиктовки приходит без официального названия: распознаватель
+  // слышит «джей сорок пять», а не строку справочника. Название подтянет
+  // автокомплит, когда врач подтвердит код.
+  const CODE_NOTE = t(
+    "dictation.noteCodeFromSpeech",
+    "Код МКБ-10 подставлен со слов — названия из справочника у него нет. " +
+      "Подтвердите код в поле поиска, чтобы название встало официальное.",
+  );
+  const TEXT_NEEDS_CODE = t(
+    "dictation.noteTextNeedsCode",
+    "Текст диагноза не перенесён: поле появляется только после выбора кода " +
+      "МКБ-10. Выберите код — и нажмите «→ в поле» ещё раз.",
+  );
+
+  const applyDictation = (fields) => {
+    const applied = [];
+    const skipped = [];
+    const notes = [];
+    const diagnosis = { ...formData.mainDiagnosis };
+    const patch = {};
+
+    // Код разбираем первым: от него зависит, отрисовано ли поле текста.
+    if (fields.mainDiagnosisCode) {
+      if (diagnosis.code) {
+        skipped.push("mainDiagnosisCode");
+      } else {
+        diagnosis.code = String(fields.mainDiagnosisCode).trim().toUpperCase();
+        applied.push("mainDiagnosisCode");
+        notes.push(CODE_NOTE);
+      }
+    }
+
+    if (fields.mainDiagnosisText) {
+      if (!diagnosis.code) notes.push(TEXT_NEEDS_CODE);
+      else if (diagnosis.text.trim()) skipped.push("mainDiagnosisText");
+      else {
+        diagnosis.text = fields.mainDiagnosisText;
+        applied.push("mainDiagnosisText");
+      }
+    }
+
+    DICTATION_DIRECT.forEach((key) => {
+      if (!fields[key]) return;
+      if (String(formData[key] ?? "").trim()) {
+        skipped.push(key);
+        return;
+      }
+      patch[key] = fields[key];
+      applied.push(key);
+    });
+
+    setFormData((prev) => ({ ...prev, ...patch, mainDiagnosis: diagnosis }));
+    // Ошибки заполнения по перенесённым разделам больше не актуальны.
+    if (applied.length) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        applied.forEach((key) => delete next[key]);
+        return next;
+      });
+    }
+    return { applied, skipped, notes };
+  };
+
+  // Перенос одного раздела — с заменой, потому что это отдельное действие
+  // врача.
+  const applyDictationField = (field, value) => {
+    if (field === "mainDiagnosisCode") {
+      setFormData((prev) => ({
+        ...prev,
+        mainDiagnosis: {
+          ...prev.mainDiagnosis,
+          code: String(value).trim().toUpperCase(),
+        },
+      }));
+      return { applied: true, note: CODE_NOTE };
+    }
+    if (field === "mainDiagnosisText") {
+      if (!formData.mainDiagnosis.code) {
+        return { applied: false, note: TEXT_NEEDS_CODE };
+      }
+      setFormData((prev) => ({
+        ...prev,
+        mainDiagnosis: { ...prev.mainDiagnosis, text: value },
+      }));
+      return { applied: true };
+    }
+    if (!DICTATION_DIRECT.includes(field)) return { applied: false };
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => {
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+    return { applied: true };
+  };
+
   // Когда врач выбирает код МКБ-10 из автокомплита (или сбрасывает)
   const handleICD10Select = (selected) => {
     if (!selected) {
@@ -652,6 +770,15 @@ export default function AddPatientMedicalHistory() {
             );
           })}
         </div>
+
+        {/* ── Голосовая надиктовка. Сама решает, показываться ли: без ключей
+             распознавания сервер отвечает ready:false и панель не рисуется —
+             мёртвой кнопки «записать» врач не увидит. ── */}
+        <DictationPanel
+          patientId={id}
+          onApply={applyDictation}
+          onApplyField={applyDictationField}
+        />
 
         <form onSubmit={handleSubmit}>
           {/* ── Complaints ── */}

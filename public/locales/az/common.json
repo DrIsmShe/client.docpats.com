@@ -1230,6 +1230,36 @@
   "avatar_choose": {
     "chooseAvatar": "Avatar seçin"
   },
+  "dictation": {
+    "title": "Qəbulu diktə et",
+    "subIdle": "Mətn forma sahələrinə düşəcək — yoxlayın və həmişəki kimi yadda saxlayın.",
+    "subRecording": "Yazılır. Kartaya diktə etdiyiniz kimi danışın.",
+    "record": "Yaz",
+    "sending": "Göndərilir…",
+    "finish": "Hazırdır",
+    "cancel": "Ləğv et",
+    "statusUploaded": "Yazı qəbul edildi, emal gözlənilir…",
+    "statusTranscribing": "Nitq tanınır…",
+    "statusTranscribed": "Nitq tanındı, bölmələrə ayrılır…",
+    "statusStructuring": "Bölmələrə ayrılır…",
+    "statusBusy": "Emal olunur…",
+    "keepWorking": "Formanı doldurmağa davam edə bilərsiniz — qaralama burada özü görünəcək.",
+    "retry": "Sil və yenidən yaz",
+    "nothingFound": "Bu yazıda kart bölmələrinə uyğun heç nə tapılmadı. Heç nə uydurulmur — daha ətraflı diktə edin.",
+    "toField": "→ sahəyə",
+    "inForm": "✓ formada",
+    "skipped": "Artıq nəsə yazdığınız üçün toxunulmadı: {{fields}}. Bölmənin yanındakı «→ sahəyə» düyməsi mətni əvəz edir.",
+    "applyEmpty": "Boş sahələrə köçür",
+    "close": "Hazırdır, yazını sil",
+    "icdCode": "ICD-10",
+    "errConnection": "Serverlə əlaqə kəsildi",
+    "errUpload": "Yazını göndərmək alınmadı. Əlaqəni yoxlayıb yenidən cəhd edin.",
+    "errTooShort": "Yazı çox qısadır — müayinəni bütöv diktə edin.",
+    "errMicDenied": "Brauzer mikrofona icazə vermədi. Sayt parametrlərindən icazə verin.",
+    "errMicUnavailable": "Mikrofon əlçatmazdır. Qoşulduğunu və başqa proqram tərəfindən istifadə olunmadığını yoxlayın.",
+    "noteCodeFromSpeech": "ICD-10 kodu nitqdən götürülüb, rəsmi adı yoxdur. Rəsmi adın düşməsi üçün kodu axtarış sahəsində təsdiqləyin.",
+    "noteTextNeedsCode": "Diaqnoz mətni köçürülmədi: sahə yalnız ICD-10 kodu seçiləndən sonra görünür. Kod seçin və «→ sahəyə» düyməsini yenidən basın."
+  },
   "medicalHistoryForm": {
     "labels": {
       "complaints": "Şikayətlər",
