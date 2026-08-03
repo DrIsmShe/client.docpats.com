@@ -49,6 +49,85 @@ export function pathTemplate(pathname) {
   return out;
 }
 
+// Всё, что похоже на адрес: абсолютный URL или путь от корня.
+const URL_LIKE = /^(https?:\/\/|\/)/i;
+
+/**
+ * Обеззаразить любое значение-адрес: путь заменяется шаблоном, query и hash
+ * отбрасываются целиком.
+ *
+ * ЗАЧЕМ ОТБРАСЫВАТЬ QUERY. В строке запроса оказывается то, что человек
+ * ввёл: /dp/search-patient-polyclinic?q=Фамилия. Разбирать её по параметрам
+ * бессмысленно — безопаснее выкинуть всю.
+ */
+export function urlTemplate(value) {
+  const raw = String(value ?? "");
+  if (!URL_LIKE.test(raw)) return raw; // "$direct", пустая строка и прочее — как есть
+  try {
+    const relative = raw.startsWith("/");
+    // База нужна только чтобы разобрать относительный путь; наружу не идёт.
+    const url = new URL(raw, relative ? "https://parse.invalid" : undefined);
+    const path = pathTemplate(url.pathname);
+    return relative ? path : url.origin + path;
+  } catch {
+    // Неразбираемый адрес: срезаем query/hash вручную, лучше грубо, чем никак.
+    return pathTemplate(raw.split(/[?#]/)[0]);
+  }
+}
+
+// Свойства, которые PostHog добавляет сам и которые нам не нужны ни для
+// одного вопроса, зато потенциально везут содержательное.
+const DROP_PROPS = new Set([
+  // Заголовок вкладки. Сейчас он статический, но стоит какой-нибудь странице
+  // начать писать в него имя пациента — и утечка появится молча.
+  "title",
+]);
+
+/**
+ * Обеззаразить плоский набор свойств: адреса — через шаблон, лишнее — прочь.
+ * Вложенные объекты ($set, $set_once) обходятся на один уровень: глубже у
+ * событий ничего не бывает, а бесконечная рекурсия по чужой структуре —
+ * лишний риск.
+ */
+export function sanitizeOutgoing(props) {
+  const out = {};
+  for (const [key, value] of Object.entries(props ?? {})) {
+    if (DROP_PROPS.has(key)) continue;
+    if (typeof value === "string") {
+      out[key] = urlTemplate(value);
+    } else if (value && typeof value === "object" && !Array.isArray(value)) {
+      out[key] = sanitizeOutgoing(value);
+    } else {
+      out[key] = value;
+    }
+  }
+  return out;
+}
+
+/**
+ * Единый фильтр исходящих событий. PostHog зовёт его для КАЖДОГО события,
+ * включая служебные ($web_vitals, $pageleave, $feature_flag_called), — и это
+ * принципиально: свой код кладёт шаблон пути только в собственные поля, а
+ * SDK добавляет сверху $pathname, $session_entry_url,
+ * $session_entry_pathname, $prev_pageview_pathname и полный $current_url.
+ * Перечислять их поимённо нельзя — список меняется с версией библиотеки,
+ * поэтому обеззараживается ВСЁ, что выглядит как адрес.
+ *
+ * ВОЗВРАЩАТЬ СОБЫТИЕ ОБЯЗАТЕЛЬНО. null здесь означает «выбросить событие», а
+ * потеря служебного свойства token приводит к 401 на приёме — поэтому
+ * фильтр только переписывает значения и никогда не удаляет ключи, кроме
+ * явно перечисленных в DROP_PROPS.
+ */
+export function sanitizeEvent(event) {
+  if (!event) return event;
+  return {
+    ...event,
+    properties: sanitizeOutgoing(event.properties),
+    ...(event.$set ? { $set: sanitizeOutgoing(event.$set) } : null),
+    ...(event.$set_once ? { $set_once: sanitizeOutgoing(event.$set_once) } : null),
+  };
+}
+
 // Свойства события. Пропускаем только скаляры и только короткие строки:
 // длинная строка — почти наверняка чей-то текст, а не название экрана.
 // Это грубый фильтр, и он намеренно грубый: цена ошибки здесь несимметрична.
@@ -90,6 +169,14 @@ export async function initAnalytics() {
       capture_pageleave: false,
       mask_all_text: true,
       mask_all_element_attributes: true,
+
+      // Последний рубеж: библиотека прикрепляет к каждому событию свои
+      // свойства с сырым адресом страницы, и capture_pageview: false их не
+      // выключает — $web_vitals уходит собственным потоком. Здесь через
+      // шаблон пути прогоняется КАЖДОЕ строковое свойство любого события.
+      // (sanitize_properties делал бы то же, но объявлен устаревшим и не
+      // видит $set/$set_once.)
+      before_send: sanitizeEvent,
 
       // Персональные профили только для вошедших: аноним не создаёт профиль.
       person_profiles: "identified_only",

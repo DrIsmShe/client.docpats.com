@@ -5,6 +5,8 @@ import ICD10Autocomplete from "../../../components/ICD10Autocomplete";
 import DictationPanel from "../../../components/dictation/DictationPanel";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { track } from "../../../lib/analytics";
+import { POLYCLINIC_HISTORY_SAVED } from "../../../lib/events";
 
 Modal.setAppElement("#root");
 
@@ -633,6 +635,9 @@ export default function AddPatientMedicalHistory() {
           withCredentials: true,
         },
       );
+      // История болезни — самое насыщенное персональными данными место в
+      // продукте. Наружу уходит ровно факт сохранения и приложен ли снимок.
+      track(POLYCLINIC_HISTORY_SAVED, { withPhoto: Boolean(photo) });
       alert(
         response.data?.message ||
           t(

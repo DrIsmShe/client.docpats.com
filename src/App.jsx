@@ -108,6 +108,7 @@ import HomeAdminMainPage from "./pages/admin/homePageAdmin";
 import UsersListPage from "./pages/admin/user/usersList.jsx";
 import AdminClinicsPage from "./pages/admin/clinics/AdminClinicsPage.jsx";
 import AdminDashboardPage from "./pages/admin/overview/AdminDashboardPage.jsx";
+import AdminAnalyticsPage from "./pages/admin/analytics/AdminAnalyticsPage.jsx";
 import AdminAuditPage from "./pages/admin/overview/AdminAuditPage.jsx";
 import AdminDoctorsPage from "./pages/admin/entities/AdminDoctorsPage.jsx";
 import AdminVerificationPage from "./pages/admin/ops/AdminVerificationPage.jsx";
@@ -2748,6 +2749,8 @@ function App() {
               {/* Ручная выдача тарифов и лист ожидания запуска оплаты. */}
               <Route path="billing" element={<AdminBillingPage />} />
               <Route path="overview" element={<AdminDashboardPage />} />
+              {/* Посещаемость сайта: экраны, аудитория, источники, скорость. */}
+              <Route path="analytics" element={<AdminAnalyticsPage />} />
               <Route path="audit-log" element={<AdminAuditPage />} />
               <Route path="clinics" element={<AdminClinicsPage />} />
               <Route path="doctors" element={<AdminDoctorsPage />} />

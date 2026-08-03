@@ -5,6 +5,8 @@
 // передавать не нужно.
 
 import axios from "../axios";
+import { track } from "../lib/analytics";
+import { GUIDE_QUESTION_ASKED, count } from "../lib/events";
 
 const GUEST_URL = "/api/v1/public/guide/ask";
 const AUTHED_URL = "/api/v1/guide/ask";
@@ -40,6 +42,10 @@ export async function fetchGuideRole() {
  */
 export async function askGuide({ messages, authed = false, section }) {
   const body = { messages, section };
+
+  // Раздел справки и длина диалога. Текст вопроса не отправляется: гид
+  // спрашивают своими словами, и там может оказаться что угодно.
+  track(GUIDE_QUESTION_ASKED, { section, authed, turn: count(messages) });
 
   if (authed) {
     try {

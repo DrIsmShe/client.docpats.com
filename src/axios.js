@@ -15,6 +15,13 @@
 import axios from "axios";
 import { API_BASE, NEWS_API_BASE } from "./config";
 import i18n from "./i18n";
+// Счётчик безопасен для импорта здесь: lib/analytics ни на axios, ни на
+// config не завязан, циклической зависимости не возникает.
+import { track } from "./lib/analytics";
+import {
+  AI_CONSULTATION_STARTED, AI_CONSULTATION_MESSAGE_SENT,
+  AI_EPICRISIS_REQUESTED, count,
+} from "./lib/events";
 
 const instance = axios.create({
   baseURL: API_BASE,
@@ -148,6 +155,10 @@ AI CONSULTATION
 ========================
 */
 
+// Счётчик консультаций. Здесь он особенно скупой: и переписка, и анкета
+// пациента — клинические данные. Наружу уходит только длина диалога (сколько
+// реплик до эпикриза) и признак гостя: по ним видно, доходят ли до конца и
+// кто именно пользуется — зарегистрированные врачи или посетители с улицы.
 export const consultationApi = {
   getStatus: (guestId) =>
     instance.get("/api/consultation/session-status", {
@@ -155,25 +166,42 @@ export const consultationApi = {
     }),
 
   start: (guestId) =>
-    instance.post(
-      "/api/consultation/start",
-      {},
-      { headers: { "x-guest-id": guestId } },
-    ),
+    instance
+      .post("/api/consultation/start", {}, { headers: { "x-guest-id": guestId } })
+      .then((res) => {
+        track(AI_CONSULTATION_STARTED, { guest: Boolean(guestId) });
+        return res;
+      }),
 
   sendMessage: (messages, patientInfo, guestId) =>
-    instance.post(
-      "/api/consultation/message",
-      { messages, patientInfo },
-      { headers: { "x-guest-id": guestId } },
-    ),
+    instance
+      .post(
+        "/api/consultation/message",
+        { messages, patientInfo },
+        { headers: { "x-guest-id": guestId } },
+      )
+      .then((res) => {
+        track(AI_CONSULTATION_MESSAGE_SENT, {
+          guest: Boolean(guestId),
+          turn: count(messages),
+        });
+        return res;
+      }),
 
   getEpicrisis: (messages, patientInfo, guestId) =>
-    instance.post(
-      "/api/consultation/epicrisis",
-      { messages, patientInfo },
-      { headers: { "x-guest-id": guestId } },
-    ),
+    instance
+      .post(
+        "/api/consultation/epicrisis",
+        { messages, patientInfo },
+        { headers: { "x-guest-id": guestId } },
+      )
+      .then((res) => {
+        track(AI_EPICRISIS_REQUESTED, {
+          guest: Boolean(guestId),
+          turns: count(messages),
+        });
+        return res;
+      }),
 };
 
 export default instance;

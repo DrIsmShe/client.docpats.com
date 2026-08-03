@@ -18,6 +18,8 @@
 // All go through the shared axios instance (baseURL = backend origin,
 // withCredentials) so the session cookie is sent automatically.
 import axios from "../axios";
+import { track } from "../lib/analytics";
+import { VIDEO_ROOM_JOINED } from "../lib/events";
 /**
  * Token for a 1:1 dialog video call.
  * @param {string} dialogId
@@ -25,7 +27,10 @@ import axios from "../axios";
 export const getDialogVideoToken = (dialogId) =>
   axios
     .post("/communication/video/token", { kind: "dialog", id: dialogId })
-    .then((res) => res.data);
+    .then((res) => {
+      track(VIDEO_ROOM_JOINED, { context: "dialog" });
+      return res.data;
+    });
 /**
  * Token for a consilium group video call — DOCTOR / clinic side.
  * @param {string} consiliumId
@@ -37,7 +42,10 @@ export const getConsiliumVideoToken = (consiliumId, displayName) =>
       `/api/v1/clinic/consilia/${consiliumId}/video-token`,
       displayName ? { displayName } : {},
     )
-    .then((res) => res.data);
+    .then((res) => {
+      track(VIDEO_ROOM_JOINED, { context: "consilium" });
+      return res.data;
+    });
 /**
  * Token for a consilium group video call — PATIENT side.
  * Authenticated by session (no clinic membership); the backend authorizes the
@@ -51,7 +59,10 @@ export const getPatientConsiliumVideoToken = (consiliumId, displayName) =>
       `/appointment-for-patient/consilium-video/${consiliumId}/video-token`,
       displayName ? { displayName } : {},
     )
-    .then((res) => res.data);
+    .then((res) => {
+      track(VIDEO_ROOM_JOINED, { context: "consilium_patient" });
+      return res.data;
+    });
 /**
  * List the consilia the current patient has been invited into.
  * GET /appointment-for-patient/consilium-video/my  → { success, items: [...] }
@@ -73,7 +84,10 @@ export const getTelemedVideoToken = (sessionId, displayName) =>
       `/api/v1/clinic/telemed/${sessionId}/video-token`,
       displayName ? { displayName } : {},
     )
-    .then((res) => res.data);
+    .then((res) => {
+      track(VIDEO_ROOM_JOINED, { context: "telemed" });
+      return res.data;
+    });
 /**
  * Token for a telemed session video call — PATIENT side.
  * Authenticated by session (no clinic membership); the backend authorizes the
@@ -87,7 +101,10 @@ export const getPatientTelemedVideoToken = (sessionId, displayName) =>
       `/appointment-for-patient/telemed-video/${sessionId}/video-token`,
       displayName ? { displayName } : {},
     )
-    .then((res) => res.data);
+    .then((res) => {
+      track(VIDEO_ROOM_JOINED, { context: "telemed_patient" });
+      return res.data;
+    });
 /**
  * List the current patient's telemed sessions (cards with clinic/doctor names).
  * GET /appointment-for-patient/telemed-video/my
@@ -118,7 +135,10 @@ export const getAppointmentVideoToken = (appointmentId, displayName) =>
       `/appointment-for-patient/video/${appointmentId}/token`,
       displayName ? { displayName } : {},
     )
-    .then((res) => res.data);
+    .then((res) => {
+      track(VIDEO_ROOM_JOINED, { context: "appointment" });
+      return res.data;
+    });
 export default {
   getDialogVideoToken,
   getConsiliumVideoToken,

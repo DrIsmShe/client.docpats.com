@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import InputMask from "react-input-mask";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { track } from "../../../lib/analytics";
+import { POLYCLINIC_PATIENT_CREATED } from "../../../lib/events";
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Lora:wght@600;700&display=swap');
@@ -456,6 +458,7 @@ const Addpatient = () => {
           headers: { "Content-Type": "multipart/form-data" },
         },
       );
+      track(POLYCLINIC_PATIENT_CREATED, { kind: "private", withPhoto: Boolean(profileImage) });
       alert(res?.data?.message || "Patient added successfully!");
       navigate("/dp/polyclinic");
     } catch (err) {

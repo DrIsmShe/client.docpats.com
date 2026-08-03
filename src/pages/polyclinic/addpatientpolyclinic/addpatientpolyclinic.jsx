@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import InputMask from "react-input-mask";
 import axios from "axios";
+import { track } from "../../../lib/analytics";
+import { POLYCLINIC_PATIENT_CREATED } from "../../../lib/events";
 
 const Addpatient = () => {
   const navigate = useNavigate();
@@ -293,6 +295,8 @@ const Addpatient = () => {
           headers: { "Content-Type": "multipart/form-data" },
         },
       );
+      // Только тип карточки и был ли снимок. Всё содержимое формы — ПД.
+      track(POLYCLINIC_PATIENT_CREATED, { kind: "regular", withPhoto: Boolean(profileImage) });
 
       alert(res?.data?.message || "Patient added successfully!");
       navigate("/dp/polyclinic");

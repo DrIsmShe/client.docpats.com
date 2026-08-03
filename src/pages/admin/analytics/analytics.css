@@ -1,0 +1,459 @@
+/* client/src/pages/admin/analytics/analytics.css
+ *
+ * Стили дашборда посещаемости. Светлая тема — как и вся остальная админка
+ * (см. AdminDashboardPage): отдельная тёмная схема здесь была бы единственной
+ * в разделе и смотрелась бы чужеродно.
+ *
+ * Роли цвета вынесены в переменные: чернила текста, сетка, поверхность. Цвета
+ * серий живут в parts.jsx — они одни на графики и на легенду, и держать их в
+ * двух местах значит однажды их рассинхронизировать.
+ */
+
+.an-page {
+  --an-surface: #fff;
+  --an-plane: #f9f9f7;
+  --an-ink: #0b0b0b;
+  --an-ink-2: #52514e;
+  --an-ink-muted: #898781;
+  --an-line: #e6eaf0;
+  --an-line-soft: #eef1f5;
+
+  padding: 20px;
+  max-width: 1240px;
+  margin: 0 auto;
+  color: var(--an-ink);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* ─── Шапка ─── */
+.an-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.an-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.an-subtitle {
+  font-size: 13px;
+  color: var(--an-ink-2);
+  margin: 0;
+  max-width: 720px;
+  line-height: 1.5;
+}
+
+.an-btn {
+  background: var(--an-surface);
+  border: 1px solid var(--an-line);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--an-ink-2);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.an-btn:hover:not(:disabled) {
+  border-color: #c9d3e0;
+  color: var(--an-ink);
+}
+
+.an-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ─── Вкладки ─── */
+.an-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--an-line);
+  margin-bottom: 14px;
+}
+
+.an-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 9px 14px;
+  font-size: 13px;
+  color: var(--an-ink-2);
+  cursor: pointer;
+  margin-bottom: -1px;
+}
+
+.an-tab:hover {
+  color: var(--an-ink);
+}
+
+.an-tab.is-active {
+  color: #2a78d6;
+  border-bottom-color: #2a78d6;
+  font-weight: 600;
+}
+
+/* ─── Фильтр периода ─── */
+.an-filters {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.an-filters__label {
+  font-size: 12px;
+  color: var(--an-ink-muted);
+  margin-right: 2px;
+}
+
+.an-filters__hint {
+  font-size: 11px;
+  color: var(--an-ink-muted);
+  margin-left: 8px;
+}
+
+.an-chip {
+  background: var(--an-surface);
+  border: 1px solid var(--an-line);
+  border-radius: 999px;
+  padding: 5px 13px;
+  font-size: 12px;
+  color: var(--an-ink-2);
+  cursor: pointer;
+}
+
+.an-chip.is-active {
+  background: #2a78d6;
+  border-color: #2a78d6;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ─── Плитки с числами ─── */
+.an-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.an-stat {
+  background: var(--an-surface);
+  border: 1px solid var(--an-line);
+  border-radius: 10px;
+  padding: 14px 18px;
+  min-width: 150px;
+  flex: 0 1 auto;
+}
+
+.an-stat__value {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.an-stat__label {
+  font-size: 12px;
+  color: var(--an-ink-2);
+  margin-top: 2px;
+}
+
+.an-stat__hint {
+  font-size: 11px;
+  color: var(--an-ink-muted);
+  margin-top: 3px;
+}
+
+/* Стрелка изменения: цвет дублируется знаком и словом, чтобы смысл не
+   держался на одном лишь цвете. */
+.an-stat__delta {
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+.an-stat__delta.is-up {
+  color: #006300;
+}
+
+.an-stat__delta.is-down {
+  color: #d03b3b;
+}
+
+/* Оценка Web Vitals: тоже знак + слово, не только цвет. */
+.an-verdict {
+  font-size: 11px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.an-verdict.is-good {
+  color: #006300;
+}
+
+.an-verdict.is-warn {
+  color: #a06600;
+}
+
+.an-verdict.is-bad {
+  color: #d03b3b;
+}
+
+/* ─── Разделы ─── */
+.an-section {
+  background: var(--an-surface);
+  border: 1px solid var(--an-line);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+.an-section--wide {
+  grid-column: 1 / -1;
+}
+
+.an-section__title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: #3b445a;
+}
+
+.an-section__note {
+  font-size: 12px;
+  color: var(--an-ink-muted);
+  margin: 0 0 14px;
+  line-height: 1.5;
+  max-width: 760px;
+}
+
+.an-subtitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--an-ink-2);
+  margin: 0 0 8px;
+}
+
+/* Две колонки на широком экране, одна на узком. */
+.an-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 18px;
+}
+
+.an-cols > .an-section {
+  margin-bottom: 0;
+}
+
+/* ─── Таблицы ─── */
+.an-table-wrap {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.an-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.an-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--an-ink-muted);
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--an-line);
+  white-space: nowrap;
+}
+
+.an-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--an-line-soft);
+  color: var(--an-ink-2);
+}
+
+.an-table tbody tr:hover td {
+  background: var(--an-plane);
+}
+
+.an-td-name {
+  color: var(--an-ink);
+  max-width: 380px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Числовые колонки — моноширинные цифры, чтобы разряды стояли столбиком. */
+.an-td-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.an-table-more {
+  font-size: 11px;
+  color: var(--an-ink-muted);
+  padding: 8px 10px 0;
+}
+
+/* ─── Продуктовое событие с раскрытием ─── */
+.an-event {
+  border: 1px solid var(--an-line);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.an-event.is-open {
+  border-color: #c9d3e0;
+}
+
+/* Заголовок — кнопка на всю ширину: клик по любой части строки раскрывает
+   событие, а не только по маленькому треугольнику. */
+.an-event__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--an-surface);
+  border: none;
+  padding: 11px 14px;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--an-ink);
+}
+
+.an-event__head:hover {
+  background: var(--an-plane);
+}
+
+.an-event__caret {
+  color: var(--an-ink-muted);
+  font-size: 11px;
+  width: 12px;
+}
+
+.an-event__name {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+/* Счётчики прижимаем вправо. */
+.an-event__nums {
+  margin-left: auto;
+  color: var(--an-ink-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.an-event__body {
+  padding: 4px 14px 16px;
+  border-top: 1px solid var(--an-line-soft);
+  background: var(--an-plane);
+}
+
+.an-event__body .an-subtitle {
+  margin-top: 12px;
+}
+
+/* ─── Форма журнала ─── */
+.an-form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 14px;
+}
+
+.an-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.an-field span {
+  font-size: 11px;
+  color: var(--an-ink-muted);
+}
+
+.an-field input {
+  border: 1px solid var(--an-line);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 13px;
+  min-width: 150px;
+  color: var(--an-ink);
+  background: var(--an-surface);
+}
+
+.an-field input:focus {
+  outline: 2px solid rgba(42, 120, 214, 0.35);
+  outline-offset: 1px;
+  border-color: #2a78d6;
+}
+
+/* ─── Состояния ─── */
+.an-loading,
+.an-empty {
+  padding: 18px;
+  font-size: 13px;
+  color: var(--an-ink-muted);
+}
+
+.an-empty {
+  padding: 14px 0;
+}
+
+.an-error,
+.an-block-error {
+  background: #fdf3f3;
+  border: 1px solid #f3d5d5;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #b91c1c;
+  margin-bottom: 14px;
+}
+
+.an-notice {
+  background: var(--an-surface);
+  border: 1px solid var(--an-line);
+  border-radius: 12px;
+  padding: 20px;
+  font-size: 13px;
+  color: var(--an-ink-2);
+  line-height: 1.6;
+  max-width: 760px;
+}
+
+.an-notice ol {
+  padding-left: 20px;
+  margin: 10px 0 0;
+}
+
+.an-notice li {
+  margin-bottom: 10px;
+}
+
+.an-notice code {
+  background: var(--an-plane);
+  border: 1px solid var(--an-line-soft);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 12px;
+}
+
+/* Тултипы recharts на узком экране не должны вылезать за край. */
+.recharts-tooltip-wrapper {
+  max-width: 90vw;
+}

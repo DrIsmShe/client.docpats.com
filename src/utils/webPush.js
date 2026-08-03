@@ -4,6 +4,9 @@
 // подписка/отписка через Service Worker + PushManager, синхронизация с
 // бэкендом (/notifications/push/*).
 
+import { track } from "../lib/analytics";
+import { PUSH_SUBSCRIBED } from "../lib/events";
+
 const API_BASE = process.env.REACT_APP_API_URL;
 
 function urlBase64ToUint8Array(base64String) {
@@ -75,6 +78,11 @@ export async function enablePush() {
     body: JSON.stringify({ subscription: sub }),
   });
   if (!res.ok) throw new Error("Не удалось сохранить подписку");
+
+  // Подписка на уведомления — единственный способ дотянуться до врача, когда
+  // вкладка закрыта. Доля подписавшихся объясняет, почему напоминания о
+  // приёмах доходят не до всех.
+  track(PUSH_SUBSCRIBED);
   return true;
 }
 

@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+// Выход: сбросить кэш сессии и разорвать связь событий счётчика с человеком.
+import { clearSession } from "../../../api/session";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -348,6 +350,7 @@ export default function Aside() {
         {},
         { withCredentials: true },
       );
+      clearSession();
       navigate("/login");
     } catch (error) {
       console.error("Logout error:", error);

@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { toggleMenu } from "../../slices/menuSlice";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+// Выход: сбросить кэш сессии и разорвать связь событий счётчика с человеком.
+import { clearSession } from "../../api/session";
 export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,6 +42,7 @@ export default function Header() {
         {},
         { withCredentials: true },
       );
+      clearSession();
       navigate("/login");
     } catch (error) {
       // eslint-disable-next-line no-console

@@ -7,6 +7,8 @@
 // нужен withCredentials (весь модуль опирается на сессию врача) и baseURL.
 
 import api from "../axios";
+import { track } from "../lib/analytics";
+import { DICTATION_UPLOADED, DICTATION_DRAFT_SAVED, count } from "../lib/events";
 
 const ROOT = "/api/v1/dictation";
 
@@ -68,6 +70,13 @@ export async function uploadDictation(patientId, blob, { lang, durationSec } = {
   const { data } = await api.post(`${ROOT}/patients/${patientId}/upload`, form, {
     headers: { "Content-Type": "multipart/form-data" },
   });
+  // Длительность записи и язык — они отвечают на вопрос, диктуют ли реплику
+  // или полноценный приём. Ни аудио, ни расшифровки, ни идентификатора
+  // пациента здесь нет и быть не может.
+  track(DICTATION_UPLOADED, {
+    lang,
+    durationSec: durationSec ? Math.round(durationSec) : undefined,
+  });
   return data.job;
 }
 
@@ -84,6 +93,9 @@ export async function listDictationJobs(limit = 20) {
 /** Правка черновика до того, как он уйдёт в карту. */
 export async function updateDictationDraft(jobId, draft) {
   const { data } = await api.patch(`${ROOT}/jobs/${jobId}/draft`, { draft });
+  // Сколько полей врач правил руками — это мера того, насколько хорошо
+  // распознавание попадает в форму. Содержимое полей, естественно, не идёт.
+  track(DICTATION_DRAFT_SAVED, { fieldsEdited: count(Object.keys(draft ?? {})) });
   return data.job;
 }
 

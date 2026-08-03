@@ -5,6 +5,8 @@ import { toggleMenu, closeMenu } from "../../../slices/menuSlice.js";
 import { useLocation } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+// Выход: сбросить кэш сессии и разорвать связь событий счётчика с человеком.
+import { clearSession } from "../../../api/session";
 import NotificationBell from "../../../components/notifications/NotificationBell.jsx";
 import LanguageSwitcher from "../../LanguageSwitcher.jsx";
 import { useTranslation } from "react-i18next";
@@ -59,6 +61,7 @@ export default function HeaderPatient() {
         {},
         { withCredentials: true },
       );
+      clearSession();
 
       alert(t("logout_success"));
       navigate("/login");

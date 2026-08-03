@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+// Выход: сбросить кэш сессии и разорвать связь событий счётчика с человеком.
+import { clearSession } from "../../../api/session";
 import { useTranslation } from "react-i18next";
 
 const CSS = `
@@ -206,6 +208,7 @@ export default function Aside() {
         {},
         { withCredentials: true },
       );
+      clearSession();
       alert(t("aside.logout.success"));
       navigate("/login");
     } catch (error) {

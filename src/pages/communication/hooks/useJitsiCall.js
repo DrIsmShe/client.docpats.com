@@ -44,6 +44,8 @@ import { getSocket } from "../socket";
 // Она шлёт POST /communication/video/token { kind:"dialog", id:dialogId }.
 // Если называется getTelemedToken — импортируй её и переименуй вызовы ниже.
 import { getDialogVideoToken } from "../../../api/videoApi";
+import { track } from "../../../lib/analytics";
+import { CALL_STARTED } from "../../../lib/events";
 
 const JITSI_URL = process.env.REACT_APP_JITSI_URL || "https://meet.docpats.com";
 const EXTERNAL_API_SRC = `${JITSI_URL}/external_api.js`;
@@ -307,6 +309,7 @@ export function useJitsiCall(currentUserId) {
         calleeId: targetPeerId,
         type,
       });
+        track(CALL_STARTED, { callType: type, transport: "jitsi" });
     },
     [callState, socket],
   );

@@ -14,6 +14,11 @@
 import axios from "../axios";
 // Язык врача уходит на сервер вместе с разбором: модель пишет выводы на нём.
 import i18n from "../i18n";
+import { track } from "../lib/analytics";
+import {
+  DIAGNOSTICS_CASE_CREATED, DIAGNOSTICS_DOCUMENT_EXTRACTED,
+  DIAGNOSTICS_CASE_ANALYZED, DIAGNOSTICS_CASE_EXPORTED, count,
+} from "../lib/events";
 
 const BASE = "/api/v1/diagnostics";
 
@@ -91,6 +96,7 @@ export async function fetchCase(caseId) {
 
 export async function createCase(payload) {
   const { data } = await axios.post(`${BASE}/cases`, payload);
+  track(DIAGNOSTICS_CASE_CREATED);
   return data.case;
 }
 
@@ -165,6 +171,13 @@ export async function extractDocument(caseId, file, hint = "", modality = "") {
     // Заданный вручную заголовок ломает разбор multipart на сервере.
     timeout: 180000,
   });
+  // Тип документа и флаг «в файле нашлись данные пациента» — структурные
+  // признаки. Сам распознанный текст, разумеется, никуда не отправляется.
+  track(DIAGNOSTICS_DOCUMENT_EXTRACTED, {
+    modality: modality || undefined,
+    docKind: data.docKind,
+    hadPatientIdentity: Boolean(data.hasPatientIdentity),
+  });
   return {
     text: data.text ?? "",
     docKind: data.docKind ?? "other",
@@ -196,6 +209,7 @@ export async function analyzeCase(caseId, modalities = []) {
     modalities,
     lang: i18n.language,
   });
+  track(DIAGNOSTICS_CASE_ANALYZED, { modalities: count(modalities), jobs: count(data.jobs) });
   return { jobs: data.jobs ?? [], message: data.message ?? "" };
 }
 
@@ -222,6 +236,7 @@ export async function rerunJob(jobId) {
  */
 export async function exportCase(caseId) {
   const res = await axios.get(`${BASE}/cases/${caseId}/export`, { responseType: "blob" });
+  track(DIAGNOSTICS_CASE_EXPORTED);
 
   const disposition = res.headers?.["content-disposition"] ?? "";
   const match = /filename="?([^";]+)"?/i.exec(disposition);

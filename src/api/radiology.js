@@ -9,8 +9,28 @@
 // фронт строился поверх стабильного API.
 
 import axios from "../axios";
+import { track } from "../lib/analytics";
+import {
+  ARENA_ATTEMPT_STARTED, ARENA_ATTEMPT_SUBMITTED, ARENA_INVESTIGATION_ORDERED,
+  ARENA_DIFFERENTIAL_COMMITTED, ARENA_ATTEMPT_ANALYZED, ARENA_DUEL_CREATED,
+  ARENA_DUEL_FINISHED, ARENA_CASE_CREATED, ARENA_CASE_REVIEWED,
+  ARENA_CASE_AI_GENERATED, STATION, scorePct, count,
+} from "../lib/events";
 
 const BASE = "/api/v1/radiology";
+
+// Счётчик стоит здесь, а не в компонентах: одну и ту же попытку начинают из
+// каталога, из ежедневного кейса, из работы над ошибками и из дуэли — в
+// api-слое это одна точка вместо четырёх, которые к тому же разъедутся.
+//
+// Наружу уходит только форма события: станция, режим, балл, флаг зачёта.
+// Ни текста заключения, ни диагноза, ни идентификатора кейса — по кейсу
+// отчёты и так строятся на сервере, где данные и так есть.
+const attemptProps = (station, result) => ({
+  station,
+  scorePct: scorePct(result?.attempt?.score?.total),
+  passed: Boolean(result?.attempt?.score?.passed),
+});
 
 // ─── Конфигурация систем чтения ───────────────────────────────────────
 /** Готовые системы чтения: конфиг вьюера, чек-лист протокола, порог. */
@@ -56,6 +76,10 @@ export async function aiGenerateCase({ modality, topic, difficulty, hint }) {
     difficulty,
     hint,
   });
+  // Обращение к модели стоит денег, поэтому частота ручных генераций — цифра,
+  // на которую смотрят отдельно от ночного автогена. Тему и подсказку автора
+  // не шлём: это свободный текст.
+  track(ARENA_CASE_AI_GENERATED, { station: STATION.RADIOLOGY, modality, difficulty });
   return data.draft;
 }
 
@@ -216,6 +240,9 @@ export async function uploadCaseImage(file) {
 
 export async function createCase(payload) {
   const { data } = await axios.post(`${BASE}/cases`, payload);
+  // Модальность — перечислимое значение (cxr/ct/mri/us/ecg), по нему видно,
+  // какие станции наполняются, а какие стоят.
+  track(ARENA_CASE_CREATED, { station: STATION.RADIOLOGY, modality: payload?.modality });
   return data.case;
 }
 
@@ -239,6 +266,9 @@ export async function reviewCase(caseId, { decision, reason }) {
     decision,
     ...(reason ? { reason } : {}),
   });
+  // Решение рецензента перечислимо. Причину отказа не отправляем — это
+  // свободный текст, и в счётчике ему делать нечего.
+  track(ARENA_CASE_REVIEWED, { station: STATION.RADIOLOGY, decision });
   return data.case;
 }
 
@@ -307,6 +337,9 @@ export async function fetchVpPolicy(caseId, { mode = "learn" } = {}) {
  */
 export async function commitVpDifferential(attemptId, text) {
   const { data } = await axios.post(`${BASE}/vp/attempts/${attemptId}/commit`, { text });
+  // Сам дифференциальный ряд не отправляем — это клинический текст. Считаем
+  // только факт: дошёл ли врач до этого шага вообще.
+  track(ARENA_DIFFERENTIAL_COMMITTED, { station: STATION.VP });
   return data.commitment;
 }
 
@@ -349,6 +382,7 @@ export async function generateVpAiBaseline(caseId) {
  */
 export async function startAttempt(caseId, { mode = "learn" } = {}) {
   const { data } = await axios.post(`${BASE}/cases/${caseId}/attempts`, { mode });
+  track(ARENA_ATTEMPT_STARTED, { station: STATION.RADIOLOGY, mode });
   return data;
 }
 
@@ -362,6 +396,11 @@ export async function submitAttempt(attemptId, response) {
     `${BASE}/attempts/${attemptId}/submit`,
     response,
   );
+  track(ARENA_ATTEMPT_SUBMITTED, {
+    ...attemptProps(STATION.RADIOLOGY, data),
+    // Сколько находок отметил врач — это число, а не сами находки.
+    findings: count(response?.findings),
+  });
   return data;
 }
 
@@ -377,6 +416,9 @@ export async function fetchAttempt(attemptId) {
  */
 export async function aiAnalyzeAttempt(attemptId) {
   const { data } = await axios.post(`${BASE}/attempts/${attemptId}/ai-analysis`);
+  // Вызов платный (ходит в модель), поэтому его частота — сама по себе цифра,
+  // на которую смотрят.
+  track(ARENA_ATTEMPT_ANALYZED, { station: STATION.RADIOLOGY });
   return data.analysis;
 }
 
@@ -408,6 +450,7 @@ export async function aiGenerateLabCase({ topic, difficulty, hint }) {
     difficulty,
     hint,
   });
+  track(ARENA_CASE_AI_GENERATED, { station: STATION.LAB, difficulty });
   return data.draft;
 }
 
@@ -425,6 +468,7 @@ export async function dismissLabAiIssues(caseId, dismissed) {
 
 export async function createLabCase(payload) {
   const { data } = await axios.post(`${BASE}/labs/cases`, payload);
+  track(ARENA_CASE_CREATED, { station: STATION.LAB });
   return data.case;
 }
 
@@ -449,11 +493,13 @@ export async function setLabStatus(caseId, status) {
 
 export async function startLabAttempt(caseId, { mode = "learn" } = {}) {
   const { data } = await axios.post(`${BASE}/labs/cases/${caseId}/attempts`, { mode });
+  track(ARENA_ATTEMPT_STARTED, { station: STATION.LAB, mode });
   return data; // { attempt, case }
 }
 
 export async function submitLabAttempt(attemptId, response) {
   const { data } = await axios.post(`${BASE}/labs/attempts/${attemptId}/submit`, response);
+  track(ARENA_ATTEMPT_SUBMITTED, attemptProps(STATION.LAB, data));
   return data; // { attempt, review, game }
 }
 
@@ -476,10 +522,12 @@ export async function fetchDuels(filter = "open") {
 }
 export async function createDuel(caseId) {
   const { data } = await axios.post(`${BASE}/duels`, { caseId });
+  track(ARENA_DUEL_CREATED, { station: STATION.RADIOLOGY });
   return data.duel;
 }
 export async function submitDuelResult(duelId, attemptId) {
   const { data } = await axios.post(`${BASE}/duels/${duelId}/result`, { attemptId });
+  track(ARENA_DUEL_FINISHED, { station: STATION.RADIOLOGY, status: data.duel?.status });
   return data.duel;
 }
 
@@ -520,6 +568,7 @@ export async function aiGenerateVpCase({ topic, difficulty, hint }) {
     difficulty,
     hint,
   });
+  track(ARENA_CASE_AI_GENERATED, { station: STATION.VP, difficulty });
   return data.draft;
 }
 
@@ -537,6 +586,7 @@ export async function dismissVpAiIssues(caseId, dismissed) {
 
 export async function createVpCase(payload) {
   const { data } = await axios.post(`${BASE}/vp/cases`, payload);
+  track(ARENA_CASE_CREATED, { station: STATION.VP });
   return data.case;
 }
 
@@ -558,17 +608,26 @@ export async function setVpStatus(caseId, status) {
 
 export async function startVpAttempt(caseId, { mode = "learn" } = {}) {
   const { data } = await axios.post(`${BASE}/vp/cases/${caseId}/attempts`, { mode });
+  track(ARENA_ATTEMPT_STARTED, { station: STATION.VP, mode });
   return data; // { attempt, case }
 }
 
 /** Назначить обследование: раскрывает результат и фиксирует заказ. */
 export async function orderInvestigation(attemptId, key) {
   const { data } = await axios.post(`${BASE}/vp/attempts/${attemptId}/order`, { key });
+  // Только КАТЕГОРИЯ обследования: по ней видно, чем врачи пользуются
+  // (лаборатория, лучевая, функциональная). Название и текст результата —
+  // содержание кейса, им в счётчике не место.
+  track(ARENA_INVESTIGATION_ORDERED, {
+    station: STATION.VP,
+    category: data.investigation?.category,
+  });
   return data.investigation; // { key, name, category, resultText, imageUrl }
 }
 
 export async function submitVpAttempt(attemptId, response) {
   const { data } = await axios.post(`${BASE}/vp/attempts/${attemptId}/submit`, response);
+  track(ARENA_ATTEMPT_SUBMITTED, attemptProps(STATION.VP, data));
   return data; // { attempt, review, game }
 }
 

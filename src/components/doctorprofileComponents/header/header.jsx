@@ -5,6 +5,8 @@ import { useLocation } from "react-router-dom";
 
 import { Link } from "react-router-dom";
 import axios from "axios";
+// Выход: сбросить кэш сессии и разорвать связь событий счётчика с человеком.
+import { clearSession } from "../../../api/session";
 import { useNavigate } from "react-router-dom";
 import { PiVideoFill } from "react-icons/pi";
 import { FaFacebookMessenger } from "react-icons/fa6";
@@ -201,6 +203,7 @@ export default function Header() {
         {},
         { withCredentials: true },
       );
+      clearSession();
       alert("You have successfully logged out");
       navigate("/login"); // Redirect to login page after logging out
     } catch (error) {

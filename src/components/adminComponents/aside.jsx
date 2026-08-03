@@ -18,6 +18,14 @@ export default function Aside() {
               <span>Обзор платформы</span>
             </Link>
           </li>
+          {/* Посещаемость: чем из построенного пользуются. Не путать с
+              «Аналитикой арены» — та про успеваемость в кейсах. */}
+          <li className="nav-item" data-sec="overview">
+            <Link className="nav-link collapsed" to="analytics">
+              <i className="bi bi-bar-chart-line"></i>
+              <span>Посещаемость</span>
+            </Link>
+          </li>
           <li className="nav-item" data-sec="overview">
             <Link className="nav-link collapsed" to="system">
               <i className="bi bi-hdd-network"></i>

@@ -3,6 +3,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { getMessages, sendMessageHttp } from "../api/communicationApi";
 import { getSocket } from "../socket";
+import { track } from "../../../lib/analytics";
+import { CHAT_MESSAGE_SENT } from "../../../lib/events";
 
 export function useChat(dialogId) {
   const [messages, setMessages] = useState([]);
@@ -185,6 +187,11 @@ export function useChat(dialogId) {
         setMessages((prev) => {
           const filtered = prev.filter((m) => m.id !== message.id);
           return [...filtered, message];
+        });
+
+        track(CHAT_MESSAGE_SENT, {
+          hasAttachment: Boolean(attachment),
+          isReply: Boolean(replyToId),
         });
       } catch (err) {
         console.error("❌ sendMessageHttp error:", err);

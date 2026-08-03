@@ -16,6 +16,8 @@ import { FaCommentMedical } from "react-icons/fa6";
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import { useSelector } from "react-redux";
 import axios from "axios";
+// Выход: сбросить кэш сессии и разорвать связь событий счётчика с человеком.
+import { clearSession } from "../../../api/session";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FaUserFriends, FaUserMd, FaGift } from "react-icons/fa";
@@ -303,6 +305,7 @@ export default function AsidePatient() {
         {},
         { withCredentials: true },
       );
+      clearSession();
       alert(t("AsidePatient.messages.logoutSuccess"));
       navigate("/login");
     } catch (error) {

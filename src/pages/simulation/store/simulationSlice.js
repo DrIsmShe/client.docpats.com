@@ -3,6 +3,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { API_BASE } from "../../../config.js";
 import * as api from "../api/simulationApi.js";
 import { uploadPhoto as apiUploadPhoto } from "../api/photoUploadApi.js";
+import { track } from "../../../lib/analytics";
+import { SIMULATION_PLAN_CREATED, SIMULATION_LANDMARKS_SAVED, count } from "../../../lib/events";
 
 /* ──────────────────────────────────────────────────────────────────────────
    S.7.7+ — URL normalization для photo.url:
@@ -155,7 +157,9 @@ export const createPlan = createAsyncThunk(
   "simulation/createPlan",
   async (payload, { rejectWithValue }) => {
     try {
-      return await api.createPlan(payload);
+      const plan = await api.createPlan(payload);
+      track(SIMULATION_PLAN_CREATED);
+      return plan;
     } catch (err) {
       return rejectWithValue(err);
     }
@@ -200,7 +204,11 @@ export const persistLandmarks = createAsyncThunk(
   "simulation/persistLandmarks",
   async ({ id, landmarks, meta }, { rejectWithValue }) => {
     try {
-      return await api.saveLandmarks(id, landmarks, meta);
+      const saved = await api.saveLandmarks(id, landmarks, meta);
+      // Число расставленных точек — мера того, доводят ли разметку до конца.
+      // Координаты остаются в системе: они привязаны к фото пациента.
+      track(SIMULATION_LANDMARKS_SAVED, { points: count(landmarks) });
+      return saved;
     } catch (err) {
       return rejectWithValue(err?.response?.data || err);
     }

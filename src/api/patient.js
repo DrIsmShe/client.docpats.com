@@ -5,6 +5,8 @@
 // Sprint 3.2 — Pull Consent (list/approve/reject consent requests).
 
 import axios from "axios";
+import { track } from "../lib/analytics";
+import { PATIENT_CONSENT_GRANTED, PATIENT_CONSENT_REVOKED, count } from "../lib/events";
 
 const API_BASE = process.env.REACT_APP_API_URL;
 
@@ -36,6 +38,7 @@ export async function grantConsent({ cardId, scopes }) {
     { cardId, scopes },
     { withCredentials: true },
   );
+  track(PATIENT_CONSENT_GRANTED, { scopes: count(scopes), via: "direct" });
   return data;
 }
 
@@ -66,6 +69,7 @@ export async function revokeConsent(consentId, reason = null) {
       data: { reason }, // DELETE с body — axios нужен data в config
     },
   );
+  track(PATIENT_CONSENT_REVOKED, { hadReason: Boolean(reason) });
   return data;
 }
 
@@ -127,6 +131,7 @@ export async function approveConsentRequest(requestId, approvedScopes = null) {
     body,
     { withCredentials: true },
   );
+  track(PATIENT_CONSENT_GRANTED, { scopes: count(approvedScopes), via: "request" });
   return data;
 }
 
@@ -152,6 +157,7 @@ export async function rejectConsentRequest(requestId, note = null) {
     body,
     { withCredentials: true },
   );
+  track(PATIENT_CONSENT_REVOKED, { via: "request_rejected" });
   return data;
 }
 // ═══════════════════════════════════════════════════════════════════════════

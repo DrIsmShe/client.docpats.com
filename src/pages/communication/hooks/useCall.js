@@ -37,6 +37,8 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { getSocket } from "../socket";
+import { track } from "../../../lib/analytics";
+import { CALL_STARTED } from "../../../lib/events";
 
 export function useCall(currentUserId) {
   const socket = getSocket();
@@ -526,6 +528,9 @@ export function useCall(currentUserId) {
           calleeId: targetPeerId,
           type,
         });
+        // Тип звонка и транспорт. Ни имени собеседника, ни идентификаторов —
+        // важно только, что звонок начался и каким способом.
+        track(CALL_STARTED, { callType: type, transport: "p2p" });
       } catch (err) {
         console.error("initiateCall error:", err);
         setCallState("idle");

@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "../components/LanguageSwitcher";
+import { track } from "../lib/analytics";
+import { BILLING_WAITLIST_JOINED } from "../lib/events";
 
 // ═════════════════════════════════════════════════════════════════════
 //   Цены (USD) — синхронизированы с server/common/config/aiPlanLimits.js
@@ -268,6 +270,10 @@ function WaitlistButton({ planKey, period, t, className = "" }) {
         },
       );
       setState(r.ok ? "done" : "error");
+      // Пока оплата не запущена, лист ожидания — главный сигнал спроса:
+      // какой тариф и какой период вообще собираются брать. Почту, которую
+      // человек только что ввёл, счётчик не получает.
+      if (r.ok) track(BILLING_WAITLIST_JOINED, { plan: planKey, period });
     } catch {
       setState("error");
     }

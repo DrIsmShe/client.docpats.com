@@ -1,4 +1,6 @@
 import axios from "axios";
+import { track } from "../../../lib/analytics";
+import { DOCTOR_ARTICLE_CREATED } from "../../../lib/events";
 import { useNavigate } from "react-router-dom";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -148,6 +150,12 @@ export default function CreateArticleScientificDoctor() {
           withCredentials: true,
         },
       );
+      // Вид статьи и был ли снимок. Заголовок и текст — авторский контент,
+      // в счётчик он не идёт.
+      track(DOCTOR_ARTICLE_CREATED, {
+        kind: "scientific",
+        withImage: selectedImage instanceof File,
+      });
 
       navigate("/doctor/my-articles-scientific");
     } catch (error) {

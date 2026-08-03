@@ -10,6 +10,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { track } from "../../lib/analytics";
+import { BILLING_CHECKOUT_STARTED } from "../../lib/events";
 
 const API_BASE = process.env.REACT_APP_API_URL;
 const TEAL = "#2484a7";
@@ -38,6 +40,7 @@ export default function PricingCheckoutPage() {
           { planKey: plan, period },
           { withCredentials: true },
         );
+        track(BILLING_CHECKOUT_STARTED, { plan, period });
         if (res.data?.checkoutUrl) {
           const url = res.data.checkoutUrl;
           // Внутренний путь (mock) — через роутер; внешний — полный переход.

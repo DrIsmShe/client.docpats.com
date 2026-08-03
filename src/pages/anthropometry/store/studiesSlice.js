@@ -14,6 +14,10 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as studyApi from "../api/studyApi.js";
+import { track } from "../../../lib/analytics";
+import {
+  ANTHROPOMETRY_STUDY_CREATED, ANTHROPOMETRY_STUDY_COMPLETED,
+} from "../../../lib/events";
 
 /* ============================================================
    THUNKS
@@ -50,7 +54,10 @@ export const createStudy = createAsyncThunk(
   "anthroStudies/create",
   async ({ caseId, data }, { rejectWithValue }) => {
     try {
-      return await studyApi.createStudy(caseId, data);
+      const study = await studyApi.createStudy(caseId, data);
+      // Протокол измерения перечислим; сами измерения — данные пациента.
+      track(ANTHROPOMETRY_STUDY_CREATED, { protocol: data?.protocol });
+      return study;
     } catch (err) {
       return rejectWithValue(
         err.response?.data?.error || { message: err.message },
@@ -63,7 +70,11 @@ export const completeStudy = createAsyncThunk(
   "anthroStudies/complete",
   async (studyId, { rejectWithValue }) => {
     try {
-      return await studyApi.completeStudy(studyId);
+      const study = await studyApi.completeStudy(studyId);
+      // Пара «создано → завершено» показывает, доводят ли исследование до
+      // конца или бросают на полпути.
+      track(ANTHROPOMETRY_STUDY_COMPLETED);
+      return study;
     } catch (err) {
       return rejectWithValue(
         err.response?.data?.error || { message: err.message },

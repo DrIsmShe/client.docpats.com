@@ -26,6 +26,7 @@
 // change — no logic rewrite.
 
 import axios from "axios";
+import { identifyUser, resetAnalytics } from "../lib/analytics";
 
 const API_BASE = process.env.REACT_APP_API_URL;
 const ENDPOINT = `${API_BASE}/common-for-user`;
@@ -64,6 +65,19 @@ export async function getSession({ force = false } = {}) {
     try {
       const { data } = await axios.get(ENDPOINT, { withCredentials: true });
       cache = { data, fetchedAt: Date.now() };
+      // Связать события счётчика с пользователем.
+      //
+      // ПОЧЕМУ ИМЕННО ЗДЕСЬ. Это единственное место в приложении, где сессия
+      // приходит с сервера: ~47 компонентов ходили за ней сами, пока их не
+      // свели сюда. Вызов identify в лейаутах пришлось бы дублировать в
+      // каждом из них и всё равно пропустить половину.
+      //
+      // Наружу уходят ТОЛЬКО идентификатор и роль — ни имени, ни почты, ни
+      // телефона (см. analytics.js). Повторные вызовы безвредны: PostHog
+      // сам не шлёт $identify, если человек уже опознан тем же id.
+      if (data?.authenticated && data.user?._id) {
+        identifyUser({ userId: data.user._id, role: data.user.role });
+      }
       return data;
     } catch (err) {
       // Match legacy behaviour: treat any failure as "not authenticated".
@@ -87,6 +101,10 @@ export async function getSession({ force = false } = {}) {
 export function clearSession() {
   cache = null;
   inFlight = null;
+  // Разорвать связь событий с человеком. Без этого следующий, кто сядет за
+  // тот же браузер, продолжил бы писать события под чужим идентификатором —
+  // на общем компьютере в ординаторской это обычное дело.
+  resetAnalytics();
 }
 
 /**

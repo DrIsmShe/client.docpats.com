@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "./surgeryApi";
+import { track } from "../../lib/analytics";
+import {
+  SURGERY_CASE_CREATED, SURGERY_OUTCOME_RECORDED, SURGERY_CASE_PUBLISHED,
+} from "../../lib/events";
 
 // ─── Thunks ───────────────────────────────────────────────────────────────
 
@@ -39,6 +43,7 @@ export const createCase = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await api.createCase(data);
+      track(SURGERY_CASE_CREATED);
       return res.data.case;
     } catch (err) {
       return rejectWithValue(err.response?.data?.error || "Ошибка создания");
@@ -91,6 +96,8 @@ export const setOutcome = createAsyncThunk(
   async ({ caseId, score }, { rejectWithValue }) => {
     try {
       const res = await api.setOutcome(caseId, score);
+      // Исход операции — числовая оценка, а не описание случая.
+      track(SURGERY_OUTCOME_RECORDED);
       return res.data.case;
     } catch (err) {
       return rejectWithValue(err.response?.data?.error || "Ошибка");
@@ -103,6 +110,7 @@ export const togglePublish = createAsyncThunk(
   async ({ caseId, publish }, { rejectWithValue }) => {
     try {
       const res = await api.publishCase(caseId, publish);
+      track(SURGERY_CASE_PUBLISHED, { published: Boolean(publish) });
       return res.data.case;
     } catch (err) {
       return rejectWithValue(err.response?.data?.error || err.message);

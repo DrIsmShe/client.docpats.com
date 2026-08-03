@@ -7,6 +7,11 @@
 // baseURL НЕ содержит "/api", поэтому пути пишем полностью.
 
 import axios from "../axios";
+import { track } from "../lib/analytics";
+import {
+  EDUCATION_ATTEMPT_STARTED, EDUCATION_ANSWER_SUBMITTED,
+  EDUCATION_ATTEMPT_FINISHED, EDUCATION_IMPORT_STARTED, scorePct,
+} from "../lib/events";
 
 const BASE = "/api/v1/education";
 
@@ -173,6 +178,9 @@ export async function fetchGuestQuota() {
 
 export async function startGuestAttempt(payload) {
   const { data } = await axios.post(`${GUEST}/attempts`, payload);
+  // Демо-контур считаем отдельным режимом: сравнение guest против auth —
+  // это и есть воронка «попробовал → зарегистрировался».
+  track(EDUCATION_ATTEMPT_STARTED, { mode: "guest" });
   return data.attempt;
 }
 
@@ -186,12 +194,19 @@ export async function submitGuestAnswer(attemptId, payload) {
     `${GUEST}/attempts/${attemptId}/answer`,
     payload,
   );
+  track(EDUCATION_ANSWER_SUBMITTED, { mode: "guest" });
   return data;
 }
 
 /** Завершает демо-попытку. Возвращает { attempt, quota }. */
 export async function finishGuestAttempt(attemptId) {
   const { data } = await axios.post(`${GUEST}/attempts/${attemptId}/submit`);
+  track(EDUCATION_ATTEMPT_FINISHED, {
+    mode: "guest",
+    scorePct: scorePct(data.attempt?.score?.percent),
+    passed: Boolean(data.attempt?.score?.passed),
+    questions: data.attempt?.score?.total,
+  });
   return data;
 }
 
@@ -219,6 +234,10 @@ export async function startAttempt(payload) {
   return orGuest(
     async () => {
       const { data } = await axios.post(`${BASE}/attempts`, payload);
+      // Считаем ВНУТРИ ветки, а не вокруг orGuest: при отказе авторизации
+      // orGuest молча уходит в гостевой контур, и событие снаружи посчитало
+      // бы одну попытку дважды — как auth и как guest.
+      track(EDUCATION_ATTEMPT_STARTED, { mode: "auth", examMode: payload?.mode });
       return data.attempt;
     },
     () =>
@@ -250,6 +269,7 @@ export async function submitAnswer(attemptId, payload) {
         `${BASE}/attempts/${attemptId}/answer`,
         payload,
       );
+      track(EDUCATION_ANSWER_SUBMITTED, { mode: "auth" });
       return data;
     },
     () => submitGuestAnswer(attemptId, payload),
@@ -260,6 +280,12 @@ export async function finishAttempt(attemptId) {
   return orGuest(
     async () => {
       const { data } = await axios.post(`${BASE}/attempts/${attemptId}/submit`);
+      track(EDUCATION_ATTEMPT_FINISHED, {
+        mode: "auth",
+        scorePct: scorePct(data.attempt?.score?.percent),
+        passed: Boolean(data.attempt?.score?.passed),
+        questions: data.attempt?.score?.total,
+      });
       return data.attempt;
     },
     // Демо-контур отдаёт ещё и остаток квоты — странице нужен результат,
@@ -412,6 +438,7 @@ export async function generateQuestions(payload) {
 
 export async function createImportJob(payload) {
   const { data } = await axios.post(`${BASE}/import/jobs`, payload);
+  track(EDUCATION_IMPORT_STARTED, { extractor: payload?.extractor });
   return data.job;
 }
 

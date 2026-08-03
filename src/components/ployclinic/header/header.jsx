@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { toggleMenu } from "../../../slices/menuSlice";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+// Выход: сбросить кэш сессии и разорвать связь событий счётчика с человеком.
+import { clearSession } from "../../../api/session";
 export default function Header() {
   const dispatch = useDispatch();
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Состояние для проверки аутентификации
@@ -42,6 +44,7 @@ export default function Header() {
         {},
         { withCredentials: true }
       );
+      clearSession();
       alert("You have successfully logged out");
       navigate("/login"); // Redirect to login page after logging out
     } catch (error) {

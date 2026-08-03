@@ -9,8 +9,25 @@
 // uniform { items: [...] } shape so React components don't need to care.
 
 import axios from "../axios";
+import { track } from "../lib/analytics";
+import {
+  CLINIC_CREATED, CLINIC_PATIENT_CREATED, CLINIC_APPOINTMENT_CREATED,
+  CLINIC_STAFF_ADDED, CLINIC_INVITATION_CREATED, CLINIC_INVITATION_ACCEPTED,
+  CLINIC_CONSILIUM_CREATED, CLINIC_TELEMED_STARTED, CLINIC_EMPLOYEE_LOGGED_IN,
+  CLINIC_ENCOUNTER_CREATED, CLINIC_PRESCRIPTION_CREATED, CLINIC_LAB_RESULT_ADDED,
+  CLINIC_IMAGING_ADDED, CLINIC_CONSENT_REQUESTED, CLINIC_MEDICAL_RECORD_ADDED,
+  CLINIC_RESOURCE_CREATED, CLINIC_SERVICE_CREATED, CLINIC_ANNOUNCEMENT_CREATED,
+  CLINIC_KNOWLEDGE_CREATED, CLINIC_ARTICLE_PUBLISHED, CLINIC_PAGE_PUBLISHED,
+  CLINIC_MEMBERSHIP_REQUESTED, CLINIC_LEAD_SUBMITTED,
+} from "../lib/events";
 
 // ─── Helpers ──────────────────────────────────────────────────
+//
+// ПРО СЧЁТЧИК В ЭТОМ ФАЙЛЕ. Клиника — самая нагруженная персональными
+// данными часть продукта, поэтому в события отсюда уходит МЕНЬШЕ всего:
+// как правило только имя события, изредка роль или тип приёма. Ни имён
+// пациентов, ни телефонов, ни причин обращения — то же правило, что у
+// серверного аудита (modules/audit): структура, не содержание.
 
 /**
  * Normalize a list response to { items: [...] }.
@@ -70,6 +87,9 @@ export const createClinic = async ({
     ...(defaultCurrency && { defaultCurrency }),
     ...(defaultLanguage && { defaultLanguage }),
   });
+  // Регистрация новой клиники — ключевое событие продукта. Название и слаг
+  // не отправляем: клиника опознаваема по ним, а счётчику это не нужно.
+  track(CLINIC_CREATED, { language: defaultLanguage, currency: defaultCurrency });
   return res.data;
 };
 
@@ -112,6 +132,9 @@ export const addStaff = async ({ userId, role, customTitle }) => {
     role,
     ...(customTitle && { customTitle }),
   });
+  // Роль — из фиксированного каталога (owner/admin/doctor/nurse/…), это
+  // перечислимое значение, а не персональные данные.
+  track(CLINIC_STAFF_ADDED, { role });
   return res.data;
 };
 
@@ -164,6 +187,9 @@ export const createInvitation = async ({
     ...(customTitle && { customTitle }),
     ...(language && { language }),
   });
+  // Почта приглашаемого — персональные данные, наружу не идёт. Роль и язык
+  // письма — идут.
+  track(CLINIC_INVITATION_CREATED, { role, language });
   return res.data;
 };
 
@@ -231,6 +257,9 @@ export const acceptInvitation = async ({
     ...(phoneNumber && { phoneNumber }),
     ...(language && { language }),
   });
+  // Закрывает воронку найма: приглашение отправлено → принято. Из всего
+  // тела запроса наружу не уходит ничего — здесь и имя, и телефон, и пароль.
+  track(CLINIC_INVITATION_ACCEPTED);
   return res.data;
 };
 
@@ -245,6 +274,10 @@ export const employeeLogin = async ({ email, password }) => {
     email,
     password,
   });
+  // Вход сотрудника — отдельная от врачебной воронка: у него своя личность
+  // (ClinicEmployee), и без этого события зона /clinic/employee выглядела бы
+  // безлюдной. Почта, разумеется, не отправляется.
+  track(CLINIC_EMPLOYEE_LOGGED_IN);
   return res.data;
 };
 
@@ -347,6 +380,9 @@ export const listPatients = async (options = {}) => {
  */
 export const createPatient = async (data) => {
   const res = await axios.post("/api/v1/clinic/patients", data);
+  // Только факт. Никаких свойств: всё, что есть в карточке пациента, —
+  // персональные данные.
+  track(CLINIC_PATIENT_CREATED);
   return res.data;
 };
 
@@ -603,6 +639,9 @@ export const deleteScheduleException = async (exceptionId) => {
  */
 export const createAppointment = async (payload) => {
   const res = await axios.post("/api/v1/clinic/appointments", payload);
+  // Тип приёма перечислим (очный, телемедицина и т. п.). Причина обращения —
+  // клинические данные, она в счётчик не идёт.
+  track(CLINIC_APPOINTMENT_CREATED, { type: payload?.type });
   return res.data;
 };
 
@@ -815,6 +854,7 @@ export const createEncounter = async (patientId, payload) => {
     `/api/v1/clinic/medical/patients/${patientId}/encounters`,
     payload,
   );
+  track(CLINIC_ENCOUNTER_CREATED);
   return res.data;
 };
 
@@ -918,6 +958,7 @@ export const createAllergy = async (patientId, payload) => {
     `/api/v1/clinic/medical/patients/${patientId}/allergies`,
     payload,
   );
+  track(CLINIC_MEDICAL_RECORD_ADDED, { kind: "allergy" });
   return res.data;
 };
 
@@ -958,6 +999,7 @@ export const createChronicDisease = async (patientId, payload) => {
     `/api/v1/clinic/medical/patients/${patientId}/chronic-diseases`,
     payload,
   );
+  track(CLINIC_MEDICAL_RECORD_ADDED, { kind: "chronic_disease" });
   return res.data;
 };
 
@@ -1000,6 +1042,7 @@ export const createOperation = async (patientId, payload) => {
     `/api/v1/clinic/medical/patients/${patientId}/operations`,
     payload,
   );
+  track(CLINIC_MEDICAL_RECORD_ADDED, { kind: "operation" });
   return res.data;
 };
 
@@ -1040,6 +1083,7 @@ export const createFamilyHistory = async (patientId, payload) => {
     `/api/v1/clinic/medical/patients/${patientId}/family-history`,
     payload,
   );
+  track(CLINIC_MEDICAL_RECORD_ADDED, { kind: "family_history" });
   return res.data;
 };
 
@@ -1082,6 +1126,7 @@ export const createImmunization = async (patientId, payload) => {
     `/api/v1/clinic/medical/patients/${patientId}/immunizations`,
     payload,
   );
+  track(CLINIC_MEDICAL_RECORD_ADDED, { kind: "immunization" });
   return res.data;
 };
 
@@ -1187,6 +1232,7 @@ export const createImagingStudy = async (patientId, formDataOrObj) => {
       headers: { "Content-Type": "multipart/form-data" },
     },
   );
+  track(CLINIC_IMAGING_ADDED);
   return res.data;
 };
 
@@ -1292,6 +1338,7 @@ export const createConsentRequest = async (cardId, payload) => {
     `/api/v1/clinic/patients/${cardId}/consent-requests`,
     payload,
   );
+  track(CLINIC_CONSENT_REQUESTED);
   return res.data;
 };
 
@@ -1386,6 +1433,7 @@ export const createPrescription = async (patientId, payload) => {
     `/api/v1/clinic/medical/patients/${patientId}/prescriptions`,
     payload,
   );
+  track(CLINIC_PRESCRIPTION_CREATED);
   return res.data;
 };
 
@@ -1569,6 +1617,12 @@ export const createLabResult = async (patientId, payload, file = null) => {
     fd,
     { headers: { "Content-Type": "multipart/form-data" } },
   );
+  // Тип панели — из справочника (Other, CBC и т. д.), это не результат
+  // анализа. Сами значения параметров и диагноз никуда не уходят.
+  track(CLINIC_LAB_RESULT_ADDED, {
+    panelType: payload.panelType || "Other",
+    withFile: Boolean(file),
+  });
   return res.data;
 };
 
@@ -1700,6 +1754,7 @@ export const listDepartments = async (filters = {}) => {
  */
 export const createDepartment = async (payload) => {
   const res = await axios.post("/api/v1/clinic/departments", payload);
+  track(CLINIC_RESOURCE_CREATED, { kind: "department" });
   return res.data;
 };
 
@@ -1791,6 +1846,7 @@ export const listRooms = async (filters = {}) => {
  */
 export const createRoom = async (payload) => {
   const res = await axios.post("/api/v1/clinic/rooms", payload);
+  track(CLINIC_RESOURCE_CREATED, { kind: "room" });
   return res.data;
 };
 
@@ -1867,6 +1923,7 @@ export const listEquipment = async (filters = {}) => {
  */
 export const createEquipment = async (payload) => {
   const res = await axios.post("/api/v1/clinic/equipment", payload);
+  track(CLINIC_RESOURCE_CREATED, { kind: "equipment" });
   return res.data;
 };
 
@@ -1940,6 +1997,7 @@ export const listKnowledge = async (filters = {}) => {
  */
 export const createKnowledge = async (payload) => {
   const res = await axios.post("/api/v1/clinic/knowledge", payload);
+  track(CLINIC_KNOWLEDGE_CREATED);
   return res.data;
 };
 
@@ -2015,6 +2073,7 @@ export const listConsilia = async (filters = {}) => {
  */
 export const createConsilium = async (payload) => {
   const res = await axios.post("/api/v1/clinic/consilia", payload);
+  track(CLINIC_CONSILIUM_CREATED);
   return res.data;
 };
 
@@ -2114,6 +2173,7 @@ export const listTelemed = async (filters = {}) => {
  */
 export const createTelemed = async (payload) => {
   const res = await axios.post("/api/v1/clinic/telemed", payload);
+  track(CLINIC_TELEMED_STARTED);
   return res.data;
 };
 
@@ -2183,6 +2243,7 @@ export const listAnnouncements = async (filters = {}) => {
  */
 export const createAnnouncement = async (payload) => {
   const res = await axios.post("/api/v1/clinic/announcements", payload);
+  track(CLINIC_ANNOUNCEMENT_CREATED);
   return res.data;
 };
 
@@ -2255,6 +2316,7 @@ export const unarchiveAnnouncement = async (id) => {
 // payload { userId, role, customTitle?, employmentType? } → { request }
 export const createMembershipRequest = async (payload) => {
   const res = await axios.post("/api/v1/clinic/membership-requests", payload);
+  track(CLINIC_MEMBERSHIP_REQUESTED);
   return res.data;
 };
 
@@ -2517,6 +2579,7 @@ export const publishCustomPage = async (id, status) => {
   const res = await axios.patch(`/api/v1/clinic/pages/${id}/publish`, {
     status,
   });
+  track(CLINIC_PAGE_PUBLISHED, { status });
   return res.data; // { page }
 };
 export const deleteCustomPage = async (id) => {
@@ -2545,7 +2608,10 @@ export const updateArticle = (id, data) =>
 export const publishArticle = (id, status) =>
   axios
     .patch(`/api/v1/clinic/articles/${id}/publish`, { status })
-    .then((r) => r.data);
+    .then((r) => {
+      track(CLINIC_ARTICLE_PUBLISHED, { status });
+      return r.data;
+    });
 export const deleteArticle = (id) =>
   axios.delete(`/api/v1/clinic/articles/${id}`).then((r) => r.data);
 export const getPublicCategoryGallery = (slug, pageSlug) =>
@@ -2597,6 +2663,7 @@ export const getService = async (id) => {
 // POST /api/v1/clinic/services  → { service }
 export const createService = async (body) => {
   const res = await axios.post("/api/v1/clinic/services", body);
+  track(CLINIC_SERVICE_CREATED);
   return res.data?.service;
 };
 
@@ -2752,6 +2819,11 @@ export const submitLead = async (slug, payload) => {
     `/api/v1/public/clinics/${encodeURIComponent(slug)}/leads`,
     payload,
   );
+  // Заявка с публичной витрины — единственное целевое действие, которое
+  // совершают снаружи, без входа в систему. Слаг клиники здесь допустим:
+  // это публичный адрес страницы, а не персональные данные. Имя, телефон и
+  // текст обращения из payload, разумеется, остаются в запросе.
+  track(CLINIC_LEAD_SUBMITTED, { clinic: slug, source: payload?.source });
   return res.data;
 };
 
