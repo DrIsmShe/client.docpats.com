@@ -179,3 +179,32 @@
   font-weight: 400;
   color: #898781;
 }
+
+/* ─── Переключатель областей ─── */
+.exam-tpl-scopes {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid #e6eaf0;
+  margin-bottom: 16px;
+}
+
+.exam-tpl-scope {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 9px 16px;
+  font-size: 13px;
+  color: #52514e;
+  cursor: pointer;
+  margin-bottom: -1px;
+}
+
+.exam-tpl-scope:hover {
+  color: #0b0b0b;
+}
+
+.exam-tpl-scope.is-active {
+  color: #2a78d6;
+  border-bottom-color: #2a78d6;
+  font-weight: 600;
+}

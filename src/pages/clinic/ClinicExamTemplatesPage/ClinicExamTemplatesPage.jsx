@@ -20,16 +20,40 @@ import {
   updateExaminationTemplate,
   deleteExaminationTemplate,
 } from "../../../api/examinationTemplates";
-import { MODALITIES, TEMPLATE_KINDS, modalityLabel } from "../examinationModalities";
+import {
+  MODALITIES,
+  TEMPLATE_KINDS,
+  ENCOUNTER_BLOCKS,
+  modalityLabel,
+} from "../examinationModalities";
 import ExamTemplateFormModal from "./ExamTemplateFormModal";
 import "./clinicExamTemplatesPage.css";
+
+// Две области применения заготовок. Разделены наглухо и на сервере: блок
+// «жалобы» не может оказаться в протоколе КТ, и наоборот.
+const SCOPES = [
+  { key: "examination", label: "Обследования", blocks: TEMPLATE_KINDS },
+  { key: "encounter", label: "История болезни", blocks: ENCOUNTER_BLOCKS },
+];
 
 export default function ClinicExamTemplatesPage() {
   const layoutContext = useOutletContext();
 
+  const [scope, setScope] = useState("examination");
   const [modality, setModality] = useState(MODALITIES[0].key);
   const [kind, setKind] = useState(TEMPLATE_KINDS[0].key);
   const [search, setSearch] = useState("");
+
+  const currentScope = SCOPES.find((s) => s.key === scope) || SCOPES[0];
+  const isEncounter = scope === "encounter";
+
+  // При переключении области подставляем её первый блок: блоки у областей
+  // разные, и оставленный от прежней области ключ вернул бы пустой список.
+  function switchScope(next) {
+    setScope(next);
+    const blocks = SCOPES.find((s) => s.key === next)?.blocks || [];
+    if (blocks.length) setKind(blocks[0].key);
+  }
 
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,15 +72,23 @@ export default function ClinicExamTemplatesPage() {
     setLoading(true);
     setError(null);
     try {
-      setItems(await listExaminationTemplates({ modality, kind }));
+      setItems(
+        await listExaminationTemplates({
+          scope,
+          // Вид исследования отправляем только для протоколов: у блоков
+          // истории болезни его нет.
+          modality: scope === "encounter" ? undefined : modality,
+          kind,
+        }),
+      );
     } catch (err) {
       setError(
-        err.response?.data?.error || "Не удалось загрузить шаблоны протоколов",
+        err.response?.data?.error || "Не удалось загрузить шаблоны",
       );
     } finally {
       setLoading(false);
     }
-  }, [modality, kind]);
+  }, [scope, modality, kind]);
 
   useEffect(() => {
     load();
@@ -76,7 +108,12 @@ export default function ClinicExamTemplatesPage() {
     if (editing && editing._id) {
       await updateExaminationTemplate(editing._id, values);
     } else {
-      await createExaminationTemplate({ ...values, modality, kind });
+      await createExaminationTemplate({
+        ...values,
+        scope,
+        modality: isEncounter ? undefined : modality,
+        kind,
+      });
     }
     setEditing(null);
     load();
@@ -95,7 +132,7 @@ export default function ClinicExamTemplatesPage() {
     }
   }
 
-  const kindLabel = TEMPLATE_KINDS.find((k) => k.key === kind)?.label || "";
+  const kindLabel = currentScope.blocks.find((k) => k.key === kind)?.label || "";
 
   return (
     <div className="exam-tpl-page">
@@ -103,8 +140,9 @@ export default function ClinicExamTemplatesPage() {
         <div>
           <h1 className="exam-tpl-title">Шаблоны протоколов</h1>
           <p className="exam-tpl-subtitle">
-            Готовые формулировки для заполнения исследований. Врач выбирает их
-            кнопкой «Шаблоны» в форме исследования. Набор общий для всей клиники.
+            Готовые формулировки для заполнения исследований и записей приёма.
+            Врач выбирает их кнопкой «Шаблоны» рядом с полем. Набор общий для
+            всей клиники.
           </p>
         </div>
         {canManage && (
@@ -118,22 +156,44 @@ export default function ClinicExamTemplatesPage() {
         )}
       </header>
 
+      {/* Область применения. Вкладками, а не выпадающим списком: это две
+          разные части работы врача, и переключаются они часто. */}
+      <nav className="exam-tpl-scopes">
+        {SCOPES.map((s) => (
+          <button
+            key={s.key}
+            type="button"
+            className={`exam-tpl-scope${scope === s.key ? " is-active" : ""}`}
+            onClick={() => switchScope(s.key)}
+          >
+            {s.label}
+          </button>
+        ))}
+      </nav>
+
       <div className="exam-tpl-filters">
-        <label className="exam-tpl-filter">
-          <span>Исследование</span>
-          <select value={modality} onChange={(e) => setModality(e.target.value)}>
-            {MODALITIES.map((m) => (
-              <option key={m.key} value={m.key}>
-                {m.label}
-              </option>
-            ))}
-          </select>
-        </label>
+        {/* Вид исследования — только для протоколов: у жалоб и анамнеза его
+            не бывает. */}
+        {!isEncounter && (
+          <label className="exam-tpl-filter">
+            <span>Исследование</span>
+            <select
+              value={modality}
+              onChange={(e) => setModality(e.target.value)}
+            >
+              {MODALITIES.map((m) => (
+                <option key={m.key} value={m.key}>
+                  {m.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
 
         <label className="exam-tpl-filter">
-          <span>Блок протокола</span>
+          <span>{isEncounter ? "Раздел записи" : "Блок протокола"}</span>
           <select value={kind} onChange={(e) => setKind(e.target.value)}>
-            {TEMPLATE_KINDS.map((k) => (
+            {currentScope.blocks.map((k) => (
               <option key={k.key} value={k.key}>
                 {k.label}
               </option>
@@ -159,7 +219,9 @@ export default function ClinicExamTemplatesPage() {
       ) : filtered.length === 0 ? (
         <div className="exam-tpl-state">
           {items.length === 0
-            ? `Для «${modalityLabel(modality)}» в блоке «${kindLabel}» шаблонов пока нет.`
+            ? isEncounter
+              ? `В разделе «${kindLabel}» шаблонов пока нет.`
+              : `Для «${modalityLabel(modality)}» в блоке «${kindLabel}» шаблонов пока нет.`
             : "Ничего не найдено"}
         </div>
       ) : (
@@ -200,7 +262,7 @@ export default function ClinicExamTemplatesPage() {
       {editing && (
         <ExamTemplateFormModal
           template={editing._id ? editing : null}
-          modalityLabel={modalityLabel(modality)}
+          modalityLabel={isEncounter ? "История болезни" : modalityLabel(modality)}
           kindLabel={kindLabel}
           onSave={handleSave}
           onClose={() => setEditing(null)}

@@ -44,6 +44,35 @@ export const TEMPLATE_KINDS = [
   { key: "recommendation", label: "Рекомендации", field: "recommendation" },
 ];
 
+/**
+ * Одиннадцать блоков записи приёма, к которым тоже заводятся заготовки.
+ *
+ * Ключи повторяют имена полей формы приёма и модели — заготовка попадает в
+ * поле напрямую, без таблицы соответствий. Порядок — как в форме.
+ *
+ * В единоличной практике (модуль myClinic) под каждый блок заведена своя
+ * коллекция-справочник (tempComplaints, tempAnamnesisMorbi, …); здесь это
+ * значения поля kind в одном справочнике.
+ */
+export const ENCOUNTER_BLOCKS = [
+  { key: "complaints", label: "Жалобы" },
+  { key: "anamnesisMorbi", label: "Anamnesis morbi" },
+  { key: "anamnesisVitae", label: "Anamnesis vitae" },
+  { key: "statusPreasens", label: "Status praesens" },
+  { key: "statusLocalis", label: "Status localis" },
+  { key: "additionalDiagnosis", label: "Дополнительный диагноз" },
+  { key: "recommendations", label: "Рекомендации" },
+  { key: "ctScanResults", label: "Результаты КТ" },
+  { key: "mriResults", label: "Результаты МРТ" },
+  { key: "ultrasoundResults", label: "Результаты УЗИ" },
+  { key: "laboratoryTestResults", label: "Результаты анализов" },
+];
+
+/** Подпись блока приёма. */
+export function encounterBlockLabel(key) {
+  return ENCOUNTER_BLOCKS.find((b) => b.key === key)?.label || key;
+}
+
 /** Подпись вида исследования; неизвестный ключ показываем как есть. */
 export function modalityLabel(key) {
   return MODALITIES.find((m) => m.key === key)?.label || key;

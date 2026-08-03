@@ -19,7 +19,7 @@
 //   - status=draft  has no required fields
 //   - update only works on drafts; for signed/amended use Amend modal
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   createEncounter,
@@ -27,6 +27,9 @@ import {
   signEncounter,
 } from "../../../api/clinic";
 import ICD10Autocomplete from "../../../components/ICD10Autocomplete";
+import { listExaminationTemplates } from "../../../api/examinationTemplates";
+import { ENCOUNTER_BLOCKS, encounterBlockLabel } from "../examinationModalities";
+import ExaminationTemplatePicker from "./ExaminationTemplatePicker";
 
 const EMPTY_FORM = {
   mainDiagnosisCode: "",
@@ -84,6 +87,71 @@ export default function EncounterFormModal({
   const [submitting, setSubmitting] = useState(false);
   const [submittingAction, setSubmittingAction] = useState(null); // "save" | "sign"
   const [errors, setErrors] = useState({});
+
+  // Заготовки формулировок для блоков приёма: { complaints: [], … }.
+  const [templates, setTemplates] = useState({});
+  // Для какого блока сейчас открыто окно выбора (null — закрыто).
+  const [pickerKind, setPickerKind] = useState(null);
+
+  // Справочник грузится один раз при открытии формы: он не зависит ни от
+  // пациента, ни от заполняемых полей — это набор формулировок клиники.
+  //
+  // Ошибку глушим намеренно: справочник может быть пуст или недоступен по
+  // правам, и это не повод ломать форму приёма — текст всегда можно набрать
+  // руками, ровно как и раньше.
+  useEffect(() => {
+    let alive = true;
+
+    (async () => {
+      const lists = await Promise.all(
+        ENCOUNTER_BLOCKS.map((b) =>
+          listExaminationTemplates({ scope: "encounter", kind: b.key }).catch(
+            () => [],
+          ),
+        ),
+      );
+      if (!alive) return;
+      const next = {};
+      ENCOUNTER_BLOCKS.forEach((b, i) => {
+        next[b.key] = lists[i];
+      });
+      setTemplates(next);
+    })();
+
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  function applyTemplate(tpl) {
+    if (pickerKind) {
+      // Как в единоличной практике: заготовка ЗАМЕЩАЕТ содержимое поля.
+      // Это стартовый текст, который врач затем правит, а не вставка к
+      // уже написанному.
+      setField(pickerKind, tpl.body?.trim() ? tpl.body : tpl.title || "");
+    }
+    setPickerKind(null);
+  }
+
+  /**
+   * Кнопка «Шаблоны» в подписи поля. Прячется, когда для блока заготовок
+   * нет: кнопка, открывающая пустой список, только мешает.
+   */
+  function TemplateButton({ kind }) {
+    const items = templates[kind] || [];
+    if (items.length === 0) return null;
+    return (
+      <button
+        type="button"
+        className="exam-template-btn"
+        onClick={() => setPickerKind(kind)}
+        disabled={submitting}
+      >
+        {t("medical.encounters.templates.pick", { defaultValue: "Шаблоны" })}
+        <span className="exam-template-count">{items.length}</span>
+      </button>
+    );
+  }
 
   function setField(name, value) {
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -380,6 +448,7 @@ export default function EncounterFormModal({
                 <span className="patients-form-optional">
                   {t("common.optional", { defaultValue: "необязательно" })}
                 </span>
+                <TemplateButton kind="additionalDiagnosis" />
               </label>
               <input
                 type="text"
@@ -405,6 +474,7 @@ export default function EncounterFormModal({
                 {t("medical.encounters.fields.complaints", {
                   defaultValue: "Жалобы",
                 })}
+              <TemplateButton kind="complaints" />
               </label>
               <textarea
                 rows={3}
@@ -419,6 +489,7 @@ export default function EncounterFormModal({
                 {t("medical.encounters.fields.anamnesisMorbi", {
                   defaultValue: "Anamnesis morbi",
                 })}
+              <TemplateButton kind="anamnesisMorbi" />
               </label>
               <textarea
                 rows={3}
@@ -433,6 +504,7 @@ export default function EncounterFormModal({
                 {t("medical.encounters.fields.anamnesisVitae", {
                   defaultValue: "Anamnesis vitae",
                 })}
+              <TemplateButton kind="anamnesisVitae" />
               </label>
               <textarea
                 rows={3}
@@ -447,6 +519,7 @@ export default function EncounterFormModal({
                 {t("medical.encounters.fields.statusPreasens", {
                   defaultValue: "Status praesens",
                 })}
+              <TemplateButton kind="statusPreasens" />
               </label>
               <textarea
                 rows={3}
@@ -461,6 +534,7 @@ export default function EncounterFormModal({
                 {t("medical.encounters.fields.statusLocalis", {
                   defaultValue: "Status localis",
                 })}
+              <TemplateButton kind="statusLocalis" />
               </label>
               <textarea
                 rows={3}
@@ -475,6 +549,7 @@ export default function EncounterFormModal({
                 {t("medical.encounters.fields.recommendations", {
                   defaultValue: "Рекомендации",
                 })}
+              <TemplateButton kind="recommendations" />
               </label>
               <textarea
                 rows={3}
@@ -501,6 +576,7 @@ export default function EncounterFormModal({
                 {t("medical.encounters.fields.ctScanResults", {
                   defaultValue: "Результаты КТ",
                 })}
+              <TemplateButton kind="ctScanResults" />
               </label>
               <textarea
                 rows={2}
@@ -515,6 +591,7 @@ export default function EncounterFormModal({
                 {t("medical.encounters.fields.mriResults", {
                   defaultValue: "Результаты МРТ",
                 })}
+              <TemplateButton kind="mriResults" />
               </label>
               <textarea
                 rows={2}
@@ -529,6 +606,7 @@ export default function EncounterFormModal({
                 {t("medical.encounters.fields.ultrasoundResults", {
                   defaultValue: "Результаты УЗИ",
                 })}
+              <TemplateButton kind="ultrasoundResults" />
               </label>
               <textarea
                 rows={2}
@@ -543,6 +621,7 @@ export default function EncounterFormModal({
                 {t("medical.encounters.fields.laboratoryTestResults", {
                   defaultValue: "Лабораторные данные",
                 })}
+              <TemplateButton kind="laboratoryTestResults" />
               </label>
               <textarea
                 rows={2}
@@ -561,6 +640,16 @@ export default function EncounterFormModal({
             </div>
           )}
         </div>
+
+        {/* Окно выбора заготовки — одно на все блоки приёма; какой именно
+            блок заполняем, помнит pickerKind. */}
+        <ExaminationTemplatePicker
+          open={Boolean(pickerKind)}
+          kindLabel={encounterBlockLabel(pickerKind)}
+          items={templates[pickerKind] || []}
+          onPick={applyTemplate}
+          onClose={() => setPickerKind(null)}
+        />
 
         {/* Footer */}
         <div className="med-modal-foot">

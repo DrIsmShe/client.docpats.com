@@ -45,8 +45,11 @@ export default function ExaminationTemplatePicker({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="med-modal-head">
+          {/* Вид исследования дописываем, только если он есть: у блоков
+              записи приёма (жалобы, анамнез) его не бывает. */}
           <h3>
-            {kindLabel} — {modalityLabel(modality)}
+            {kindLabel}
+            {modality ? ` — ${modalityLabel(modality)}` : ""}
           </h3>
           <button type="button" className="med-modal-close" onClick={onClose}>
             ×
@@ -68,8 +71,8 @@ export default function ExaminationTemplatePicker({
 
           {items.length === 0 ? (
             <div className="med-empty">
-              Для этого исследования заготовок пока нет. Их можно завести в
-              разделе «Шаблоны протоколов».
+              Заготовок для этого блока пока нет. Их можно завести в разделе
+              «Шаблоны протоколов».
             </div>
           ) : filtered.length === 0 ? (
             <div className="med-empty">Ничего не найдено</div>
