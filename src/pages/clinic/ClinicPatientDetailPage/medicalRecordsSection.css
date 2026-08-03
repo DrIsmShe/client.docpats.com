@@ -1419,3 +1419,90 @@
   padding-left: 0;
   padding-right: 20px;
 }
+
+/* ─── Заготовки протоколов исследований ───────────────────────────────
+ *
+ * Кнопка «Шаблоны» стоит в подписи поля и открывает окно выбора готовой
+ * формулировки — так же, как в единоличной практике (модуль myClinic).
+ */
+
+.exam-template-btn {
+  margin-left: 8px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #2a78d6;
+  background: #f3f7fd;
+  border: 1px solid #d6e4f7;
+  border-radius: 999px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.exam-template-btn:hover:not(:disabled) {
+  background: #e8f1fc;
+}
+
+.exam-template-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Счётчик доступных формулировок — чтобы было видно, есть ли смысл открывать. */
+.exam-template-count {
+  margin-left: 5px;
+  padding: 0 5px;
+  font-size: 10px;
+  color: #52514e;
+  background: #fff;
+  border-radius: 999px;
+}
+
+/* Окно выбора уже основного: в нём один столбец формулировок. */
+.exam-template-modal {
+  max-width: 560px;
+}
+
+.exam-template-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exam-template-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #e6eaf0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.exam-template-item:hover {
+  border-color: #2a78d6;
+  background: #f9fbfe;
+}
+
+.exam-template-title {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0b0b0b;
+}
+
+/* Текст заготовки показываем целиком, но с ограничением по высоте: иначе
+   длинный протокол занял бы весь экран, и список стал бы нелистаемым. */
+.exam-template-body {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #52514e;
+  max-height: 62px;
+  overflow: hidden;
+}

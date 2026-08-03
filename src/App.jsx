@@ -576,6 +576,7 @@ import ClinicDepartmentsPage from "./pages/clinic/ClinicDepartmentsPage/ClinicDe
 import ClinicRoomsPage from "./pages/clinic/ClinicRoomsPage/ClinicRoomsPage.jsx";
 import ClinicEquipmentPage from "./pages/clinic/ClinicEquipmentPage/ClinicEquipmentPage.jsx";
 import ClinicKnowledgePage from "./pages/clinic/ClinicKnowledgePage/ClinicKnowledgePage.jsx";
+import ClinicExamTemplatesPage from "./pages/clinic/ClinicExamTemplatesPage/ClinicExamTemplatesPage.jsx";
 import ClinicKnowledgeArticlePage from "./pages/clinic/ClinicKnowledgePage/ClinicKnowledgeArticlePage.jsx";
 import ClinicAnnouncementsPage from "./pages/clinic/ClinicAnnouncementsPage/ClinicAnnouncementsPage.jsx";
 import ClinicConsiliumPage from "./pages/clinic/ClinicConsiliumPage/ClinicConsiliumPage.jsx";
@@ -728,6 +729,11 @@ function App() {
               <Route path="rooms" element={<ClinicRoomsPage />} />
               <Route path="equipment" element={<ClinicEquipmentPage />} />
               <Route path="knowledge" element={<ClinicKnowledgePage />} />
+              {/* Справочник заготовок для протоколов исследований. */}
+              <Route
+                path="exam-templates"
+                element={<ClinicExamTemplatesPage />}
+              />
               <Route
                 path="announcements"
                 element={<ClinicAnnouncementsPage />}
@@ -799,6 +805,11 @@ function App() {
                 element={<ClinicAnnouncementsPage />}
               />
               <Route path="knowledge" element={<ClinicKnowledgePage />} />
+              {/* Справочник заготовок для протоколов исследований. */}
+              <Route
+                path="exam-templates"
+                element={<ClinicExamTemplatesPage />}
+              />
               <Route path="schedule" element={<EmployeeSchedulePage />} />
               <Route path="book" element={<EmployeeBookAppointmentPage />} />
               <Route

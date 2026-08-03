@@ -25,23 +25,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createImagingStudy } from "../../../api/clinic";
+import { listExaminationTemplates } from "../../../api/examinationTemplates";
+import {
+  MODALITIES,
+  TEMPLATE_KINDS,
+  modalityLabel,
+  hasRadiation,
+} from "../examinationModalities";
+import ExaminationTemplatePicker from "./ExaminationTemplatePicker";
 
-const STUDY_TYPES = [
-  "CT",
-  "MRI",
-  "USG",
-  "X-Ray",
-  "PET",
-  "SPECT",
-  "EEG",
-  "ECG",
-  "Holter",
-  "Spirometry",
-  "Doppler",
-  "Gastroscopy",
-  "Colonoscopy",
-  "CapsuleEndoscopy",
-];
+// Виды исследований берутся из общего справочника: раньше список был
+// прописан здесь копией, и при добавлении новых видов на сервере форма о них
+// не узнавала.
+const STUDY_TYPES = MODALITIES.map((m) => m.key);
 
 const MAX_FILES = 20;
 const MAX_FILE_SIZE_MB = 150;
@@ -60,11 +56,57 @@ export default function ImagingFormModal({ patient, onClose, onSaved }) {
   const [diagnosis, setDiagnosis] = useState("");
   const [contrastUsed, setContrastUsed] = useState(false);
 
+  // Блоки протокола, которых раньше в клинике не было: название исследования,
+  // рекомендации и доза облучения. Порядок полей в форме — как в единоличной
+  // практике: название → протокол → заключение → рекомендации.
+  const [nameOfExam, setNameOfExam] = useState("");
+  const [recommendation, setRecommendation] = useState("");
+  const [radiationDose, setRadiationDose] = useState("");
+
+  // Заготовки для всех четырёх блоков сразу: { nameOfExam: [], report: [], … }.
+  const [templates, setTemplates] = useState({});
+  // Какой из блоков сейчас выбирает заготовку (null — окно закрыто).
+  const [pickerKind, setPickerKind] = useState(null);
+
   // Each item: { file, previewUrl, isImage }
   const [filePackets, setFilePackets] = useState([]);
 
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+
+  // Заготовки протокола для выбранного вида исследования.
+  //
+  // Перезапрашиваются при смене вида: у КТ и МРТ наборы формулировок разные.
+  // Ошибку глушим намеренно — справочник может быть пуст или недоступен по
+  // правам (медсестра его только читает), и это не повод ломать всю форму:
+  // текст всегда можно набрать руками.
+  useEffect(() => {
+    let alive = true;
+
+    (async () => {
+      try {
+        const lists = await Promise.all(
+          TEMPLATE_KINDS.map((k) =>
+            listExaminationTemplates({ modality: studyType, kind: k.key }).catch(
+              () => [],
+            ),
+          ),
+        );
+        if (!alive) return;
+        const next = {};
+        TEMPLATE_KINDS.forEach((k, i) => {
+          next[k.key] = lists[i];
+        });
+        setTemplates(next);
+      } catch {
+        if (alive) setTemplates({});
+      }
+    })();
+
+    return () => {
+      alive = false;
+    };
+  }, [studyType]);
 
   // Cleanup blob URLs on unmount / when files removed
   useEffect(() => {
@@ -149,6 +191,46 @@ export default function ImagingFormModal({ patient, onClose, onSaved }) {
     return errs;
   }
 
+  // Куда подставлять выбранную заготовку. Ключ блока → его setter.
+  const SETTERS = {
+    nameOfExam: setNameOfExam,
+    report: setReport,
+    diagnosis: setDiagnosis,
+    recommendation: setRecommendation,
+  };
+
+  function applyTemplate(tpl) {
+    const setter = SETTERS[pickerKind];
+    if (setter) {
+      // Заголовок используем, только если текста нет: у заготовок вида
+      // «название исследования» весь смысл в заголовке, а у протокола —
+      // в теле.
+      setter(tpl.body?.trim() ? tpl.body : tpl.title || "");
+    }
+    setPickerKind(null);
+  }
+
+  /**
+   * Кнопка «Шаблоны» рядом с подписью поля — как в единоличной практике.
+   * Прячется, если для этого блока и вида исследования заготовок нет:
+   * кнопка, открывающая пустой список, только мешает.
+   */
+  function TemplateButton({ kind }) {
+    const items = templates[kind] || [];
+    if (items.length === 0) return null;
+    return (
+      <button
+        type="button"
+        className="exam-template-btn"
+        onClick={() => setPickerKind(kind)}
+        disabled={submitting}
+      >
+        {t("medical.imaging.templates.pick", { defaultValue: "Шаблоны" })}
+        <span className="exam-template-count">{items.length}</span>
+      </button>
+    );
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     const errs = validate();
@@ -162,8 +244,15 @@ export default function ImagingFormModal({ patient, onClose, onSaved }) {
       const body = {
         studyType,
         date: date || undefined,
+        nameOfExam: nameOfExam.trim() || undefined,
         report: report.trim() || undefined,
         diagnosis: diagnosis.trim() || undefined,
+        recommendation: recommendation.trim() || undefined,
+        // Дозу отправляем только у лучевых методов. Сервер всё равно отбросит
+        // её у остальных, но слать заведомо лишнее незачем.
+        radiationDose: hasRadiation(studyType)
+          ? radiationDose.trim() || undefined
+          : undefined,
         contrastUsed,
       };
       const files = filePackets.map((p) => p.file);
@@ -241,7 +330,7 @@ export default function ImagingFormModal({ patient, onClose, onSaved }) {
                 >
                   {STUDY_TYPES.map((type) => (
                     <option key={type} value={type}>
-                      {type}
+                      {modalityLabel(type)}
                     </option>
                   ))}
                 </select>
@@ -267,18 +356,42 @@ export default function ImagingFormModal({ patient, onClose, onSaved }) {
               </div>
             </div>
 
-            <div className="patients-form-field">
-              <label className="med-checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={contrastUsed}
-                  onChange={(e) => setContrastUsed(e.target.checked)}
-                  disabled={submitting}
-                />
-                {t("medical.imaging.fields.contrastUsed", {
-                  defaultValue: "С контрастом",
-                })}
-              </label>
+            <div className="patients-form-row">
+              <div className="patients-form-field" style={{ flex: 1 }}>
+                <label className="med-checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={contrastUsed}
+                    onChange={(e) => setContrastUsed(e.target.checked)}
+                    disabled={submitting}
+                  />
+                  {t("medical.imaging.fields.contrastUsed", {
+                    defaultValue: "С контрастом",
+                  })}
+                </label>
+              </div>
+
+              {/* Доза облучения — только у лучевых методов. У ЭКГ или
+                  спирометрии поле просто не показывается. */}
+              {hasRadiation(studyType) && (
+                <div className="patients-form-field" style={{ flex: 1 }}>
+                  <label>
+                    {t("medical.imaging.fields.radiationDose", {
+                      defaultValue: "Доза облучения",
+                    })}
+                    <span className="patients-form-optional">
+                      {t("common.optional", { defaultValue: "необязательно" })}
+                    </span>
+                  </label>
+                  <input
+                    type="text"
+                    value={radiationDose}
+                    onChange={(e) => setRadiationDose(e.target.value)}
+                    disabled={submitting}
+                    placeholder="мЗв"
+                  />
+                </div>
+              )}
             </div>
           </fieldset>
 
@@ -334,25 +447,58 @@ export default function ImagingFormModal({ patient, onClose, onSaved }) {
             )}
           </fieldset>
 
-          {/* Report + diagnosis */}
+          {/* Протокол исследования: четыре блока в том же порядке, что и в
+              единоличной практике — название, протокол, заключение,
+              рекомендации. У каждого блока своя кнопка выбора заготовки. */}
           <fieldset className="med-fieldset">
             <legend>
               {t("medical.imaging.reportTitle", {
-                defaultValue: "Заключение",
+                defaultValue: "Протокол исследования",
               })}
             </legend>
 
             <div className="patients-form-field">
               <label>
-                {t("medical.imaging.fields.diagnosis", {
-                  defaultValue: "Диагноз",
+                {t("medical.imaging.fields.nameOfExam", {
+                  defaultValue: "Название исследования",
                 })}
-                <span className="patients-form-optional">
-                  {t("common.optional", { defaultValue: "необязательно" })}
-                </span>
+                <TemplateButton kind="nameOfExam" />
               </label>
               <input
                 type="text"
+                value={nameOfExam}
+                onChange={(e) => setNameOfExam(e.target.value)}
+                disabled={submitting}
+              />
+            </div>
+
+            <div className="patients-form-field">
+              <label>
+                {t("medical.imaging.fields.report", {
+                  defaultValue: "Протокол",
+                })}
+                <TemplateButton kind="report" />
+              </label>
+              <textarea
+                rows={5}
+                value={report}
+                onChange={(e) => setReport(e.target.value)}
+                disabled={submitting}
+                placeholder={t("medical.imaging.placeholders.report", {
+                  defaultValue: "Описание снимков и выявленных изменений…",
+                })}
+              />
+            </div>
+
+            <div className="patients-form-field">
+              <label>
+                {t("medical.imaging.fields.diagnosis", {
+                  defaultValue: "Заключение",
+                })}
+                <TemplateButton kind="diagnosis" />
+              </label>
+              <textarea
+                rows={3}
                 value={diagnosis}
                 onChange={(e) => setDiagnosis(e.target.value)}
                 disabled={submitting}
@@ -361,22 +507,16 @@ export default function ImagingFormModal({ patient, onClose, onSaved }) {
 
             <div className="patients-form-field">
               <label>
-                {t("medical.imaging.fields.report", {
-                  defaultValue: "Описание / заключение",
+                {t("medical.imaging.fields.recommendation", {
+                  defaultValue: "Рекомендации",
                 })}
-                <span className="patients-form-optional">
-                  {t("common.optional", { defaultValue: "необязательно" })}
-                </span>
+                <TemplateButton kind="recommendation" />
               </label>
               <textarea
-                rows={5}
-                value={report}
-                onChange={(e) => setReport(e.target.value)}
+                rows={3}
+                value={recommendation}
+                onChange={(e) => setRecommendation(e.target.value)}
                 disabled={submitting}
-                placeholder={t("medical.imaging.placeholders.report", {
-                  defaultValue:
-                    "Описание снимков, выявленные изменения, рекомендации…",
-                })}
               />
             </div>
           </fieldset>
@@ -387,6 +527,19 @@ export default function ImagingFormModal({ patient, onClose, onSaved }) {
             </div>
           )}
         </div>
+
+        {/* Окно выбора заготовки. Одно на все четыре блока: какой именно
+            блок заполняем, помнит pickerKind. */}
+        <ExaminationTemplatePicker
+          open={Boolean(pickerKind)}
+          kindLabel={
+            TEMPLATE_KINDS.find((k) => k.key === pickerKind)?.label || ""
+          }
+          modality={studyType}
+          items={templates[pickerKind] || []}
+          onPick={applyTemplate}
+          onClose={() => setPickerKind(null)}
+        />
 
         {/* Footer */}
         <div className="med-modal-foot">

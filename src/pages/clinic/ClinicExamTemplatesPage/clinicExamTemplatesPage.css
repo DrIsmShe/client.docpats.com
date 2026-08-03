@@ -1,0 +1,181 @@
+/* client/src/pages/clinic/ClinicExamTemplatesPage/clinicExamTemplatesPage.css
+ *
+ * Справочник заготовок для протоколов исследований. Оформление то же, что у
+ * остальных страниц клиники: светлые карточки на сером поле, синий акцент.
+ * Классы кнопок (staff-page-btn-*) и модального окна (med-modal-*) общие с
+ * остальным разделом — здесь только то, чего в них нет.
+ */
+
+.exam-tpl-page {
+  padding: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #0b0b0b;
+}
+
+.exam-tpl-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.exam-tpl-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.exam-tpl-subtitle {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #52514e;
+  max-width: 640px;
+}
+
+/* ─── Фильтры ─── */
+.exam-tpl-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 18px;
+}
+
+.exam-tpl-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Поиск занимает остаток строки, селекты — по содержимому. */
+.exam-tpl-filter--grow {
+  flex: 1;
+  min-width: 200px;
+}
+
+.exam-tpl-filter span {
+  font-size: 11px;
+  color: #898781;
+}
+
+.exam-tpl-filter select,
+.exam-tpl-filter input {
+  border: 1px solid #e6eaf0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  background: #fff;
+  color: #0b0b0b;
+  min-width: 170px;
+}
+
+.exam-tpl-filter input {
+  width: 100%;
+  min-width: 0;
+}
+
+.exam-tpl-filter select:focus,
+.exam-tpl-filter input:focus {
+  outline: 2px solid rgba(42, 120, 214, 0.35);
+  outline-offset: 1px;
+  border-color: #2a78d6;
+}
+
+/* ─── Список ─── */
+.exam-tpl-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exam-tpl-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  background: #fff;
+  border: 1px solid #e6eaf0;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.exam-tpl-card__main {
+  min-width: 0; /* иначе длинный текст растянет карточку и сломает верстку */
+}
+
+.exam-tpl-card__title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Тело заготовки бывает в несколько абзацев — сохраняем переносы, но
+   ограничиваем высоту, чтобы список оставался обозримым. */
+.exam-tpl-card__body {
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #52514e;
+  white-space: pre-wrap;
+  max-height: 96px;
+  overflow: hidden;
+}
+
+.exam-tpl-card__actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.exam-tpl-danger {
+  background: #fff;
+  border: 1px solid #f3d5d5;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  color: #b91c1c;
+  cursor: pointer;
+}
+
+.exam-tpl-danger:hover {
+  background: #fdf3f3;
+}
+
+/* ─── Состояния и мелочи ─── */
+.exam-tpl-state {
+  padding: 28px 4px;
+  font-size: 13px;
+  color: #898781;
+}
+
+.exam-tpl-error {
+  background: #fdf3f3;
+  border: 1px solid #f3d5d5;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #b91c1c;
+  margin-bottom: 14px;
+}
+
+.exam-tpl-hint {
+  font-size: 12px;
+  color: #898781;
+  margin-top: -4px;
+}
+
+/* Подпись «КТ · Протокол» в шапке окна правки. */
+.exam-tpl-modal-context {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #898781;
+}

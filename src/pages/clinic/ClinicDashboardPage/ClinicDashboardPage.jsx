@@ -404,6 +404,20 @@ export default function ClinicDashboardPage() {
               <span className="clinic-dashboard-action-arrow">→</span>
             </Link>
           )}
+          {/* Заготовки формулировок для протоколов исследований. Право своё
+              (examination_template), а не от базы знаний: медсестра шаблоны
+              читает, но не правит. */}
+          {canRead("examination_template") && (
+            <Link to="/clinic/exam-templates" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">🧾</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.viewExamTemplates", {
+                  defaultValue: "Шаблоны протоколов",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
           {canRead("knowledge") && (
             <Link
               to="/clinic/announcements"
