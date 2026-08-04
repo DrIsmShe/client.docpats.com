@@ -17,8 +17,12 @@ const BASE = "/api/v1/clinic/medical/examination-templates";
  * Заготовки нужного вида. Оба фильтра необязательны, но форма исследования
  * всегда запрашивает конкретную пару: вид исследования + блок протокола.
  */
-export async function listExaminationTemplates({ modality, kind, limit } = {}) {
-  const { data } = await axios.get(BASE, { params: { modality, kind, limit } });
+export async function listExaminationTemplates({ scope, modality, kind, limit } = {}) {
+  // scope обязателен к передаче: сервер без него считает запрос протоколом
+  // исследования, и вкладка «История болезни» получала бы чужой список.
+  const { data } = await axios.get(BASE, {
+    params: { scope, modality, kind, limit },
+  });
   return data.items ?? [];
 }
 
@@ -27,11 +31,18 @@ export async function getExaminationTemplate(templateId) {
   return data.template;
 }
 
-export async function createExaminationTemplate({ modality, kind, title, body }) {
-  const { data } = await axios.post(BASE, { modality, kind, title, body });
-  // Считаем как пополнение базы знаний клиники: вид исследования и блок
-  // протокола перечислимы, сама формулировка наружу не идёт.
-  track(CLINIC_KNOWLEDGE_CREATED, { kind: "examination_template", modality });
+export async function createExaminationTemplate({ scope, modality, kind, title, body }) {
+  // scope должен уйти на сервер обязательно. Без него сервер подставляет
+  // «обследования», и заготовка приёма («жалобы», «анамнез») отвергается как
+  // блок, не относящийся к этой области.
+  const { data } = await axios.post(BASE, { scope, modality, kind, title, body });
+  // Считаем как пополнение базы знаний клиники: область, вид исследования и
+  // блок перечислимы, сама формулировка наружу не идёт.
+  track(CLINIC_KNOWLEDGE_CREATED, {
+    kind: "examination_template",
+    scope: scope || "examination",
+    modality,
+  });
   return data.template;
 }
 

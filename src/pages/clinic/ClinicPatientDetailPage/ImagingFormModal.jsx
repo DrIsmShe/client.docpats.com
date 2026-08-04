@@ -87,9 +87,14 @@ export default function ImagingFormModal({ patient, onClose, onSaved }) {
       try {
         const lists = await Promise.all(
           TEMPLATE_KINDS.map((k) =>
-            listExaminationTemplates({ modality: studyType, kind: k.key }).catch(
-              () => [],
-            ),
+            // Область указываем явно, хотя сервер и подставил бы её сам:
+            // молчаливый умолчательный режим — ровно то, на чём форма приёма
+            // получала чужой список и отказ при сохранении.
+            listExaminationTemplates({
+              scope: "examination",
+              modality: studyType,
+              kind: k.key,
+            }).catch(() => []),
           ),
         );
         if (!alive) return;
