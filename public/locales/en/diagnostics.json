@@ -86,6 +86,7 @@
   "readImage": "Read the image",
   "readingImage": "Looking at the image…",
   "readImageHint": "CT, MRI, ultrasound, echocardiography, X-ray, ECG, EEG, ABR, endoscopy. The model looks at the image itself and describes what is visible. The file is not stored.",
+  "pickModalityForImage": "The image will be reviewed in a general way: the selected area does not read images. Pick the study type in the list on the right — the review will then follow its protocol.",
   "imageRead": "Image reviewed.",
   "imageReadNote": "This describes what is visible, not a report. No findings on a single image does not mean the patient has none.",
   "enterAsPanel": "Enter as values",

@@ -86,6 +86,7 @@
   "readImage": "Görüntüyü oku",
   "readingImage": "Görüntüye bakılıyor…",
   "readImageHint": "BT, MR, ultrason, ekokardiyografi, röntgen, EKG, EEG, BERA, endoskopi. Model görüntünün kendisine bakar ve görüneni tanımlar. Dosya saklanmaz.",
+  "pickModalityForImage": "Görüntü genel biçimde incelenecek: seçili alan görüntü okumaz. Sağdaki listeden inceleme türünü seçin — inceleme o protokole göre yapılır.",
   "imageRead": "Görüntü incelendi.",
   "imageReadNote": "Bu, görünenin tanımıdır; rapor değildir. Tek bir görüntüde bulgu olmaması hastada bulgu olmadığı anlamına gelmez.",
   "enterAsPanel": "Değerlerle gir",

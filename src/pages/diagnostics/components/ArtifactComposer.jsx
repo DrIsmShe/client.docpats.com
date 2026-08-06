@@ -58,6 +58,10 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
   );
   const rawActiveModality = modalities.find((m) => m.key === modality) ?? null;
   const activeModality = rawActiveModality ? localizeModality(rawActiveModality) : null;
+  // Умеет ли выбранное направление смотреть изображения. От этого зависит,
+  // пойдёт ли осмотр снимка по протоколу этого исследования или общим
+  // порядком: чужой протокол сервер не подставляет, но и своего тогда нет.
+  const imageAware = Boolean(rawActiveModality?.capabilities?.includes("image"));
 
   function setRow(i, patch) {
     setRows((prev) => prev.map((r, idx) => (idx === i ? { ...r, ...patch } : r)));
@@ -415,6 +419,16 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
       {activeModality?.binaryNote && !panelOpen && modality !== "clinical" && (
         <p className="dg-muted" style={{ marginTop: 8 }}>
           {activeModality.binaryNote}
+        </p>
+      )}
+
+      {/* Направление задаёт протокол осмотра снимка, и по умолчанию здесь
+          стоит «Клинический случай», который смотреть не умеет. Врач не
+          обязан догадываться, что список справа влияет на чтение снимка:
+          выглядит он относящимся к кнопке «Добавить в дело». */}
+      {!panelOpen && !imageAware && (
+        <p className="dg-muted" style={{ marginTop: 8 }}>
+          {t("pickModalityForImage")}
         </p>
       )}
     </form>

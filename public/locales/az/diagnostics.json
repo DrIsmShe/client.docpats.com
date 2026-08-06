@@ -86,6 +86,7 @@
   "readImage": "Şəkli oxu",
   "readingImage": "Şəklə baxılır…",
   "readImageHint": "KT, MRT, USM, exokardioqrafiya, rentgen, EKQ, EEQ, BERA, endoskopiya. Model şəklin özünə baxır və orada görünəni təsvir edir. Fayl saxlanmır.",
+  "pickModalityForImage": "Şəkil ümumi qaydada nəzərdən keçiriləcək: seçilmiş istiqamət şəkilləri oxumur. Sağdakı siyahıdan tədqiqat növünü seçin — onda baxış onun protokolu üzrə gedəcək.",
   "imageRead": "Şəkil nəzərdən keçirildi.",
   "imageReadNote": "Bu, görünənin təsviridir, rəy deyil. Bir şəkildə dəyişiklik görünməməsi xəstədə onun olmaması demək deyil.",
   "enterAsPanel": "Göstəricilərlə daxil et",
