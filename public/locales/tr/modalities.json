@@ -129,6 +129,70 @@
       "Bradikardi ile birlikte tam blok"
     ]
   },
+  "echo": {
+    "title": "Ekokardiyografi",
+    "purpose": "EKO'nun rapor ve görüntü üzerinden değerlendirilmesi: boşluklar, kapaklar, kasılma, perikart",
+    "binaryNote": "Gönderilen kare, hareket eden kalbin donmuş bir görüntüsüdür. Model burada anatomiyi görür: boşluk boyutları, kapakların durumu, sıvı varlığı. Ejeksiyon fraksiyonunu, gradyanları ve akımları ÖLÇMEZ — bunu inceleme sırasında cihaz yapar ve bu sayılar rapordan alınmalıdır. Tek kareden kasılma değerlendirilmez: bunun için görüntü değil, kayıt gerekir.",
+    "checklist": [
+      "Boşluk boyutları ve duvar kalınlığı",
+      "Global ve bölgesel kasılma, rapordan ejeksiyon fraksiyonu",
+      "Kapaklar: yaprakçıklar, darlık, yetersizlik ve derecesi",
+      "Diyastolik fonksiyon",
+      "Perikart: sıvı, bası bulguları",
+      "Aort ve pulmoner hipertansiyon",
+      "Önceki inceleme ve şikâyetlerle karşılaştırma"
+    ],
+    "redFlags": [
+      "Kalp tamponadı bulguları",
+      "Kalp boşluğunda trombüs ya da hareketli kitle",
+      "Kritik kapak darlığı",
+      "Aort diseksiyonu ya da akut genişleme",
+      "Ejeksiyon fraksiyonunda ağır düşüş",
+      "Akut sağ kalp yüklenmesi bulguları"
+    ]
+  },
+  "eeg": {
+    "title": "Elektroensefalografi",
+    "purpose": "EEG'nin tanım ve kayıt sayfası üzerinden değerlendirilmesi: temel ritim, asimetri, epileptiform aktivite",
+    "binaryNote": "Kayıt sayfası model tarafından görüntü olarak okunur: temel ritim, belirgin asimetri, açık epileptiform deşarjlar — göz kararı, resimden. Bu bir EEG yorumu DEĞİLDİR: kayıt onlarca dakika sürer, sayfada ise birkaç saniye vardır ve orada bulgu olmaması kaydın geri kalanı hakkında hiçbir şey söylemez. Hareket artefaktı ile şebeke girişimini model güvenilir biçimde ayırt edemez — teknisyenin tanımıyla karşılaştırın.",
+    "checklist": [
+      "Temel ritim: frekans, amplitüd, bölgesel farklar",
+      "Göz açmaya ve provokasyona yanıt",
+      "Hemisferler arası asimetri",
+      "Epileptiform aktivite: diken, keskin dalga, kompleksler",
+      "Yavaşlama: bölgesel ve yaygın",
+      "Artefaktlar ve kayıt kalitesi",
+      "Klinik tablo ve önceki kayıtla karşılaştırma"
+    ],
+    "redFlags": [
+      "Elektrografik status epileptikus",
+      "Süregelen epileptiform aktivite",
+      "Burst-supresyon paterni",
+      "Nörogörüntüleme gerektiren bölgesel yavaşlama",
+      "Periyodik lateralize deşarjlar"
+    ]
+  },
+  "bera": {
+    "title": "İşitsel uyarılmış potansiyeller (BERA)",
+    "purpose": "BERA'nın rapor ve çıktı üzerinden değerlendirilmesi: dalgalar, latanslar, yanıt eşikleri",
+    "binaryNote": "Çıktı model tarafından görüntü olarak okunur: dalgaların varlığı ve seçilebilirliği, eğrilerin tekrarlanabilirliği, kulaklar arasında belirgin asimetri. Kesin latansları ve dalgalar arası aralıkları model ölçemez — milisaniyenin kesirleri resimden okunamaz ve normali retrokoklear patolojiden ayıran tam da bunlardır. Sayıları cihaz raporundan alın; işitme eşikleri tek bir çıktıdan belirlenmez.",
+    "checklist": [
+      "I, III, V dalgalarının seçilebilirliği ve tekrarlanabilirliği",
+      "Rapordan dalgaların mutlak latansları",
+      "Dalgalar arası aralıklar I–III, III–V, I–V",
+      "V dalgası latansında kulaklar arası fark",
+      "Her kulak için yanıt eşikleri",
+      "Ortalama kalitesi ve gürültü düzeyi",
+      "Odyometri, otoakustik emisyon ve şikâyetlerle karşılaştırma"
+    ],
+    "redFlags": [
+      "I–V aralığının uzaması — retrokoklear lezyon şüphesi",
+      "V dalgası latansında belirgin kulaklar arası asimetri",
+      "Koklear işlev korunmuşken tekrarlanabilir yanıt alınamaması",
+      "İşitsel nöropati bulguları",
+      "Çocukta yüksek eşikler — konuşma geriliği riski"
+    ]
+  },
   "endoscopy": {
     "title": "Endoskopi",
     "purpose": "Endoskopi raporunun değerlendirilmesi: incelemenin tamlığı, biyopsiler, izlem",

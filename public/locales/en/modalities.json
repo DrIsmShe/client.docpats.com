@@ -129,6 +129,70 @@
       "Complete block with bradycardia"
     ]
   },
+  "echo": {
+    "title": "Echocardiography",
+    "purpose": "Reviewing echo by report and image: chambers, valves, contractility, pericardium",
+    "binaryNote": "The image you send is a still frame of a moving heart. The model sees anatomy on it: chamber size, valve appearance, presence of effusion. It does NOT measure ejection fraction, gradients or flows — the machine does that during the study, and those numbers must come from the report. Contractility cannot be judged from a single frame: that needs a recording, not a picture.",
+    "checklist": [
+      "Chamber dimensions and wall thickness",
+      "Global and regional contractility, ejection fraction from the report",
+      "Valves: leaflets, stenosis, regurgitation and its grade",
+      "Diastolic function",
+      "Pericardium: effusion, signs of compression",
+      "Aorta and pulmonary hypertension",
+      "Comparison with the previous study and with symptoms"
+    ],
+    "redFlags": [
+      "Signs of cardiac tamponade",
+      "Intracardiac thrombus or a mobile mass",
+      "Critical valve stenosis",
+      "Aortic dissection or acute dilatation",
+      "Severely reduced ejection fraction",
+      "Signs of acute right heart strain"
+    ]
+  },
+  "eeg": {
+    "title": "Electroencephalography",
+    "purpose": "Reviewing EEG by report and a page of the recording: background rhythm, asymmetry, epileptiform activity",
+    "binaryNote": "A page of the recording is read by the model as an image: background rhythm, gross asymmetry, obvious epileptiform discharges — by eye, from the picture. This is NOT an EEG interpretation: the recording runs for tens of minutes while the page holds a few seconds, and finding nothing on it says nothing about the rest. The model tells movement artefact and mains interference apart unreliably — check against the technologist's description.",
+    "checklist": [
+      "Background rhythm: frequency, amplitude, regional differences",
+      "Reactivity to eye opening and provocation",
+      "Interhemispheric asymmetry",
+      "Epileptiform activity: spikes, sharp waves, complexes",
+      "Slowing: regional and generalised",
+      "Artefacts and recording quality",
+      "Comparison with the clinical picture and the previous recording"
+    ],
+    "redFlags": [
+      "Electrographic status epilepticus",
+      "Ongoing epileptiform activity",
+      "Burst-suppression pattern",
+      "Regional slowing that calls for neuroimaging",
+      "Periodic lateralised discharges"
+    ]
+  },
+  "bera": {
+    "title": "Auditory brainstem response (ABR/BERA)",
+    "purpose": "Reviewing ABR by report and printout: waves, latencies, response thresholds",
+    "binaryNote": "The printout is read by the model as an image: whether waves are present and distinct, whether curves reproduce, gross asymmetry between ears. The model cannot measure exact latencies and interpeak intervals — fractions of a millisecond are not readable from a picture, and those are precisely what separates normal from retrocochlear pathology. Take the numbers from the device report; hearing thresholds are not determined from a single printout.",
+    "checklist": [
+      "Presence and reproducibility of waves I, III, V",
+      "Absolute wave latencies from the report",
+      "Interpeak intervals I–III, III–V, I–V",
+      "Interaural difference of wave V latency",
+      "Response thresholds for each ear",
+      "Averaging quality and noise level",
+      "Comparison with audiometry, otoacoustic emissions and symptoms"
+    ],
+    "redFlags": [
+      "Prolonged I–V interval — suspected retrocochlear lesion",
+      "Significant interaural asymmetry of wave V latency",
+      "No reproducible responses with preserved cochlear function",
+      "Signs of auditory neuropathy",
+      "Elevated thresholds in a child — risk of speech delay"
+    ]
+  },
   "endoscopy": {
     "title": "Endoscopy",
     "purpose": "Review of an endoscopy report: completeness of the examination, biopsies, follow-up",

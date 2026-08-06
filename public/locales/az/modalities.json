@@ -129,6 +129,70 @@
       "Bradikardiya ilə tam blokada"
     ]
   },
+  "echo": {
+    "title": "Exokardioqrafiya",
+    "purpose": "ExoKQ-nın protokol və şəkil üzrə təhlili: kameralar, qapaqlar, yığılma, perikard",
+    "binaryNote": "Göndərilən kadr hərəkət edən ürəyin stop-kadrıdır. Model orada anatomiyanı görür: kameraların ölçüsü, qapaqların vəziyyəti, mayenin olması. O, atım fraksiyasını, qradiyentləri və axınları ÖLÇMÜR — bunu tədqiqat anında cihaz edir və rəqəmlər protokoldan götürülməlidir. Bir kadra görə yığılma qiymətləndirilmir: bunun üçün şəkil deyil, yazı lazımdır.",
+    "checklist": [
+      "Kameraların ölçüsü və divarların qalınlığı",
+      "Qlobal və lokal yığılma, protokoldan atım fraksiyası",
+      "Qapaqlar: taylar, stenoz, requrgitasiya və onun dərəcəsi",
+      "Diastolik funksiya",
+      "Perikard: maye, sıxılma əlamətləri",
+      "Aorta və ağciyər hipertenziyası",
+      "Əvvəlki tədqiqat və şikayətlərlə müqayisə"
+    ],
+    "redFlags": [
+      "Ürək tamponadası əlamətləri",
+      "Ürək boşluğunda tromb və ya hərəkətli törəmə",
+      "Qapağın kritik stenozu",
+      "Aortanın dissseksiyası və ya kəskin genişlənməsi",
+      "Atım fraksiyasının ağır azalması",
+      "Sağ şöbələrin kəskin yüklənmə əlamətləri"
+    ]
+  },
+  "eeg": {
+    "title": "Elektroensefaloqrafiya",
+    "purpose": "EEQ-nin təsvir və yazı səhifəsi üzrə təhlili: əsas ritm, asimmetriya, epileptiform aktivlik",
+    "binaryNote": "Yazının səhifəsi model tərəfindən şəkil kimi oxunur: əsas ritm, kobud asimmetriya, aydın epileptiform boşalmalar — gözlə, şəkil üzrə. Bu, EEQ-nin deşifrəsi DEYİL: yazı onlarla dəqiqə davam edir, səhifədə isə bir neçə saniyə var və orada dəyişiklik görünməməsi qalan yazı haqqında heç nə demir. Hərəkət artefaktlarını və şəbəkə küyünü model etibarsız ayırır — funksional diaqnostun təsviri ilə tutuşdurun.",
+    "checklist": [
+      "Əsas ritm: tezlik, amplituda, zonal fərqlər",
+      "Gözlərin açılmasına və sınaqlara reaktivlik",
+      "Yarımkürələrarası asimmetriya",
+      "Epileptiform aktivlik: spayklar, iti dalğalar, komplekslər",
+      "Yavaşlama: regional və generalizə olunmuş",
+      "Artefaktlar və yazının keyfiyyəti",
+      "Klinika və əvvəlki yazı ilə müqayisə"
+    ],
+    "redFlags": [
+      "Elektroqrafik epileptik status",
+      "Davamlı epileptiform aktivlik",
+      "«Alışma-basdırılma» patterni",
+      "Neyrovizualizasiya tələb edən regional yavaşlama",
+      "Periodik lateralizə olunmuş boşalmalar"
+    ]
+  },
+  "bera": {
+    "title": "Eşitmə oyadılmış potensialları (BERA)",
+    "purpose": "BERA-nın protokol və çap üzrə təhlili: piklər, latentliklər, cavab astanaları",
+    "binaryNote": "Çap model tərəfindən şəkil kimi oxunur: piklərin olması və seçilməsi, əyrilərin təkrarlanması, qulaqlar arasında kobud asimmetriya. Dəqiq latentlikləri və piklərarası intervalları model ölçə bilmir — millisaniyənin hissələri şəkildən oxunmur, məhz onlar normanı retrokoxlear zədələnmədən ayırır. Rəqəmləri cihazın protokolundan götürün; eşitmə astanaları bir çapa görə təyin edilmir.",
+    "checklist": [
+      "I, III, V piklərinin seçilməsi və təkrarlanması",
+      "Protokoldan piklərin mütləq latentlikləri",
+      "Piklərarası intervallar I–III, III–V, I–V",
+      "V pikinin latentliyində qulaqlararası fərq",
+      "Hər qulaq üzrə cavab astanaları",
+      "Ortalamanın keyfiyyəti və küy səviyyəsi",
+      "Audiometriya, otoakustik emissiya və şikayətlərlə müqayisə"
+    ],
+    "redFlags": [
+      "I–V intervalının uzanması — retrokoxlear zədələnmə şübhəsi",
+      "V pikinin latentliyində əhəmiyyətli qulaqlararası asimmetriya",
+      "İlbiz funksiyası saxlanılarkən təkrarlanan cavabların olmaması",
+      "Eşitmə neyropatiyasının əlamətləri",
+      "Uşaqda yüksəlmiş astanalar — nitqin gecikməsi riski"
+    ]
+  },
   "endoscopy": {
     "title": "Endoskopiya",
     "purpose": "Endoskopiya protokolunun təhlili: baxışın tamlığı, biopsiyalar, müşahidə",

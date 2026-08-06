@@ -37,11 +37,17 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
   // протоколом в промпте). Подписи для врача переводим здесь.
   const localizeModality = useModalityText();
   const fileRef = useRef(null);
+  // Отдельный выбор файла для чтения снимка: у него другой accept (PDF сюда
+  // не годится) и другое действие, поэтому переиспользовать один input нельзя.
+  const imageRef = useRef(null);
   const [text, setText] = useState("");
   const [modality, setModality] = useState("clinical");
   const [panelOpen, setPanelOpen] = useState(false);
   const [rows, setRows] = useState([emptyRow()]);
   const [reading, setReading] = useState(false);
+  // Какое именно чтение идёт — от этого зависит и надпись на кнопке, и то,
+  // что показывать в результате.
+  const [readingImage, setReadingImage] = useState(false);
   const [recognized, setRecognized] = useState(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
@@ -63,23 +69,24 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
     setRow(i, { key, name: a ? a.label : "", unit: a ? a.unit : "" });
   }
 
-  async function pickFile(file) {
+  async function pickFile(file, { readImage = false } = {}) {
     if (!file || reading || disabled) return;
     // Файл уходит внешней модели — значит нужны те же подтверждения, что и для
     // разбора. Спрашиваем ЗДЕСЬ, а не отсылаем врача к кнопке «Разобрать»:
     // прикрепить документ до запуска разбора — естественный порядок работы.
-    if (requireGates) return requireGates(() => runExtract(file));
-    return runExtract(file);
+    if (requireGates) return requireGates(() => runExtract(file, { readImage }));
+    return runExtract(file, { readImage });
   }
 
-  async function runExtract(file) {
+  async function runExtract(file, { readImage = false } = {}) {
     setReading(true);
+    setReadingImage(readImage);
     setError(null);
     setRecognized(null);
     try {
       // Модальность выбрана врачом в форме — отдаём её распознаванию, чтобы
       // осмотр снимка шёл по протоколу этого исследования, а не вообще.
-      const res = await extractDocument(caseId, file, "", modality);
+      const res = await extractDocument(caseId, file, "", modality, { readImage });
       // Распознанное кладём в то же поле ввода: врач правит его здесь и
       // добавляет сам. Автоматически нельзя — ошибка в цифре меняет вывод.
       setText((prev) => (prev.trim() ? `${prev.trim()}\n\n${res.text}` : res.text));
@@ -88,7 +95,9 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
       setError(readApiError(err, t("recognizeFailed")));
     } finally {
       setReading(false);
+      setReadingImage(false);
       if (fileRef.current) fileRef.current.value = "";
+      if (imageRef.current) imageRef.current.value = "";
     }
   }
 
@@ -202,6 +211,23 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
                     shown: recognized.dicom.layout.shown.length,
                     total: recognized.dicom.frames,
                   })}
+                </div>
+              )}
+
+              {/* Границы осмотра снимка. Показываются ВСЕГДА, когда снимок
+                  смотрели: описание увиденного без оговорок о том, чего по
+                  одному кадру видно быть не может, читается как заключение —
+                  а это ровно то, чем осмотр не является. */}
+              {recognized.imageStudy && (
+                <div className="dg-artifact-note dg-artifact-note--warn">
+                  <strong>{t("imageRead")}</strong> {t("imageReadNote")}
+                  {recognized.imageStudy.limits?.length > 0 && (
+                    <ul className="dg-image-limits">
+                      {recognized.imageStudy.limits.map((l, i) => (
+                        <li key={i}>{l}</li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               )}
             </div>
@@ -334,7 +360,28 @@ export default function ArtifactComposer({ caseId, modalities, analytes, disable
               disabled={disabled || reading}
               title={t("attachHint")}
             >
-              {reading ? t("recognizing") : t("attachDocument")}
+              {reading && !readingImage ? t("recognizing") : t("attachDocument")}
+            </button>
+
+            {/* Второе действие с тем же файлом: не «что напечатано», а «что
+                видно». PDF здесь не принимается намеренно — на разбор уходит
+                картинка, а не многостраничный документ. */}
+            <input
+              ref={imageRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,application/dicom,.dcm"
+              style={{ display: "none" }}
+              onChange={(e) => pickFile(e.target.files?.[0], { readImage: true })}
+              disabled={disabled || reading}
+            />
+            <button
+              type="button"
+              className="dg-link-btn"
+              onClick={() => imageRef.current?.click()}
+              disabled={disabled || reading}
+              title={t("readImageHint")}
+            >
+              {reading && readingImage ? t("readingImage") : t("readImage")}
             </button>
           </>
         )}

@@ -154,7 +154,13 @@ export async function removeArtifact(caseId, artifactId) {
  *   hasPatientIdentity: boolean, phiFields: string[], dicom: object|null,
  *   fileName: string, pages: number}>}
  */
-export async function extractDocument(caseId, file, hint = "", modality = "") {
+export async function extractDocument(
+  caseId,
+  file,
+  hint = "",
+  modality = "",
+  { readImage = false } = {},
+) {
   const form = new FormData();
   form.append("file", file);
   if (hint) form.append("hint", hint);
@@ -162,6 +168,13 @@ export async function extractDocument(caseId, file, hint = "", modality = "") {
   // этого исследования. Без неё снимок всё равно прочитается — сервер поймёт
   // по факту отсутствия текста, — но осмотр будет общим, а не по чек-листу.
   if (modality) form.append("modality", modality);
+  // Врач сказал, что перед ним снимок, а не бланк.
+  //
+  // Сервер умеет догадываться сам, но догадка ошибается на плёнке с
+  // напечатанными маркерами: текст из неё извлекается, файл выглядит
+  // документом, и на сам снимок никто не смотрит. Явное указание врача
+  // сильнее догадки.
+  if (readImage) form.append("readImage", "1");
   // Описание снимка модель пишет сразу на языке врача — оно кладётся в дело
   // текстом и потом уже не переводится.
   form.append("lang", i18n.language);
@@ -190,6 +203,10 @@ export async function extractDocument(caseId, file, hint = "", modality = "") {
     // Технические данные DICOM: сколько кадров в файле и какие показаны.
     // Нужны, чтобы честно сказать врачу, что прочитана выборка, а не серия.
     dicom: data.dicom ?? null,
+    // Результат осмотра САМОГО снимка, отдельно от текста. В text он уже
+    // вклеен — здесь он нужен, чтобы показать врачу границы прочтения
+    // (limits): чего по одной картинке сказать нельзя.
+    imageStudy: data.imageStudy ?? null,
     fileName: data.fileName ?? "",
     pages: data.pages ?? 1,
   };
