@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { fetchNews, searchNews } from "../../axios";
 import NewsCard from "../../components/newsAI/NewsCard";
 import axios from "axios";
@@ -536,27 +536,37 @@ export default function NewsList() {
   // что и в списке карточек).
   const itemKey = (it) => (it ? `${it._sourceType}-${it._id}` : null);
 
-  // Первая крупная карточка — СЛУЧАЙНЫЙ материал из текущей ленты. Выбор
-  // держим по ключу и перевыбираем ТОЛЬКО когда выбранного в ленте не стало:
-  //   • загрузка страницы    — heroKey ещё пуст → случайный;
-  //   • смена вкладки/фильтра — лента заменилась целиком, старого ключа в ней
-  //     нет → новый случайный;
-  //   • «Показать ещё»        — лента лишь дополняется, выбранный на месте →
-  //     карточка НЕ перескакивает.
-  // Условие «нет в ленте» вместо гонки эффектов (сброс + выбор по !loading):
-  // та гонка при переключении вкладки оставляла ключ от старого набора, и
-  // герой откатывался к feed[0] — самому свежему. Отсюда «не меняется».
+  // Первая крупная карточка — СЛУЧАЙНЫЙ материал из текущей ленты.
+  //
+  // Перевыбираем при смене САМОЙ ЛЕНТЫ (вкладка, поиск, категория, сортировка,
+  // язык), а не по признаку «выбранного больше нет в ленте».
+  //
+  // ПОЧЕМУ НЕ ПО ИСЧЕЗНОВЕНИЮ. Прежнее правило молча ломалось на одной
+  // вкладке из пяти. «Медицинский дайджест» показывает те же материалы, что и
+  // «Все», только без публикаций, научных статей и врачей. Герой, выбранный на
+  // «Все», — почти всегда материал дайджеста, в новой ленте он ОСТАЁТСЯ, и
+  // правило решало, что менять нечего. На остальных вкладках такого пересечения
+  // нет, поэтому там случайность работала и подозрений не вызывала.
+  //
+  // Сигнатура ленты — те же зависимости, по которым идёт loadAll. Пока она та
+  // же, «Показать ещё» лишь дополняет ленту, и карточка не перескакивает.
+  const feedScope = `${type}|${locale}|${appliedSearch}|${appliedCategory}|${appliedSort}`;
   const [heroKey, setHeroKey] = useState(null);
+  const heroScopeRef = useRef(null);
 
   useEffect(() => {
     if (loading || feed.length === 0) return;
+
+    const scopeChanged = heroScopeRef.current !== feedScope;
     const stillThere =
-      heroKey != null && feed.some((it) => itemKey(it) === heroKey);
-    if (!stillThere) {
+      !scopeChanged && heroKey != null && feed.some((it) => itemKey(it) === heroKey);
+
+    if (scopeChanged || !stillThere) {
+      heroScopeRef.current = feedScope;
       const pick = feed[Math.floor(Math.random() * feed.length)];
       setHeroKey(itemKey(pick));
     }
-  }, [feed, loading, heroKey]);
+  }, [feed, loading, heroKey, feedScope]);
 
   // Найденный по ключу материал; запасной вариант — первый в ленте (короткий
   // момент между заменой ленты и перевыбором).
