@@ -336,6 +336,18 @@ export async function stopRadiologyAutogen() {
 }
 
 /**
+ * Включить или выключить НОЧНУЮ генерацию.
+ *
+ * Не путать с остановкой: та прерывает идущий прогон и действует один раз,
+ * а это — постоянный выключатель. Хранится в базе и переживает перезапуск
+ * сервера: выключенная вечером генерация не должна ожить ночью сама.
+ */
+export async function setRadiologyNightlyAutogen(enabled) {
+  const { data } = await axios.post(`${BASE}/autogen/nightly`, { enabled });
+  return data;
+}
+
+/**
  * Состояние автогенерации: идёт ли прогон сейчас и чем кончился прошлый
  * (created / skipped / failed по модальностям).
  */

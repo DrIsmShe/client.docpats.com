@@ -25,6 +25,7 @@ import {
   deleteCasePermanently,
   runRadiologyAutogen,
   stopRadiologyAutogen,
+  setRadiologyNightlyAutogen,
   fetchRadiologyAutogenState,
   uploadCaseImage,
   aiDraftCase,
@@ -145,6 +146,11 @@ export default function AdminRadiologyCasesPage() {
   // вкладка, соседняя или ночной cron.
   const [autoRunning, setAutoRunning] = useState(false);
   const [autoStopping, setAutoStopping] = useState(false);
+  // Включена ли НОЧНАЯ генерация. Отдельно от прогона: остановка прерывает
+  // один прогон, а это выключатель расписания, живущий до отмены.
+  const [nightly, setNightly] = useState(true);
+  const [nightlyEnvOff, setNightlyEnvOff] = useState(false);
+  const [nightlyBusy, setNightlyBusy] = useState(false);
   // Найденные в сети учебные снимки под тему кейса.
   const [imgBusy, setImgBusy] = useState(false);
   const [imgSources, setImgSources] = useState(null);
@@ -221,6 +227,11 @@ export default function AdminRadiologyCasesPage() {
         setAutoRunning(Boolean(state.running));
         setAutoStopping(Boolean(state.stopping));
         setAutoScope(state.scope ?? null);
+        // nightlyEnabled приходит из базы, envEnabled — из .env сервера.
+        // Второе жёстче: при выключенном .env кнопка в админке ничего не
+        // решает, и владелец должен это видеть, а не гадать.
+        setNightly(state.nightlyEnabled !== false);
+        setNightlyEnvOff(state.envEnabled === false);
       } catch {
         // Молча: это фоновый опрос, и ошибка сети здесь не повод пугать
         // владельца красной плашкой поверх работающей страницы.
@@ -592,6 +603,37 @@ export default function AdminRadiologyCasesPage() {
     } finally {
       setAutoBusy(false);
       setAutoScope(null);
+    }
+  }
+
+  // Ночная генерация: выключатель расписания, а не остановка прогона.
+  // Переживает перезапуск сервера — хранится в базе.
+  async function handleToggleNightly() {
+    const next = !nightly;
+    if (
+      !next &&
+      !window.confirm(
+        "Выключить ночную генерацию? Новые кейсы перестанут появляться сами, " +
+          "пока вы не включите её обратно этой же кнопкой.",
+      )
+    ) {
+      return;
+    }
+    setNightlyBusy(true);
+    setError(null);
+    try {
+      const state = await setRadiologyNightlyAutogen(next);
+      setNightly(state.nightlyEnabled !== false);
+      setNotice(
+        next
+          ? "🌙 Ночная генерация включена: новые кейсы будут появляться по расписанию."
+          : "🌙 Ночная генерация выключена. Ручные кнопки выше продолжают работать.",
+      );
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось переключить ночную генерацию"));
+    } finally {
+      setNightlyBusy(false);
     }
   }
 
@@ -982,6 +1024,53 @@ export default function AdminRadiologyCasesPage() {
             >
               {autoStopping ? "🛑 Останавливаем…" : "🛑 Остановить генерацию"}
             </button>
+          </div>
+
+          {/* ВЫКЛЮЧАТЕЛЬ РАСПИСАНИЯ — отдельно от остановки прогона.
+              «Остановить» прерывает то, что идёт сейчас, и действует один
+              раз; этот переключатель решает, будет ли генерация ночью, и
+              держится до отмены. Раньше для этого приходилось править .env
+              по SSH и перезапускать сервер. */}
+          <div
+            className="edu-btn-row"
+            style={{ marginTop: 12, paddingTop: 10, borderTop: "1px solid #e6eaf0" }}
+          >
+            <button
+              type="button"
+              className={`edu-btn ${nightly ? "edu-btn--danger" : ""}`}
+              onClick={handleToggleNightly}
+              disabled={nightlyBusy || nightlyEnvOff}
+              title={
+                nightlyEnvOff
+                  ? "Выключено на сервере через RADIOLOGY_AUTOGEN=off — кнопка ничего не изменит"
+                  : "Действует до тех пор, пока не включите обратно"
+              }
+            >
+              {nightlyBusy
+                ? "переключаем…"
+                : nightly
+                  ? "🌙 Выключить ночную генерацию"
+                  : "🌙 Включить ночную генерацию"}
+            </button>
+
+            <span className="edu-hint">
+              {nightlyEnvOff ? (
+                <>
+                  Ночная генерация выключена <b>на сервере</b> (RADIOLOGY_AUTOGEN=off).
+                  Кнопка здесь ничего не изменит, пока это не снимут в .env.
+                </>
+              ) : nightly ? (
+                <>
+                  Сейчас: <b>кейсы заводятся каждую ночь</b> (06:20 по Баку). Ручные кнопки
+                  выше работают независимо от этого.
+                </>
+              ) : (
+                <>
+                  Сейчас: <b>ночью ничего не генерируется</b>. Выключение переживает
+                  перезапуск сервера — само не включится.
+                </>
+              )}
+            </span>
           </div>
 
           <div className="edu-hint" style={{ marginTop: 6 }}>
