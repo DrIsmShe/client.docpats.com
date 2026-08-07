@@ -1039,3 +1039,24 @@
   min-width: 96px;
   text-align: right;
 }
+
+/* Найденные в сети учебные случаи со снимком (админка лучевых кейсов).
+   Карточка-ссылка: заголовок ведёт на страницу случая, под ним — лицензия и
+   насколько находка соответствует теме. */
+.rad-img-src {
+  border-top: 1px solid #e6eaf0;
+  padding: 9px 0;
+}
+.rad-img-src:first-of-type {
+  border-top: none;
+}
+.rad-img-src a {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d4ed8;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.rad-img-src a:hover {
+  text-decoration: underline;
+}

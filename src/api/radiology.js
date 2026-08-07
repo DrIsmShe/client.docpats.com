@@ -84,6 +84,20 @@ export async function aiGenerateCase({ modality, topic, difficulty, hint }) {
 }
 
 /**
+ * Найти в интернете учебные снимки по теме кейса (роль author).
+ *
+ * Отдаёт ССЫЛКИ, а не файлы: между «модель нашла страницу» и «снимок в
+ * учебном продукте» стоят проверка лицензии, проверка находки на кадре и
+ * деидентификация — ни одно из трёх машина за человека не делает.
+ *
+ * @returns {{sources: Array<{url,site,title,whatIsShown,license,commercialUse,match,matchNote}>, advice: string}}
+ */
+export async function aiFindCaseImages({ topic, modality, hint }) {
+  const { data } = await axios.post(`${BASE}/ai/find-images`, { topic, modality, hint });
+  return data;
+}
+
+/**
  * ИИ-проверка лучевого кейса вторым проходом (роль author).
  * Отдаёт замечания, ничего не правит: { verdict, issues:[{target,severity,issue,suggestion}], errorCount, summary }.
  */
@@ -294,8 +308,23 @@ export async function deleteCasePermanently(caseId) {
  * конца, — за результатом ходите в fetchRadiologyAutogenState.
  * @returns {{ running: boolean, enabled: boolean, lastRun: object|null }}
  */
-export async function runRadiologyAutogen() {
-  const { data } = await axios.post(`${BASE}/autogen/run`);
+export async function runRadiologyAutogen(scope = "all") {
+  // scope: all | radiology | labs | vp. Раздел нужен, чтобы получить два
+  // лабораторных кейса, не заводя заодно пять лучевых черновиков, каждый из
+  // которых потом ждёт человека с холстом.
+  const { data } = await axios.post(`${BASE}/autogen/run`, { scope });
+  return data;
+}
+
+/**
+ * Остановить идущий прогон.
+ *
+ * Прервётся на границе пунктов плана: начатый кейс доделается. Мгновенно
+ * оборвать нельзя — ответ модели уже оплачен, и бросать его на полпути значит
+ * заплатить и не получить ничего.
+ */
+export async function stopRadiologyAutogen() {
+  const { data } = await axios.post(`${BASE}/autogen/stop`);
   return data;
 }
 

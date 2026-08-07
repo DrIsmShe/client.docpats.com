@@ -1450,5 +1450,13 @@
         "Süni intellekt klinikanın həkimlərinə necə kömək edir?"
       ]
     }
+  },
+  "trust": {
+    "verified": "Təsdiqlənmiş həkim",
+    "reviewsNoun": "rəy",
+    "patientsNoun": "pasiyent",
+    "appointmentsNoun": "qəbul keçirilib",
+    "yearsNoun": "il DocPats-da",
+    "monthsNoun": "ay DocPats-da"
   }
 }

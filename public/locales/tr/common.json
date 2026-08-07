@@ -1368,5 +1368,13 @@
         "Yapay zekâ klinik hekimlerine nasıl yardımcı olur?"
       ]
     }
+  },
+  "trust": {
+    "verified": "Doğrulanmış hekim",
+    "reviewsNoun": "değerlendirme",
+    "patientsNoun": "hasta",
+    "appointmentsNoun": "randevu yapıldı",
+    "yearsNoun": "yıl DocPats'ta",
+    "monthsNoun": "ay DocPats'ta"
   }
 }

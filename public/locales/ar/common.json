@@ -1362,5 +1362,13 @@
         "كيف يساعد الذكاء الاصطناعي أطباء العيادة؟"
       ]
     }
+  },
+  "trust": {
+    "verified": "طبيب موثَّق",
+    "reviewsNoun": "تقييم",
+    "patientsNoun": "مريض",
+    "appointmentsNoun": "موعد أُجري",
+    "yearsNoun": "سنة في DocPats",
+    "monthsNoun": "شهر في DocPats"
   }
 }

@@ -1419,5 +1419,13 @@
         "Чем ИИ помогает врачам клиники?"
       ]
     }
+  },
+  "trust": {
+    "verified": "Проверенный врач",
+    "reviewsNoun": "отзыв(ов)",
+    "patientsNoun": "пациентов",
+    "appointmentsNoun": "приёмов проведено",
+    "yearsNoun": "г. на DocPats",
+    "monthsNoun": "мес. на DocPats"
   }
 }

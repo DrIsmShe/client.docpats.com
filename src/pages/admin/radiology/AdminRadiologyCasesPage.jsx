@@ -24,10 +24,12 @@ import {
   archiveCase,
   deleteCasePermanently,
   runRadiologyAutogen,
+  stopRadiologyAutogen,
   fetchRadiologyAutogenState,
   uploadCaseImage,
   aiDraftCase,
   aiGenerateCase,
+  aiFindCaseImages,
   aiVerifyCase,
   dismissCaseAiIssues,
   generateCaseAiBaseline,
@@ -67,6 +69,36 @@ const STATUS_LABELS = {
   rejected: "Отклонён",
   archived: "В архиве",
 };
+// Разделы автогенерации. Ключи те же, что на сервере (AUTOGEN_SCOPES в
+// jobs/radiologyDailyCases.job.js).
+//
+// Раздельные кнопки нужны из-за разной судьбы кейсов: анализы и виртуальный
+// пациент доходят до публикации сами, а лучевой кейс всегда остаётся
+// черновиком и ждёт человека со снимком. Одна кнопка на всё означала, что за
+// двумя лабораторными кейсами тянутся пять непроверенных лучевых.
+const AUTOGEN_SCOPES = {
+  all: {
+    title: "все разделы",
+    button: "🤖 Сгенерировать всё",
+    confirm: "Сгенерировать кейсы по всем разделам — снимки, анализы, виртуальный пациент?",
+  },
+  radiology: {
+    title: "снимки",
+    button: "🩻 Только снимки",
+    confirm: "Сгенерировать по кейсу-черновику на каждую лучевую модальность?",
+  },
+  labs: {
+    title: "анализы",
+    button: "🧪 Только анализы",
+    confirm: "Сгенерировать кейс станции «Анализы»?",
+  },
+  vp: {
+    title: "виртуальный пациент",
+    button: "🧑‍⚕️ Только виртуальный пациент",
+    confirm: "Сгенерировать кейс станции «Виртуальный пациент»?",
+  },
+};
+
 const sigColor = (s) => SIGNIFICANCES.find((x) => x.key === s)?.color ?? "#2563eb";
 const parseList = (s) => String(s ?? "").split(/[\n,;]+/).map((x) => x.trim()).filter(Boolean);
 const newKey = () => `f_${Date.now().toString(36)}_${Math.floor(Math.random() * 1e4)}`;
@@ -106,6 +138,12 @@ export default function AdminRadiologyCasesPage() {
   // Ночная автогенерация: метка у открытого кейса и ручной запуск.
   const [autoGen, setAutoGen] = useState(null);
   const [autoBusy, setAutoBusy] = useState(false);
+  // Какой раздел генерируется сейчас: подсвечиваем кнопку именно его, а не
+  // все четыре сразу.
+  const [autoScope, setAutoScope] = useState(null);
+  // Найденные в сети учебные снимки под тему кейса.
+  const [imgBusy, setImgBusy] = useState(false);
+  const [imgSources, setImgSources] = useState(null);
 
   // Второй проход: замечания рецензента и отметки «разобрано».
   const [review, setReview] = useState(null);
@@ -471,13 +509,18 @@ export default function AdminRadiologyCasesPage() {
   // Ручной запуск ночной автогенерации. Сервер отвечает сразу и работает в
   // фоне (пять запросов к модели — это минуты, соединение столько не живёт),
   // поэтому итог забираем опросом состояния.
-  async function handleRunAutogen() {
-    if (!window.confirm("Сгенерировать по кейсу-черновику на каждую модальность? Это займёт несколько минут.")) return;
+  async function handleRunAutogen(scope = "all") {
+    const what = AUTOGEN_SCOPES[scope] ?? AUTOGEN_SCOPES.all;
+    if (!window.confirm(`${what.confirm} Это займёт несколько минут.`)) return;
+
     setAutoBusy(true);
+    setAutoScope(scope);
     setError(null);
-    setNotice("🤖 Прогон запущен, ИИ работает. Можно не ждать на этой странице — черновики появятся в списке.");
+    setNotice(
+      `🤖 Прогон запущен (${what.title}), ИИ работает. Можно не ждать на этой странице — черновики появятся в списке.`,
+    );
     try {
-      await runRadiologyAutogen();
+      await runRadiologyAutogen(scope);
       // Опрос до окончания. Ограничение по числу попыток — страховка от
       // бесконечного цикла, если процесс на сервере перезапустится.
       for (let i = 0; i < 120; i += 1) {
@@ -489,7 +532,10 @@ export default function AdminRadiologyCasesPage() {
           return;
         }
         setNotice(
-          `🤖 ИИ работает… готово модальностей: ${state.lastRun?.created?.length ?? 0}.`,
+          (state.stopping
+            ? "🛑 Останавливаем: доделываем начатый кейс…"
+            : `🤖 ИИ работает (${what.title})…`) +
+            ` готово: ${state.lastRun?.created?.length ?? 0}.`,
         );
       }
       setNotice("🤖 Прогон идёт дольше обычного — обновите страницу позже, чтобы увидеть итог.");
@@ -498,6 +544,19 @@ export default function AdminRadiologyCasesPage() {
       setError(readApiError(err, "Не удалось выполнить автогенерацию"));
     } finally {
       setAutoBusy(false);
+      setAutoScope(null);
+    }
+  }
+
+  // Остановка прогона. Начатый кейс доделается — прервать запрос к модели на
+  // середине значит заплатить за ответ и выбросить его.
+  async function handleStopAutogen() {
+    try {
+      await stopRadiologyAutogen();
+      setNotice("🛑 Остановка запрошена: доделываем начатый кейс, остальные не начнём.");
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось остановить прогон"));
     }
   }
 
@@ -572,6 +631,40 @@ export default function AdminRadiologyCasesPage() {
       setError(readApiError(err, "ИИ не смог составить черновик"));
     } finally {
       setAiBusy(false);
+    }
+  }
+
+  // Поиск снимков под тему.
+  //
+  // Закрывает разрыв, на котором работа и вставала: кейс ИИ придумывает
+  // целиком, а снимка к нему нет и взяться ему неоткуда. Ищем по теме из поля
+  // выше, а если оно пусто — по названию уже открытого кейса: чаще всего
+  // снимок нужен именно к нему.
+  async function handleFindImages() {
+    const topic = aiTopic.trim() || form.title.trim();
+    if (topic.length < 3) {
+      setError("Опишите тему кейса или откройте кейс — по ней и будем искать снимок");
+      return;
+    }
+    setImgBusy(true);
+    setError(null);
+    setNotice(null);
+    setImgSources(null);
+    try {
+      const found = await aiFindCaseImages({
+        topic,
+        modality: form.modality,
+        hint: aiGenHint.trim() || undefined,
+      });
+      setImgSources(found);
+      if (!found.sources.length) {
+        setNotice("Готовых учебных случаев по этой теме не нашлось — смотрите совет ниже.");
+      }
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось найти снимки"));
+    } finally {
+      setImgBusy(false);
     }
   }
 
@@ -803,11 +896,42 @@ export default function AdminRadiologyCasesPage() {
             править или удалить навсегда. Выключатели — в <code>.env</code> сервера
             (<code>RADIOLOGY_AUTOGEN</code>, <code>RADIOLOGY_AUTOGEN_PUBLISH</code>).
           </div>
-          <div className="edu-btn-row" style={{ marginTop: 10 }}>
-            <button type="button" className="edu-btn edu-btn--ghost" onClick={handleRunAutogen} disabled={autoBusy || busy || aiGenBusy}>
-              {autoBusy ? "ИИ работает, это займёт минуты…" : "🤖 Сгенерировать партию сейчас"}
-            </button>
+          {/* Каждый раздел запускается отдельно: судьба кейсов у них разная,
+              и тянуть пять лучевых черновиков ради одного лабораторного
+              незачем. Пока идёт прогон, работает только «Остановить». */}
+          <div className="edu-btn-row" style={{ marginTop: 10, flexWrap: "wrap", gap: 8 }}>
+            {Object.entries(AUTOGEN_SCOPES).map(([key, s]) => (
+              <button
+                key={key}
+                type="button"
+                className="edu-btn edu-btn--ghost"
+                onClick={() => handleRunAutogen(key)}
+                disabled={autoBusy || busy || aiGenBusy}
+                title={s.confirm}
+              >
+                {autoBusy && autoScope === key ? `${s.title}: ИИ работает…` : s.button}
+              </button>
+            ))}
+
+            {autoBusy && (
+              <button
+                type="button"
+                className="edu-btn edu-btn--danger"
+                onClick={handleStopAutogen}
+                title="Начатый кейс доделается, остальные не начнутся"
+              >
+                🛑 Остановить генерацию
+              </button>
+            )}
           </div>
+
+          {autoBusy && (
+            <div className="edu-hint" style={{ marginTop: 6 }}>
+              Остановка срабатывает между кейсами: начатый доделается. Прервать запрос к
+              модели на середине нельзя — ответ уже оплачен, и бросать его значит
+              заплатить и не получить ничего.
+            </div>
+          )}
         </div>
       )}
 
@@ -867,10 +991,87 @@ export default function AdminRadiologyCasesPage() {
                   {verifyBusy ? "рецензент проверяет…" : "🔍 Проверить текущий кейс"}
                 </button>
               )}
+              <button
+                type="button"
+                className="edu-btn edu-btn--ghost"
+                onClick={handleFindImages}
+                disabled={imgBusy || aiGenBusy || busy || verifyBusy}
+                title="Найти в интернете учебные случаи со снимком по этой теме"
+              >
+                {imgBusy ? "ищем снимки…" : "🔎 Найти снимок в интернете"}
+              </button>
               {selected && selected !== "new" && (
                 <span className="edu-hint">Результат откроется как новый черновик — текущий кейс не изменится.</span>
               )}
             </div>
+
+            {/* Найденные учебные случаи. Отдаём ССЫЛКИ, а не картинки:
+                скачать, проверить лицензию, убедиться, что находка на кадре
+                действительно та, и деидентифицировать — работа человека. */}
+            {imgSources && (
+              <div className="rad-panel" style={{ marginTop: 12, background: "#f8fafc" }}>
+                <div className="edu-hint" style={{ marginBottom: 8 }}>
+                  <b>Найдено случаев: {imgSources.sources.length}.</b> Проверьте лицензию перед
+                  использованием: DocPats — коммерческий продукт, и материалы под CC BY-NC
+                  в него помещать нельзя. Модель называет лицензию так, как её видит,
+                  но последнее слово за вами.
+                </div>
+
+                {imgSources.sources.map((s, i) => (
+                  <div key={i} className="rad-img-src">
+                    <a href={s.url} target="_blank" rel="noopener noreferrer">
+                      {s.title || s.url}
+                    </a>
+                    <div className="edu-hint">
+                      {s.site}
+                      {" · "}
+                      <b
+                        style={{
+                          color:
+                            s.match === "exact"
+                              ? "#15803d"
+                              : s.match === "close"
+                                ? "#a16207"
+                                : "#64748b",
+                        }}
+                      >
+                        {s.match === "exact"
+                          ? "точно по теме"
+                          : s.match === "close"
+                            ? "близко"
+                            : "частично"}
+                      </b>
+                      {" · коммерчески: "}
+                      <b
+                        style={{
+                          color:
+                            s.commercialUse === "yes"
+                              ? "#15803d"
+                              : s.commercialUse === "no"
+                                ? "#b91c1c"
+                                : "#a16207",
+                        }}
+                      >
+                        {s.commercialUse === "yes"
+                          ? "можно"
+                          : s.commercialUse === "no"
+                            ? "НЕЛЬЗЯ"
+                            : "неясно — проверьте"}
+                      </b>
+                    </div>
+                    {s.whatIsShown && <div className="edu-hint">На снимке: {s.whatIsShown}</div>}
+                    {s.matchNote && <div className="edu-hint">Отличия: {s.matchNote}</div>}
+                    <div className="edu-hint">Лицензия: {s.license}</div>
+                  </div>
+                ))}
+
+                {imgSources.advice && (
+                  <div className="edu-hint" style={{ marginTop: 10 }}>
+                    <b>Совет:</b> {imgSources.advice}
+                  </div>
+                )}
+              </div>
+            )}
           </>
         ) : (
           <div className="edu-warn">

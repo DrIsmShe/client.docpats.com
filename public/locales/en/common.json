@@ -1344,5 +1344,13 @@
         "How does the AI help the clinic physicians?"
       ]
     }
+  },
+  "trust": {
+    "verified": "Verified doctor",
+    "reviewsNoun": "review(s)",
+    "patientsNoun": "patients",
+    "appointmentsNoun": "appointments held",
+    "yearsNoun": "yr on DocPats",
+    "monthsNoun": "mo on DocPats"
   }
 }
