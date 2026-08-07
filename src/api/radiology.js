@@ -92,8 +92,15 @@ export async function aiGenerateCase({ modality, topic, difficulty, hint }) {
  *
  * @returns {{sources: Array<{url,site,title,whatIsShown,license,commercialUse,match,matchNote}>, advice: string}}
  */
-export async function aiFindCaseImages({ topic, modality, hint }) {
-  const { data } = await axios.post(`${BASE}/ai/find-images`, { topic, modality, hint });
+export async function aiFindCaseImages({ topic, modality, hint, caseId }) {
+  // caseId передаём, если кейс сохранён: тогда сервер положит находки в него,
+  // и после перезагрузки страницы ссылки останутся на месте.
+  const { data } = await axios.post(`${BASE}/ai/find-images`, {
+    topic,
+    modality,
+    hint,
+    caseId,
+  });
   return data;
 }
 

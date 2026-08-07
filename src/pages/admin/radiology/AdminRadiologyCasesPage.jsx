@@ -141,6 +141,10 @@ export default function AdminRadiologyCasesPage() {
   // Какой раздел генерируется сейчас: подсвечиваем кнопку именно его, а не
   // все четыре сразу.
   const [autoScope, setAutoScope] = useState(null);
+  // Идёт ли прогон ПО ДАННЫМ СЕРВЕРА — не важно, кто его запустил: эта
+  // вкладка, соседняя или ночной cron.
+  const [autoRunning, setAutoRunning] = useState(false);
+  const [autoStopping, setAutoStopping] = useState(false);
   // Найденные в сети учебные снимки под тему кейса.
   const [imgBusy, setImgBusy] = useState(false);
   const [imgSources, setImgSources] = useState(null);
@@ -198,6 +202,38 @@ export default function AdminRadiologyCasesPage() {
       }
     })();
   }, [navigate]);
+
+  // СОСТОЯНИЕ ПРОГОНА СПРАШИВАЕМ У СЕРВЕРА, А НЕ ПОМНИМ У СЕБЯ.
+  //
+  // Генерация идёт в процессе сервера и переживает и перезагрузку страницы, и
+  // закрытие вкладки. Пока «Остановить» показывалась по локальному флагу, её
+  // не было ровно тогда, когда она нужнее всего: прогон запустил ночной cron,
+  // или страницу обновили посреди работы — кнопка исчезала, а генерация шла.
+  //
+  // Опрос раз в 8 секунд: прогон живёт минуты, чаще спрашивать не о чем.
+  useEffect(() => {
+    let alive = true;
+
+    async function poll() {
+      try {
+        const state = await fetchRadiologyAutogenState();
+        if (!alive) return;
+        setAutoRunning(Boolean(state.running));
+        setAutoStopping(Boolean(state.stopping));
+        setAutoScope(state.scope ?? null);
+      } catch {
+        // Молча: это фоновый опрос, и ошибка сети здесь не повод пугать
+        // владельца красной плашкой поверх работающей страницы.
+      }
+    }
+
+    poll();
+    const id = setInterval(poll, 8000);
+    return () => {
+      alive = false;
+      clearInterval(id);
+    };
+  }, []);
 
   function resetReview() {
     setReview(null);
@@ -287,6 +323,14 @@ export default function AdminRadiologyCasesPage() {
       );
       setArmed(null);
       setAutoGen(doc.autoGen?.isAuto ? doc.autoGen : null);
+      // Ссылки на снимки-кандидаты хранятся в самом кейсе: их положила ночная
+      // генерация или прошлый ручной поиск. Показываем сразу при открытии —
+      // иначе автор ищет заново то, что уже найдено и оплачено.
+      setImgSources(
+        doc.imageSources?.length
+          ? { sources: doc.imageSources, advice: doc.imageSearchAdvice ?? "" }
+          : null,
+      );
       restoreReview(doc);
       setActiveImg(0);
       setActiveLabel(null);
@@ -514,6 +558,9 @@ export default function AdminRadiologyCasesPage() {
     if (!window.confirm(`${what.confirm} Это займёт несколько минут.`)) return;
 
     setAutoBusy(true);
+    // Не ждём ближайшего опроса: кнопки должны переключиться сразу, иначе
+    // владелец успевает нажать второй раздел до первого ответа сервера.
+    setAutoRunning(true);
     setAutoScope(scope);
     setError(null);
     setNotice(
@@ -552,7 +599,8 @@ export default function AdminRadiologyCasesPage() {
   // середине значит заплатить за ответ и выбросить его.
   async function handleStopAutogen() {
     try {
-      await stopRadiologyAutogen();
+      const state = await stopRadiologyAutogen();
+      setAutoStopping(Boolean(state.stopping));
       setNotice("🛑 Остановка запрошена: доделываем начатый кейс, остальные не начнём.");
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
@@ -655,6 +703,9 @@ export default function AdminRadiologyCasesPage() {
         topic,
         modality: form.modality,
         hint: aiGenHint.trim() || undefined,
+        // Кейс уже сохранён — пусть сервер положит находки в него: поиск
+        // стоит денег, и повторять его после каждой перезагрузки незачем.
+        caseId: selected && selected !== "new" ? selected : undefined,
       });
       setImgSources(found);
       if (!found.sources.length) {
@@ -906,30 +957,36 @@ export default function AdminRadiologyCasesPage() {
                 type="button"
                 className="edu-btn edu-btn--ghost"
                 onClick={() => handleRunAutogen(key)}
-                disabled={autoBusy || busy || aiGenBusy}
+                disabled={autoRunning || busy || aiGenBusy}
                 title={s.confirm}
               >
-                {autoBusy && autoScope === key ? `${s.title}: ИИ работает…` : s.button}
+                {autoRunning && autoScope === key ? `${s.title}: ИИ работает…` : s.button}
               </button>
             ))}
 
-            {autoBusy && (
+            {/* Показывается по состоянию СЕРВЕРА: прогон мог запустить ночной
+                cron или соседняя вкладка — остановить нужно и такой. */}
+            {autoRunning && (
               <button
                 type="button"
                 className="edu-btn edu-btn--danger"
                 onClick={handleStopAutogen}
+                disabled={autoStopping}
                 title="Начатый кейс доделается, остальные не начнутся"
               >
-                🛑 Остановить генерацию
+                {autoStopping ? "🛑 Останавливаем…" : "🛑 Остановить генерацию"}
               </button>
             )}
           </div>
 
-          {autoBusy && (
+          {autoRunning && (
             <div className="edu-hint" style={{ marginTop: 6 }}>
-              Остановка срабатывает между кейсами: начатый доделается. Прервать запрос к
-              модели на середине нельзя — ответ уже оплачен, и бросать его значит
-              заплатить и не получить ничего.
+              {autoStopping
+                ? "Остановка запрошена: доделываем начатый кейс, остальные не начнём."
+                : `Идёт генерация${autoScope ? ` (${AUTOGEN_SCOPES[autoScope]?.title ?? autoScope})` : ""}. ` +
+                  "Остановка срабатывает между кейсами: начатый доделается. Прервать запрос к " +
+                  "модели на середине нельзя — ответ уже оплачен, и бросать его значит " +
+                  "заплатить и не получить ничего."}
             </div>
           )}
         </div>
