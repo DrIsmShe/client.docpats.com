@@ -11,7 +11,7 @@
 // в R2 и DICOM-анонимизация — следующий шаг). Модель данных под загрузку
 // готова: images[] хранит url + подпись + размеры.
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   fetchReadingConfig,
@@ -138,7 +138,8 @@ export default function AdminRadiologyCasesPage() {
   const [armed, setArmed] = useState(null); // индекс находки из плана
   // Ночная автогенерация: метка у открытого кейса и ручной запуск.
   const [autoGen, setAutoGen] = useState(null);
-  const [autoBusy, setAutoBusy] = useState(false);
+  // Идёт ли прогон, решает сервер (autoRunning ниже): генерация переживает
+  // перезагрузку страницы, а локальный флаг — нет.
   // Какой раздел генерируется сейчас: подсвечиваем кнопку именно его, а не
   // все четыре сразу.
   const [autoScope, setAutoScope] = useState(null);
@@ -154,6 +155,10 @@ export default function AdminRadiologyCasesPage() {
   // Найденные в сети учебные снимки под тему кейса.
   const [imgBusy, setImgBusy] = useState(false);
   const [imgSources, setImgSources] = useState(null);
+  // Сборка кейса одной кнопкой и её итог — сводка «что спросят и что зачтётся».
+  const [oneClickBusy, setOneClickBusy] = useState(false);
+  const [ready, setReady] = useState(null);
+  const oneClickRef = useRef(null);
 
   // Второй проход: замечания рецензента и отметки «разобрано».
   const [review, setReview] = useState(null);
@@ -568,7 +573,6 @@ export default function AdminRadiologyCasesPage() {
     const what = AUTOGEN_SCOPES[scope] ?? AUTOGEN_SCOPES.all;
     if (!window.confirm(`${what.confirm} Это займёт несколько минут.`)) return;
 
-    setAutoBusy(true);
     // Не ждём ближайшего опроса: кнопки должны переключиться сразу, иначе
     // владелец успевает нажать второй раздел до первого ответа сервера.
     setAutoRunning(true);
@@ -601,7 +605,6 @@ export default function AdminRadiologyCasesPage() {
       if (isAuthError(err)) return navigate("/login");
       setError(readApiError(err, "Не удалось выполнить автогенерацию"));
     } finally {
-      setAutoBusy(false);
       setAutoScope(null);
     }
   }
@@ -681,6 +684,84 @@ export default function AdminRadiologyCasesPage() {
   // ИИ-черновик по активному снимку. Заполняет ПУСТЫЕ поля (не затирая
   // введённое автором) и добавляет предложенные находки — всё как заготовку
   // для проверки экспертом.
+  // ОДНА КНОПКА: снимок → готовый кейс.
+  //
+  // Раньше то же самое собиралось из пяти отдельных действий: загрузить файл,
+  // нажать «составить черновик», перенести находки, выбрать сложность,
+  // запустить рецензента. Каждый шаг понятен по отдельности, но вместе они
+  // требуют помнить порядок — и автор бросал кейс на середине.
+  //
+  // Отличие от «Составить черновик по снимку»: тот бережно заполняет только
+  // ПУСТЫЕ поля, потому что дополняет работу автора. Здесь кейс собирается с
+  // нуля, поэтому заполняется всё — и сложность, и разметка, и эталон.
+  async function handleOneClickCase(e) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+
+    setOneClickBusy(true);
+    setError(null);
+    setReady(null);
+    try {
+      // 1. Снимок на сервер. Там же он переэнкодится и чистится от метаданных.
+      setNotice("1/3 · Загружаю снимок…");
+      const { url, width, height } = await uploadCaseImage(file);
+      const previewUrl = URL.createObjectURL(file);
+      const image = { url, previewUrl, label: "", width, height };
+      setImages([image]);
+      setActiveImg(0);
+
+      // 2. ИИ смотрит на кадр и собирает кейс целиком: название, контекст,
+      //    находки С КООРДИНАТАМИ, эталонное заключение и принимаемые
+      //    варианты ответа.
+      setNotice("2/3 · ИИ читает снимок и собирает кейс…");
+      const draft = await aiDraftCase({
+        imageUrl: url,
+        modality: form.modality,
+        hint: aiHint,
+        imageIndex: 0,
+      });
+
+      const nextForm = {
+        ...BLANK,
+        modality: form.modality,
+        difficulty: draft.difficulty || "medium",
+        title: draft.title,
+        clinicalContext: draft.clinicalContext,
+        correctText: draft.impression.correctText,
+        diagnosisKeys: (draft.impression.diagnosisKeys || []).join(", "),
+        diagnosisSynonyms: (draft.impression.diagnosisSynonyms || []).join(", "),
+      };
+      const nextFindings = draft.findings.map((f) => ({ ...f, key: newKey() }));
+
+      setSelected("new");
+      setForm(nextForm);
+      setFindings(nextFindings);
+      setPlanned([]);
+      setAutoGen(null);
+      setImgSources(null);
+
+      // 3. Второй проход: тот же рецензент, что проверяет ночные автокейсы.
+      //    Запускается сразу — иначе автор увидит «готово» и не узнает, что
+      //    рецензент нашёл три замечания.
+      setNotice("3/3 · Рецензент проверяет кейс…");
+      await runVerify([], nextFindings, nextForm);
+
+      setReady({
+        findings: nextFindings.length,
+        keys: (draft.impression.diagnosisKeys || []).length,
+        synonyms: (draft.impression.diagnosisSynonyms || []).length,
+      });
+      setNotice(null);
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось собрать кейс по снимку"));
+      setNotice(null);
+    } finally {
+      setOneClickBusy(false);
+    }
+  }
+
   async function handleAiDraft() {
     const img = images[activeImg];
     if (!img?.url?.trim()) {
@@ -966,6 +1047,89 @@ export default function AdminRadiologyCasesPage() {
 
       {error && <div className="edu-error" style={{ marginTop: 12 }}>{error}</div>}
       {notice && <div className="edu-notice" style={{ marginTop: 12 }}>{notice}</div>}
+
+      {/* ГЛАВНЫЙ ВХОД: снимок → готовый кейс.
+          Стоит первым и до всех остальных панелей намеренно — это тот путь,
+          которым кейс заводится в девяти случаях из десяти. Всё, что ниже
+          (генерация по теме, поиск снимка, ручная правка), остаётся для
+          случаев, когда снимка ещё нет или кейс нужно доработать. */}
+      <div className="rad-panel rad-oneclick" style={{ marginTop: 16 }}>
+        <div className="rad-oneclick__head">
+          <b>Загрузите снимок — соберу кейс целиком</b>
+          <select
+            className="edu-select"
+            value={form.modality}
+            onChange={(e) => setForm((f) => ({ ...f, modality: e.target.value }))}
+            disabled={oneClickBusy}
+            aria-label="Вид исследования"
+          >
+            {systems.map((s) => (
+              <option key={s.modality} value={s.modality}>
+                {s.title}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="edu-hint" style={{ marginTop: 6 }}>
+          ИИ посмотрит на кадр и заполнит всё: название, клинический контекст,
+          сложность, разметку находок прямо на снимке, эталонное заключение и
+          список ответов, которые засчитываются учащемуся. Затем кейс проверит
+          рецензент. Вам останется прочитать и решить — публиковать или нет.
+        </div>
+
+        <input
+          ref={oneClickRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          style={{ display: "none" }}
+          onChange={handleOneClickCase}
+          disabled={oneClickBusy || busy}
+        />
+        <div className="edu-btn-row" style={{ marginTop: 10 }}>
+          <button
+            type="button"
+            className="edu-btn"
+            onClick={() => oneClickRef.current?.click()}
+            disabled={oneClickBusy || busy}
+          >
+            {oneClickBusy ? "Собираю кейс…" : "📷 Загрузить снимок и собрать кейс"}
+          </button>
+          {aiEnabled === false && (
+            <span className="edu-hint">ИИ выключен: нет ANTHROPIC_API_KEY на сервере.</span>
+          )}
+        </div>
+
+        {/* Сводка эталона: что именно спросят у учащегося и какой ответ
+            система засчитает. Без неё автор видит только поля формы и не
+            может проверить главное — совпадают ли принимаемые ответы с тем,
+            что на снимке действительно есть. */}
+        {ready && (
+          <div className="rad-ready">
+            <b>Кейс собран. Что увидит и сделает учащийся:</b>
+            <ol className="rad-ready__list">
+              <li>
+                Прочитает клинический контекст и посмотрит на снимок — заключение и
+                находки ему до ответа не показываются.
+              </li>
+              <li>
+                Отметит находки на снимке: их размечено <b>{ready.findings}</b>.
+                Засчитывается попадание в область каждой.
+              </li>
+              <li>
+                Напишет заключение своими словами. Засчитываются{" "}
+                <b>{ready.keys + ready.synonyms}</b> вариантов формулировки
+                (ключи диагноза и синонимы — оба списка ниже в форме, правьте их
+                как обычный текст).
+              </li>
+            </ol>
+            <div className="edu-hint">
+              Проверьте разметку на холсте и списки ответов, разберите замечания
+              рецензента — и публикуйте. Ничего дозаполнять не нужно.
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Ночная автогенерация: что делает робот и как вмешаться руками. */}
       {aiEnabled && (
