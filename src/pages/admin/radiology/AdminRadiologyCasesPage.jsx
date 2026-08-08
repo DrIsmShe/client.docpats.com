@@ -160,6 +160,9 @@ export default function AdminRadiologyCasesPage() {
   const [ready, setReady] = useState(null);
   const oneClickRef = useRef(null);
   const editorRef = useRef(null);
+  // Подсказка автора для сборки в один клик: диагноз, находка, локализация,
+  // анамнез. Необязательна и живёт отдельно от подсказки в «Помощи ИИ».
+  const [oneClickHint, setOneClickHint] = useState("");
 
   // Второй проход: замечания рецензента и отметки «разобрано».
   const [review, setReview] = useState(null);
@@ -719,7 +722,9 @@ export default function AdminRadiologyCasesPage() {
       const draft = await aiDraftCase({
         imageUrl: url,
         modality: form.modality,
-        hint: aiHint,
+        // Подсказка из этой же панели, а не из «Помощи ИИ» ниже: та относится
+        // к уже открытому кейсу и в сборке с нуля пуста.
+        hint: oneClickHint.trim() || undefined,
         imageIndex: 0,
       });
 
@@ -1100,6 +1105,30 @@ export default function AdminRadiologyCasesPage() {
           сложность, разметку находок прямо на снимке, эталонное заключение и
           список ответов, которые засчитываются учащемуся. Затем кейс проверит
           рецензент. Вам останется прочитать и решить — публиковать или нет.
+        </div>
+
+        {/* Необязательная подсказка. Сервер передаёт её модели с оговоркой
+            «учти, но проверь по снимку»: подсказка направляет взгляд, но не
+            обязывает подтвердить диагноз, которого на кадре нет. */}
+        <div style={{ marginTop: 10 }}>
+          <label className="edu-field-label" htmlFor="rad-oneclick-hint">
+            Подсказка ИИ — по желанию
+          </label>
+          <input
+            id="rad-oneclick-hint"
+            className="edu-input"
+            type="text"
+            maxLength={500}
+            value={oneClickHint}
+            onChange={(e) => setOneClickHint(e.target.value)}
+            disabled={oneClickBusy || busy}
+            placeholder="Например: киста левой верхнечелюстной пазухи; смотреть на уровень жидкости"
+          />
+          <div className="edu-hint" style={{ marginTop: 4 }}>
+            Можно оставить пустым. Если знаете диагноз, название находки, её
+            локализацию или анамнез — напишите: ИИ учтёт это, но всё равно
+            сверится со снимком и не подтвердит того, чего на кадре не видит.
+          </div>
         </div>
 
         <input
