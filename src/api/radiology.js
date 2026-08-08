@@ -110,8 +110,12 @@ export async function aiFindCaseImages({ topic, modality, hint, caseId }) {
  */
 export async function aiVerifyCase({ modality, draft, caseId }) {
   // caseId передаём, если кейс уже сохранён: тогда сервер положит рецензию в
-  // кейс, и гейт публикации переживёт перезагрузку страницы.
-  const { data } = await axios.post(`${BASE}/ai/verify`, { modality, draft, caseId });
+  // кейс, и гейт публикации переживёт перезагрузку страницы. У несохранённого
+  // кейса поле опускаем целиком: сервер принимает строку или отсутствие поля,
+  // а на null отвечает 400 «Expected string, received null».
+  const body = { modality, draft };
+  if (caseId) body.caseId = caseId;
+  const { data } = await axios.post(`${BASE}/ai/verify`, body);
   return data.review;
 }
 

@@ -745,7 +745,8 @@ export default function AdminRadiologyCasesPage() {
       //    Запускается сразу — иначе автор увидит «готово» и не узнает, что
       //    рецензент нашёл три замечания.
       setNotice("3/3 · Рецензент проверяет кейс…");
-      await runVerify([], nextFindings, nextForm);
+      // Кейс собран в форме и ещё не сохранён — id передавать нечего.
+      await runVerify([], nextFindings, nextForm, null);
 
       setReady({
         findings: nextFindings.length,
@@ -911,10 +912,14 @@ export default function AdminRadiologyCasesPage() {
   // находки из плана ИИ, и уже поставленные на снимок — координаты
   // рецензенту не нужны, ему важны состав находок, их значимость и
   // согласованность с заключением.
-  async function runVerify(plannedArg, findingsArg, formArg) {
+  // caseIdArg: id сохранённого кейса. Передавайте его явно, если вызываете
+  // runVerify из цепочки, которая только что сменила выбранный кейс —
+  // состояние `selected` там ещё старое. null/"" означают «кейс не сохранён».
+  async function runVerify(plannedArg, findingsArg, formArg, caseIdArg) {
     const usePlanned = plannedArg ?? planned;
     const useFindings = findingsArg ?? findings;
     const useForm = formArg ?? form;
+    const verifyTargetId = selected && selected !== "new" ? selected : undefined;
     const all = [
       ...usePlanned.map((p) => ({
         label: p.label,
@@ -935,7 +940,14 @@ export default function AdminRadiologyCasesPage() {
     setVerifyBusy(true);
     try {
       const res = await aiVerifyCase({
-        caseId: selected !== "new" ? selected : undefined,
+        // Явно переданный id важнее подсмотренного в состоянии: вызов сразу
+        // после setSelected видит ЕЩЁ СТАРОЕ значение (React применяет
+        // состояние после обработчика). Отсюда прилетал caseId от прошлого
+        // открытого кейса — или null, если не открывали ни одного.
+        //
+        // null здесь недопустим: сервер принимает строку или отсутствие поля,
+        // а на null отвечает «Expected string, received null».
+        caseId: caseIdArg !== undefined ? caseIdArg || undefined : verifyTargetId,
         modality: useForm.modality,
         draft: {
           title: useForm.title.trim() || undefined,
