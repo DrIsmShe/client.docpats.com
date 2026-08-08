@@ -751,8 +751,9 @@ export default function AdminRadiologyCasesPage() {
       //    Запускается сразу — иначе автор увидит «готово» и не узнает, что
       //    рецензент нашёл три замечания.
       setNotice("3/3 · Рецензент проверяет кейс…");
-      // Кейс собран в форме и ещё не сохранён — id передавать нечего.
-      await runVerify([], nextFindings, nextForm, null);
+      // Кейс собран в форме и ещё не сохранён — id передавать нечего. Кадр
+      // берём из локальной переменной: setImages выше ещё не применился.
+      await runVerify([], nextFindings, nextForm, { caseId: null, imageUrl: url });
 
       setReady({
         findings: nextFindings.length,
@@ -929,14 +930,16 @@ export default function AdminRadiologyCasesPage() {
   // находки из плана ИИ, и уже поставленные на снимок — координаты
   // рецензенту не нужны, ему важны состав находок, их значимость и
   // согласованность с заключением.
-  // caseIdArg: id сохранённого кейса. Передавайте его явно, если вызываете
-  // runVerify из цепочки, которая только что сменила выбранный кейс —
-  // состояние `selected` там ещё старое. null/"" означают «кейс не сохранён».
-  async function runVerify(plannedArg, findingsArg, formArg, caseIdArg) {
+  // overrides: { caseId, imageUrl } — передавайте явно, если вызываете
+  // runVerify из цепочки, которая только что положила кейс и кадр в состояние:
+  // `selected` и `images` там ещё старые. null/"" означают «этого нет».
+  async function runVerify(plannedArg, findingsArg, formArg, overrides = {}) {
     const usePlanned = plannedArg ?? planned;
     const useFindings = findingsArg ?? findings;
     const useForm = formArg ?? form;
     const verifyTargetId = selected && selected !== "new" ? selected : undefined;
+    // Рецензенту показываем тот же кадр, что размечает автор.
+    const verifyImageUrl = images[activeImg]?.url?.trim() || undefined;
     const all = [
       ...usePlanned.map((p) => ({
         label: p.label,
@@ -964,7 +967,14 @@ export default function AdminRadiologyCasesPage() {
         //
         // null здесь недопустим: сервер принимает строку или отсутствие поля,
         // а на null отвечает «Expected string, received null».
-        caseId: caseIdArg !== undefined ? caseIdArg || undefined : verifyTargetId,
+        caseId:
+          overrides.caseId !== undefined
+            ? overrides.caseId || undefined
+            : verifyTargetId,
+        imageUrl:
+          overrides.imageUrl !== undefined
+            ? overrides.imageUrl || undefined
+            : verifyImageUrl,
         modality: useForm.modality,
         draft: {
           title: useForm.title.trim() || undefined,

@@ -108,13 +108,16 @@ export async function aiFindCaseImages({ topic, modality, hint, caseId }) {
  * ИИ-проверка лучевого кейса вторым проходом (роль author).
  * Отдаёт замечания, ничего не правит: { verdict, issues:[{target,severity,issue,suggestion}], errorCount, summary }.
  */
-export async function aiVerifyCase({ modality, draft, caseId }) {
+export async function aiVerifyCase({ modality, draft, caseId, imageUrl }) {
   // caseId передаём, если кейс уже сохранён: тогда сервер положит рецензию в
   // кейс, и гейт публикации переживёт перезагрузку страницы. У несохранённого
   // кейса поле опускаем целиком: сервер принимает строку или отсутствие поля,
   // а на null отвечает 400 «Expected string, received null».
   const body = { modality, draft };
   if (caseId) body.caseId = caseId;
+  // Кадр передаём, если он уже загружен: тогда рецензент смотрит на снимок и
+  // ловит несоответствие кейса кадру — по одному тексту это не проверить.
+  if (imageUrl) body.imageUrl = imageUrl;
   const { data } = await axios.post(`${BASE}/ai/verify`, body);
   return data.review;
 }
