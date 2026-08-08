@@ -159,6 +159,7 @@ export default function AdminRadiologyCasesPage() {
   const [oneClickBusy, setOneClickBusy] = useState(false);
   const [ready, setReady] = useState(null);
   const oneClickRef = useRef(null);
+  const editorRef = useRef(null);
 
   // Второй проход: замечания рецензента и отметки «разобрано».
   const [review, setReview] = useState(null);
@@ -754,6 +755,9 @@ export default function AdminRadiologyCasesPage() {
         synonyms: (draft.impression.diagnosisSynonyms || []).length,
       });
       setNotice(null);
+      // Готовый кейс лежит ниже автогенерации и списка кейсов — сами к нему
+      // не прокрутившись, автор видит только сводку и не понимает, где итог.
+      scrollToEditor();
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
       setError(readApiError(err, "Не удалось собрать кейс по снимку"));
@@ -761,6 +765,14 @@ export default function AdminRadiologyCasesPage() {
     } finally {
       setOneClickBusy(false);
     }
+  }
+
+  // Прокрутка к форме кейса. requestAnimationFrame — чтобы форма успела
+  // отрисоваться после setForm/setFindings: до этого ref ещё пуст.
+  function scrollToEditor() {
+    requestAnimationFrame(() => {
+      editorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   }
 
   async function handleAiDraft() {
@@ -1136,9 +1148,18 @@ export default function AdminRadiologyCasesPage() {
               </li>
             </ol>
             <div className="edu-hint">
-              Проверьте разметку на холсте и списки ответов, разберите замечания
-              рецензента — и публикуйте. Ничего дозаполнять не нужно.
+              Сам кейс — ниже на этой странице, в форме «Новый кейс»: снимок с
+              разметкой, тексты, ответы и замечания рецензента. Проверьте их и
+              нажмите «Сохранить» — до этого кейс живёт только в форме.
             </div>
+            <button
+              type="button"
+              className="edu-btn"
+              style={{ marginTop: 10 }}
+              onClick={scrollToEditor}
+            >
+              ↓ Перейти к собранному кейсу
+            </button>
           </div>
         )}
       </div>
@@ -1441,7 +1462,9 @@ export default function AdminRadiologyCasesPage() {
         </div>
 
         {/* ─── Редактор ─── */}
-        <div>
+        {/* Якорь: после сборки в один клик страница сама прокручивается сюда —
+            иначе готовый кейс остаётся ниже экрана и его не видно. */}
+        <div ref={editorRef}>
           {!selected ? (
             <div className="rad-panel"><div className="edu-hint">Выберите кейс слева или создайте новый.</div></div>
           ) : (
