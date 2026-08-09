@@ -526,11 +526,17 @@ export async function aiVerifyLabCase({ draft, caseId }) {
  * @returns {{draft, review, rounds, converged, stoppedBy, changes, disputed,
  *   case, variantsStale, saved}}
  */
-export async function aiAutofixLabCase({ draft, caseId, maxRounds }) {
+export async function aiAutofixLabCase({ draft, caseId, maxRounds, issues, hint }) {
   const { data } = await axios.post(`${BASE}/labs/ai/autofix`, {
     draft,
     caseId,
     maxRounds,
+    // Передан список — правится ровно он, одним кругом (кнопка «исправить» у
+    // конкретного замечания). Пусто — сервер рецензирует сам и правит всё.
+    issues,
+    // Указание автора: чем править и в какую сторону. Главнее предложения
+    // рецензента.
+    hint,
   });
   return data;
 }
@@ -658,8 +664,14 @@ export async function aiVerifyVpCase({ draft, caseId }) {
  * замечаниям рецензента и перепроверяет себя, пока рецензия не станет чистой.
  * Идёт минуты. Сохранённый сценарий сервер записывает сам.
  */
-export async function aiAutofixVpCase({ draft, caseId, maxRounds }) {
-  const { data } = await axios.post(`${BASE}/vp/ai/autofix`, { draft, caseId, maxRounds });
+export async function aiAutofixVpCase({ draft, caseId, maxRounds, issues, hint }) {
+  const { data } = await axios.post(`${BASE}/vp/ai/autofix`, {
+    draft,
+    caseId,
+    maxRounds,
+    issues,
+    hint,
+  });
   return data;
 }
 

@@ -177,9 +177,19 @@ export function AiRowIssues({ issues }) {
  * @param {Set<number>} props.dismissed  индексы разобранных замечаний
  * @param {(i:number)=>void} props.onDismiss
  * @param {()=>void} props.onRecheck     повторная проверка (после правок)
+ * @param {(i:number)=>void} [props.onFix] исправить ОДНО замечание силами ИИ
  * @param {boolean} props.busy
+ * @param {boolean} [props.fixBusy]      идёт правка
  */
-export default function AiReviewPanel({ review, dismissed, onDismiss, onRecheck, busy }) {
+export default function AiReviewPanel({
+  review,
+  dismissed,
+  onDismiss,
+  onRecheck,
+  onFix,
+  busy,
+  fixBusy,
+}) {
   if (!review) return null;
 
   const open = review.issues.filter((_, i) => !dismissed?.has(i));
@@ -233,14 +243,31 @@ export default function AiReviewPanel({ review, dismissed, onDismiss, onRecheck,
                       {s.label}
                       {issue.target ? ` · ${issue.target}` : ""}
                     </span>
-                    <button
-                      type="button"
-                      className="edu-btn edu-btn--ghost"
-                      style={{ padding: "2px 8px", fontSize: 12 }}
-                      onClick={() => onDismiss(index)}
-                    >
-                      разобрано
-                    </button>
+                    <div style={{ display: "flex", gap: 6 }}>
+                      {/* Исправить ИМЕННО ЭТО замечание. Нужно там, где
+                          рецензент предлагает два пути и выбор врачебный:
+                          общая кнопка «исправить всё» выберет за автора, а
+                          здесь он правит по одному и смотрит результат. */}
+                      {onFix && (
+                        <button
+                          type="button"
+                          className="edu-btn edu-btn--ghost"
+                          style={{ padding: "2px 8px", fontSize: 12 }}
+                          onClick={() => onFix(index)}
+                          disabled={fixBusy || busy}
+                        >
+                          {fixBusy ? "правит…" : "🛠 исправить"}
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        className="edu-btn edu-btn--ghost"
+                        style={{ padding: "2px 8px", fontSize: 12 }}
+                        onClick={() => onDismiss(index)}
+                      >
+                        разобрано
+                      </button>
+                    </div>
                   </div>
                   <div style={{ marginTop: 4, fontSize: 13 }}>{issue.issue}</div>
                   {issue.suggestion && (

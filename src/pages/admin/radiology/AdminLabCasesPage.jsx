@@ -104,6 +104,9 @@ export default function AdminLabCasesPage() {
   // автор должен видеть, что цифры правил не человек, и через неделю тоже.
   const [revision, setRevision] = useState(null);
   const [fixBusy, setFixBusy] = useState(false);
+  // Указание автора редактору: чем править и в какую сторону. Рецензент часто
+  // предлагает два пути, и выбор между ними врачебный, а не редакторский.
+  const [fixHint, setFixHint] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -325,11 +328,19 @@ export default function AdminLabCasesPage() {
   // Сохранённый кейс сервер записывает САМ и возвращает уже сохранённую
   // версию: иначе чистая рецензия лежала бы в базе на кейсе, который автор
   // ещё не сохранил, и гейт открылся бы для неисправленных цифр.
-  async function handleAutofix() {
+  //
+  // onlyIndex — номер одного замечания (кнопка «исправить» на его карточке).
+  // Тогда правится ровно оно: там, где рецензент предлагает два пути, выбор
+  // между ними врачебный, и делать его должен автор, а не редактор.
+  async function handleAutofix(onlyIndex = null) {
     const draft = draftFromForm();
     if (draft.panel.length < 2) {
       return setError("Для автоправки нужно минимум 2 заполненных показателя");
     }
+    const only =
+      onlyIndex === null ? null : (review?.issues ?? []).filter((_, i) => i === onlyIndex);
+    if (only && !only.length) return setError("Замечание не найдено — перепроверьте кейс");
+
     setFixBusy(true);
     setError(null);
     setNotice(null);
@@ -337,6 +348,8 @@ export default function AdminLabCasesPage() {
       const res = await aiAutofixLabCase({
         caseId: selected !== "new" ? selected : undefined,
         draft,
+        issues: only ?? undefined,
+        hint: fixHint.trim() || undefined,
       });
 
       if (res.saved) {
@@ -645,11 +658,20 @@ export default function AdminLabCasesPage() {
                 </button>
               )}
               {selected && (
-                <button type="button" className="edu-btn edu-btn--ghost" onClick={handleAutofix} disabled={aiBusy || busy || verifyBusy || fixBusy}>
+                <button type="button" className="edu-btn edu-btn--ghost" onClick={() => handleAutofix()} disabled={aiBusy || busy || verifyBusy || fixBusy}>
                   {fixBusy ? "ИИ правит и перепроверяет…" : "🛠 Исправить замечания (ИИ)"}
                 </button>
               )}
             </div>
+            {selected && (
+              <input
+                className="edu-input"
+                style={{ marginTop: 8 }}
+                placeholder="Указание редактору (необязательно): напр. «ГГТП добавь в панель, а не убирай из разбора»"
+                value={fixHint}
+                onChange={(e) => setFixHint(e.target.value)}
+              />
+            )}
             {selected && (
               <div className="edu-hint" style={{ marginTop: 8 }}>
                 «Исправить замечания» — это круг «правка → перепроверка», и он повторяется,
@@ -658,7 +680,8 @@ export default function AdminLabCasesPage() {
                 чистая рецензия должна относиться к тому, что лежит в базе. Публикацию это
                 не проталкивает — гейт просто перестаёт что-либо считать, когда замечаний
                 нет. Помните: правит и проверяет ОДНА модель, поэтому «противоречий не
-                осталось» ≠ «кейс верен».
+                осталось» ≠ «кейс верен». Нужно исправить что-то одно — жмите «🛠 исправить»
+                на самом замечании; указание выше действует и там.
               </div>
             )}
           </>
@@ -836,7 +859,9 @@ export default function AdminLabCasesPage() {
                 dismissed={dismissed}
                 onDismiss={handleDismiss}
                 onRecheck={() => runVerify()}
+                onFix={(index) => handleAutofix(index)}
                 busy={verifyBusy}
+                fixBusy={fixBusy}
               />
 
               {/* Отчёт третьего прохода: что машина исправила сама */}

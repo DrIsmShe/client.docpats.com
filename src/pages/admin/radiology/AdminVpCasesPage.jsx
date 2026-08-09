@@ -95,6 +95,8 @@ export default function AdminVpCasesPage() {
   // Хранится в кейсе (aiRevision) — переживает перезагрузку страницы.
   const [revision, setRevision] = useState(null);
   const [fixBusy, setFixBusy] = useState(false);
+  // Указание автора редактору: чем править и в какую сторону.
+  const [fixHint, setFixHint] = useState("");
 
   useEffect(() => {
     (async () => {
@@ -302,7 +304,10 @@ export default function AdminVpCasesPage() {
   // Сохранённый сценарий сервер переписывает САМ (и сам восстанавливает ключи
   // обследований по названиям): иначе чистая рецензия лежала бы в базе на
   // версии, которой автор ещё не сохранял.
-  async function handleAutofix() {
+  //
+  // onlyIndex — номер одного замечания (кнопка «исправить» на его карточке):
+  // тогда правится ровно оно, а не всё сразу.
+  async function handleAutofix(onlyIndex = null) {
     const investigations = invs
       .filter((i) => i.name.trim())
       .map((i) => ({
@@ -314,12 +319,18 @@ export default function AdminVpCasesPage() {
     if (investigations.length < 2) {
       return setError("Для автоправки нужно минимум 2 обследования");
     }
+    const only =
+      onlyIndex === null ? null : (review?.issues ?? []).filter((_, i) => i === onlyIndex);
+    if (only && !only.length) return setError("Замечание не найдено — перепроверьте сценарий");
+
     setFixBusy(true);
     setError(null);
     setNotice(null);
     try {
       const res = await aiAutofixVpCase({
         caseId: selected !== "new" ? selected : undefined,
+        issues: only ?? undefined,
+        hint: fixHint.trim() || undefined,
         draft: {
           title: form.title.trim() || undefined,
           presentation: form.presentation.trim() || undefined,
@@ -616,11 +627,20 @@ export default function AdminVpCasesPage() {
                 </button>
               )}
               {selected && (
-                <button type="button" className="edu-btn edu-btn--ghost" onClick={handleAutofix} disabled={aiBusy || busy || verifyBusy || fixBusy}>
+                <button type="button" className="edu-btn edu-btn--ghost" onClick={() => handleAutofix()} disabled={aiBusy || busy || verifyBusy || fixBusy}>
                   {fixBusy ? "ИИ правит и перепроверяет…" : "🛠 Исправить замечания (ИИ)"}
                 </button>
               )}
             </div>
+            {selected && (
+              <input
+                className="edu-input"
+                style={{ marginTop: 8 }}
+                placeholder="Указание редактору (необязательно): напр. «лишние обследования не убирай, поправь только результаты»"
+                value={fixHint}
+                onChange={(e) => setFixHint(e.target.value)}
+              />
+            )}
             {selected && (
               <div className="edu-hint" style={{ marginTop: 8 }}>
                 «Исправить замечания» — круг «правка → перепроверка», повторяется, пока
@@ -628,6 +648,7 @@ export default function AdminVpCasesPage() {
                 минут). Сохранённый сценарий переписывается сразу. Публикацию это не
                 проталкивает: гейт просто перестаёт что-либо считать, когда замечаний нет.
                 Правит и проверяет ОДНА модель — «противоречий не осталось» ≠ «верно».
+                Нужно исправить что-то одно — жмите «🛠 исправить» на самом замечании.
               </div>
             )}
           </>
@@ -800,7 +821,9 @@ export default function AdminVpCasesPage() {
                 dismissed={dismissed}
                 onDismiss={handleDismiss}
                 onRecheck={() => runVerify()}
+                onFix={(index) => handleAutofix(index)}
                 busy={verifyBusy}
+                fixBusy={fixBusy}
               />
 
               {/* Отчёт третьего прохода: что машина исправила сама */}
