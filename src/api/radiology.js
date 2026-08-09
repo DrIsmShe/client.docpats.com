@@ -664,6 +664,28 @@ export async function aiVerifyVpCase({ draft, caseId }) {
  * замечаниям рецензента и перепроверяет себя, пока рецензия не станет чистой.
  * Идёт минуты. Сохранённый сценарий сервер записывает сам.
  */
+/**
+ * ТРЕТИЙ ПРОХОД станции «Снимки»: машина правит ТЕКСТОВУЮ часть кейса по
+ * замечаниям рецензента и перепроверяет себя.
+ *
+ * Разметку на кадре и подтверждение деидентификации она не трогает: точки
+ * ставит тот, кто снимок видел. Поэтому здесь чаще, чем на других станциях,
+ * встречается исход «замечание осталось» — «на снимке этого не видно» текстом
+ * не лечится, и такое замечание вернётся в disputed.
+ */
+export async function aiAutofixCase({ draft, caseId, modality, imageUrl, maxRounds, issues, hint }) {
+  const { data } = await axios.post(`${BASE}/ai/autofix`, {
+    draft,
+    caseId,
+    modality,
+    imageUrl,
+    maxRounds,
+    issues,
+    hint,
+  });
+  return data;
+}
+
 export async function aiAutofixVpCase({ draft, caseId, maxRounds, issues, hint }) {
   const { data } = await axios.post(`${BASE}/vp/ai/autofix`, {
     draft,

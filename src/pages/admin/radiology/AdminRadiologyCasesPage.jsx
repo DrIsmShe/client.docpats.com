@@ -32,6 +32,7 @@ import {
   aiGenerateCase,
   aiFindCaseImages,
   aiVerifyCase,
+  aiAutofixCase,
   dismissCaseAiIssues,
   generateCaseAiBaseline,
 } from "../../../api/radiology";
@@ -40,6 +41,7 @@ import RadiologyCanvas from "../../radiology/components/RadiologyCanvas";
 import AiReviewPanel, {
   issuesForRow,
   AiRowIssues,
+  AiRevisionPanel,
   unresolvedIssues,
 } from "./AiReviewPanel";
 import CaseTranslationsPanel from "./CaseTranslationsPanel";
@@ -168,6 +170,14 @@ export default function AdminRadiologyCasesPage() {
   const [review, setReview] = useState(null);
   const [dismissed, setDismissed] = useState(() => new Set());
   const [verifyBusy, setVerifyBusy] = useState(false);
+
+  // Третий проход: что машина исправила в ТЕКСТОВОЙ части и с чем не
+  // согласилась. Разметку на кадре она не трогает — точки ставит тот, кто
+  // снимок видел.
+  const [revision, setRevision] = useState(null);
+  const [fixBusy, setFixBusy] = useState(false);
+  // Указание автора редактору: чем править и в какую сторону.
+  const [fixHint, setFixHint] = useState("");
   const [cases, setCases] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -258,6 +268,7 @@ export default function AdminRadiologyCasesPage() {
   function resetReview() {
     setReview(null);
     setDismissed(new Set());
+    setRevision(null);
   }
 
   // Рецензия, сохранённая у кейса, восстанавливается вместе с ним: гейт
@@ -352,6 +363,10 @@ export default function AdminRadiologyCasesPage() {
           : null,
       );
       restoreReview(doc);
+      // Отчёт машинной правки живёт в кейсе рядом с рецензией — он объясняет,
+      // откуда взялись формулировки, и через неделю нужен даже больше, чем
+      // сразу после нажатия кнопки.
+      setRevision(doc.aiRevision?.revisedAt ? doc.aiRevision : null);
       setActiveImg(0);
       setActiveLabel(null);
       setNotice(null);
@@ -997,6 +1012,126 @@ export default function AdminRadiologyCasesPage() {
     }
   }
 
+  // ТРЕТИЙ ПРОХОД: машина правит кейс по замечаниям и перепроверяет себя.
+  //
+  // Правится только ТЕКСТ — план находок, контекст, заключение, значимость и
+  // пояснения находок. Точки на кадре и галочка деидентификации остаются:
+  // разметку делает тот, кто снимок видел, и анонимность подтверждает он же.
+  // Поэтому у этой станции обычен исход «замечание осталось»: «на снимке
+  // находки не видно» текстом не чинится, и такое замечание вернётся с
+  // возражением редактора.
+  //
+  // onlyIndex — номер одного замечания (кнопка «исправить» на его карточке).
+  async function handleAutofix(onlyIndex = null) {
+    const all = [
+      ...planned.map((p) => ({
+        label: p.label,
+        significance: p.significance ?? "major",
+        location: p.location || undefined,
+        explanation: p.explanation || undefined,
+      })),
+      ...findings.map((f) => ({
+        label: f.label,
+        significance: f.significance ?? "major",
+        explanation: f.explanation?.trim() || undefined,
+      })),
+    ];
+    if (all.length === 0) {
+      return setError("Нечего править: нет ни находок в плане, ни размеченных");
+    }
+    const only =
+      onlyIndex === null ? null : (review?.issues ?? []).filter((_, i) => i === onlyIndex);
+    if (only && !only.length) return setError("Замечание не найдено — перепроверьте кейс");
+
+    setFixBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const res = await aiAutofixCase({
+        caseId: selected && selected !== "new" ? selected : undefined,
+        // Кадр уходит на ПЕРЕПРОВЕРКУ: рецензент должен смотреть на тот же
+        // снимок, что и раньше, иначе исправленный текст будет проверен
+        // слабее исходного.
+        imageUrl: images[activeImg]?.url?.trim() || undefined,
+        modality: form.modality,
+        issues: only ?? undefined,
+        hint: fixHint.trim() || undefined,
+        draft: {
+          title: form.title.trim() || undefined,
+          clinicalContext: form.clinicalContext.trim() || undefined,
+          plannedFindings: all,
+          impression: {
+            correctText: form.correctText.trim() || undefined,
+            diagnosisKeys: parseList(form.diagnosisKeys),
+            diagnosisSynonyms: parseList(form.diagnosisSynonyms),
+          },
+        },
+      });
+
+      if (res.saved) {
+        // Кейс уже в базе: сервер сам развёл правки по плану и разметке
+        // (размеченное из плана убирается, координаты не трогаются).
+        await refresh();
+        await openCase(selected);
+      } else {
+        setForm((f) => ({
+          ...f,
+          title: res.draft.title ?? "",
+          clinicalContext: res.draft.clinicalContext ?? "",
+          correctText: res.draft.impression?.correctText ?? "",
+          diagnosisKeys: (res.draft.impression?.diagnosisKeys ?? []).join(", "),
+          diagnosisSynonyms: (res.draft.impression?.diagnosisSynonyms ?? []).join(", "),
+        }));
+        setPlanned(
+          (res.draft.plannedFindings ?? []).map((p) => ({
+            label: p.label,
+            significance: p.significance ?? "major",
+            location: p.location ?? "",
+            explanation: p.explanation ?? "",
+          })),
+        );
+        setReview(res.review);
+        setDismissed(new Set());
+        setRevision({
+          rounds: res.rounds?.length ?? 0,
+          stoppedBy: res.stoppedBy,
+          converged: res.converged,
+          changes: res.changes ?? [],
+          disputed: res.disputed ?? [],
+        });
+      }
+
+      const left = res.review?.issues?.length ?? 0;
+      setNotice(
+        [
+          res.converged
+            ? `Готово: замечаний не осталось (кругов правки: ${res.rounds?.length ?? 0}).`
+            : `Осталось замечаний: ${left} — ${
+                res.stoppedBy === "no_progress"
+                  ? "правка перестала их убирать, дальше нужен врач"
+                  : res.stoppedBy === "error"
+                    ? "цикл прервался ошибкой модели"
+                    : res.stoppedBy === "targeted"
+                      ? "правилось только выбранное замечание"
+                      : "исчерпан лимит кругов"
+              }.`,
+          res.markupPresent
+            ? "Разметку на кадре машина не трогала — сверьте её с исправленным планом находок."
+            : null,
+          !res.saved ? "Кейс не сохранён: проверьте правки и нажмите «Сохранить»." : null,
+          "Проверьте, что изменилось: ИИ правит ИИ, и «противоречий не осталось» не то же самое, что «верно».",
+        ]
+          .filter(Boolean)
+          .join(" "),
+      );
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось выполнить автоправку"));
+    } finally {
+      setFixBusy(false);
+    }
+  }
+
   // Замечания к находке: модель может указать target кодом (pneumothorax)
   // или человеческим ярлыком («Пневмоторакс») — принимаем оба.
   function issuesForFinding(labelKey) {
@@ -1381,15 +1516,20 @@ export default function AdminRadiologyCasesPage() {
                 {aiGenBusy ? "ИИ составляет кейс…" : "✨ Сгенерировать кейс целиком"}
               </button>
               {selected && (
-                <button type="button" className="edu-btn edu-btn--ghost" onClick={() => runVerify()} disabled={aiGenBusy || busy || verifyBusy}>
+                <button type="button" className="edu-btn edu-btn--ghost" onClick={() => runVerify()} disabled={aiGenBusy || busy || verifyBusy || fixBusy}>
                   {verifyBusy ? "рецензент проверяет…" : "🔍 Проверить текущий кейс"}
+                </button>
+              )}
+              {selected && (
+                <button type="button" className="edu-btn edu-btn--ghost" onClick={() => handleAutofix()} disabled={aiGenBusy || busy || verifyBusy || fixBusy}>
+                  {fixBusy ? "ИИ правит и перепроверяет…" : "🛠 Исправить замечания (ИИ)"}
                 </button>
               )}
               <button
                 type="button"
                 className="edu-btn edu-btn--ghost"
                 onClick={handleFindImages}
-                disabled={imgBusy || aiGenBusy || busy || verifyBusy}
+                disabled={imgBusy || aiGenBusy || busy || verifyBusy || fixBusy}
                 title="Найти в интернете учебные случаи со снимком по этой теме"
               >
                 {imgBusy ? "ищем снимки…" : "🔎 Найти снимок в интернете"}
@@ -1398,6 +1538,25 @@ export default function AdminRadiologyCasesPage() {
                 <span className="edu-hint">Результат откроется как новый черновик — текущий кейс не изменится.</span>
               )}
             </div>
+            {selected && (
+              <>
+                <input
+                  className="edu-input"
+                  style={{ marginTop: 8 }}
+                  placeholder="Указание редактору (необязательно): напр. «находку не убирай, поправь только значимость и заключение»"
+                  value={fixHint}
+                  onChange={(e) => setFixHint(e.target.value)}
+                />
+                <div className="edu-hint" style={{ marginTop: 8 }}>
+                  «Исправить замечания» правит ТЕКСТ: план находок, контекст, заключение,
+                  значимость и пояснения. Точки на снимке и галочку деидентификации ИИ не
+                  трогает — разметку делает тот, кто снимок видел. Поэтому замечание вида
+                  «на кадре этой находки не видно» он текстом не закроет, а вернёт с
+                  возражением: решать вам. Нужно исправить что-то одно — жмите
+                  «🛠 исправить» на самом замечании.
+                </div>
+              </>
+            )}
 
             {/* Найденные учебные случаи. Отдаём ССЫЛКИ, а не картинки:
                 скачать, проверить лицензию, убедиться, что находка на кадре
@@ -1772,8 +1931,13 @@ export default function AdminRadiologyCasesPage() {
                 dismissed={dismissed}
                 onDismiss={handleDismiss}
                 onRecheck={() => runVerify()}
+                onFix={(index) => handleAutofix(index)}
                 busy={verifyBusy}
+                fixBusy={fixBusy}
               />
+
+              {/* Отчёт третьего прохода: что машина исправила в тексте */}
+              <AiRevisionPanel revision={revision} />
 
               {/* Заключение-эталон */}
               <div className="rad-panel">
