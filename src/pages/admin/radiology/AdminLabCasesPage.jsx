@@ -15,6 +15,7 @@ import {
   deleteLabCasePermanently,
   aiGenerateLabCase,
   aiVerifyLabCase,
+  aiAutofixLabCase,
   dismissLabAiIssues,
   generateLabAiBaseline,
   generateLabVariants,
@@ -24,6 +25,7 @@ import { readApiError, isAuthError } from "../../../api/education";
 import AiReviewPanel, {
   issuesForRow,
   AiRowIssues,
+  AiRevisionPanel,
   unresolvedIssues,
 } from "./AiReviewPanel";
 import CaseTranslationsPanel from "./CaseTranslationsPanel";
@@ -97,6 +99,12 @@ export default function AdminLabCasesPage() {
   const [dismissed, setDismissed] = useState(() => new Set());
   const [verifyBusy, setVerifyBusy] = useState(false);
 
+  // Третий проход: что машина исправила сама и с чем не согласилась.
+  // Хранится в кейсе (aiRevision), поэтому переживает перезагрузку страницы —
+  // автор должен видеть, что цифры правил не человек, и через неделю тоже.
+  const [revision, setRevision] = useState(null);
+  const [fixBusy, setFixBusy] = useState(false);
+
   useEffect(() => {
     (async () => {
       try {
@@ -123,6 +131,7 @@ export default function AdminLabCasesPage() {
   function resetReview() {
     setReview(null);
     setDismissed(new Set());
+    setRevision(null);
   }
 
   // Рецензия, сохранённая у кейса, восстанавливается вместе с ним: гейт
@@ -185,6 +194,10 @@ export default function AdminLabCasesPage() {
         })),
       );
       restoreReview(doc);
+      // Отчёт машинной правки живёт в кейсе рядом с рецензией: он объясняет,
+      // почему цифры именно такие, и нужен ровно тогда, когда автор открыл
+      // кейс заново, а не в тот момент, когда нажимал кнопку.
+      setRevision(doc.aiRevision?.revisedAt ? doc.aiRevision : null);
       setNotice(null);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
@@ -258,18 +271,8 @@ export default function AdminLabCasesPage() {
   // Проверяем ТО, ЧТО СЕЙЧАС В ФОРМЕ: после правок можно перепроверить, и
   // рецензируется версия автора, а не первоначальная выдача модели.
   async function runVerify(rowsArg, formArg) {
-    const useRows = rowsArg ?? rows;
-    const useForm = formArg ?? form;
-    const panel = useRows
-      .filter((r) => r.name.trim() && r.value.trim())
-      .map((r) => ({
-        name: r.name.trim(),
-        value: r.value.trim(),
-        unit: r.unit.trim() || undefined,
-        refRange: r.refRange.trim() || undefined,
-        significant: Boolean(r.significant),
-      }));
-    if (panel.length < 2) {
+    const draft = draftFromForm(rowsArg, formArg);
+    if (draft.panel.length < 2) {
       setError("Для проверки нужно минимум 2 заполненных показателя");
       return;
     }
@@ -277,16 +280,7 @@ export default function AdminLabCasesPage() {
     try {
       const res = await aiVerifyLabCase({
         caseId: selected !== "new" ? selected : undefined,
-        draft: {
-          title: useForm.title.trim() || undefined,
-          clinicalContext: useForm.clinicalContext.trim() || undefined,
-          panel,
-          impression: {
-            correctText: useForm.correctText.trim() || undefined,
-            diagnosisKeys: parseList(useForm.diagnosisKeys),
-            diagnosisSynonyms: parseList(useForm.diagnosisSynonyms),
-          },
-        },
+        draft,
       });
       setReview(res);
       setDismissed(new Set());
@@ -295,6 +289,119 @@ export default function AdminLabCasesPage() {
       setError(readApiError(err, "Не удалось выполнить проверку ИИ"));
     } finally {
       setVerifyBusy(false);
+    }
+  }
+
+  // Черновик для ИИ из текущего состояния формы — общий для проверки и для
+  // автоправки: рецензировать и править нужно одно и то же, иначе автор
+  // получит правки к версии, которой не видел.
+  function draftFromForm(rowsArg, formArg) {
+    const useRows = rowsArg ?? rows;
+    const useForm = formArg ?? form;
+    return {
+      title: useForm.title.trim() || undefined,
+      clinicalContext: useForm.clinicalContext.trim() || undefined,
+      panel: useRows
+        .filter((r) => r.name.trim() && r.value.trim())
+        .map((r) => ({
+          name: r.name.trim(),
+          value: r.value.trim(),
+          unit: r.unit.trim() || undefined,
+          refRange: r.refRange.trim() || undefined,
+          significant: Boolean(r.significant),
+        })),
+      impression: {
+        correctText: useForm.correctText.trim() || undefined,
+        diagnosisKeys: parseList(useForm.diagnosisKeys),
+        diagnosisSynonyms: parseList(useForm.diagnosisSynonyms),
+      },
+    };
+  }
+
+  // ТРЕТИЙ ПРОХОД: машина правит кейс по замечаниям и перепроверяет себя, пока
+  // рецензия не станет чистой. Гейт публикации это не обходит — он считает
+  // неразобранные замечания, а после чистой рецензии считать нечего.
+  //
+  // Сохранённый кейс сервер записывает САМ и возвращает уже сохранённую
+  // версию: иначе чистая рецензия лежала бы в базе на кейсе, который автор
+  // ещё не сохранил, и гейт открылся бы для неисправленных цифр.
+  async function handleAutofix() {
+    const draft = draftFromForm();
+    if (draft.panel.length < 2) {
+      return setError("Для автоправки нужно минимум 2 заполненных показателя");
+    }
+    setFixBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const res = await aiAutofixLabCase({
+        caseId: selected !== "new" ? selected : undefined,
+        draft,
+      });
+
+      if (res.saved) {
+        // Кейс уже в базе — перечитываем его оттуда. Ключи показателей
+        // присвоил сервер (сопоставив имена со старой панелью), и брать их из
+        // ответа значило бы держать в форме вторую версию правды.
+        await refresh();
+        await openCase(selected);
+      } else {
+        setForm((f) => ({
+          ...f,
+          title: res.draft.title ?? "",
+          clinicalContext: res.draft.clinicalContext ?? "",
+          difficulty: res.draft.difficulty ?? f.difficulty,
+          correctText: res.draft.impression?.correctText ?? "",
+          diagnosisKeys: (res.draft.impression?.diagnosisKeys ?? []).join(", "),
+          diagnosisSynonyms: (res.draft.impression?.diagnosisSynonyms ?? []).join(", "),
+        }));
+        setRows(
+          (res.draft.panel ?? []).map((p) => ({
+            key: newKey(),
+            name: p.name ?? "",
+            value: p.value ?? "",
+            unit: p.unit ?? "",
+            refRange: p.refRange ?? "",
+            significant: Boolean(p.significant),
+          })),
+        );
+        setReview(res.review);
+        setDismissed(new Set());
+        setRevision({
+          rounds: res.rounds?.length ?? 0,
+          stoppedBy: res.stoppedBy,
+          converged: res.converged,
+          changes: res.changes ?? [],
+          disputed: res.disputed ?? [],
+        });
+      }
+
+      const left = res.review?.issues?.length ?? 0;
+      setNotice(
+        [
+          res.converged
+            ? `Готово: замечаний не осталось (кругов правки: ${res.rounds?.length ?? 0}).`
+            : `Осталось замечаний: ${left} — ${
+                res.stoppedBy === "no_progress"
+                  ? "правка перестала их убирать, дальше нужен врач"
+                  : res.stoppedBy === "error"
+                    ? "цикл прервался ошибкой модели"
+                    : "исчерпан лимит кругов"
+              }.`,
+          res.variantsStale
+            ? "Числовые варианты считались по прежним цифрам — перегенерируйте их."
+            : null,
+          !res.saved ? "Кейс не сохранён: проверьте правки и нажмите «Сохранить»." : null,
+          "Проверьте, что изменилось: ИИ правит ИИ, и «противоречий не осталось» не то же самое, что «верно».",
+        ]
+          .filter(Boolean)
+          .join(" "),
+      );
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось выполнить автоправку"));
+    } finally {
+      setFixBusy(false);
     }
   }
 
@@ -529,15 +636,31 @@ export default function AdminLabCasesPage() {
               onChange={(e) => setAiHint(e.target.value)}
             />
             <div className="edu-btn-row" style={{ marginTop: 10 }}>
-              <button type="button" className="edu-btn" onClick={handleAiGenerate} disabled={aiBusy || busy || verifyBusy}>
+              <button type="button" className="edu-btn" onClick={handleAiGenerate} disabled={aiBusy || busy || verifyBusy || fixBusy}>
                 {aiBusy ? "ИИ составляет кейс…" : "✨ Сгенерировать кейс целиком"}
               </button>
               {selected && (
-                <button type="button" className="edu-btn edu-btn--ghost" onClick={() => runVerify()} disabled={aiBusy || busy || verifyBusy}>
+                <button type="button" className="edu-btn edu-btn--ghost" onClick={() => runVerify()} disabled={aiBusy || busy || verifyBusy || fixBusy}>
                   {verifyBusy ? "рецензент проверяет…" : "🔍 Проверить текущий кейс"}
                 </button>
               )}
+              {selected && (
+                <button type="button" className="edu-btn edu-btn--ghost" onClick={handleAutofix} disabled={aiBusy || busy || verifyBusy || fixBusy}>
+                  {fixBusy ? "ИИ правит и перепроверяет…" : "🛠 Исправить замечания (ИИ)"}
+                </button>
+              )}
             </div>
+            {selected && (
+              <div className="edu-hint" style={{ marginTop: 8 }}>
+                «Исправить замечания» — это круг «правка → перепроверка», и он повторяется,
+                пока рецензент не перестанет находить замечания (максимум два круга,
+                несколько минут работы модели). Сохранённый кейс переписывается сразу:
+                чистая рецензия должна относиться к тому, что лежит в базе. Публикацию это
+                не проталкивает — гейт просто перестаёт что-либо считать, когда замечаний
+                нет. Помните: правит и проверяет ОДНА модель, поэтому «противоречий не
+                осталось» ≠ «кейс верен».
+              </div>
+            )}
           </>
         ) : (
           <div className="edu-warn">
@@ -715,6 +838,9 @@ export default function AdminLabCasesPage() {
                 onRecheck={() => runVerify()}
                 busy={verifyBusy}
               />
+
+              {/* Отчёт третьего прохода: что машина исправила сама */}
+              <AiRevisionPanel revision={revision} />
 
               {/* Эталон */}
               <div className="rad-panel">

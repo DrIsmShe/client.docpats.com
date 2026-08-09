@@ -15,6 +15,7 @@ import {
   deleteVpCasePermanently,
   aiGenerateVpCase,
   aiVerifyVpCase,
+  aiAutofixVpCase,
   dismissVpAiIssues,
   generateVpAiBaseline,
   generateVpVariants,
@@ -24,6 +25,7 @@ import { readApiError, isAuthError } from "../../../api/education";
 import AiReviewPanel, {
   issuesForRow,
   AiRowIssues,
+  AiRevisionPanel,
   unresolvedIssues,
 } from "./AiReviewPanel";
 import CaseTranslationsPanel from "./CaseTranslationsPanel";
@@ -89,6 +91,11 @@ export default function AdminVpCasesPage() {
   const [dismissed, setDismissed] = useState(() => new Set());
   const [verifyBusy, setVerifyBusy] = useState(false);
 
+  // Третий проход: что машина исправила сама и с чем не согласилась.
+  // Хранится в кейсе (aiRevision) — переживает перезагрузку страницы.
+  const [revision, setRevision] = useState(null);
+  const [fixBusy, setFixBusy] = useState(false);
+
   useEffect(() => {
     (async () => {
       try {
@@ -115,6 +122,7 @@ export default function AdminVpCasesPage() {
   function resetReview() {
     setReview(null);
     setDismissed(new Set());
+    setRevision(null);
   }
   // Рецензия, сохранённая у кейса, восстанавливается вместе с ним: гейт
   // публикации живёт в кейсе, и перезагрузка страницы не должна его открывать.
@@ -175,6 +183,10 @@ export default function AdminVpCasesPage() {
         })),
       );
       restoreReview(doc);
+      // Отчёт машинной правки живёт в кейсе рядом с рецензией: он объясняет,
+      // почему данные именно такие, и нужен как раз тогда, когда автор открыл
+      // сценарий заново.
+      setRevision(doc.aiRevision?.revisedAt ? doc.aiRevision : null);
       setNotice(null);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
@@ -280,6 +292,104 @@ export default function AdminVpCasesPage() {
       setError(readApiError(err, "Не удалось выполнить проверку ИИ"));
     } finally {
       setVerifyBusy(false);
+    }
+  }
+
+  // ТРЕТИЙ ПРОХОД: машина правит сценарий по замечаниям и перепроверяет себя,
+  // пока рецензия не станет чистой. Гейт публикации это не обходит — он
+  // считает неразобранные замечания, а после чистой рецензии считать нечего.
+  //
+  // Сохранённый сценарий сервер переписывает САМ (и сам восстанавливает ключи
+  // обследований по названиям): иначе чистая рецензия лежала бы в базе на
+  // версии, которой автор ещё не сохранял.
+  async function handleAutofix() {
+    const investigations = invs
+      .filter((i) => i.name.trim())
+      .map((i) => ({
+        name: i.name.trim(),
+        category: i.category.trim() || undefined,
+        resultText: i.resultText.trim() || undefined,
+        necessary: Boolean(i.necessary),
+      }));
+    if (investigations.length < 2) {
+      return setError("Для автоправки нужно минимум 2 обследования");
+    }
+    setFixBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      const res = await aiAutofixVpCase({
+        caseId: selected !== "new" ? selected : undefined,
+        draft: {
+          title: form.title.trim() || undefined,
+          presentation: form.presentation.trim() || undefined,
+          investigations,
+          diagnosis: {
+            correctText: form.correctText.trim() || undefined,
+            diagnosisKeys: parseList(form.diagnosisKeys),
+            diagnosisSynonyms: parseList(form.diagnosisSynonyms),
+          },
+        },
+      });
+
+      if (res.saved) {
+        await refresh();
+        await openCase(selected);
+      } else {
+        setForm((f) => ({
+          ...f,
+          title: res.draft.title ?? "",
+          presentation: res.draft.presentation ?? "",
+          difficulty: res.draft.difficulty ?? f.difficulty,
+          correctText: res.draft.diagnosis?.correctText ?? "",
+          diagnosisKeys: (res.draft.diagnosis?.diagnosisKeys ?? []).join(", "),
+          diagnosisSynonyms: (res.draft.diagnosis?.diagnosisSynonyms ?? []).join(", "),
+        }));
+        setInvs(
+          (res.draft.investigations ?? []).map((i) => ({
+            key: newKey(),
+            name: i.name ?? "",
+            category: i.category ?? "",
+            resultText: i.resultText ?? "",
+            imageUrl: "",
+            necessary: Boolean(i.necessary),
+          })),
+        );
+        setReview(res.review);
+        setDismissed(new Set());
+        setRevision({
+          rounds: res.rounds?.length ?? 0,
+          stoppedBy: res.stoppedBy,
+          converged: res.converged,
+          changes: res.changes ?? [],
+          disputed: res.disputed ?? [],
+        });
+      }
+
+      const left = res.review?.issues?.length ?? 0;
+      setNotice(
+        [
+          res.converged
+            ? `Готово: замечаний не осталось (кругов правки: ${res.rounds?.length ?? 0}).`
+            : `Осталось замечаний: ${left} — ${
+                res.stoppedBy === "no_progress"
+                  ? "правка перестала их убирать, дальше нужен врач"
+                  : res.stoppedBy === "error"
+                    ? "цикл прервался ошибкой модели"
+                    : "исчерпан лимит кругов"
+              }.`,
+          res.variantsStale ? "Варианты сценария считались по прежним данным — перегенерируйте их." : null,
+          !res.saved ? "Сценарий не сохранён: проверьте правки и нажмите «Сохранить»." : null,
+          "Проверьте, что изменилось: ИИ правит ИИ, и «противоречий не осталось» не то же самое, что «верно».",
+        ]
+          .filter(Boolean)
+          .join(" "),
+      );
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось выполнить автоправку"));
+    } finally {
+      setFixBusy(false);
     }
   }
 
@@ -497,15 +607,29 @@ export default function AdminVpCasesPage() {
               onChange={(e) => setAiHint(e.target.value)}
             />
             <div className="edu-btn-row" style={{ marginTop: 10 }}>
-              <button type="button" className="edu-btn" onClick={handleAiGenerate} disabled={aiBusy || busy || verifyBusy}>
+              <button type="button" className="edu-btn" onClick={handleAiGenerate} disabled={aiBusy || busy || verifyBusy || fixBusy}>
                 {aiBusy ? "ИИ составляет сценарий…" : "✨ Сгенерировать сценарий целиком"}
               </button>
               {selected && (
-                <button type="button" className="edu-btn edu-btn--ghost" onClick={() => runVerify()} disabled={aiBusy || busy || verifyBusy}>
+                <button type="button" className="edu-btn edu-btn--ghost" onClick={() => runVerify()} disabled={aiBusy || busy || verifyBusy || fixBusy}>
                   {verifyBusy ? "рецензент проверяет…" : "🔍 Проверить текущий сценарий"}
                 </button>
               )}
+              {selected && (
+                <button type="button" className="edu-btn edu-btn--ghost" onClick={handleAutofix} disabled={aiBusy || busy || verifyBusy || fixBusy}>
+                  {fixBusy ? "ИИ правит и перепроверяет…" : "🛠 Исправить замечания (ИИ)"}
+                </button>
+              )}
             </div>
+            {selected && (
+              <div className="edu-hint" style={{ marginTop: 8 }}>
+                «Исправить замечания» — круг «правка → перепроверка», повторяется, пока
+                рецензент не перестанет находить замечания (максимум два круга, несколько
+                минут). Сохранённый сценарий переписывается сразу. Публикацию это не
+                проталкивает: гейт просто перестаёт что-либо считать, когда замечаний нет.
+                Правит и проверяет ОДНА модель — «противоречий не осталось» ≠ «верно».
+              </div>
+            )}
           </>
         ) : (
           <div className="edu-warn">
@@ -678,6 +802,9 @@ export default function AdminVpCasesPage() {
                 onRecheck={() => runVerify()}
                 busy={verifyBusy}
               />
+
+              {/* Отчёт третьего прохода: что машина исправила сама */}
+              <AiRevisionPanel revision={revision} />
 
               {/* Диагноз */}
               <div className="rad-panel">

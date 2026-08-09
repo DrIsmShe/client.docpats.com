@@ -515,6 +515,26 @@ export async function aiVerifyLabCase({ draft, caseId }) {
   return data.review;
 }
 
+/**
+ * ТРЕТИЙ ПРОХОД станции «Анализы»: машина сама правит кейс по замечаниям
+ * рецензента и перепроверяет себя, пока рецензия не станет чистой.
+ *
+ * Идёт МИНУТЫ — это несколько вызовов модели с рассуждением подряд, а не один.
+ * Кейс с id сервер сохраняет сам (иначе чистая рецензия относилась бы к
+ * неисправленной версии); несохранённый просто возвращается в форму.
+ *
+ * @returns {{draft, review, rounds, converged, stoppedBy, changes, disputed,
+ *   case, variantsStale, saved}}
+ */
+export async function aiAutofixLabCase({ draft, caseId, maxRounds }) {
+  const { data } = await axios.post(`${BASE}/labs/ai/autofix`, {
+    draft,
+    caseId,
+    maxRounds,
+  });
+  return data;
+}
+
 /** Отметки «разобрано» на замечаниях сохранённой рецензии (индексы). */
 export async function dismissLabAiIssues(caseId, dismissed) {
   const { data } = await axios.patch(`${BASE}/labs/cases/${caseId}/ai-review/dismissed`, { dismissed });
@@ -631,6 +651,16 @@ export async function aiGenerateVpCase({ topic, difficulty, hint }) {
 export async function aiVerifyVpCase({ draft, caseId }) {
   const { data } = await axios.post(`${BASE}/vp/ai/verify`, { draft, caseId });
   return data.review;
+}
+
+/**
+ * ТРЕТИЙ ПРОХОД станции «Виртуальный пациент»: машина правит сценарий по
+ * замечаниям рецензента и перепроверяет себя, пока рецензия не станет чистой.
+ * Идёт минуты. Сохранённый сценарий сервер записывает сам.
+ */
+export async function aiAutofixVpCase({ draft, caseId, maxRounds }) {
+  const { data } = await axios.post(`${BASE}/vp/ai/autofix`, { draft, caseId, maxRounds });
+  return data;
 }
 
 /** Отметки «разобрано» на замечаниях сохранённой рецензии (индексы). */

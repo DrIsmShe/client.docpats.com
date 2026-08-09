@@ -69,6 +69,91 @@ const SEVERITY = {
   warning: { label: "внимание", color: "#b45309", bg: "#fffbeb" },
 };
 
+// Чем закончился цикл «правка → перепроверка» (server/modules/radiology/ai/autoFix.js).
+const STOPPED_BY = {
+  clean: "рецензент не нашёл замечаний",
+  max_rounds: "исчерпан лимит кругов",
+  no_progress: "правка перестала убирать замечания — спор по существу",
+  error: "цикл прервался ошибкой модели",
+};
+
+/**
+ * ОТЧЁТ МАШИННОЙ ПРАВКИ. Показывается, пока правки живут в кейсе, а не только
+ * сразу после нажатия кнопки: через неделю вопрос «почему здесь такая цифра»
+ * возникает чаще, чем в первую минуту.
+ *
+ * Смысл блока — сделать правку читаемой по диффу. Кейс, который машина
+ * переписала целиком и молча, автор проверять не станет: проверять там нечего,
+ * кроме как перечитывать всё заново. Список «было → стало + почему» — то, ради
+ * чего редактор вообще обязан отчитываться.
+ *
+ * @param {object|null} props.revision { rounds, stoppedBy, converged, changes, disputed }
+ */
+export function AiRevisionPanel({ revision }) {
+  if (!revision) return null;
+  const changes = revision.changes ?? [];
+  const disputed = revision.disputed ?? [];
+  if (!changes.length && !disputed.length) return null;
+
+  return (
+    <div className="rad-panel">
+      <div className="edu-card-title" style={{ fontSize: 15 }}>🛠 Что исправил ИИ</div>
+      <div className="edu-hint" style={{ marginTop: 6 }}>
+        Кругов правки: {revision.rounds ?? 0}
+        {revision.stoppedBy ? ` · остановка: ${STOPPED_BY[revision.stoppedBy] ?? revision.stoppedBy}` : ""}
+        {" · "}
+        {revision.converged ? "замечаний не осталось" : "замечания остались"}
+      </div>
+      <div className="edu-hint" style={{ marginTop: 4 }}>
+        Правил и проверял ОДИН и тот же ИИ. Согласованность он вычищает хорошо, общее
+        для обеих ролей заблуждение — нет: референс, который он считает верным, таким и
+        останется. Проверьте цифры глазами.
+      </div>
+
+      {changes.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 10 }}>
+          {changes.map((c, i) => (
+            <div
+              key={i}
+              style={{ border: "1px solid #e5efe5", background: "#f6fbf6", borderRadius: 8, padding: 8 }}
+            >
+              {c.target && (
+                <div style={{ fontSize: 12, color: "#15803d", fontWeight: 600 }}>{c.target}</div>
+              )}
+              <div style={{ marginTop: 2, fontSize: 13 }}>{c.change}</div>
+              {c.why && (
+                <div style={{ marginTop: 2, fontSize: 12, opacity: 0.8 }}>Почему: {c.why}</div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {disputed.length > 0 && (
+        <>
+          {/* Несогласие редактора с рецензентом. Это не брак работы, а самое
+              интересное место кейса: две роли одной модели разошлись, и
+              рассудить их может только человек. */}
+          <div className="edu-field-label" style={{ marginTop: 12 }}>
+            Замечания, которые ИИ считает неверными и не исправлял ({disputed.length})
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 6 }}>
+            {disputed.map((d, i) => (
+              <div
+                key={i}
+                style={{ border: "1px solid #e8e3f5", background: "#faf8ff", borderRadius: 8, padding: 8 }}
+              >
+                <div style={{ fontSize: 13 }}>{d.issue}</div>
+                <div style={{ marginTop: 2, fontSize: 12, opacity: 0.85 }}>Возражение: {d.why}</div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 /** Компактная подсказка под строкой показателя/обследования. */
 export function AiRowIssues({ issues }) {
   if (!issues?.length) return null;
