@@ -1071,7 +1071,7 @@ export default function AdminRadiologyCasesPage() {
       if (res.saved) {
         // Кейс уже в базе: сервер сам развёл правки по плану и разметке
         // (размеченное из плана убирается, координаты не трогаются).
-        await refresh();
+        await refreshList();
         await openCase(selected);
       } else {
         setForm((f) => ({
