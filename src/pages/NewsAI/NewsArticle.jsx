@@ -440,12 +440,7 @@ export default function NewsArticle() {
                 )}
               </div>
 
-              {/* Hero image */}
-              {article.imageUrl && (
-                <div className="dp-hero-img-wrap">
-                  <img src={article.imageUrl} alt="" className="dp-hero-img" />
-                </div>
-              )}
+              {/* Hero image убран: статьи выводятся без изображений */}
             </div>
           </header>
 

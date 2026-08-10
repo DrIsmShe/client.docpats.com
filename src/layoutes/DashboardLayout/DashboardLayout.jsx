@@ -218,6 +218,7 @@ const CSS = `
 .nl-hero-card-wrap{margin-bottom:32px}
 .nl-hero-card{background:white;border:1px solid var(--border);border-radius:20px;overflow:hidden;display:grid;grid-template-columns:1fr 2fr;min-height:340px;box-shadow:var(--shadow-lg);transition:box-shadow .25s,transform .25s;cursor:pointer}
 .nl-hero-card:hover{box-shadow:0 28px 64px rgba(28,25,23,.14);transform:translateY(-3px)}
+.nl-hero-card.nl-hero-card--noimg{grid-template-columns:1fr;min-height:0}
 .nl-hero-card-img{position:relative;overflow:hidden}
 .nl-hero-card-img img{width:450px;height:350px;object-fit:cover;transition:transform .4s ease}
 .nl-hero-card:hover .nl-hero-card-img img{transform:scale(1.04)}

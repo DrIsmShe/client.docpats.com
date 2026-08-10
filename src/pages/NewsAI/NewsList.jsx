@@ -1060,6 +1060,7 @@ function HeroCard({ item, searchTerm, isAuthenticated, userRole }) {
       })
     : null;
   const hl = makeHighlight(searchTerm);
+  // лента выводится без изображений
   return (
     <Link
       to={getItemLink(item, { isAuthenticated, userRole })}
@@ -1067,16 +1068,8 @@ function HeroCard({ item, searchTerm, isAuthenticated, userRole }) {
       target="_blank"
       rel="noopener noreferrer"
     >
-      <article className="nl-hero-card">
-        {item.imageUrl && (
-          <div className="nl-hero-card-img">
-            <img src={item.imageUrl} alt={item.title} loading="lazy" />
-            <div className="nl-hero-card-overlay" />
-          </div>
-        )}
-        <div
-          className={`nl-hero-card-body${item.imageUrl ? " has-image" : ""}`}
-        >
+      <article className="nl-hero-card nl-hero-card--noimg">
+        <div className="nl-hero-card-body">
           <div className="nl-hero-card-meta">
             <span
               className="nl-hero-badge"
@@ -1264,27 +1257,22 @@ function DoctorCard({ item, searchTerm, isAuthenticated, userRole }) {
       <article className="dp-card-doctor doctor-card">
         <div className="doctor-card-inner">
           <div className="doctor-card-left">
-            {item.imageUrl ? (
-              <div className="dp-card-img doctor-card-img">
-                <img src={item.imageUrl} alt={item.title} loading="lazy" />
-              </div>
-            ) : (
-              <div className="doctor-card-avatar">
-                <svg
-                  width="44"
-                  height="44"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-              </div>
-            )}
+            {/* фото врача не выводим — лента без изображений */}
+            <div className="doctor-card-avatar">
+              <svg
+                width="44"
+                height="44"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </div>
           </div>
           <div className=".dp-card-body-doctors doctor-card-right">
             <div className="dp-card-meta">
@@ -1510,6 +1498,7 @@ const CSS = `
 .nl-hero-card-wrap{margin-bottom:32px}
 .nl-hero-card{background:white;border:1px solid var(--border);border-radius:20px;overflow:hidden;display:grid;grid-template-columns:1fr 2fr;min-height:340px;box-shadow:var(--shadow-lg);transition:box-shadow .25s,transform .25s;cursor:pointer}
 .nl-hero-card:hover{box-shadow:0 28px 64px rgba(28,25,23,.14);transform:translateY(-3px)}
+.nl-hero-card.nl-hero-card--noimg{grid-template-columns:1fr;min-height:0}
 .nl-hero-card-img{position:relative;overflow:hidden}
 .nl-hero-card-img img{width:450px;height:350px;object-fit:cover;transition:transform .4s ease}
 .nl-hero-card:hover .nl-hero-card-img img{transform:scale(1.04)}
