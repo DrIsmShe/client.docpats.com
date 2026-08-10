@@ -108,7 +108,17 @@ function Highlight({ text, term }) {
   );
 }
 
-export default function NewsCard({ news, searchTerm = "" }) {
+// Единая карточка ленты. Дайджест использует её как есть; публикации врачей и
+// научные статьи передают href/typeLabel/byline — так все карточки во всех
+// вкладках набраны одним шрифтом и живут по одним правилам вёрстки.
+export default function NewsCard({
+  news,
+  searchTerm = "",
+  href,
+  typeLabel: typeLabelProp,
+  typeIcon,
+  byline,
+}) {
   const { t, i18n } = useTranslation("NewsAiTranslate");
   const [hov, setHov] = useState(false);
 
@@ -127,11 +137,15 @@ export default function NewsCard({ news, searchTerm = "" }) {
   const spec = SPECIALTY_CONFIG[mainSpec] || SPECIALTY_CONFIG.general;
 
   const isResearch = news.type === "research";
-  const typeLabel = isResearch
-    ? t("types.researchFull")
-    : news.type === "news"
-      ? t("types.newsFull")
-      : news.type || "";
+  const typeLabel =
+    typeLabelProp ??
+    (isResearch
+      ? t("types.researchFull")
+      : news.type === "news"
+        ? t("types.newsFull")
+        : news.type || "");
+  const icon = typeIcon ?? (isResearch ? "⚗" : "📡");
+  const link = href || (news.slug ? `/public/news/${news.slug}` : null);
 
   const dateStr = news.publishedAt
     ? new Date(news.publishedAt).toLocaleDateString(
@@ -165,7 +179,7 @@ export default function NewsCard({ news, searchTerm = "" }) {
                 background: spec.pale,
               }}
             >
-              {isResearch ? "⚗" : "📡"} {typeLabel}
+              {icon} {typeLabel}
             </span>
           )}
           {dateStr && <time className="nc2-date">{dateStr}</time>}
@@ -173,13 +187,13 @@ export default function NewsCard({ news, searchTerm = "" }) {
 
         {/* Заголовок */}
         <h3 className="nc2-title">
-          <a
-            href={`/public/news/${news.slug}`}
-            className="nc2-title-link"
-            rel="noopener noreferrer"
-          >
+          {link ? (
+            <a href={link} className="nc2-title-link" rel="noopener noreferrer">
+              <Highlight text={news.title} term={searchTerm} />
+            </a>
+          ) : (
             <Highlight text={news.title} term={searchTerm} />
-          </a>
+          )}
         </h3>
 
         {/* Краткое содержание */}
@@ -219,9 +233,10 @@ export default function NewsCard({ news, searchTerm = "" }) {
               <span className="nc2-source">{news.sourceName}</span>
             )}
           </div> */}
-          {news.slug && (
+          {byline && <span className="nc2-byline">{byline}</span>}
+          {link && (
             <a
-              href={`/public/news/${news.slug}`}
+              href={link}
               className="nc2-read"
               style={{ color: spec.color }}
               rel="noopener noreferrer"
@@ -384,7 +399,9 @@ const CSS = `
   line-height: 1.72;
   color: var(--ink2);
   margin: 0 22px 16px;
-  flex: 1;
+  /* без flex:1 — иначе блок растягивается по высоте карточки и вместо ровных
+     трёх строк показывает обрезанную по горизонту четвёртую */
+  flex: 0 0 auto;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -436,6 +453,19 @@ const CSS = `
   line-height: 1.4;
 }
 .nc2[dir="rtl"] .nc2-tag { letter-spacing: 0; }
+
+/* Подпись автора в футере (публикации врачей / научные статьи) */
+.nc2-byline {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 .nc2-source {
   font-family: var(--sans);

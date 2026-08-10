@@ -107,10 +107,6 @@ export default function DashboardLayout() {
 
 // ── CSS (не трогать) ──────────────────────────
 const CSS = `
-.dp-card-stats-doctor{display:flex; justify-content: space-between; align-items: center;}
-.dp-card-doctor {padding: 20px; min-height: 290px;background: white;border: 1px solid var(--border);border-radius: 14px;overflow: hidden;display: flex;flex-direction: column;transition: box-shadow .2s, transform .2s;box-shadow: var(--shadow-sm);}
-.dp-card-body-doctors {max-width: 200px;padding:18px 20px 16px;display:flex;flex-direction:column;flex:1}
-.doctor-card-right-doctors {}
 .nl-hero-card-link {text-decoration: none;color: inherit;display: block;}
 .nl-hero-card-link:hover .nl-hero-card {transform: translateY(-4px);box-shadow: 0 32px 80px rgba(28,25,23,.18);}
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,300;1,8..60,400&family=Nunito:wght@300;400;500;600;700;800&display=swap');
@@ -252,32 +248,6 @@ const CSS = `
 .nl-empty-title{font-family:var(--font-display);font-size:22px;color:var(--ink2);font-style:italic}
 .nl-empty-reset{font-family:var(--font-body);font-size:14px;font-weight:600;color:var(--teal);background:var(--teal-pale);border:1.5px solid var(--teal-border);border-radius:8px;padding:10px 24px;cursor:pointer;transition:all .15s}
 .nl-empty-reset:hover{background:var(--teal);color:white;border-color:var(--teal)}
-.dp-card{min-height:300px;background:white;border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s;box-shadow:var(--shadow-sm)}
-.dp-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
-.dp-card-img{width:100%;height:180px;overflow:hidden;flex-shrink:0}
-.dp-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
-.dp-card:hover .dp-card-img img{transform:scale(1.03)}
-.dp-card-body{padding:18px 20px 16px;display:flex;flex-direction:column;flex:1}
-.dp-card-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
-.dp-badge{font-family:var(--font-card-sans);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:100px;white-space:nowrap;line-height:1.4}
-.dp-badge-spec{background:var(--cream2);color:var(--ink3);border:1px solid var(--border)}
-.dp-card-title{font-family:var(--font-card-serif);font-size:21px;font-weight:400;line-height:1.42;letter-spacing:-.01em;color:#14110f;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.dp-card-preview{font-family:var(--font-card-sans);font-size:15.5px;font-weight:400;color:#3d3830;line-height:1.72;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:16px;flex:1}
-.dp-card-footer{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:auto;padding-top:12px;border-top:1px solid var(--border)}
-.dp-card-author-info{display:flex;align-items:center;gap:5px;flex-wrap:wrap;min-width:0}
-.dp-author{font-family:var(--font-card-sans);font-size:12px;font-weight:500;color:#7a7268;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dp-meta-dot{color:var(--border2);font-size:12px}
-.dp-country{font-family:var(--font-card-sans);font-size:12px;color:#7a7268;white-space:nowrap;display:flex;align-items:center;gap:3px}
-.dp-card-stats{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.dp-stat{display:flex;align-items:center;gap:4px;font-family:var(--font-card-sans);font-size:12px;color:#7a7268;font-weight:400}
-.dp-stat svg{opacity:.6}
-.doctor-card{}
-.doctor-card-img{height:150px !important}
-.doctor-card-avatar{width:100%;height:120px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f5f3ff 0%,#ede9fe 100%);color:#7c3d9f;flex-shrink:0;border-bottom:1px solid #e9d8fd}
-.doctor-card-clinic{display:flex;align-items:center;gap:5px;font-family:var(--font-card-sans);font-size:12px;color:#7a7268;margin-bottom:6px;font-style:italic;line-height:1.4}
-.doctor-card-clinic svg{flex-shrink:0;opacity:.6}
-.doctor-articles-stat{color:#7c3d9f;font-weight:600}
-.doctor-articles-stat svg{opacity:.7}
 .nl-footer{background:var(--ink);border-top:3px solid var(--teal);padding:28px 0;margin-top:auto}
 .nl-footer-inner{padding:0 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .nl-footer-brand{display:flex;align-items:baseline;gap:14px}
@@ -292,6 +262,27 @@ const CSS = `
 @media(max-width:1023px) and (min-width:768px){.nl-nav-inner,.nl-topbar,.nl-hero-inner,.nl-filter-bar-inner,.nl-adv-panel-inner,.nl-content-inner,.nl-footer-inner,.nl-active-tags{padding-left:24px;padding-right:24px}.nl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nl-hero-card{grid-template-columns:1fr}.nl-hero-card-img{height:260px}.nl-hero-title{font-size:clamp(22px,3.5vw,32px)}}
 @media(max-width:769px){.nl-topbar{padding:0 20px;font-size:9px}.nl-topbar-date{display:none}.nl-nav-inner{padding:0 20px}.nl-hamburger{display:flex}.nl-nav-links{display:none;position:absolute;top:60px;left:0;right:0;background:linear-gradient(135deg,#0c4a6e 0%,#0f766e 100%);flex-direction:column;align-items:flex-start;padding:8px 0;border-top:1px solid rgba(255,255,255,.1);z-index:300}.nl-nav-links.open{display:flex}.nl-nav-link{width:100%;padding:12px 20px;height:auto;font-size:11px}.nl-nav-link::after{display:none}.nl-nav-logo{font-size:20px}.nl-locale-btn{padding:3px 6px;font-size:9px}.nl-btn-member{display:none}.nl-hero{padding:28px 0 56px}.nl-hero-inner{padding:0 20px}.nl-hero-title{font-size:clamp(20px,6vw,28px)}.nl-filter-bar-inner{padding:0 16px;gap:8px}.nl-filter-tabs{border-inline-end:none;padding-inline-end:0;margin-inline-end:0;border-bottom:1px solid var(--border);padding-bottom:10px;width:100%;overflow-x:auto}.nl-filter-right{width:100%}.nl-filter-search{max-width:100%}.nl-adv-panel-inner{padding:16px 16px}.nl-active-tags{padding:8px 16px}.nl-content-inner{padding:20px 16px 48px}.nl-footer-inner{padding:0 20px}.nl-hero-card{grid-template-columns:1fr}.nl-hero-card-img{height:400px;width:400px}.nl-hero-card-body{padding:20px 18px}.nl-grid{grid-template-columns:1fr;gap:16px}}
 @media(max-width:769px){.nl-topbar{display:none}.nl-nav-inner,.nl-hero-inner,.nl-content-inner,.nl-footer-inner{padding-left:14px;padding-right:14px}.nl-footer-brand{flex-direction:column;gap:2px}.nl-footer-links{flex-wrap:wrap}}
-@media(max-width:479px){.dp-card-title{font-size:17px}.dp-card-preview{font-size:13px;-webkit-line-clamp:2}}
-@media(hover:none) and (pointer:coarse){.nl-hero-card:hover{transform:none;box-shadow:var(--shadow-lg)}.dp-card:hover{transform:none;box-shadow:var(--shadow-sm)}.nl-btn-more:hover:not(:disabled){background:white;color:var(--teal);border-color:var(--teal-border)}}
+/* ── Карточка врача: та же типографика и ритм, что у карточек материалов ── */
+.dc-card{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-sm);transition:box-shadow .25s,transform .25s,border-color .2s}
+.dc-card:hover{box-shadow:var(--shadow-md);transform:translateY(-4px);border-color:rgba(20,17,15,.15)}
+.dc-strip{height:4px;flex-shrink:0;background:linear-gradient(90deg,#7c3d9f,#a855f7)}
+.dc-head{display:flex;align-items:center;gap:14px;padding:20px 22px 0}
+.dc-avatar{width:56px;height:56px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f5f3ff,#ede9fe);color:#7c3d9f;border:1px solid #e9d8fd}
+.dc-head-text{min-width:0}
+.dc-eyebrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.dc-type,.dc-spec{font-family:var(--font-card-sans);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:100px;white-space:nowrap;line-height:1.4}
+.dc-type{background:rgba(124,61,159,.1);color:#7c3d9f}
+.dc-spec{background:var(--cream2);color:var(--ink3);border:1px solid var(--border)}
+.dc-name{font-family:var(--font-card-serif);font-size:21px;font-weight:400;line-height:1.3;letter-spacing:-.01em;color:#14110f}
+.dc-name-link{color:inherit;text-decoration:none;background-image:linear-gradient(currentColor,currentColor);background-size:0% 1px;background-repeat:no-repeat;background-position:0 100%;transition:background-size .3s cubic-bezier(.4,0,.2,1)}
+.dc-card:hover .dc-name-link{background-size:100% 1px}
+.dc-clinic{display:flex;align-items:center;gap:6px;font-family:var(--font-card-sans);font-size:13px;font-style:italic;color:#7a7268;margin:12px 22px 0;line-height:1.4}
+.dc-clinic svg{flex-shrink:0;opacity:.6}
+.dc-about{font-family:var(--font-card-sans);font-size:15.5px;line-height:1.72;color:#3d3830;margin:12px 22px 16px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.dc-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding:14px 22px 18px;border-top:1px solid var(--border)}
+.dc-meta{font-family:var(--font-card-sans);font-size:12px;color:#7a7268;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dc-open{font-family:var(--font-card-sans);font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;color:#7c3d9f;border:1.5px solid currentColor;border-radius:100px;padding:6px 14px;white-space:nowrap;flex-shrink:0;opacity:.8;transition:background .18s,color .18s,opacity .18s}
+.dc-open:hover{opacity:1;background:#7c3d9f;color:#fff}
+@media(max-width:479px){.dc-name{font-size:17px}.dc-about{font-size:13px;-webkit-line-clamp:2}}
+@media(hover:none) and (pointer:coarse){.nl-hero-card:hover{transform:none;box-shadow:var(--shadow-lg)}.nl-btn-more:hover:not(:disabled){background:white;color:var(--teal);border-color:var(--teal-border)}}
 `;
