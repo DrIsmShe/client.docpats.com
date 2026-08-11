@@ -478,7 +478,7 @@ export default function Aside() {
               клинических инструментов, а не в «Обучении»: это рабочий
               справочник для заполнения карты и направлений, а не учебный
               материал. */}
-          <Link className="dp2-item is-chat" to="/medical-codes">
+          <Link className="dp2-item is-chat" to="/doctor/medical-codes">
             <span className="dp2-icon">
               <LuBookMarked />
             </span>

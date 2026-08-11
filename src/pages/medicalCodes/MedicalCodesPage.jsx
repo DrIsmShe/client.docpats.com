@@ -139,10 +139,27 @@ export default function MedicalCodesPage() {
     }
   }
 
-  const translated = stats?.bySystem?.icd10cm?.translated?.[i18n.language];
-  const totalLoaded = stats?.bySystem?.icd10cm?.total ?? 0;
+  // Счётчик считает ВСЕ системы, а не только болезни. Раньше он показывал
+  // только icd10cm, и выходило, что страница ищет операции, которых по её же
+  // словам в базе нет.
+  const diseases = stats?.bySystem?.[CODE_SYSTEMS.ICD10CM]?.total ?? 0;
+  const procedures = stats?.bySystem?.[CODE_SYSTEMS.ICD9CM_SG]?.total ?? 0;
+  const totalLoaded = stats?.total ?? diseases + procedures;
+
+  // Переводы догружаются партиями и идут по алфавиту кодов, поэтому «переведено
+  // или нет» — не двоичное состояние. Врачу показываем долю: иначе непонятно,
+  // почему «холера» находится по-русски, а «диабет» нет.
+  const translatedCount = stats
+    ? Object.values(stats.bySystem ?? {}).reduce(
+        (sum, s) => sum + (s.translated?.[i18n.language] ?? 0),
+        0,
+      )
+    : 0;
+  const coverage = totalLoaded > 0 ? translatedCount / totalLoaded : 0;
+  // Порог, а не «ноль переводов»: при 5% переведённых предупреждение нужно
+  // ровно так же, как при нуле.
   const showTranslationNotice =
-    stats && i18n.language !== "en" && totalLoaded > 0 && !translated;
+    stats && i18n.language !== "en" && totalLoaded > 0 && coverage < 0.9;
 
   return (
     <div className="mc-page" dir={isRTL ? "rtl" : "ltr"}>
@@ -160,10 +177,17 @@ export default function MedicalCodesPage() {
 
       {showTranslationNotice && (
         <div className="mc-notice" role="status">
-          {t(
-            "noticeEnglishOnly",
-            "Названия пока только на английском — переводы загружаются отдельно. Ищите по коду или английскому названию.",
-          )}
+          {translatedCount === 0
+            ? t(
+                "noticeEnglishOnly",
+                "Названия пока только на английском — переводы загружаются отдельно. Ищите по коду или английскому названию.",
+              )
+            : t("noticePartial", {
+                defaultValue:
+                  "Переведено {{done}} названий из {{total}} — остальные пока на английском. Переводы догружаются по порядку кодов.",
+                done: translatedCount.toLocaleString(),
+                total: totalLoaded.toLocaleString(),
+              })}
         </div>
       )}
 
@@ -249,6 +273,15 @@ export default function MedicalCodesPage() {
       {stats && (
         <footer className="mc-stats">
           {t("loadedCodes", "Загружено кодов")}: {totalLoaded.toLocaleString()}
+          {procedures > 0 && (
+            <span className="mc-stats-hint">
+              {" ("}
+              {t("filterDiseases", "Болезни")}: {diseases.toLocaleString()}
+              {", "}
+              {t("filterProcedures", "Операции")}: {procedures.toLocaleString()}
+              {")"}
+            </span>
+          )}
           {stats.searchStrategy === "regex" && (
             <span className="mc-stats-hint">
               {" · "}

@@ -10,6 +10,7 @@
   "loadedCodes": "Codes loaded",
   "strictSearch": "exact search (typos not tolerated)",
   "noticeEnglishOnly": "Names are in English for now — translations are loaded separately.",
+  "noticePartial": "{{done}} of {{total}} names translated — the rest are still in English. Translations are loaded in code order.",
   "errSearch": "Search failed. Please try again.",
   "errForbidden": "The directory is available to medical staff",
   "filterAll": "All",

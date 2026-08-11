@@ -10,6 +10,7 @@
   "loadedCodes": "Yüklənmiş kodlar",
   "strictSearch": "dəqiq axtarış (səhvlər nəzərə alınmır)",
   "noticeEnglishOnly": "Adlar hələlik yalnız ingiliscədir — tərcümələr ayrıca yüklənir.",
+  "noticePartial": "{{total}} addan {{done}} tərcümə olunub — qalanları hələlik ingiliscədir. Tərcümələr kod sırası ilə yüklənir.",
   "errSearch": "Axtarış alınmadı. Yenidən cəhd edin.",
   "errForbidden": "Məlumat kitabı tibbi personal üçündür",
   "filterAll": "Hamısı",

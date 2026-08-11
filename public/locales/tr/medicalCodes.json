@@ -10,6 +10,7 @@
   "loadedCodes": "Yüklenen kodlar",
   "strictSearch": "tam arama (yazım hataları dikkate alınmaz)",
   "noticeEnglishOnly": "Adlar şimdilik yalnızca İngilizce — çeviriler ayrıca yükleniyor.",
+  "noticePartial": "{{total}} addan {{done}} tanesi çevrildi — kalanlar şimdilik İngilizce. Çeviriler kod sırasına göre yükleniyor.",
   "errSearch": "Arama başarısız oldu. Lütfen tekrar deneyin.",
   "errForbidden": "Rehber tıbbi personele açıktır",
   "filterAll": "Tümü",
