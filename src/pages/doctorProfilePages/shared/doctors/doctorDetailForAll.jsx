@@ -1522,8 +1522,16 @@ export default function DoctorDetailsForAll() {
                 articles.map((article) => (
                   <div key={article._id} className="dd-article-card">
                     <div className="dd-article-card-body">
+                      {/* Список смешанный (doctor-articles отдаёт обычные и
+                          научные вместе с меткой articleType), а страницы
+                          детали у них разные — иначе научная статья открылась
+                          бы страницей обычных и дала «Статья не найдена». */}
                       <Link
-                        to={`/doctor/article-detail/${article._id}`}
+                        to={
+                          article.articleType === "scientific"
+                            ? `/doctor/article-scientific-detail/${article._id}`
+                            : `/doctor/article-detail/${article._id}`
+                        }
                         className="dd-article-title"
                       >
                         {article.title}

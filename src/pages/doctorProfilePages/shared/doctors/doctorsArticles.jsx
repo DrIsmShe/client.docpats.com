@@ -512,8 +512,18 @@ export default function DoctorArticles() {
 
                 {/* Body */}
                 <div className="doa-card-body">
+                  {/* Здесь вперемешку обычные и научные статьи: сервер отдаёт
+                      их одним списком, помечая каждую articleType. Страницы
+                      детали у них РАЗНЫЕ — ищут в разных коллекциях, — и
+                      научная статья, открытая обычной страницей, даёт
+                      «Статья не найдена». Поэтому путь выбирается по метке,
+                      а не берётся один на всех. */}
                   <Link
-                    to={`/doctor/article-detail/${article._id}`}
+                    to={
+                      article.articleType === "scientific"
+                        ? `/doctor/article-scientific-detail/${article._id}`
+                        : `/doctor/article-detail/${article._id}`
+                    }
                     className="doa-card-title-link"
                   >
                     <div className="doa-card-title">{article.title}</div>
