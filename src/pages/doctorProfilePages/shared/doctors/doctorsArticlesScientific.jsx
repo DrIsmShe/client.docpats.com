@@ -512,8 +512,11 @@ export default function DoctorsArticlesScientific() {
 
                 {/* Body */}
                 <div className="doa-card-body">
+                  {/* Научная статья — и открывать её надо страницей научных
+                      статей. Обычная страница ищет в другой коллекции и на
+                      любой научной статье отвечает «Статья не найдена». */}
                   <Link
-                    to={`/doctor/article-detail/${article._id}`}
+                    to={`/doctor/article-scientific-detail/${article._id}`}
                     className="doa-card-title-link"
                   >
                     <div className="doa-card-title">{article.title}</div>
