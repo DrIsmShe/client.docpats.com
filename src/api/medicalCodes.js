@@ -13,9 +13,14 @@ import api from "../axios";
 const ROOT = "/api/v1/medical-codes";
 
 /** Системы кодирования. Значения совпадают с серверными — они уезжают в записи. */
+// Значения обязаны совпадать с CODE_SYSTEMS на сервере
+// (modules/medicalCodes/models/medicalCode.model.js): они уходят в запрос как
+// есть и сравниваются с полем system в базе. Опечатка или пропуск не дают
+// ошибки — фильтр просто перестаёт фильтровать, и это молча.
 export const CODE_SYSTEMS = {
   ICD10CM: "icd10cm",
   ICD10WHO: "icd10who",
+  ICD9CM_SG: "icd9cm_sg", // вмешательства (операции), 3 882 кода
   ICHI: "ichi",
 };
 

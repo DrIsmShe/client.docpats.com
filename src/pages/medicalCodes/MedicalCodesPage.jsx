@@ -29,6 +29,10 @@ const DEBOUNCE_MS = 250;
 // ищет что-то одно: заполняя диагноз — болезнь, оформляя операцию — процедуру.
 // Без фильтра выдача смешивается, и по слову "tonsil" приходят и тонзиллит, и
 // тонзиллэктомия.
+// Кнопка с value === undefined не отфильтровала бы ничего: параметр system
+// просто не ушёл бы в запрос, и «Операции» показывали бы весь справочник,
+// выглядя при этом нажатыми. Так и было, пока в клиентских константах не
+// хватало icd9cm_sg. Лучше не показать фильтр, чем показать лгущий.
 const FILTERS = [
   { value: "", labelKey: "filterAll", fallback: "Всё" },
   { value: CODE_SYSTEMS.ICD10CM, labelKey: "filterDiseases", fallback: "Болезни" },
@@ -37,7 +41,7 @@ const FILTERS = [
     labelKey: "filterProcedures",
     fallback: "Операции",
   },
-];
+].filter((f) => f.value !== undefined);
 
 export default function MedicalCodesPage() {
   const { t, i18n } = useTranslation("medicalCodes");
