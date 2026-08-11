@@ -24,6 +24,7 @@ import {
   LuBuilding2,
   LuCirclePlus,
   LuStethoscope,
+  LuBookMarked,
 } from "react-icons/lu";
 import { TbStethoscope } from "react-icons/tb";
 
@@ -471,6 +472,17 @@ export default function Aside() {
               <LuStethoscope />
             </span>
             {t("diagnostics_second_opinion", { defaultValue: "Второе мнение" })}
+          </Link>
+
+          {/* Справочник кодов МКБ (modules/medicalCodes). Стоит среди
+              клинических инструментов, а не в «Обучении»: это рабочий
+              справочник для заполнения карты и направлений, а не учебный
+              материал. */}
+          <Link className="dp2-item is-chat" to="/medical-codes">
+            <span className="dp2-icon">
+              <LuBookMarked />
+            </span>
+            {t("medical_codes", { defaultValue: "Справочник кодов" })}
           </Link>
 
           <div className="dp2-group">

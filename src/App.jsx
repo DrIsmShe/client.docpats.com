@@ -71,6 +71,10 @@ import AdminArenaAnalyticsPage from "./pages/admin/radiology/AdminArenaAnalytics
 // живых пациентов, другие коллекции и другая ответственность.
 import DiagnosticsCasesPage from "./pages/diagnostics/DiagnosticsCasesPage";
 import DiagnosticCasePage from "./pages/diagnostics/DiagnosticCasePage";
+// Справочник кодов МКБ (server/modules/medicalCodes). Отдельная страница, а не
+// только автокомплит в форме приёма: код часто нужно просто найти и скопировать
+// в направление или выписку.
+import MedicalCodesPage from "./pages/medicalCodes/MedicalCodesPage";
 import AdminBillingPage from "./pages/admin/billing/AdminBillingPage";
 import TopDoctorsPage from "./pages/public/TopDoctorsPage";
 import DocsPage from "./pages/public/DocsPage";
@@ -2419,6 +2423,18 @@ function App() {
               element={
                 <DoctorOnlyRoute>
                   <DiagnosticCasePage />
+                </DoctorOnlyRoute>
+              }
+            />
+            {/* Справочник кодов МКБ. Доступ — медперсоналу: на бэкенде тот же
+                список ролей (medicalCodes/middlewares/codesAuth.js). Не публичный
+                сознательно: открытый поиск по кодам болезней на медицинском
+                сайте читается как приглашение поставить себе диагноз. */}
+            <Route
+              path="/medical-codes"
+              element={
+                <DoctorOnlyRoute>
+                  <MedicalCodesPage />
                 </DoctorOnlyRoute>
               }
             />

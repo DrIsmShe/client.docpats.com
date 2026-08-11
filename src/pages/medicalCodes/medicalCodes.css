@@ -1,0 +1,244 @@
+/* client/src/pages/medicalCodes/medicalCodes.css
+   Справочник кодов (/medical-codes). Поля и кнопки берутся из education.css
+   (edu-*), здесь — только раскладка списка результатов.
+
+   Список плотный намеренно: врач сканирует его глазами в поиске нужной
+   формулировки, и воздух между строками замедляет чтение, а не помогает. */
+
+.mc-page {
+  --mc-bg: #ffffff;
+  --mc-ink: #1c1917;
+  --mc-ink-soft: #6b7280;
+  --mc-line: #e5e7eb;
+  --mc-accent: #0f766e;
+  --mc-warn-bg: #fffbeb;
+  --mc-warn-line: #fde68a;
+
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+  color: var(--mc-ink);
+}
+
+.mc-head {
+  margin-bottom: 20px;
+}
+
+.mc-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.mc-sub {
+  color: var(--mc-ink-soft);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Предупреждение о том, что переводов ещё нет. Не ошибка — состояние данных,
+   поэтому спокойный жёлтый, а не красный. */
+.mc-notice {
+  background: var(--mc-warn-bg);
+  border: 1px solid var(--mc-warn-line);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.mc-searchbar {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.mc-input {
+  width: 100%;
+  font-size: 16px; /* не меньше 16px: иначе iOS зумит страницу при фокусе */
+  padding: 12px 14px;
+}
+
+.mc-spinner {
+  position: absolute;
+  inset-inline-end: 12px;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  border: 2px solid var(--mc-line);
+  border-top-color: var(--mc-accent);
+  border-radius: 50%;
+  animation: mc-spin 0.7s linear infinite;
+}
+
+@keyframes mc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Переключатель систем: болезни / операции. Кнопки, а не выпадающий список —
+   вариантов мало, и переключение должно быть в один клик, без раскрытия. */
+.mc-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.mc-filter {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mc-ink-soft);
+  background: #fff;
+  border: 1px solid var(--mc-line);
+  border-radius: 100px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.mc-filter:hover {
+  color: var(--mc-ink);
+  border-color: var(--mc-ink-soft);
+}
+
+/* Активный вариант отличается не только цветом, но и весом шрифта и заливкой —
+   один цвет как единственный признак состояния читается не всеми. */
+.mc-filter.is-active {
+  color: var(--mc-accent);
+  font-weight: 600;
+  border-color: var(--mc-accent);
+  background: #f0fdfa;
+}
+
+.mc-error {
+  color: #b91c1c;
+  font-size: 14px;
+  padding: 10px 0;
+}
+
+.mc-empty {
+  color: var(--mc-ink-soft);
+  font-size: 14px;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.mc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--mc-line);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.mc-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--mc-line);
+}
+
+.mc-item:last-child {
+  border-bottom: none;
+}
+
+.mc-item:hover {
+  background: #f9fafb;
+}
+
+/* Код — кнопка: клик копирует. Моноширинный, чтобы коды выстраивались в
+   колонку и глаз находил нужный по форме. */
+.mc-code {
+  flex-shrink: 0;
+  min-width: 84px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--mc-accent);
+  background: none;
+  border: none;
+  padding: 2px 0;
+  cursor: pointer;
+  text-align: start;
+  position: relative;
+}
+
+.mc-code:hover {
+  text-decoration: underline;
+}
+
+.mc-copied {
+  display: block;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--mc-ink-soft);
+  text-transform: lowercase;
+}
+
+.mc-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.mc-name {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.mc-name-en {
+  font-size: 12px;
+  color: var(--mc-ink-soft);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+.mc-parent {
+  font-size: 11px;
+  color: var(--mc-ink-soft);
+  margin-top: 3px;
+}
+
+/* Рубрика-заголовок: код есть, но ставить его диагнозом нельзя. Подпись, а не
+   только цвет — врач с нарушением цветовосприятия должен это увидеть. */
+.mc-flag {
+  flex-shrink: 0;
+  align-self: center;
+  font-size: 11px;
+  color: #92400e;
+  background: var(--mc-warn-bg);
+  border: 1px solid var(--mc-warn-line);
+  border-radius: 100px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.mc-stats {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--mc-ink-soft);
+  text-align: center;
+}
+
+.mc-stats-hint {
+  color: var(--mc-ink-soft);
+}
+
+@media (max-width: 520px) {
+  .mc-item {
+    flex-wrap: wrap;
+    gap: 6px 12px;
+  }
+
+  .mc-flag {
+    align-self: flex-start;
+  }
+}

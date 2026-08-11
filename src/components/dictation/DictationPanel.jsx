@@ -94,6 +94,14 @@ const CSS = `
 .dct-row-btn.taken{border-color:#bbf7d0;background:#f0fdf4;color:#15803d;cursor:default}
 .dct-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .dct-skipped{font-size:12.5px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:9px 12px;margin-top:10px}
+.dct-row-sub{font-size:12px;color:#64748b;margin-top:2px}
+.dct-codes{border-top:1px solid #f1f5f9;padding-top:10px;margin-top:4px}
+.dct-codes-title{font-size:12.5px;font-weight:600;color:#475569;margin:0 0 2px}
+.dct-codes-hint{font-size:12px;color:#64748b;margin:0 0 8px}
+.dct-code{display:flex;gap:10px;align-items:flex-start;padding:6px 0}
+.dct-code-code{flex:none;width:80px;font-size:13px;font-weight:700;color:#0f172a;font-variant-numeric:tabular-nums}
+.dct-code-title{flex:1;font-size:13px;color:#334155}
+.dct-code-en{display:block;font-size:11.5px;color:#94a3b8}
 @media(max-width:640px){.dct-row{flex-wrap:wrap}.dct-row-label{width:100%}}
 `;
 
@@ -460,7 +468,16 @@ export default function DictationPanel({ patientId, onApply, onApplyField }) {
               filled.map((k) => (
                 <div className="dct-row" key={k}>
                   <div className="dct-row-label">{labelOf(k)}</div>
-                  <div className="dct-row-text">{draft[k]}</div>
+                  <div className="dct-row-text">
+                    {draft[k]}
+                    {/* Официальное название кода из справочника МКБ — рядом с
+                        кодом, чтобы врач видел, что именно он назвал вслух. */}
+                    {k === "mainDiagnosisCode" && draft.mainDiagnosisCodeTitle && (
+                      <div className="dct-row-sub">
+                        {draft.mainDiagnosisCodeTitle}
+                      </div>
+                    )}
+                  </div>
                   <button
                     type="button"
                     className={`dct-row-btn${taken.includes(k) ? " taken" : ""}`}
@@ -480,6 +497,75 @@ export default function DictationPanel({ patientId, onApply, onApplyField }) {
                   </button>
                 </div>
               ))
+            )}
+
+            {/* Код назван, но в справочнике не нашёлся: чаще всего это ошибка
+                распознавания («Джей 35 ноль один»). Молчать нельзя — врач
+                решил бы, что код проверен. */}
+            {draft?.mainDiagnosisCodeUnknown && (
+              <div className="dct-skipped">
+                {t(
+                  "dictation.codeUnknown",
+                  "Такого кода нет в справочнике МКБ — проверьте его. Возможно, речь распозналась неточно.",
+                )}
+              </div>
+            )}
+
+            {/* Подсказка, а не простановка: код уходит в статистику и в счета,
+                поэтому выбирает врач. Система только показывает кандидатов. */}
+            {draft?.codeSuggestions?.length > 0 && (
+              <div className="dct-codes">
+                <p className="dct-codes-title">
+                  {t("dictation.codeSuggestions", "Похожие коды МКБ")}
+                </p>
+                <p className="dct-codes-hint">
+                  {t(
+                    "dictation.codeSuggestionsHint",
+                    "Подобраны по формулировке диагноза. Ничего не проставлено — выберите сами, если код подходит.",
+                  )}
+                </p>
+                {draft.codeSuggestions.map((s) => (
+                  <div className="dct-code" key={s.code}>
+                    <div className="dct-code-code">{s.code}</div>
+                    <div className="dct-code-title">
+                      {s.title}
+                      {/* Английское название показываем, когда перевода ещё
+                          нет: справочник переводится постепенно. */}
+                      {s.titleEn && s.titleEn !== s.title && (
+                        <span className="dct-code-en">{s.titleEn}</span>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      className={`dct-row-btn${
+                        taken.includes(`code:${s.code}`) ? " taken" : ""
+                      }`}
+                      onClick={() => {
+                        const res = onApplyField?.(
+                          "mainDiagnosisCode",
+                          s.code,
+                        ) ?? { applied: true };
+                        setNotes(res.note ? [res.note] : []);
+                        if (!res.applied) return;
+                        // Выбранный код помечаем отдельным ключом: в форме поле
+                        // одно, а кандидатов несколько, и «✓ в форме» должно
+                        // стоять именно у выбранного.
+                        setTaken((prev) => [
+                          ...prev.filter((f) => !f.startsWith("code:")),
+                          `code:${s.code}`,
+                        ]);
+                        setSkipped((prev) =>
+                          prev.filter((f) => f !== "mainDiagnosisCode"),
+                        );
+                      }}
+                    >
+                      {taken.includes(`code:${s.code}`)
+                        ? t("dictation.inForm", "✓ в форме")
+                        : t("dictation.toField", "→ в поле")}
+                    </button>
+                  </div>
+                ))}
+              </div>
             )}
 
             {skipped.length > 0 && (

@@ -1,0 +1,18 @@
+{
+  "title": "Medical codes",
+  "subtitle": "International Classification of Diseases. Search by code or name.",
+  "placeholder": "Code or name: J35.01, tonsillitis…",
+  "nothingFound": "Nothing found",
+  "copyHint": "Copy code",
+  "copied": "copied",
+  "group": "Category",
+  "notBillable": "category, not for diagnosis",
+  "loadedCodes": "Codes loaded",
+  "strictSearch": "exact search (typos not tolerated)",
+  "noticeEnglishOnly": "Names are in English for now — translations are loaded separately.",
+  "errSearch": "Search failed. Please try again.",
+  "errForbidden": "The directory is available to medical staff",
+  "filterAll": "All",
+  "filterDiseases": "Diseases",
+  "filterProcedures": "Procedures"
+}

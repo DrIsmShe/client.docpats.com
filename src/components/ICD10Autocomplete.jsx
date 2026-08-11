@@ -2,12 +2,68 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import axios from "axios";
 
+import { searchCodes, getCodesStats } from "../api/medicalCodes";
+
+// Запасной источник — публичный API NLM (США). Использовался как основной, пока
+// у нас не появился свой справочник (server/modules/medicalCodes).
 const NLM_API = "https://clinicaltables.nlm.nih.gov/api/icd10cm/v3/search";
 
 /**
- * Автокомплит для поиска кодов МКБ-10 через публичный API NLM.
- * Дропдаун рендерится через React Portal в document.body,
- * чтобы не зависеть от overflow/transform родителей.
+ * Готовность своего справочника проверяется ОДИН раз на всё приложение и
+ * кэшируется в модуле: компонент открывается в четырёх разных формах, и
+ * дёргать /stats из каждой было бы расточительно.
+ *
+ * Зачем проверка вообще: код доезжает до прода раньше, чем туда загружают
+ * справочник (74 тысячи кодов импортируются отдельным скриптом). Без этой
+ * проверки первый же врач после деплоя остался бы с молчащим автокомплитом.
+ * Как только импорт отработает, переключение произойдёт само, без правок.
+ */
+let localCatalogReady = null;
+let catalogProbe = null;
+
+async function isLocalCatalogReady() {
+  if (localCatalogReady !== null) return localCatalogReady;
+  if (!catalogProbe) {
+    catalogProbe = getCodesStats()
+      .then((stats) => {
+        localCatalogReady = (stats?.total ?? 0) > 0;
+        if (!localCatalogReady) {
+          console.warn(
+            "[ICD10] Свой справочник кодов пуст — ищу во внешнем API NLM. " +
+              "Запустите modules/medicalCodes/scripts/importIcd10cm.js",
+          );
+        }
+        return localCatalogReady;
+      })
+      .catch(() => {
+        // Нет доступа (роль без прав) или эндпоинт недоступен — работаем как
+        // раньше, через NLM. Форма не должна ломаться из-за справочника.
+        localCatalogReady = false;
+        return false;
+      });
+  }
+  return catalogProbe;
+}
+
+/** Поиск во внешнем API NLM — прежнее поведение, теперь как запасной путь. */
+async function searchViaNlm(query, signal) {
+  const { data } = await axios.get(NLM_API, {
+    params: { sf: "code,name", terms: query, maxList: 20 },
+    signal,
+  });
+  const pairs = data[3] || [];
+  return pairs.map(([code, name]) => ({ code, title: name }));
+}
+
+/**
+ * Автокомплит для поиска кодов МКБ-10.
+ *
+ * Источник — свой справочник (/api/v1/medical-codes): работает без интернета,
+ * отвечает за миллисекунды и понимает язык интерфейса врача. Пока справочник
+ * не загружен, автоматически откатывается на публичный API NLM.
+ *
+ * Дропдаун рендерится через React Portal в document.body, чтобы не зависеть от
+ * overflow/transform родителей.
  */
 export default function ICD10Autocomplete({
   value,
@@ -76,17 +132,27 @@ export default function ICD10Autocomplete({
       if (abortRef.current) abortRef.current.abort();
       abortRef.current = new AbortController();
 
+      const term = query.trim();
+      const signal = abortRef.current.signal;
+
       try {
-        const { data } = await axios.get(NLM_API, {
-          params: {
-            sf: "code,name",
-            terms: query.trim(),
-            maxList: 20,
-          },
-          signal: abortRef.current.signal,
-        });
-        const pairs = data[3] || [];
-        const mapped = pairs.map(([code, name]) => ({ code, title: name }));
+        let mapped;
+
+        if (await isLocalCatalogReady()) {
+          const data = await searchCodes(term, { limit: 20, signal });
+          // Контракт с формами прежний — {code, title}. Остальные поля
+          // (titleEn, isBillable) идут довеском и используются в списке.
+          mapped = (data.items || []).map((item) => ({
+            code: item.code,
+            title: item.title,
+            titleEn: item.titleEn,
+            isBillable: item.isBillable,
+          }));
+        } else {
+          mapped = await searchViaNlm(term, signal);
+        }
+
+        if (signal.aborted) return;
         setResults(mapped);
         setHighlight(0);
         setOpen(true);
@@ -98,7 +164,7 @@ export default function ICD10Autocomplete({
           setResults([]);
         }
       } finally {
-        setLoading(false);
+        if (!abortRef.current?.signal.aborted) setLoading(false);
       }
     }, 250);
 
@@ -225,7 +291,42 @@ export default function ICD10Autocomplete({
               >
                 {item.code}
               </span>
-              <span style={{ flex: 1, lineHeight: 1.4 }}>{item.title}</span>
+              <span style={{ flex: 1, lineHeight: 1.4 }}>
+                {item.title}
+                {/* Оригинал показываем, только когда он отличается от
+                    отображаемого названия: иначе строка дублирует сама себя.
+                    Врач часто сверяется с английской формулировкой. */}
+                {item.titleEn && item.titleEn !== item.title && (
+                  <span
+                    style={{
+                      display: "block",
+                      fontSize: 11,
+                      color: "#7089a6",
+                      marginTop: 2,
+                    }}
+                  >
+                    {item.titleEn}
+                  </span>
+                )}
+              </span>
+              {/* Рубрику-заголовок нельзя ставить диагнозом — нужен конечный
+                  код. Предупреждаем здесь, а не после отказа сохранения. */}
+              {item.isBillable === false && (
+                <span
+                  style={{
+                    flexShrink: 0,
+                    fontSize: 10,
+                    color: "#92400e",
+                    background: "#fffbeb",
+                    border: "1px solid #fde68a",
+                    borderRadius: 100,
+                    padding: "1px 7px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  рубрика
+                </span>
+              )}
             </div>
           ))}
       </div>

@@ -1,0 +1,18 @@
+{
+  "title": "Kod rehberi",
+  "subtitle": "Uluslararası Hastalık Sınıflandırması. Kod veya ada göre arama.",
+  "placeholder": "Kod veya ad: J35.01, tonsillit…",
+  "nothingFound": "Sonuç bulunamadı",
+  "copyHint": "Kodu kopyala",
+  "copied": "kopyalandı",
+  "group": "Kategori",
+  "notBillable": "kategori, tanı için değil",
+  "loadedCodes": "Yüklenen kodlar",
+  "strictSearch": "tam arama (yazım hataları dikkate alınmaz)",
+  "noticeEnglishOnly": "Adlar şimdilik yalnızca İngilizce — çeviriler ayrıca yükleniyor.",
+  "errSearch": "Arama başarısız oldu. Lütfen tekrar deneyin.",
+  "errForbidden": "Rehber tıbbi personele açıktır",
+  "filterAll": "Tümü",
+  "filterDiseases": "Hastalıklar",
+  "filterProcedures": "Ameliyatlar"
+}
