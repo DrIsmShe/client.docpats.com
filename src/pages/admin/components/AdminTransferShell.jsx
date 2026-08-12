@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 import {
   fetchDatabases,
-  fetchCollections,
+  fetchSummary,
   humanSize,
 } from "../../../api/adminTransfer";
 
@@ -47,7 +47,7 @@ export default function AdminTransferShell({
   useEffect(() => {
     if (!database) return;
     setInfo(null);
-    fetchCollections(database)
+    fetchSummary(database)
       .then(setInfo)
       .catch(() => setError("Не удалось прочитать состав базы"));
   }, [database]);
@@ -104,9 +104,18 @@ export default function AdminTransferShell({
         )}
       </div>
 
+      {/* Состав базы считается не мгновенно: коллекций больше двух сотен, и с
+          обычной сети это несколько секунд. Пустое место всё это время читается
+          как «сломалось», поэтому говорим прямо, что идёт подсчёт. */}
+      {!info && !pickTarget && database && (
+        <div className="mb-3 small text-muted">
+          Считаем состав базы <b>{database}</b>…
+        </div>
+      )}
+
       {info && !pickTarget && (
         <div className="mb-3 small text-muted">
-          Коллекций: <b>{info.collections.length}</b> · документов:{" "}
+          Коллекций: <b>{info.collectionCount}</b> · документов:{" "}
           <b>{info.totalDocuments.toLocaleString("ru")}</b> · объём:{" "}
           <b>{humanSize(info.totalSize)}</b>
           {/* Файл выгрузки крупнее самих данных: канонический EJSON пишет типы

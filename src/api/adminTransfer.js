@@ -21,7 +21,22 @@ export async function fetchDatabases() {
   return data;
 }
 
-/** Состав базы: коллекции, число документов, размер. */
+/**
+ * Сводка по базе: сколько коллекций, документов и байт. Одна команда к Mongo.
+ *
+ * Отдельно от подробного списка намеренно: перебор всех 221 коллекции ради трёх
+ * чисел занимал с обычной сети 45 секунд, и всё это время страница выглядела
+ * сломанной.
+ */
+export async function fetchSummary(database) {
+  const { data } = await axios.get(`${ROOT}/collections`, {
+    ...withCreds,
+    params: { database, summary: 1 },
+  });
+  return data;
+}
+
+/** Подробный состав: каждая коллекция со счётчиком и размером. Небыстро. */
 export async function fetchCollections(database) {
   const { data } = await axios.get(`${ROOT}/collections`, {
     ...withCreds,
