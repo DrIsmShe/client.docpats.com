@@ -1,52 +1,94 @@
-import { useState } from "react";
-import axios from "axios";
+// client/src/pages/admin/components/AdminImportCollection.jsx
+//
+// Загрузка одной коллекции из файла. Отличается от загрузки базы только тем,
+// что из файла берётся одна названная коллекция — удобно, когда нужно вернуть
+// на место что-то одно, не трогая остальное.
+//
+// Название выбирается из состава базы, а не вводится руками: опечатка создала
+// бы новую коллекцию с похожим именем, и данные ушли бы в никуда, отчитавшись
+// об успехе.
 
-const API_BASE = process.env.REACT_APP_API_URL;
+import { useState } from "react";
+
+import AdminTransferShell from "./AdminTransferShell";
+import { importCollection, readError } from "../../../api/adminTransfer";
 
 export default function AdminImportCollection() {
   const [file, setFile] = useState(null);
   const [collection, setCollection] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState("");
 
-  const handleUpload = async () => {
-    if (!file || !collection) {
-      alert("Выбери файл и коллекцию");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-
+  const run = async ({ database, password }) => {
+    setError("");
+    setResult(null);
+    setBusy(true);
     try {
-      const res = await axios.post(
-        `${API_BASE}/api/admin/import-collection?collectionName=${collection}`,
-        formData,
-        { withCredentials: true },
-      );
-
-      alert(`Импортировано: ${res.data.inserted}`);
+      setResult(await importCollection({ database, collection, password, file }));
     } catch (err) {
-      console.error(err);
-      alert("Ошибка импорта");
+      setError(await readError(err));
+    } finally {
+      setBusy(false);
     }
   };
 
   return (
-    <div>
-      <input
-        placeholder="Название коллекции (users, articles...)"
-        value={collection}
-        onChange={(e) => setCollection(e.target.value)}
-      />
+    <AdminTransferShell
+      title="Загрузить одну коллекцию"
+      hint="Из файла берётся только выбранная коллекция, остальное в нём игнорируется."
+    >
+      {({ database, password, info }) => (
+        <>
+          <div className="mb-3">
+            <label className="form-label small text-muted">Коллекция</label>
+            <select
+              className="form-select"
+              value={collection}
+              onChange={(e) => setCollection(e.target.value)}
+            >
+              <option value="">— выберите —</option>
+              {(info?.collections || [])
+                .filter((c) => c.importable)
+                .map((c) => (
+                  <option key={c.name} value={c.name}>
+                    {c.name} ({c.count.toLocaleString("ru")})
+                  </option>
+                ))}
+            </select>
+            <div className="form-text">
+              Защищённые от записи коллекции в списке не показаны.
+            </div>
+          </div>
 
-      <input
-        type="file"
-        accept=".json"
-        onChange={(e) => setFile(e.target.files[0])}
-      />
+          <input
+            type="file"
+            accept=".json,application/json"
+            className="form-control mb-3"
+            onChange={(e) => setFile(e.target.files?.[0] || null)}
+          />
 
-      <button onClick={handleUpload} className="btn btn-warning">
-        ⬆️ Загрузить коллекцию
-      </button>
-    </div>
+          <button
+            className="btn btn-danger"
+            disabled={busy || !file || !password || !collection}
+            onClick={() => run({ database, password })}
+          >
+            {busy ? "Загрузка…" : "Загрузить коллекцию"}
+          </button>
+
+          {error && <div className="alert alert-danger mt-3 py-2">{error}</div>}
+
+          {result?.report?.[0] && (
+            <div className="alert alert-info mt-3 py-2">
+              Записано: <b>{result.report[0].inserted}</b>, пропущено{" "}
+              {result.report[0].skipped}.
+              {result.report[0].reason && (
+                <div className="small mt-1">{result.report[0].reason}</div>
+              )}
+            </div>
+          )}
+        </>
+      )}
+    </AdminTransferShell>
   );
 }

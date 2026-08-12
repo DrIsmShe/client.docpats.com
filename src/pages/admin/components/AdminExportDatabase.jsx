@@ -1,40 +1,75 @@
-import axios from "axios";
+// client/src/pages/admin/components/AdminExportDatabase.jsx
+//
+// Выгрузка базы целиком.
+//
+// Скачивание идёт потоком, поэтому заранее известного размера у ответа нет:
+// сервер не может его посчитать, не собрав дамп в памяти — ровно то, от чего
+// уходили. Показываем накопленные байты, чтобы было видно, что процесс идёт,
+// а не завис.
 
-const API_BASE = process.env.REACT_APP_API_URL;
+import { useState } from "react";
 
-const AdminExportDatabase = () => {
-  const handleDownload = async () => {
-    console.log("📦 DOWNLOAD CLICK");
+import AdminTransferShell from "./AdminTransferShell";
+import { exportDatabase, readError, humanSize } from "../../../api/adminTransfer";
+
+export default function AdminExportDatabase() {
+  const [busy, setBusy] = useState(false);
+  const [loaded, setLoaded] = useState(0);
+  const [done, setDone] = useState(null);
+  const [error, setError] = useState("");
+
+  const run = async ({ database, password }) => {
+    setError("");
+    setDone(null);
+    setLoaded(0);
+    setBusy(true);
     try {
-      const res = await axios.get(`${API_BASE}/api/admin/export-all`, {
-        responseType: "blob",
-        withCredentials: true,
-      });
-
-      const blob = new Blob([res.data], {
-        type: "application/json",
-      });
-
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-
-      a.href = url;
-      a.download = "database.json";
-      document.body.appendChild(a);
-      a.click();
-
-      a.remove();
-      window.URL.revokeObjectURL(url);
+      const result = await exportDatabase({ database, password }, setLoaded);
+      setDone(result);
     } catch (err) {
-      console.error(err);
-      alert("Ошибка скачивания базы");
+      setError(await readError(err));
+    } finally {
+      setBusy(false);
     }
   };
 
   return (
-    <button onClick={handleDownload} className="btn btn-danger">
-      📦 Скачать ВСЮ базу
-    </button>
+    <AdminTransferShell
+      title="Скачать базу целиком"
+      hint="Все коллекции одним файлом. Сессии не выгружаются — это живые ключи доступа."
+    >
+      {({ database, password }) => (
+        <>
+          <button
+            className="btn btn-danger"
+            disabled={busy || !password}
+            onClick={() => run({ database, password })}
+          >
+            {busy ? "Скачивание…" : "📦 Скачать всю базу"}
+          </button>
+
+          {busy && (
+            <div className="mt-3 small text-muted">
+              Получено: {humanSize(loaded)} — не закрывайте вкладку.
+            </div>
+          )}
+
+          {done && (
+            <div className="alert alert-success mt-3 py-2">
+              Готово: <b>{done.filename}</b>, {humanSize(done.size)}.
+              <div className="small mt-1">
+                {/* Признак полноты — часть самого файла, а не обещание
+                    интерфейса: обрезанная закачка не пройдёт проверку при
+                    загрузке обратно. */}
+                Файл заканчивается отметкой о завершении и счётчиками по
+                коллекциям — по ним загрузка проверит, что скачалось всё.
+              </div>
+            </div>
+          )}
+
+          {error && <div className="alert alert-danger mt-3 py-2">{error}</div>}
+        </>
+      )}
+    </AdminTransferShell>
   );
-};
-export default AdminExportDatabase;
+}
