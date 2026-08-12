@@ -43,7 +43,14 @@ export default function ImportModePicker({ mode, onMode, confirmWord, confirm, o
             включая созданные после выгрузки. Отменить это нельзя.
           </div>
           <div className="small mt-2">
-            Для подтверждения наберите <code>{confirmWord}</code>:
+            Для подтверждения наберите {confirmWord.includes(" ") ? (
+              // Когда целей несколько, подтверждается не одно фиксированное
+              // слово, а имя той базы, кнопку которой нажмут: подтвердить одну
+              // и нажать на другую не получится.
+              <b>{confirmWord}</b>
+            ) : (
+              <code>{confirmWord}</code>
+            )}:
           </div>
           <input
             className="form-control form-control-sm mt-1"
@@ -57,9 +64,15 @@ export default function ImportModePicker({ mode, onMode, confirmWord, confirm, o
   );
 }
 
-/** Можно ли запускать: разрушительный режим — только с точным подтверждением. */
+/**
+ * Можно ли запускать: разрушительный режим — только с непустым подтверждением.
+ *
+ * Совпадение с ИМЕНЕМ цели проверяет сама страница в момент нажатия: целей
+ * бывает несколько, и подтвердить одну базу, а нажать на другую нельзя.
+ */
 export function modeReady(mode, confirmWord, confirm) {
   const selected = IMPORT_MODES.find((m) => m.value === mode);
   if (!selected?.danger) return true;
-  return confirm.trim() === confirmWord;
+  if (confirmWord && !confirmWord.includes(" ")) return confirm.trim() === confirmWord;
+  return confirm.trim().length > 0;
 }

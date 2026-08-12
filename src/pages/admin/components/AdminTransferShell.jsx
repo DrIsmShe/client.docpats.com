@@ -14,10 +14,17 @@ import {
   humanSize,
 } from "../../../api/adminTransfer";
 
+/**
+ * @param {boolean} [pickTarget] на страницах загрузки база выбирается не
+ *   списком, а кнопкой на каждую: «залить сюда» — это решение, а не настройка,
+ *   и видеть все возможные цели сразу безопаснее, чем выбирать в выпадающем
+ *   списке и потом гадать, что там осталось выбранным.
+ */
 export default function AdminTransferShell({
   title,
   hint,
   danger = false,
+  pickTarget = false,
   children,
 }) {
   const [databases, setDatabases] = useState([]);
@@ -73,7 +80,7 @@ export default function AdminTransferShell({
         </div>
       )}
 
-      <div className="mb-3">
+      <div className="mb-3" hidden={pickTarget}>
         <label className="form-label small text-muted">База данных</label>
         <select
           className="form-select"
@@ -97,7 +104,7 @@ export default function AdminTransferShell({
         )}
       </div>
 
-      {info && (
+      {info && !pickTarget && (
         <div className="mb-3 small text-muted">
           Коллекций: <b>{info.collections.length}</b> · документов:{" "}
           <b>{info.totalDocuments.toLocaleString("ru")}</b> · объём:{" "}
@@ -133,7 +140,7 @@ export default function AdminTransferShell({
         </div>
       </div>
 
-      {children({ database, password, info, setError, danger })}
+      {children({ database, password, info, setError, danger, databases, appDatabase })}
     </div>
   );
 }
