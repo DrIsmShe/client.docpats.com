@@ -111,7 +111,8 @@
     "signIn": "Giriş yap",
     "aiConsult": "AI Tıbbi Danışma → Epikriz",
     "aiConsultTag": "AI · Ücretsiz",
-    "examPrep": "Sınavlar"
+    "examPrep": "Sınavlar",
+    "analyticsLink": "Analitik makaleler · tıbbi kaynakların sentezi"
   },
   "anthem": {
     "playing": "DocPats Müziği Çalıyor",
@@ -163,5 +164,6 @@
   "clinicPerk4": "Veri erişim denetimi",
   "examPrepTag": "Testler ve sınavlar · yalnızca doktorlar için",
   "examPrepText": "Sınav hazırlığı: hata çözümlemeli testler ve sınavlar",
-  "examPrepDoctorsOnly": "Sınav hazırlığı bölümü yalnızca doktorlar içindir. Lütfen doktor olarak giriş yapın."
+  "examPrepDoctorsOnly": "Sınav hazırlığı bölümü yalnızca doktorlar içindir. Lütfen doktor olarak giriş yapın.",
+  "analyticsTag": "DOCPATS · YZ SENTEZİ"
 }

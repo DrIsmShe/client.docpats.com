@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { fetchNews, searchNews } from "../../axios";
+import { fetchSynthesisArticles, fetchNews, searchNews } from "../../axios";
 import NewsCard from "../../components/newsAI/NewsCard";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -130,13 +130,38 @@ function sortFeed(items, sortBy) {
     }
   });
 }
-function mergeAndSort(ai, pub, sci, doc = [], sortBy = "date_desc") {
+// Аналитическая статья приходит из движка новостей и устроена иначе, чем
+// врачебная: у неё специальность вместо категории и нет автора-человека.
+// Приводим к тому же виду, что и остальные карточки, — иначе вкладка не
+// сможет жить внутри общей ленты.
+function normalizeSynthesisItem(item) {
+  return {
+    _id: item._id,
+    _sourceType: "synthesis",
+    _sortDate: item.createdAt || item.publishedAt || null,
+    title: item.title || "Без заголовка",
+    preview: item.summary || item.abstract || item.preview || "",
+    imageUrl: item.imageUrl || null,
+    createdAt: item.createdAt || item.publishedAt,
+    author: item.author ? { name: item.author } : null,
+    specialization: item.specialty || null,
+    country: null,
+    likesCount: 0,
+    commentCount: 0,
+    categories: item.specialty ? [item.specialty] : [],
+    category: item.specialty || null,
+    _original: item,
+  };
+}
+
+function mergeAndSort(ai, pub, sci, doc = [], syn = [], sortBy = "date_desc") {
   return sortFeed(
     [
       ...ai.map(normalizeAiItem),
       ...pub.map((i) => normalizeDocpatsItem(i, "article")),
       ...sci.map((i) => normalizeDocpatsItem(i, "scientific")),
       ...doc.map(normalizeDoctorItem),
+      ...syn.map(normalizeSynthesisItem),
     ],
     sortBy,
   );
@@ -159,6 +184,11 @@ function getItemLink(item, { isAuthenticated, userRole } = {}) {
     if (userRole === "doctor")
       return `/doctor/article-scientific-detail/${item._id}`;
     return `/public/doctor/article-scientific-detail-for-all/${item._id}`;
+  }
+  if (item._sourceType === "synthesis") {
+    // Отдельная страница статьи остаётся прежней — меняется только то, откуда
+    // на неё попадают: из общей ленты, а не с отдельной вкладки-перехода.
+    return `/public/articles/${item._id}`;
   }
   if (item._sourceType === "doctor") {
     if (!isAuthenticated)
@@ -274,6 +304,9 @@ export default function NewsList() {
   const [aiTotal, setAiTotal] = useState(0);
   const [pubTotal, setPubTotal] = useState(0);
   const [sciTotal, setSciTotal] = useState(0);
+  const [synPage, setSynPage] = useState(1);
+  const [synTotalPages, setSynTotalPages] = useState(1);
+  const [synTotal, setSynTotal] = useState(0);
   const [doctorTotal, setDoctorTotal] = useState(0);
   const [categoryList, setCategoryList] = useState([]);
   const [aiCategories, setAiCategories] = useState([]);
@@ -306,13 +339,9 @@ export default function NewsList() {
   const doLoadPub = type === "" || type === "publications" || hasSearch;
   const doLoadSci = type === "" || type === "research" || hasSearch;
   const doLoadDoctors = type === "" || type === "doctors";
-
-  const getAnalyticsLink = () => {
-    if (!isAuthenticated) return "/public/articles";
-    if (userRole === "doctor") return "/doctor/articles-ai-for-doctors";
-    if (userRole === "patient") return "/patient/articles-ai-for-patients";
-    return "/articles";
-  };
+  // Аналитика грузится и в общей ленте, и на своей вкладке — как остальные
+  // разделы. Раньше вкладка вела на отдельную страницу, и «Всё» её не включало.
+  const doLoadSyn = type === "" || type === "analytics";
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -362,7 +391,7 @@ export default function NewsList() {
         sortBy: appliedSort,
       };
       try {
-        const [aiRes, pubRes, sciRes, docRes] = await Promise.allSettled([
+        const [aiRes, pubRes, sciRes, docRes, synRes] = await Promise.allSettled([
           doLoadAI
             ? q
               ? searchNews({
@@ -381,12 +410,16 @@ export default function NewsList() {
             ? fetchScientificArticles({ ...docParams, locale })
             : Promise.resolve(null),
           doLoadDoctors ? fetchDoctors() : Promise.resolve(null),
+          doLoadSyn
+            ? fetchSynthesisArticles({ page: pageNum, limit: 20, locale })
+            : Promise.resolve(null),
         ]);
 
         let ai = [],
           pub = [],
           sci = [],
-          doc = [];
+          doc = [],
+          syn = [];
 
         if (aiRes.status === "fulfilled" && aiRes.value) {
           const d = aiRes.value;
@@ -431,11 +464,24 @@ export default function NewsList() {
           setDoctorTotal(0);
         }
 
-        setFeed(mergeAndSort(ai, pub, sci, doc, appliedSort));
+        if (synRes.status === "fulfilled" && synRes.value) {
+          const d = synRes.value;
+          syn = d.articles || [];
+          setSynTotal(d.total || 0);
+          setSynPage(d.page || 1);
+          setSynTotalPages(d.totalPages || 1);
+        } else {
+          setSynTotal(0);
+          setSynPage(1);
+          setSynTotalPages(1);
+        }
+
+        setFeed(mergeAndSort(ai, pub, sci, doc, syn, appliedSort));
         setTotal(
           (aiRes.value?.total || 0) +
             (pubRes.value?.total || 0) +
             (sciRes.value?.total || 0) +
+            (synRes.value?.total || 0) +
             doc.length,
         );
       } catch (err) {
@@ -454,7 +500,8 @@ export default function NewsList() {
   const hasMore =
     (doLoadAI && aiPage < aiTotalPages) ||
     (doLoadPub && pubPage < pubTotalPages) ||
-    (doLoadSci && sciPage < sciTotalPages);
+    (doLoadSci && sciPage < sciTotalPages) ||
+    (doLoadSyn && synPage < synTotalPages);
 
   const handleLoadMore = async () => {
     setLoadingMore(true);
@@ -465,7 +512,7 @@ export default function NewsList() {
       sortBy: appliedSort,
     };
     try {
-      const [aiRes, pubRes, sciRes] = await Promise.allSettled([
+      const [aiRes, pubRes, sciRes, synRes] = await Promise.allSettled([
         doLoadAI && aiPage < aiTotalPages
           ? appliedSearch
             ? searchNews({
@@ -483,10 +530,14 @@ export default function NewsList() {
         doLoadSci && sciPage < sciTotalPages
           ? fetchScientificArticles({ ...docParams, page: sciPage + 1, locale })
           : Promise.resolve(null),
+        doLoadSyn && synPage < synTotalPages
+          ? fetchSynthesisArticles({ page: synPage + 1, limit: 20, locale })
+          : Promise.resolve(null),
       ]);
       let ai = [],
         pub = [],
-        sci = [];
+        sci = [],
+        syn = [];
       if (aiRes.status === "fulfilled" && aiRes.value) {
         ai = normalizeAiResponse(aiRes.value);
         setAiPage(aiRes.value?.page || aiPage + 1);
@@ -499,9 +550,13 @@ export default function NewsList() {
         sci = sciRes.value.articles || [];
         setSciPage(sciRes.value?.page || sciPage + 1);
       }
+      if (synRes.status === "fulfilled" && synRes.value) {
+        syn = synRes.value.articles || [];
+        setSynPage(synRes.value?.page || synPage + 1);
+      }
       setFeed((prev) =>
         sortFeed(
-          [...prev, ...mergeAndSort(ai, pub, sci, [], appliedSort)],
+          [...prev, ...mergeAndSort(ai, pub, sci, [], syn, appliedSort)],
           appliedSort,
         ),
       );
@@ -628,25 +683,18 @@ export default function NewsList() {
         <div className="nl-filter-bar">
           <div className="nl-filter-bar-inner">
             <div className="nl-filter-tabs">
-              {FILTERS.map((f) =>
-                f.value === "analytics" ? (
-                  <Link
-                    key={f.value}
-                    to={getAnalyticsLink()}
-                    className="nl-filter-tab"
-                  >
-                    {f.label}
-                  </Link>
-                ) : (
-                  <button
-                    key={f.value}
-                    className={`nl-filter-tab${type === f.value ? " active" : ""}`}
-                    onClick={() => setType(f.value)}
-                  >
-                    {f.label}
-                  </button>
-                ),
-              )}
+              {/* Аналитика теперь такая же вкладка, как остальные: раньше она
+                  уводила на отдельную страницу, и лента обрывалась. Отдельная
+                  страница осталась и открывается ссылкой с главной. */}
+              {FILTERS.map((f) => (
+                <button
+                  key={f.value}
+                  className={`nl-filter-tab${type === f.value ? " active" : ""}`}
+                  onClick={() => setType(f.value)}
+                >
+                  {f.label}
+                </button>
+              ))}
             </div>
             <div className="nl-filter-right">
               {/* поиск закомментирован */}
@@ -913,11 +961,7 @@ export default function NewsList() {
               {FILTERS.map((f) => (
                 <button
                   key={f.value}
-                  onClick={() =>
-                    f.value === "analytics"
-                      ? navigate("/public/articles")
-                      : setType(f.value)
-                  }
+                  onClick={() => setType(f.value)}
                   className="nl-footer-link"
                 >
                   {f.label}

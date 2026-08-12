@@ -111,7 +111,8 @@
     "signIn": "Daxil ol",
     "aiConsult": "AI Tibbi Konsultasiya → Epikriz",
     "aiConsultTag": "AI · Pulsuz",
-    "examPrep": "Testlər"
+    "examPrep": "Testlər",
+    "analyticsLink": "Analitik məqalələr · tibbi mənbələrin sintezi"
   },
   "anthem": {
     "playing": "DocPats Musiqisi Çalınır",
@@ -163,5 +164,6 @@
   "clinicPerk4": "Məlumat girişinin auditi",
   "examPrepTag": "Testlər və imtahanlar · yalnız həkimlər üçün",
   "examPrepText": "İmtahana hazırlıq: səhvlərin təhlili ilə testlər və imtahanlar",
-  "examPrepDoctorsOnly": "İmtahana hazırlıq bölməsi yalnız həkimlər üçündür. Zəhmət olmasa həkim kimi daxil olun."
+  "examPrepDoctorsOnly": "İmtahana hazırlıq bölməsi yalnız həkimlər üçündür. Zəhmət olmasa həkim kimi daxil olun.",
+  "analyticsTag": "DOCPATS · Sİ SİNTEZİ"
 }

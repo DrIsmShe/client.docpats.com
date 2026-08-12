@@ -111,7 +111,8 @@
     "signIn": "Sign In",
     "aiConsult": "AI Medical Consultation → Epicrisis",
     "aiConsultTag": "AI · Free",
-    "examPrep": "Exams"
+    "examPrep": "Exams",
+    "analyticsLink": "Analytical articles · synthesis of medical sources"
   },
   "anthem": {
     "playing": "Playing DocPats Soundtrack",
@@ -163,5 +164,6 @@
   "clinicPerk4": "Data access audit",
   "examPrepTag": "Tests & exams · doctors only",
   "examPrepText": "Exam prep: tests and exams with answer explanations",
-  "examPrepDoctorsOnly": "Exam prep is available to doctors only. Please sign in as a doctor."
+  "examPrepDoctorsOnly": "Exam prep is available to doctors only. Please sign in as a doctor.",
+  "analyticsTag": "DOCPATS · AI SYNTHESIS"
 }

@@ -1332,6 +1332,35 @@ export default function AuthLayout() {
                       </div>
                     </a>
                   </motion.div>
+                  {/* Аналитические статьи — отдельная страница.
+                      Раньше на неё вела вкладка внутри ленты новостей, и лента
+                      на ней обрывалась: человек уходил со страницы, не понимая
+                      куда. Теперь вкладка листает аналитику внутри ленты, а
+                      целая витрина открывается отсюда — осознанным переходом. */}
+                  <motion.div className="dp-news-card-wrap" variants={item}>
+                    <a href="/public/articles" className="dp-news-card">
+                      <div className="dp-news-card-accent" />
+                      <div className="dp-news-card-body">
+                        <div className="dp-news-card-icon">🧬</div>
+                        <div className="dp-news-card-copy">
+                          <div className="dp-news-card-tag">
+                            {t("analyticsTag", {
+                              defaultValue: "DOCPATS · AI SYNTHESIS",
+                            })}
+                          </div>
+                          <div className="dp-news-card-text">
+                            {t("nav.analyticsLink", {
+                              defaultValue:
+                                "Аналитические статьи · синтез медицинских источников",
+                            })}
+                          </div>
+                        </div>
+                        <span className="dp-news-card-arrow">
+                          <Arrow />
+                        </span>
+                      </div>
+                    </a>
+                  </motion.div>
 
                   {/* Anthem */}
                   <motion.div variants={item} style={{ marginBottom: 22 }}>
