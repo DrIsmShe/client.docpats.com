@@ -93,11 +93,35 @@ export async function readError(err) {
   return data?.message || err.message || "Неизвестная ошибка";
 }
 
-async function upload(url, { database, collection, password, file }) {
+// Режимы загрузки. Разница между ними — это разница между «дополнить»,
+// «починить» и «стереть и залить заново», и цена ошибки у них разная.
+export const IMPORT_MODES = [
+  {
+    value: "add",
+    title: "Только добавить недостающее",
+    hint: "Существующие записи не трогаются. Ничего не теряется — но и не исправляется: изменённые документы останутся какими были.",
+    danger: false,
+  },
+  {
+    value: "restore",
+    title: "Восстановить из копии",
+    hint: "Документ из файла замещает существующий. То, что появилось после выгрузки и в файле отсутствует, остаётся на месте.",
+    danger: false,
+  },
+  {
+    value: "replace",
+    title: "Заменить содержимое коллекций",
+    hint: "Коллекции из файла очищаются и наполняются заново. Единственный режим, дающий точное состояние на момент выгрузки — и единственный, в котором данные УДАЛЯЮТСЯ.",
+    danger: true,
+  },
+];
+
+async function upload(url, { database, collection, password, file, mode }) {
   const form = new FormData();
   form.append("file", file);
   form.append("database", database);
   form.append("password", password);
+  form.append("mode", mode || "add");
   if (collection) form.append("collection", collection);
 
   const { data } = await axios.post(url, form, withCreds);

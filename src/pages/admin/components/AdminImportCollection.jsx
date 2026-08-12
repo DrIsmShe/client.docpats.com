@@ -11,6 +11,7 @@
 import { useState } from "react";
 
 import AdminTransferShell from "./AdminTransferShell";
+import ImportModePicker, { modeReady } from "./ImportModePicker";
 import { importCollection, readError } from "../../../api/adminTransfer";
 
 export default function AdminImportCollection() {
@@ -19,13 +20,17 @@ export default function AdminImportCollection() {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
+  const [mode, setMode] = useState("add");
+  const [confirm, setConfirm] = useState("");
 
   const run = async ({ database, password }) => {
     setError("");
     setResult(null);
     setBusy(true);
     try {
-      setResult(await importCollection({ database, collection, password, file }));
+      setResult(
+        await importCollection({ database, collection, password, file, mode }),
+      );
     } catch (err) {
       setError(await readError(err));
     } finally {
@@ -68,9 +73,26 @@ export default function AdminImportCollection() {
             onChange={(e) => setFile(e.target.files?.[0] || null)}
           />
 
+          <ImportModePicker
+            mode={mode}
+            onMode={(m) => {
+              setMode(m);
+              setConfirm("");
+            }}
+            confirmWord={collection || "коллекция"}
+            confirm={confirm}
+            onConfirm={setConfirm}
+          />
+
           <button
             className="btn btn-danger"
-            disabled={busy || !file || !password || !collection}
+            disabled={
+              busy ||
+              !file ||
+              !password ||
+              !collection ||
+              !modeReady(mode, collection, confirm)
+            }
             onClick={() => run({ database, password })}
           >
             {busy ? "Загрузка…" : "Загрузить коллекцию"}
@@ -80,8 +102,14 @@ export default function AdminImportCollection() {
 
           {result?.report?.[0] && (
             <div className="alert alert-info mt-3 py-2">
-              Записано: <b>{result.report[0].inserted}</b>, пропущено{" "}
-              {result.report[0].skipped}.
+              Добавлено: <b>{result.report[0].inserted}</b>
+              {result.report[0].updated > 0 && (
+                <>, заменено <b>{result.report[0].updated}</b></>
+              )}
+              {result.report[0].deleted > 0 && (
+                <>, удалено <b>{result.report[0].deleted}</b></>
+              )}
+              , пропущено {result.report[0].skipped}.
               {result.report[0].reason && (
                 <div className="small mt-1">{result.report[0].reason}</div>
               )}

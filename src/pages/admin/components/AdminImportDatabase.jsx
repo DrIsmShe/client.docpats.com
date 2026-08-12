@@ -10,6 +10,7 @@
 import { useState } from "react";
 
 import AdminTransferShell from "./AdminTransferShell";
+import ImportModePicker, { modeReady } from "./ImportModePicker";
 import { importDatabase, readError } from "../../../api/adminTransfer";
 
 const STATUS = {
@@ -25,13 +26,15 @@ export default function AdminImportDatabase() {
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
+  const [mode, setMode] = useState("add");
+  const [confirm, setConfirm] = useState("");
 
   const run = async ({ database, password }) => {
     setError("");
     setResult(null);
     setBusy(true);
     try {
-      setResult(await importDatabase({ database, password, file }));
+      setResult(await importDatabase({ database, password, file, mode }));
     } catch (err) {
       setError(await readError(err));
     } finally {
@@ -42,7 +45,7 @@ export default function AdminImportDatabase() {
   return (
     <AdminTransferShell
       title="Загрузить базу из файла"
-      hint="Документы добавляются. Существующие записи не перезаписываются — совпадения по _id пропускаются."
+      hint="Возвращает в базу ранее скачанную копию. Что делать с уже существующими записями — выбирается ниже."
     >
       {({ database, password }) => (
         <>
@@ -60,9 +63,22 @@ export default function AdminImportDatabase() {
             onChange={(e) => setFile(e.target.files?.[0] || null)}
           />
 
+          <ImportModePicker
+            mode={mode}
+            onMode={(m) => {
+              setMode(m);
+              setConfirm("");
+            }}
+            confirmWord={database}
+            confirm={confirm}
+            onConfirm={setConfirm}
+          />
+
           <button
             className="btn btn-danger"
-            disabled={busy || !file || !password}
+            disabled={
+              busy || !file || !password || !modeReady(mode, database, confirm)
+            }
             onClick={() => run({ database, password })}
           >
             {busy ? "Загрузка…" : "Загрузить в базу"}
@@ -73,15 +89,22 @@ export default function AdminImportDatabase() {
           {result && (
             <div className="mt-3">
               <div className="alert alert-info py-2">
-                Записано документов: <b>{result.insertedTotal}</b>
-                {result.warning && <div className="small mt-1">{result.warning}</div>}
+                Добавлено: <b>{result.insertedTotal}</b>
+                {result.updatedTotal > 0 && (
+                  <> · заменено: <b>{result.updatedTotal}</b></>
+                )}
+                {result.deletedTotal > 0 && (
+                  <> · удалено: <b>{result.deletedTotal}</b></>
+                )}
               </div>
 
               <table className="table table-sm">
                 <thead>
                   <tr>
                     <th>Коллекция</th>
-                    <th className="text-end">Записано</th>
+                    <th className="text-end">Добавлено</th>
+                    <th className="text-end">Заменено</th>
+                    <th className="text-end">Удалено</th>
                     <th className="text-end">Пропущено</th>
                     <th>Итог</th>
                   </tr>
@@ -91,6 +114,8 @@ export default function AdminImportDatabase() {
                     <tr key={r.collection}>
                       <td><code>{r.collection}</code></td>
                       <td className="text-end">{r.inserted}</td>
+                      <td className="text-end">{r.updated || 0}</td>
+                      <td className="text-end">{r.deleted || 0}</td>
                       <td className="text-end">{r.skipped}</td>
                       <td className={STATUS[r.status]?.cls || ""}>
                         {STATUS[r.status]?.label || r.status}

@@ -81,6 +81,16 @@ export default function AdminTransferShell({
           Коллекций: <b>{info.collections.length}</b> · документов:{" "}
           <b>{info.totalDocuments.toLocaleString("ru")}</b> · объём:{" "}
           <b>{humanSize(info.totalSize)}</b>
+          {/* Файл выгрузки крупнее самих данных: канонический EJSON пишет типы
+              явно ($oid, $date), зато ничего не теряет. Пусть это не будет
+              неожиданностью при скачивании. */}
+          {info.totalSize > 200 * 1024 * 1024 && (
+            <div className="text-warning mt-1">
+              Файл выгрузки выйдет примерно вдвое больше — около{" "}
+              {humanSize(info.totalSize * 2)}. Браузер собирает его в памяти
+              вкладки; если не хватит, качайте коллекции по отдельности.
+            </div>
+          )}
         </div>
       )}
 
