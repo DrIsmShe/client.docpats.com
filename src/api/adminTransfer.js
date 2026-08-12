@@ -15,10 +15,10 @@ const ROOT = `${API_BASE}/api/admin/transfer`;
 
 const withCreds = { withCredentials: true };
 
-/** Какие базы можно выгружать. */
+/** Какие базы можно выгружать и с какой работает само приложение. */
 export async function fetchDatabases() {
   const { data } = await axios.get(`${ROOT}/databases`, withCreds);
-  return data.databases;
+  return data;
 }
 
 /** Состав базы: коллекции, число документов, размер. */

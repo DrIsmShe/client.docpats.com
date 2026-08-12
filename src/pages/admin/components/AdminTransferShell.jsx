@@ -22,15 +22,17 @@ export default function AdminTransferShell({
 }) {
   const [databases, setDatabases] = useState([]);
   const [database, setDatabase] = useState("");
+  const [appDatabase, setAppDatabase] = useState(null);
   const [info, setInfo] = useState(null);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
     fetchDatabases()
-      .then((list) => {
-        setDatabases(list);
-        setDatabase(list[0]?.name || "");
+      .then((data) => {
+        setDatabases(data.databases);
+        setAppDatabase(data.appDatabase);
+        setDatabase(data.databases[0]?.name || "");
       })
       .catch(() => setError("Не удалось получить список баз"));
   }, []);
@@ -51,6 +53,25 @@ export default function AdminTransferShell({
       {hint && <p className="text-muted small">{hint}</p>}
 
       {error && <div className="alert alert-danger py-2">{error}</div>}
+
+      {/* Откуда берётся путаница: сервер, к которому вы подключены, может
+          работать с одной базой, а выгружать — другую. На боевом сервере это
+          одно и то же, на машине разработчика нет. Показываем прямо здесь. */}
+      {appDatabase && (
+        <div
+          className={`alert py-2 small ${
+            databases.some((d) => d.name === appDatabase)
+              ? "alert-secondary"
+              : "alert-warning"
+          }`}
+        >
+          Сам сервер сейчас работает с базой <b>{appDatabase}</b>.
+          {!databases.some((d) => d.name === appDatabase) && (
+            <> Она отличается от тех, что ниже: вы переносите данные не той
+            базы, на которой работает это приложение.</>
+          )}
+        </div>
+      )}
 
       <div className="mb-3">
         <label className="form-label small text-muted">База данных</label>
