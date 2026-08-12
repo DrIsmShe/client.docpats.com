@@ -25,6 +25,7 @@ import {
   LuCirclePlus,
   LuStethoscope,
   LuBookMarked,
+  LuLibraryBig,
 } from "react-icons/lu";
 import { TbStethoscope } from "react-icons/tb";
 
@@ -483,6 +484,17 @@ export default function Aside() {
               <LuBookMarked />
             </span>
             {t("medical_codes", { defaultValue: "Справочник кодов" })}
+          </Link>
+
+          {/* Доказательная медицина (modules/ebm). Рядом со справочником
+              кодов и «Вторым мнением» — это инструмент для решения у постели
+              больного, а не учебный материал: врач приходит сюда с конкретным
+              вопросом по конкретному пациенту. */}
+          <Link className="dp2-item is-chat" to="/doctor/evidence">
+            <span className="dp2-icon">
+              <LuLibraryBig />
+            </span>
+            {t("evidence_based", { defaultValue: "Доказательная медицина" })}
           </Link>
 
           <div className="dp2-group">

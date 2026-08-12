@@ -1,0 +1,341 @@
+/* client/src/pages/ebm/ebm.css
+   Доказательная медицина (/doctor/evidence).
+
+   Раскладка подчинена одному правилу: сначала врач видит, КАК ПОНЯТ его
+   вопрос, потом — сколько чего нашлось, и только потом сами работы. Если
+   вопрос понят неверно, до списка доходить незачем.
+
+   Ступени доказательности НЕ раскрашены в «хорошо/плохо». Мета-анализ не
+   «зелёный», а наблюдательное исследование не «красное»: цвет читался бы как
+   оценка достоверности вывода, тогда как это всего лишь тип источника. */
+
+.ebm-page {
+  --ebm-ink: #1c1917;
+  --ebm-ink-soft: #6b7280;
+  --ebm-line: #e5e7eb;
+  --ebm-accent: #0f766e;
+  --ebm-soft-bg: #f9fafb;
+
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+  color: var(--ebm-ink);
+}
+
+.ebm-head h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.ebm-lead {
+  color: var(--ebm-ink-soft);
+  font-size: 14px;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+/* ── форма ──────────────────────────────────────────────────────────── */
+
+.ebm-form {
+  border: 1px solid var(--ebm-line);
+  border-radius: 12px;
+  padding: 14px;
+  background: #fff;
+}
+
+.ebm-input {
+  width: 100%;
+  border: 1px solid var(--ebm-line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.5;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.ebm-input:focus {
+  outline: 2px solid var(--ebm-accent);
+  outline-offset: -1px;
+  border-color: transparent;
+}
+
+.ebm-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.ebm-period,
+.ebm-raw-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ebm-ink-soft);
+}
+
+.ebm-period select {
+  font: inherit;
+  padding: 4px 6px;
+  border: 1px solid var(--ebm-line);
+  border-radius: 6px;
+}
+
+.ebm-submit {
+  margin-inline-start: auto;
+  background: var(--ebm-accent);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 20px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ebm-submit:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.ebm-hint,
+.ebm-status,
+.ebm-widened {
+  color: var(--ebm-ink-soft);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ebm-hint {
+  margin: 10px 0 0;
+}
+
+.ebm-status {
+  margin: 20px 0;
+}
+
+.ebm-error {
+  margin: 20px 0;
+  padding: 12px 14px;
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 14px;
+}
+
+/* ── как понят вопрос ───────────────────────────────────────────────── */
+
+.ebm-result {
+  margin-top: 24px;
+}
+
+.ebm-pico {
+  border: 1px solid var(--ebm-line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: var(--ebm-soft-bg);
+  margin-bottom: 16px;
+}
+
+.ebm-pico h2 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ebm-ink-soft);
+}
+
+.ebm-pico dl {
+  display: grid;
+  grid-template-columns: minmax(90px, auto) 1fr;
+  gap: 4px 14px;
+  margin: 0;
+  font-size: 14px;
+}
+
+.ebm-pico dt {
+  color: var(--ebm-ink-soft);
+}
+
+.ebm-pico dd {
+  margin: 0;
+}
+
+.ebm-note {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--ebm-ink-soft);
+  line-height: 1.5;
+}
+
+/* ── итог ───────────────────────────────────────────────────────────── */
+
+.ebm-verdict {
+  border: 1px solid var(--ebm-line);
+  border-inline-start: 3px solid var(--ebm-accent);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  background: #fff;
+}
+
+.ebm-verdict strong {
+  display: block;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Приглушённо и мелко, но всегда на виду: система показывает поле литературы,
+   а не выносит клиническое решение. */
+.ebm-verdict-note {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--ebm-ink-soft);
+}
+
+/* Нечего показать — не повод для тревожного оформления: «работ не найдено»
+   это ответ, а не ошибка. */
+.ebm-verdict--nothing,
+.ebm-verdict--not_understood,
+.ebm-verdict--not_clinical {
+  border-inline-start-color: #d6d3d1;
+}
+
+.ebm-widened {
+  margin: 0 0 12px;
+}
+
+.ebm-query {
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.ebm-query summary {
+  cursor: pointer;
+  color: var(--ebm-ink-soft);
+}
+
+.ebm-query code {
+  display: block;
+  margin: 8px 0;
+  padding: 10px 12px;
+  background: var(--ebm-soft-bg);
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.6;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.ebm-query a {
+  color: var(--ebm-accent);
+}
+
+/* ── ступени ────────────────────────────────────────────────────────── */
+
+.ebm-level {
+  margin-bottom: 26px;
+}
+
+.ebm-level h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  margin: 0 0 2px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--ebm-line);
+}
+
+.ebm-level-count {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ebm-ink-soft);
+  background: var(--ebm-soft-bg);
+  border-radius: 999px;
+  padding: 1px 9px;
+}
+
+.ebm-level-note {
+  margin: 6px 0 10px;
+  font-size: 12px;
+  color: var(--ebm-ink-soft);
+}
+
+.ebm-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ebm-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.ebm-item:last-child {
+  border-bottom: 0;
+}
+
+.ebm-item > a {
+  color: var(--ebm-accent);
+  font-size: 15px;
+  line-height: 1.45;
+  text-decoration: none;
+}
+
+.ebm-item > a:hover {
+  text-decoration: underline;
+}
+
+.ebm-item-meta {
+  margin-top: 3px;
+  font-size: 13px;
+  color: var(--ebm-ink-soft);
+}
+
+.ebm-authors {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--ebm-ink-soft);
+}
+
+/* «Принято в печать, номера ещё нет» — данные свежие, но окончательная версия
+   может отличаться от прочитанной. */
+.ebm-ahead {
+  margin-inline-start: 8px;
+  font-size: 11px;
+  border: 1px solid var(--ebm-line);
+  border-radius: 4px;
+  padding: 0 5px;
+}
+
+.ebm-more {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--ebm-ink-soft);
+}
+
+@media (max-width: 600px) {
+  .ebm-pico dl {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .ebm-pico dt {
+    margin-top: 6px;
+  }
+
+  .ebm-submit {
+    margin-inline-start: 0;
+    width: 100%;
+  }
+}

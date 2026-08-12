@@ -75,6 +75,7 @@ import DiagnosticCasePage from "./pages/diagnostics/DiagnosticCasePage";
 // только автокомплит в форме приёма: код часто нужно просто найти и скопировать
 // в направление или выписку.
 import MedicalCodesPage from "./pages/medicalCodes/MedicalCodesPage";
+import EvidencePage from "./pages/ebm/EvidencePage";
 import AdminBillingPage from "./pages/admin/billing/AdminBillingPage";
 import TopDoctorsPage from "./pages/public/TopDoctorsPage";
 import DocsPage from "./pages/public/DocsPage";
@@ -2632,6 +2633,21 @@ function App() {
                 element={
                   <DoctorOnlyRoute>
                     <MedicalCodesPage />
+                  </DoctorOnlyRoute>
+                }
+              />
+              {/* Доказательная медицина: вопрос врача → что есть в PubMed,
+                  разложенное по силе дизайна исследования. В зоне врача по той
+                  же причине, что и справочник кодов: нужны меню и шапка
+                  кабинета. Доступ — медперсоналу, на бэкенде тот же список
+                  ролей (ebm/middlewares/ebmAuth.js). Пациентам закрыто
+                  сознательно: список исследований читается как приглашение
+                  назначить лечение себе самому. */}
+              <Route
+                path="evidence"
+                element={
+                  <DoctorOnlyRoute>
+                    <EvidencePage />
                   </DoctorOnlyRoute>
                 }
               />
