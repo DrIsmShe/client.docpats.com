@@ -283,6 +283,30 @@ export default function NewsList() {
     }
   }, []);
 
+  useEffect(() => {
+    if (userRole !== "doctor") return;
+    let cancelled = false;
+
+    apiInstance
+      .get("/api/me/specialty")
+      .then(({ data }) => {
+        if (cancelled || !data?.feedSection) return;
+        setMySection(data.feedSection);
+        setMySpecName(data.specialization || "");
+        // Врач заходит сюда за своей темой — включаем её сразу. Общая лента
+        // остаётся в одном клике, а разбирать восемь с половиной тысяч чужих
+        // материалов, чтобы добраться до своих, никто не станет.
+        setOnlyMine(true);
+      })
+      // Молча: не смогли узнать специальность — показываем всю ленту. Это
+      // рабочее состояние, а не ошибка, о которой надо кричать.
+      .catch(() => {});
+
+    return () => {
+      cancelled = true;
+    };
+  }, [userRole]);
+
   const { t, i18n } = useTranslation("NewsAiTranslate");
   const navigate = useNavigate();
   const [type, setType] = useState("");
@@ -508,12 +532,12 @@ export default function NewsList() {
         setLoading(false);
       }
     },
-    [type, locale, appliedSearch, appliedCategory, appliedSort],
+    [type, locale, appliedSearch, appliedCategory, appliedSort, onlyMine, mySection],
   );
 
   useEffect(() => {
     loadAll(1);
-  }, [type, locale, appliedSearch, appliedCategory, appliedSort, loadAll]);
+  }, [type, locale, appliedSearch, appliedCategory, appliedSort, onlyMine, mySection, loadAll]);
 
   const hasMore =
     (doLoadAI && aiPage < aiTotalPages) ||
