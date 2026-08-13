@@ -14,7 +14,6 @@
       "research": "Tədqiqat"
     }
   },
-
   "role": {
     "doctor": "Həkim",
     "patient": "Xəstə",
@@ -42,17 +41,13 @@
     "dermatologist": "Dermatologiya",
     "occupational_medicine_doctor": "Peşə xəstəlikləri",
     "pain_management_specialist": "Ağrı müalicəsi",
-
     "pediatrician": "Pediatriya",
     "neonatologist": "Neonatologiya",
     "child_psychiatrist": "Uşaq psixiatriyası",
-
     "gynecologist": "Ginekologiya",
     "obstetrician": "Akuşerlik",
     "reproductive_endocrinologist": "Reproduktiv endokrinologiya",
-
     "andrologist": "Andrologiya",
-
     "neurosurgeon": "Neyrocərrahiyyə",
     "orthopedic_trauma_surgeon": "Ortopediya və travmatologiya",
     "maxillofacial_surgeon": "Çənə-üz cərrahiyyəsi",
@@ -66,18 +61,14 @@
     "vascular_surgeon": "Damar cərrahiyyəsi",
     "transplant_surgeon": "Transplantologiya",
     "oral_surgeon": "Ağız cərrahiyyəsi",
-
     "ophthalmologist": "Oftalmologiya",
     "otolaryngologist": "LOR",
-
     "oncologist": "Onkoloji",
     "oncologist_chemotherapist": "Onkoloji (Kimyaterapiya)",
     "oncologist_radiotherapist": "Onkoloji (Radioterapiya)",
-
     "psychiatrist": "Psixiatriya",
     "psychologist": "Psixologiya",
     "neurologist": "Nöroloji",
-
     "geriatrician": "Geriatriya",
     "sleep_medicine_specialist": "Yuxu tibbi",
     "clinical_pharmacologist": "Klinik farmakologiya",
@@ -85,49 +76,37 @@
     "medical_geneticist": "Genetika",
     "toxicologist": "Toksikologiya",
     "immunotherapist": "İmmunoterapiya",
-
     "pediatric_neurologist": "Pediatrik nöroloji",
     "pediatric_endocrinologist": "Pediatrik endokrinologiya",
     "pediatric_oncologist": "Pediatrik onkoloji",
-
     "gynecologic_oncologist": "Ginekoloji onkoloji",
     "breast_specialist": "Mammologiya",
     "menopause_specialist": "Menopauza",
-
     "sexologist": "Seksologiya",
-
     "psychotherapist": "Psixoterapiya",
     "addiction_specialist": "Asılılıq müalicəsi",
-
     "oculoplastic_surgeon": "Okuloplastik cərrahiyyə",
     "robotic_surgeon": "Robotik cərrahiyyə",
     "bariatric_surgeon": "Bariatrik cərrahiyyə",
-
     "neuro_ophthalmologist": "Neyro-oftalmologiya",
     "oculist": "Okulist",
-
     "cytologist": "Sitologiya",
     "biochemist": "Biokimya",
     "molecular_diagnostics_specialist": "Molekulyar diaqnostika",
     "medical_imaging_specialist": "Tibbi görüntüləmə",
-
     "endodontist": "Endodontiya",
     "dental_hygienist": "Stomatoloji gigiyena",
     "oral_pathologist": "Ağız patologiyası",
-
     "chiropractor": "Manual terapiya",
     "osteopath": "Osteopatiya",
     "acupuncturist": "Akupunktur",
     "speech_therapist": "Loqopediya",
     "occupational_therapist": "Erqoterapiya",
     "rehabilitation_psychologist": "Reabilitasiya psixologiyası",
-
     "kinesiologist": "Kineziologiya",
     "athletic_trainer": "İdman məşqçisi",
-
     "disaster_medicine_specialist": "Fəlakət tibbi",
     "triage_specialist": "Triage",
-
     "functional_diagnostics_specialist": "Funksional diaqnostika",
     "radiologist": "Radiologiya",
     "ultrasound_diagnostician": "Ultrasəs",
@@ -135,17 +114,13 @@
     "forensic_medical_examiner": "Məhkəmə tibbi",
     "geneticist": "Genetika",
     "laboratory_diagnostics_specialist": "Laborator diaqnostika",
-
     "dentist": "Stomatologiya",
     "orthodontist": "Ortodontiya",
     "periodontist": "Parodontologiya",
     "prosthodontist": "Ortopedik stomatologiya",
-
     "physiotherapist": "Fizioterapiya",
     "exercise_therapy_doctor": "LFT",
-
     "sports_doctor": "İdman tibbi",
-
     "emergency_medicine_doctor": "Təcili tibbi yardım"
   },
   "topbar": {
@@ -241,10 +216,9 @@
   },
   "brand": "DocPats · Tibbi Kəşfiyyat · Medical Intelligence",
   "articles_plural": "məqalə",
-  "news_ai_news": "Tibbi icmal",
+  "news_ai_news": "Tibbdə yeniliklər",
   "research_ai_news": "Həkim məqalələri",
   "publications_ai_news": "Həkim baxışı ",
-
   "types": {
     "research": "Tədqiqat",
     "news": "Xəbər",
@@ -309,8 +283,13 @@
     "description": "DocPats — praktik həkimin rəhbərliyi altında fəaliyyət göstərən tibbi redaksiyadır. Bütün analitik materiallar yalnız PubMed, The Lancet, PLOS Medicine, NEJM, CDC, WHO və digər nüfuzlu tibbi mənbələrə əsaslanır.",
     "disclaimer_docpats": "⚕ Material yalnız məlumat xarakterlidir və həkim konsultasiyasını əvəz etmir. Tibbi yardım üçün mütləq həkimə müraciət edin."
   },
-
   "card": {
-    "readFull": "Tam versiyasını oxu"
+    "readFull": "Tam versiyasını oxu",
+    "checkEvidence": "Sübutlar",
+    "abstractOnly": "yalnız xülasə"
+  },
+  "feed": {
+    "mySpecialty": "İxtisasım",
+    "allTopics": "Bütün mövzular"
   }
 }

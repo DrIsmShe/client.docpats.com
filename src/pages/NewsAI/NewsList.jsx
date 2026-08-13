@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { fetchSynthesisArticles, fetchNews, searchNews } from "../../axios";
 import NewsCard from "../../components/newsAI/NewsCard";
+import apiInstance from "../../axios";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -260,6 +261,17 @@ export default function NewsList() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState("");
 
+  // Раздел ленты, отвечающий специальности врача. Приходит с сервера готовым
+  // ключом (GET /api/me/specialty): клиенту незачем знать все 101 название
+  // справочника специализаций.
+  //
+  // null означает «своего раздела нет» — нормальный ответ, а не сбой: у
+  // терапевта и семейного врача его и не должно быть. Тогда переключателя не
+  // будет, и лента останется общей.
+  const [mySection, setMySection] = useState(null);
+  const [mySpecName, setMySpecName] = useState("");
+  const [onlyMine, setOnlyMine] = useState(false);
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
@@ -401,7 +413,13 @@ export default function NewsList() {
                   type: "",
                   locale,
                 })
-              : fetchNews({ page: pageNum, limit: 20, type: "", locale })
+              : fetchNews({
+                  page: pageNum,
+                  limit: 20,
+                  type: "",
+                  locale,
+                  specialty: onlyMine && mySection ? mySection : "",
+                })
             : Promise.resolve(null),
           doLoadPub
             ? fetchArticles({ ...docParams, locale })
@@ -522,7 +540,13 @@ export default function NewsList() {
                 type: "",
                 locale,
               })
-            : fetchNews({ page: aiPage + 1, limit: 20, type: "", locale })
+            : fetchNews({
+                page: aiPage + 1,
+                limit: 20,
+                type: "",
+                locale,
+                specialty: onlyMine && mySection ? mySection : "",
+              })
           : Promise.resolve(null),
         doLoadPub && pubPage < pubTotalPages
           ? fetchArticles({ ...docParams, page: pubPage + 1, locale })
@@ -696,6 +720,29 @@ export default function NewsList() {
                 </button>
               ))}
             </div>
+
+            {/* Своя специальность или вся лента.
+                Показывается только врачу, у которого специальность указана и
+                для неё есть раздел: обещать «моя специальность» терапевту, у
+                которого своего раздела нет, — значит показать ему пустоту. */}
+            {mySection && (
+              <div className="nl-mine">
+                <button
+                  className={`nl-mine-btn${onlyMine ? " active" : ""}`}
+                  onClick={() => setOnlyMine(true)}
+                  title={mySpecName}
+                >
+                  {t("feed.mySpecialty", { defaultValue: "Моя специальность" })}
+                </button>
+                <button
+                  className={`nl-mine-btn${onlyMine ? "" : " active"}`}
+                  onClick={() => setOnlyMine(false)}
+                >
+                  {t("feed.allTopics", { defaultValue: "Все темы" })}
+                </button>
+              </div>
+            )}
+
             <div className="nl-filter-right">
               {/* поиск закомментирован */}
               {/* <div className="nl-filter-search">...</div> */}
@@ -979,9 +1026,32 @@ export default function NewsList() {
 // здесь задаём для остальных источников.
 const TYPE_ICON = { article: "🩺", scientific: "⚗" };
 
+/**
+ * Ссылка «проверить доказательства» для материала дайджеста.
+ *
+ * Заголовок уходит в модуль доказательной медицины как вопрос — он сам
+ * разберёт его и построит запрос к PubMed. Так новость перестаёт быть
+ * тупиком: от «вот что пишут» можно перейти к «а что за этим стоит».
+ *
+ * Только врачу: страница /doctor/evidence закрыта для пациентов и гостей,
+ * и вести их туда — значит вести в отказ.
+ */
+function evidenceLinkFor(news, userRole) {
+  if (userRole !== "doctor") return null;
+  const question = String(news?.title || "").trim();
+  if (question.length < 10) return null;
+  return `/doctor/evidence?q=${encodeURIComponent(question.slice(0, 300))}`;
+}
+
 function FeedCard({ item, searchTerm, isAuthenticated, userRole }) {
   if (item._sourceType === "ai")
-    return <NewsCard news={item._original} searchTerm={searchTerm} />;
+    return (
+      <NewsCard
+        news={item._original}
+        searchTerm={searchTerm}
+        evidenceHref={evidenceLinkFor(item._original, userRole)}
+      />
+    );
   if (item._sourceType === "doctor")
     return (
       <DoctorCard
@@ -1181,6 +1251,9 @@ const CSS = `
 .nl-chip-dot.doctor{background:#c084fc}
 .nl-filter-bar{background:white;border-bottom:1px solid var(--border);box-shadow:0 2px 12px rgba(28,25,23,.05);position:sticky;top:60px;z-index:100}
 .nl-filter-bar-inner{padding:0 40px;display:flex;align-items:center;gap:12px;min-height:56px;flex-wrap:wrap}
+.nl-mine{display:flex;gap:4px;flex-shrink:0;margin-inline-end:8px}
+.nl-mine-btn{font:inherit;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:5px 12px;border:1px solid var(--border);background:#fff;color:#6b7280;border-radius:999px;cursor:pointer;white-space:nowrap}
+.nl-mine-btn.active{background:#0f766e;border-color:#0f766e;color:#fff}
 .nl-filter-tabs{display:flex;align-items:center;gap:4px;flex-shrink:0;border-inline-end:1px solid var(--border);padding-inline-end:16px;margin-inline-end:4px}
 .nl-filter-tab{font-family:var(--font-body);font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);background:transparent;border:1.5px solid transparent;border-radius:8px;padding:7px 14px;cursor:pointer;transition:all .15s;white-space:nowrap}
 .nl-root[dir=rtl] .nl-filter-tab{letter-spacing:0}

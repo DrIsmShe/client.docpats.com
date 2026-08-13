@@ -17,6 +17,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 
 import {
   askEvidence,
@@ -37,8 +38,13 @@ const PERIODS = [
 
 export default function EvidencePage() {
   const { t } = useTranslation("ebm");
+  const [searchParams] = useSearchParams();
 
-  const [question, setQuestion] = useState("");
+  // Вопрос может прийти ссылкой — из карточки медицинской ленты («проверить
+  // доказательства по этой теме»). Заголовок новости не идеальный клинический
+  // вопрос, но разбор всё равно вытащит из него термины, а врач видит поле
+  // ввода и может уточнить формулировку.
+  const [question, setQuestion] = useState(searchParams.get("q") || "");
   const [years, setYears] = useState(0);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -94,6 +100,17 @@ export default function EvidencePage() {
     e.preventDefault();
     run();
   };
+
+  // Пришли по ссылке с готовым вопросом — ищем сразу, не заставляя нажимать
+  // кнопку ещё раз. Один раз за открытие страницы: дальше врач управляет сам.
+  const autoRan = useRef(false);
+  useEffect(() => {
+    if (autoRan.current) return;
+    const fromLink = searchParams.get("q");
+    if (!fromLink || fromLink.trim().length < 5) return;
+    autoRan.current = true;
+    run();
+  }, [searchParams, run]);
 
   return (
     <div className="ebm-page">

@@ -1,6 +1,7 @@
 // components/newsAI/NewsCard.jsx
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const SPECIALTY_CONFIG = {
   oncology: {
@@ -118,6 +119,9 @@ export default function NewsCard({
   typeLabel: typeLabelProp,
   typeIcon,
   byline,
+  // Ссылка на поиск доказательств по теме материала. Передаётся только там,
+  // где врач авторизован: на публичной витрине этого раздела нет.
+  evidenceHref = null,
 }) {
   const { t, i18n } = useTranslation("NewsAiTranslate");
   const [hov, setHov] = useState(false);
@@ -234,6 +238,31 @@ export default function NewsCard({
             )}
           </div> */}
           {byline && <span className="nc2-byline">{byline}</span>}
+
+          {/* Что говорят доказательства по этой теме.
+              Заголовок материала уходит в поиск как вопрос: модуль
+              доказательной медицины сам разберёт его и построит запрос к
+              PubMed. Так новость перестаёт быть тупиком — от «вот что пишут»
+              можно перейти к «а что за этим стоит». */}
+          {evidenceHref && (
+            <Link
+              to={evidenceHref}
+              className="nc2-evidence"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {t("card.checkEvidence", { defaultValue: "Доказательства" })}
+            </Link>
+          )}
+
+          {/* Треть материалов приходит без полного текста — одна аннотация.
+              Раньше это выяснялось только после клика по «читать полностью»,
+              и уход на сайт издателя выглядел обманом. */}
+          {news.hasFullText === false && (
+            <span className="nc2-abstract-only">
+              {t("card.abstractOnly", { defaultValue: "только аннотация" })}
+            </span>
+          )}
+
           {link && (
             <a
               href={link}
@@ -477,6 +506,34 @@ const CSS = `
   text-overflow: ellipsis;
   max-width: 120px;
   font-style: italic;
+}
+
+.nc2-evidence {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #0f766e;
+  border: 1px solid #99f6e4;
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin-inline-end: 8px;
+}
+.nc2-evidence:hover { background: #f0fdfa; }
+
+/* Приглушённо и без рамки: это не действие, а предупреждение о том, что
+   откроется у издателя, а не здесь. */
+.nc2-abstract-only {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: #9ca3af;
+  white-space: nowrap;
+  margin-inline-end: 8px;
 }
 
 .nc2-read {

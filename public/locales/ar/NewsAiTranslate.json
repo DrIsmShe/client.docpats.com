@@ -16,14 +16,12 @@
       "research": "بحوث"
     }
   },
-
   "role": {
     "doctor": "طبيب",
     "patient": "مريض",
     "admin": "مدير",
     "radiologist": "أخصائي أشعة"
   },
-
   "specialties": {
     "therapist": "الطب العام",
     "family_doctor": "طب الأسرة",
@@ -45,17 +43,13 @@
     "dermatologist": "الأمراض الجلدية",
     "occupational_medicine_doctor": "طب العمل",
     "pain_management_specialist": "علاج الألم",
-
     "pediatrician": "طب الأطفال",
     "neonatologist": "حديثي الولادة",
     "child_psychiatrist": "الطب النفسي للأطفال",
-
     "gynecologist": "أمراض النساء",
     "obstetrician": "التوليد",
     "reproductive_endocrinologist": "الغدد الصماء التناسلية",
-
     "andrologist": "طب الذكورة",
-
     "neurosurgeon": "جراحة الأعصاب",
     "orthopedic_trauma_surgeon": "جراحة العظام",
     "maxillofacial_surgeon": "جراحة الفم والفكين",
@@ -69,18 +63,14 @@
     "vascular_surgeon": "جراحة الأوعية الدموية",
     "transplant_surgeon": "زراعة الأعضاء",
     "oral_surgeon": "جراحة الفم",
-
     "ophthalmologist": "طب العيون",
     "otolaryngologist": "أنف وأذن وحنجرة",
-
     "oncologist": "الأورام",
     "oncologist_chemotherapist": "الأورام (العلاج الكيميائي)",
     "oncologist_radiotherapist": "الأورام (العلاج الإشعاعي)",
-
     "psychiatrist": "الطب النفسي",
     "psychologist": "علم النفس",
     "neurologist": "الأعصاب",
-
     "geriatrician": "طب الشيخوخة",
     "sleep_medicine_specialist": "طب النوم",
     "clinical_pharmacologist": "علم الأدوية السريري",
@@ -88,49 +78,37 @@
     "medical_geneticist": "الوراثة",
     "toxicologist": "علم السموم",
     "immunotherapist": "العلاج المناعي",
-
     "pediatric_neurologist": "أعصاب الأطفال",
     "pediatric_endocrinologist": "غدد صماء للأطفال",
     "pediatric_oncologist": "أورام الأطفال",
-
     "gynecologic_oncologist": "أورام النساء",
     "breast_specialist": "أمراض الثدي",
     "menopause_specialist": "سن اليأس",
-
     "sexologist": "علم الجنس",
-
     "psychotherapist": "العلاج النفسي",
     "addiction_specialist": "علاج الإدمان",
-
     "oculoplastic_surgeon": "جراحة تجميل العين",
     "robotic_surgeon": "الجراحة الروبوتية",
     "bariatric_surgeon": "جراحة السمنة",
-
     "neuro_ophthalmologist": "أعصاب العيون",
     "oculist": "طبيب عيون",
-
     "cytologist": "علم الخلايا",
     "biochemist": "الكيمياء الحيوية",
     "molecular_diagnostics_specialist": "التشخيص الجزيئي",
     "medical_imaging_specialist": "التصوير الطبي",
-
     "endodontist": "علاج الجذور",
     "dental_hygienist": "نظافة الأسنان",
     "oral_pathologist": "أمراض الفم",
-
     "chiropractor": "العلاج اليدوي",
     "osteopath": "العلاج العظمي",
     "acupuncturist": "الوخز بالإبر",
     "speech_therapist": "علاج النطق",
     "occupational_therapist": "العلاج الوظيفي",
     "rehabilitation_psychologist": "علم نفس التأهيل",
-
     "kinesiologist": "علم الحركة",
     "athletic_trainer": "مدرب رياضي",
-
     "disaster_medicine_specialist": "طب الكوارث",
     "triage_specialist": "الفرز الطبي",
-
     "functional_diagnostics_specialist": "التشخيص الوظيفي",
     "radiologist": "الأشعة",
     "ultrasound_diagnostician": "الموجات فوق الصوتية",
@@ -138,23 +116,18 @@
     "forensic_medical_examiner": "الطب الشرعي",
     "geneticist": "علم الوراثة",
     "laboratory_diagnostics_specialist": "التشخيص المخبري",
-
     "dentist": "طب الأسنان",
     "orthodontist": "تقويم الأسنان",
     "periodontist": "أمراض اللثة",
     "prosthodontist": "تركيبات الأسنان",
-
     "physiotherapist": "العلاج الطبيعي",
     "exercise_therapy_doctor": "العلاج بالتمارين",
-
     "sports_doctor": "الطب الرياضي",
-
     "emergency_medicine_doctor": "الطب الطارئ"
   },
   "topbar": {
     "title": "DocPats · التحليل الذكي"
   },
-
   "loading_ai": {
     "article": "جارٍ تحميل المقال…"
   },
@@ -241,10 +214,9 @@
   },
   "brand": "DocPats · الذكاء الطبي",
   "articles_plural": "مقالات",
-  "news_ai_news": "ملخص طبي",
+  "news_ai_news": "الجديد في الطب",
   "research_ai_news": "مقالات الأطباء",
   "publications_ai_news": "نظرة الطبيب",
-
   "types": {
     "research": "بحث علمي",
     "news": "خبر",
@@ -309,8 +281,13 @@
     "description": "DocPats هي هيئة تحرير طبية يقودها طبيب ممارس. جميع المواد التحليلية تعتمد حصريًا على مصادر علمية محكمة مثل PubMed وThe Lancet وPLOS Medicine وNEJM وCDC وWHO وغيرها من المجلات الطبية الرائدة.",
     "disclaimer_docpats": "⚕ هذه المادة لأغراض معلوماتية فقط ولا تغني عن الاستشارة الطبية المباشرة. يرجى مراجعة الطبيب للحصول على الرعاية الصحية."
   },
-
   "card": {
-    "readFull": "قراءة النسخة الكاملة"
+    "readFull": "قراءة النسخة الكاملة",
+    "checkEvidence": "البراهين",
+    "abstractOnly": "الملخص فقط"
+  },
+  "feed": {
+    "mySpecialty": "تخصصي",
+    "allTopics": "كل المواضيع"
   }
 }

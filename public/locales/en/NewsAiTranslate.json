@@ -20,17 +20,13 @@
     "dermatologist": "Dermatology",
     "occupational_medicine_doctor": "Occupational Medicine",
     "pain_management_specialist": "Pain Management",
-
     "pediatrician": "Pediatrics",
     "neonatologist": "Neonatology",
     "child_psychiatrist": "Child Psychiatry",
-
     "gynecologist": "Gynecology",
     "obstetrician": "Obstetrics",
     "reproductive_endocrinologist": "Reproductive Endocrinology",
-
     "andrologist": "Andrology",
-
     "neurosurgeon": "Neurosurgery",
     "orthopedic_trauma_surgeon": "Orthopedics and Traumatology",
     "maxillofacial_surgeon": "Maxillofacial Surgery",
@@ -44,18 +40,14 @@
     "vascular_surgeon": "Vascular Surgery",
     "transplant_surgeon": "Transplantology",
     "oral_surgeon": "Oral Surgery",
-
     "ophthalmologist": "Ophthalmology",
     "otolaryngologist": "ENT",
-
     "oncologist": "Oncology",
     "oncologist_chemotherapist": "Oncology (Chemotherapy)",
     "oncologist_radiotherapist": "Oncology (Radiotherapy)",
-
     "psychiatrist": "Psychiatry",
     "psychologist": "Psychology",
     "neurologist": "Neurology",
-
     "geriatrician": "Geriatrics",
     "sleep_medicine_specialist": "Sleep Medicine",
     "clinical_pharmacologist": "Clinical Pharmacology",
@@ -63,49 +55,37 @@
     "medical_geneticist": "Genetics",
     "toxicologist": "Toxicology",
     "immunotherapist": "Immunotherapy",
-
     "pediatric_neurologist": "Pediatric Neurology",
     "pediatric_endocrinologist": "Pediatric Endocrinology",
     "pediatric_oncologist": "Pediatric Oncology",
-
     "gynecologic_oncologist": "Gynecologic Oncology",
     "breast_specialist": "Mammology",
     "menopause_specialist": "Menopause",
-
     "sexologist": "Sexology",
-
     "psychotherapist": "Psychotherapy",
     "addiction_specialist": "Addiction Medicine",
-
     "oculoplastic_surgeon": "Oculoplastic Surgery",
     "robotic_surgeon": "Robotic Surgery",
     "bariatric_surgeon": "Bariatric Surgery",
-
     "neuro_ophthalmologist": "Neuro-ophthalmology",
     "oculist": "Oculist",
-
     "cytologist": "Cytology",
     "biochemist": "Biochemistry",
     "molecular_diagnostics_specialist": "Molecular Diagnostics",
     "medical_imaging_specialist": "Medical Imaging",
-
     "endodontist": "Endodontics",
     "dental_hygienist": "Dental Hygiene",
     "oral_pathologist": "Oral Pathology",
-
     "chiropractor": "Chiropractic",
     "osteopath": "Osteopathy",
     "acupuncturist": "Acupuncture",
     "speech_therapist": "Speech Therapy",
     "occupational_therapist": "Occupational Therapy",
     "rehabilitation_psychologist": "Rehabilitation Psychology",
-
     "kinesiologist": "Kinesiology",
     "athletic_trainer": "Athletic Trainer",
-
     "disaster_medicine_specialist": "Disaster Medicine",
     "triage_specialist": "Triage",
-
     "functional_diagnostics_specialist": "Functional Diagnostics",
     "radiologist": "Radiology",
     "ultrasound_diagnostician": "Ultrasound",
@@ -113,17 +93,13 @@
     "forensic_medical_examiner": "Forensic Medicine",
     "geneticist": "Genetics",
     "laboratory_diagnostics_specialist": "Laboratory Diagnostics",
-
     "dentist": "Dentistry",
     "orthodontist": "Orthodontics",
     "periodontist": "Periodontology",
     "prosthodontist": "Prosthodontics",
-
     "physiotherapist": "Physiotherapy",
     "exercise_therapy_doctor": "Exercise Therapy",
-
     "sports_doctor": "Sports Medicine",
-
     "emergency_medicine_doctor": "Emergency Medicine"
   },
   "topbar": {
@@ -180,7 +156,7 @@
   "translateArticles": "Translate articles",
   "brand": "DocPats · Medical Intelligence",
   "articles_plural": "articles",
-  "news_ai_news": "Medical Digest",
+  "news_ai_news": "What's new in medicine",
   "research_ai_news": "Doctor Articles",
   "publications_ai_news": "Doctor’s Insight",
   "nav": {
@@ -198,7 +174,6 @@
     "signOut": "Sign out"
   },
   "welcome": "Welcome",
-
   "role": {
     "doctor": "Doctor",
     "patient": "Patient",
@@ -276,9 +251,10 @@
     "empty": "Nothing found"
   },
   "card": {
-    "readFull": "Read the full version"
+    "readFull": "Read the full version",
+    "checkEvidence": "Evidence",
+    "abstractOnly": "abstract only"
   },
-
   "sort": {
     "date_desc": "Newest first",
     "date_asc": "Oldest first",
@@ -301,7 +277,6 @@
     "allCategories": "All categories",
     "sorting": "Sorting"
   },
-
   "stats": {
     "materials": "materials",
     "news": "news",
@@ -312,5 +287,9 @@
     "search": "Search",
     "category": "Category",
     "sorting": "Sorting"
+  },
+  "feed": {
+    "mySpecialty": "My specialty",
+    "allTopics": "All topics"
   }
 }

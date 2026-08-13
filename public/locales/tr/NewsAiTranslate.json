@@ -20,17 +20,13 @@
     "dermatologist": "Dermatoloji",
     "occupational_medicine_doctor": "İşyeri Hekimliği",
     "pain_management_specialist": "Ağrı Yönetimi",
-
     "pediatrician": "Pediatri",
     "neonatologist": "Neonatoloji",
     "child_psychiatrist": "Çocuk Psikiyatrisi",
-
     "gynecologist": "Jinekoloji",
     "obstetrician": "Kadın Doğum",
     "reproductive_endocrinologist": "Üreme Endokrinolojisi",
-
     "andrologist": "Androloji",
-
     "neurosurgeon": "Beyin Cerrahisi",
     "orthopedic_trauma_surgeon": "Ortopedi ve Travmatoloji",
     "maxillofacial_surgeon": "Ağız ve Çene Cerrahisi",
@@ -44,18 +40,14 @@
     "vascular_surgeon": "Damar Cerrahisi",
     "transplant_surgeon": "Organ Nakli",
     "oral_surgeon": "Ağız Cerrahisi",
-
     "ophthalmologist": "Göz Hastalıkları",
     "otolaryngologist": "KBB",
-
     "oncologist": "Onkoloji",
     "oncologist_chemotherapist": "Onkoloji (Kemoterapi)",
     "oncologist_radiotherapist": "Onkoloji (Radyoterapi)",
-
     "psychiatrist": "Psikiyatri",
     "psychologist": "Psikoloji",
     "neurologist": "Nöroloji",
-
     "geriatrician": "Geriatri",
     "sleep_medicine_specialist": "Uyku Tıbbı",
     "clinical_pharmacologist": "Klinik Farmakoloji",
@@ -63,49 +55,37 @@
     "medical_geneticist": "Genetik",
     "toxicologist": "Toksikoloji",
     "immunotherapist": "İmmünoterapi",
-
     "pediatric_neurologist": "Çocuk Nörolojisi",
     "pediatric_endocrinologist": "Çocuk Endokrinolojisi",
     "pediatric_oncologist": "Çocuk Onkolojisi",
-
     "gynecologic_oncologist": "Jinekolojik Onkoloji",
     "breast_specialist": "Meme Hastalıkları",
     "menopause_specialist": "Menopoz",
-
     "sexologist": "Seksoloji",
-
     "psychotherapist": "Psikoterapi",
     "addiction_specialist": "Bağımlılık Tedavisi",
-
     "oculoplastic_surgeon": "Oküloplastik Cerrahi",
     "robotic_surgeon": "Robotik Cerrahi",
     "bariatric_surgeon": "Bariatrik Cerrahi",
-
     "neuro_ophthalmologist": "Nörooftalmoloji",
     "oculist": "Okülist",
-
     "cytologist": "Sitoloji",
     "biochemist": "Biyokimya",
     "molecular_diagnostics_specialist": "Moleküler Tanı",
     "medical_imaging_specialist": "Tıbbi Görüntüleme",
-
     "endodontist": "Endodonti",
     "dental_hygienist": "Ağız Hijyeni",
     "oral_pathologist": "Ağız Patolojisi",
-
     "chiropractor": "Manuel Terapi",
     "osteopath": "Osteopati",
     "acupuncturist": "Akupunktur",
     "speech_therapist": "Konuşma Terapisi",
     "occupational_therapist": "Ergoterapi",
     "rehabilitation_psychologist": "Rehabilitasyon Psikolojisi",
-
     "kinesiologist": "Kinezyoloji",
     "athletic_trainer": "Spor Antrenörü",
-
     "disaster_medicine_specialist": "Afet Tıbbı",
     "triage_specialist": "Triyaj",
-
     "functional_diagnostics_specialist": "Fonksiyonel Tanı",
     "radiologist": "Radyoloji",
     "ultrasound_diagnostician": "Ultrason",
@@ -113,17 +93,13 @@
     "forensic_medical_examiner": "Adli Tıp",
     "geneticist": "Genetik",
     "laboratory_diagnostics_specialist": "Laboratuvar Tanı",
-
     "dentist": "Diş Hekimliği",
     "orthodontist": "Ortodonti",
     "periodontist": "Periodontoloji",
     "prosthodontist": "Protetik Diş Tedavisi",
-
     "physiotherapist": "Fizyoterapi",
     "exercise_therapy_doctor": "Egzersiz Terapisi",
-
     "sports_doctor": "Spor Hekimliği",
-
     "emergency_medicine_doctor": "Acil Tıp"
   },
   "topbar": {
@@ -200,7 +176,6 @@
     "allCategories": "Tüm kategoriler",
     "sorting": "Sıralama"
   },
-
   "stats": {
     "materials": "içerik",
     "news": "haber",
@@ -213,10 +188,9 @@
     "sorting": "Sıralama"
   },
   "articles_plural": "makale",
-  "news_ai_news": "Tıbbi Bülten",
+  "news_ai_news": "Tıpta yenilikler",
   "research_ai_news": "Doktor Makaleleri",
   "publications_ai_news": "Doktor Bakışı",
-
   "brand": "DocPats · Medical Intelligence",
   "welcome": "Hoş geldiniz",
   "nav": {
@@ -310,6 +284,12 @@
     "empty": "Hiçbir şey bulunamadı"
   },
   "card": {
-    "readFull": "Tam sürümü oku"
+    "readFull": "Tam sürümü oku",
+    "checkEvidence": "Kanıtlar",
+    "abstractOnly": "yalnızca özet"
+  },
+  "feed": {
+    "mySpecialty": "Uzmanlığım",
+    "allTopics": "Tüm konular"
   }
 }
