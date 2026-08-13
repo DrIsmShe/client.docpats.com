@@ -24,5 +24,7 @@
   "showQuery": "Show the PubMed query",
   "openInPubmed": "Open in PubMed",
   "aheadOfPrint": "ahead of print",
-  "moreInPubmed": "{{n}} more — see PubMed"
+  "moreInPubmed": "{{n}} more — see PubMed",
+  "readFullHere": "Read in full here",
+  "thousandChars": "k characters"
 }

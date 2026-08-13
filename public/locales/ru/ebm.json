@@ -24,5 +24,7 @@
   "showQuery": "Показать запрос к PubMed",
   "openInPubmed": "Открыть в PubMed",
   "aheadOfPrint": "до выхода номера",
-  "moreInPubmed": "ещё {{n}} — смотрите в PubMed"
+  "moreInPubmed": "ещё {{n}} — смотрите в PubMed",
+  "readFullHere": "Читать целиком здесь",
+  "thousandChars": "тыс. знаков"
 }

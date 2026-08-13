@@ -302,6 +302,33 @@
   color: var(--ebm-ink-soft);
 }
 
+/* Полный текст у нас. Выделен заметнее прочего в карточке: это главное,
+   чего не даёт сам PubMed, — там только аннотация. */
+.ebm-fulltext {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #0f766e;
+  background: #f0fdfa;
+  border: 1px solid #99f6e4;
+  border-radius: 6px;
+  padding: 4px 10px;
+}
+
+.ebm-fulltext:hover {
+  background: #ccfbf1;
+}
+
+.ebm-fulltext-size {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--ebm-ink-soft);
+}
+
 .ebm-authors {
   margin-top: 2px;
   font-size: 12px;

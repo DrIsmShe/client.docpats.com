@@ -261,6 +261,19 @@ function Level({ level, t }) {
                 <span className="ebm-ahead">{t("aheadOfPrint")}</span>
               )}
             </div>
+
+            {/* Работа есть в нашем архиве целиком.
+                PubMed отдаёт только аннотацию, и обычно на этом чтение
+                заканчивается: у издателя половина статей за подпиской. Здесь
+                же лежит полный текст — из журналов открытого доступа. */}
+            {item.fullTextUrl && (
+              <a className="ebm-fulltext" href={item.fullTextUrl}>
+                {t("readFullHere")}
+                <span className="ebm-fulltext-size">
+                  {Math.round((item.fullTextLength || 0) / 1000)} {t("thousandChars")}
+                </span>
+              </a>
+            )}
             {item.authors?.length > 0 && (
               <div className="ebm-authors">
                 {item.authors.slice(0, 3).join(", ")}

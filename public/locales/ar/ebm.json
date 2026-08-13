@@ -24,5 +24,7 @@
   "showQuery": "إظهار استعلام PubMed",
   "openInPubmed": "فتح في PubMed",
   "aheadOfPrint": "قبل صدور العدد",
-  "moreInPubmed": "و{{n}} أخرى — راجع PubMed"
+  "moreInPubmed": "و{{n}} أخرى — راجع PubMed",
+  "readFullHere": "اقرأ النص كاملاً هنا",
+  "thousandChars": "ألف حرف"
 }

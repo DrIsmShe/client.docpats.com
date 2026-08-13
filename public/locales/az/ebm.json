@@ -24,5 +24,7 @@
   "showQuery": "PubMed sorğusunu göstər",
   "openInPubmed": "PubMed-də aç",
   "aheadOfPrint": "nömrədən əvvəl",
-  "moreInPubmed": "daha {{n}} — PubMed-ə baxın"
+  "moreInPubmed": "daha {{n}} — PubMed-ə baxın",
+  "readFullHere": "Tam mətni burada oxuyun",
+  "thousandChars": "min simvol"
 }

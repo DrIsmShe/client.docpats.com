@@ -436,13 +436,14 @@ export default function NewsList() {
                   limit: 20,
                   type: "",
                   locale,
+                  specialty: appliedCategory || (onlyMine && mySection ? mySection : ""),
                 })
               : fetchNews({
                   page: pageNum,
                   limit: 20,
                   type: "",
                   locale,
-                  specialty: onlyMine && mySection ? mySection : "",
+                  specialty: appliedCategory || (onlyMine && mySection ? mySection : ""),
                 })
             : Promise.resolve(null),
           doLoadPub
@@ -569,7 +570,7 @@ export default function NewsList() {
                 limit: 20,
                 type: "",
                 locale,
-                specialty: onlyMine && mySection ? mySection : "",
+                specialty: appliedCategory || (onlyMine && mySection ? mySection : ""),
               })
           : Promise.resolve(null),
         doLoadPub && pubPage < pubTotalPages
@@ -768,8 +769,36 @@ export default function NewsList() {
             )}
 
             <div className="nl-filter-right">
-              {/* поиск закомментирован */}
-              {/* <div className="nl-filter-search">...</div> */}
+              {/* Поиск по всем разделам. Раньше поле было закомментировано, а
+                  эндпоинт /api/search не смонтирован на сервере — то есть
+                  поиска не существовало вовсе, и заметить это было нельзя. */}
+              <div className="nl-filter-search">
+                <input
+                  type="search"
+                  className="nl-search-input"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  placeholder={t("filters.searchPlaceholder", {
+                    defaultValue: "Поиск по материалам…",
+                  })}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") setAppliedSearch(searchInput.trim());
+                  }}
+                />
+                {searchInput && (
+                  <button
+                    type="button"
+                    className="nl-search-clear"
+                    onClick={() => {
+                      setSearchInput("");
+                      setAppliedSearch("");
+                    }}
+                    aria-label="×"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
               <button
                 className={`nl-filter-adv-btn${filtersOpen ? " open" : ""}`}
                 onClick={() => setFiltersOpen((o) => !o)}
@@ -828,7 +857,12 @@ export default function NewsList() {
                       <option value="">{t("labels.allCategories")}</option>
                       {allCategories.map((c) => (
                         <option key={c} value={c}>
-                          {c}
+                          {/* Ключи разделов технические — «infectious»,
+                              «sports_medicine». Врачу показываем название на
+                              его языке, а в запрос уходит по-прежнему ключ.
+                              Если названия для ключа нет (категория статьи
+                              врача), показываем как есть. */}
+                          {t(`specialties.${c}`, { defaultValue: c })}
                         </option>
                       ))}
                     </select>
@@ -882,7 +916,7 @@ export default function NewsList() {
                   )}
                   {appliedCategory && (
                     <span className="nl-tag">
-                      {t("labels.category")}: <b>{appliedCategory}</b>
+                      {t("labels.category")}: <b>{t(`specialties.${appliedCategory}`, { defaultValue: appliedCategory })}</b>
                       <button
                         onClick={() => {
                           setFilterCategory("");
@@ -934,7 +968,7 @@ export default function NewsList() {
               )}
               {appliedCategory && (
                 <span className="nl-tag">
-                  {t("tags.category")}: <b>{appliedCategory}</b>
+                  {t("tags.category")}: <b>{t(`specialties.${appliedCategory}`, { defaultValue: appliedCategory })}</b>
                   <button
                     onClick={() => {
                       setFilterCategory("");
@@ -1275,6 +1309,10 @@ const CSS = `
 .nl-chip-dot.doctor{background:#c084fc}
 .nl-filter-bar{background:white;border-bottom:1px solid var(--border);box-shadow:0 2px 12px rgba(28,25,23,.05);position:sticky;top:60px;z-index:100}
 .nl-filter-bar-inner{padding:0 40px;display:flex;align-items:center;gap:12px;min-height:56px;flex-wrap:wrap}
+.nl-filter-search{position:relative;display:flex;align-items:center;flex:1;min-width:180px;max-width:340px}
+.nl-search-input{width:100%;font:inherit;font-size:13px;padding:7px 28px 7px 12px;border:1px solid var(--border);border-radius:999px;background:#fff;outline:none}
+.nl-search-input:focus{border-color:#0f766e}
+.nl-search-clear{position:absolute;inset-inline-end:8px;border:0;background:none;font-size:16px;line-height:1;color:#9ca3af;cursor:pointer;padding:0}
 .nl-mine{display:flex;gap:4px;flex-shrink:0;margin-inline-end:8px}
 .nl-mine-btn{font:inherit;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:5px 12px;border:1px solid var(--border);background:#fff;color:#6b7280;border-radius:999px;cursor:pointer;white-space:nowrap}
 .nl-mine-btn.active{background:#0f766e;border-color:#0f766e;color:#fff}
