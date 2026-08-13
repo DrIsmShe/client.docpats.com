@@ -108,6 +108,15 @@ function normalizeDoctorItem(item) {
 }
 
 function sortFeed(items, sortBy) {
+  // При поиске порядок уже задан релевантностью: сервер вернул материалы
+  // отсортированными по совпадению, а лента идёт первой.
+  //
+  // Пересортировать их по дате — значит похоронить найденное. Именно так и
+  // выходило: врач вставлял в поиск заголовок статьи, она находилась, но выше
+  // неё вставали свежие публикации врачей, потому что вышли сегодня. Выглядело
+  // как «поиск не нашёл и показал что-то своё».
+  if (sortBy === "relevance") return items;
+
   return [...items].sort((a, b) => {
     switch (sortBy) {
       case "date_asc":
@@ -519,7 +528,11 @@ export default function NewsList() {
           setSynTotalPages(1);
         }
 
-        setFeed(mergeAndSort(ai, pub, sci, doc, syn, appliedSort));
+        // Ищем — значит сортируем по совпадению, а не по дате. Явный выбор
+        // врача в списке сортировки при этом уважаем.
+        const order =
+          appliedSearch && appliedSort === "date_desc" ? "relevance" : appliedSort;
+        setFeed(mergeAndSort(ai, pub, sci, doc, syn, order));
         setTotal(
           (aiRes.value?.total || 0) +
             (pubRes.value?.total || 0) +
