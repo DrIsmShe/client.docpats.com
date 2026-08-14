@@ -4,22 +4,9 @@ import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { RU_MONTHS } from "../../../../lib/ruMonths";
 
 /* ===== Локализация месяцев (родительный падеж) ===== */
-const RU_MONTHS = [
-  "января",
-  "февраля",
-  "марта",
-  "апреля",
-  "мая",
-  "июня",
-  "июля",
-  "августа",
-  "сентября",
-  "октября",
-  "ноября",
-  "декабря",
-];
 
 /* ===================== Дата/возраст ===================== */
 function ruYears(n) {

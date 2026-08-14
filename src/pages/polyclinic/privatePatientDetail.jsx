@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import SurgeryTab from "../surgery/SurgeryTab";
+import { SCAN_TEST_TYPES, ENDPOINTS } from "./examConstants";
 
 /* ─────────────────────────── CSS ─────────────────────────── */
 const CSS = `
@@ -229,18 +230,6 @@ export const SeverityBadge = ({ level }) => {
 };
 
 /* ─────────────────────── SCAN TABLE ─────────────────────── */
-const SCAN_TEST_TYPES = [
-  { value: "BloodTestGeneral", label: "Общий анализ крови" },
-  { value: "BloodTestBiochemistry", label: "Биохимия" },
-  { value: "UrineTest", label: "Анализ мочи" },
-  { value: "StoolTest", label: "Анализ кала" },
-  { value: "HormonePanel", label: "Гормоны" },
-  { value: "TumorMarkers", label: "Онкомаркеры" },
-  { value: "PCR", label: "ПЦР" },
-  { value: "Immunology", label: "Иммунология" },
-  { value: "GeneticScreening", label: "Генетический скрининг" },
-  { value: "Other", label: "Другое" },
-];
 
 const ScanTable = ({
   scans,
@@ -476,26 +465,7 @@ export default function PrivatePatientDetail() {
       setScansLoading(true);
       setError("");
       try {
-        const endpoints = [
-          "CTscaner",
-          "MRIscaner",
-          "USMscaner",
-          "XRAYscaner",
-          "PETscaner",
-          "SPECTscaner",
-          "EEGscaner",
-          "Ginecology",
-          "HOLTERscaner",
-          "Spirometryscaner",
-          "Doplerscaner",
-          "Gastroscopyscaner",
-          "CapsuleEndoscopyscaner",
-          "Angiographyscaner",
-          "EKGscaner",
-          "EchoEKGscaner",
-          "Coronographyscaner",
-          "Labtestscaner",
-        ];
+        const endpoints = ENDPOINTS;
         const results = await Promise.allSettled(
           endpoints.map((e) =>
             axios.get(`${API_BASE}/clinic/get-examinations/${e}/list/${id}`, {

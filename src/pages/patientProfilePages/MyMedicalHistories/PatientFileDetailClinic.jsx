@@ -11,24 +11,11 @@ import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { RU_MONTHS } from "../../../lib/ruMonths";
 
 const BASE_URL = process.env.REACT_APP_API_URL;
 
 /* ===================== Дата / возраст ===================== */
-const RU_MONTHS = [
-  "января",
-  "февраля",
-  "марта",
-  "апреля",
-  "мая",
-  "июня",
-  "июля",
-  "августа",
-  "сентября",
-  "октября",
-  "ноября",
-  "декабря",
-];
 
 function ruYears(n) {
   const a = Math.abs(Number(n)) % 100;
