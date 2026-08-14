@@ -143,6 +143,14 @@ export default function Aside() {
               <span>Врачи и приёмы</span>
             </Link>
           </li>
+          {/* Пункт выше — обзор: сводка приёмов и рассылка уведомлений.
+              Завести врача и поправить карточку можно только здесь. */}
+          <li className="nav-item" data-sec="users">
+            <Link className="nav-link collapsed" to="doctors-manage">
+              <i className="bi bi-person-plus"></i>
+              <span>Профили врачей</span>
+            </Link>
+          </li>
           <li className="nav-item" data-sec="users">
             <Link className="nav-link collapsed" to="verification">
               <i className="bi bi-patch-check"></i>

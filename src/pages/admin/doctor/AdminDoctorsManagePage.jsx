@@ -27,7 +27,16 @@ import {
   deleteDoctor,
   EMPTY_DOCTOR,
 } from "../../../api/adminDoctors";
+import { countryPhoneMeta } from "../../../constants/countryPhoneMeta";
 import "./adminDoctors.css";
+
+// Страны берём из общего справочника countryPhoneMeta — того же, что на
+// странице «Редактировать профиль» у самого врача. Свой список завёлся бы
+// быстро, но разошёлся бы с профилем: врач выбрал бы «USA», админ — «United
+// States», и в каталоге появились бы две разные страны.
+const COUNTRIES = Object.values(countryPhoneMeta)
+  .map((c) => c.name)
+  .sort((a, b) => a.localeCompare(b));
 
 export default function AdminDoctorsManagePage() {
   const [doctors, setDoctors] = useState([]);
@@ -273,7 +282,24 @@ function DoctorForm({ form, set, specializations, saving, onSubmit, onCancel }) 
         <legend>Где принимает</legend>
         <div className="adoc-grid">
           <Field label="Клиника" value={form.clinic} onChange={set("clinic")} />
-          <Field label="Страна" value={form.country} onChange={set("country")} />
+
+          <label className="adoc-field">
+            <span>Страна</span>
+            <select value={form.country} onChange={set("country")}>
+              <option value="">— не выбрана —</option>
+              {/* Значение врача может не совпасть со справочником: профиль
+                  заполнялся раньше, вручную. Показываем его отдельной
+                  строкой, иначе при первой же правке страна молча слетит. */}
+              {form.country && !COUNTRIES.includes(form.country) && (
+                <option value={form.country}>{form.country}</option>
+              )}
+              {COUNTRIES.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+          </label>
           <Field label="Адрес" value={form.address} onChange={set("address")} wide />
           <Field
             label="Фотография"
