@@ -116,6 +116,7 @@ import AdminDashboardPage from "./pages/admin/overview/AdminDashboardPage.jsx";
 import AdminAnalyticsPage from "./pages/admin/analytics/AdminAnalyticsPage.jsx";
 import AdminAuditPage from "./pages/admin/overview/AdminAuditPage.jsx";
 import AdminDoctorsPage from "./pages/admin/entities/AdminDoctorsPage.jsx";
+import AdminDoctorsManagePage from "./pages/admin/doctor/AdminDoctorsManagePage.jsx";
 import AdminVerificationPage from "./pages/admin/ops/AdminVerificationPage.jsx";
 import AdminSecurityPage from "./pages/admin/ops/AdminSecurityPage.jsx";
 import AdminReviewsPage from "./pages/admin/ops/AdminReviewsPage.jsx";
@@ -2809,6 +2810,9 @@ function App() {
               <Route path="audit-log" element={<AdminAuditPage />} />
               <Route path="clinics" element={<AdminClinicsPage />} />
               <Route path="doctors" element={<AdminDoctorsPage />} />
+              {/* Заведение и правка профилей врачей. Соседний маршрут
+                  /doctors — это обзор и рассылка, там ничего не создать. */}
+              <Route path="doctors-manage" element={<AdminDoctorsManagePage />} />
               <Route path="verification" element={<AdminVerificationPage />} />
               <Route path="security" element={<AdminSecurityPage />} />
               <Route path="reviews" element={<AdminReviewsPage />} />

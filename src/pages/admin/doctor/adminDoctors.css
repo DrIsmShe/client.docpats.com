@@ -1,0 +1,304 @@
+/* client/src/pages/admin/doctor/adminDoctors.css
+   Управление профилями врачей в админке.
+
+   Форма плотная и в две колонки: полей два десятка, и растянутые на всю
+   ширину поля заставляли бы прокручивать страницу ради одного профиля.
+   Описание — исключение, ему нужна вся ширина: это главный текст карточки. */
+
+.adoc {
+  --adoc-ink: #1c1917;
+  --adoc-soft: #6b7280;
+  --adoc-line: #e5e7eb;
+  --adoc-accent: #0f766e;
+
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+  color: var(--adoc-ink);
+}
+
+.adoc-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.adoc-head h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.adoc-sub {
+  margin: 0;
+  font-size: 14px;
+  color: var(--adoc-soft);
+}
+
+.adoc-primary {
+  background: var(--adoc-accent);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.adoc-primary:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.adoc-notice,
+.adoc-error {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  word-break: break-word;
+}
+
+.adoc-notice {
+  background: #f0fdfa;
+  border: 1px solid #99f6e4;
+  color: #115e59;
+}
+
+.adoc-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+}
+
+/* ── форма ──────────────────────────────────────────────────────────── */
+
+.adoc-form {
+  border: 1px solid var(--adoc-line);
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 24px;
+  background: #fff;
+}
+
+.adoc-form h2 {
+  font-size: 18px;
+  margin: 0 0 14px;
+}
+
+.adoc-form fieldset {
+  border: 0;
+  border-top: 1px solid var(--adoc-line);
+  padding: 14px 0 4px;
+  margin: 0;
+}
+
+.adoc-form legend {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--adoc-soft);
+  padding-inline-end: 10px;
+}
+
+.adoc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+}
+
+.adoc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.adoc-field--wide {
+  grid-column: 1 / -1;
+}
+
+.adoc-field > span {
+  color: var(--adoc-soft);
+}
+
+.adoc-req {
+  color: #dc2626;
+}
+
+.adoc-field input,
+.adoc-field select,
+.adoc-field textarea {
+  font: inherit;
+  font-size: 14px;
+  padding: 8px 10px;
+  border: 1px solid var(--adoc-line);
+  border-radius: 6px;
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.adoc-field textarea {
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.adoc-field input:focus,
+.adoc-field select:focus,
+.adoc-field textarea:focus {
+  outline: 2px solid var(--adoc-accent);
+  outline-offset: -1px;
+  border-color: transparent;
+}
+
+.adoc-hint {
+  font-size: 11px;
+  color: var(--adoc-soft);
+  font-style: normal;
+}
+
+.adoc-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  align-self: end;
+  padding-bottom: 8px;
+}
+
+.adoc-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--adoc-line);
+}
+
+.adoc-form-actions button:not(.adoc-primary) {
+  background: #fff;
+  border: 1px solid var(--adoc-line);
+  border-radius: 8px;
+  padding: 9px 18px;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ── список ─────────────────────────────────────────────────────────── */
+
+.adoc-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.adoc-search input {
+  font: inherit;
+  font-size: 14px;
+  padding: 8px 12px;
+  border: 1px solid var(--adoc-line);
+  border-radius: 999px;
+  min-width: 260px;
+}
+
+.adoc-empty {
+  color: var(--adoc-soft);
+  font-size: 14px;
+  padding: 24px 0;
+}
+
+.adoc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.adoc-table th {
+  text-align: start;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--adoc-soft);
+  border-bottom: 1px solid var(--adoc-line);
+  padding: 8px 10px;
+  font-weight: 600;
+}
+
+.adoc-table td {
+  padding: 10px;
+  border-bottom: 1px solid #f3f4f6;
+  vertical-align: top;
+}
+
+.adoc-job {
+  font-size: 12px;
+  color: var(--adoc-soft);
+  margin-top: 2px;
+}
+
+.adoc-blocked {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #991b1b;
+  background: #fef2f2;
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+
+.adoc-email {
+  color: var(--adoc-soft);
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.adoc-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.adoc-actions a,
+.adoc-actions button {
+  font: inherit;
+  font-size: 13px;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--adoc-accent);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.adoc-actions .adoc-danger {
+  color: #b91c1c;
+}
+
+@media (max-width: 760px) {
+  .adoc-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .adoc-table thead {
+    display: none;
+  }
+
+  .adoc-table td {
+    display: block;
+    border: 0;
+    padding: 4px 0;
+  }
+
+  .adoc-table tr {
+    display: block;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--adoc-line);
+  }
+}
