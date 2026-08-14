@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-31T08:32:54.891Z",
+  "generatedAt": "2026-08-14T17:37:59.860Z",
   "sections": [
     {
       "name": "clinic",
@@ -193,54 +193,54 @@
     {
       "name": "for-doctors",
       "title": "DocPats для врача",
-      "sourceHash": "cd1b5b73fed154043d6e29985cf1c606aaee37f7",
+      "sourceHash": "eb671ce048e5886708c3b480d26688d6d2878986",
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 5685
+          "bytes": 7127
         },
         "en": {
           "status": "fresh",
-          "bytes": 6589
+          "bytes": 8192
         },
         "tr": {
           "status": "fresh",
-          "bytes": 6199
+          "bytes": 7567
         },
         "az": {
           "status": "fresh",
-          "bytes": 5928
+          "bytes": 7414
         },
         "ar": {
           "status": "fresh",
-          "bytes": 5339
+          "bytes": 6577
         }
       }
     },
     {
       "name": "for-patients",
       "title": "DocPats для пациента",
-      "sourceHash": "68d0f11496bde91d050991aae6667a7f316ce7f3",
+      "sourceHash": "b46165b3907cc338c20f668c962192e26955ad30",
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 4143
+          "bytes": 4527
         },
         "en": {
           "status": "fresh",
-          "bytes": 4703
+          "bytes": 5124
         },
         "tr": {
           "status": "fresh",
-          "bytes": 4597
+          "bytes": 4992
         },
         "az": {
           "status": "fresh",
-          "bytes": 4574
+          "bytes": 4796
         },
         "ar": {
           "status": "fresh",
-          "bytes": 3728
+          "bytes": 4147
         }
       }
     },

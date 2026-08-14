@@ -2018,7 +2018,7 @@ export default function AuthLayout() {
                   {t("footer.contact") || "Contact"}
                 </a>
                 <a className="dp-footer-link" href="/public/about">
-                  {t("footer.about") || "О редакции"}
+                  {t("footer.about") || "О проекте"}
                 </a>
                 <Link className="dp-footer-link" to="/clinic/staff-login">
                   {t("footer.staffLogin") || "Вход для клиник"}

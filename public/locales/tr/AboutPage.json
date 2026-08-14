@@ -1,20 +1,42 @@
 {
   "topbar": {
     "left": "DocPats · Medical Intelligence",
-    "right": "Editör ekibi hakkında"
+    "right": "Proje hakkında"
   },
   "nav": {
     "back": "Ana sayfa",
     "tag": "Hakkımızda"
   },
   "hero": {
-    "label": "DocPats · Tıbbi yayın kurulu",
+    "label": "DocPats · Tıbbi platform",
     "headline": "Hakkımızda",
-    "deck": "Pratisyen bir hekim tarafından yönetilen bağımsız bir tıbbi yayın kurulu. Tüm içerikler yalnızca hakemli bilimsel kaynaklara dayanmaktadır."
+    "deck": "Pratisyen bir hekim tarafından yönetilen tıbbi platform: hastaya ait bir hastalık geçmişi, hekim için bir çalışma alanı, klinik yönetimi — ve hakemli bilimsel kaynakların analizlerini yayımlayan bağımsız bir yayın kurulu."
+  },
+  "platform": {
+    "sectionTitle": "DocPats nedir",
+    "lead": "DocPats tek bir ürün değil, tek bir hesapta bir araya getirilmiş dört üründür. Bu sayfanın geri kalanında anlatılan yayın kurulu, platformun bölümlerinden biridir; projenin tamamı değil.",
+    "items": [
+      {
+        "who": "Hasta için",
+        "text": "Hastalık geçmişiniz tek bir yerde: randevular, tahliller, görüntülemeler, aşılar, geçirilmiş ameliyatlar. Hekim erişimi yalnızca sizin onayınızla ve bölüm bölüm alır; kaydınıza yapılan her erişim, değiştirilemeyen ve silinemeyen bir günlüğe yazılır. Randevu alma, doğrudan tarayıcıda video görüşme ve karşı tarafın diline çeviren sohbet."
+      },
+      {
+        "who": "Hekim için",
+        "text": "Klinik gerektirmeyen bir çalışma alanı: takvim ve muayene, yapılandırılmış hasta kaydı, SOAP formatında epikriz, tahlillerin ve görüntülemelerin yardımcı değerlendirmesi. Ayrıca kanıta dayalı tıp, ICD kod rehberi ve sınav hazırlığı."
+      },
+      {
+        "who": "Klinik için",
+        "text": "Dokuz rollü çok kullanıcılı sistem: personel ve yetkiler, bölümler, odalar, takvim ve sıra, faturalar ve ödemeler, deposuyla eczane, laboratuvar, konsültasyonlar, teletıp, analitik. Bir kliniğin verileri diğerine ayarlar düzeyinde değil, veritabanı sorguları düzeyinde kapalıdır. Ayrıca — yerleşik bir kurucuyla hazırlanan, kliniğe ait web sitesi."
+      },
+      {
+        "who": "Eğitim ve pratik",
+        "text": "Görüntü okuma simülatörü — röntgen, BT, MR, ultrason, EKG — ile laboratuvar tanı ve sanal hasta istasyonları, cerrahi simülasyon, plastik cerrahide antropometri. Hekim hazır bir şık seçmez; patolojiyi doğrudan görüntü üzerinde bulur ve okuma protokolünü izler."
+      }
+    ]
   },
   "editor": {
     "sectionTitle": "Genel yayın yönetmeni",
-    "avatar": "İİ",
+    "avatar": "I.I.",
     "name": "Doctor I.I.",
     "title": "DocPats Genel Yayın Yönetmeni · Kulak Burun Boğaz Uzmanı",
     "bio": "Pratisyen kulak burun boğaz uzmanı ve DocPats tıbbi platformunun kurucusu. Onun editöryal liderliği altında, platformdaki tüm analitik materyaller güncel klinik verilere ve kanıta dayalı tıp standartlarına uygunluk açısından incelenmektedir.",
@@ -22,8 +44,9 @@
   },
   "mission": {
     "sectionTitle": "Misyonumuz",
-    "p1": "DocPats, hekimlerin ve hastaların güncel tıbbi ve bilimsel verilerin derinlemesine analizine erişmesini sağlamak için oluşturuldu. Tıbbi dergilerin yerini almıyoruz — onların içeriğini erişilebilir ve pratikte uygulanabilir hale getiriyoruz.",
-    "p2": "Her DocPats analitik materyali, birden fazla hakemli kaynaktan elde edilen verileri sentezleyerek, okuyucuya tıp ve biyolojik bilimlerdeki güncel konular hakkında bütünsel bir tablo sunar."
+    "p1": "DocPats basit bir düşünceyle başladı: hastalık geçmişi kayıt masasına değil, hastaya aittir. Hekim onu her muayenede yeniden toplamak zorunda kalmamalı, klinik ise yazılımını değiştirdiğinde onu kaybetmemelidir. Platformdaki her şey bu sorundan doğdu.",
+    "p2": "Projenin diğer yarısı bilgiye erişimdir. Hekimin ve hastanın ihtiyacı haberlerin tekrarı değil, güncel verilerin çözümlenmesidir: çalışma ne gösterdi, ne kadar güvenilir ve pratikte neyi değiştiriyor. Tıp dergilerinin yerini almıyoruz — içeriklerini erişilebilir ve uygulanabilir hâle getiriyoruz.",
+    "p3": "Her DocPats analitik materyali birden fazla hakemli kaynaktan gelen verileri sentezler. Yapay zekânın devreye girdiği yerde — tahlillerin ve görüntülemelerin değerlendirilmesinde — rolü küçük puntolu bir açıklamayla değil, sistemin kuruluşuyla sınırlandırılmıştır: çıktı yardımcı olarak işaretlenir ve bu işaret değiştirilemez; sonucu hekim yazar ve imzalar."
   },
   "sources": {
     "sectionTitle": "Güvendiğimiz kaynaklar",

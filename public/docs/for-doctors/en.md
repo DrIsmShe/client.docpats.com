@@ -1,99 +1,111 @@
 # DocPats for Physicians
 
-DocPats is a physician's workplace: patient consultations, their charts, AI assistance in reviewing clinical material, and professional development in a single account. No clinic is required: you work independently, and if you later establish a clinic, it is activated within the same account, with no data migration.
+DocPats is a physician's workplace: patient appointments, their charts, AI assistance in reviewing clinical material, and professional preparation in a single account. No clinic is required: you work for yourself, and if you do open a clinic, it is enabled within the same account, with no data migration.
 
-**The first 6 months after registration — the Growth plan free of charge.** Not a stripped-down demo version, but the same plan that subsequently costs $49 per month.
+**The first 6 months after registration — the Growth plan free of charge.** Not a stripped-down demo version, but the very same plan that costs $49 per month thereafter.
 
 ---
 
-## Consultations and Payment
+## Appointments and payment
 
-Patients search for a physician on the platform and book appointments themselves. You configure your schedule: open slots by day and appointment type, closed days, with booking confirmation left to you.
+Patients find physicians on the platform and book appointments themselves. You configure the schedule: open slots by day and appointment type, blocked days, with booking confirmation up to you.
 
 - **Video consultations** — directly in the browser, with no software installation. The trial period includes 720 minutes of video per month.
-- **Platform commission — 12 %** during the trial period and on the Growth plan, **10 %** on Pro. The remainder is yours.
-- Chat with the patient between consultations: messages, files, history.
+- **The platform commission** depends on the plan: 12% during the trial period, 15% on Lite, 13% on Start, 12% on Growth, and 10% on Pro. The remainder is yours — see the full list below, in the "What it costs" section.
+- Patient chat between appointments: messages, files, history.
 
-## A Patient Chart Without a Clinic
+## A patient chart without a clinic
 
-You have your own outpatient practice within your account, containing two types of patients: those **registered** on the platform (they can view their own data and authorize your access) and **private** patients — those you manage yourself, without an account of their own.
+You have your own outpatient practice inside the account, containing two types of patients: those **registered** on the platform (they can see their own data and authorize your access) and **private** patients — those you manage yourself, without an account of their own.
 
-The chart is not free text but a structure familiar to physicians:
+The chart is not free text but a structure familiar to any physician:
 
 - complaints, anamnesis morbi, anamnesis vitae;
 - status praesens and status localis;
 - laboratory test results;
-- CT, MRI, and ultrasonography reports;
+- CT, MRI, and ultrasound reports;
 - recommendations;
 - allergies, chronic conditions, immunizations, family history.
 
 Repeat examinations are assembled from templates rather than typed anew. During the trial period — up to 600 patients in your practice.
 
-## AI That Does Not Make the Diagnosis for You
+## AI that does not make the diagnosis in your place
 
-The assistant reviews clinical material: laboratory tests, ECG, CT, MRI, ultrasonography, and radiography reports, endoscopy, histology, dermoscopy — and the clinical case as a whole. It indicates what warrants attention, what should be clarified, and **what is missing from the data**.
+The assistant reviews clinical material: laboratory tests, ECGs, CT, MRI, ultrasound and radiography reports, endoscopy, histology, dermoscopy — and the clinical case as a whole. It indicates what warrants attention, what should be clarified, and **what is missing from the data**.
 
-The boundary here is maintained not by wording in the interface but by the architecture of the system itself:
+The boundary here is maintained not by a disclaimer in the interface but by the architecture of the system itself:
 
-- every output is flagged as advisory, and this flag is immutable — it travels with the data into any export or integration;
+- every output is flagged as supportive, and this flag is immutable — it travels with the data into any export or integration;
 - a case cannot be closed until you have written your own conclusion;
 - the model's output is never inserted into your conclusion automatically.
 
-You write and sign the final conclusion. The system remains advisory — and this is a deliberate design decision, not a fine-print disclaimer.
+You write and sign the final conclusion. The system remains supportive — and this is a deliberate decision, not a caveat in fine print.
 
-Separately: a **discharge summary in SOAP format** is assembled from the consultation chart, leaving you only to proofread it. During the trial period — 60 reviews and 60 summaries per month.
+Separately: a **discharge summary in SOAP format** is assembled from the visit chart; all that remains for you is to proofread it. During the trial period — 60 reviews and 60 summaries per month.
 
-## Examination Preparation
+## Exam preparation
 
-A bank of **1011 questions** — certification, residency, international certificates, CME. During the trial period and on the Growth plan, the number of questions is unlimited.
+A bank of **1011 questions** — certification, residency, international certificates, continuing medical education. During the trial period and on the Growth and Pro plans the number of questions is unlimited; on Start — one thousand per month, on Lite — 167. The limit can be removed on any plan with a separate add-on (see "What it costs").
 
-Questions are organized by category and program, attempts are saved, and errors are collected into a separate queue for review — you return precisely to what you did not master.
+Questions are sorted by category and program, attempts are saved, and errors are collected into a separate queue for review — you return to precisely what gave you trouble.
 
-## Your Reputation and Visibility
+## Your reputation and visibility
 
 - **Verification**: two levels of confirmation — basic and full, based on documents.
-- **Articles** — both general and scientific, published under your authorship.
+- **Articles** — both general and scientific, under your authorship.
 - **Patient reviews** and **recommendations from fellow physicians**.
-- Your profile and articles are **visible to search engines**: the page is served with complete titles, descriptions, and schema.org markup, rather than as an empty shell that a search engine cannot read. Patients find you through search, not only within the platform.
+- Your profile and articles are **visible to search engines**: the page is served with ready-made titles, descriptions, and schema.org markup, rather than as an empty shell that a search engine cannot read. Patients find you through search, not only within the platform.
 
-## Language Is Not an Obstacle
+## Language does not get in the way
 
 The interface is available in five languages: Russian, English, Azerbaijani, Turkish, and Arabic, with correct text direction for Arabic.
 
-**Chat messages are translated** — you write in your language, and the patient reads in theirs. The platform's educational materials are also translated automatically, rather than waiting for an editor.
+**Chat messages are translated** — you write in your own language, and the patient reads in theirs. The platform's educational materials are also translated automatically, without waiting for an editor.
 
-## Patient Data
+## Patient data
 
 - Personal and medical data are **encrypted** at rest.
-- Every access to a patient chart is recorded in an **audit log** that can neither be modified nor deleted and that is retained for seven years.
+- Every access to a patient chart is written to an **audit log** that cannot be modified or deleted and is retained for seven years.
 - A registered patient **personally authorizes** your access to their data.
 
-The platform is built with regard for HIPAA requirements governing the handling of medical data.
+The platform is built with regard to HIPAA requirements for handling medical data.
 
-## If You Grow Into a Clinic
+## If you grow into a clinic
 
-A clinic is activated within the same account: staff with nine roles and permissions down to the level of an individual section, departments, consultation rooms, equipment, scheduling and queue management, invoices and payments, pharmacy and inventory, multidisciplinary case conferences, telemedicine, a knowledge base, staff announcements, and analytics.
+The clinic is enabled within the same account: staff with nine roles and permissions down to the level of an individual section, departments, exam rooms, equipment, scheduling and queue management, invoices and payments, pharmacy and inventory, multidisciplinary consultations, telemedicine, a knowledge base, staff announcements, and analytics.
 
-Plus **your clinic's own website** — built with a site builder inside the platform, with a public storefront, reviews, services, and intake of requests.
+Plus **your own clinic website** — assembled with a builder inside the platform, with a public storefront, reviews, services, and request intake.
 
-## Coming Soon
+## Coming soon
 
-Candidly, about what has already been built but is still being populated:
+An honest account of what has already been built but is still being populated:
 
-- **Image reading simulator** — the physician does not select an answer option but works as a radiologist: locating pathology directly on the image, following an examination protocol, making a diagnosis, and receiving a review. Five reading modalities — radiography, CT, MRI, ultrasonography, ECG; three stations — images, laboratory tests, virtual patient; plus duels with colleagues and a ranking. The first cases are being published now.
+- **Imaging interpretation trainer** — the physician does not select a multiple-choice answer but works as a radiologist: locating pathology directly on the image, following the reading protocol, making a diagnosis, and receiving a detailed review. Five reading modalities — radiography, CT, MRI, ultrasound, ECG; three stations — images, laboratory tests, virtual patient; duels with colleagues and a leaderboard. The first cases are being published now.
 - **Anthropometry in plastic surgery** — annotation of anatomical landmarks on photographs, automatic calculation of angles and proportions, before-and-after comparison. The first procedure is rhinoplasty.
 
-## What It Costs
+## What it costs
 
-- **Trial period, 6 months — free of charge.** For all new physicians, on Growth plan terms.
-- **Start — $19 per month** ($190 per year). A small practice.
-- **Growth — $49 per month** ($490 per year). A steady flow of patients.
-- **Pro — $99 per month** ($990 per year). No limits, 10 % commission.
+**Trial period, 6 months — free of charge.** For all new physicians, on the terms of the Growth plan, with a 12% commission.
 
-Separate plans are available for clinics: from $99 per month for five physicians up to a version with no limit on the number of physicians.
+- **Lite — $3 per month** ($30 per year). The simplest entry point: up to 17 patients in your practice, 3 reviews and 3 summaries per month, 15% commission.
+- **Start — $19 per month** ($190 per year). A small practice: up to 100 patients, 20 reviews and 20 summaries, 13% commission.
+- **Growth — $49 per month** ($490 per year). A steady flow of patients: up to 600 patients, 60 reviews and 60 summaries, 12% commission.
+- **Pro — $99 per month** ($990 per year). No limits on patients, reviews, or summaries, 10% commission.
+
+The commission works inversely to the subscription: the cheaper the plan, the larger the share the platform takes from each appointment. If you have a high appointment volume, a higher plan pays for itself through the commission sooner than through the limits.
+
+**For clinics** — a separate lineup, in which the commission decreases as the plan increases:
+
+- **Clinic Start — $99 per month** ($990 per year). Up to 5 physicians, 10% commission.
+- **Clinic Business — $249 per month** ($2490 per year). Up to 15 physicians, 7% commission, analytics and priority placement in recommendations.
+- **Clinic Enterprise — $499 per month** ($4990 per year). No limit on the number of physicians, 5% commission.
+
+**Exam preparation** is purchased separately, on top of any plan, including the free one: **Exam Prep Plus — $7 per month** ($70 per year) for 2000 questions and **Exam Prep Unlimited — $15 per month** ($150 per year) with no limits. During the trial period and on Growth and Pro, questions are unlimited anyway — the add-on is needed if you are on Lite or Start.
+
+Annual payment equals ten monthly payments: two months free. Current terms are always on the [pricing page](/pricing).
 
 ---
 
-**Registration takes a couple of minutes; patient charts and consultations are available immediately.** The trial period begins automatically — no payment details are required for it.
+**Registration takes a couple of minutes, and patient charts and appointments are available immediately.** The trial period begins automatically — no payment details are required for it.
 
-<!-- translated-from-ru: cd1b5b73fed154043d6e29985cf1c606aaee37f7 -->
+<!-- translated-from-ru: eb671ce048e5886708c3b480d26688d6d2878986 -->

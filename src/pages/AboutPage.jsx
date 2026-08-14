@@ -7,8 +7,10 @@ export default function AboutPage() {
   const isRTL = i18n.language === "ar";
 
   // Arrays from translation file (returnObjects required for nested arrays)
+  const platformRaw = t("platform.items", { returnObjects: true });
   const sourcesRaw = t("sources.items", { returnObjects: true });
   const policiesRaw = t("policy.items", { returnObjects: true });
+  const platform = Array.isArray(platformRaw) ? platformRaw : [];
   const sources = Array.isArray(sourcesRaw) ? sourcesRaw : [];
   const policies = Array.isArray(policiesRaw) ? policiesRaw : [];
 
@@ -64,7 +66,32 @@ export default function AboutPage() {
         {/* CONTENT */}
         <main className="ab-main">
           <div className="ab-main-inner">
-            {/* EDITOR BLOCK */}
+            {/* WHAT DOCPATS IS — the platform, not just the editorial arm.
+                Comes first: the reader needs to know what the project is
+                before meeting the editor who runs one part of it. */}
+            <section className="ab-section">
+              <h2 className="ab-section-title">{t("platform.sectionTitle")}</h2>
+              <p className="ab-text">{t("platform.lead")}</p>
+              <div className="ab-plat-grid">
+                {platform.map((p, i) => (
+                  <div key={p.who || i} className="ab-plat-item">
+                    <div className="ab-plat-who">{p.who}</div>
+                    <p className="ab-plat-text">{p.text}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* MISSION */}
+            <section className="ab-section">
+              <h2 className="ab-section-title">{t("mission.sectionTitle")}</h2>
+              <p className="ab-text">{t("mission.p1")}</p>
+              <p className="ab-text">{t("mission.p2")}</p>
+              <p className="ab-text">{t("mission.p3")}</p>
+            </section>
+
+            {/* EDITOR BLOCK — the editorial arm starts here; sources and
+                policy below belong to it. */}
             <section className="ab-section">
               <h2 className="ab-section-title">{t("editor.sectionTitle")}</h2>
               <div className="ab-editor-card">
@@ -78,13 +105,6 @@ export default function AboutPage() {
                   </Link>
                 </div>
               </div>
-            </section>
-
-            {/* MISSION */}
-            <section className="ab-section">
-              <h2 className="ab-section-title">{t("mission.sectionTitle")}</h2>
-              <p className="ab-text">{t("mission.p1")}</p>
-              <p className="ab-text">{t("mission.p2")}</p>
             </section>
 
             {/* SOURCES */}
@@ -280,6 +300,28 @@ const CSS = `
   transition:opacity .15s;
 }
 .ab-editor-profile:hover{opacity:.7}
+/* «Что такое DocPats»: четыре карточки по аудиториям. Своя сетка, а не
+   ab-sources-grid — там короткие подписи в две строки, здесь абзац. */
+.ab-plat-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:26px;
+}
+.ab-plat-item{
+  background:var(--paper2);border:1px solid var(--rule);
+  border-top:3px solid #b83030;padding:20px 22px;
+}
+.ab-plat-who{
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:#b83030;margin-bottom:10px;
+}
+.ab-page[dir="rtl"] .ab-plat-who{
+  font-family:var(--sans);text-transform:none;letter-spacing:0;font-weight:600;
+}
+.ab-plat-text{
+  font-family:var(--sans);font-size:14px;font-weight:300;
+  line-height:1.75;color:var(--ink2);margin:0;
+}
+.ab-page[dir="rtl"] .ab-plat-text{font-weight:400}
+
 .ab-sources-grid{
   display:grid;grid-template-columns:repeat(2,1fr);gap:2px;
 }
@@ -355,7 +397,7 @@ const CSS = `
 @media(max-width:768px){
   .ab-topbar,.ab-nav{padding:0 20px}
   .ab-header-inner,.ab-main-inner,.ab-footer-inner{padding-left:20px;padding-right:20px}
-  .ab-sources-grid{grid-template-columns:1fr}
+  .ab-sources-grid,.ab-plat-grid{grid-template-columns:1fr}
   .ab-editor-card{flex-direction:column}
   .ab-nav-tag{display:none}
 }

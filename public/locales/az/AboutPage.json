@@ -1,20 +1,42 @@
 {
   "topbar": {
     "left": "DocPats · Medical Intelligence",
-    "right": "Redaksiya haqqında"
+    "right": "Layihə haqqında"
   },
   "nav": {
     "back": "Ana səhifə",
     "tag": "Haqqımızda"
   },
   "hero": {
-    "label": "DocPats · Tibbi redaksiya",
+    "label": "DocPats · Tibbi platforma",
     "headline": "Haqqımızda",
-    "deck": "Praktik bir həkimin rəhbərliyi altında müstəqil tibbi redaksiya. Bütün materiallar yalnız resenziyalı elmi mənbələrə əsaslanır."
+    "deck": "Praktik həkimin rəhbərliyi altında tibbi platforma: xəstəyə məxsus xəstəlik tarixçəsi, həkim üçün iş yeri, klinikanın idarə olunması — və resenziyalı elmi mənbələrin təhlillərini dərc edən müstəqil redaksiya."
+  },
+  "platform": {
+    "sectionTitle": "DocPats nədir",
+    "lead": "DocPats bir məhsul deyil, bir hesabda birləşdirilmiş dörd məhsuldur. Bu səhifənin qalan hissəsinin bəhs etdiyi redaksiya platformanın bölmələrindən biridir, bütün layihə deyil.",
+    "items": [
+      {
+        "who": "Xəstə üçün",
+        "text": "Xəstəlik tarixçəsi bir yerdə: qəbullar, analizlər, şəkillər, peyvəndlər, keçirilmiş əməliyyatlar. Həkim girişi yalnız sizin razılığınızla və bölmə-bölmə alır, kartınıza hər müraciət isə dəyişdirilməsi və silinməsi mümkün olmayan jurnala yazılır. Həkimə yazılma, birbaşa brauzerdə video qəbul və həmsöhbətin dilinə tərcümə olunan çat."
+      },
+      {
+        "who": "Həkim üçün",
+        "text": "Klinika tələb etməyən iş yeri: cədvəl və qəbul, strukturlaşdırılmış xəstə kartı, SOAP formatında epikriz, analizlərin və şəkillərin köməkçi təhlili. Bundan əlavə — sübuta əsaslanan təbabət, BXT kodları məlumat kitabçası və imtahanlara hazırlıq."
+      },
+      {
+        "who": "Klinika üçün",
+        "text": "Doqquz rollu çoxistifadəçili sistem: işçilər və hüquqlar, şöbələr, kabinetlər, cədvəl və növbə, hesablar və ödənişlər, anbarı ilə aptek, laboratoriya, konsiliumlar, telemedisina, analitika. Bir klinikanın məlumatları digəri üçün parametrlər səviyyəsində deyil, bazaya sorğular səviyyəsində əlçatmazdır. Ayrıca — konstruktorla yığılan klinikanın öz saytı."
+      },
+      {
+        "who": "Təlim və təcrübə",
+        "text": "Şəkil oxuma trenajoru — rentgen, KT, MRT, USM, EKQ — laborator diaqnostika və virtual xəstə stansiyaları, cərrahi simulyasiya, plastik cərrahiyyədə antropometriya. Həkim hazır cavab variantını seçmir, patologiyanı birbaşa şəkildə tapır və baxış protokolu üzrə gedir."
+      }
+    ]
   },
   "editor": {
     "sectionTitle": "Baş redaktor",
-    "avatar": "İİ",
+    "avatar": "I.I.",
     "name": "Doctor I.I.",
     "title": "DocPats baş redaktoru · Otorinolarinqoloq",
     "bio": "Praktik otorinolarinqoloq və DocPats tibbi platformasının təsisçisi. Onun redaktor rəhbərliyi altında platformanın bütün analitik materialları aktual klinik məlumatlara və sübuta əsaslanan tibb standartlarına uyğunluq baxımından yoxlanılır.",
@@ -22,8 +44,9 @@
   },
   "mission": {
     "sectionTitle": "Missiyamız",
-    "p1": "DocPats, həkimlərin və xəstələrin aktual tibbi və elmi məlumatların dərin analizinə çıxış əldə etməsi üçün yaradılıb. Biz tibbi jurnalları əvəz etmirik — biz onların məzmununu əlçatan və praktikada tətbiq oluna bilən hala gətiririk.",
-    "p2": "Hər bir DocPats analitik materialı bir neçə resenziyalı mənbədən alınan məlumatları sintez edərək, oxucuya tibb və biologiya elmlərinin aktual məsələləri haqqında bütöv mənzərə təqdim edir."
+    "p1": "DocPats sadə bir fikirdən başladı: xəstəlik tarixçəsi qeydiyyat şöbəsinə deyil, xəstəyə məxsusdur. Həkim onu hər qəbulda yenidən toplamamalı, klinika isə proqramı dəyişəndə itirməməlidir. Platformadakı hər şey bu məsələdən böyüdü.",
+    "p2": "Layihənin ikinci yarısı biliyə çıxışdır. Həkimə və xəstəyə xəbərlərin təkrarı deyil, aktual məlumatların təhlili lazımdır: tədqiqat nə göstərdi, ona nə dərəcədə etibar etmək olar və bu, praktikada nəyi dəyişir. Biz tibbi jurnalları əvəz etmirik — biz onların məzmununu əlçatan və tətbiq oluna bilən hala gətiririk.",
+    "p3": "Hər bir DocPats analitik materialı bir neçə resenziyalı mənbədən alınan məlumatları sintez edir. Süni intellektin işə qarışdığı yerdə isə — analizlərin və şəkillərin təhlilində — onun rolu xırda şriftlə yazılmış qeydlə deyil, sistemin quruluşu ilə məhdudlaşdırılıb: nəticə köməkçi kimi işarələnir və bu işarə dəyişdirilə bilməz, yekun rəyi isə həkim yazır və imzalayır."
   },
   "sources": {
     "sectionTitle": "Etibar etdiyimiz mənbələr",

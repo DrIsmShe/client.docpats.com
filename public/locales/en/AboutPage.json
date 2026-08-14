@@ -1,20 +1,42 @@
 {
   "topbar": {
     "left": "DocPats · Medical Intelligence",
-    "right": "About the editorial team"
+    "right": "About the project"
   },
   "nav": {
     "back": "Home",
     "tag": "About"
   },
   "hero": {
-    "label": "DocPats · Medical editorial team",
+    "label": "DocPats · Medical platform",
     "headline": "About us",
-    "deck": "An independent medical editorial team led by a practising physician. All materials are based exclusively on peer-reviewed scientific sources."
+    "deck": "A medical platform led by a practising physician: a medical history that belongs to the patient, a workplace for the doctor, clinic management — and an independent editorial team publishing analyses of peer-reviewed scientific sources."
+  },
+  "platform": {
+    "sectionTitle": "What DocPats is",
+    "lead": "DocPats is not one product but four, brought together in a single account. The editorial team the rest of this page describes is one section of the platform, not the whole project.",
+    "items": [
+      {
+        "who": "For patients",
+        "text": "Your medical history in one place: appointments, lab results, imaging, vaccinations, past surgeries. A doctor gets access section by section and only with your consent, and every look at your record is written to a log that cannot be altered or deleted. Booking, video consultations right in the browser, and a chat that translates into the other person's language."
+      },
+      {
+        "who": "For doctors",
+        "text": "A workplace that does not require a clinic: scheduling and appointments, a structured patient record, SOAP-format discharge summaries, and assisted review of lab results and imaging. Plus evidence-based medicine, an ICD code reference, and exam preparation."
+      },
+      {
+        "who": "For clinics",
+        "text": "A multi-user system with nine roles: staff and permissions, departments, rooms, scheduling and queues, invoices and payments, pharmacy with stock, laboratory, case conferences, telemedicine, analytics. One clinic's data is unreachable from another at the level of database queries, not settings. Separately — the clinic's own website, assembled in a built-in builder."
+      },
+      {
+        "who": "Training and practice",
+        "text": "An imaging-reading simulator — X-ray, CT, MRI, ultrasound, ECG — plus laboratory-diagnostics and virtual-patient stations, surgical simulation, and anthropometry in plastic surgery. The doctor does not pick an answer from a list but finds the pathology on the image itself and follows the reading protocol."
+      }
+    ]
   },
   "editor": {
     "sectionTitle": "Editor-in-chief",
-    "avatar": "II",
+    "avatar": "I.I.",
     "name": "Doctor I.I.",
     "title": "Editor-in-chief of DocPats · Otolaryngologist",
     "bio": "Practising otolaryngologist and founder of the DocPats medical platform. Under his editorial leadership, all analytical materials on the platform are reviewed for compliance with current clinical data and evidence-based medicine standards.",
@@ -22,8 +44,9 @@
   },
   "mission": {
     "sectionTitle": "Our mission",
-    "p1": "DocPats was created to give doctors and patients access to in-depth analysis of current medical and scientific data. We do not replace medical journals — we make their content accessible and applicable in practice.",
-    "p2": "Every DocPats analytical piece synthesises data from multiple peer-reviewed sources, giving the reader a comprehensive picture of current issues in medicine and the biological sciences."
+    "p1": "DocPats began with a simple idea: a medical history belongs to the patient, not to a front desk. A doctor should not have to reassemble it at every appointment, and a clinic should not lose it when it changes software. Everything else in the platform grew out of that problem.",
+    "p2": "The other half of the project is access to knowledge. Doctors and patients need more than a news summary — they need current data explained: what a study found, how far it can be trusted, and what it changes in practice. We do not replace medical journals — we make their content accessible and applicable.",
+    "p3": "Every DocPats analytical piece synthesises data from several peer-reviewed sources. And where artificial intelligence does take part — in reviewing lab results and imaging — its role is limited not by fine print but by how the system is built: its output is marked as advisory, that mark cannot be removed, and the conclusion is written and signed by the doctor."
   },
   "sources": {
     "sectionTitle": "Sources we trust",
