@@ -1,0 +1,405 @@
+/* client/src/pages/admin/dashboard/adminDashboard.css
+   Главная страница админпанели.
+
+   Все классы с префиксом adm- и своя палитра: страница живёт внутри
+   бутстраповского шаблона админки, и без префикса её карточки перехватывали
+   бы стили .card/.info-card из темы. */
+
+.adm {
+  --adm-ink: #0f172a;
+  --adm-soft: #64748b;
+  --adm-line: #e2e8f0;
+  --adm-bg: #f8fafc;
+  --adm-accent: #0f766e;
+  --adm-warn: #b45309;
+  --adm-danger: #b91c1c;
+  --adm-ok: #15803d;
+
+  color: var(--adm-ink);
+  padding-bottom: 48px;
+}
+
+/* ── шапка ──────────────────────────────────────────────────────────── */
+
+.adm-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.adm-head h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+
+.adm-head p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--adm-soft);
+}
+
+.adm-refresh {
+  font: inherit;
+  font-size: 13px;
+  background: #fff;
+  border: 1px solid var(--adm-line);
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  color: var(--adm-ink);
+}
+
+.adm-refresh:hover:not(:disabled) {
+  border-color: var(--adm-accent);
+  color: var(--adm-accent);
+}
+
+.adm-refresh:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* ── общий блок ─────────────────────────────────────────────────────── */
+
+.adm-section {
+  margin-bottom: 28px;
+}
+
+.adm-section > h2 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--adm-soft);
+  margin: 0 0 12px;
+}
+
+/* ── ключевые показатели ────────────────────────────────────────────── */
+
+.adm-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 14px;
+}
+
+.adm-kpi {
+  background: #fff;
+  border: 1px solid var(--adm-line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.adm-kpi-label {
+  font-size: 13px;
+  color: var(--adm-soft);
+}
+
+.adm-kpi-value {
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.adm-kpi-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--adm-soft);
+}
+
+.adm-trend {
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.adm-trend--up {
+  color: var(--adm-ok);
+  background: #f0fdf4;
+}
+
+.adm-trend--down {
+  color: var(--adm-danger);
+  background: #fef2f2;
+}
+
+.adm-trend--flat {
+  color: var(--adm-soft);
+  background: var(--adm-bg);
+}
+
+.adm-spark {
+  display: block;
+  width: 100%;
+  height: 34px;
+  overflow: visible;
+}
+
+/* ── очередь дел ────────────────────────────────────────────────────── */
+
+/* auto-fill, а не auto-fit: при одной карточке auto-fit растянул бы её на
+   всю ширину экрана, и единственное дело выглядело бы как баннер. */
+.adm-queue {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.adm-task {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: 1px solid var(--adm-line);
+  border-left-width: 3px;
+  border-radius: 10px;
+  padding: 13px 15px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.adm-task:hover {
+  background: var(--adm-bg);
+  color: inherit;
+}
+
+.adm-task--warn {
+  border-left-color: #f59e0b;
+}
+
+.adm-task--danger {
+  border-left-color: #ef4444;
+}
+
+.adm-task--info {
+  border-left-color: #0ea5e9;
+}
+
+.adm-task-n {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+
+.adm-task-text {
+  display: block;
+  min-width: 0;
+}
+
+/* Оба — block: инлайновыми они слипались в одну строку, и подпись читалась
+   как «в диагностической аренеждут снимка». */
+.adm-task-label {
+  display: block;
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.adm-task-hint {
+  display: block;
+  font-size: 11px;
+  color: var(--adm-soft);
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+.adm-clear {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 14px;
+}
+
+/* ── разделы платформы ──────────────────────────────────────────────── */
+
+.adm-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
+  gap: 10px;
+}
+
+.adm-tile {
+  background: #fff;
+  border: 1px solid var(--adm-line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.adm-tile:hover {
+  border-color: var(--adm-accent);
+  color: inherit;
+}
+
+/* Плитка без своей страницы: просто число, без намёка на переход. */
+.adm-tile--flat {
+  background: var(--adm-bg);
+}
+
+.adm-tile-n {
+  font-size: 19px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.adm-tile-label {
+  font-size: 12px;
+  color: var(--adm-soft);
+  margin-top: 2px;
+}
+
+/* ── нижняя пара: здоровье + лента ──────────────────────────────────── */
+
+.adm-split {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(300px, 1.4fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .adm-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.adm-panel {
+  background: #fff;
+  border: 1px solid var(--adm-line);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.adm-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  font-size: 13px;
+}
+
+.adm-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.adm-row > span:first-child {
+  color: var(--adm-soft);
+}
+
+.adm-row > span:last-child {
+  font-variant-numeric: tabular-nums;
+}
+
+.adm-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-inline-end: 6px;
+  vertical-align: middle;
+}
+
+.adm-dot--ok {
+  background: #22c55e;
+}
+
+.adm-dot--bad {
+  background: #ef4444;
+}
+
+/* лента событий */
+
+.adm-feed {
+  display: flex;
+  flex-direction: column;
+}
+
+.adm-event {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 13px;
+}
+
+.adm-event:last-child {
+  border-bottom: 0;
+}
+
+.adm-event-time {
+  flex: 0 0 68px;
+  font-size: 11px;
+  color: var(--adm-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.adm-event-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.adm-event-res {
+  color: var(--adm-soft);
+  font-size: 12px;
+}
+
+.adm-event-bad {
+  color: var(--adm-danger);
+  font-weight: 600;
+}
+
+/* ── состояния ──────────────────────────────────────────────────────── */
+
+.adm-msg {
+  padding: 16px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.adm-msg--error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: var(--adm-danger);
+}
+
+.adm-skeleton {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: adm-shimmer 1.3s linear infinite;
+  border-radius: 12px;
+  height: 108px;
+}
+
+@keyframes adm-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adm-skeleton {
+    animation: none;
+  }
+}
