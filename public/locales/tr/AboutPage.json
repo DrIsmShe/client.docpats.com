@@ -15,7 +15,7 @@
   "editor": {
     "sectionTitle": "Genel yayın yönetmeni",
     "avatar": "İİ",
-    "name": "Dr. İsmail İsmailov",
+    "name": "Doctor I.I.",
     "title": "DocPats Genel Yayın Yönetmeni · Kulak Burun Boğaz Uzmanı",
     "bio": "Pratisyen kulak burun boğaz uzmanı ve DocPats tıbbi platformunun kurucusu. Onun editöryal liderliği altında, platformdaki tüm analitik materyaller güncel klinik verilere ve kanıta dayalı tıp standartlarına uygunluk açısından incelenmektedir.",
     "profileLink": "DocPats üzerindeki profil →"
@@ -28,17 +28,38 @@
   "sources": {
     "sectionTitle": "Güvendiğimiz kaynaklar",
     "items": [
-      { "name": "PubMed / MEDLINE", "desc": "ABD Ulusal Tıp Kütüphanesi" },
+      {
+        "name": "PubMed / MEDLINE",
+        "desc": "ABD Ulusal Tıp Kütüphanesi"
+      },
       {
         "name": "The Lancet",
         "desc": "Dünyanın en eski tıp dergilerinden biri"
       },
-      { "name": "NEJM", "desc": "New England Journal of Medicine" },
-      { "name": "PLOS Medicine", "desc": "Açık erişimli hakemli dergi" },
-      { "name": "WHO", "desc": "Dünya Sağlık Örgütü" },
-      { "name": "CDC", "desc": "ABD Hastalık Kontrol Merkezleri" },
-      { "name": "Frontiers in Medicine", "desc": "Uluslararası hakemli dergi" },
-      { "name": "PeerJ", "desc": "Açık erişimli bilimsel dergi" }
+      {
+        "name": "NEJM",
+        "desc": "New England Journal of Medicine"
+      },
+      {
+        "name": "PLOS Medicine",
+        "desc": "Açık erişimli hakemli dergi"
+      },
+      {
+        "name": "WHO",
+        "desc": "Dünya Sağlık Örgütü"
+      },
+      {
+        "name": "CDC",
+        "desc": "ABD Hastalık Kontrol Merkezleri"
+      },
+      {
+        "name": "Frontiers in Medicine",
+        "desc": "Uluslararası hakemli dergi"
+      },
+      {
+        "name": "PeerJ",
+        "desc": "Açık erişimli bilimsel dergi"
+      }
     ]
   },
   "policy": {

@@ -15,7 +15,7 @@
   "editor": {
     "sectionTitle": "Baş redaktor",
     "avatar": "İİ",
-    "name": "Dr. İsmayıl İsmayılov",
+    "name": "Doctor I.I.",
     "title": "DocPats baş redaktoru · Otorinolarinqoloq",
     "bio": "Praktik otorinolarinqoloq və DocPats tibbi platformasının təsisçisi. Onun redaktor rəhbərliyi altında platformanın bütün analitik materialları aktual klinik məlumatlara və sübuta əsaslanan tibb standartlarına uyğunluq baxımından yoxlanılır.",
     "profileLink": "DocPats-dakı profil →"
@@ -28,20 +28,38 @@
   "sources": {
     "sectionTitle": "Etibar etdiyimiz mənbələr",
     "items": [
-      { "name": "PubMed / MEDLINE", "desc": "ABŞ Milli Tibb Kitabxanası" },
+      {
+        "name": "PubMed / MEDLINE",
+        "desc": "ABŞ Milli Tibb Kitabxanası"
+      },
       {
         "name": "The Lancet",
         "desc": "Dünyanın ən qədim tibb jurnallarından biri"
       },
-      { "name": "NEJM", "desc": "New England Journal of Medicine" },
-      { "name": "PLOS Medicine", "desc": "Açıq resenziyalı jurnal" },
-      { "name": "WHO", "desc": "Ümumdünya Səhiyyə Təşkilatı" },
-      { "name": "CDC", "desc": "ABŞ Xəstəliklərə Nəzarət Mərkəzləri" },
+      {
+        "name": "NEJM",
+        "desc": "New England Journal of Medicine"
+      },
+      {
+        "name": "PLOS Medicine",
+        "desc": "Açıq resenziyalı jurnal"
+      },
+      {
+        "name": "WHO",
+        "desc": "Ümumdünya Səhiyyə Təşkilatı"
+      },
+      {
+        "name": "CDC",
+        "desc": "ABŞ Xəstəliklərə Nəzarət Mərkəzləri"
+      },
       {
         "name": "Frontiers in Medicine",
         "desc": "Beynəlxalq resenziyalı jurnal"
       },
-      { "name": "PeerJ", "desc": "Açıq elmi jurnal" }
+      {
+        "name": "PeerJ",
+        "desc": "Açıq elmi jurnal"
+      }
     ]
   },
   "policy": {

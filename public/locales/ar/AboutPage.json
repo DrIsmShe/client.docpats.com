@@ -15,7 +15,7 @@
   "editor": {
     "sectionTitle": "رئيس التحرير",
     "avatar": "إ.إ",
-    "name": "د. إسماعيل إسماعيلوف",
+    "name": "Doctor I.I.",
     "title": "رئيس تحرير DocPats · طبيب أنف وأذن وحنجرة",
     "bio": "طبيب أنف وأذن وحنجرة ممارس ومؤسس منصة DocPats الطبية. تحت قيادته التحريرية، تخضع جميع المواد التحليلية على المنصة للمراجعة للتأكد من توافقها مع البيانات السريرية الحالية ومعايير الطب القائم على الأدلة.",
     "profileLink": "← الملف الشخصي على DocPats"
@@ -28,14 +28,38 @@
   "sources": {
     "sectionTitle": "مصادر نثق بها",
     "items": [
-      { "name": "PubMed / MEDLINE", "desc": "المكتبة الوطنية الأمريكية للطب" },
-      { "name": "The Lancet", "desc": "إحدى أقدم المجلات الطبية في العالم" },
-      { "name": "NEJM", "desc": "New England Journal of Medicine" },
-      { "name": "PLOS Medicine", "desc": "مجلة محكّمة مفتوحة الوصول" },
-      { "name": "WHO", "desc": "منظمة الصحة العالمية" },
-      { "name": "CDC", "desc": "مراكز السيطرة على الأمراض الأمريكية" },
-      { "name": "Frontiers in Medicine", "desc": "مجلة دولية محكّمة" },
-      { "name": "PeerJ", "desc": "مجلة علمية مفتوحة الوصول" }
+      {
+        "name": "PubMed / MEDLINE",
+        "desc": "المكتبة الوطنية الأمريكية للطب"
+      },
+      {
+        "name": "The Lancet",
+        "desc": "إحدى أقدم المجلات الطبية في العالم"
+      },
+      {
+        "name": "NEJM",
+        "desc": "New England Journal of Medicine"
+      },
+      {
+        "name": "PLOS Medicine",
+        "desc": "مجلة محكّمة مفتوحة الوصول"
+      },
+      {
+        "name": "WHO",
+        "desc": "منظمة الصحة العالمية"
+      },
+      {
+        "name": "CDC",
+        "desc": "مراكز السيطرة على الأمراض الأمريكية"
+      },
+      {
+        "name": "Frontiers in Medicine",
+        "desc": "مجلة دولية محكّمة"
+      },
+      {
+        "name": "PeerJ",
+        "desc": "مجلة علمية مفتوحة الوصول"
+      }
     ]
   },
   "policy": {

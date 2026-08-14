@@ -15,7 +15,7 @@
   "editor": {
     "sectionTitle": "Editor-in-chief",
     "avatar": "II",
-    "name": "Dr. Ismail Ismailov",
+    "name": "Doctor I.I.",
     "title": "Editor-in-chief of DocPats · Otolaryngologist",
     "bio": "Practising otolaryngologist and founder of the DocPats medical platform. Under his editorial leadership, all analytical materials on the platform are reviewed for compliance with current clinical data and evidence-based medicine standards.",
     "profileLink": "Profile on DocPats →"
@@ -36,9 +36,18 @@
         "name": "The Lancet",
         "desc": "One of the oldest medical journals in the world"
       },
-      { "name": "NEJM", "desc": "New England Journal of Medicine" },
-      { "name": "PLOS Medicine", "desc": "Open peer-reviewed journal" },
-      { "name": "WHO", "desc": "World Health Organization" },
+      {
+        "name": "NEJM",
+        "desc": "New England Journal of Medicine"
+      },
+      {
+        "name": "PLOS Medicine",
+        "desc": "Open peer-reviewed journal"
+      },
+      {
+        "name": "WHO",
+        "desc": "World Health Organization"
+      },
       {
         "name": "CDC",
         "desc": "U.S. Centers for Disease Control and Prevention"
@@ -47,7 +56,10 @@
         "name": "Frontiers in Medicine",
         "desc": "International peer-reviewed journal"
       },
-      { "name": "PeerJ", "desc": "Open scientific journal" }
+      {
+        "name": "PeerJ",
+        "desc": "Open scientific journal"
+      }
     ]
   },
   "policy": {

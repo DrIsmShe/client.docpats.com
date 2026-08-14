@@ -45,8 +45,8 @@
     "words": "{{count}} words"
   },
   "author": {
-    "default": "Edited by Dr. Ismail",
-    "label": "Author: Dr. Ismail"
+    "default": "Edited by Doctor I.I.",
+    "label": "Author: Doctor I.I."
   },
   "badges": {
     "our_analytics": "Our analytics"
@@ -71,7 +71,7 @@
   "loading": "Loading materials…",
   "load_error": "Failed to load articles",
   "empty_state": "Articles have not been generated yet. The first ones will appear today at 04:00.",
-  "author_name": "Editor-in-Chief of DocPats – Dr. Ismail",
+  "author_name": "Editor-in-Chief of DocPats · Doctor I.I.",
   "words": "{{count}} words",
   "sources": "{{count}} sources",
   "other_materials": "Other Materials",
@@ -167,7 +167,7 @@
     "news": "News",
     "research": "Research",
     "about": "About DocPats Editorial Team",
-    "name": "Dr. Ismail Ismailov",
+    "name": "Doctor I.I.",
     "role": "Editor-in-Chief of DocPats · Otolaryngologist",
     "description": "DocPats is a medical editorial team led by a practicing physician. All analytical materials are based исключительно on peer-reviewed scientific sources such as PubMed, The Lancet, PLOS Medicine, NEJM, CDC, WHO, and other leading medical journals.",
     "disclaimer_docpats": "⚕ This material is for informational purposes only and does not replace professional medical consultation. Please consult a doctor for medical assistance."

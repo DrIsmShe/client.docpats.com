@@ -66,8 +66,8 @@
     "words": "{{count}} söz"
   },
   "author": {
-    "default": "Dr. İsmayıl tərəfindən redaktə edilib",
-    "label": "Müəllif: Dr. İsmayıl"
+    "default": "Redaktoru: Doctor I.I.",
+    "label": "Müəllif: Doctor I.I."
   },
   "badges": {
     "our_analytics": "Bizim analitika"
@@ -92,7 +92,7 @@
   "loading": "Materiallar yüklənir…",
   "load_error": "Məqalələri yükləmək mümkün olmadı",
   "empty_state": "Məqalələr hələ yaradılmayıb. İlk materiallar bu gün saat 04:00-da görünəcək.",
-  "author_name": "DocPats-ın Baş Redaktoru – Dr. İsmayıl",
+  "author_name": "DocPats baş redaktoru · Doctor I.I.",
   "words": "{{count}} söz",
   "sources": "{{count}} mənbə",
   "other_materials": "Digər Materiallar",
@@ -206,7 +206,7 @@
     "news": "Xəbərlər",
     "research": "Tədqiqat",
     "about": "DocPats redaksiyası haqqında",
-    "name": "Dr. İsmayıl İsmayılov",
+    "name": "Doctor I.I.",
     "role": "DocPats baş redaktoru · Otolarinqoloq",
     "description": "DocPats — praktik həkimin rəhbərliyi altında fəaliyyət göstərən tibbi redaksiyadır. Bütün analitik materiallar yalnız PubMed, The Lancet, PLOS Medicine, NEJM, CDC, WHO və digər nüfuzlu tibbi mənbələrə əsaslanır.",
     "disclaimer_docpats": "⚕ Material yalnız məlumat xarakterlidir və həkim konsultasiyasını əvəz etmir. Tibbi yardım üçün mütləq həkimə müraciət edin."

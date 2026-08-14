@@ -45,8 +45,8 @@
     "words": "{{count}} kelime"
   },
   "author": {
-    "default": "Dr. İsmail tarafından düzenlendi",
-    "label": "Yazar: Dr. İsmail"
+    "default": "Editör: Doctor I.I.",
+    "label": "Yazar: Doctor I.I."
   },
   "badges": {
     "our_analytics": "Analizimiz"
@@ -71,7 +71,7 @@
   "loading": "İçerikler yükleniyor…",
   "load_error": "Makaleler yüklenemedi",
   "empty_state": "Makaleler henüz oluşturulmadı. İlk içerikler bugün saat 04:00'te yayınlanacak.",
-  "author_name": "DocPats Baş Editörü – Dr. İsmail",
+  "author_name": "DocPats Genel Yayın Yönetmeni · Doctor I.I.",
   "words": "{{count}} kelime",
   "sources": "{{count}} kaynak",
   "other_materials": "Diğer İçerikler",
@@ -200,7 +200,7 @@
     "news": "Haberler",
     "research": "Araştırma",
     "about": "DocPats Editör Ekibi Hakkında",
-    "name": "Dr. İsmail İsmailov",
+    "name": "Doctor I.I.",
     "role": "DocPats Baş Editörü · Kulak Burun Boğaz Uzmanı",
     "description": "DocPats, aktif olarak çalışan bir doktorun liderliğinde oluşturulmuş bir tıbbi editörlük ekibidir. Tüm içerikler yalnızca PubMed, The Lancet, PLOS Medicine, NEJM, CDC, WHO ve diğer saygın tıbbi kaynaklara dayanmaktadır.",
     "disclaimer_docpats": "⚕ Bu içerik yalnızca bilgilendirme amaçlıdır ve doktor muayenesinin yerini tutmaz. Tıbbi yardım için bir uzmana başvurunuz."
