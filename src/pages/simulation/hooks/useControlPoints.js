@@ -46,6 +46,11 @@ function genKey() {
 const DEFAULT_POINT_RADIUS = 0.05; // было 0.08
 const DEFAULT_POINT_STRENGTH = 0.5; // было 1.0
 
+// Пределы радиуса при перетаскивании пунктирного круга: меньше 1 % кадра —
+// точка практически неуловима, больше половины — деформирует пол-лица.
+const RADIUS_MIN = 0.01;
+const RADIUS_MAX = 0.5;
+
 export function useControlPoints({ initialPoints, onCommit }) {
   const [points, setPoints] = useState(initialPoints || []);
   const [selectedKey, setSelectedKey] = useState(null);
@@ -221,6 +226,43 @@ export function useControlPoints({ initialPoints, onCommit }) {
     });
   }, [commit]);
 
+  /* ────────── DRAG: радиус влияния ──────────
+     Раньше радиус правился только числом в правой панели: чтобы понять,
+     насколько широко «плывёт» ткань, врач менял значение, смотрел на
+     результат и менял снова. Теперь пунктирный круг можно тянуть прямо
+     на снимке — это тот же приём, что в Liquify, и он не требует
+     переводить ощущение в цифру.
+
+     Радиус приходит уже посчитанным (редактор знает размеры кадра),
+     здесь только зажимаем в пределы RADIUS_MIN..RADIUS_MAX. */
+  const radiusDraggingRef = useRef(null);
+
+  const startDragRadius = useCallback((key) => {
+    const target = pointsRef.current.find((p) => p.key === key);
+    if (!target) return;
+    radiusDraggingRef.current = { key };
+    setSelectedKey(key);
+  }, []);
+
+  const updateDragRadius = useCallback((radius) => {
+    const d = radiusDraggingRef.current;
+    if (!d) return;
+    const next = Math.max(RADIUS_MIN, Math.min(RADIUS_MAX, radius));
+    setPoints((prev) =>
+      prev.map((p) => (p.key === d.key ? { ...p, radius: next } : p)),
+    );
+  }, []);
+
+  const endDragRadius = useCallback(() => {
+    const d = radiusDraggingRef.current;
+    if (!d) return;
+    radiusDraggingRef.current = null;
+    setPoints((latest) => {
+      commit(latest, { action: "drag-radius", key: d.key });
+      return latest;
+    });
+  }, [commit]);
+
   return {
     points,
     selectedKey,
@@ -239,6 +281,10 @@ export function useControlPoints({ initialPoints, onCommit }) {
     startDragAnchor,
     updateDragAnchor,
     endDragAnchor,
+
+    startDragRadius,
+    updateDragRadius,
+    endDragRadius,
 
     syncFromExternal,
 

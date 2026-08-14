@@ -71,9 +71,9 @@ export default function BreastEditorPage() {
   const {
     viewport,
     handleWheel,
-    startPan,
-    updatePan,
-    endPan,
+    startGesture,
+    updateGesture,
+    endGesture,
     zoomIn,
     zoomOut,
     reset,
@@ -224,47 +224,110 @@ export default function BreastEditorPage() {
 
   const canCompare = !!preview?.imageData && controlPoints.length > 0;
 
-  /* ─── Pan/zoom handlers ─── */
-  const dragStateRef = useRef(null);
+  /* ─── Pan/zoom handlers ───
+
+     Тот же реестр указателей, что в лицевом редакторе: один палец —
+     панорама, два — щипок. До этого здесь был только одноуказательный пан,
+     а зум жил исключительно в колесе мыши, которого на планшете нет: врач
+     мог двигать снимок, но не мог его приблизить иначе как кнопками.
+
+     Отклонение ладони тоже отсюда: третье и последующие касания в жест не
+     принимаются, а перетаскивание контрольных точек живёт в оверлее и
+     сюда не всплывает. */
+  const pointersRef = useRef(new Map());
+  const gestureRef = useRef(null);
+  const surfaceRef = useRef(null);
+
+  const readGeometry = useCallback(() => {
+    const el = surfaceRef.current;
+    const pts = [...pointersRef.current.values()];
+    if (!el || !pts.length) return null;
+    const rect = el.getBoundingClientRect();
+    let sx = 0;
+    let sy = 0;
+    for (const p of pts) {
+      sx += p.x;
+      sy += p.y;
+    }
+    const dist =
+      pts.length >= 2
+        ? Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y)
+        : 0;
+    return {
+      cx: sx / pts.length - rect.left,
+      cy: sy / pts.length - rect.top,
+      dist,
+    };
+  }, []);
+
+  const rebaseGesture = useCallback(() => {
+    const g = readGeometry();
+    if (!g) return;
+    startGesture();
+    gestureRef.current = { startCx: g.cx, startCy: g.cy, startDist: g.dist };
+  }, [readGeometry, startGesture]);
 
   const onPointerDown = useCallback(
     (e) => {
       if (isAddPointMode) return;
-      if (e.button !== undefined && e.button !== 0) return;
+      if (e.pointerType === "mouse" && e.button !== 0) return;
 
-      dragStateRef.current = "pan";
+      pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pointersRef.current.size > 2) return; // третий палец лишний
+
+      if (!surfaceRef.current) surfaceRef.current = e.currentTarget;
       try {
         e.currentTarget.setPointerCapture?.(e.pointerId);
       } catch {
         /* ignore */
       }
-      startPan(e);
+      rebaseGesture();
     },
-    [isAddPointMode, startPan],
+    [isAddPointMode, rebaseGesture],
   );
 
   const onPointerMove = useCallback(
     (e) => {
-      if (dragStateRef.current === "pan") {
-        updatePan(e);
-      }
+      const g = gestureRef.current;
+      if (!g) return;
+      if (!pointersRef.current.has(e.pointerId)) return;
+
+      pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      const geo = readGeometry();
+      if (!geo) return;
+      updateGesture({
+        dx: geo.cx - g.startCx,
+        dy: geo.cy - g.startCy,
+        scaleRatio:
+          g.startDist > 0 && geo.dist > 0 ? geo.dist / g.startDist : 1,
+        centerX: g.startCx,
+        centerY: g.startCy,
+      });
     },
-    [updatePan],
+    [readGeometry, updateGesture],
   );
 
   const onPointerUp = useCallback(
     (e) => {
-      if (dragStateRef.current === "pan") {
-        try {
-          e.currentTarget.releasePointerCapture?.(e.pointerId);
-        } catch {
-          /* ignore */
-        }
-        endPan();
+      pointersRef.current.delete(e.pointerId);
+      try {
+        e.currentTarget.releasePointerCapture?.(e.pointerId);
+      } catch {
+        /* ignore */
       }
-      dragStateRef.current = null;
+      if (!gestureRef.current) return;
+
+      if (pointersRef.current.size === 0) {
+        gestureRef.current = null;
+        endGesture();
+      } else {
+        // Один палец из двух подняли — без пересборки базы оставшийся
+        // рывком утащил бы снимок на разницу центроидов.
+        rebaseGesture();
+      }
     },
-    [endPan],
+    [endGesture, rebaseGesture],
   );
 
   /* ─── Keyboard ─── */

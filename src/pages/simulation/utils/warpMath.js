@@ -131,18 +131,154 @@ function preprocessPoints(points) {
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
-   Главный метод. Forward Warp с локальным smoothstep falloff'ом.
+   Область записи одной точки.
+
+   Пиксель получает ненулевой вклад ТОЛЬКО если попал внутрь круга радиуса
+   `radius` вокруг `anchor` (см. «строгая локальность» выше): за границей
+   `distSq >= radiusSq` и вклад пропускается, а пиксель копируется из src
+   без изменений. Значит зона записи точки — ровно этот круг, и его bbox
+   можно посчитать заранее, не трогая остальной кадр.
+
+   Это фундамент инкрементального пересчёта: смещение `current` не двигает
+   зону записи вообще, поэтому перетаскивание точки трогает один и тот же
+   небольшой прямоугольник.
    ────────────────────────────────────────────────────────────────────────── */
-export function applyWarp({ src, width, height, points }) {
+function pointWriteBounds(p, W, H) {
+  const r = typeof p?.radius === "number" && p.radius > 0 ? p.radius : 0.05;
+  const ax = p?.anchor?.x ?? 0;
+  const ay = p?.anchor?.y ?? 0;
+  return {
+    x0: Math.floor((ax - r) * W),
+    y0: Math.floor((ay - r) * H),
+    x1: Math.ceil((ax + r) * W),
+    y1: Math.ceil((ay + r) * H),
+  };
+}
+
+function samePoint(a, b) {
+  return (
+    a.anchor?.x === b.anchor?.x &&
+    a.anchor?.y === b.anchor?.y &&
+    a.current?.x === b.current?.x &&
+    a.current?.y === b.current?.y &&
+    a.radius === b.radius &&
+    a.strength === b.strength
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Прямоугольник, который нужно пересчитать при переходе prev → next.
+
+   Возвращает:
+     { x, y, w, h } — пересчитать только его;
+     null           — пересчитать кадр целиком (первый кадр, массовая
+                      правка, undo/redo, смена фото).
+
+   Порог MAX_INCREMENTAL: когда изменилось много точек, объединение их
+   прямоугольников обычно накрывает почти весь кадр, и возня с ROI только
+   добавляет накладных расходов.
+   ────────────────────────────────────────────────────────────────────────── */
+const MAX_INCREMENTAL = 4;
+
+export function computeDirtyRect(prevPoints, nextPoints, W, H) {
+  if (!Array.isArray(prevPoints) || !Array.isArray(nextPoints)) return null;
+
+  const prevByKey = new Map();
+  for (const p of prevPoints) if (p?.key) prevByKey.set(p.key, p);
+  const nextByKey = new Map();
+  for (const p of nextPoints) if (p?.key) nextByKey.set(p.key, p);
+
+  // Точка без ключа — не можем сопоставить, честнее пересчитать всё.
+  if (prevByKey.size !== prevPoints.length) return null;
+  if (nextByKey.size !== nextPoints.length) return null;
+
+  const touched = [];
+  for (const [key, next] of nextByKey) {
+    const prev = prevByKey.get(key);
+    if (!prev) touched.push([null, next]);
+    else if (!samePoint(prev, next)) touched.push([prev, next]);
+  }
+  for (const [key, prev] of prevByKey) {
+    if (!nextByKey.has(key)) touched.push([prev, null]);
+  }
+
+  if (touched.length === 0) return { x: 0, y: 0, w: 0, h: 0 }; // нечего делать
+  if (touched.length > MAX_INCREMENTAL) return null;
+
+  let x0 = Infinity;
+  let y0 = Infinity;
+  let x1 = -Infinity;
+  let y1 = -Infinity;
+
+  for (const [prev, next] of touched) {
+    for (const p of [prev, next]) {
+      if (!p) continue;
+      const b = pointWriteBounds(p, W, H);
+      if (b.x0 < x0) x0 = b.x0;
+      if (b.y0 < y0) y0 = b.y0;
+      if (b.x1 > x1) x1 = b.x1;
+      if (b.y1 > y1) y1 = b.y1;
+    }
+  }
+
+  // Билинейная выборка читает соседний пиксель — расширяем на 1 px, иначе
+  // на границе ROI остаётся шов толщиной в пиксель.
+  x0 = Math.max(0, x0 - 1);
+  y0 = Math.max(0, y0 - 1);
+  x1 = Math.min(W, x1 + 1);
+  y1 = Math.min(H, y1 + 1);
+
+  if (x1 <= x0 || y1 <= y0) return { x: 0, y: 0, w: 0, h: 0 };
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Главный метод. Forward Warp с локальным smoothstep falloff'ом.
+
+   roi — необязательный прямоугольник {x, y, w, h}. Если задан, считаются
+   только эти пиксели; остальные в dst не трогаются. Имеет смысл ТОЛЬКО
+   вместе с dst, который уже содержит корректный предыдущий кадр — иначе
+   за пределами roi останется мусор.
+
+   dst — необязательный буфер для записи. Позволяет переиспользовать
+   выделенную память между кадрами вместо аллокации 4 МБ на каждое
+   движение пальца.
+   ────────────────────────────────────────────────────────────────────────── */
+export function applyWarp({
+  src,
+  width,
+  height,
+  points,
+  roi = null,
+  dst: dstIn = null,
+}) {
   const W = width;
   const H = height;
-  const dst = new Uint8ClampedArray(src.length);
+  const dst =
+    dstIn && dstIn.length === src.length
+      ? dstIn
+      : new Uint8ClampedArray(src.length);
 
   const pts = preprocessPoints(points);
 
+  const rx0 = roi ? Math.max(0, roi.x) : 0;
+  const ry0 = roi ? Math.max(0, roi.y) : 0;
+  const rx1 = roi ? Math.min(W, roi.x + roi.w) : W;
+  const ry1 = roi ? Math.min(H, roi.y + roi.h) : H;
+
+  if (rx1 <= rx0 || ry1 <= ry0) return dst;
+
   // Нет точек или все identity — тождественное преобразование, копируем.
   if (pts.length === 0) {
-    dst.set(src);
+    if (!roi) {
+      dst.set(src);
+    } else {
+      for (let ty = ry0; ty < ry1; ty++) {
+        const from = (ty * W + rx0) * 4;
+        const to = (ty * W + rx1) * 4;
+        dst.set(src.subarray(from, to), from);
+      }
+    }
     return dst;
   }
 
@@ -150,11 +286,11 @@ export function applyWarp({ src, width, height, points }) {
   const invH = 1 / H;
   const N = pts.length;
 
-  for (let ty = 0; ty < H; ty++) {
+  for (let ty = ry0; ty < ry1; ty++) {
     const ny = ty * invH;
     const rowOffset = ty * W * 4;
 
-    for (let tx = 0; tx < W; tx++) {
+    for (let tx = rx0; tx < rx1; tx++) {
       const nx = tx * invW;
 
       // Аккумулятор смещений (в normalized space)

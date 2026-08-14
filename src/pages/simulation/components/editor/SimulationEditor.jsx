@@ -52,6 +52,7 @@ import MeasurementsOverlay from "./MeasurementsOverlay.jsx";
 import MeasurementsPanel from "./MeasurementsPanel.jsx";
 import ManualLandmarkWizard from "./ManualLandmarkWizard.jsx";
 
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { useZoomPan } from "../../hooks/useZoomPan.js";
 import { useCanvasImage } from "../../hooks/useCanvasImage.js";
 import { useWarpEngine } from "../../hooks/useWarpEngine.js";
@@ -88,19 +89,6 @@ function cloneImageData(imageData) {
     imageData.width,
     imageData.height,
   );
-}
-
-function useIsMobile(breakpoint = 768) {
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth <= breakpoint : false,
-  );
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const onResize = () => setIsMobile(window.innerWidth <= breakpoint);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, [breakpoint]);
-  return isMobile;
 }
 
 const PANEL_WIDTH = 290;
@@ -249,10 +237,11 @@ export default function SimulationEditor({ plan }) {
 
   const {
     viewport,
+    viewportRef,
     handleWheel,
-    startPan,
-    updatePan,
-    endPan,
+    startGesture,
+    updateGesture,
+    endGesture,
     zoomIn,
     zoomOut,
     reset,
@@ -343,9 +332,9 @@ export default function SimulationEditor({ plan }) {
     setBakedImageData(null);
   }, [planId]);
 
-  const { warpedImageData, isWarping, scheduleWarp } = useWarpEngine({
-    sourceImageData: effectivePreview?.imageData,
-  });
+  const { warpedImageData, warpRegion, isWarping, scheduleWarp } = useWarpEngine(
+    { sourceImageData: effectivePreview?.imageData },
+  );
 
   const canvasContainerRef = useRef(null);
   const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
@@ -419,6 +408,9 @@ export default function SimulationEditor({ plan }) {
     startDragAnchor,
     updateDragAnchor,
     endDragAnchor,
+    startDragRadius,
+    updateDragRadius,
+    endDragRadius,
     syncFromExternal,
     commitPoints,
   } = useControlPoints({
@@ -567,22 +559,86 @@ export default function SimulationEditor({ plan }) {
 
   /* ════════════════ End cleanup actions ════════════════ */
 
-  const draggingState = useRef(null);
+  /* ══════════════════════════════════════════════════════════════════════
+     Указатели.
+
+     Раньше состояние перетаскивания было ОДНОЙ переменной на весь редактор.
+     Стоило коснуться экрана вторым пальцем или положить ладонь рядом со
+     стилусом — приходил второй pointerdown и затирал состояние: начатое
+     перетаскивание точки бросалось на полпути и превращалось в панораму.
+
+     Теперь ведётся реестр активных указателей по pointerId, а жест —
+     явная сущность:
+       kind: "gesture" — панорама одним указателем и щипок двумя;
+             "current" / "anchor" — перетаскивание ручки точки.
+
+     Пока тянут точку, любые новые указатели игнорируются целиком. Это и
+     есть отклонение ладони: она физически не может перехватить жест.
+     ══════════════════════════════════════════════════════════════════════ */
+
+  const surfaceRef = useRef(null); // контейнер канваса — система координат
+  const pointersRef = useRef(new Map()); // pointerId → {x, y, type}
+  const gestureRef = useRef(null);
+
+  /** Центроид указателей в координатах канваса + расстояние между двумя. */
+  const readGeometry = useCallback((el) => {
+    const pts = [...pointersRef.current.values()];
+    const n = pts.length;
+    if (!n || !el) return null;
+    const rect = el.getBoundingClientRect();
+    let sx = 0;
+    let sy = 0;
+    for (const p of pts) {
+      sx += p.x;
+      sy += p.y;
+    }
+    let dist = 0;
+    if (n >= 2) {
+      dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+    }
+    return { cx: sx / n - rect.left, cy: sy / n - rect.top, dist, n };
+  }, []);
+
+  /** Пересобрать базу жеста — при смене числа указателей. */
+  const rebaseGesture = useCallback(
+    (el) => {
+      const g = readGeometry(el);
+      if (!g) return;
+      startGesture();
+      gestureRef.current = {
+        kind: "gesture",
+        startCx: g.cx,
+        startCy: g.cy,
+        startDist: g.dist,
+      };
+    },
+    [readGeometry, startGesture],
+  );
+
+  // Живая ссылка на точки: обработчики указателя читают её вместо того,
+  // чтобы держать `points` в зависимостях. Иначе колбэки пересоздавались бы
+  // на каждое движение, пропсы ручек менялись бы, и мемоизация из пункта 4
+  // не работала бы вовсе.
+  const pointsLiveRef = useRef(points);
+  pointsLiveRef.current = points;
 
   const releaseDrag = useCallback(() => {
-    const state = draggingState.current;
-    if (!state) return false;
-    draggingState.current = null;
-    if (state === "pan") endPan();
-    else if (state === "current") endDragCurrent();
-    else if (state === "anchor") endDragAnchor();
+    const g = gestureRef.current;
+    if (!g) return false;
+    gestureRef.current = null;
+    if (g.kind === "gesture") endGesture();
+    else if (g.kind === "current") endDragCurrent();
+    else if (g.kind === "anchor") endDragAnchor();
+    else if (g.kind === "radius") endDragRadius();
     return true;
-  }, [endPan, endDragCurrent, endDragAnchor]);
+  }, [endGesture, endDragCurrent, endDragAnchor, endDragRadius]);
 
   const getPointerNorm = useCallback(
     (evt, el) => {
       if (!effectivePreview || !el) return null;
-      const imgPt = pointerToImage(evt, el, viewport);
+      // viewportRef, а не viewport из state: state синхронизируется раз в
+      // кадр, и при 240-герцовом стилусе точка отставала бы от пера.
+      const imgPt = pointerToImage(evt, el, viewportRef.current);
       return imageToNormalized(
         imgPt.x,
         imgPt.y,
@@ -590,74 +646,162 @@ export default function SimulationEditor({ plan }) {
         effectivePreview.height,
       );
     },
-    [effectivePreview, viewport],
+    [effectivePreview, viewportRef],
   );
 
   const onPointerDown = useCallback(
     (e) => {
       if (wizard.active) return;
 
+      // Правая кнопка — аварийный сброс залипшего жеста.
       if (e.button === 2) {
-        if (draggingState.current) {
+        if (gestureRef.current) {
           e.preventDefault();
           e.stopPropagation();
           releaseDrag();
         }
         return;
       }
-      if (e.button !== undefined && e.button !== 0) return;
+      if (e.pointerType === "mouse" && e.button !== 0) return;
 
-      if (mode === "add") {
-        const norm = getPointerNorm(e, e.currentTarget);
+      // Тянем точку — посторонние касания не принимаем вообще.
+      const active = gestureRef.current;
+      if (active && (active.kind === "current" || active.kind === "anchor")) {
+        return;
+      }
+
+      pointersRef.current.set(e.pointerId, {
+        x: e.clientX,
+        y: e.clientY,
+        type: e.pointerType,
+      });
+
+      if (mode === "add" && pointersRef.current.size === 1) {
+        const norm = getPointerNorm(e, surfaceRef.current);
         if (norm) addPoint(norm);
         return;
       }
 
-      draggingState.current = "pan";
+      if (pointersRef.current.size > 2) return; // третий палец лишний
+
       try {
-        e.currentTarget.setPointerCapture?.(e.pointerId);
+        canvasContainerRef.current?.setPointerCapture?.(e.pointerId);
       } catch {
         /* ignore */
       }
-      startPan(e);
+      rebaseGesture(surfaceRef.current);
     },
-    [wizard.active, mode, getPointerNorm, addPoint, startPan, releaseDrag],
+    [wizard.active, mode, getPointerNorm, addPoint, releaseDrag, rebaseGesture],
   );
 
   const onPointerMove = useCallback(
     (e) => {
-      const state = draggingState.current;
-      if (state === "pan") {
-        updatePan(e);
-      } else if (state === "current") {
-        const norm = getPointerNorm(e, canvasContainerRef.current);
-        if (norm) updateDragCurrent(norm);
-      } else if (state === "anchor") {
-        const norm = getPointerNorm(e, canvasContainerRef.current);
-        if (norm) updateDragAnchor(norm);
+      const g = gestureRef.current;
+      if (!g) return;
+
+      if (pointersRef.current.has(e.pointerId)) {
+        pointersRef.current.set(e.pointerId, {
+          x: e.clientX,
+          y: e.clientY,
+          type: e.pointerType,
+        });
       }
+
+      if (g.kind === "gesture") {
+        const geo = readGeometry(surfaceRef.current);
+        if (!geo) return;
+        const scaleRatio =
+          g.startDist > 0 && geo.dist > 0 ? geo.dist / g.startDist : 1;
+        updateGesture({
+          dx: geo.cx - g.startCx,
+          dy: geo.cy - g.startCy,
+          scaleRatio,
+          centerX: g.startCx,
+          centerY: g.startCy,
+        });
+        return;
+      }
+
+      // Перетаскивание ручки ведёт РОВНО тот указатель, который его начал.
+      if (g.pointerId !== undefined && g.pointerId !== e.pointerId) return;
+
+      // Стилус и мышь отдают промежуточные отсчёты пачкой: браузер
+      // объединяет их в одно событие, а исходные доступны только через
+      // getCoalescedEvents(). Без него на 120–240 Гц теряются точки и
+      // траектория выходит угловатой.
+      const samples =
+        typeof e.nativeEvent?.getCoalescedEvents === "function"
+          ? e.nativeEvent.getCoalescedEvents()
+          : null;
+      const last = samples && samples.length ? samples[samples.length - 1] : e;
+
+      const norm = getPointerNorm(last, surfaceRef.current);
+      if (!norm) return;
+
+      if (g.kind === "radius") {
+        // Радиус — расстояние от привязки до указателя, в тех же единицах,
+        // в которых он хранится: доля от длинной стороны кадра.
+        const p = pointsLiveRef.current.find((it) => it.key === g.key);
+        if (!p) return;
+        const dx = norm.x - p.anchor.x;
+        const dy = norm.y - p.anchor.y;
+        const W = effectivePreview?.width || 1;
+        const H = effectivePreview?.height || 1;
+        const maxDim = Math.max(W, H);
+        updateDragRadius(Math.hypot((dx * W) / maxDim, (dy * H) / maxDim));
+        return;
+      }
+
+      if (g.kind === "current") updateDragCurrent(norm);
+      else if (g.kind === "anchor") updateDragAnchor(norm);
     },
-    [updatePan, updateDragCurrent, updateDragAnchor, getPointerNorm],
+    [
+      readGeometry,
+      updateGesture,
+      updateDragCurrent,
+      updateDragAnchor,
+      updateDragRadius,
+      getPointerNorm,
+      effectivePreview,
+    ],
   );
 
   const onPointerUp = useCallback(
     (e) => {
-      if (!draggingState.current) return;
+      pointersRef.current.delete(e.pointerId);
       try {
-        e.currentTarget.releasePointerCapture?.(e.pointerId);
+        canvasContainerRef.current?.releasePointerCapture?.(e.pointerId);
       } catch {
         /* ignore */
       }
-      releaseDrag();
+
+      const g = gestureRef.current;
+      if (!g) return;
+
+      if (g.kind === "gesture") {
+        if (pointersRef.current.size === 0) {
+          releaseDrag();
+        } else {
+          // Подняли один палец из двух: без пересборки базы оставшийся
+          // палец скачком утащил бы картинку на разницу центроидов.
+          rebaseGesture(surfaceRef.current);
+        }
+        return;
+      }
+
+      if (g.pointerId === undefined || g.pointerId === e.pointerId) {
+        releaseDrag();
+      }
     },
-    [releaseDrag],
+    [releaseDrag, rebaseGesture],
   );
 
   const onDoubleClick = useCallback(
     (e) => {
-      if (draggingState.current) {
+      if (gestureRef.current) {
         e.preventDefault();
         e.stopPropagation();
+        pointersRef.current.clear();
         releaseDrag();
       }
     },
@@ -666,42 +810,54 @@ export default function SimulationEditor({ plan }) {
 
   const onContextMenu = useCallback(
     (e) => {
-      if (draggingState.current) {
+      if (gestureRef.current) {
         e.preventDefault();
+        pointersRef.current.clear();
         releaseDrag();
       }
     },
     [releaseDrag],
   );
 
-  const onHandleCurrentDown = useCallback(
-    (e, key) => {
-      const norm = getPointerNorm(e, canvasContainerRef.current);
+  const beginHandleDrag = useCallback(
+    (e, key, kind) => {
+      const norm = getPointerNorm(e, surfaceRef.current);
       if (!norm) return;
-      draggingState.current = "current";
-      startDragCurrent(key, norm);
+      // Панорама, если она шла, отменяется — иначе два жеста наложатся.
+      if (gestureRef.current?.kind === "gesture") endGesture();
+      pointersRef.current.clear();
+      gestureRef.current = { kind, key, pointerId: e.pointerId };
+      if (kind === "current") startDragCurrent(key, norm);
+      else if (kind === "anchor") startDragAnchor(key, norm);
+      else if (kind === "radius") startDragRadius(key);
       try {
         canvasContainerRef.current?.setPointerCapture?.(e.pointerId);
       } catch {
         /* ignore */
       }
     },
-    [getPointerNorm, startDragCurrent],
+    [
+      getPointerNorm,
+      startDragCurrent,
+      startDragAnchor,
+      startDragRadius,
+      endGesture,
+    ],
+  );
+
+  const onHandleCurrentDown = useCallback(
+    (e, key) => beginHandleDrag(e, key, "current"),
+    [beginHandleDrag],
   );
 
   const onHandleAnchorDown = useCallback(
-    (e, key) => {
-      const norm = getPointerNorm(e, canvasContainerRef.current);
-      if (!norm) return;
-      draggingState.current = "anchor";
-      startDragAnchor(key, norm);
-      try {
-        canvasContainerRef.current?.setPointerCapture?.(e.pointerId);
-      } catch {
-        /* ignore */
-      }
-    },
-    [getPointerNorm, startDragAnchor],
+    (e, key) => beginHandleDrag(e, key, "anchor"),
+    [beginHandleDrag],
+  );
+
+  const onHandleRadiusDown = useCallback(
+    (e, key) => beginHandleDrag(e, key, "radius"),
+    [beginHandleDrag],
   );
 
   const onOverlayBgClick = useCallback(() => {
@@ -843,17 +999,33 @@ export default function SimulationEditor({ plan }) {
     <div
       className={styles.editorRoot}
       ref={canvasContainerRef}
+      style={{ touchAction: "none" }}
       onDoubleClick={onDoubleClick}
       onContextMenu={onContextMenu}
+      /* Движение и отпускание слушаем ЗДЕСЬ, на том же элементе, на который
+         ставится setPointerCapture.
+
+         Раньше захват вешался на этот корневой div, а onPointerMove/onPointerUp
+         жили на вложенном контейнере канваса. Захват перенаправляет события на
+         элемент захвата — то есть сюда, — и до дочернего обработчика они не
+         доходили: перетаскивание точки замирало на первом же кадре, а
+         pointerup терялся, оставляя жест «залипшим». Отсюда и появились
+         аварийные сбросы по двойному клику и правой кнопке.
+
+         Корень — общий предок и канваса, и SVG-оверлея с ручками, поэтому
+         сюда доходит и захваченное, и обычное всплывающее событие. */
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
     >
       <SimulationCanvas
         preview={effectivePreview}
         viewport={viewport}
         warpedImageData={warpedImageData}
+        warpRegion={warpRegion}
         onWheel={handleWheel}
         onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
+        surfaceRef={surfaceRef}
         onSizeChange={handleSizeChange}
       />
 
@@ -879,10 +1051,12 @@ export default function SimulationEditor({ plan }) {
         canvasSize={canvasSize}
         selectedKey={selectedKey}
         mode={mode}
+        isMobile={isMobile}
         onBackgroundClick={onOverlayBgClick}
         onSelect={setSelectedKey}
         onCurrentPointerDown={onHandleCurrentDown}
         onAnchorPointerDown={onHandleAnchorDown}
+        onRadiusPointerDown={onHandleRadiusDown}
       />
 
       <EditorToolbar

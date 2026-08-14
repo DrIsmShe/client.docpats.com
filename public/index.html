@@ -46,14 +46,25 @@
     <link href="%PUBLIC_URL%/favicon.ico" rel="icon" />
     <link href="%PUBLIC_URL%/logo_docpats.png" rel="apple-touch-icon" />
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect" />
+    <!-- Google Fonts.
+         display=swap: без него текст невидим, пока шрифт не скачался. -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Nunito:300,400,600,700|Poppins:300,400,500,600,700"
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Nunito:300,400,600,700|Poppins:300,400,500,600,700&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Vendor CSS Files -->
+    <!-- Vendor CSS Files.
+         Удалены как неиспользуемые (проверено поиском по src/):
+           • boxicons.min.css  — ни одного класса bx-*  (66 КБ)
+           • quill.snow.css / quill.bubble.css — редактор в проекте CKEditor
+           • simple-datatables/style.css
+           • assets/css/bundle.css — Bootstrap 5.3.3 БЕЗ минификации плюс
+             swiper и glightbox; Bootstrap уже подключён строкой выше, а
+             swiper и glightbox в проекте не встречаются (391 КБ).
+         Оставлены: bootstrap (сетка и компоненты), bootstrap-icons (bi-*,
+         137 вхождений) и remixicon (ri-*, 200 вхождений). -->
     <link
       href="/assets/vendor/bootstrap/css/bootstrap.min.css"
       rel="stylesheet"
@@ -62,19 +73,11 @@
       href="/assets/vendor/bootstrap-icons/bootstrap-icons.css"
       rel="stylesheet"
     />
-    <link
-      href="/assets/vendor/boxicons/css/boxicons.min.css"
-      rel="stylesheet"
-    />
-    <link href="/assets/vendor/quill/quill.snow.css" rel="stylesheet" />
-    <link href="/assets/vendor/quill/quill.bubble.css" rel="stylesheet" />
     <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
-    <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet" />
 
     <!-- Template Main CSS Files -->
     <link href="/assets/css/style.css" rel="stylesheet" />
     <link href="/assets/css/index.css" rel="stylesheet" />
-    <link href="/assets/css/bundle.css" rel="stylesheet" />
     <link href="/assets/css/app.css" rel="stylesheet" />
     <script type="application/ld+json">
       {
@@ -117,21 +120,33 @@
         toggle: function () {},
       };
     </script>
-    <!-- Bootstrap bundle (включает Popper) -->
-    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Vendor JS Files -->
-    <script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
-    <script src="/assets/vendor/chart.js/chart.umd.js"></script>
-    <script src="/assets/vendor/echarts/echarts.min.js"></script>
-    <script src="/assets/vendor/quill/quill.min.js"></script>
-    <script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
-    <script src="/assets/vendor/tinymce/tinymce.min.js"></script>
-    <script src="/assets/vendor/php-email-form/validate.js"></script>
+    <!-- Vendor JS.
+         Здесь лежало 3,4 МБ скриптов без defer — каждый блокировал разбор
+         страницы. Удалено всё, чего нет в коде (проверено поиском по src/):
 
-    <!-- Template Main JS Files -->
-    <script src="/assets/js/main.js"></script>
-    <script src="/assets/js/app.js"></script>
-    <script src="/assets/js/bundle.js"></script>
+           echarts.min.js         1000 КБ — 0 вызовов (совпадения в поиске
+                                            оказывались словом «recharts»)
+           tinymce.min.js          417 КБ — 0 вызовов
+           apexcharts.min.js       503 КБ — единственное упоминание лежит
+                                            внутри JSX-комментария
+           chart.umd.js            200 КБ — Chart.js берётся из npm через
+                                            react-chartjs-2
+           quill.min.js            211 КБ — редактор в проекте CKEditor
+           simple-datatables.js     92 КБ — 0 вызовов
+           validate.js               2 КБ — 0 вызовов
+           assets/js/bundle.js     887 КБ — Bootstrap 5.3.3 без минификации
+                                            плюс Swiper, GLightbox и jQuery;
+                                            Bootstrap уже подключён ниже, а
+                                            остальные три в проекте не
+                                            встречаются. TynApp оттуда же —
+                                            остаётся заглушка выше.
+
+         Осталось три файла. defer, чтобы они не тормозили разбор HTML:
+         bootstrap нужен из-за data-bs-* в разметке админки, main.js и
+         app.js — мелкая обвязка темы. -->
+    <script defer src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/assets/js/main.js"></script>
+    <script defer src="/assets/js/app.js"></script>
 
     <script>
       function scrollToBottom(el) {

@@ -1,22 +1,28 @@
 // src/pages/simulation/components/editor/ControlPointLayer.jsx
 import React, { useMemo } from "react";
 import ControlPointHandle from "./ControlPointHandle.jsx";
-import {
-  normalizedToImage,
-  imageToCanvas,
-} from "../../utils/coordinateHelpers.js";
+import { normalizedToImage } from "../../utils/coordinateHelpers.js";
 
 /* ──────────────────────────────────────────────────────────────────────────
    Overlay с SVG-маркерами над canvas.
 
    КРИТИЧНО (pointer-events):
    — Корневой <svg> имеет pointerEvents: "none" → клики проходят насквозь
-     к canvas-контейнеру, который обрабатывает pan (select-mode) или
-     добавление точки (add-mode).
-   — Конкретные handles (circle/rect в ControlPointHandle) получают
-     events благодаря <g pointerEvents="auto"> обёртке. Это позволяет
-     схватить маркер даже в select-режиме для drag, но не перехватывать
-     фоновые клики.
+     к canvas-контейнеру, который обрабатывает жест (панорама/щипок) или
+     добавление точки.
+   — Конкретные handles получают события благодаря <g pointerEvents="auto">.
+
+   ПОЧЕМУ КООРДИНАТЫ В ПРОСТРАНСТВЕ ИЗОБРАЖЕНИЯ (пункт 4)
+
+   Раньше каждая точка проецировалась в экранные пиксели на JS, и любое
+   изменение viewport'а пересчитывало весь массив и перерисовывало все
+   ручки. При панораме это N перерисовок React на кадр.
+
+   Теперь точки живут в координатах изображения, а viewport — это один
+   transform на группе. Панорама меняет ровно одну строку атрибута: сами
+   ручки не перерендериваются вообще (они мемоизированы, а их пропсы не
+   меняются). Масштаб влияет на invScale — он нужен, чтобы ручки на экране
+   оставались одного размера независимо от зума.
    ────────────────────────────────────────────────────────────────────────── */
 
 export default function ControlPointLayer({
@@ -26,38 +32,40 @@ export default function ControlPointLayer({
   canvasSize,
   selectedKey,
   mode, // оставлено для будущих расширений (курсор в add-режиме и т.п.)
+  isMobile,
   onSelect,
   onCurrentPointerDown,
   onAnchorPointerDown,
+  onRadiusPointerDown,
   onBackgroundClick, // не вешаем на корень — оставлено для совместимости
 }) {
+  // Зависит только от точек и размеров кадра — viewport здесь не участвует,
+  // поэтому панорама и зум не пересчитывают этот массив.
   const projected = useMemo(() => {
-    if (!preview || !canvasSize.width) return [];
-    return points.map((p) => {
-      const anchorImg = normalizedToImage(
+    if (!preview) return [];
+    const maxDim = Math.max(preview.width, preview.height);
+    return points.map((p) => ({
+      point: p,
+      anchorImg: normalizedToImage(
         p.anchor.x,
         p.anchor.y,
         preview.width,
         preview.height,
-      );
-      const currentImg = normalizedToImage(
+      ),
+      currentImg: normalizedToImage(
         p.current.x,
         p.current.y,
         preview.width,
         preview.height,
-      );
-      const anchorPx = imageToCanvas(anchorImg.x, anchorImg.y, viewport);
-      const currentPx = imageToCanvas(currentImg.x, currentImg.y, viewport);
-      const pixelRadius =
-        p.radius * Math.max(preview.width, preview.height) * viewport.scale;
-      return {
-        point: p,
-        anchorPx,
-        currentPx,
-        pixelRadius,
-      };
-    });
-  }, [points, preview, viewport, canvasSize]);
+      ),
+      radiusImg: p.radius * maxDim,
+    }));
+  }, [points, preview]);
+
+  if (!preview || !canvasSize.width) return null;
+
+  const scale = viewport?.scale ?? 1;
+  const invScale = scale > 0 ? 1 / scale : 1;
 
   return (
     <svg
@@ -69,18 +77,24 @@ export default function ControlPointLayer({
         pointerEvents: "none", // клики проваливаются к canvas
       }}
     >
-      <g style={{ pointerEvents: "auto" }}>
-        {projected.map(({ point, anchorPx, currentPx, pixelRadius }) => (
+      <g
+        style={{ pointerEvents: "auto" }}
+        transform={`translate(${viewport?.tx ?? 0} ${viewport?.ty ?? 0}) scale(${scale})`}
+      >
+        {projected.map(({ point, anchorImg, currentImg, radiusImg }) => (
           <ControlPointHandle
             key={point.key}
             point={point}
-            pixelAnchor={anchorPx}
-            pixelCurrent={currentPx}
-            pixelRadius={pixelRadius}
+            imgAnchor={anchorImg}
+            imgCurrent={currentImg}
+            imgRadius={radiusImg}
+            invScale={invScale}
+            isMobile={isMobile}
             isSelected={point.key === selectedKey}
             onSelect={onSelect}
             onCurrentPointerDown={onCurrentPointerDown}
             onAnchorPointerDown={onAnchorPointerDown}
+            onRadiusPointerDown={onRadiusPointerDown}
           />
         ))}
       </g>

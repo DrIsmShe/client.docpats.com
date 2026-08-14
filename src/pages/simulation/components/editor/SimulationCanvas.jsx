@@ -1,5 +1,5 @@
 // src/pages/simulation/components/editor/SimulationCanvas.jsx
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 
 /* ──────────────────────────────────────────────────────────────────────────
    Canvas-рендерер. S.3 обновление: приоритет рендера
@@ -16,14 +16,28 @@ export default function SimulationCanvas({
   preview,
   viewport,
   warpedImageData,
+  warpRegion,
   onWheel,
   onPointerDown,
   onPointerMove,
   onPointerUp,
   onSizeChange,
+  surfaceRef,
 }) {
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
+
+  /* Отдаём контейнер наружу: редактор пересчитывает координаты указателя
+     относительно ИМЕННО этой поверхности (viewport.tx/ty заданы в её
+     системе), а слушает события на корневом элементе. Считать по корню
+     нельзя — его прямоугольник может отличаться, и точка уехала бы. */
+  const setContainer = useCallback(
+    (el) => {
+      containerRef.current = el;
+      if (surfaceRef) surfaceRef.current = el;
+    },
+    [surfaceRef],
+  );
   const warpedCanvasRef = useRef(null); // offscreen для warped ImageData
 
   /* ────────── ResizeObserver ────────── */
@@ -58,6 +72,9 @@ export default function SimulationCanvas({
      Держим отдельный canvas размера preview. putImageData → он,
      потом drawImage(offscreen) → на видимый с viewport transform.
   */
+  /* warpRegion — прямоугольник, изменившийся в этом кадре. Движок присылает
+     его вместе с версией; кладём в offscreen только его, а не весь кадр.
+     putImageData умеет частичную запись последними четырьмя аргументами. */
   useEffect(() => {
     if (!warpedImageData) return;
 
@@ -80,8 +97,30 @@ export default function SimulationCanvas({
     }
 
     const ctx = oc.getContext("2d");
-    ctx.putImageData(warpedImageData, 0, 0);
-  }, [warpedImageData]);
+    if (
+      warpRegion &&
+      warpRegion.w > 0 &&
+      warpRegion.h > 0 &&
+      !(
+        warpRegion.x === 0 &&
+        warpRegion.y === 0 &&
+        warpRegion.w === warpedImageData.width &&
+        warpRegion.h === warpedImageData.height
+      )
+    ) {
+      ctx.putImageData(
+        warpedImageData,
+        0,
+        0,
+        warpRegion.x,
+        warpRegion.y,
+        warpRegion.w,
+        warpRegion.h,
+      );
+    } else {
+      ctx.putImageData(warpedImageData, 0, 0);
+    }
+  }, [warpedImageData, warpRegion]);
 
   /* ────────── Render: выбираем источник и рисуем ────────── */
   useEffect(() => {
@@ -112,15 +151,14 @@ export default function SimulationCanvas({
 
     ctx.drawImage(source, 0, 0, preview.width, preview.height);
     ctx.restore();
-  }, [preview, viewport, warpedImageData]);
+  }, [preview, viewport, warpedImageData, warpRegion]);
 
-  const wheelHandler = useCallback(
-    (evt) => {
-      onWheel?.(evt.nativeEvent, canvasRef.current);
-    },
-    [onWheel],
-  );
-
+  /* Колесо вешается ОДИН раз, нативно, с { passive: false }.
+     Раньше рядом с этим слушателем на том же <canvas> висел ещё и React
+     onWheel — оба звали один обработчик, и один щелчок колеса давал
+     двойной шаг зума (1.15² вместо 1.15). React-обработчик убран; нативный
+     оставлен, потому что только он может вызвать preventDefault и не дать
+     странице прокрутиться под курсором. */
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || !onWheel) return undefined;
@@ -131,7 +169,7 @@ export default function SimulationCanvas({
 
   return (
     <div
-      ref={containerRef}
+      ref={setContainer}
       style={{
         width: "100%",
         height: "100%",
@@ -154,7 +192,6 @@ export default function SimulationCanvas({
           position: "absolute",
           inset: 0,
         }}
-        onWheel={wheelHandler}
       />
     </div>
   );

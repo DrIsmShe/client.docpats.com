@@ -5,53 +5,75 @@ import { clampScale, canvasToImage } from "../utils/coordinateHelpers.js";
 /* ──────────────────────────────────────────────────────────────────────────
    Zoom & pan viewport.
 
-   viewport = { scale, tx, ty } — state.
+   viewport = { scale, tx, ty }.
 
-   Особенности:
-   — zoom-at-point: колесо крутится относительно курсора (как в Figma).
-     Формула: после зума точка под курсором должна остаться под курсором.
-   — pan: drag с правой кнопкой ИЛИ пробел+drag ИЛИ touch-drag двумя
-     пальцами (TODO S.4). Для S.2 — просто drag мышью.
+   ЖЕСТЫ (закрывает давний TODO S.4)
 
-   S.7.5+ — passive wheel listener fix:
-   React 17+ оборачивает onWheel как passive event listener, и
-   evt.preventDefault() внутри не работает (warning в console). Решение —
-   крепим обработчик wheel вручную через addEventListener с
-   { passive: false }. Возвращаем `attachWheelListener(el)` который
-   вешается на canvas через useEffect или ref-callback.
+   Раньше здесь был только `wheel`, а его на тач-экране не существует —
+   на телефоне масштаб менялся исключительно кнопками тулбара. Теперь
+   панорама и зум описаны ОДНИМ жестом:
+
+     startGesture()  — снимок текущего viewport'а;
+     updateGesture({ dx, dy, scaleRatio, centerX, centerY })
+                     — dx/dy: сдвиг центроида указателей от начала жеста;
+                       scaleRatio: отношение текущего расстояния между
+                       двумя указателями к начальному (для одного пальца
+                       это 1);
+     endGesture().
+
+   Один палец даёт scaleRatio = 1 и вырождается в чистый сдвиг, два пальца
+   дают щипок. Отдельной ветки для «мобильного» нет — это один и тот же код,
+   поэтому поведение мыши, стилуса и пальца не может разъехаться.
+
+   Точка под начальным центроидом остаётся под ним при любом масштабе —
+   то же правило, что у зума колесом (как в Figma).
+
+   ПЕРЕРИСОВКА (пункт 4)
+
+   viewport лежит и в ref (истина, обновляется синхронно), и в state (для
+   React-потребителей). setState вызывается не чаще одного раза за кадр:
+   стилус шлёт до 240 событий в секунду, и без этого каждое из них
+   перерисовывало бы канвас, три слоя оверлеев и все ручки точек.
    ────────────────────────────────────────────────────────────────────────── */
 
 const INITIAL_VIEWPORT = { scale: 1, tx: 0, ty: 0 };
-
-const EMPTY_PAN = {
-  active: false,
-  startX: 0,
-  startY: 0,
-  startTx: 0,
-  startTy: 0,
-};
 
 export function useZoomPan({
   minScale = 0.1,
   maxScale = 10,
   zoomStep = 1.15,
 } = {}) {
-  const [viewport, setViewport] = useState(INITIAL_VIEWPORT);
+  const [viewport, setViewportState] = useState(INITIAL_VIEWPORT);
 
-  const panStateRef = useRef({ ...EMPTY_PAN });
-  const viewportRef = useRef(viewport);
-  viewportRef.current = viewport;
+  const viewportRef = useRef(INITIAL_VIEWPORT);
+  const rafIdRef = useRef(null);
+  const gestureStartRef = useRef(null);
 
-  /* ────────── Wheel handler (берём элемент в callback) ──────────
-     Возвращаем функцию которая принимает (evt, canvasElement).
-     Внутри SimulationCanvas / SimulationEditor можно её использовать
-     как раньше через onWheel — но ТАКЖЕ предоставляем
-     attachWheelListener для повешивания вручную через useEffect. */
+  /* ────────── Синхронизация ref → state, не чаще кадра ────────── */
+  const flush = useCallback(() => {
+    rafIdRef.current = null;
+    setViewportState(viewportRef.current);
+  }, []);
+
+  const commitViewport = useCallback(
+    (next) => {
+      viewportRef.current = next;
+      if (rafIdRef.current === null) {
+        rafIdRef.current = requestAnimationFrame(flush);
+      }
+    },
+    [flush],
+  );
+
+  useEffect(() => {
+    return () => {
+      if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current);
+    };
+  }, []);
+
+  /* ────────── Wheel ────────── */
   const handleWheel = useCallback(
     (evt, canvasElement) => {
-      // Этот метод оставлен для обратной совместимости. Если evt
-      // приходит как passive (через onWheel), preventDefault не сработает,
-      // но и крашиться не будет.
       try {
         evt.preventDefault();
       } catch {
@@ -63,109 +85,153 @@ export function useZoomPan({
       const cx = evt.clientX - rect.left;
       const cy = evt.clientY - rect.top;
 
-      setViewport((v) => {
-        const direction = evt.deltaY < 0 ? 1 : -1;
-        const factor = direction > 0 ? zoomStep : 1 / zoomStep;
-        const newScale = clampScale(v.scale * factor, minScale, maxScale);
+      const v = viewportRef.current;
+      const direction = evt.deltaY < 0 ? 1 : -1;
+      const factor = direction > 0 ? zoomStep : 1 / zoomStep;
+      const newScale = clampScale(v.scale * factor, minScale, maxScale);
+      if (newScale === v.scale) return;
 
-        if (newScale === v.scale) return v;
-
-        const imgPt = canvasToImage(cx, cy, v);
-        const newTx = cx - imgPt.x * newScale;
-        const newTy = cy - imgPt.y * newScale;
-
-        return { scale: newScale, tx: newTx, ty: newTy };
+      const imgPt = canvasToImage(cx, cy, v);
+      commitViewport({
+        scale: newScale,
+        tx: cx - imgPt.x * newScale,
+        ty: cy - imgPt.y * newScale,
       });
     },
-    [minScale, maxScale, zoomStep],
+    [minScale, maxScale, zoomStep, commitViewport],
   );
 
-  /**
-   * S.7.5+ — Хелпер для повешивания wheel listener'а на DOM-элемент
-   * с { passive: false }. Используется так:
-   *
-   *   const wheelRef = useCallback(attachWheelListener, [attachWheelListener]);
-   *   <div ref={wheelRef}>...</div>
-   *
-   * Или через useEffect:
-   *
-   *   useEffect(() => attachWheelListener(canvasEl.current), [attachWheelListener]);
-   */
   const attachWheelListener = useCallback(
     (element) => {
       if (!element) return undefined;
-
       const onWheel = (evt) => {
         evt.preventDefault();
         handleWheel(evt, element);
       };
-
       element.addEventListener("wheel", onWheel, { passive: false });
       return () => element.removeEventListener("wheel", onWheel);
     },
     [handleWheel],
   );
 
-  /* ────────── Pan ────────── */
-  const startPan = useCallback((evt) => {
-    const v = viewportRef.current;
-    const ps = panStateRef.current;
-    ps.active = true;
-    ps.startX = evt.clientX;
-    ps.startY = evt.clientY;
-    ps.startTx = v.tx;
-    ps.startTy = v.ty;
+  /* ────────── Единый жест: пан одним указателем + щипок двумя ────────── */
+  const startGesture = useCallback(() => {
+    gestureStartRef.current = { ...viewportRef.current };
   }, []);
 
-  const updatePan = useCallback((evt) => {
-    const s = panStateRef.current;
-    if (!s.active) return;
-    const dx = evt.clientX - s.startX;
-    const dy = evt.clientY - s.startY;
-    setViewport((v) => ({
-      ...v,
-      tx: s.startTx + dx,
-      ty: s.startTy + dy,
-    }));
+  const updateGesture = useCallback(
+    ({ dx = 0, dy = 0, scaleRatio = 1, centerX = 0, centerY = 0 }) => {
+      const start = gestureStartRef.current;
+      if (!start) return;
+
+      const newScale = clampScale(start.scale * scaleRatio, minScale, maxScale);
+
+      // Точка изображения, бывшая под начальным центроидом, обязана
+      // остаться под ним же — иначе картинка «убегает» из-под пальцев.
+      const imgPt = canvasToImage(centerX, centerY, start);
+
+      commitViewport({
+        scale: newScale,
+        tx: centerX + dx - imgPt.x * newScale,
+        ty: centerY + dy - imgPt.y * newScale,
+      });
+    },
+    [minScale, maxScale, commitViewport],
+  );
+
+  const endGesture = useCallback(() => {
+    gestureStartRef.current = null;
   }, []);
+
+  /* ────────── Совместимость: одноуказательный пан ──────────
+     Этим API пользуются RadiologyCanvas и BreastEditorPage. Ломать их
+     ради жестов в лицевом редакторе незачем — старая сигнатура осталась,
+     просто теперь это частный случай жеста (scaleRatio = 1), и они
+     бесплатно получают тот же rAF-троттлинг.
+
+     centerX/centerY здесь роли не играют: при scaleRatio = 1 масштаб не
+     меняется, и формула вырождается в tx = start.tx + dx. */
+  const panPointerRef = useRef(null);
+
+  const startPan = useCallback(
+    (evt) => {
+      panPointerRef.current = { x: evt.clientX, y: evt.clientY };
+      startGesture();
+    },
+    [startGesture],
+  );
+
+  const updatePan = useCallback(
+    (evt) => {
+      const s = panPointerRef.current;
+      if (!s) return;
+      updateGesture({
+        dx: evt.clientX - s.x,
+        dy: evt.clientY - s.y,
+        scaleRatio: 1,
+        centerX: 0,
+        centerY: 0,
+      });
+    },
+    [updateGesture],
+  );
 
   const endPan = useCallback(() => {
-    panStateRef.current.active = false;
-  }, []);
+    panPointerRef.current = null;
+    endGesture();
+  }, [endGesture]);
 
   /* ────────── Imperative actions ────────── */
-  const zoomIn = useCallback(() => {
-    setViewport((v) => ({
-      ...v,
-      scale: clampScale(v.scale * zoomStep, minScale, maxScale),
-    }));
-  }, [minScale, maxScale, zoomStep]);
+  const zoomAtCenter = useCallback(
+    (factor) => {
+      const v = viewportRef.current;
+      const newScale = clampScale(v.scale * factor, minScale, maxScale);
+      if (newScale === v.scale) return;
+      commitViewport({ ...v, scale: newScale });
+    },
+    [minScale, maxScale, commitViewport],
+  );
 
-  const zoomOut = useCallback(() => {
-    setViewport((v) => ({
-      ...v,
-      scale: clampScale(v.scale / zoomStep, minScale, maxScale),
-    }));
-  }, [minScale, maxScale, zoomStep]);
+  const zoomIn = useCallback(
+    () => zoomAtCenter(zoomStep),
+    [zoomAtCenter, zoomStep],
+  );
+  const zoomOut = useCallback(
+    () => zoomAtCenter(1 / zoomStep),
+    [zoomAtCenter, zoomStep],
+  );
 
-  const setViewportDirect = useCallback((next) => {
-    setViewport(next);
-  }, []);
+  const setViewport = useCallback(
+    (next) => {
+      viewportRef.current = next;
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+      setViewportState(next);
+    },
+    [],
+  );
 
-  const reset = useCallback(() => {
-    setViewport(INITIAL_VIEWPORT);
-  }, []);
+  const reset = useCallback(
+    () => setViewport(INITIAL_VIEWPORT),
+    [setViewport],
+  );
 
   return {
     viewport,
+    viewportRef,
     handleWheel,
     attachWheelListener,
+    startGesture,
+    updateGesture,
+    endGesture,
     startPan,
     updatePan,
     endPan,
     zoomIn,
     zoomOut,
     reset,
-    setViewport: setViewportDirect,
+    setViewport,
   };
 }
