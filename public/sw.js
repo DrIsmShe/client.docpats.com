@@ -22,8 +22,8 @@ self.addEventListener("push", (event) => {
   const title = data.title || "DocPats";
   const options = {
     body: data.body || "",
-    icon: "/logo_docpats.png",
-    badge: "/logo_docpats.png",
+    icon: "/logo_docpats_192.png",
+    badge: "/logo_docpats_192.png",
     data: { url: data.url || "/" },
     tag: data.tag || undefined,
   };

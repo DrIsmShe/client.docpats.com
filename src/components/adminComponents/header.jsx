@@ -64,7 +64,7 @@ export default function Header() {
             target="_blank"
           >
             <img
-              src={`${process.env.PUBLIC_URL}/logo_docpats.png`}
+              src={`${process.env.PUBLIC_URL}/logo_docpats_192.png`}
               alt="Docpats Logo"
             />
 

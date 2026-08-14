@@ -268,7 +268,7 @@ export default function Header() {
             className="logo d-flex align-items-center"
           >
             <img
-              src={`${process.env.PUBLIC_URL}/logo_docpats.png`}
+              src={`${process.env.PUBLIC_URL}/logo_docpats_192.png`}
               alt="Docpats Logo"
               style={{ height: 34, objectFit: "contain" }}
             />

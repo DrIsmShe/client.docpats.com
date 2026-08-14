@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T17:37:59.860Z",
+  "generatedAt": "2026-08-14T19:20:16.938Z",
   "sections": [
     {
       "name": "clinic",
@@ -245,6 +245,33 @@
       }
     },
     {
+      "name": "hipaa",
+      "title": "HIPAA: что сделано в платформе",
+      "sourceHash": "e3c4adfd989f60b3d8945845f2af0baddb294dbf",
+      "languages": {
+        "ru": {
+          "status": "source",
+          "bytes": 3092
+        },
+        "en": {
+          "status": "fresh",
+          "bytes": 3459
+        },
+        "tr": {
+          "status": "fresh",
+          "bytes": 3406
+        },
+        "az": {
+          "status": "fresh",
+          "bytes": 3355
+        },
+        "ar": {
+          "status": "fresh",
+          "bytes": 2919
+        }
+      }
+    },
+    {
       "name": "patient-cabinet",
       "title": "Кабинет пациента",
       "sourceHash": "f52cfd86425a346d1f8e0f46520c2bafbe599ebf",
@@ -268,6 +295,33 @@
         "ar": {
           "status": "fresh",
           "bytes": 3707
+        }
+      }
+    },
+    {
+      "name": "privacy",
+      "title": "Как DocPats обращается с вашими данными",
+      "sourceHash": "a71000c5d4c22e210a5df89082c7b4e1628fe61f",
+      "languages": {
+        "ru": {
+          "status": "source",
+          "bytes": 3608
+        },
+        "en": {
+          "status": "fresh",
+          "bytes": 3987
+        },
+        "tr": {
+          "status": "fresh",
+          "bytes": 3963
+        },
+        "az": {
+          "status": "fresh",
+          "bytes": 3807
+        },
+        "ar": {
+          "status": "fresh",
+          "bytes": 3389
         }
       }
     },

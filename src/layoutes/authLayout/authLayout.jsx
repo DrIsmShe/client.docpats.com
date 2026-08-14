@@ -2008,13 +2008,16 @@ export default function AuthLayout() {
                 <a className="dp-footer-link" href="/terms-consent-page">
                   {t("footer.terms") || "Terms"}
                 </a>
-                <a className="dp-footer-link" href="#">
+                <Link className="dp-footer-link" to="/docs/privacy">
                   {t("footer.privacy") || "Privacy"}
-                </a>
-                <a className="dp-footer-link" href="#">
+                </Link>
+                <Link className="dp-footer-link" to="/docs/hipaa">
                   {t("footer.hipaa") || "HIPAA"}
-                </a>
-                <a className="dp-footer-link" href="#">
+                </Link>
+                <a
+                  className="dp-footer-link"
+                  href="mailto:support@docpats.com"
+                >
                   {t("footer.contact") || "Contact"}
                 </a>
                 <a className="dp-footer-link" href="/public/about">
