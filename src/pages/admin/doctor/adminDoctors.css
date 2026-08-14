@@ -163,6 +163,85 @@
   font-style: normal;
 }
 
+/* ── фотография ─────────────────────────────────────────────────────── */
+
+.adoc-photo {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.adoc-photo-preview {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 72px;
+  border-radius: 8px;
+  border: 1px solid var(--adoc-line);
+  object-fit: cover;
+  background: #f9fafb;
+}
+
+.adoc-photo-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--adoc-soft);
+  text-align: center;
+}
+
+.adoc-photo-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.adoc-photo-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Настоящий input[type=file] спрятан внутри подписи: щелчок по ней открывает
+   тот же диалог выбора файла, но выглядит как кнопка формы. */
+.adoc-photo-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  border: 1px solid var(--adoc-line);
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  background: #fff;
+  white-space: nowrap;
+}
+
+.adoc-photo-btn:hover {
+  border-color: var(--adoc-accent);
+  color: var(--adoc-accent);
+}
+
+.adoc-photo-btn input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  font-size: 0;
+}
+
+.adoc-photo-clear {
+  font: inherit;
+  font-size: 13px;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #b91c1c;
+  cursor: pointer;
+}
+
 .adoc-check {
   display: flex;
   align-items: center;

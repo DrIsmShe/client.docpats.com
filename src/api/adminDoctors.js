@@ -39,6 +39,22 @@ export async function updateDoctor(userId, payload) {
 }
 
 /**
+ * Заливает фотографию и возвращает ссылку на неё.
+ *
+ * В базу ничего не пишет: ссылка подставляется в форму, а профиль сохраняется
+ * общей кнопкой. Если админ передумает и закроет форму, в карточке останется
+ * прежнее фото.
+ */
+export async function uploadDoctorPhoto(file) {
+  const body = new FormData();
+  body.append("image", file);
+  // Content-Type не выставляем руками: браузер сам добавит boundary, без
+  // которого сервер не разберёт multipart.
+  const { data } = await api.post(`${ROOT}/photo`, body);
+  return data.url;
+}
+
+/**
  * Убирает врача из каталога.
  *
  * Запись не стирается: на врача ссылаются приёмы, переписка и медицинские
@@ -80,5 +96,6 @@ export default {
   createDoctor,
   updateDoctor,
   deleteDoctor,
+  uploadDoctorPhoto,
   EMPTY_DOCTOR,
 };

@@ -25,18 +25,11 @@ import {
   createDoctor,
   updateDoctor,
   deleteDoctor,
+  uploadDoctorPhoto,
   EMPTY_DOCTOR,
 } from "../../../api/adminDoctors";
-import { countryPhoneMeta } from "../../../constants/countryPhoneMeta";
+import { COUNTRIES } from "../../../constants/countries";
 import "./adminDoctors.css";
-
-// Страны берём из общего справочника countryPhoneMeta — того же, что на
-// странице «Редактировать профиль» у самого врача. Свой список завёлся бы
-// быстро, но разошёлся бы с профилем: врач выбрал бы «USA», админ — «United
-// States», и в каталоге появились бы две разные страны.
-const COUNTRIES = Object.values(countryPhoneMeta)
-  .map((c) => c.name)
-  .sort((a, b) => a.localeCompare(b));
 
 export default function AdminDoctorsManagePage() {
   const [doctors, setDoctors] = useState([]);
@@ -138,6 +131,10 @@ export default function AdminDoctorsManagePage() {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
+  // Для значений, которые приходят не из поля ввода: ссылка на загруженное фото.
+  const setField = (field, value) =>
+    setForm((prev) => ({ ...prev, [field]: value }));
+
   return (
     <div className="adoc">
       <header className="adoc-head">
@@ -159,6 +156,7 @@ export default function AdminDoctorsManagePage() {
         <DoctorForm
           form={form}
           set={set}
+          setField={setField}
           specializations={specializations}
           saving={saving}
           onSubmit={save}
@@ -226,7 +224,15 @@ export default function AdminDoctorsManagePage() {
   );
 }
 
-function DoctorForm({ form, set, specializations, saving, onSubmit, onCancel }) {
+function DoctorForm({
+  form,
+  set,
+  setField,
+  specializations,
+  saving,
+  onSubmit,
+  onCancel,
+}) {
   // Специальности сгруппированы по разделам справочника — иначе в списке из
   // ста позиций нужную приходится искать глазами.
   const byCategory = specializations.reduce((acc, s) => {
@@ -301,12 +307,10 @@ function DoctorForm({ form, set, specializations, saving, onSubmit, onCancel }) 
             </select>
           </label>
           <Field label="Адрес" value={form.address} onChange={set("address")} wide />
-          <Field
-            label="Фотография"
+          <PhotoField
             value={form.profileImage}
             onChange={set("profileImage")}
-            hint="ссылка на изображение"
-            wide
+            onUploaded={(url) => setField("profileImage", url)}
           />
           <label className="adoc-check">
             <input type="checkbox" checked={form.allowVideo} onChange={set("allowVideo")} />
@@ -371,6 +375,83 @@ function DoctorForm({ form, set, specializations, saving, onSubmit, onCancel }) 
         </button>
       </div>
     </form>
+  );
+}
+
+/**
+ * Фотография: ссылка или файл с компьютера.
+ *
+ * Поле со ссылкой оставлено намеренно — фото врача часто уже лежит на сайте
+ * клиники, и вставить адрес быстрее, чем скачивать и заливать заново. Загрузка
+ * нужна для второго случая: снимок прислали на почту, и в интернете его нет.
+ *
+ * Оба пути кончаются одним и тем же: в profileImage лежит ссылка. Поэтому
+ * загрузка просто подставляет полученный адрес в то же поле — его видно, его
+ * можно поправить руками, и сохранять профиль всё равно нужно кнопкой.
+ */
+function PhotoField({ value, onChange, onUploaded }) {
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+
+  const pick = async (e) => {
+    const file = e.target.files?.[0];
+    // Сбрасываем сразу: иначе повторный выбор того же файла не вызовет change.
+    e.target.value = "";
+    if (!file) return;
+
+    setBusy(true);
+    setErr("");
+    try {
+      onUploaded(await uploadDoctorPhoto(file));
+    } catch (error) {
+      setErr(error.response?.data?.message || "Не удалось загрузить файл");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  // Обёртка — div, а не label: внутри два поля ввода, а label с несколькими
+  // контролами переадресует щелчок первому из них, и кнопка выбора файла
+  // открывала бы вместо диалога курсор в поле со ссылкой.
+  return (
+    <div className="adoc-field adoc-field--wide">
+      <span>Фотография</span>
+      <div className="adoc-photo">
+        {value ? (
+          <img className="adoc-photo-preview" src={value} alt="" />
+        ) : (
+          <div className="adoc-photo-preview adoc-photo-empty">нет фото</div>
+        )}
+        <div className="adoc-photo-body">
+          <input
+            value={value}
+            onChange={onChange}
+            placeholder="https://…"
+            disabled={busy}
+          />
+          <div className="adoc-photo-actions">
+            {/* input[type=file] спрятан: его стандартный вид не подчиняется
+                оформлению формы, а щелчок по подписи работает так же. */}
+            <span className="adoc-photo-btn">
+              {busy ? "Загрузка…" : "Загрузить с компьютера"}
+              <input type="file" accept="image/*" onChange={pick} disabled={busy} />
+            </span>
+            {value && !busy && (
+              <button
+                type="button"
+                className="adoc-photo-clear"
+                onClick={() => onUploaded("")}
+              >
+                убрать
+              </button>
+            )}
+          </div>
+          <em className="adoc-hint">
+            {err || "ссылка на изображение или файл до 15 МБ"}
+          </em>
+        </div>
+      </div>
+    </div>
   );
 }
 
