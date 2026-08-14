@@ -70,18 +70,30 @@ export function useWarpEngine({ sourceImageData }) {
     }, IDLE_INDICATOR_MS);
   }, []);
 
-  /* ────────── Наложение вырезки на накопленный буфер ────────── */
+  /* ────────── Наложение вырезки на накопленный буфер ──────────
+
+     ImageData пересоздаётся на каждый кадр — но это ОБЁРТКА над тем же
+     буфером, а не копия пикселей: конструктор ImageData принимает
+     существующий Uint8ClampedArray как есть. Стоит это одного маленького
+     объекта в кадр.
+
+     Так сделано намеренно. Потребители движка (BreastCanvas и другие)
+     перерисовываются по изменению идентичности warpedImageData — это был
+     контракт до инкрементальных вырезок. Когда я оставил объект
+     постоянным, канвас маммопластики перестал обновляться вовсе: точки
+     двигались, а форма не менялась. Возвращать контракт правильнее, чем
+     заставлять каждого потребителя знать про warpRegion. */
   const applyPatch = useCallback((buffer, x, y, w, h) => {
     const accum = accumRef.current;
     if (!accum || !buffer || w <= 0 || h <= 0) return;
     const patch = new Uint8ClampedArray(buffer);
-    const W = accum.imageData.width;
     const rowBytes = w * 4;
     for (let row = 0; row < h; row++) {
-      const to = ((y + row) * W + x) * 4;
+      const to = ((y + row) * accum.width + x) * 4;
       accum.data.set(patch.subarray(row * rowBytes, (row + 1) * rowBytes), to);
     }
     versionRef.current += 1;
+    accum.imageData = new ImageData(accum.data, accum.width, accum.height);
     setWarpedImageData(accum.imageData);
     setWarpRegion({ x, y, w, h, version: versionRef.current });
   }, []);
@@ -230,7 +242,12 @@ export function useWarpEngine({ sourceImageData }) {
 
     // Накопитель main thread'а — стартует копией оригинала.
     const data = new Uint8ClampedArray(sourceImageData.data);
-    accumRef.current = { data, imageData: new ImageData(data, W, H) };
+    accumRef.current = {
+      data,
+      width: W,
+      height: H,
+      imageData: new ImageData(data, W, H),
+    };
 
     const worker = workerRef.current;
     if (worker) {

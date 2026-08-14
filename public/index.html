@@ -112,14 +112,6 @@
     </script>
 
     <div id="root"></div>
-
-    <script>
-      // заглушка, чтобы app.js не падал
-      window.TynApp = window.TynApp || {
-        init: function () {},
-        toggle: function () {},
-      };
-    </script>
     <!-- Vendor JS.
          Здесь лежало 3,4 МБ скриптов без defer — каждый блокировал разбор
          страницы. Удалено всё, чего нет в коде (проверено поиском по src/):
@@ -141,12 +133,22 @@
                                             встречаются. TynApp оттуда же —
                                             остаётся заглушка выше.
 
-         Осталось три файла. defer, чтобы они не тормозили разбор HTML:
-         bootstrap нужен из-за data-bs-* в разметке админки, main.js и
-         app.js — мелкая обвязка темы. -->
+         Вслед за ними убраны и скрипты самой темы — assets/js/main.js
+         (NiceAdmin) и assets/js/app.js (Tyn), а с ними заглушка TynApp.
+         Они инициализировали как раз удалённые библиотеки и падали с
+         «tinymce is not defined» и «Cannot set properties of undefined».
+
+         Восстанавливать их незачем: обе темы навешивают обработчики через
+         document.querySelector В МОМЕНТ ВЫПОЛНЕНИЯ, а выполняются они до
+         того, как React отрисует разметку. Все селекторы возвращают null,
+         каждая проверка вида `if (select('.back-to-top'))` ложна, и ни один
+         обработчик не привязывается. Проверено по коду: переключение
+         бокового меню в разметке и так висит на своём React-onClick, а
+         блоки .echart пусты — их инициализация закомментирована.
+
+         Остался один скрипт. defer, чтобы не тормозил разбор HTML:
+         bootstrap нужен из-за data-bs-* в разметке админки. -->
     <script defer src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script defer src="/assets/js/main.js"></script>
-    <script defer src="/assets/js/app.js"></script>
 
     <script>
       function scrollToBottom(el) {
