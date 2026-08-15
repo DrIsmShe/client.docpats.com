@@ -82,6 +82,23 @@
   border-radius: 3px;
 }
 
+/* Путь к странице, набранный в тексте кодом. Остаётся моноширинным — иначе
+   перестанет читаться как адрес, — но получает цвет ссылки и подчёркивание
+   по наведению: без этого кликабельность ничем не выдаёт себя. */
+.pathLink {
+  text-decoration: none;
+}
+
+.pathLink :global(code) {
+  color: #1554a8;
+  background: #eaf1fb;
+}
+
+.pathLink:hover :global(code) {
+  background: #dae7f8;
+  text-decoration: underline;
+}
+
 .note {
   color: #63748a;
   font-size: 16px;
@@ -94,4 +111,18 @@
   .doc {
     font-size: 16px;
   }
+}
+
+/* Возврат к оглавлению корпуса. Отдельным блоком над текстом: внутри
+   markdown-разметки ссылка потерялась бы среди заголовков раздела. */
+.backLink {
+  display: inline-block;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: #0f766e;
+  text-decoration: none;
+}
+
+.backLink:hover {
+  text-decoration: underline;
 }

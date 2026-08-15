@@ -33,7 +33,7 @@
   },
   "doctorBanner": {
     "title": "Yeni doktorlar için 6 ay ücretsiz",
-    "text": "Kayıt olduktan sonra — 6 ay boyunca tüm Doctor Growth özellikleri. Sonrasında platformda $19/ay ile kalabilir veya pratiğinize uygun bir ücretli plan seçebilirsiniz.",
+    "text": "Kayıttan sonra — 6 ay boyunca Doctor Growth seviyesinde olanaklar, %15 komisyon. Ardından siz başka bir tarife seçene kadar hesap aylık 3 $ olan Lite tarifesine geçer.",
     "cta": "Başla"
   },
   "patientFooter": "💡 Ücretsiz plan sonsuza dek geçerlidir. Ücretli özellikler ödemeden hemen sonra etkinleşir, istediğiniz zaman iptal edebilirsiniz.",
@@ -61,18 +61,18 @@
       "desc": "Maksimum AI olanakları ve öncelik"
     },
     "doctor_lite": {
-      "name": "Temel",
-      "desc": "",
-      "trialNote": "İlk 6 ay — Doctor Growth seviyesinde ücretsiz"
+      "name": "Lite",
+      "desc": "Platforma en basit giriş",
+      "trialNote": "Deneme süresi bittiğinde hesap buraya geçer"
     },
     "doctor_basic": {
       "name": "Start",
-      "desc": "Deneme süresi sonrası platformda temel varlık",
-      "trialNote": "İlk 6 ay — Doctor Growth seviyesinde ücretsiz"
+      "desc": "Küçük bir muayenehane"
     },
     "doctor_super": {
       "name": "Growth",
-      "desc": "Büyüyen özel pratik için"
+      "desc": "Büyüyen özel pratik için",
+      "trialNote": "İlk 6 ay ücretsiz verilen, tam olarak bu tarifenin olanaklarıdır"
     },
     "doctor_pro": {
       "name": "Pro",

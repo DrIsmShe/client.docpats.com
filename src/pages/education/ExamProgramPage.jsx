@@ -11,6 +11,7 @@ import {
   fetchReadiness,
   fetchAttempts,
   fetchProgramBlocks,
+  fetchQuota,
   startAttempt,
   readApiError,
   isAuthError,
@@ -40,6 +41,9 @@ export default function ExamProgramPage() {
   const [readiness, setReadiness] = useState(null);
   const [attempts, setAttempts] = useState([]);
   const [blocksInfo, setBlocksInfo] = useState(null);
+  // null — список ещё не приехал: до этого момента ничего не блокируем,
+  // иначе страница на секунду показывала бы всё запертым.
+  const [allowedModes, setAllowedModes] = useState(null);
   const [loading, setLoading] = useState(true);
   const [starting, setStarting] = useState(null);
   const [error, setError] = useState(null);
@@ -62,17 +66,21 @@ export default function ExamProgramPage() {
       setLoading(true);
       setError(null);
       try {
-        const [p, r, a, b] = await Promise.all([
+        const [p, r, a, b, q] = await Promise.all([
           fetchProgram(programId),
           fetchReadiness(programId),
           fetchAttempts({ programId, limit: 50 }),
           fetchProgramBlocks(programId),
+          // Режимы приезжают вместе с квотой: без них страница предлагала бы
+          // кнопки, на которые сервер отвечает отказом.
+          fetchQuota().catch(() => null),
         ]);
         if (cancelled) return;
         setProgram(p);
         setReadiness(r);
         setAttempts(a);
         setBlocksInfo(b);
+        setAllowedModes(Array.isArray(q?.modes) ? q.modes : null);
       } catch (err) {
         if (!cancelled) handleApiError(err, t("program.errors.loadProgram"));
       } finally {
@@ -312,35 +320,50 @@ export default function ExamProgramPage() {
         <h2 className="edu-card-title">
           {hasBlocks ? t("program.start.titleWhole") : t("program.start.title")}
         </h2>
-        {MODES.map((modeKey) => (
-          <div
-            key={modeKey}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 16,
-              padding: "12px 0",
-              borderTop: "1px solid #eef2f7",
-            }}
-          >
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 500 }}>{t(`shared.modes.${modeKey}`)}</div>
-              <div style={{ fontSize: 13.5, color: "#5a6b7f" }}>
-                {t(`program.modeHints.${modeKey}`)}
-              </div>
-            </div>
-            <button
-              type="button"
-              className="edu-btn edu-btn--ghost"
-              disabled={Boolean(starting) || Boolean(inProgress)}
-              onClick={() => handleStart(modeKey)}
+        {MODES.map((modeKey) => {
+          // Режим заперт, только когда список уже приехал и его там нет.
+          const locked =
+            Array.isArray(allowedModes) && !allowedModes.includes(modeKey);
+          return (
+            <div
+              key={modeKey}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 16,
+                padding: "12px 0",
+                borderTop: "1px solid #eef2f7",
+                opacity: locked ? 0.55 : 1,
+              }}
             >
-              {starting === modeKey
-                ? t("program.start.preparing")
-                : t("program.start.action")}
-            </button>
-          </div>
-        ))}
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 500 }}>
+                  {t(`shared.modes.${modeKey}`)}
+                </div>
+                <div style={{ fontSize: 13.5, color: "#5a6b7f" }}>
+                  {locked
+                    ? t("program.modeLocked", {
+                        defaultValue:
+                          "Входит в Exam Prep и в тарифы Growth и Pro",
+                      })
+                    : t(`program.modeHints.${modeKey}`)}
+                </div>
+              </div>
+              <button
+                type="button"
+                className="edu-btn edu-btn--ghost"
+                disabled={locked || Boolean(starting) || Boolean(inProgress)}
+                onClick={() => handleStart(modeKey)}
+              >
+                {locked
+                  ? t("program.start.locked", { defaultValue: "Недоступно" })
+                  : starting === modeKey
+                    ? t("program.start.preparing")
+                    : t("program.start.action")}
+              </button>
+            </div>
+          );
+        })}
       </div>
 
       {/* ─── История ─── */}

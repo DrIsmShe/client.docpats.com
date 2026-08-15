@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-14T19:20:16.938Z",
+  "generatedAt": "2026-08-15T08:54:25.770Z",
   "sections": [
     {
       "name": "clinic",
@@ -8,23 +8,28 @@
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 5429
+          "bytes": 5429,
+          "title": "Клиника"
         },
         "en": {
           "status": "fresh",
-          "bytes": 6143
+          "bytes": 6143,
+          "title": "Clinic"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 5957
+          "bytes": 5957,
+          "title": "Klinik"
         },
         "az": {
           "status": "fresh",
-          "bytes": 5895
+          "bytes": 5895,
+          "title": "Klinika"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 5128
+          "bytes": 5128,
+          "title": "العيادة"
         }
       }
     },
@@ -35,23 +40,28 @@
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 4167
+          "bytes": 4167,
+          "title": "Клиника: кто что делает"
         },
         "en": {
           "status": "fresh",
-          "bytes": 5252
+          "bytes": 5252,
+          "title": "The Clinic: Who Does What"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 4514
+          "bytes": 4514,
+          "title": "Klinik: kim neyi yapar"
         },
         "az": {
           "status": "fresh",
-          "bytes": 4507
+          "bytes": 4507,
+          "title": "Klinika: kim nə edir"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 4255
+          "bytes": 4255,
+          "title": "العيادة: من يقوم بأي مهمة"
         }
       }
     },
@@ -62,23 +72,28 @@
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 3386
+          "bytes": 3386,
+          "title": "Разбор материала ИИ"
         },
         "en": {
           "status": "fresh",
-          "bytes": 3852
+          "bytes": 3852,
+          "title": "AI Material Review"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 3722
+          "bytes": 3722,
+          "title": "Yapay Zekâ ile Materyal Analizi"
         },
         "az": {
           "status": "fresh",
-          "bytes": 3569
+          "bytes": 3569,
+          "title": "Materialın süni intellekt tərəfindən təhlili"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 3211
+          "bytes": 3211,
+          "title": "تحليل المادة بالذكاء الاصطناعي (AI)"
         }
       }
     },
@@ -89,23 +104,28 @@
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 4301
+          "bytes": 4301,
+          "title": "Пациенты в кабинете врача"
         },
         "en": {
           "status": "fresh",
-          "bytes": 4977
+          "bytes": 4977,
+          "title": "Patients in the Physician's Office"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 4589
+          "bytes": 4589,
+          "title": "Hekim Panelinde Hastalar"
         },
         "az": {
           "status": "fresh",
-          "bytes": 4686
+          "bytes": 4686,
+          "title": "Həkim kabinetində pasiyentlər"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 3962
+          "bytes": 3962,
+          "title": "المرضى في عيادة الطبيب"
         }
       }
     },
@@ -116,23 +136,28 @@
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 3539
+          "bytes": 3539,
+          "title": "История болезни и шаблоны осмотров"
         },
         "en": {
           "status": "fresh",
-          "bytes": 3891
+          "bytes": 3891,
+          "title": "Medical History and Examination Templates"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 3734
+          "bytes": 3734,
+          "title": "Hastalık Öyküsü ve Muayene Şablonları"
         },
         "az": {
           "status": "fresh",
-          "bytes": 3766
+          "bytes": 3766,
+          "title": "Xəstəlik tarixçəsi və müayinə şablonları"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 3568
+          "bytes": 3568,
+          "title": "التاريخ المرضي وقوالب الفحوص"
         }
       }
     },
@@ -143,23 +168,28 @@
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 3710
+          "bytes": 3710,
+          "title": "Приёмы и расписание врача"
         },
         "en": {
           "status": "fresh",
-          "bytes": 4449
+          "bytes": 4449,
+          "title": "Appointments and Physician Schedule"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 4238
+          "bytes": 4238,
+          "title": "Muayeneler ve hekim takvimi"
         },
         "az": {
           "status": "fresh",
-          "bytes": 4106
+          "bytes": 4106,
+          "title": "Qəbullar və həkimin cədvəli"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 3574
+          "bytes": 3574,
+          "title": "مواعيد الطبيب وجدوله الزمني"
         }
       }
     },
@@ -170,50 +200,60 @@
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 3149
+          "bytes": 3149,
+          "title": "Подготовка к экзаменам"
         },
         "en": {
           "status": "fresh",
-          "bytes": 3642
+          "bytes": 3642,
+          "title": "Exam Preparation"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 3277
+          "bytes": 3277,
+          "title": "Sınavlara Hazırlık"
         },
         "az": {
           "status": "fresh",
-          "bytes": 3204
+          "bytes": 3204,
+          "title": "İmtahanlara hazırlıq"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 2909
+          "bytes": 2909,
+          "title": "التحضير للامتحانات"
         }
       }
     },
     {
       "name": "for-doctors",
       "title": "DocPats для врача",
-      "sourceHash": "eb671ce048e5886708c3b480d26688d6d2878986",
+      "sourceHash": "3d9f333db997e66915770ad2545d93436fd5509b",
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 7127
+          "bytes": 8955,
+          "title": "DocPats для врача"
         },
         "en": {
           "status": "fresh",
-          "bytes": 8192
+          "bytes": 10134,
+          "title": "DocPats for Physicians"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 7567
+          "bytes": 9394,
+          "title": "Hekimler için DocPats"
         },
         "az": {
           "status": "fresh",
-          "bytes": 7414
+          "bytes": 9299,
+          "title": "Həkimlər üçün DocPats"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 6577
+          "bytes": 8287,
+          "title": "DocPats للطبيب"
         }
       }
     },
@@ -224,23 +264,28 @@
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 4527
+          "bytes": 4527,
+          "title": "DocPats для пациента"
         },
         "en": {
           "status": "fresh",
-          "bytes": 5124
+          "bytes": 5124,
+          "title": "DocPats for Patients"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 4992
+          "bytes": 4992,
+          "title": "Hastalar için DocPats"
         },
         "az": {
           "status": "fresh",
-          "bytes": 4796
+          "bytes": 4796,
+          "title": "Pasiyent üçün DocPats"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 4147
+          "bytes": 4147,
+          "title": "DocPats للمريض"
         }
       }
     },
@@ -251,23 +296,28 @@
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 3092
+          "bytes": 3092,
+          "title": "HIPAA: что сделано в платформе"
         },
         "en": {
           "status": "fresh",
-          "bytes": 3459
+          "bytes": 3459,
+          "title": "HIPAA: What Has Been Implemented in the Platform"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 3406
+          "bytes": 3406,
+          "title": "HIPAA: Platformda Neler Yapıldı"
         },
         "az": {
           "status": "fresh",
-          "bytes": 3355
+          "bytes": 3355,
+          "title": "HIPAA: platformada nə edilib"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 2919
+          "bytes": 2919,
+          "title": "HIPAA: ما تم إنجازه في المنصة"
         }
       }
     },
@@ -278,23 +328,28 @@
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 3651
+          "bytes": 3651,
+          "title": "Кабинет пациента"
         },
         "en": {
           "status": "fresh",
-          "bytes": 4168
+          "bytes": 4168,
+          "title": "Patient Portal"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 4047
+          "bytes": 4047,
+          "title": "Hasta Portalı"
         },
         "az": {
           "status": "fresh",
-          "bytes": 3970
+          "bytes": 3970,
+          "title": "Pasiyent kabineti"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 3707
+          "bytes": 3707,
+          "title": "حساب المريض"
         }
       }
     },
@@ -305,23 +360,28 @@
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 3608
+          "bytes": 3608,
+          "title": "Как DocPats обращается с вашими данными"
         },
         "en": {
           "status": "fresh",
-          "bytes": 3987
+          "bytes": 3987,
+          "title": "How DocPats Handles Your Data"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 3963
+          "bytes": 3963,
+          "title": "DocPats Verilerinizi Nasıl İşliyor"
         },
         "az": {
           "status": "fresh",
-          "bytes": 3807
+          "bytes": 3807,
+          "title": "DocPats məlumatlarınızla necə davranır"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 3389
+          "bytes": 3389,
+          "title": "كيف تتعامل DocPats مع بياناتك"
         }
       }
     },
@@ -332,23 +392,28 @@
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 25969
+          "bytes": 25969,
+          "title": "DocPats Surgical Simulation — Руководство пользователя"
         },
         "en": {
           "status": "fresh",
-          "bytes": 27045
+          "bytes": 27045,
+          "title": "DocPats Surgical Simulation — User Guide"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 26649
+          "bytes": 26649,
+          "title": "DocPats Surgical Simulation — Kullanıcı Kılavuzu"
         },
         "az": {
           "status": "fresh",
-          "bytes": 27218
+          "bytes": 27218,
+          "title": "DocPats Surgical Simulation — İstifadəçi təlimatı"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 23258
+          "bytes": 23258,
+          "title": "DocPats Surgical Simulation — دليل المستخدم"
         }
       }
     }

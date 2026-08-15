@@ -137,6 +137,12 @@ const DOCTOR_PLANS = [
     highlight: false,
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=doctor_super",
+    // Плашка про пробный период стоит здесь, потому что бесплатные полгода
+    // дают ЛИМИТЫ ИМЕННО ЭТОГО тарифа. Раньше она висела на Lite и Start
+    // одновременно, и обе карточки утверждали «бесплатно как Doctor Growth»,
+    // то есть рассказывали про третий тариф. На Lite своя формулировка —
+    // туда аккаунт переходит по окончании пробного.
+    showTrialNote: true,
     features: [
       { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.doctorProfile" },

@@ -142,7 +142,8 @@
     "terms": "Şartlar",
     "privacy": "Gizlilik",
     "hipaa": "HIPAA",
-    "contact": "İletişim"
+    "contact": "İletişim",
+    "docs": "Dokümantasyon"
   },
   "featureAI": "AI Konsültasyon",
   "featureAIDesc": "Semptomların ücretsiz ön tıbbi değerlendirmesi ve uluslararası SOAP formatında epikriz oluşturma.",

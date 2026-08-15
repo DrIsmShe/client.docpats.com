@@ -142,7 +142,8 @@
     "terms": "Şərtlər",
     "privacy": "Məxfilik",
     "hipaa": "HIPAA",
-    "contact": "Əlaqə"
+    "contact": "Əlaqə",
+    "docs": "Sənədlər"
   },
   "featureAI": "AI konsultasiya",
   "featureAIDesc": "Simptomların pulsuz ilkin tibbi qiymətləndirilməsi və beynəlxalq SOAP formatında epikrizin yaradılması.",

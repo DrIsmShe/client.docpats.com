@@ -142,7 +142,8 @@
     "terms": "Terms",
     "privacy": "Privacy",
     "hipaa": "HIPAA",
-    "contact": "Contact"
+    "contact": "Contact",
+    "docs": "Documentation"
   },
   "featureAI": "AI Consultation",
   "featureAIDesc": "Free preliminary medical assessment of symptoms with an epicrisis generated in the international SOAP format.",

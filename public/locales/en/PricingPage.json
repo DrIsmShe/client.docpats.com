@@ -33,7 +33,7 @@
   },
   "doctorBanner": {
     "title": "6 months free for new doctors",
-    "text": "After signing up — full Doctor Growth features for 6 months. Then stay on the platform for $19/mo or pick a paid plan that fits your practice.",
+    "text": "After registration — Doctor Growth-level capabilities for 6 months, 15% commission. The account then moves to Lite at $3/month until you choose another plan.",
     "cta": "Get started"
   },
   "patientFooter": "💡 The free plan is forever. Paid features activate immediately after payment, cancel anytime.",
@@ -61,18 +61,18 @@
       "desc": "Maximum AI capabilities and priority"
     },
     "doctor_lite": {
-      "name": "Basic",
-      "desc": "",
-      "trialNote": "First 6 months — free, equivalent to Doctor Growth"
+      "name": "Lite",
+      "desc": "The minimal way onto the platform",
+      "trialNote": "This is where the account lands when the trial ends"
     },
     "doctor_basic": {
       "name": "Start",
-      "desc": "Basic presence on the platform after trial",
-      "trialNote": "First 6 months — free, equivalent to Doctor Growth"
+      "desc": "A small practice"
     },
     "doctor_super": {
       "name": "Growth",
-      "desc": "For growing private practice"
+      "desc": "For growing private practice",
+      "trialNote": "The capabilities of this plan are what the first 6 months give you for free"
     },
     "doctor_pro": {
       "name": "Pro",

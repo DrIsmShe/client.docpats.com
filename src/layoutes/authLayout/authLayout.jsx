@@ -2002,6 +2002,12 @@ export default function AuthLayout() {
                 <Link className="dp-footer-link" to="/docs/for-patients">
                   {t("footer.forPatients") || "Пациентам"}
                 </Link>
+                {/* Оглавление всего корпуса. Без него в футер помещаются
+                    четыре раздела из тринадцати, а остальные девять
+                    недостижимы ниоткуда. */}
+                <Link className="dp-footer-link" to="/docs">
+                  {t("footer.docs") || "Документация"}
+                </Link>
                 <a className="dp-footer-link" href="/consultation">
                   {t("footer.aiConsult") || "AI Консультация"}
                 </a>

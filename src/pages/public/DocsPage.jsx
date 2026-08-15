@@ -12,7 +12,7 @@
 // оригинал, это лучше пустой страницы.
 
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import styles from "./DocsPage.module.css";
@@ -34,6 +34,98 @@ const STAMP = /<!--\s*translated-from-ru:[\s\S]*?-->/g;
  */
 function looksLikeHtml(text) {
   return text.trimStart().startsWith("<");
+}
+
+/**
+ * Ссылки внутри документации.
+ *
+ * Три разных случая, и путать их нельзя:
+ *
+ *   #якорь      — оглавление внутри самого документа (руководство по
+ *                 симуляции целиком на них построено). Абсолютным его
+ *                 делать нельзя, новую вкладку открывать тем более:
+ *                 перескок должен происходить на этой же странице.
+ *   mailto:/tel: — не адрес страницы. Трогать нечего.
+ *   /раздел      — ссылка на страницу сайта. Разворачивается в полный
+ *                 адрес и открывается в новой вкладке, чтобы читатель не
+ *                 терял место в документе.
+ *
+ * Полный адрес собирается из origin в момент отрисовки, а не зашит в
+ * markdown: на docpats.com получится https://docpats.com/pricing, на
+ * localhost — localhost. Иначе проверять документацию локально было бы
+ * невозможно: любая ссылка уводила бы на прод.
+ */
+function absoluteUrl(path) {
+  const origin =
+    typeof window !== "undefined" ? window.location.origin : "https://docpats.com";
+  return /^https?:/i.test(path)
+    ? path
+    : `${origin}${path.startsWith("/") ? "" : "/"}${path}`;
+}
+
+function DocLink({ href = "", children, node, ...rest }) {
+  const isAnchor = href.startsWith("#");
+  const isProtocol = /^[a-z][a-z0-9+.-]*:/i.test(href); // mailto:, tel:, https:
+
+  if (isAnchor || (isProtocol && !/^https?:/i.test(href))) {
+    return (
+      <a href={href} {...rest}>
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <a href={absoluteUrl(href)} target="_blank" rel="noopener noreferrer" {...rest}>
+      {children}
+    </a>
+  );
+}
+
+/**
+ * Адреса страниц, набранные в тексте моноширинным шрифтом.
+ *
+ * В корпусе они записаны как `/patient/my-lab-results` — то есть кодом, а не
+ * markdown-ссылкой. Так их и писать удобнее (в тексте это скорее «название
+ * места», чем ссылка), и переводчику они достаются нетронутыми: содержимое
+ * обратных кавычек модель не переводит. Но читателю от этого не легче —
+ * приходится копировать путь руками в адресную строку.
+ *
+ * Поэтому ссылку делаем на отрисовке, а не в исходниках: markdown остаётся
+ * прежним, а кликабельными становятся сразу все разделы, включая будущие.
+ *
+ * Два случая исключены намеренно:
+ *
+ *   - блок кода (```) — там путь стоит внутри примера, а не как адрес;
+ *   - путь с подстановкой: `/dp/patient-detail/<id>`, `/clinics/<адрес
+ *     клиники>`. Такого адреса не существует, ссылка привела бы на «страница
+ *     не найдена». Их в корпусе десять, и они остаются просто кодом.
+ */
+const PATH_IN_CODE = /^\/[A-Za-z0-9][A-Za-z0-9/_-]*$/;
+
+function DocCode({ inline, className, children, node, ...rest }) {
+  const text = (Array.isArray(children) ? children.join("") : String(children ?? "")).trim();
+
+  if (!inline || !PATH_IN_CODE.test(text)) {
+    return (
+      <code className={className} {...rest}>
+        {children}
+      </code>
+    );
+  }
+
+  return (
+    <a
+      className={styles.pathLink}
+      href={absoluteUrl(text)}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <code className={className} {...rest}>
+        {children}
+      </code>
+    </a>
+  );
 }
 
 export default function DocsPage() {
@@ -114,7 +206,18 @@ export default function DocsPage() {
           </p>
         )}
 
-        {state === "ready" && <ReactMarkdown>{markdown}</ReactMarkdown>}
+        {state === "ready" && (
+          <>
+            {/* Возврат к оглавлению: без него читатель, пришедший по прямой
+                ссылке, не узнает, что разделов ещё двенадцать. */}
+            <Link className={styles.backLink} to="/docs">
+              ← {t("docs.allSections", { defaultValue: "Все разделы" })}
+            </Link>
+            <ReactMarkdown components={{ a: DocLink, code: DocCode }}>
+              {markdown}
+            </ReactMarkdown>
+          </>
+        )}
       </article>
     </div>
   );
