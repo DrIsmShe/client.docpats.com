@@ -14,7 +14,7 @@
   "period": {
     "monthly": "Monthly",
     "yearly": "Yearly",
-    "yearlyBadge": "−20%",
+    "yearlyBadge": "−17%",
     "perMonth": "/ mo",
     "perYear": "/ yr",
     "approxPerMonth": "≈ ${{amount}}/mo"
@@ -91,24 +91,22 @@
     "clinic_pro": {
       "name": "Enterprise",
       "desc": "For large medical centers"
+    },
+    "patient_care": {
+      "name": "Care",
+      "desc": "Your family's health in one place"
     }
   },
   "features": {
     "aiConsultations": "{{count}} AI consultations per month",
-    "aiConsultationsUnlimited": "Unlimited AI patient consultations",
     "aiArticles": "{{count}} AI articles per month",
-    "aiArticlesUnlimited": "Unlimited AI articles",
     "aiArticlesOne": "1 AI article per month",
     "aiAnalyses": "{{count}} AI case analyses per month",
-    "aiAnalysesUnlimited": "Unlimited AI analyses",
     "soapEpicrises": "{{count}} SOAP epicrises per month",
-    "soapEpicrisesUnlimited": "Unlimited SOAP epicrises",
     "aiPatientConsultations": "{{count}} AI patient consultations",
     "patientsInOffice": "{{count}} patients in office",
-    "patientsInOfficeUnlimited": "Unlimited patients in office",
     "videoMinutes": "{{count}} minutes of video/audio per month",
     "videoMinutesHours": "{{count}} minutes of video/audio ({{hours}} h)",
-    "videoMinutesUnlimited": "Unlimited video appointments",
     "doctorProfile": "Doctor profile on DocPats",
     "doctorProfilePriority": "Priority doctor profile",
     "directPayments": "Direct online payments",
@@ -116,19 +114,12 @@
     "anthropometryTools": "Anthropometry tools",
     "surgicalSimulation": "Surgical simulation",
     "viewDocuments": "View all your own documents — unlimited",
-    "fullHistory": "Full document history",
     "fullHistoryBackup": "Full history + auto-backup",
     "bookDoctor": "Book doctors via DocPats",
-    "paidConsultations": "Paid online consultations with a doctor",
-    "consultationDiscount": "{{percent}}% off online consultations",
-    "consultationDiscountNo": "Discount on online consultations",
     "exportPdf": "Export epicrisis to PDF",
     "medReminders": "Medication reminders",
-    "doctorPriorityQueue": "Priority queue for doctors",
-    "translateDocs2": "Document translation into 2 languages",
     "translateDocs5": "Document translation into 5 languages",
     "doctorsInClinic": "Up to {{count}} doctors in account",
-    "doctorsInClinicUnlimited": "Unlimited doctors",
     "allDoctorsProfiles": "Profiles of all doctors on DocPats",
     "unifiedSchedule": "Unified clinic schedule",
     "unifiedScheduleCrm": "Unified schedule and CRM",
@@ -138,9 +129,14 @@
     "extendedAnalytics": "Extended analytics and reports",
     "topInRecommendations": "Top in AI recommendations",
     "personalManager": "Personal manager",
-    "allAiUnlimited": "Unlimited AI features",
     "examQuestions": "{{count}} test questions per month",
-    "examQuestionsUnlimited": "Unlimited tests and exams"
+    "examQuestionsUnlimited": "Unlimited tests and exams",
+    "familyMembers": "Family profiles: {{count}}",
+    "storedFiles": "Document archive: {{count}} files",
+    "storedFilesOff": "Document archive",
+    "videoMinutesPatient": "{{count}} minutes of video/audio with a doctor",
+    "videoMinutesPatientHours": "{{count}} minutes of video/audio with a doctor ({{hours}} h)",
+    "familyMembersOff": "Family profiles"
   },
   "examAddon": {
     "title": "Exam preparation",
@@ -165,5 +161,14 @@
     "done": "Thanks! We will write the day payments open.",
     "error": "Could not send. Please try again.",
     "notice": "Payments are not live yet — leave your email and we will write on launch day."
+  },
+  "invoice": {
+    "cta": "Pay by invoice",
+    "company": "Organization or your name",
+    "email": "Email for the invoice",
+    "taxId": "Tax ID (if any)",
+    "submit": "Request an invoice",
+    "sending": "Sending…",
+    "error": "Could not send. Please try again."
   }
 }

@@ -1132,16 +1132,10 @@ export default function ProfilePatientHomePage() {
       }),
       link: "/patient/news",
     },
-    {
-      icon: "✨",
-      color: "gold",
-      label: t("aiSynthesis"),
-      sub: t("ProfileHomePage.health.aiSynthesisSub", {
-        defaultValue: "AI-разбор ваших медицинских данных",
-      }),
-      link: "/public/user-synthesis",
-      external: true,
-    },
+    // Плитка генератора обзоров (user-synthesis) убрана. Подпись обещала
+    // «AI-разбор ваших медицинских данных» — ровно то, в чём генератор
+    // пациенту отказывает: личные вопросы о здоровье он отклоняет и
+    // отправляет к врачу. Обещание было противоположно поведению.
   ];
 
   const doctorItems = [

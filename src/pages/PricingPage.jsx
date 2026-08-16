@@ -12,6 +12,9 @@ import { BILLING_WAITLIST_JOINED } from "../lib/events";
 //   PLAN_PRICES. Если меняешь там — меняй и здесь.
 // ═════════════════════════════════════════════════════════════════════
 const PRICES_USD = {
+  // Care: годовая = 15 $, а не десять месячных (18 $). Иначе тариф не
+  // окупает фиксированную комиссию эквайринга — см. aiPlanLimits.js.
+  patient_care: { monthly: 1.5, yearly: 15 },
   patient_std: { monthly: 9, yearly: 90 },
   patient_pro: { monthly: 19, yearly: 190 },
   // 9 $, не 3 $: см. пояснение в server/common/config/aiPlanLimits.js —
@@ -36,6 +39,25 @@ const PRICES_USD = {
 //   Сами тексты приходят из переводов через t().
 // ═════════════════════════════════════════════════════════════════════
 
+// ═══ Пациентские тарифы, пересмотр от 16.08.2026 ═══════════════════
+//
+// С карточек убраны три строки, каждая по своей причине:
+//
+//   «Скидка 10/20 % на онлайн-консультации» — платформа не проводит оплату
+//   приёма (механизма выплат врачу в коде нет), значит применить скидку
+//   не к чему. Обещание было невыполнимым, а не просто нереализованным.
+//
+//   «Приоритетная очередь к врачам» — расписанием владеет врач.
+//   Платформа не может поставить платящего пациента раньше чужого, и
+//   продавать приоритет в доступе к медицинской помощи не стоит даже
+//   при технической возможности.
+//
+//   «SOAP-эпикризы» — клинический документ с разделами «оценка» и «план».
+//   Пациент, составляющий его сам себе без врача, делает медицинское
+//   заключение без медика. Осталось врачебным инструментом.
+//
+// Взамен на карточки вынесено то, что платформа действительно даёт и
+// действительно стоит денег: своя история, выгрузка, перевод документов.
 const PATIENT_PLANS = [
   {
     key: "patient_free",
@@ -44,18 +66,37 @@ const PATIENT_PLANS = [
     cta: "register",
     ctaPath: "/registration",
     features: [
-      { i18nKey: "features.aiConsultations", vars: { count: 2 } },
-      // Статей на бесплатном больше нет: генерация стоила $0,14 за штуку,
-      // а платить за бесплатного пользователя некому. Показываем строку
-      // погашенной — это довод за Plus, а не молчаливое исчезновение.
-      { i18nKey: "features.aiArticlesOne", off: true },
-      { i18nKey: "features.soapEpicrises", vars: { count: 1 } },
-      { i18nKey: "features.viewDocuments" },
+      { i18nKey: "features.storedFiles", vars: { count: 50 } },
+      { i18nKey: "features.videoMinutesPatient", vars: { count: 30 } },
+      { i18nKey: "features.exportPdf" },
       { i18nKey: "features.bookDoctor" },
-      { i18nKey: "features.paidConsultations" },
-      { i18nKey: "features.consultationDiscountNo", off: true },
-      { i18nKey: "features.exportPdf", off: true },
+      { i18nKey: "features.aiConsultations", vars: { count: 2 } },
+      // Погашенная строка берёт ключ БЕЗ подстановки: значения у неё нет,
+      // и с обычным ключом i18next напечатал бы «Профили близких: {{count}}».
+      { i18nKey: "features.familyMembersOff", off: true },
       { i18nKey: "features.translateDocs5", off: true },
+      { i18nKey: "features.medReminders", off: true },
+    ],
+  },
+  {
+    // Care — самый дешёвый вход. Обращений к модели он НЕ добавляет:
+    // консультации и статьи те же, что на бесплатном. Продаёт то, что
+    // платформе почти ничего не стоит, — профили близких, напоминания,
+    // перевод документов. Иначе при 1,5 $ тариф не окупает даже
+    // фиксированную комиссию эквайринга.
+    key: "patient_care",
+    highlight: false,
+    cta: "subscribe",
+    ctaPath: "/pricing/checkout?plan=patient_care",
+    features: [
+      { i18nKey: "features.storedFiles", vars: { count: 300 } },
+      { i18nKey: "features.videoMinutesPatientHours", vars: { count: 60, hours: 1 } },
+      { i18nKey: "features.familyMembers", vars: { count: 2 } },
+      { i18nKey: "features.medReminders" },
+      { i18nKey: "features.translateDocs5" },
+      { i18nKey: "features.exportPdf" },
+      { i18nKey: "features.aiConsultations", vars: { count: 2 } },
+      { i18nKey: "features.fullHistoryBackup", off: true },
     ],
   },
   {
@@ -64,15 +105,23 @@ const PATIENT_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=patient_std",
     features: [
+      // «Полная история документов» отсюда убрана: бесплатный тариф уже
+      // обещает «просмотр всех своих документов без лимита». Две строки об
+      // одном и том же, из которых одна платная, читаются как подвох.
+      // Различие Plus от Free держится на профилях близких, напоминаниях и
+      // переводе — на том, чего на Free действительно нет.
+      //
+      // «Перевод на 2 языка» заменён на все пять. Двойка была произвольной:
+      // объяснить, какие именно два языка и почему, невозможно. Перевод
+      // документов — граница между бесплатным и платным, а не между Plus и
+      // Pro.
+      { i18nKey: "features.storedFiles", vars: { count: 1000 } },
+      { i18nKey: "features.videoMinutesPatientHours", vars: { count: 180, hours: 3 } },
+      { i18nKey: "features.familyMembers", vars: { count: 5 } },
       { i18nKey: "features.aiConsultations", vars: { count: 10 } },
-      { i18nKey: "features.aiArticles", vars: { count: 2 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 10 } },
-      { i18nKey: "features.fullHistory" },
-      { i18nKey: "features.exportPdf" },
-      { i18nKey: "features.consultationDiscount", vars: { percent: 10 } },
       { i18nKey: "features.medReminders" },
-      { i18nKey: "features.translateDocs2" },
-      { i18nKey: "features.translateDocs5", off: true },
+      { i18nKey: "features.translateDocs5" },
+      { i18nKey: "features.exportPdf" },
     ],
   },
   {
@@ -81,15 +130,18 @@ const PATIENT_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=patient_pro",
     features: [
-      { i18nKey: "features.aiPatientConsultations", vars: { count: 25 } },
-      { i18nKey: "features.aiArticles", vars: { count: 8 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 25 } },
+      // Ключ был features.aiPatientConsultations — врачебный, «AI-консультаций
+      // пациентов». На пациентской карточке он читался как чужой: Plus
+      // обещал «10 AI-консультаций в месяц», Pro — «25 AI-консультаций
+      // пациентов», будто это разные вещи.
+      { i18nKey: "features.storedFiles", vars: { count: 5000 } },
+      { i18nKey: "features.videoMinutesPatientHours", vars: { count: 600, hours: 10 } },
+      { i18nKey: "features.familyMembers", vars: { count: 10 } },
+      { i18nKey: "features.aiConsultations", vars: { count: 25 } },
       { i18nKey: "features.fullHistoryBackup" },
-      { i18nKey: "features.exportPdf" },
-      { i18nKey: "features.consultationDiscount", vars: { percent: 20 } },
       { i18nKey: "features.medReminders" },
-      { i18nKey: "features.doctorPriorityQueue" },
       { i18nKey: "features.translateDocs5" },
+      { i18nKey: "features.exportPdf" },
     ],
   },
 ];
@@ -497,9 +549,138 @@ function PlanCard({ plan, period, t, currentPlanKey, paymentsEnabled }) {
             {isCurrent ? t("card.currentPlan") : t(ctaLabelKey)}
           </button>
           )}
+
+          {/* Оплата по счёту — ПАРАЛЛЕЛЬНЫЙ канал, а не замена онлайну.
+              Показываем всегда: и пока касса закрыта, и после запуска
+              эквайринга. Бухгалтерия клиники не платит корпоративной
+              картой, и для чека в 99–499 $ счёт с закрывающими
+              документами — основной способ, а не запасной.
+              На бесплатном тарифе счёт не нужен. */}
+          {!isFree && !isCurrent && (
+            <InvoiceButton planKey={plan.key} period={period} t={t} />
+          )}
         </div>
       </div>
     </motion.div>
+  );
+}
+
+// ═════════════════════════════════════════════════════════════════════
+//   ОПЛАТА ПО СЧЁТУ
+//
+//   Форма намеренно короткая: название организации, email и налоговый
+//   номер. Всё остальное выясняется перепиской — длинная форма на этом
+//   шаге теряет клиента вернее, чем недостающее поле.
+// ═════════════════════════════════════════════════════════════════════
+function InvoiceButton({ planKey, period, t }) {
+  const [open, setOpen] = useState(false);
+  const [form, setForm] = useState({
+    companyName: "",
+    email: "",
+    taxId: "",
+    note: "",
+  });
+  const [state, setState] = useState("idle"); // idle | sending | done | error
+  const [result, setResult] = useState(null);
+
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  async function submit(e) {
+    e.preventDefault();
+    setState("sending");
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/payments/invoice-request`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            ...form,
+            planKey,
+            period,
+            months: period === "yearly" ? 12 : 1,
+          }),
+        },
+      );
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || "error");
+      setResult(data);
+      setState("done");
+    } catch {
+      setState("error");
+    }
+  }
+
+  if (state === "done") {
+    return (
+      <div className="alert alert-success small mt-2 mb-0 py-2">
+        ✓ {result?.message}
+        {result?.amount != null && (
+          <div className="fw-semibold mt-1">
+            {result.planName} — ${result.amount}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        className="btn btn-link btn-sm w-100 mt-2 text-decoration-none"
+        onClick={() => setOpen(true)}
+      >
+        {t("invoice.cta", { defaultValue: "Оплатить по счёту" })}
+      </button>
+    );
+  }
+
+  return (
+    <form onSubmit={submit} className="mt-2">
+      <input
+        className="form-control form-control-sm mb-2"
+        placeholder={t("invoice.company", {
+          defaultValue: "Организация или ваше имя",
+        })}
+        value={form.companyName}
+        onChange={set("companyName")}
+        required
+      />
+      <input
+        type="email"
+        className="form-control form-control-sm mb-2"
+        placeholder={t("invoice.email", { defaultValue: "Email для счёта" })}
+        value={form.email}
+        onChange={set("email")}
+        required
+      />
+      <input
+        className="form-control form-control-sm mb-2"
+        placeholder={t("invoice.taxId", {
+          defaultValue: "Налоговый номер (если есть)",
+        })}
+        value={form.taxId}
+        onChange={set("taxId")}
+      />
+      <button
+        type="submit"
+        className="btn btn-outline-secondary btn-sm w-100"
+        disabled={state === "sending"}
+      >
+        {state === "sending"
+          ? t("invoice.sending", { defaultValue: "Отправляем…" })
+          : t("invoice.submit", { defaultValue: "Запросить счёт" })}
+      </button>
+      {state === "error" && (
+        <div className="text-danger small mt-2">
+          {t("invoice.error", {
+            defaultValue: "Не удалось отправить. Попробуйте ещё раз.",
+          })}
+        </div>
+      )}
+    </form>
   );
 }
 

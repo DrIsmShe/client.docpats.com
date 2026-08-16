@@ -14,7 +14,7 @@
   "period": {
     "monthly": "Aylık",
     "yearly": "Yıllık",
-    "yearlyBadge": "−20%",
+    "yearlyBadge": "−17%",
     "perMonth": "/ ay",
     "perYear": "/ yıl",
     "approxPerMonth": "≈ ${{amount}}/ay"
@@ -91,24 +91,22 @@
     "clinic_pro": {
       "name": "Enterprise",
       "desc": "Büyük tıp merkezleri için"
+    },
+    "patient_care": {
+      "name": "Care",
+      "desc": "Sevdiklerinizin sağlığı tek yerde"
     }
   },
   "features": {
     "aiConsultations": "Ayda {{count}} AI konsültasyonu",
-    "aiConsultationsUnlimited": "Sınırsız AI hasta konsültasyonu",
     "aiArticles": "Ayda {{count}} AI makalesi",
-    "aiArticlesUnlimited": "Sınırsız AI makalesi",
     "aiArticlesOne": "Ayda 1 AI makalesi",
     "aiAnalyses": "Ayda {{count}} AI vaka analizi",
-    "aiAnalysesUnlimited": "Sınırsız AI analizi",
     "soapEpicrises": "Ayda {{count}} SOAP epikrizi",
-    "soapEpicrisesUnlimited": "Sınırsız SOAP epikrizi",
     "aiPatientConsultations": "{{count}} AI hasta konsültasyonu",
     "patientsInOffice": "Ofiste {{count}} hasta",
-    "patientsInOfficeUnlimited": "Sınırsız hasta",
     "videoMinutes": "Ayda {{count}} dakika video/ses",
     "videoMinutesHours": "{{count}} dakika video/ses ({{hours}} sa)",
-    "videoMinutesUnlimited": "Sınırsız video randevu",
     "doctorProfile": "DocPats'te doktor profili",
     "doctorProfilePriority": "Öncelikli doktor profili",
     "directPayments": "Doğrudan online ödemeler",
@@ -116,19 +114,12 @@
     "anthropometryTools": "Antropometri araçları",
     "surgicalSimulation": "Cerrahi simülasyon",
     "viewDocuments": "Kendi belgelerini görüntüleme — sınırsız",
-    "fullHistory": "Tam belge geçmişi",
     "fullHistoryBackup": "Tam geçmiş + otomatik yedekleme",
     "bookDoctor": "DocPats üzerinden doktor randevusu",
-    "paidConsultations": "Doktorla ücretli online konsültasyon",
-    "consultationDiscount": "Online konsültasyonlarda %{{percent}} indirim",
-    "consultationDiscountNo": "Online konsültasyonlarda indirim",
     "exportPdf": "Epikrizi PDF olarak dışa aktar",
     "medReminders": "İlaç hatırlatıcıları",
-    "doctorPriorityQueue": "Doktorlara öncelikli sıra",
-    "translateDocs2": "2 dile belge çevirisi",
     "translateDocs5": "5 dile belge çevirisi",
     "doctorsInClinic": "Hesapta {{count}} doktora kadar",
-    "doctorsInClinicUnlimited": "Sınırsız doktor",
     "allDoctorsProfiles": "DocPats'te tüm doktor profilleri",
     "unifiedSchedule": "Birleşik klinik takvimi",
     "unifiedScheduleCrm": "Birleşik takvim ve CRM",
@@ -138,9 +129,14 @@
     "extendedAnalytics": "Genişletilmiş analitik ve raporlar",
     "topInRecommendations": "AI önerilerinde en üstte",
     "personalManager": "Kişisel yönetici",
-    "allAiUnlimited": "Sınırsız AI özellikleri",
     "examQuestions": "Ayda {{count}} test sorusu",
-    "examQuestionsUnlimited": "Sınırsız test ve sınav"
+    "examQuestionsUnlimited": "Sınırsız test ve sınav",
+    "familyMembers": "Aile profilleri: {{count}}",
+    "storedFiles": "Belge arşivi: {{count}} dosya",
+    "storedFilesOff": "Belge arşivi",
+    "videoMinutesPatient": "Hekimle {{count}} dakika video/ses",
+    "videoMinutesPatientHours": "Hekimle {{count}} dakika video/ses ({{hours}} saat)",
+    "familyMembersOff": "Aile profilleri"
   },
   "examAddon": {
     "title": "Sınavlara hazırlık",
@@ -165,5 +161,14 @@
     "done": "Teşekkürler! Ödeme açıldığı gün yazacağız.",
     "error": "Gönderilemedi. Tekrar deneyin.",
     "notice": "Ödeme henüz aktif değil — e-postanızı bırakın, açılışta yazalım."
+  },
+  "invoice": {
+    "cta": "Fatura ile öde",
+    "company": "Kurum veya adınız",
+    "email": "Fatura için e-posta",
+    "taxId": "Vergi numarası (varsa)",
+    "submit": "Fatura talep et",
+    "sending": "Gönderiliyor…",
+    "error": "Gönderilemedi. Lütfen tekrar deneyin."
   }
 }

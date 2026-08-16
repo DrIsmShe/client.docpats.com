@@ -14,7 +14,7 @@
   "period": {
     "monthly": "شهرياً",
     "yearly": "سنوياً",
-    "yearlyBadge": "−20%",
+    "yearlyBadge": "−17%",
     "perMonth": "/ شهر",
     "perYear": "/ سنة",
     "approxPerMonth": "≈ ${{amount}}/شهر"
@@ -91,24 +91,22 @@
     "clinic_pro": {
       "name": "Enterprise",
       "desc": "للمراكز الطبية الكبيرة"
+    },
+    "patient_care": {
+      "name": "Care",
+      "desc": "صحة أحبائك في مكان واحد"
     }
   },
   "features": {
     "aiConsultations": "{{count}} استشارة AI شهرياً",
-    "aiConsultationsUnlimited": "استشارات AI غير محدودة للمرضى",
     "aiArticles": "{{count}} مقالات AI شهرياً",
-    "aiArticlesUnlimited": "مقالات AI غير محدودة",
     "aiArticlesOne": "مقالة AI واحدة شهرياً",
     "aiAnalyses": "{{count}} تحليل AI للحالات شهرياً",
-    "aiAnalysesUnlimited": "تحليلات AI غير محدودة",
     "soapEpicrises": "{{count}} ملخص SOAP شهرياً",
-    "soapEpicrisesUnlimited": "ملخصات SOAP غير محدودة",
     "aiPatientConsultations": "{{count}} استشارة AI للمرضى",
     "patientsInOffice": "{{count}} مريض في المكتب",
-    "patientsInOfficeUnlimited": "مرضى غير محدودين",
     "videoMinutes": "{{count}} دقيقة فيديو/صوت شهرياً",
     "videoMinutesHours": "{{count}} دقيقة فيديو/صوت ({{hours}} س)",
-    "videoMinutesUnlimited": "مواعيد فيديو غير محدودة",
     "doctorProfile": "ملف الطبيب على DocPats",
     "doctorProfilePriority": "ملف طبيب ذو أولوية",
     "directPayments": "مدفوعات مباشرة عبر الإنترنت",
@@ -116,19 +114,12 @@
     "anthropometryTools": "أدوات قياسات الجسم",
     "surgicalSimulation": "محاكاة جراحية",
     "viewDocuments": "عرض جميع مستنداتك — بدون حد",
-    "fullHistory": "السجل الكامل للمستندات",
     "fullHistoryBackup": "السجل الكامل + نسخ احتياطي تلقائي",
     "bookDoctor": "حجز الأطباء عبر DocPats",
-    "paidConsultations": "استشارات مدفوعة عبر الإنترنت مع الطبيب",
-    "consultationDiscount": "خصم {{percent}}% على الاستشارات الإلكترونية",
-    "consultationDiscountNo": "خصم على الاستشارات الإلكترونية",
     "exportPdf": "تصدير الملخص إلى PDF",
     "medReminders": "تذكيرات بالأدوية",
-    "doctorPriorityQueue": "أولوية في قائمة الانتظار للأطباء",
-    "translateDocs2": "ترجمة المستندات إلى لغتين",
     "translateDocs5": "ترجمة المستندات إلى 5 لغات",
     "doctorsInClinic": "حتى {{count}} طبيب في الحساب",
-    "doctorsInClinicUnlimited": "عدد غير محدود من الأطباء",
     "allDoctorsProfiles": "ملفات جميع الأطباء على DocPats",
     "unifiedSchedule": "جدول موحد للعيادة",
     "unifiedScheduleCrm": "جدول موحد و CRM",
@@ -138,9 +129,14 @@
     "extendedAnalytics": "تحليلات وتقارير موسعة",
     "topInRecommendations": "في قمة توصيات الذكاء الاصطناعي",
     "personalManager": "مدير شخصي",
-    "allAiUnlimited": "ميزات AI غير محدودة",
     "examQuestions": "{{count}} سؤال اختبار شهرياً",
-    "examQuestionsUnlimited": "اختبارات وامتحانات بلا حدود"
+    "examQuestionsUnlimited": "اختبارات وامتحانات بلا حدود",
+    "familyMembers": "ملفات أفراد العائلة: {{count}}",
+    "storedFiles": "أرشيف المستندات: {{count}} ملف",
+    "storedFilesOff": "أرشيف المستندات",
+    "videoMinutesPatient": "{{count}} دقيقة فيديو/صوت مع الطبيب",
+    "videoMinutesPatientHours": "{{count}} دقيقة فيديو/صوت مع الطبيب ({{hours}} ساعة)",
+    "familyMembersOff": "ملفات أفراد العائلة"
   },
   "examAddon": {
     "title": "التحضير للامتحانات",
@@ -165,5 +161,14 @@
     "done": "شكراً! سنراسلك يوم فتح الدفع.",
     "error": "تعذّر الإرسال. حاول مرة أخرى.",
     "notice": "الدفع غير مفعّل بعد — اترك بريدك وسنراسلك عند الإطلاق."
+  },
+  "invoice": {
+    "cta": "الدفع بالفاتورة",
+    "company": "المؤسسة أو اسمك",
+    "email": "البريد الإلكتروني للفاتورة",
+    "taxId": "الرقم الضريبي (إن وجد)",
+    "submit": "طلب فاتورة",
+    "sending": "جارٍ الإرسال…",
+    "error": "تعذّر الإرسال. حاول مرة أخرى."
   }
 }

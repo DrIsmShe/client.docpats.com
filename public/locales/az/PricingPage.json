@@ -14,7 +14,7 @@
   "period": {
     "monthly": "Aylıq",
     "yearly": "İllik",
-    "yearlyBadge": "−20%",
+    "yearlyBadge": "−17%",
     "perMonth": "/ ay",
     "perYear": "/ il",
     "approxPerMonth": "≈ ${{amount}}/ay"
@@ -91,24 +91,22 @@
     "clinic_pro": {
       "name": "Enterprise",
       "desc": "Böyük tibbi mərkəzlər üçün"
+    },
+    "patient_care": {
+      "name": "Care",
+      "desc": "Yaxınlarınızın sağlamlığı bir yerdə"
     }
   },
   "features": {
     "aiConsultations": "Ayda {{count}} AI konsultasiyası",
-    "aiConsultationsUnlimited": "Limitsiz AI xəstə konsultasiyası",
     "aiArticles": "Ayda {{count}} AI məqaləsi",
-    "aiArticlesUnlimited": "Limitsiz AI məqalələri",
     "aiArticlesOne": "Ayda 1 AI məqaləsi",
     "aiAnalyses": "Ayda {{count}} AI hadisə təhlili",
-    "aiAnalysesUnlimited": "Limitsiz AI təhlilləri",
     "soapEpicrises": "Ayda {{count}} SOAP epikrizi",
-    "soapEpicrisesUnlimited": "Limitsiz SOAP epikrizləri",
     "aiPatientConsultations": "{{count}} AI xəstə konsultasiyası",
     "patientsInOffice": "Ofisdə {{count}} xəstə",
-    "patientsInOfficeUnlimited": "Limitsiz xəstə",
     "videoMinutes": "Ayda {{count}} dəqiqə video/audio",
     "videoMinutesHours": "{{count}} dəqiqə video/audio ({{hours}} saat)",
-    "videoMinutesUnlimited": "Limitsiz video qəbulu",
     "doctorProfile": "DocPats-da həkim profili",
     "doctorProfilePriority": "Prioritet həkim profili",
     "directPayments": "Birbaşa onlayn ödənişlər",
@@ -116,19 +114,12 @@
     "anthropometryTools": "Antropometriya alətləri",
     "surgicalSimulation": "Cərrahi simulyasiya",
     "viewDocuments": "Bütün öz sənədlərinə baxış — limitsiz",
-    "fullHistory": "Tam sənəd tarixçəsi",
     "fullHistoryBackup": "Tam tarixçə + avtomatik ehtiyat",
     "bookDoctor": "DocPats vasitəsilə həkimə qeydiyyat",
-    "paidConsultations": "Həkimlə ödənişli onlayn konsultasiya",
-    "consultationDiscount": "Onlayn konsultasiyalara {{percent}}% endirim",
-    "consultationDiscountNo": "Onlayn konsultasiyalara endirim",
     "exportPdf": "Epikrizi PDF kimi ixrac",
     "medReminders": "Dərman xatırlatmaları",
-    "doctorPriorityQueue": "Həkimlərə prioritet növbə",
-    "translateDocs2": "Sənədləri 2 dilə tərcümə",
     "translateDocs5": "Sənədləri 5 dilə tərcümə",
     "doctorsInClinic": "Hesabda {{count}} həkimə qədər",
-    "doctorsInClinicUnlimited": "Limitsiz sayda həkim",
     "allDoctorsProfiles": "DocPats-da bütün həkimlərin profilləri",
     "unifiedSchedule": "Vahid klinika cədvəli",
     "unifiedScheduleCrm": "Vahid cədvəl və CRM",
@@ -138,9 +129,14 @@
     "extendedAnalytics": "Genişləndirilmiş analitika və hesabatlar",
     "topInRecommendations": "AI tövsiyələrində ən yuxarıda",
     "personalManager": "Şəxsi menecer",
-    "allAiUnlimited": "Limitsiz AI funksiyalar",
     "examQuestions": "Ayda {{count}} test sualı",
-    "examQuestionsUnlimited": "Limitsiz testlər və imtahanlar"
+    "examQuestionsUnlimited": "Limitsiz testlər və imtahanlar",
+    "familyMembers": "Yaxınların profilləri: {{count}}",
+    "storedFiles": "Sənəd arxivi: {{count}} fayl",
+    "storedFilesOff": "Sənəd arxivi",
+    "videoMinutesPatient": "Həkimlə {{count}} dəqiqə video/audio",
+    "videoMinutesPatientHours": "Həkimlə {{count}} dəqiqə video/audio ({{hours}} saat)",
+    "familyMembersOff": "Yaxınların profilləri"
   },
   "examAddon": {
     "title": "İmtahanlara hazırlıq",
@@ -165,5 +161,14 @@
     "done": "Təşəkkür! Ödəniş açılan gün yazacağıq.",
     "error": "Göndərmək alınmadı. Yenidən cəhd edin.",
     "notice": "Ödəniş hələ qoşulmayıb — e-poçt qoyun, başlayanda yazacağıq."
+  },
+  "invoice": {
+    "cta": "Hesab-faktura ilə ödəmək",
+    "company": "Təşkilat və ya adınız",
+    "email": "Hesab üçün email",
+    "taxId": "Vergi nömrəsi (varsa)",
+    "submit": "Hesab istəmək",
+    "sending": "Göndərilir…",
+    "error": "Göndərmək alınmadı. Yenidən cəhd edin."
   }
 }

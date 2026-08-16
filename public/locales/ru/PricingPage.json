@@ -14,7 +14,7 @@
   "period": {
     "monthly": "Помесячно",
     "yearly": "За год",
-    "yearlyBadge": "−20%",
+    "yearlyBadge": "−17%",
     "perMonth": "/ мес",
     "perYear": "/ год",
     "approxPerMonth": "≈ {{amount}} $/мес"
@@ -91,24 +91,22 @@
     "clinic_pro": {
       "name": "Enterprise",
       "desc": "Для крупных медицинских центров"
+    },
+    "patient_care": {
+      "name": "Care",
+      "desc": "Здоровье близких в одном месте"
     }
   },
   "features": {
     "aiConsultations": "{{count}} AI-консультаций в месяц",
-    "aiConsultationsUnlimited": "Безлимитные AI-консультации пациентов",
     "aiArticles": "{{count}} AI-статей в месяц",
-    "aiArticlesUnlimited": "Безлимитные AI-статьи",
     "aiArticlesOne": "1 AI-статья в месяц",
     "aiAnalyses": "{{count}} AI-анализов в месяц",
-    "aiAnalysesUnlimited": "Безлимитные AI-анализы",
     "soapEpicrises": "{{count}} SOAP-эпикризов в месяц",
-    "soapEpicrisesUnlimited": "Безлимитные SOAP-эпикризы",
     "aiPatientConsultations": "{{count}} AI-консультаций пациентов",
     "patientsInOffice": "{{count}} пациентов в кабинете",
-    "patientsInOfficeUnlimited": "Безлимитные пациенты в кабинете",
     "videoMinutes": "{{count}} минут видео/аудио в месяц",
     "videoMinutesHours": "{{count}} минут видео/аудио ({{hours}} ч)",
-    "videoMinutesUnlimited": "Безлимитные видео-приёмы",
     "doctorProfile": "Профиль врача на DocPats",
     "doctorProfilePriority": "Приоритетный профиль врача",
     "directPayments": "Прямые онлайн-платежи",
@@ -116,19 +114,12 @@
     "anthropometryTools": "Инструменты антропометрии",
     "surgicalSimulation": "Хирургическая симуляция",
     "viewDocuments": "Просмотр всех своих документов — без лимита",
-    "fullHistory": "Полная история документов",
     "fullHistoryBackup": "Полная история + автобэкап",
     "bookDoctor": "Запись к врачам через DocPats",
-    "paidConsultations": "Платные онлайн-консультации с врачом",
-    "consultationDiscount": "Скидка {{percent}}% на онлайн-консультации",
-    "consultationDiscountNo": "Скидка на онлайн-консультации",
     "exportPdf": "Экспорт эпикриза в PDF",
     "medReminders": "Напоминания о лекарствах",
-    "doctorPriorityQueue": "Приоритетная очередь к врачам",
-    "translateDocs2": "Перевод документов на 2 языка",
     "translateDocs5": "Перевод документов на 5 языков",
     "doctorsInClinic": "До {{count}} врачей в аккаунте",
-    "doctorsInClinicUnlimited": "Неограниченное кол-во врачей",
     "allDoctorsProfiles": "Профили всех врачей на DocPats",
     "unifiedSchedule": "Единое расписание клиники",
     "unifiedScheduleCrm": "Единое расписание и CRM",
@@ -138,9 +129,14 @@
     "extendedAnalytics": "Расширенная аналитика и отчёты",
     "topInRecommendations": "Топ в рекомендациях AI",
     "personalManager": "Персональный менеджер",
-    "allAiUnlimited": "Безлимитные AI-функции",
     "examQuestions": "{{count}} вопросов тестов в месяц",
-    "examQuestionsUnlimited": "Безлимитные тесты и экзамены"
+    "examQuestionsUnlimited": "Безлимитные тесты и экзамены",
+    "familyMembers": "Профили близких: {{count}}",
+    "storedFiles": "Архив документов: {{count}} файлов",
+    "storedFilesOff": "Архив документов",
+    "videoMinutesPatient": "{{count}} минут видео/аудио с врачом",
+    "videoMinutesPatientHours": "{{count}} минут видео/аудио с врачом ({{hours}} ч)",
+    "familyMembersOff": "Профили близких"
   },
   "examAddon": {
     "title": "Подготовка к экзаменам",
@@ -165,5 +161,14 @@
     "done": "Спасибо! Напишем, как только откроем оплату.",
     "error": "Не получилось отправить. Попробуйте ещё раз.",
     "notice": "Оплата пока не подключена — оставьте email, и мы напишем в день запуска."
+  },
+  "invoice": {
+    "cta": "Оплатить по счёту",
+    "company": "Организация или ваше имя",
+    "email": "Email для счёта",
+    "taxId": "Налоговый номер (если есть)",
+    "submit": "Запросить счёт",
+    "sending": "Отправляем…",
+    "error": "Не удалось отправить. Попробуйте ещё раз."
   }
 }
