@@ -7,7 +7,9 @@
     "back": "← Back",
     "title": "DocPats Pricing",
     "subtitle": "Choose a plan for patients, doctors, or clinics",
-    "footerSupport": "All plans include basic support. Questions?"
+    "footerSupport": "All plans include basic support. Questions?",
+    "subtitleDoctor": "Choose a plan for your private practice or for a clinic",
+    "subtitlePatient": "Choose a plan for yourself"
   },
   "period": {
     "monthly": "Monthly",
@@ -32,12 +34,12 @@
     "cta": "Sign up"
   },
   "doctorBanner": {
-    "title": "6 months free for new doctors",
-    "text": "After registration — Doctor Growth-level capabilities for 6 months, 15% commission. The account then moves to Lite at $3/month until you choose another plan.",
+    "title": "3 months free for new doctors",
+    "text": "After registration — Doctor Start-level capabilities free for 3 months. The account then moves to Lite at $9/month until you choose another plan.",
     "cta": "Get started"
   },
   "patientFooter": "💡 The free plan is forever. Paid features activate immediately after payment, cancel anytime.",
-  "doctorFooter": "💡 The higher the tier — the lower the commission per booking. Doctor Growth pays for itself with 2-3 patients a month, Doctor Pro with 4-5.",
+  "doctorFooter": "💡 The platform takes no percentage of your consultations on any plan — the patient's payment goes to the doctor in full. Choose a plan by the size of your practice, not to reduce a commission.",
   "clinicFooter": "💡 The Enterprise plan includes a dedicated manager and custom configuration tailored to your clinic. Contact us to discuss.",
   "card": {
     "free": "Free",
@@ -67,12 +69,12 @@
     },
     "doctor_basic": {
       "name": "Start",
-      "desc": "A small practice"
+      "desc": "A small practice",
+      "trialNote": "The capabilities of this plan are what the first 3 months give you for free"
     },
     "doctor_super": {
       "name": "Growth",
-      "desc": "For growing private practice",
-      "trialNote": "The capabilities of this plan are what the first 6 months give you for free"
+      "desc": "For growing private practice"
     },
     "doctor_pro": {
       "name": "Pro",
@@ -110,7 +112,6 @@
     "doctorProfile": "Doctor profile on DocPats",
     "doctorProfilePriority": "Priority doctor profile",
     "directPayments": "Direct online payments",
-    "commission": "DocPats commission {{percent}}%",
     "aiPriority": "Priority in AI recommendations",
     "anthropometryTools": "Anthropometry tools",
     "surgicalSimulation": "Surgical simulation",

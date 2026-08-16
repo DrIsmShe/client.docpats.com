@@ -1,57 +1,57 @@
 # Exam Preparation
 
-A question bank and practice tool organized by exam program. The section is located at
+A question bank and practice tool organized by exam program. This section is located at
 `/education`.
 
-## What you can prepare for
+## What You Can Prepare For
 
 Programs are organized by **exam type**:
 
-- licensure for practice — SMLE, DHA, MOH, national accreditation;
-- entry into residency and specialty training — TUS, accreditation;
+- licensure for practice — SMLE, DHA, MOH, state accreditation;
+- residency and postgraduate entrance exams — TUS, accreditation;
 - specialty board certification;
 - international certificates;
 - continuing medical education, CME credits;
-- university examinations and state examinations;
-- internal training of clinic staff.
+- university and state final examinations;
+- internal training for clinic staff.
 
 And by **region**: CIS, Europe, the Middle East and North Africa, Asia, Africa,
-the Americas, Oceania, as well as programs not tied to a specific country.
+the Americas, Oceania, as well as programs not tied to any particular country.
 
 The program catalog is at `/education`; an individual program page is at
 `/education/programs/<program id>`.
 
-## Four practice modes
+## Four Practice Modes
 
 The mode is selected before you begin and determines how the session proceeds. This is the principal
-setting in the section:
+setting in this section:
 
-- **Mentor** — an explanation appears immediately after each answer, with no
-  timer. This mode is intended for working through a topic rather than for assessment.
-- **Timed** — the timer runs, and explanations are shown at the end. Practice
-  for pacing.
+- **Mentor** — the explanation appears immediately after each answer; there is no
+  timer. This mode is intended for working through a topic, not for assessment.
+- **Timed** — the timer runs and explanations are shown at the end. Practice for
+  pacing.
 - **Mock exam** — a full simulation: the question set is assembled according to the
   structure of the actual exam, with a timer and a report at the end.
-- **Weak-topic reinforcement** — questions are selected based on statistics from your previous
+- **Weak-topic drill** — questions are selected based on statistics from your previous
   attempts, that is, on the material you find difficult.
 
-The last mode is precisely how you work through your errors: there is no need to recall on your own where you
+The last mode is precisely the review of your errors: there is no need to recall on your own where you
 made mistakes — the selection is built automatically.
 
-## Types of questions
+## Question Types
 
-- single best answer;
+- single correct answer;
 - multiple correct answers;
 - true or false;
 - clinical vignette — a case with examination findings;
-- image-based question — radiography, ECG, histology;
+- image-based question — radiograph, ECG, histology;
 - clinical case.
 
-Each question has a difficulty level: easy, medium, or hard.
+Each question has a difficulty level: easy, moderate, or difficult.
 
-## How an attempt proceeds
+## How an Attempt Proceeds
 
-1. On the program page, select a mode and begin an attempt.
+1. On the program page, select a mode and start an attempt.
 2. Answer the questions; the attempt opens at
    `/education/attempts/<attempt id>`.
 3. Complete the attempt — the result will be saved.
@@ -62,7 +62,7 @@ are not lost.
 
 All attempts are saved; you can return to them and review what you answered and how.
 
-## Exam readiness
+## Exam Readiness
 
 A **readiness percentage** is calculated for each program, and it is not simply the proportion of correct
 answers:
@@ -71,22 +71,26 @@ answers:
   exam — topics that are more heavily represented on the exam carry more weight;
 - **coverage** is shown separately: how many topics you have accumulated
   meaningful statistics for at all;
-- the program's passing score is displayed alongside, if it has been defined.
+- the program's passing score is displayed alongside, if one has been defined.
 
-Consequently, 80% readiness with coverage of one third of the topics means something different from 80% with
-full coverage — and this is apparent immediately rather than discovered at the exam.
+Therefore, 80% readiness with coverage of one third of the topics means something different from 80% with
+full coverage — and this is apparent immediately, rather than becoming clear at the exam itself.
 
-## How many questions are available
+## How Many Questions Are Available
 
-- **Trial period and the Growth plan** — unlimited.
-- **Start** — 1000 questions per month.
-- **Pro** — unlimited.
+- **Lite** — 500 questions per month.
+- **Trial period and the Start plan** — 1500 questions per month.
+- **Growth and Pro** — unlimited.
 
-A portion of the bank is also available without a subscription, in a preview volume.
+Questions are the one item that costs the platform nothing to provide:
+the bank is our own, and no language model calls are made during a session. For this reason the
+limits here are generous, and the distinction between plans is placed on the practice **modes**.
 
-## Available languages
+Part of the bank is also available without a subscription, in a preview volume.
 
-Questions exist in the platform's languages: a program and its questions are delivered in the
-language of your interface, provided a translation is available.
+## Available Languages
 
-<!-- translated-from-ru: b2e4897921f9ee7efe043e7720a32410876fe380 -->
+Questions exist in the platform's supported languages: a program and its questions are delivered in the
+language of your interface, provided a translation is available for them.
+
+<!-- translated-from-ru: 8a630e4e3b6d397bd32091c0095ced0a2b5a553c -->

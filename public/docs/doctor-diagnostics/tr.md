@@ -1,60 +1,60 @@
 # Yapay Zekâ ile Materyal Analizi
 
-Asistan, klinik materyali analiz eder ve neye dikkat edilmesi gerektiğini, neyin
-netleştirilmesi gerektiğini ve verilerde nelerin eksik olduğunu gösterir. Bölüm
-`/diagnostics` adresinde yer alır.
+Asistan, klinik materyali analiz eder ve nelere dikkat edilmesi gerektiğini,
+nelerin netleştirilmesi gerektiğini ve verilerde nelerin eksik olduğunu gösterir.
+Bu bölüme `/diagnostics` adresinden ulaşılır.
 
 ## Temel kural
 
 **Vakayı analiz değil, siz kapatırsınız.** Kendi sonucunuzu yazmadığınız sürece
-vaka kapanmaz — sistem bunu doğrudan reddeder ve vakanın yapay zekâ analiziyle
-değil, hekimin sonucuyla kapatıldığını belirtir.
+vaka kapanmaz — sistem doğrudan reddeder ve vakanın yapay zekâ analiziyle değil,
+hekim sonucuyla kapatıldığını belirtir.
 
-Modelin çıkarımı hiçbir zaman sizin raporunuza otomatik olarak yerleştirilmez;
-modelin her çıkarımı yardımcı nitelikte olarak işaretlenir ve bu işaret
-değiştirilemez: verilerle birlikte dışa aktarma dosyasına ve her türlü
-entegrasyona taşınır.
+Modelin çıktısı hiçbir zaman otomatik olarak sizin raporunuza yerleştirilmez ve
+modelin her çıktısı yardımcı nitelikte olarak işaretlenir; bu işaret
+değiştirilemez: verilerle birlikte dışa aktarımlara ve tüm entegrasyonlara aynen
+aktarılır.
 
 ## Neler analiz edilebilir
 
-Dokuz tür inceleme: laboratuvar tetkikleri, röntgen, CT, MRI, ultrasonografi,
-ECG, endoskopi, histoloji, dermatoskopi. Ayrıca **klinik vakanın tamamı** —
-tek bir görüntünün değil, bütünsel tablonun önem taşıdığı durumlar için.
+Dokuz tetkik türü: laboratuvar tahlilleri, röntgen, CT, MRI, ultrasonografi, ECG,
+endoskopi, histoloji, dermatoskopi. Ayrıca **klinik olgunun tamamı** — tek bir
+görüntünün değil, bütünsel tablonun önem taşıdığı durumlar için.
 
-Sistemin içinde üç ayrı analiz modülü çalışır: inceleme raporlarına yönelik,
-laboratuvar parametrelerine yönelik ve klinik vakaya yönelik. Bunlardan
-hangisinin uygulanacağı, eklediğiniz materyale göre belirlenir.
+Sistemin içinde birbirinden farklı üç analiz motoru çalışır: tetkik raporlarına
+yönelik olan, laboratuvar parametrelerine yönelik olan ve klinik olguya yönelik
+olan. Hangisinin uygulanacağı, eklediğiniz materyale göre belirlenir.
 
-## Analizin başlaması için gereken iki koşul
+## Analizin başlatılması için gereken iki koşul
 
 1. **Materyaller kimliksizleştirilmiş olmalıdır** — görüntüde ve form başlığında
-   hastanın soyadı bulunmamalıdır. Bu sizin onayınızdır: sistem içeriği sizin
+   hastanın soyadı bulunmamalıdır. Bu, sizin beyanınızdır: sistem içeriği sizin
    yerinize denetleyemez.
 2. **Harici model tarafından işlenmesine onay verilmiş olmalıdır** — dosya
-   platformun dışına çıkar ve bu, varsayılan bir işaret değil, bilinçli bir
-   karardır.
+   platformun dışına çıkar ve bu, varsayılan bir işaret kutusu değil, bilinçli
+   bir karardır.
 
-Bu iki onay verilmediği sürece analiz düğmesi çalışmaz ve neyin eksik olduğunu
+Bu iki işaret konulmadığı sürece analiz düğmesi çalışmaz ve neyin eksik olduğunu
 bildirir. Aynı iki koşul belge tanıma işlemi için de geçerlidir.
 
 ## Çalışma sırası
 
 1. `/diagnostics` bölümünde **bir vaka oluşturun**: başlık, analizini almak
    istediğiniz soru ve klinik bağlam.
-2. **Materyalleri ekleyin** — görüntüler, form taramaları, PDF. Dosyalar
-   şifrelenmiş olarak saklanır.
+2. **Materyalleri ekleyin** — görüntüler, form taramaları, PDF. Dosyalar şifreli
+   olarak saklanır.
 3. Gerekirse **belgeyi tanıtın**: model, formu elle yeniden yazmanıza gerek
-   kalmaması için taramadan metni ve parametreleri çıkarır. Sonucu, orijinal
-   belge önünde bulunan bir insan denetler.
-4. **Analizi başlatın.** Vaka «analiz ediliyor» durumuna geçer; iş görevler
-   halinde yürütülür ve her biri ayrı ayrı görünür — kuyrukta, yürütülüyor,
-   hazır, hata veya atlandı. Tek bir görev, diğerlerine dokunmadan yeniden
+   kalmaması için taramadan metni ve parametreleri çıkarır. Sonucu, orijinali
+   önünde bulunan bir insan denetler.
+4. **Analizi başlatın.** Vaka «analiz ediliyor» durumuna geçer; işlem görevler
+   hâlinde yürütülür ve her biri ayrı ayrı görünür — kuyrukta, yürütülüyor,
+   hazır, hata veya atlandı. Tek bir görev, diğerlerine dokunulmadan yeniden
    başlatılabilir.
 5. **Bulguları değerlendirin** (aşağıya bakınız).
-6. **Sonucu yazın** ve vakayı kapatın.
+6. **Sonucunuzu yazın** ve vakayı kapatın.
 
-Kapatılmış bir vaka gerektiğinde **yeniden açılabilir** — örneğin ileri
-tetkikler geldiğinde.
+Kapatılan vaka gerektiğinde **yeniden açılabilir** — örneğin ileri tetkik
+sonuçları geldiğinde.
 
 ## Bulgular ve sizin kararınız
 
@@ -63,27 +63,39 @@ Her bulgu bir önem derecesi alır: **kritik**, **önemli** veya **not**.
 Her bulgu için bir karar verirsiniz: **katılıyorum**, **kısmen** veya
 **katılmıyorum**. Karar verilmediği sürece bulgu değerlendirilmemiş sayılır.
 
-Karar bir formalite değildir. Aynı anda iki işlevi yerine getirir: analize geri
-bildirim sağlar ve aynı zamanda daha sonra dönebileceğiniz kendi materyal
-etiketlemenizi oluşturur.
+Karar bir formalite değildir. Aynı anda iki işlevi yerine getirir: hem analize
+geri bildirimdir hem de daha sonra dönebileceğiniz kendi materyal
+etiketlemenizdir.
 
-## Kaç analiz kullanılabilir
+## Kaç analiz hakkı vardır
 
-- **Deneme süresi ve Growth tarifesi** — ayda 60 analiz.
-- **Start** — ayda 20.
-- **Pro** — sınırsız.
+- **Lite** — ayda 5 analiz.
+- **Deneme süresi ve Start tarifesi** — ayda 15.
+- **Growth** — ayda 40.
+- **Pro** — ayda 100.
 
-## Dışa aktarma
+Sayım, takvim ayına göre değil, 30 günlük kayan pencereye göre yapılır: kota
+ayın birinde sıfırlanmaz, kademeli olarak serbest kalır.
 
-Vaka bütün olarak dışa aktarılır: materyaller, sizin kararlarınızla birlikte
-bulgular ve sizin sonucunuz. Hem tek bir ekli dosya hem de vakanın tamamı
-silinebilir.
+Sayımla ilgili önemli bir açıklama. Birden fazla tetkik dalı içeren bir vaka —
+röntgen, CT, laboratuvar — **her dal için ayrı bir analiz** başlatır ve kotada da
+aynı sayıda yer kaplar. Bu bir kılı kırk yarma değildir: her dal, modele yapılan
+bağımsız bir başvurudur.
+
+Aylık kotanın yanı sıra iki genel sınır daha geçerlidir — saatte 20 ve günde 60
+analiz. Bunlar tüm tarifelerde aynıdır ve bütçeyi değil, kazara oluşan
+döngülerden korumayı amaçlar: düğmenin takılması, betiğin kontrolden çıkması.
+
+## Dışa aktarım
+
+Vaka bütünüyle dışa aktarılır: materyaller, sizin kararlarınızla birlikte
+bulgular ve sonucunuz. Hem tek bir ekli dosya hem de vakanın tamamı silinebilir.
 
 ## Asistanın yapmadıkları
 
-Tanı koymaz ve tedavi reçete etmez. Bunun nedeni ifadelerde temkinli olmak
-değildir: yaşayan bir hasta hakkında tanı belirleyen bir sistem, ayrı bir
-düzenlemeye tabi bir tıbbi cihazdır. Modül yardımcı nitelikte kaldığı sürece bu
-statü doğmaz ve bu sınır «kolaylık olsun diye» bulanıklaştırılamaz.
+Tanı koymaz ve tedavi düzenlemez. Bunun nedeni ifadelerdeki temkinlilik
+değildir: yaşayan bir hasta hakkında tanı beyan eden bir sistem, ayrı bir
+mevzuata tabi tıbbi cihazdır. Modül yardımcı nitelikte kaldığı sürece bu statü
+doğmaz ve bu sınır «kolaylık olsun diye» bulanıklaştırılamaz.
 
-<!-- translated-from-ru: 5fdd2268fb0e8df3c981fb51e6aeb3a65d4f3234 -->
+<!-- translated-from-ru: a16f94496fc9c38880bd655c6d5ce8fdaf9710db -->

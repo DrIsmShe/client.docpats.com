@@ -14,7 +14,10 @@ import { BILLING_WAITLIST_JOINED } from "../lib/events";
 const PRICES_USD = {
   patient_std: { monthly: 9, yearly: 90 },
   patient_pro: { monthly: 19, yearly: 190 },
-  doctor_lite: { monthly: 3, yearly: 30 },
+  // 9 $, не 3 $: см. пояснение в server/common/config/aiPlanLimits.js —
+  // при 3 $ постоянные расходы (комиссия эквайринга + инфраструктура)
+  // съедали треть тарифа ещё до первого обращения к модели.
+  doctor_lite: { monthly: 9, yearly: 90 },
   doctor_basic: { monthly: 19, yearly: 190 },
   doctor_super: { monthly: 49, yearly: 490 },
   doctor_pro: { monthly: 99, yearly: 990 },
@@ -41,9 +44,12 @@ const PATIENT_PLANS = [
     cta: "register",
     ctaPath: "/registration",
     features: [
-      { i18nKey: "features.aiConsultations", vars: { count: 5 } },
-      { i18nKey: "features.aiArticlesOne" },
-      { i18nKey: "features.soapEpicrises", vars: { count: 3 } },
+      { i18nKey: "features.aiConsultations", vars: { count: 2 } },
+      // Статей на бесплатном больше нет: генерация стоила $0,14 за штуку,
+      // а платить за бесплатного пользователя некому. Показываем строку
+      // погашенной — это довод за Plus, а не молчаливое исчезновение.
+      { i18nKey: "features.aiArticlesOne", off: true },
+      { i18nKey: "features.soapEpicrises", vars: { count: 1 } },
       { i18nKey: "features.viewDocuments" },
       { i18nKey: "features.bookDoctor" },
       { i18nKey: "features.paidConsultations" },
@@ -58,9 +64,9 @@ const PATIENT_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=patient_std",
     features: [
-      { i18nKey: "features.aiConsultations", vars: { count: 30 } },
-      { i18nKey: "features.aiArticles", vars: { count: 5 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 20 } },
+      { i18nKey: "features.aiConsultations", vars: { count: 10 } },
+      { i18nKey: "features.aiArticles", vars: { count: 2 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 10 } },
       { i18nKey: "features.fullHistory" },
       { i18nKey: "features.exportPdf" },
       { i18nKey: "features.consultationDiscount", vars: { percent: 10 } },
@@ -75,9 +81,9 @@ const PATIENT_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=patient_pro",
     features: [
-      { i18nKey: "features.aiConsultationsUnlimited" },
-      { i18nKey: "features.aiArticles", vars: { count: 20 } },
-      { i18nKey: "features.soapEpicrisesUnlimited" },
+      { i18nKey: "features.aiPatientConsultations", vars: { count: 25 } },
+      { i18nKey: "features.aiArticles", vars: { count: 8 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 25 } },
       { i18nKey: "features.fullHistoryBackup" },
       { i18nKey: "features.exportPdf" },
       { i18nKey: "features.consultationDiscount", vars: { percent: 20 } },
@@ -99,17 +105,16 @@ const DOCTOR_PLANS = [
     ctaPath: "/pricing/checkout?plan=doctor_lite",
     showTrialNote: true,
     features: [
-      { i18nKey: "features.examQuestions", vars: { count: 167 } },
+      { i18nKey: "features.examQuestions", vars: { count: 500 } },
       { i18nKey: "features.doctorProfile" },
-      { i18nKey: "features.aiAnalyses", vars: { count: 3 } },
+      { i18nKey: "features.aiAnalyses", vars: { count: 5 } },
       { i18nKey: "features.aiArticles", vars: { count: 1 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 3 } },
-      { i18nKey: "features.aiPatientConsultations", vars: { count: 2 } },
-      { i18nKey: "features.patientsInOffice", vars: { count: 17 } },
-      { i18nKey: "features.videoMinutes", vars: { count: 40 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 5 } },
+      { i18nKey: "features.aiPatientConsultations", vars: { count: 3 } },
+      { i18nKey: "features.patientsInOffice", vars: { count: 30 } },
+      { i18nKey: "features.videoMinutes", vars: { count: 60 } },
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
-      { i18nKey: "features.commission", vars: { percent: 15 } },
     ],
   },
   {
@@ -117,19 +122,23 @@ const DOCTOR_PLANS = [
     highlight: false,
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=doctor_basic",
-    showTrialNote: false,
+    // Плашка про пробный период стоит здесь, потому что бесплатные три
+    // месяца дают ЛИМИТЫ ИМЕННО ЭТОГО тарифа. Раньше она висела на Growth —
+    // пока пробный давал его лимиты; вместе с сокращением пробного до трёх
+    // месяцев на лимитах Start переехала и она. На Lite своя формулировка:
+    // туда аккаунт переходит по окончании пробного.
+    showTrialNote: true,
     features: [
-      { i18nKey: "features.examQuestions", vars: { count: 1000 } },
+      { i18nKey: "features.examQuestions", vars: { count: 1500 } },
       { i18nKey: "features.doctorProfile" },
-      { i18nKey: "features.aiAnalyses", vars: { count: 20 } },
-      { i18nKey: "features.aiArticles", vars: { count: 6 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 20 } },
-      { i18nKey: "features.aiPatientConsultations", vars: { count: 10 } },
+      { i18nKey: "features.aiAnalyses", vars: { count: 15 } },
+      { i18nKey: "features.aiArticles", vars: { count: 4 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 15 } },
+      { i18nKey: "features.aiPatientConsultations", vars: { count: 8 } },
       { i18nKey: "features.patientsInOffice", vars: { count: 100 } },
       { i18nKey: "features.videoMinutes", vars: { count: 240 } },
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
-      { i18nKey: "features.commission", vars: { percent: 13 } },
     ],
   },
   {
@@ -137,27 +146,21 @@ const DOCTOR_PLANS = [
     highlight: false,
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=doctor_super",
-    // Плашка про пробный период стоит здесь, потому что бесплатные полгода
-    // дают ЛИМИТЫ ИМЕННО ЭТОГО тарифа. Раньше она висела на Lite и Start
-    // одновременно, и обе карточки утверждали «бесплатно как Doctor Growth»,
-    // то есть рассказывали про третий тариф. На Lite своя формулировка —
-    // туда аккаунт переходит по окончании пробного.
-    showTrialNote: true,
+    showTrialNote: false,
     features: [
       { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.doctorProfile" },
-      { i18nKey: "features.aiAnalyses", vars: { count: 60 } },
-      { i18nKey: "features.aiArticles", vars: { count: 18 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 60 } },
-      { i18nKey: "features.aiPatientConsultations", vars: { count: 60 } },
+      { i18nKey: "features.aiAnalyses", vars: { count: 40 } },
+      { i18nKey: "features.aiArticles", vars: { count: 12 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 40 } },
+      { i18nKey: "features.aiPatientConsultations", vars: { count: 30 } },
       { i18nKey: "features.patientsInOffice", vars: { count: 600 } },
       {
         i18nKey: "features.videoMinutesHours",
-        vars: { count: 720, hours: 12 },
+        vars: { count: 600, hours: 10 },
       },
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
-      { i18nKey: "features.commission", vars: { percent: 12 } },
     ],
   },
   {
@@ -166,21 +169,25 @@ const DOCTOR_PLANS = [
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=doctor_pro",
     features: [
+      // Безлимиты заменены потолками. Обещать «без ограничений» на обращения
+      // к модели можно, только пока платформа берёт процент с приёмов и
+      // перерасход тяжёлого врача покрывается его же оборотом. Процента
+      // больше нет: подписка — единственный доход, а расход на разборы не
+      // ограничен ничем. Числа выбраны с запасом к реальной практике.
       { i18nKey: "features.examQuestionsUnlimited" },
       { i18nKey: "features.doctorProfilePriority" },
-      { i18nKey: "features.aiAnalysesUnlimited" },
-      { i18nKey: "features.aiArticlesUnlimited" },
-      { i18nKey: "features.soapEpicrisesUnlimited" },
-      { i18nKey: "features.aiConsultationsUnlimited" },
-      { i18nKey: "features.patientsInOfficeUnlimited" },
+      { i18nKey: "features.aiAnalyses", vars: { count: 100 } },
+      { i18nKey: "features.aiArticles", vars: { count: 25 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 100 } },
+      { i18nKey: "features.aiPatientConsultations", vars: { count: 60 } },
+      { i18nKey: "features.patientsInOffice", vars: { count: 2000 } },
       {
         i18nKey: "features.videoMinutesHours",
-        vars: { count: 1500, hours: 25 },
+        vars: { count: 1200, hours: 20 },
       },
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.surgicalSimulation" },
       { i18nKey: "features.aiPriority" },
-      { i18nKey: "features.commission", vars: { percent: 10 } },
     ],
   },
 ];
@@ -195,14 +202,13 @@ const CLINIC_PLANS = [
       { i18nKey: "features.doctorsInClinic", vars: { count: 5 } },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedSchedule" },
-      { i18nKey: "features.aiAnalyses", vars: { count: 100 } },
-      { i18nKey: "features.aiArticles", vars: { count: 30 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 100 } },
+      { i18nKey: "features.aiAnalyses", vars: { count: 120 } },
+      { i18nKey: "features.aiArticles", vars: { count: 25 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 90 } },
       { i18nKey: "features.videoMinutesClinic", vars: { count: 1500 } },
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.clinicAnalytics", off: true },
       { i18nKey: "features.topInRecommendations", off: true },
-      { i18nKey: "features.commission", vars: { percent: 10 } },
     ],
   },
   {
@@ -214,9 +220,9 @@ const CLINIC_PLANS = [
       { i18nKey: "features.doctorsInClinic", vars: { count: 15 } },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedSchedule" },
-      { i18nKey: "features.aiAnalysesUnlimited" },
-      { i18nKey: "features.aiArticlesUnlimited" },
-      { i18nKey: "features.soapEpicrisesUnlimited" },
+      { i18nKey: "features.aiAnalyses", vars: { count: 280 } },
+      { i18nKey: "features.aiArticles", vars: { count: 80 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 300 } },
       {
         i18nKey: "features.videoMinutesClinicHours",
         vars: { count: 5000, hours: 83 },
@@ -224,7 +230,6 @@ const CLINIC_PLANS = [
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.clinicAnalytics" },
       { i18nKey: "features.topInRecommendations" },
-      { i18nKey: "features.commission", vars: { percent: 7 } },
     ],
   },
   {
@@ -233,16 +238,24 @@ const CLINIC_PLANS = [
     cta: "contact",
     ctaPath: "mailto:support@docpats.com?subject=Clinic%20Enterprise",
     features: [
-      { i18nKey: "features.doctorsInClinicUnlimited" },
+      // Штат по-прежнему не ограничен — врачи денег платформе не стоят.
+      // А вот «весь ИИ без ограничений» при неограниченном штате означало
+      // расход, не связанный с выручкой вообще ничем: это был единственный
+      // тариф, где потолок отсутствовал сразу по обеим осям.
+      { i18nKey: "features.doctorsInClinic", vars: { count: 50 } },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedScheduleCrm" },
-      { i18nKey: "features.allAiUnlimited" },
-      { i18nKey: "features.videoMinutesUnlimited" },
+      { i18nKey: "features.aiAnalyses", vars: { count: 480 } },
+      { i18nKey: "features.aiArticles", vars: { count: 150 } },
+      { i18nKey: "features.soapEpicrises", vars: { count: 550 } },
+      {
+        i18nKey: "features.videoMinutesClinicHours",
+        vars: { count: 15000, hours: 250 },
+      },
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.extendedAnalytics" },
       { i18nKey: "features.topInRecommendations" },
       { i18nKey: "features.personalManager" },
-      { i18nKey: "features.commission", vars: { percent: 5 } },
     ],
   },
 ];
@@ -652,6 +665,16 @@ export default function PricingPage() {
     [TABS, allowedTabKeys],
   );
 
+  // Подпись под заголовком обещала «для пациентов, врачей или клиник» всегда,
+  // хотя вкладки фильтруются по роли: врач видел две вкладки и текст про три
+  // аудитории, из которых одной на странице нет вовсе. Обещание, которого
+  // страница не выполняет, читается как поломка, а не как настройка.
+  const subtitleKey = useMemo(() => {
+    if (userRole === "doctor") return "page.subtitleDoctor";
+    if (userRole === "patient" || userRole === "user") return "page.subtitlePatient";
+    return "page.subtitle";
+  }, [userRole]);
+
   // Если активная вкладка недоступна роли — переключаемся на первую доступную.
   useEffect(() => {
     if (!allowedTabKeys.includes(activeTab)) {
@@ -714,7 +737,7 @@ export default function PricingPage() {
           transition={{ duration: 0.5 }}
         >
           <h1 className="fw-bold mb-2">{t("page.title")}</h1>
-          <p className="text-muted">{t("page.subtitle")}</p>
+          <p className="text-muted">{t(subtitleKey)}</p>
         </motion.div>
 
         {/* PERIOD TOGGLE */}

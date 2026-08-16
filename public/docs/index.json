@@ -1,34 +1,34 @@
 {
-  "generatedAt": "2026-08-15T08:54:25.770Z",
+  "generatedAt": "2026-08-16T07:33:50.643Z",
   "sections": [
     {
       "name": "clinic",
       "title": "Клиника",
-      "sourceHash": "eed93cd79b0b44eabd76fa019afc9e5959646060",
+      "sourceHash": "93c8a522dc85661d192852ad3228b3c218a42e6e",
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 5429,
+          "bytes": 5776,
           "title": "Клиника"
         },
         "en": {
           "status": "fresh",
-          "bytes": 6143,
+          "bytes": 6502,
           "title": "Clinic"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 5957,
+          "bytes": 6294,
           "title": "Klinik"
         },
         "az": {
           "status": "fresh",
-          "bytes": 5895,
+          "bytes": 6198,
           "title": "Klinika"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 5128,
+          "bytes": 5451,
           "title": "العيادة"
         }
       }
@@ -68,31 +68,31 @@
     {
       "name": "doctor-diagnostics",
       "title": "Разбор материала ИИ",
-      "sourceHash": "5fdd2268fb0e8df3c981fb51e6aeb3a65d4f3234",
+      "sourceHash": "a16f94496fc9c38880bd655c6d5ce8fdaf9710db",
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 3386,
+          "bytes": 3992,
           "title": "Разбор материала ИИ"
         },
         "en": {
           "status": "fresh",
-          "bytes": 3852,
-          "title": "AI Material Review"
+          "bytes": 4564,
+          "title": "AI Review of Clinical Material"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 3722,
+          "bytes": 4369,
           "title": "Yapay Zekâ ile Materyal Analizi"
         },
         "az": {
           "status": "fresh",
-          "bytes": 3569,
+          "bytes": 4189,
           "title": "Materialın süni intellekt tərəfindən təhlili"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 3211,
+          "bytes": 3787,
           "title": "تحليل المادة بالذكاء الاصطناعي (AI)"
         }
       }
@@ -196,31 +196,31 @@
     {
       "name": "exams",
       "title": "Подготовка к экзаменам",
-      "sourceHash": "b2e4897921f9ee7efe043e7720a32410876fe380",
+      "sourceHash": "8a630e4e3b6d397bd32091c0095ced0a2b5a553c",
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 3149,
+          "bytes": 3382,
           "title": "Подготовка к экзаменам"
         },
         "en": {
           "status": "fresh",
-          "bytes": 3642,
+          "bytes": 3936,
           "title": "Exam Preparation"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 3277,
-          "title": "Sınavlara Hazırlık"
+          "bytes": 3557,
+          "title": "Sınavlara hazırlık"
         },
         "az": {
           "status": "fresh",
-          "bytes": 3204,
+          "bytes": 3459,
           "title": "İmtahanlara hazırlıq"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 2909,
+          "bytes": 3185,
           "title": "التحضير للامتحانات"
         }
       }
@@ -228,31 +228,31 @@
     {
       "name": "for-doctors",
       "title": "DocPats для врача",
-      "sourceHash": "3d9f333db997e66915770ad2545d93436fd5509b",
+      "sourceHash": "b9decd8277fe2756c6e37406e80f87dd71df5900",
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 8955,
+          "bytes": 9066,
           "title": "DocPats для врача"
         },
         "en": {
           "status": "fresh",
-          "bytes": 10134,
+          "bytes": 10386,
           "title": "DocPats for Physicians"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 9394,
+          "bytes": 9584,
           "title": "Hekimler için DocPats"
         },
         "az": {
           "status": "fresh",
-          "bytes": 9299,
+          "bytes": 9360,
           "title": "Həkimlər üçün DocPats"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 8287,
+          "bytes": 8518,
           "title": "DocPats للطبيب"
         }
       }
@@ -260,31 +260,31 @@
     {
       "name": "for-patients",
       "title": "DocPats для пациента",
-      "sourceHash": "b46165b3907cc338c20f668c962192e26955ad30",
+      "sourceHash": "a13742b3e3ff75f570b0fa4e978c82390efdb38f",
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 4527,
+          "bytes": 4514,
           "title": "DocPats для пациента"
         },
         "en": {
           "status": "fresh",
-          "bytes": 5124,
+          "bytes": 5119,
           "title": "DocPats for Patients"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 4992,
-          "title": "Hastalar için DocPats"
+          "bytes": 4944,
+          "title": "Hasta için DocPats"
         },
         "az": {
           "status": "fresh",
-          "bytes": 4796,
+          "bytes": 4792,
           "title": "Pasiyent üçün DocPats"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 4147,
+          "bytes": 4170,
           "title": "DocPats للمريض"
         }
       }

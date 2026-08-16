@@ -7,7 +7,9 @@
     "back": "← Geri",
     "title": "DocPats Tariflər",
     "subtitle": "Xəstələr, həkimlər və ya klinikalar üçün plan seçin",
-    "footerSupport": "Bütün tariflərə əsas dəstək daxildir. Sualınız var?"
+    "footerSupport": "Bütün tariflərə əsas dəstək daxildir. Sualınız var?",
+    "subtitleDoctor": "Fərdi praktika və ya klinika üçün plan seçin",
+    "subtitlePatient": "Özünüz üçün plan seçin"
   },
   "period": {
     "monthly": "Aylıq",
@@ -32,12 +34,12 @@
     "cta": "Qeydiyyatdan keç"
   },
   "doctorBanner": {
-    "title": "Yeni həkimlər üçün 6 ay pulsuz",
-    "text": "Qeydiyyatdan sonra — 6 ay ərzində Doctor Growth səviyyəsində imkanlar, komissiya 15 %. Sonra başqa tarif seçməyincə hesab ayda 3 $ olan Lite tarifinə keçir.",
+    "title": "Yeni həkimlər üçün 3 ay pulsuz",
+    "text": "Qeydiyyatdan sonra — 3 ay ərzində Doctor Start səviyyəsində imkanlar pulsuz. Sonra başqa tarif seçməyincə hesab ayda 9 $ olan Lite tarifinə keçir.",
     "cta": "Başla"
   },
   "patientFooter": "💡 Pulsuz plan həmişəlikdir. Ödənişli funksiyalar ödənişdən dərhal sonra aktivləşir, istənilən vaxt ləğv edə bilərsiniz.",
-  "doctorFooter": "💡 Tarif nə qədər yüksəkdirsə — qeydiyyat üçün komissiya o qədər aşağıdır. Doctor Growth ayda 2-3 xəstə ilə, Doctor Pro 4-5 xəstə ilə özünü ödəyir.",
+  "doctorFooter": "💡 Platforma heç bir tarifdə qəbullardan faiz götürmür — xəstənin ödənişi bütövlüklə həkimə gedir. Tarif komissiyanı azaltmaq üçün deyil, praktikanın həcminə görə seçilir.",
   "clinicFooter": "💡 Enterprise tarifinə şəxsi menecer və klinikanızın ehtiyaclarına uyğun fərdi konfiqurasiya daxildir. Detallar üçün bizimlə əlaqə saxlayın.",
   "card": {
     "free": "Pulsuz",
@@ -67,12 +69,12 @@
     },
     "doctor_basic": {
       "name": "Start",
-      "desc": "Kiçik praktika"
+      "desc": "Kiçik praktika",
+      "trialNote": "İlk 3 ay pulsuz olaraq məhz bu tarifin imkanları verilir"
     },
     "doctor_super": {
       "name": "Growth",
-      "desc": "Böyüyən fərdi təcrübə üçün",
-      "trialNote": "İlk 6 ay pulsuz olaraq məhz bu tarifin imkanları verilir"
+      "desc": "Böyüyən fərdi təcrübə üçün"
     },
     "doctor_pro": {
       "name": "Pro",
@@ -110,7 +112,6 @@
     "doctorProfile": "DocPats-da həkim profili",
     "doctorProfilePriority": "Prioritet həkim profili",
     "directPayments": "Birbaşa onlayn ödənişlər",
-    "commission": "DocPats komissiyası {{percent}}%",
     "aiPriority": "AI tövsiyələrində prioritet",
     "anthropometryTools": "Antropometriya alətləri",
     "surgicalSimulation": "Cərrahi simulyasiya",

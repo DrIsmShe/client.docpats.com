@@ -7,7 +7,9 @@
     "back": "← Geri",
     "title": "DocPats Fiyatlandırma",
     "subtitle": "Hastalar, doktorlar veya klinikler için bir plan seçin",
-    "footerSupport": "Tüm planlar temel destek içerir. Sorularınız mı var?"
+    "footerSupport": "Tüm planlar temel destek içerir. Sorularınız mı var?",
+    "subtitleDoctor": "Kendi muayenehaneniz ya da bir klinik için plan seçin",
+    "subtitlePatient": "Kendiniz için bir plan seçin"
   },
   "period": {
     "monthly": "Aylık",
@@ -32,12 +34,12 @@
     "cta": "Kayıt ol"
   },
   "doctorBanner": {
-    "title": "Yeni doktorlar için 6 ay ücretsiz",
-    "text": "Kayıttan sonra — 6 ay boyunca Doctor Growth seviyesinde olanaklar, %15 komisyon. Ardından siz başka bir tarife seçene kadar hesap aylık 3 $ olan Lite tarifesine geçer.",
+    "title": "Yeni doktorlar için 3 ay ücretsiz",
+    "text": "Kayıttan sonra — 3 ay boyunca Doctor Start seviyesinde olanaklar ücretsiz. Ardından siz başka bir tarife seçene kadar hesap aylık 9 $ olan Lite tarifesine geçer.",
     "cta": "Başla"
   },
   "patientFooter": "💡 Ücretsiz plan sonsuza dek geçerlidir. Ücretli özellikler ödemeden hemen sonra etkinleşir, istediğiniz zaman iptal edebilirsiniz.",
-  "doctorFooter": "💡 Plan ne kadar yüksekse — randevu başına komisyon o kadar düşük olur. Doctor Growth ayda 2-3 hastayla, Doctor Pro 4-5 hastayla kendini amorti eder.",
+  "doctorFooter": "💡 Platform hiçbir tarifede randevulardan komisyon almaz — hastanın ödemesi hekime tam olarak gider. Tarife, komisyonu düşürmek için değil, muayenehanenizin büyüklüğüne göre seçilir.",
   "clinicFooter": "💡 Enterprise planı, kişisel bir yönetici ve kliniğinizin ihtiyaçlarına özel yapılandırma içerir. Detaylar için bizimle iletişime geçin.",
   "card": {
     "free": "Ücretsiz",
@@ -67,12 +69,12 @@
     },
     "doctor_basic": {
       "name": "Start",
-      "desc": "Küçük bir muayenehane"
+      "desc": "Küçük bir muayenehane",
+      "trialNote": "İlk 3 ay ücretsiz verilen, tam olarak bu tarifenin olanaklarıdır"
     },
     "doctor_super": {
       "name": "Growth",
-      "desc": "Büyüyen özel pratik için",
-      "trialNote": "İlk 6 ay ücretsiz verilen, tam olarak bu tarifenin olanaklarıdır"
+      "desc": "Büyüyen özel pratik için"
     },
     "doctor_pro": {
       "name": "Pro",
@@ -110,7 +112,6 @@
     "doctorProfile": "DocPats'te doktor profili",
     "doctorProfilePriority": "Öncelikli doktor profili",
     "directPayments": "Doğrudan online ödemeler",
-    "commission": "DocPats komisyonu %{{percent}}",
     "aiPriority": "AI önerilerinde öncelik",
     "anthropometryTools": "Antropometri araçları",
     "surgicalSimulation": "Cerrahi simülasyon",

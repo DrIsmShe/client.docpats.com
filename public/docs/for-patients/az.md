@@ -2,33 +2,33 @@
 
 Tibbi tarixçəniz özgə qeydiyyat şöbəsində deyil, sizdə saxlanılır: qəbullar,
 analizlər, təsvirlər, peyvəndlər və keçirilmiş əməliyyatlar bir yerdə toplanıb. Hansı
-həkimin orada nəyi görəcəyinə siz özünüz qərar verirsiniz və istənilən anda
+həkimin orada nəyi görəcəyinə siz özünüz qərar verirsiniz və istənilən an
 məlumatlarınızı götürə bilərsiniz.
 
 **Qeydiyyatsız başlamaq mümkündür** — hesab yaratmazdan əvvəl sual verib cavab
-almaq olar.
+ala bilərsiniz.
 
 ---
 
-## Vizitdən əvvəl soruşmaq
+## Vizitdən əvvəl soruşun
 
 Tibbi köməkçi şikayətləri təhlil edir, analizlərinizin nə demək olduğunu izah edir və
-hansı mütəxəssisə müraciət etməli olduğunuzu göstərir. O, sizin dilinizdə — müraciət
-etdiyiniz dildə cavab verir.
+hansı mütəxəssisə müraciət etməli olduğunuzu məsləhət görür. O, sizin dilinizdə —
+müraciət etdiyiniz dildə cavab verir.
 
-Onun **axtarış sistemindən fərqli** olaraq etdikləri:
+O, **axtarış sistemindən fərqli olaraq** nə edir:
 
-- **diaqnoz qoymur** — ilkin klinik qiymətləndirmə verir və hər zaman
+- **diaqnoz qoymur** — ilkin klinik qiymətləndirmə verir və həmişə
   əyani qəbulu tövsiyə edir;
-- narahatedici əlamətlərdə — döş qəfəsində ağrı, tənəffüs çətinliyi, insult
-  əlamətləri — söhbəti davam etdirmək əvəzinə dərhal təcili yardımı çağırmağı məsləhət görür;
-- yalnız tibbi mövzulara cavab verir.
+- narahatedici əlamətlər zamanı — döş qəfəsində ağrı, tənəffüs çətinliyi, insult
+  əlamətləri — söhbəti davam etdirmək əvəzinə dərhal təcili yardıma zəng etməyi məsləhət görür;
+- yalnız tibbi mövzularda cavab verir.
 
 Bir neçə mesajdan sonra o, **epikriz** — söhbətin qısa xülasəsini toplamağı təklif edəcək:
-şikayətlər, onların davametmə müddəti, artıq qəbul edilənlər, dəqiqləşdirilməli məqamlar. Onunla
-həkimə gəlmək və kabinetdə hər şeyin nə vaxt başladığını xatırlamağa çalışmamaq olar.
+şikayətlər, onların davamiyyəti, artıq nə qəbul edilib, nəyi dəqiqləşdirmək lazımdır. Onunla
+həkimin yanına gedib kabinetdə hər şeyin nə vaxt başladığını xatırlamağa çalışmaya bilərsiniz.
 
-Bu, həkimin əvəzi deyil. Bu, qəbulun məğzdən başlaması üçün vizitə hazırlıqdır.
+Bu, həkimin əvəzi deyil. Bu, qəbulun mahiyyətdən başlaması üçün vizitə hazırlıqdır.
 
 ## Xəstəlik tarixçəniz — bir yerdə
 
@@ -38,14 +38,14 @@ Bu, həkimin əvəzi deyil. Bu, qəbulun məğzdən başlaması üçün vizitə 
   xroniki xəstəliklər.
 - **Həkimlərim** və **Klinikalarım** — müraciət etdiyiniz hər kəs.
 
-Məlumatlar bir klinikaya bağlı deyil: həkimi və ya şəhəri dəyişdiniz — tarixçə
-sizdə qaldı. **Məlumatlarınızı pulsuz tarif də daxil olmaqla istənilən tarifdə
-məhdudiyyətsiz ixrac etmək olar.**
+Məlumatlar bir klinikaya bağlı deyil: həkimi və ya şəhəri dəyişdinizsə, tarixçə
+sizdə qalır. **Məlumatlarınızı pulsuz tarif də daxil olmaqla istənilən tarifdə
+məhdudiyyətsiz ixrac edə bilərsiniz.**
 
 ## Kimin nəyi görəcəyinə siz qərar verirsiniz
 
-Həkim və ya klinika kartınıza giriş tələb edəndə siz bütövlükdə «hə» və ya
-«yox» cavabı vermirsiniz. Bölmələr **ayrı-ayrılıqda** açılır:
+Həkim və ya klinika kartınıza girişi tələb edəndə siz bütövlükdə «bəli» və ya
+«xeyr» cavabı vermirsiniz. Bölmələr **ayrı-ayrılıqda** açılır:
 
 - allergiyalar;
 - qəbullar;
@@ -54,60 +54,61 @@ Həkim və ya klinika kartınıza giriş tələb edəndə siz bütövlükdə «h
 - peyvəndlər;
 - keçirilmiş əməliyyatlar.
 
-Stomatoloqa allergiyaları açıb əməliyyat tarixçəsini açmamaq olar. Girişi
+Stomatoloqa allergiyaları açıb əməliyyatlar tarixçəsini açmamaq olar. Girişi
 qeydiyyat masasındakı inzibatçı deyil, siz verirsiniz və kartınıza hər müraciət
-nə dəyişdirilə, nə də silinə bilən jurnalda qeyd olunur.
+nə dəyişdirilə, nə də silinə bilən jurnala yazılır.
 
-## Həkim — əyani və ya video vasitəsilə
+## Həkim — əyani və ya video ilə
 
-Siz həkimi ixtisası üzrə tapır, profilinə, məqalələrinə, digər pasiyentlərin rəylərinə
-və həmkar həkimlərin tövsiyələrinə baxır və boş vaxta özünüz yazılırsınız.
+Həkimi ixtisas üzrə tapır, profilə, məqalələrə, digər pasiyentlərin rəylərinə və
+həkim həmkarlarının tövsiyələrinə baxır və boş vaxta özünüz yazılırsınız.
 
 - **Video qəbul** brauzerdə keçirilir — heç nə quraşdırmaq lazım deyil.
 - Qəbullar arasında **həkimlə çat**: suallar, fayllar, bütün yazışma saxlanılır.
 - **Yazışma tərcümə olunur**: siz öz dilinizdə yazırsınız, həkim öz dilində oxuyur.
-  Dil maneəsi artıq «dil bilən həkim» axtarmağa səbəb olmur.
+  Dil maneəsi «dil bilən həkim» axtarmaq üçün səbəb olmaqdan çıxır.
 
 ## Mövzunuz üzrə təhlil
 
-Sizə diaqnoz qoyulubsa və məsələni daha dərindən anlamaq istəyirsinizsə — platforma
-mövzu üzrə mənbələrə istinadlarla ətraflı təhlil hazırlayacaq və hər bölmədən sonra
-«bu praktikada nə deməkdir» blokunu əlavə edəcək. Üç abzaslıq qeyd deyil, həkimə
-mənalı suallarla getməyə imkan verən material.
+Sizə diaqnoz qoyulubsa və məsələni daha dərindən anlamaq istəyirsinizsə, platforma
+mövzu üzrə mənbələrə istinadlarla ətraflı təhlil və hər bölmədən sonra «bu, praktikada
+nə deməkdir» bloku ilə material toplayacaq. Üç abzaslıq qeyd deyil, həkimə mənalı
+suallarla getməyə imkan verən material.
 
 ## Məlumatlarınız
 
 - Şəxsi və tibbi məlumatlar saxlanarkən **şifrələnir**.
-- Kartınıza hər müraciət yeddi il saxlanılan və hətta inzibatçı üçün belə
+- Kartınıza hər müraciət yeddi il saxlanılan və hətta inzibatçı üçün də
   dəyişdirilməsi mümkün olmayan **audit jurnalına** yazılır.
 - Həkim **yalnız sizin təsdiqinizdən sonra** və yalnız açdığınız bölmələrə
   giriş əldə edir.
 
-Platforma tibbi məlumatlarla işə dair HIPAA tələbləri nəzərə alınmaqla
+Platforma tibbi məlumatlarla davranışa dair HIPAA tələbləri nəzərə alınmaqla
 qurulub.
 
-## Bu nə qədər başa gəlir
+## Bu, nə qədərdir
 
-- **Free — 0 $.** Müddətsiz. Ayda köməkçi ilə 5 konsultasiya, 3 epikriz,
+- **Free — 0 $.** Müddətsiz. Ayda köməkçi ilə 2 konsultasiya, 1 epikriz,
   bütün tarixçəniz və məlumatların məhdudiyyətsiz ixracı.
-- **Plus — ayda 9 $** (ildə 90 $). 30 konsultasiya, 20 epikriz, mövzu üzrə 5 təhlil
-  və həkimin **video qəbuluna 10 % endirim**.
-- **Pro — ayda 19 $** (ildə 190 $). Məhdudiyyətsiz konsultasiya və epikrizlər,
-  20 təhlil və **video qəbula 20 % endirim**.
+- **Plus — ayda 9 $** (ildə 90 $). 10 konsultasiya, 10 epikriz, mövzu üzrə
+  2 təhlil və həkimdə **video qəbula 10 % endirim**.
+- **Pro — ayda 19 $** (ildə 190 $). 25 konsultasiya, 25 epikriz,
+  8 təhlil və **video qəbula 20 % endirim**.
 
 Tarixçənizin saxlanması, ona giriş və məlumatların ixracı **bütün tariflərdə
 pulsuzdur**. Ödənişli hissə — süni intellektin köməyi və qəbula endirimdir. İllik ödəniş
 on aylıq ödənişə bərabərdir: iki ay hədiyyə.
 
-Ayrıca — **tibbi imtahanlara hazırlıq**: siz tələbə və ya rezidentsinizsə, platformanın
-sual bankı pulsuz da daxil olmaqla istənilən tarifin üzərinə əlavə (addon) kimi qoşulur —
-2000 sual üçün **ayda 7 $** və ya məhdudiyyətsiz **ayda 15 $**. Pasiyentə bu lazım deyil.
+Ayrıca — **tibbi imtahanlara hazırlıq**: əgər siz tələbə və ya rezidentsinizsə,
+platformanın sual bankı pulsuz daxil olmaqla istənilən tarifin üzərinə əlavə modul kimi
+açılır — 2000 sual üçün **ayda 7 $** və ya məhdudiyyətsiz **ayda 15 $**.
+Pasiyentə o lazım deyil.
 
-Aktual şərtlər həmişə [tariflər səhifəsində](/pricing) yerləşir.
+Aktual şərtlər həmişə [tariflər səhifəsində](/pricing) yerləşdirilir.
 
 ---
 
 **Qeydiyyatsız sınayın:** köməkçiyə sual verin və epikrizin necə alındığına baxın.
 Hesab yalnız tarixçəni saxlamaq istədiyiniz zaman lazım olacaq.
 
-<!-- translated-from-ru: b46165b3907cc338c20f668c962192e26955ad30 -->
+<!-- translated-from-ru: a13742b3e3ff75f570b0fa4e978c82390efdb38f -->
