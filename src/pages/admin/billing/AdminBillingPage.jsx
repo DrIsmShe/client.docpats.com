@@ -18,6 +18,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import axios from "../../../axios";
+import InvoiceRequests from "./InvoiceRequests";
+import PaymentRequisites from "./PaymentRequisites";
 import "../../education/education.css";
 
 const API = "/api/payments";
@@ -25,9 +27,19 @@ const API = "/api/payments";
 // Ключи планов совпадают с server/common/config/aiPlanLimits.js.
 // Список короткий и меняется вместе с тарифной сеткой — держать его в
 // отдельном справочнике ради трёх мест нет смысла.
+// doctor_lite здесь отсутствовал: тариф появился позже, а список не
+// обновили — выдать его вручную было нельзя. Тот же пропуск, из-за
+// которого doctor_lite нельзя было и купить.
+//
+// Список планов в кодовой базе не один: PLAN_LIMITS и PLAN_PRICES в
+// конфиге, enum модели User, PLAN_ALLOWED_ROLES, PAID_PLANS в рассылке
+// напоминаний и вот этот. Заводя тариф, пройдите все шесть.
 const GRANTABLE = [
-  { group: "Пациенты", keys: ["patient_std", "patient_pro"] },
-  { group: "Врачи", keys: ["doctor_basic", "doctor_super", "doctor_pro"] },
+  { group: "Пациенты", keys: ["patient_std"] },
+  {
+    group: "Врачи",
+    keys: ["doctor_lite", "doctor_basic", "doctor_super", "doctor_pro"],
+  },
   { group: "Клиники", keys: ["clinic_start", "clinic", "clinic_pro"] },
   { group: "Подготовка к экзаменам", keys: ["exam_plus", "exam_unlimited"] },
 ];
@@ -93,13 +105,20 @@ export default function AdminBillingPage() {
 
   return (
     <div className="edu-page edu-page--wide">
-      <h1 className="edu-title">Тарифы и заявки</h1>
+      <h1 className="edu-title">Оплаты</h1>
       <p className="edu-subtitle">
-        Ручная выдача доступа и список тех, кто ждёт запуска оплаты.
+        Заявки на счёт, реквизиты для оплаты, ручная выдача доступа и лист
+        ожидания запуска кассы.
       </p>
 
       {error && <div className="edu-error">{error}</div>}
       {notice && <div className="edu-notice">{notice}</div>}
+
+      {/* Заявки первыми: это единственный блок, требующий реакции.
+          Остальное — справочники и инструменты, к ним заходят по нужде. */}
+      <InvoiceRequests onNotice={setNotice} onError={setError} />
+
+      <PaymentRequisites onNotice={setNotice} onError={setError} />
 
       {/* ─── Выдача ─── */}
       <div className="edu-card">

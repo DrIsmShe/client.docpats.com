@@ -52,15 +52,12 @@
   "plans": {
     "patient_free": {
       "name": "Free",
-      "desc": "وصول أساسي للأبد بعد التسجيل"
+      "desc": "وصول أساسي للأبد بعد التسجيل",
+      "trialNote": "الأشهر الثلاثة الأولى — 10 استشارات مع المساعد شهرياً بدلاً من اثنتين"
     },
     "patient_std": {
       "name": "Plus",
       "desc": "للاستخدام النشط للذكاء الاصطناعي"
-    },
-    "patient_pro": {
-      "name": "Pro",
-      "desc": "أقصى إمكانيات الذكاء الاصطناعي والأولوية"
     },
     "doctor_lite": {
       "name": "Lite",
@@ -91,18 +88,12 @@
     "clinic_pro": {
       "name": "Enterprise",
       "desc": "للمراكز الطبية الكبيرة"
-    },
-    "patient_care": {
-      "name": "Care",
-      "desc": "صحة أحبائك في مكان واحد"
     }
   },
   "features": {
     "aiConsultations": "{{count}} استشارة AI شهرياً",
     "aiArticles": "{{count}} مقالات AI شهرياً",
-    "aiArticlesOne": "مقالة AI واحدة شهرياً",
     "aiAnalyses": "{{count}} تحليل AI للحالات شهرياً",
-    "soapEpicrises": "{{count}} ملخص SOAP شهرياً",
     "aiPatientConsultations": "{{count}} استشارة AI للمرضى",
     "patientsInOffice": "{{count}} مريض في المكتب",
     "videoMinutes": "{{count}} دقيقة فيديو/صوت شهرياً",
@@ -114,11 +105,8 @@
     "anthropometryTools": "أدوات قياسات الجسم",
     "surgicalSimulation": "محاكاة جراحية",
     "viewDocuments": "عرض جميع مستنداتك — بدون حد",
-    "fullHistoryBackup": "السجل الكامل + نسخ احتياطي تلقائي",
     "bookDoctor": "حجز الأطباء عبر DocPats",
     "exportPdf": "تصدير الملخص إلى PDF",
-    "medReminders": "تذكيرات بالأدوية",
-    "translateDocs5": "ترجمة المستندات إلى 5 لغات",
     "doctorsInClinic": "حتى {{count}} طبيب في الحساب",
     "allDoctorsProfiles": "ملفات جميع الأطباء على DocPats",
     "unifiedSchedule": "جدول موحد للعيادة",
@@ -127,16 +115,26 @@
     "videoMinutesClinicHours": "{{count}} دقيقة فيديو شهرياً ({{hours}} س)",
     "clinicAnalytics": "تحليلات على مستوى العيادة",
     "extendedAnalytics": "تحليلات وتقارير موسعة",
-    "topInRecommendations": "في قمة توصيات الذكاء الاصطناعي",
     "personalManager": "مدير شخصي",
     "examQuestions": "{{count}} سؤال اختبار شهرياً",
     "examQuestionsUnlimited": "اختبارات وامتحانات بلا حدود",
-    "familyMembers": "ملفات أفراد العائلة: {{count}}",
     "storedFiles": "أرشيف المستندات: {{count}} ملف",
-    "storedFilesOff": "أرشيف المستندات",
     "videoMinutesPatient": "{{count}} دقيقة فيديو/صوت مع الطبيب",
     "videoMinutesPatientHours": "{{count}} دقيقة فيديو/صوت مع الطبيب ({{hours}} ساعة)",
-    "familyMembersOff": "ملفات أفراد العائلة"
+    "pFullHistory": "سجلك الطبي الكامل — قيود جميع أطبائك",
+    "pLabResults": "التحاليل وتقارير الفحوصات",
+    "pPrescriptions": "الوصفات وتوصيات الطبيب",
+    "pStudyFiles": "الصور: أشعة، مقطعية، رنين، سونار، تخطيط قلب وغيرها",
+    "pBooking": "حجز المواعيد وسجل الزيارات",
+    "pVideoUnlimited": "موعد بالفيديو مع الطبيب — بلا حد زمني",
+    "pChat": "محادثة مع طبيبك بين الزيارات: ملفات ورسائل",
+    "pExport": "تصدير كل بياناتك، بما في ذلك PDF",
+    "pConsent": "أنت تقرّر ما الذي يراه الطبيب أو العيادة",
+    "pRevoke": "يمكنك سحب الإذن في أي وقت",
+    "pMyDoctors": "أطباؤك وعياداتك في قائمة واحدة",
+    "pArticles": "مقالات وأخبار طبية",
+    "pLangs": "الواجهة والمراسلة بخمس لغات",
+    "pInvite": "ادعُ أحد أقاربك — سيحصل على حسابه الخاص"
   },
   "examAddon": {
     "title": "التحضير للامتحانات",
@@ -160,7 +158,7 @@
     "sending": "جارٍ الإرسال…",
     "done": "شكراً! سنراسلك يوم فتح الدفع.",
     "error": "تعذّر الإرسال. حاول مرة أخرى.",
-    "notice": "الدفع غير مفعّل بعد — اترك بريدك وسنراسلك عند الإطلاق."
+    "notice": "يجري تفعيل الدفع مباشرة على الموقع. حالياً يُدفع بالتحويل: اضغط «الدفع بالفاتورة» وسنرسل التفاصيل — حساباً بنكياً أو بطاقة. تفضّل انتظار الدفع على الموقع؟ اترك بريدك الإلكتروني."
   },
   "invoice": {
     "cta": "الدفع بالفاتورة",

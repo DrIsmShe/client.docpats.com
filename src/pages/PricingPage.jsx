@@ -12,11 +12,7 @@ import { BILLING_WAITLIST_JOINED } from "../lib/events";
 //   PLAN_PRICES. Если меняешь там — меняй и здесь.
 // ═════════════════════════════════════════════════════════════════════
 const PRICES_USD = {
-  // Care: годовая = 15 $, а не десять месячных (18 $). Иначе тариф не
-  // окупает фиксированную комиссию эквайринга — см. aiPlanLimits.js.
-  patient_care: { monthly: 1.5, yearly: 15 },
   patient_std: { monthly: 9, yearly: 90 },
-  patient_pro: { monthly: 19, yearly: 190 },
   // 9 $, не 3 $: см. пояснение в server/common/config/aiPlanLimits.js —
   // при 3 $ постоянные расходы (комиссия эквайринга + инфраструктура)
   // съедали треть тарифа ещё до первого обращения к модели.
@@ -39,25 +35,29 @@ const PRICES_USD = {
 //   Сами тексты приходят из переводов через t().
 // ═════════════════════════════════════════════════════════════════════
 
-// ═══ Пациентские тарифы, пересмотр от 16.08.2026 ═══════════════════
+// ═══ Тарифы, пересмотр от 16.08.2026 ═══════════════════════════════
 //
-// С карточек убраны три строки, каждая по своей причине:
+// ПРАВИЛО: на карточке остаётся только то, за чем стоит работающий код.
+// Продавать несуществующее опаснее, чем не иметь функции — купивший
+// обнаружит подмену на второй день, и вернуть его доверие будет нечем.
 //
-//   «Скидка 10/20 % на онлайн-консультации» — платформа не проводит оплату
-//   приёма (механизма выплат врачу в коде нет), значит применить скидку
-//   не к чему. Обещание было невыполнимым, а не просто нереализованным.
+// Убрано как невыполнимое:
+//   «Скидка 10/20 % на приём» — платформа не проводит оплату приёма,
+//   применять скидку не к чему.
+//   «Приоритетная очередь к врачам» — расписанием владеет врач; и
+//   продавать приоритет в доступе к помощи не стоит даже при
+//   технической возможности.
 //
-//   «Приоритетная очередь к врачам» — расписанием владеет врач.
-//   Платформа не может поставить платящего пациента раньше чужого, и
-//   продавать приоритет в доступе к медицинской помощи не стоит даже
-//   при технической возможности.
+// Убрано как непостроенное (функции нет ни для кого):
+//   SOAP-эпикризы у врача и клиники, профили близких, напоминания о
+//   лекарствах, автобэкап истории, перевод документов. Всё это было в
+//   прайсе, но ни одной строки кода за этим не стоит. Вернём на карточки
+//   вместе с самими функциями, а не раньше.
 //
-//   «SOAP-эпикризы» — клинический документ с разделами «оценка» и «план».
-//   Пациент, составляющий его сам себе без врача, делает медицинское
-//   заключение без медика. Осталось врачебным инструментом.
-//
-// Взамен на карточки вынесено то, что платформа действительно даёт и
-// действительно стоит денег: своя история, выгрузка, перевод документов.
+// Минуты видео убраны с ПАЦИЕНТСКИХ карточек: приём назначает врач, и
+// минуты списываются с его тарифа. У пациента остаётся одна платная ось —
+// консультации помощника; всё остальное (история, документы, выгрузка,
+// запись к врачу, переписка) бесплатно на любом тарифе.
 const PATIENT_PLANS = [
   {
     key: "patient_free",
@@ -65,83 +65,50 @@ const PATIENT_PLANS = [
     highlight: false,
     cta: "register",
     ctaPath: "/registration",
+    // Плашка про пробный период. Видео из пациентских тарифов убрано:
+    // приём назначает и ведёт врач, минуты считаются с его тарифа.
+    // Ограничивать пациента значило бы не пустить его на приём, который
+    // ему назначили и за который он заплатил врачу.
+    showTrialNote: true,
     features: [
-      { i18nKey: "features.storedFiles", vars: { count: 50 } },
-      { i18nKey: "features.videoMinutesPatient", vars: { count: 30 } },
-      { i18nKey: "features.exportPdf" },
-      { i18nKey: "features.bookDoctor" },
+      { i18nKey: "features.pFullHistory" },
+      { i18nKey: "features.pLabResults" },
+      { i18nKey: "features.pPrescriptions" },
+      { i18nKey: "features.pStudyFiles" },
+      { i18nKey: "features.pBooking" },
+      { i18nKey: "features.pVideoUnlimited" },
+      { i18nKey: "features.pChat" },
+      { i18nKey: "features.pConsent" },
+      { i18nKey: "features.pRevoke" },
+      { i18nKey: "features.pMyDoctors" },
+      { i18nKey: "features.pExport" },
+      { i18nKey: "features.pArticles" },
+      { i18nKey: "features.pLangs" },
+      { i18nKey: "features.pInvite" },
       { i18nKey: "features.aiConsultations", vars: { count: 2 } },
-      // Погашенная строка берёт ключ БЕЗ подстановки: значения у неё нет,
-      // и с обычным ключом i18next напечатал бы «Профили близких: {{count}}».
-      { i18nKey: "features.familyMembersOff", off: true },
-      { i18nKey: "features.translateDocs5", off: true },
-      { i18nKey: "features.medReminders", off: true },
-    ],
-  },
-  {
-    // Care — самый дешёвый вход. Обращений к модели он НЕ добавляет:
-    // консультации и статьи те же, что на бесплатном. Продаёт то, что
-    // платформе почти ничего не стоит, — профили близких, напоминания,
-    // перевод документов. Иначе при 1,5 $ тариф не окупает даже
-    // фиксированную комиссию эквайринга.
-    key: "patient_care",
-    highlight: false,
-    cta: "subscribe",
-    ctaPath: "/pricing/checkout?plan=patient_care",
-    features: [
-      { i18nKey: "features.storedFiles", vars: { count: 300 } },
-      { i18nKey: "features.videoMinutesPatientHours", vars: { count: 60, hours: 1 } },
-      { i18nKey: "features.familyMembers", vars: { count: 2 } },
-      { i18nKey: "features.medReminders" },
-      { i18nKey: "features.translateDocs5" },
-      { i18nKey: "features.exportPdf" },
-      { i18nKey: "features.aiConsultations", vars: { count: 2 } },
-      { i18nKey: "features.fullHistoryBackup", off: true },
     ],
   },
   {
     key: "patient_std",
-    highlight: false,
+    highlight: true,
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=patient_std",
     features: [
-      // «Полная история документов» отсюда убрана: бесплатный тариф уже
-      // обещает «просмотр всех своих документов без лимита». Две строки об
-      // одном и том же, из которых одна платная, читаются как подвох.
-      // Различие Plus от Free держится на профилях близких, напоминаниях и
-      // переводе — на том, чего на Free действительно нет.
-      //
-      // «Перевод на 2 языка» заменён на все пять. Двойка была произвольной:
-      // объяснить, какие именно два языка и почему, невозможно. Перевод
-      // документов — граница между бесплатным и платным, а не между Plus и
-      // Pro.
-      { i18nKey: "features.storedFiles", vars: { count: 1000 } },
-      { i18nKey: "features.videoMinutesPatientHours", vars: { count: 180, hours: 3 } },
-      { i18nKey: "features.familyMembers", vars: { count: 5 } },
-      { i18nKey: "features.aiConsultations", vars: { count: 10 } },
-      { i18nKey: "features.medReminders" },
-      { i18nKey: "features.translateDocs5" },
-      { i18nKey: "features.exportPdf" },
-    ],
-  },
-  {
-    key: "patient_pro",
-    highlight: true,
-    cta: "subscribe",
-    ctaPath: "/pricing/checkout?plan=patient_pro",
-    features: [
-      // Ключ был features.aiPatientConsultations — врачебный, «AI-консультаций
-      // пациентов». На пациентской карточке он читался как чужой: Plus
-      // обещал «10 AI-консультаций в месяц», Pro — «25 AI-консультаций
-      // пациентов», будто это разные вещи.
-      { i18nKey: "features.storedFiles", vars: { count: 5000 } },
-      { i18nKey: "features.videoMinutesPatientHours", vars: { count: 600, hours: 10 } },
-      { i18nKey: "features.familyMembers", vars: { count: 10 } },
-      { i18nKey: "features.aiConsultations", vars: { count: 25 } },
-      { i18nKey: "features.fullHistoryBackup" },
-      { i18nKey: "features.medReminders" },
-      { i18nKey: "features.translateDocs5" },
-      { i18nKey: "features.exportPdf" },
+      { i18nKey: "features.pFullHistory" },
+      { i18nKey: "features.pLabResults" },
+      { i18nKey: "features.pPrescriptions" },
+      { i18nKey: "features.pStudyFiles" },
+      { i18nKey: "features.pBooking" },
+      { i18nKey: "features.pVideoUnlimited" },
+      { i18nKey: "features.pChat" },
+      { i18nKey: "features.pConsent" },
+      { i18nKey: "features.pRevoke" },
+      { i18nKey: "features.pMyDoctors" },
+      { i18nKey: "features.pExport" },
+      { i18nKey: "features.pArticles" },
+      { i18nKey: "features.pLangs" },
+      { i18nKey: "features.pInvite" },
+      { i18nKey: "features.aiConsultations", vars: { count: 15 } },
     ],
   },
 ];
@@ -161,9 +128,9 @@ const DOCTOR_PLANS = [
       { i18nKey: "features.doctorProfile" },
       { i18nKey: "features.aiAnalyses", vars: { count: 5 } },
       { i18nKey: "features.aiArticles", vars: { count: 1 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 5 } },
       { i18nKey: "features.aiPatientConsultations", vars: { count: 3 } },
       { i18nKey: "features.patientsInOffice", vars: { count: 30 } },
+      { i18nKey: "features.storedFiles", vars: { count: 400 } },
       { i18nKey: "features.videoMinutes", vars: { count: 60 } },
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
@@ -185,9 +152,9 @@ const DOCTOR_PLANS = [
       { i18nKey: "features.doctorProfile" },
       { i18nKey: "features.aiAnalyses", vars: { count: 15 } },
       { i18nKey: "features.aiArticles", vars: { count: 4 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 15 } },
       { i18nKey: "features.aiPatientConsultations", vars: { count: 8 } },
       { i18nKey: "features.patientsInOffice", vars: { count: 100 } },
+      { i18nKey: "features.storedFiles", vars: { count: 1500 } },
       { i18nKey: "features.videoMinutes", vars: { count: 240 } },
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
@@ -204,9 +171,9 @@ const DOCTOR_PLANS = [
       { i18nKey: "features.doctorProfile" },
       { i18nKey: "features.aiAnalyses", vars: { count: 40 } },
       { i18nKey: "features.aiArticles", vars: { count: 12 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 40 } },
       { i18nKey: "features.aiPatientConsultations", vars: { count: 30 } },
       { i18nKey: "features.patientsInOffice", vars: { count: 600 } },
+      { i18nKey: "features.storedFiles", vars: { count: 6000 } },
       {
         i18nKey: "features.videoMinutesHours",
         vars: { count: 600, hours: 10 },
@@ -230,9 +197,9 @@ const DOCTOR_PLANS = [
       { i18nKey: "features.doctorProfilePriority" },
       { i18nKey: "features.aiAnalyses", vars: { count: 100 } },
       { i18nKey: "features.aiArticles", vars: { count: 25 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 100 } },
       { i18nKey: "features.aiPatientConsultations", vars: { count: 60 } },
       { i18nKey: "features.patientsInOffice", vars: { count: 2000 } },
+      { i18nKey: "features.storedFiles", vars: { count: 20000 } },
       {
         i18nKey: "features.videoMinutesHours",
         vars: { count: 1200, hours: 20 },
@@ -252,15 +219,14 @@ const CLINIC_PLANS = [
     ctaPath: "/pricing/checkout?plan=clinic_start",
     features: [
       { i18nKey: "features.doctorsInClinic", vars: { count: 5 } },
+      { i18nKey: "features.storedFiles", vars: { count: 7000 } },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedSchedule" },
       { i18nKey: "features.aiAnalyses", vars: { count: 120 } },
       { i18nKey: "features.aiArticles", vars: { count: 25 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 90 } },
       { i18nKey: "features.videoMinutesClinic", vars: { count: 1500 } },
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.clinicAnalytics", off: true },
-      { i18nKey: "features.topInRecommendations", off: true },
     ],
   },
   {
@@ -270,18 +236,17 @@ const CLINIC_PLANS = [
     ctaPath: "/pricing/checkout?plan=clinic",
     features: [
       { i18nKey: "features.doctorsInClinic", vars: { count: 15 } },
+      { i18nKey: "features.storedFiles", vars: { count: 20000 } },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedSchedule" },
       { i18nKey: "features.aiAnalyses", vars: { count: 280 } },
       { i18nKey: "features.aiArticles", vars: { count: 80 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 300 } },
       {
         i18nKey: "features.videoMinutesClinicHours",
         vars: { count: 5000, hours: 83 },
       },
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.clinicAnalytics" },
-      { i18nKey: "features.topInRecommendations" },
     ],
   },
   {
@@ -295,18 +260,17 @@ const CLINIC_PLANS = [
       // расход, не связанный с выручкой вообще ничем: это был единственный
       // тариф, где потолок отсутствовал сразу по обеим осям.
       { i18nKey: "features.doctorsInClinic", vars: { count: 50 } },
+      { i18nKey: "features.storedFiles", vars: { count: 60000 } },
       { i18nKey: "features.allDoctorsProfiles" },
       { i18nKey: "features.unifiedScheduleCrm" },
       { i18nKey: "features.aiAnalyses", vars: { count: 480 } },
       { i18nKey: "features.aiArticles", vars: { count: 150 } },
-      { i18nKey: "features.soapEpicrises", vars: { count: 550 } },
       {
         i18nKey: "features.videoMinutesClinicHours",
         vars: { count: 15000, hours: 250 },
       },
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.extendedAnalytics" },
-      { i18nKey: "features.topInRecommendations" },
       { i18nKey: "features.personalManager" },
     ],
   },
@@ -798,7 +762,14 @@ export default function PricingPage() {
     })
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
-        if (alive && d?.success) setCurrentPlanKey(d.storedPlan || null);
+        // ДЕЙСТВУЮЩИЙ план, а не сохранённый. У бесплатного пациента
+        // subscriptionPlan в базе пустой — он и приходил в storedPlan как
+        // null, поэтому карточка Free предлагала зарегистрироваться уже
+        // зарегистрированному человеку. effectivePlan считается из роли,
+        // подписки и пробного периода и всегда что-то означает.
+        if (alive && d?.success) {
+          setCurrentPlanKey(d.effectivePlan || d.storedPlan || null);
+        }
       })
       .catch(() => {});
     return () => {
@@ -959,13 +930,16 @@ export default function PricingPage() {
           </div>
         </div>
 
-        {/* Пока касса закрыта — говорим об этом прямо, а не оставляем
-            человека выяснять это нажатием на «Подключить». */}
+        {/* Касса закрыта — но это больше не значит «платить нельзя»:
+            оплата по счёту работает. Прежний текст «оплата пока не
+            подключена» противоречил кнопке «Оплатить по счёту» на каждой
+            карточке и заставлял человека уйти, вместо того чтобы
+            заплатить. */}
         {!paymentsEnabled && (
-          <div className="alert alert-warning text-center mb-4" role="status">
+          <div className="alert alert-info text-center mb-4" role="status">
             {t("waitlist.notice", {
               defaultValue:
-                "Оплата пока не подключена — оставьте email, и мы напишем в день запуска.",
+                "Оплата прямо на сайте подключается. Сейчас платят переводом: нажмите «Оплатить по счёту» — пришлём реквизиты, счёт или карту. Хотите дождаться оплаты на сайте — оставьте email.",
             })}
           </div>
         )}

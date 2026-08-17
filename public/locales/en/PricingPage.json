@@ -52,15 +52,12 @@
   "plans": {
     "patient_free": {
       "name": "Free",
-      "desc": "Basic access forever after registration"
+      "desc": "Basic access forever after registration",
+      "trialNote": "First 3 months — 10 assistant consultations a month instead of two"
     },
     "patient_std": {
       "name": "Plus",
       "desc": "For active AI usage"
-    },
-    "patient_pro": {
-      "name": "Pro",
-      "desc": "Maximum AI capabilities and priority"
     },
     "doctor_lite": {
       "name": "Lite",
@@ -91,18 +88,12 @@
     "clinic_pro": {
       "name": "Enterprise",
       "desc": "For large medical centers"
-    },
-    "patient_care": {
-      "name": "Care",
-      "desc": "Your family's health in one place"
     }
   },
   "features": {
     "aiConsultations": "{{count}} AI consultations per month",
     "aiArticles": "{{count}} AI articles per month",
-    "aiArticlesOne": "1 AI article per month",
     "aiAnalyses": "{{count}} AI case analyses per month",
-    "soapEpicrises": "{{count}} SOAP epicrises per month",
     "aiPatientConsultations": "{{count}} AI patient consultations",
     "patientsInOffice": "{{count}} patients in office",
     "videoMinutes": "{{count}} minutes of video/audio per month",
@@ -114,11 +105,8 @@
     "anthropometryTools": "Anthropometry tools",
     "surgicalSimulation": "Surgical simulation",
     "viewDocuments": "View all your own documents — unlimited",
-    "fullHistoryBackup": "Full history + auto-backup",
     "bookDoctor": "Book doctors via DocPats",
     "exportPdf": "Export epicrisis to PDF",
-    "medReminders": "Medication reminders",
-    "translateDocs5": "Document translation into 5 languages",
     "doctorsInClinic": "Up to {{count}} doctors in account",
     "allDoctorsProfiles": "Profiles of all doctors on DocPats",
     "unifiedSchedule": "Unified clinic schedule",
@@ -127,16 +115,26 @@
     "videoMinutesClinicHours": "{{count}} minutes of video ({{hours}} h)",
     "clinicAnalytics": "Clinic-wide analytics",
     "extendedAnalytics": "Extended analytics and reports",
-    "topInRecommendations": "Top in AI recommendations",
     "personalManager": "Personal manager",
     "examQuestions": "{{count}} test questions per month",
     "examQuestionsUnlimited": "Unlimited tests and exams",
-    "familyMembers": "Family profiles: {{count}}",
     "storedFiles": "Document archive: {{count}} files",
-    "storedFilesOff": "Document archive",
     "videoMinutesPatient": "{{count}} minutes of video/audio with a doctor",
     "videoMinutesPatientHours": "{{count}} minutes of video/audio with a doctor ({{hours}} h)",
-    "familyMembersOff": "Family profiles"
+    "pFullHistory": "Your full medical history — records from every doctor",
+    "pLabResults": "Lab results and examination reports",
+    "pPrescriptions": "Prescriptions and doctor's recommendations",
+    "pStudyFiles": "Imaging: X-ray, CT, MRI, ultrasound, ECG and more",
+    "pBooking": "Booking and appointment history",
+    "pVideoUnlimited": "Video appointments — no time limit",
+    "pChat": "Chat with your doctor between visits: files and messages",
+    "pExport": "Export all your data, including PDF",
+    "pConsent": "You decide which sections a doctor or clinic can see",
+    "pRevoke": "Revoke access at any time",
+    "pMyDoctors": "Your doctors and clinics in one list",
+    "pArticles": "Medical articles and news",
+    "pLangs": "Interface and messaging in five languages",
+    "pInvite": "Invite a relative — they get their own account"
   },
   "examAddon": {
     "title": "Exam preparation",
@@ -160,7 +158,7 @@
     "sending": "Sending…",
     "done": "Thanks! We will write the day payments open.",
     "error": "Could not send. Please try again.",
-    "notice": "Payments are not live yet — leave your email and we will write on launch day."
+    "notice": "Paying directly on the site is being connected. For now people pay by transfer: click “Pay by invoice” and we will send the details — bank account or card. Prefer to wait for on-site payment? Leave your email."
   },
   "invoice": {
     "cta": "Pay by invoice",

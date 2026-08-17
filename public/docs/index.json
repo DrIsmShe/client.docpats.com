@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16T13:58:43.996Z",
+  "generatedAt": "2026-08-16T19:44:06.988Z",
   "sections": [
     {
       "name": "clinic",
@@ -260,31 +260,31 @@
     {
       "name": "for-patients",
       "title": "DocPats для пациента",
-      "sourceHash": "3ee8ae643382c88c91ceafd8234d07caadc83a0d",
+      "sourceHash": "6ac673e237fed586ded8f5c36e1268c289dc14bc",
       "languages": {
         "ru": {
           "status": "source",
-          "bytes": 4670,
+          "bytes": 4707,
           "title": "DocPats для пациента"
         },
         "en": {
           "status": "fresh",
-          "bytes": 5301,
+          "bytes": 5272,
           "title": "DocPats for Patients"
         },
         "tr": {
           "status": "fresh",
-          "bytes": 5146,
+          "bytes": 5151,
           "title": "Hastalar için DocPats"
         },
         "az": {
           "status": "fresh",
-          "bytes": 5018,
+          "bytes": 5071,
           "title": "Pasiyent üçün DocPats"
         },
         "ar": {
           "status": "fresh",
-          "bytes": 4339,
+          "bytes": 4280,
           "title": "DocPats للمريض"
         }
       }

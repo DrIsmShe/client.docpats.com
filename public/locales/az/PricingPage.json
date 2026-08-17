@@ -52,15 +52,12 @@
   "plans": {
     "patient_free": {
       "name": "Free",
-      "desc": "Qeydiyyatdan sonra daimi əsas giriş"
+      "desc": "Qeydiyyatdan sonra daimi əsas giriş",
+      "trialNote": "İlk 3 ay — iki əvəzinə ayda 10 köməkçi konsultasiyası"
     },
     "patient_std": {
       "name": "Plus",
       "desc": "Aktiv AI istifadəsi üçün"
-    },
-    "patient_pro": {
-      "name": "Pro",
-      "desc": "Maksimum AI imkanları və prioritet"
     },
     "doctor_lite": {
       "name": "Lite",
@@ -91,18 +88,12 @@
     "clinic_pro": {
       "name": "Enterprise",
       "desc": "Böyük tibbi mərkəzlər üçün"
-    },
-    "patient_care": {
-      "name": "Care",
-      "desc": "Yaxınlarınızın sağlamlığı bir yerdə"
     }
   },
   "features": {
     "aiConsultations": "Ayda {{count}} AI konsultasiyası",
     "aiArticles": "Ayda {{count}} AI məqaləsi",
-    "aiArticlesOne": "Ayda 1 AI məqaləsi",
     "aiAnalyses": "Ayda {{count}} AI hadisə təhlili",
-    "soapEpicrises": "Ayda {{count}} SOAP epikrizi",
     "aiPatientConsultations": "{{count}} AI xəstə konsultasiyası",
     "patientsInOffice": "Ofisdə {{count}} xəstə",
     "videoMinutes": "Ayda {{count}} dəqiqə video/audio",
@@ -114,11 +105,8 @@
     "anthropometryTools": "Antropometriya alətləri",
     "surgicalSimulation": "Cərrahi simulyasiya",
     "viewDocuments": "Bütün öz sənədlərinə baxış — limitsiz",
-    "fullHistoryBackup": "Tam tarixçə + avtomatik ehtiyat",
     "bookDoctor": "DocPats vasitəsilə həkimə qeydiyyat",
     "exportPdf": "Epikrizi PDF kimi ixrac",
-    "medReminders": "Dərman xatırlatmaları",
-    "translateDocs5": "Sənədləri 5 dilə tərcümə",
     "doctorsInClinic": "Hesabda {{count}} həkimə qədər",
     "allDoctorsProfiles": "DocPats-da bütün həkimlərin profilləri",
     "unifiedSchedule": "Vahid klinika cədvəli",
@@ -127,16 +115,26 @@
     "videoMinutesClinicHours": "Ayda {{count}} dəqiqə video ({{hours}} saat)",
     "clinicAnalytics": "Klinika üzrə analitika",
     "extendedAnalytics": "Genişləndirilmiş analitika və hesabatlar",
-    "topInRecommendations": "AI tövsiyələrində ən yuxarıda",
     "personalManager": "Şəxsi menecer",
     "examQuestions": "Ayda {{count}} test sualı",
     "examQuestionsUnlimited": "Limitsiz testlər və imtahanlar",
-    "familyMembers": "Yaxınların profilləri: {{count}}",
     "storedFiles": "Sənəd arxivi: {{count}} fayl",
-    "storedFilesOff": "Sənəd arxivi",
     "videoMinutesPatient": "Həkimlə {{count}} dəqiqə video/audio",
     "videoMinutesPatientHours": "Həkimlə {{count}} dəqiqə video/audio ({{hours}} saat)",
-    "familyMembersOff": "Yaxınların profilləri"
+    "pFullHistory": "Bütün xəstəlik tarixçəniz — bütün həkimlərinizin qeydləri",
+    "pLabResults": "Analizlər və müayinə nəticələri",
+    "pPrescriptions": "Təyinatlar və həkim tövsiyələri",
+    "pStudyFiles": "Şəkillər: rentgen, KT, MRT, USM, EKQ və digərləri",
+    "pBooking": "Həkimə yazılma və qəbul tarixçəsi",
+    "pVideoUnlimited": "Həkimlə videoqəbul — vaxt məhdudiyyəti olmadan",
+    "pChat": "Qəbullar arasında həkimlə çat: fayllar və yazışma",
+    "pExport": "Bütün məlumatlarınızın ixracı və PDF",
+    "pConsent": "Hansı bölmələri həkim və ya klinika görür — siz həll edirsiniz",
+    "pRevoke": "İstənilən vaxt girişi ləğv etmək olar",
+    "pMyDoctors": "Öz həkimləriniz və klinikalarınız bir siyahıda",
+    "pArticles": "Tibbi məqalələr və xəbərlər",
+    "pLangs": "İnterfeys və yazışma beş dildə",
+    "pInvite": "Yaxınınızı dəvət edin — o öz hesabını açacaq"
   },
   "examAddon": {
     "title": "İmtahanlara hazırlıq",
@@ -160,7 +158,7 @@
     "sending": "Göndərilir…",
     "done": "Təşəkkür! Ödəniş açılan gün yazacağıq.",
     "error": "Göndərmək alınmadı. Yenidən cəhd edin.",
-    "notice": "Ödəniş hələ qoşulmayıb — e-poçt qoyun, başlayanda yazacağıq."
+    "notice": "Saytda birbaşa ödəniş qoşulur. Hazırda köçürmə ilə ödəyirlər: «Hesab-faktura ilə ödəmək» düyməsini basın — rekvizitləri göndərəcəyik, hesab və ya kart. Saytda ödənişi gözləmək istəyirsinizsə, e-poçtunuzu qoyun."
   },
   "invoice": {
     "cta": "Hesab-faktura ilə ödəmək",

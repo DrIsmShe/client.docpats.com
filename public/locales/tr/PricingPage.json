@@ -52,15 +52,12 @@
   "plans": {
     "patient_free": {
       "name": "Free",
-      "desc": "Kayıt sonrası kalıcı temel erişim"
+      "desc": "Kayıt sonrası kalıcı temel erişim",
+      "trialNote": "İlk 3 ay — iki yerine ayda 10 asistan danışması"
     },
     "patient_std": {
       "name": "Plus",
       "desc": "Aktif AI kullanımı için"
-    },
-    "patient_pro": {
-      "name": "Pro",
-      "desc": "Maksimum AI olanakları ve öncelik"
     },
     "doctor_lite": {
       "name": "Lite",
@@ -91,18 +88,12 @@
     "clinic_pro": {
       "name": "Enterprise",
       "desc": "Büyük tıp merkezleri için"
-    },
-    "patient_care": {
-      "name": "Care",
-      "desc": "Sevdiklerinizin sağlığı tek yerde"
     }
   },
   "features": {
     "aiConsultations": "Ayda {{count}} AI konsültasyonu",
     "aiArticles": "Ayda {{count}} AI makalesi",
-    "aiArticlesOne": "Ayda 1 AI makalesi",
     "aiAnalyses": "Ayda {{count}} AI vaka analizi",
-    "soapEpicrises": "Ayda {{count}} SOAP epikrizi",
     "aiPatientConsultations": "{{count}} AI hasta konsültasyonu",
     "patientsInOffice": "Ofiste {{count}} hasta",
     "videoMinutes": "Ayda {{count}} dakika video/ses",
@@ -114,11 +105,8 @@
     "anthropometryTools": "Antropometri araçları",
     "surgicalSimulation": "Cerrahi simülasyon",
     "viewDocuments": "Kendi belgelerini görüntüleme — sınırsız",
-    "fullHistoryBackup": "Tam geçmiş + otomatik yedekleme",
     "bookDoctor": "DocPats üzerinden doktor randevusu",
     "exportPdf": "Epikrizi PDF olarak dışa aktar",
-    "medReminders": "İlaç hatırlatıcıları",
-    "translateDocs5": "5 dile belge çevirisi",
     "doctorsInClinic": "Hesapta {{count}} doktora kadar",
     "allDoctorsProfiles": "DocPats'te tüm doktor profilleri",
     "unifiedSchedule": "Birleşik klinik takvimi",
@@ -127,16 +115,26 @@
     "videoMinutesClinicHours": "Ayda {{count}} dakika video ({{hours}} sa)",
     "clinicAnalytics": "Klinik geneli analitik",
     "extendedAnalytics": "Genişletilmiş analitik ve raporlar",
-    "topInRecommendations": "AI önerilerinde en üstte",
     "personalManager": "Kişisel yönetici",
     "examQuestions": "Ayda {{count}} test sorusu",
     "examQuestionsUnlimited": "Sınırsız test ve sınav",
-    "familyMembers": "Aile profilleri: {{count}}",
     "storedFiles": "Belge arşivi: {{count}} dosya",
-    "storedFilesOff": "Belge arşivi",
     "videoMinutesPatient": "Hekimle {{count}} dakika video/ses",
     "videoMinutesPatientHours": "Hekimle {{count}} dakika video/ses ({{hours}} saat)",
-    "familyMembersOff": "Aile profilleri"
+    "pFullHistory": "Tüm hastalık geçmişiniz — bütün hekimlerinizin kayıtları",
+    "pLabResults": "Tahliller ve tetkik raporları",
+    "pPrescriptions": "Reçeteler ve hekim önerileri",
+    "pStudyFiles": "Görüntüler: röntgen, BT, MR, ultrason, EKG ve diğerleri",
+    "pBooking": "Randevu alma ve randevu geçmişi",
+    "pVideoUnlimited": "Hekimle görüntülü muayene — süre sınırı yok",
+    "pChat": "Muayeneler arasında hekimle sohbet: dosyalar ve yazışma",
+    "pExport": "Tüm verilerinizi dışa aktarma ve PDF",
+    "pConsent": "Hangi bölümleri hekim ya da klinik görür — siz karar verirsiniz",
+    "pRevoke": "Erişimi istediğiniz an geri alabilirsiniz",
+    "pMyDoctors": "Kendi hekimleriniz ve klinikleriniz tek listede",
+    "pArticles": "Tıbbi makaleler ve haberler",
+    "pLangs": "Arayüz ve yazışma beş dilde",
+    "pInvite": "Bir yakınınızı davet edin — kendi hesabını açar"
   },
   "examAddon": {
     "title": "Sınavlara hazırlık",
@@ -160,7 +158,7 @@
     "sending": "Gönderiliyor…",
     "done": "Teşekkürler! Ödeme açıldığı gün yazacağız.",
     "error": "Gönderilemedi. Tekrar deneyin.",
-    "notice": "Ödeme henüz aktif değil — e-postanızı bırakın, açılışta yazalım."
+    "notice": "Doğrudan sitede ödeme bağlanıyor. Şimdilik havale ile ödeniyor: «Fatura ile öde» düğmesine basın — bilgileri göndereceğiz, banka hesabı ya da kart. Sitede ödemeyi beklemek isterseniz e-postanızı bırakın."
   },
   "invoice": {
     "cta": "Fatura ile öde",
