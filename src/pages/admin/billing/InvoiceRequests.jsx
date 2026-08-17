@@ -28,6 +28,9 @@ const FILTERS = [
   { key: "invoiced", label: "Счёт выставлен" },
   { key: "paid", label: "Оплаченные" },
   { key: "all", label: "Все" },
+  // Архив стоит последним и отделён: это не ещё один срез рабочего
+  // списка, а место, куда убирают отработанное.
+  { key: "archived", label: "Архив" },
 ];
 
 function fmtDate(d) {
@@ -101,11 +104,49 @@ export default function InvoiceRequests({ onNotice, onError }) {
     }
   }
 
+  async function archive(item) {
+    setBusy(true);
+    try {
+      await axios.post(`${API}/invoice-requests/${item._id}/archive`);
+      onNotice?.("Заявка в архиве — оттуда её можно вернуть");
+      setOpenId(null);
+      load();
+    } catch (err) {
+      onError?.(err?.response?.data?.message ?? "Не удалось убрать в архив");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function restore(item) {
+    setBusy(true);
+    try {
+      await axios.post(`${API}/invoice-requests/${item._id}/restore`);
+      onNotice?.("Заявка возвращена в работу");
+      setOpenId(null);
+      load();
+    } catch (err) {
+      onError?.(err?.response?.data?.message ?? "Не удалось вернуть заявку");
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function remove(item) {
+    // Единственное необратимое действие на странице — поэтому
+    // единственное, что спрашивает подтверждение.
+    const ok = window.confirm(
+      `Удалить заявку «${item.companyName}» навсегда?\n\n` +
+        `Вернуть её будет нельзя. Если плательщик переведёт деньги по ` +
+        `уже отправленному письму, опознать платёж будет не по чему.`,
+    );
+    if (!ok) return;
+
     setBusy(true);
     try {
       await axios.delete(`${API}/invoice-requests/${item._id}`);
-      onNotice?.("Заявка удалена");
+      onNotice?.("Заявка удалена навсегда");
+      setOpenId(null);
       load();
     } catch (err) {
       onError?.(err?.response?.data?.message ?? "Не удалось удалить заявку");
@@ -246,13 +287,58 @@ export default function InvoiceRequests({ onNotice, onError }) {
                 </div>
               ) : null}
               {it.paidAt ? <div>Оплачена: {fmtDate(it.paidAt)}</div> : null}
+              {it.archivedAt ? (
+                <div>В архиве с {fmtDate(it.archivedAt)}</div>
+              ) : null}
             </dl>
 
-            {it.status === "paid" ? (
-              <p className="edu-hint">
-                Заявка оплачена, транзакция {String(it.transactionId)}. Удалить
-                нельзя: это разорвало бы связь с деньгами.
-              </p>
+            {/* В архиве заявку не обрабатывают: сначала вернуть в работу.
+                Иначе «включить тариф» оказывается доступно из места, куда
+                заявки убирают именно затем, чтобы к ним не возвращаться. */}
+            {it.archivedAt ? (
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <button
+                  type="button"
+                  className="edu-btn"
+                  disabled={busy}
+                  onClick={() => restore(it)}
+                >
+                  Вернуть в работу
+                </button>
+                {it.status === "paid" ? (
+                  <span className="edu-hint">
+                    Оплаченную удалить нельзя: на ней транзакция{" "}
+                    {String(it.transactionId)}.
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    className="edu-btn edu-btn--ghost"
+                    disabled={busy}
+                    onClick={() => remove(it)}
+                    style={{ color: "#b42318" }}
+                  >
+                    Удалить навсегда
+                  </button>
+                )}
+              </div>
+            ) : it.status === "paid" ? (
+              <>
+                <p className="edu-hint">
+                  Заявка оплачена, транзакция {String(it.transactionId)}.
+                  Удалить нельзя: это разорвало бы связь с деньгами. Убрать в
+                  архив — можно и нужно, иначе через год рабочие заявки утонут
+                  среди закрытых.
+                </p>
+                <button
+                  type="button"
+                  className="edu-btn edu-btn--ghost"
+                  disabled={busy}
+                  onClick={() => archive(it)}
+                >
+                  В архив
+                </button>
+              </>
             ) : (
               <>
                 <div className="edu-form-row">
@@ -302,13 +388,16 @@ export default function InvoiceRequests({ onNotice, onError }) {
                   >
                     Написать заявителю
                   </a>
+                  {/* Не «удалить»: из рабочего списка заявка уходит в
+                      архив, откуда её можно вернуть. Удаление навсегда
+                      живёт только там. */}
                   <button
                     type="button"
                     className="edu-btn edu-btn--ghost"
                     disabled={busy}
-                    onClick={() => remove(it)}
+                    onClick={() => archive(it)}
                   >
-                    Удалить заявку
+                    В архив
                   </button>
                 </div>
               </>
