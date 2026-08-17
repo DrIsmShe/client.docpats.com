@@ -151,6 +151,11 @@ export default function InvoiceRequests({ onNotice, onError }) {
                 <th>Email</th>
                 <th>Тариф</th>
                 <th>Период</th>
+                {/* Сумма и номер — прямо в списке: именно их админ сверяет
+                    с банковской выпиской, и открывать ради этого каждую
+                    карточку значит десять кликов вместо одного взгляда. */}
+                <th>Ждём</th>
+                <th>Номер</th>
                 <th>Статус</th>
                 <th>Создана</th>
                 <th />
@@ -168,7 +173,29 @@ export default function InvoiceRequests({ onNotice, onError }) {
                     {it.months} мес.
                     {it.period === "yearly" ? " (год)" : ""}
                   </td>
-                  <td>{STATUS_LABEL[it.status] ?? it.status}</td>
+                  <td style={{ fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>
+                    {it.amountExpected
+                      ? `${Number(it.amountExpected).toFixed(2)} $`
+                      : "—"}
+                  </td>
+                  <td>
+                    <code>{it.reference || "—"}</code>
+                  </td>
+                  <td>
+                    {STATUS_LABEL[it.status] ?? it.status}
+                    {/* Плательщик нажал «я оплатил». Это ещё не оплата —
+                        сигнал, что в выписке пора искать. */}
+                    {it.paymentClaimedAt && it.status !== "paid" ? (
+                      <span
+                        className="badge bg-warning text-dark ms-2"
+                        title={`Плательщик сообщил об оплате ${fmtDate(
+                          it.paymentClaimedAt,
+                        )} — проверьте выписку`}
+                      >
+                        сообщил об оплате
+                      </span>
+                    ) : null}
+                  </td>
                   <td>{fmtDate(it.createdAt)}</td>
                   <td>
                     <button
@@ -193,12 +220,31 @@ export default function InvoiceRequests({ onNotice, onError }) {
             <h3 className="edu-card-title">{it.companyName}</h3>
 
             <dl className="edu-form-row" style={{ display: "grid", gap: 4 }}>
+              {/* То, по чему платёж ищут в выписке. Копейки уникальны —
+                  это и есть опознавательный знак, поэтому показываем их
+                  первыми, до контактов. */}
+              <div>
+                <strong>
+                  Ищем в выписке:{" "}
+                  {it.amountExpected
+                    ? `${Number(it.amountExpected).toFixed(2)} $`
+                    : "сумма не назначена"}
+                  {it.reference ? ` · ${it.reference}` : ""}
+                </strong>
+              </div>
               <div>Контакт: {it.contactName || "—"}</div>
               <div>Телефон: {it.phone || "—"}</div>
               <div>Налоговый номер: {it.taxId || "—"}</div>
               <div>Страна: {it.country || "—"}</div>
               <div>Аккаунт: {it.userId || "не привязан"}</div>
               {it.note ? <div>Комментарий: {it.note}</div> : null}
+              {it.paymentClaimedAt ? (
+                <div>
+                  <strong>Плательщик сообщил об оплате:</strong>{" "}
+                  {fmtDate(it.paymentClaimedAt)}
+                  {it.claimNote ? ` — ${it.claimNote}` : ""}
+                </div>
+              ) : null}
               {it.paidAt ? <div>Оплачена: {fmtDate(it.paidAt)}</div> : null}
             </dl>
 
