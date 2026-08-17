@@ -20,6 +20,7 @@ import axios from "../../axios";
 import { getClinicMe, getEmployeeMe, employeeLogout } from "../../api/clinic";
 import LanguageSwitcher from "../../components/LanguageSwitcher";
 import ClinicNotificationBell from "../../components/notifications/ClinicNotificationBell";
+import ClinicSubscriptionBanner from "./ClinicSubscriptionBanner";
 import "./clinicLayout.css";
 
 export default function ClinicLayout({ employeeMode = false }) {
@@ -174,6 +175,10 @@ export default function ClinicLayout({ employeeMode = false }) {
       </header>
 
       <main className="clinic-layout-main">
+        {/* Состояние подписки — над содержимым страницы, а не в углу:
+            заморозка меняет то, что человек вообще может сделать, и
+            узнавать об этом из неудачной попытки он не должен. */}
+        <ClinicSubscriptionBanner subscription={context?.subscription} />
         <Outlet context={context} />
       </main>
     </div>

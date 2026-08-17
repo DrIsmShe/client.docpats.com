@@ -62,7 +62,7 @@
     "doctor_lite": {
       "name": "Lite",
       "desc": "Platformaya minimal giriş",
-      "trialNote": "Sınaq müddəti bitəndə hesab buraya keçir"
+      "trialNote": "Sınaq müddətindən sonra hesab pulsuz səviyyəyə keçir: 5 pasiyent, ayda 1 AI təhlili. Lite — ilk ödənişli pillə"
     },
     "doctor_basic": {
       "name": "Start",
@@ -79,15 +79,18 @@
     },
     "clinic_start": {
       "name": "Start",
-      "desc": "5 həkimə qədər kiçik klinikalar üçün"
+      "desc": "5 həkimə qədər kiçik klinikalar üçün",
+      "trialNote": "30 gün pulsuz, sonra ödənişli. Ödəniş olmadan pasiyent kartları əlçatan qalır, lakin yeni qeydlər yaradılmır"
     },
     "clinic": {
       "name": "Business",
-      "desc": "15 həkimə qədər klinikalar üçün"
+      "desc": "15 həkimə qədər klinikalar üçün",
+      "trialNote": "30 gün pulsuz, sonra ödənişli. Ödəniş olmadan pasiyent kartları əlçatan qalır, lakin yeni qeydlər yaradılmır"
     },
     "clinic_pro": {
       "name": "Enterprise",
-      "desc": "Böyük tibbi mərkəzlər üçün"
+      "desc": "Böyük tibbi mərkəzlər üçün",
+      "trialNote": "30 gün pulsuz, sonra ödənişli. Ödəniş olmadan pasiyent kartları əlçatan qalır, lakin yeni qeydlər yaradılmır"
     }
   },
   "features": {
@@ -99,7 +102,7 @@
     "videoMinutes": "Ayda {{count}} dəqiqə video/audio",
     "videoMinutesHours": "{{count}} dəqiqə video/audio ({{hours}} saat)",
     "doctorProfile": "DocPats-da həkim profili",
-    "directPayments": "Birbaşa onlayn ödənişlər",
+    "directPayments": "Qəbulun ödənişi birbaşa həkimə gedir — platforma komissiya götürmür",
     "anthropometryTools": "Antropometriya alətləri",
     "surgicalSimulation": "Cərrahi simulyasiya",
     "viewDocuments": "Bütün öz sənədlərinə baxış — limitsiz",

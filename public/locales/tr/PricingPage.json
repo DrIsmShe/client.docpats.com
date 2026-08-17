@@ -62,7 +62,7 @@
     "doctor_lite": {
       "name": "Lite",
       "desc": "Platforma en basit giriş",
-      "trialNote": "Deneme süresi bittiğinde hesap buraya geçer"
+      "trialNote": "Deneme süresinden sonra hesap ücretsiz seviyeye geçer: 5 hasta, ayda 1 AI analizi. Lite ilk ücretli basamaktır"
     },
     "doctor_basic": {
       "name": "Start",
@@ -79,15 +79,18 @@
     },
     "clinic_start": {
       "name": "Start",
-      "desc": "5 doktora kadar küçük klinikler için"
+      "desc": "5 doktora kadar küçük klinikler için",
+      "trialNote": "30 gün ücretsiz, sonrası ücretli. Ödeme olmadan hasta kayıtları erişilebilir kalır, ancak yeni kayıt oluşturulamaz"
     },
     "clinic": {
       "name": "Business",
-      "desc": "15 doktora kadar klinikler için"
+      "desc": "15 doktora kadar klinikler için",
+      "trialNote": "30 gün ücretsiz, sonrası ücretli. Ödeme olmadan hasta kayıtları erişilebilir kalır, ancak yeni kayıt oluşturulamaz"
     },
     "clinic_pro": {
       "name": "Enterprise",
-      "desc": "Büyük tıp merkezleri için"
+      "desc": "Büyük tıp merkezleri için",
+      "trialNote": "30 gün ücretsiz, sonrası ücretli. Ödeme olmadan hasta kayıtları erişilebilir kalır, ancak yeni kayıt oluşturulamaz"
     }
   },
   "features": {
@@ -99,7 +102,7 @@
     "videoMinutes": "Ayda {{count}} dakika video/ses",
     "videoMinutesHours": "{{count}} dakika video/ses ({{hours}} sa)",
     "doctorProfile": "DocPats'te doktor profili",
-    "directPayments": "Doğrudan online ödemeler",
+    "directPayments": "Muayene ücreti doğrudan doktora gider — platform komisyon almaz",
     "anthropometryTools": "Antropometri araçları",
     "surgicalSimulation": "Cerrahi simülasyon",
     "viewDocuments": "Kendi belgelerini görüntüleme — sınırsız",

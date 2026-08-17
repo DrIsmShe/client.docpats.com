@@ -62,7 +62,7 @@
     "doctor_lite": {
       "name": "Lite",
       "desc": "The minimal way onto the platform",
-      "trialNote": "This is where the account lands when the trial ends"
+      "trialNote": "After the trial the account moves to the free level: 5 patients, 1 AI analysis per month. Lite is the first paid step"
     },
     "doctor_basic": {
       "name": "Start",
@@ -79,15 +79,18 @@
     },
     "clinic_start": {
       "name": "Start",
-      "desc": "For small clinics up to 5 doctors"
+      "desc": "For small clinics up to 5 doctors",
+      "trialNote": "30 days free, then paid. Without payment patient records stay accessible, but no new entries can be created"
     },
     "clinic": {
       "name": "Business",
-      "desc": "For clinics up to 15 doctors"
+      "desc": "For clinics up to 15 doctors",
+      "trialNote": "30 days free, then paid. Without payment patient records stay accessible, but no new entries can be created"
     },
     "clinic_pro": {
       "name": "Enterprise",
-      "desc": "For large medical centers"
+      "desc": "For large medical centers",
+      "trialNote": "30 days free, then paid. Without payment patient records stay accessible, but no new entries can be created"
     }
   },
   "features": {
@@ -99,7 +102,7 @@
     "videoMinutes": "{{count}} minutes of video/audio per month",
     "videoMinutesHours": "{{count}} minutes of video/audio ({{hours}} h)",
     "doctorProfile": "Doctor profile on DocPats",
-    "directPayments": "Direct online payments",
+    "directPayments": "Patients pay the doctor directly — the platform takes no commission",
     "anthropometryTools": "Anthropometry tools",
     "surgicalSimulation": "Surgical simulation",
     "viewDocuments": "View all your own documents — unlimited",

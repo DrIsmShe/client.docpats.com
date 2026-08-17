@@ -224,6 +224,11 @@ const DOCTOR_PLANS = [
 const CLINIC_PLANS = [
   {
     key: "clinic_start",
+    // Пометка о пробном периоде на всех трёх клинических карточках:
+    // бесплатного клинического уровня нет, но начать не заплатив можно.
+    // Сказать об этом обязаны здесь — иначе через месяц клиника узнаёт
+    // о заморозке, упершись в неё посреди приёма.
+    showTrialNote: true,
     highlight: false,
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=clinic_start",
@@ -241,6 +246,7 @@ const CLINIC_PLANS = [
   },
   {
     key: "clinic",
+    showTrialNote: true,
     highlight: true,
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=clinic",
@@ -261,6 +267,7 @@ const CLINIC_PLANS = [
   },
   {
     key: "clinic_pro",
+    showTrialNote: true,
     highlight: false,
     cta: "contact",
     ctaPath: "mailto:support@docpats.com?subject=Clinic%20Enterprise",
