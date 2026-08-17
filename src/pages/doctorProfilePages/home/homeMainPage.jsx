@@ -7,6 +7,7 @@ import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { useTranslation } from "react-i18next";
 
 import { COUNTRIES, COUNTRY_ISO } from "../../../constants/countries";
+import TrainingVisibilityToggle from "../../../components/shared/TrainingVisibilityToggle";
 /* ─────────────────────────── STYLES ─────────────────────────── */
 const styles = `
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
@@ -1473,6 +1474,11 @@ export default function HomeMainPage() {
                 </div>
               </div>
               <div className="hmp-card-body">
+                {/* Показ учебной активности. Первым в настройках, а не в
+                    конце: это единственный пункт, который меняет то, что
+                    видят посторонние. */}
+                <TrainingVisibilityToggle />
+
                 <form onSubmit={handleSubmitMainSettings}>
                   <div className="hmp-row">
                     <label className="hmp-lbl">{t("fields.nickname")}</label>

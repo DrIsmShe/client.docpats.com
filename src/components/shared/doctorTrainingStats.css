@@ -1,0 +1,117 @@
+/* Учебная активность врача. Оформлена сдержанно и НЕ похоже на награду:
+   это факт об активности, а не знак отличия. Медаль на этом месте
+   читалась бы как оценка квалификации, которой здесь нет. */
+
+.dts-card {
+  margin: 16px 0;
+  padding: 14px 16px;
+  border: 1px solid #e3e6ea;
+  border-radius: 10px;
+  background: #fbfcfd;
+}
+
+.dts-title {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #45525f;
+}
+
+.dts-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+}
+
+.dts-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dts-value {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.dts-label {
+  font-size: 13px;
+  color: #6b7681;
+}
+
+.dts-extra {
+  font-size: 13px;
+  color: #45525f;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Оговорка мелким, но не спрятана: она объясняет, чем цифры НЕ являются,
+   и убрать её значило бы оставить утверждение, которого мы не делали. */
+.dts-caption {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #8b959f;
+  max-width: 60ch;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dts-card {
+    background: #1b1f24;
+    border-color: #2c333b;
+  }
+  .dts-value {
+    color: #e4e8ec;
+  }
+}
+
+/* ─── Переключатель показа (кабинет врача) ────────────────────────── */
+
+.tvt {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  border: 1px solid #e3e6ea;
+  border-radius: 10px;
+  background: #fbfcfd;
+}
+
+.tvt-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.tvt-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  font-size: 13px;
+  color: #5c6874;
+}
+
+.tvt-hint {
+  flex-basis: 100%;
+  color: #8b959f;
+  line-height: 1.5;
+}
+
+.tvt-saved {
+  font-size: 12px;
+  color: #1a7f37;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tvt {
+    background: #1b1f24;
+    border-color: #2c333b;
+  }
+  .tvt-preview {
+    color: #b9c2cb;
+  }
+}

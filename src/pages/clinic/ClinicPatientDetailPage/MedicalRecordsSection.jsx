@@ -26,9 +26,20 @@ import { SUB_RECORD_CONFIGS } from "./subRecordConfigs";
 import ImagingTab from "./ImagingTab";
 import PrescriptionsTab from "./PrescriptionsTab";
 import LabResultsTab from "./LabResultsTab";
+import SummaryTab from "./SummaryTab";
+import FhirExportButton from "./FhirExportButton";
 import "./medicalRecordsSection.css";
 
 const TABS = [
+  // Сводка первой и по умолчанию: врач открывает карту с вопросом «что
+  // мне про него важно знать», а не «покажи список историй болезни».
+  // Остальные вкладки никуда не делись — они для работы с разделом,
+  // сводка для решения.
+  {
+    id: "summary",
+    labelKey: "medical.tabs.summary",
+    defaultLabel: "Сводка",
+  },
   {
     id: "encounters",
     labelKey: "medical.tabs.encounters",
@@ -86,13 +97,21 @@ export default function MedicalRecordsSection({ patient, canWrite }) {
   const myRole = layoutContext?.role || "member";
   const canDelete = myRole === "owner";
 
-  const [activeTab, setActiveTab] = useState("encounters");
+  const [activeTab, setActiveTab] = useState("summary");
 
   return (
     <section className="staff-page-section med-section">
-      <h2>
-        {t("medical.sectionTitle", { defaultValue: "Медицинская карта" })}
-      </h2>
+      <div className="med-section-head">
+        <h2>
+          {t("medical.sectionTitle", { defaultValue: "Медицинская карта" })}
+        </h2>
+
+        {/* Выгрузка в FHIR доступна тем, кому разрешена запись, — так же
+            как на сервере. Забрать карту целиком не рядовое чтение:
+            файл дальше живёт своей жизнью, и роли, которой положено
+            смотреть, не обязательно положено уносить. */}
+        {canWrite && <FhirExportButton patient={patient} />}
+      </div>
 
       <div className="med-tabs">
         {TABS.map((tab) => (
@@ -108,6 +127,8 @@ export default function MedicalRecordsSection({ patient, canWrite }) {
       </div>
 
       <div className="med-tab-content">
+        {activeTab === "summary" && <SummaryTab patient={patient} />}
+
         {activeTab === "encounters" && (
           <EncountersTab
             patient={patient}

@@ -1,0 +1,150 @@
+/* client/src/pages/public/previsit.css
+ *
+ * Анкета перед приёмом. Открывается по ссылке из письма, часто с
+ * телефона, часто вечером. Отсюда крупный шрифт, одна колонка и большие
+ * области нажатия: попасть пальцем в радиокнопку 16 пикселей нельзя. */
+
+.pv-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 28px 18px 56px;
+}
+
+.pv-page h1 {
+  margin: 0 0 10px;
+  font-size: 25px;
+  line-height: 1.25;
+}
+
+.pv-lead {
+  margin: 0 0 24px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #5c6874;
+}
+
+.pv-form {
+  display: grid;
+  gap: 22px;
+}
+
+.pv-q {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pv-q__label {
+  padding: 0;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.pv-q__req {
+  color: #c0392b;
+}
+
+.pv-q__hint {
+  margin: 4px 0 8px;
+  font-size: 14px;
+  color: #8b959f;
+  line-height: 1.45;
+}
+
+.pv-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d3dae0;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 16px; /* меньше 16px — iOS зумит поле при фокусе */
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.pv-options {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* Вся строка кликабельна, а не только кружок: на телефоне это разница
+   между «отметил» и «промахнулся третий раз». */
+.pv-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid #dfe4e9;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.pv-option input {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.pv-submit {
+  padding: 14px 24px;
+  border: none;
+  border-radius: 10px;
+  background: #0d6efd;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pv-submit:disabled {
+  opacity: 0.6;
+}
+
+.pv-note {
+  margin: 0;
+  font-size: 13px;
+  color: #8b959f;
+  line-height: 1.5;
+}
+
+/* Срочные признаки. Единственное место в анкете, где допустим красный:
+   здесь он означает «не ждите», и это ровно то, что мы имеем в виду. */
+.pv-urgent {
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: #fdecea;
+  border: 1px solid #e9a79d;
+  margin: 0 0 20px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.pv-urgent p {
+  margin: 6px 0 0;
+}
+
+.pv-error {
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #fdecea;
+  border: 1px solid #f3b0a8;
+  color: #7a1c11;
+  font-size: 15px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .pv-textarea,
+  .pv-option {
+    background: #1b1f24;
+    border-color: #2c333b;
+    color: #e4e8ec;
+  }
+  .pv-urgent {
+    background: #3d201b;
+    border-color: #7a2c22;
+    color: #f7c3bb;
+  }
+}

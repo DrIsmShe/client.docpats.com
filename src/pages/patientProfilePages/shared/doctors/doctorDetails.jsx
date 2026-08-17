@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import CommentSection from "../../../../components/shared/CommentSection";
 import DoctorReviews from "../../../../components/shared/DoctorReviews";
 import DoctorTrustStats from "../../../../components/shared/DoctorTrustStats";
+import DoctorTrainingStats from "../../../../components/shared/DoctorTrainingStats";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { FaCommentDots } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
@@ -1575,6 +1576,10 @@ export default function DoctorDetail() {
               {t("doctorDetail.comments.title")}
             </h4>
             <DoctorTrustStats doctorProfileId={doctorProfile?._id} />
+            {/* Учебная активность. Берёт userId, а не id профиля: попытки
+                в тренажёре привязаны к пользователю. Блок не рисуется,
+                если врач показ не включил. */}
+            <DoctorTrainingStats userId={doctorUserId} />
             <DoctorReviews doctorProfileId={doctorProfile?._id} />
             <CommentSection refId={profileId} targetType="Doctor" />
           </div>

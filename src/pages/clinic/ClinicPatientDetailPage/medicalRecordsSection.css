@@ -1506,3 +1506,27 @@
   max-height: 62px;
   overflow: hidden;
 }
+
+/* Заголовок раздела с кнопкой выгрузки справа. */
+.med-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.med-section-head h2 {
+  margin: 0;
+}
+
+.med-export {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.med-export__error {
+  font-size: 13px;
+  color: #a02617;
+}

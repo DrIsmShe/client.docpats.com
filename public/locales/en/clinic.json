@@ -875,7 +875,8 @@
       }
     },
     "tabs": {
-      "labResults": "Lab Results"
+      "labResults": "Lab Results",
+      "summary": "Summary"
     },
     "labResults": {
       "listTitle": "Lab Results",

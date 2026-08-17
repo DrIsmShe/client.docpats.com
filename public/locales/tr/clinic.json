@@ -875,7 +875,8 @@
       }
     },
     "tabs": {
-      "labResults": "Laboratuvar sonuçları"
+      "labResults": "Laboratuvar sonuçları",
+      "summary": "Özet"
     },
     "labResults": {
       "listTitle": "Laboratuvar sonuçları",

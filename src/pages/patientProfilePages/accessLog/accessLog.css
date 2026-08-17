@@ -1,0 +1,129 @@
+/* Журнал доступа. Список, а не таблица: строка читается целиком
+   («12.08, Клиника на Садовой, врач, просмотр — аллергии»), а таблица
+   заставляет собирать её глазами из четырёх колонок. */
+
+.al-page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.al-page h1 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.al-lead {
+  margin: 0 0 18px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #5c6874;
+  max-width: 62ch;
+}
+
+.al-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  color: #5c6874;
+  cursor: pointer;
+}
+
+.al-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.al-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #e3e6ea;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+}
+
+/* Отклонённая попытка выделена: это единственная строка в журнале,
+   которая может означать проблему. */
+.al-row.is-denied {
+  border-color: #f0b3aa;
+  background: #fff6f5;
+}
+
+/* Свои действия приглушены — они здесь для полноты, а не для тревоги. */
+.al-row.is-own {
+  opacity: 0.6;
+}
+
+.al-row__at {
+  color: #8b959f;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.al-row__body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  align-items: baseline;
+}
+
+.al-row__org {
+  font-weight: 600;
+}
+
+.al-row__role {
+  color: #6b7681;
+}
+
+.al-row__what {
+  color: #1f2a35;
+}
+
+.al-row__denied {
+  color: #a02617;
+  font-weight: 600;
+}
+
+.al-note,
+.al-hint {
+  margin-top: 18px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #8b959f;
+  max-width: 62ch;
+}
+
+.al-error {
+  color: #a02617;
+  font-size: 14px;
+}
+
+@media (max-width: 560px) {
+  .al-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .al-row {
+    background: #1b1f24;
+    border-color: #2c333b;
+  }
+  .al-row.is-denied {
+    background: #2a1917;
+    border-color: #5c2a22;
+  }
+  .al-row__what,
+  .al-row__org {
+    color: #e4e8ec;
+  }
+}

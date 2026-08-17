@@ -875,7 +875,8 @@
       }
     },
     "tabs": {
-      "labResults": "Анализы"
+      "labResults": "Анализы",
+      "summary": "Сводка"
     },
     "labResults": {
       "listTitle": "Результаты анализов",

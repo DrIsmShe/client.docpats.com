@@ -1,0 +1,299 @@
+/* client/src/pages/patientProfilePages/labInsight/labInsight.css
+ *
+ * Расшифровка анализов для пациента.
+ *
+ * Человек читает это, волнуясь. Отсюда решения:
+ *   — крупный текст, много воздуха, короткая строка;
+ *   — цветом выделено только то, что вне нормы; если подсветить всё,
+ *     не выделено ничего;
+ *   — «вне нормы» окрашено в янтарный, а не в красный: красный читается
+ *     как «опасность», а мы этого не знаем и знать не можем. Мы знаем
+ *     только, что значение вышло за границу. */
+
+.li-page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.li-head h1 {
+  margin: 0 0 8px;
+  font-size: 26px;
+}
+
+.li-lead {
+  margin: 0 0 20px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #5c6874;
+  max-width: 62ch;
+}
+
+/* ─── Загрузка ──────────────────────────────────────────────────── */
+
+.li-upload {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 18px;
+  border: 1px dashed #c8d0d8;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.li-file {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.li-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #0d6efd;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.li-btn--ghost {
+  background: transparent;
+  color: #6b7681;
+  border: 1px solid #d3dae0;
+}
+
+.li-quota {
+  font-size: 13px;
+  color: #8b959f;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Разборы ───────────────────────────────────────────────────── */
+
+.li-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.li-tab {
+  position: relative;
+  padding: 7px 14px;
+  border: 1px solid #d3dae0;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+
+.li-tab.is-active {
+  border-color: #0d6efd;
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+.li-tab__dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: #e8a33d;
+  vertical-align: middle;
+}
+
+.li-overview {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+
+/* Непрочитанное — до результатов, и заметно: молча пропущенная строка
+   бланка опаснее отказа. */
+.li-unreadable {
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #fff8e6;
+  border: 1px solid #f0d9a0;
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.li-unreadable ul {
+  margin: 6px 0;
+  padding-left: 20px;
+}
+
+.li-unreadable p {
+  margin: 6px 0 0;
+  color: #6b5417;
+}
+
+.li-group {
+  margin: 24px 0 10px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7681;
+}
+
+.li-note {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #6b7681;
+  max-width: 62ch;
+}
+
+.li-params {
+  display: grid;
+  gap: 10px;
+}
+
+.li-param {
+  padding: 14px 16px;
+  border: 1px solid #e3e6ea;
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* Янтарный, не красный: мы знаем, что значение вышло за границу, но не
+   знаем, опасно ли это для конкретного человека. Красный обещал бы
+   знание, которого у нас нет. */
+.li-param--out,
+.li-param--far {
+  border-color: #f0d9a0;
+  background: #fffaf0;
+}
+
+.li-param--far {
+  border-left: 4px solid #e8a33d;
+}
+
+.li-param--borderline {
+  border-color: #e0e6ec;
+  background: #fbfcfd;
+}
+
+.li-param__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.li-param__name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.li-param__value {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.li-param__arrow {
+  margin-right: 4px;
+  color: #c07f1e;
+}
+
+.li-param__level {
+  margin: 4px 0 8px;
+  font-size: 13px;
+  color: #6b7681;
+}
+
+.li-param__ref {
+  color: #97a1ab;
+}
+
+.li-param__what,
+.li-param__means {
+  margin: 0 0 6px;
+  font-size: 15px;
+  line-height: 1.55;
+  max-width: 62ch;
+}
+
+.li-param__what {
+  color: #5c6874;
+}
+
+.li-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid #e6eaee;
+}
+
+/* Заключение о том, к какому врачу идти, — всегда последним и заметным.
+   Экран не даёт советов по лечению, и это не должно выглядеть
+   недоделкой: он заканчивается направлением к человеку, который их даёт. */
+.li-seedoctor {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  max-width: 52ch;
+}
+
+.li-error {
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #fdecea;
+  border: 1px solid #f3b0a8;
+  color: #7a1c11;
+  font-size: 14px;
+}
+
+.li-empty {
+  font-size: 15px;
+  color: #8b959f;
+  line-height: 1.55;
+  max-width: 60ch;
+}
+
+@media (prefers-color-scheme: dark) {
+  .li-param,
+  .li-tab {
+    background: #1b1f24;
+    border-color: #2c333b;
+  }
+  .li-param--out,
+  .li-param--far {
+    background: #2a2418;
+    border-color: #5c4a22;
+  }
+  .li-param--borderline {
+    background: #1e2329;
+  }
+  .li-unreadable {
+    background: #2a2418;
+    border-color: #5c4a22;
+  }
+  .li-param__name,
+  .li-param__value,
+  .li-param__means {
+    color: #e4e8ec;
+  }
+  .li-upload {
+    border-color: #3a424b;
+  }
+}

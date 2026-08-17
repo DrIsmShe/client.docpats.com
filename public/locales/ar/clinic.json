@@ -875,7 +875,8 @@
       }
     },
     "tabs": {
-      "labResults": "نتائج المختبر"
+      "labResults": "نتائج المختبر",
+      "summary": "الملخص"
     },
     "labResults": {
       "listTitle": "نتائج المختبر",

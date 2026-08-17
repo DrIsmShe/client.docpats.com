@@ -875,7 +875,8 @@
       }
     },
     "tabs": {
-      "labResults": "Laborator nəticələr"
+      "labResults": "Laborator nəticələr",
+      "summary": "Xülasə"
     },
     "labResults": {
       "listTitle": "Laborator nəticələr",
