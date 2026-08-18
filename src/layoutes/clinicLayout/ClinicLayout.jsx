@@ -178,7 +178,10 @@ export default function ClinicLayout({ employeeMode = false }) {
         {/* Состояние подписки — над содержимым страницы, а не в углу:
             заморозка меняет то, что человек вообще может сделать, и
             узнавать об этом из неудачной попытки он не должен. */}
-        <ClinicSubscriptionBanner subscription={context?.subscription} />
+        <ClinicSubscriptionBanner
+          subscription={context?.subscription}
+          role={context?.role}
+        />
         <Outlet context={context} />
       </main>
     </div>
