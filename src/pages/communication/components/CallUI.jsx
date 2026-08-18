@@ -22,9 +22,26 @@
 //
 // Дизайн (стили, аватар, кнопки, backdrop) — сохранён 1:1 из v5.
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, Suspense, lazy } from "react";
+
+// Лениво: CallUI живёт ВНЕ <Routes> и потому целиком лежит во входном
+// бандле. Панель записи нужна только в активном звонке, а входной бандл
+// грузят все — включая посетителей публичных страниц, у которых звонков
+// нет вовсе. Локальная граница Suspense здесь безопасна: до звонка
+// CallUI возвращает null и грузить нечего.
+const ScribePanel = lazy(() => import("./ScribePanel"));
 
 const styles = `
+  /* Панель записи приёма внутри карточки звонка. Ограничена по ширине:
+     карточка узкая, а текст запроса согласия длинный, и без ограничения
+     он растянул бы оверлей. */
+  .call-scribe {
+    width: 100%;
+    max-width: 520px;
+    margin: 12px auto 4px;
+    text-align: left;
+  }
+
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
 
   .call-overlay {
@@ -322,6 +339,14 @@ export default function CallUI({
   onEnd,
   onToggleMute,
   onToggleVideo,
+  // ─── Запись приёма (необязательные) ───
+  // Без них CallUI ведёт себя ровно как раньше: панель не появляется.
+  // Сделано необязательным намеренно — звонки между двумя пациентами
+  // или служебные вызовы записывать нечего и незачем.
+  scribeRole = null, // "doctor" | "patient"
+  scribeRoom = null,
+  scribePeerUserId = null,
+  onScribeDraft = null,
 }) {
   // [FULLSCREEN] Хуки ДОЛЖНЫ быть до раннего return (правила хуков React).
   const overlayRef = useRef(null);
@@ -415,6 +440,24 @@ export default function CallUI({
           </div>
 
           <div className="call-name">{name}</div>
+
+          {/* Панель записи приёма. Только в АКТИВНОМ звонке: во время
+              дозвона записывать нечего, а кнопка там путала бы. */}
+          {scribeRole && scribeRoom && callState === "active" && (
+            <div className="call-scribe">
+              {/* fallback={null}: панель появляется через долю секунды
+                  после начала звонка, и заглушка «загрузка» на её месте
+                  выглядела бы поломкой, а не ожиданием. */}
+              <Suspense fallback={null}>
+                <ScribePanel
+                  role={scribeRole}
+                  room={scribeRoom}
+                  peerUserId={scribePeerUserId}
+                  onDraft={onScribeDraft}
+                />
+              </Suspense>
+            </div>
+          )}
 
           {isVideoCall && !showVideoStage && (
             <div className="call-type-badge">🎥 Видеозвонок</div>

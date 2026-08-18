@@ -1,0 +1,122 @@
+/* Панель записи приёма.
+ *
+ * Полоса «идёт запись» видна ВСЁ время записи и не убирается. Человек,
+ * забывший о записи, не может считаться согласившимся на неё: согласие
+ * даётся на то, что помнишь. */
+
+.scribe {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #dfe4e9;
+  background: #fff;
+  font-size: 14px;
+}
+
+/* Запрос согласия — крупнее и подробнее остального: человек решает,
+   записывать ли его голос, и решает один раз. */
+.scribe--ask {
+  display: block;
+  border-color: #b9d4f5;
+  background: #f5f9ff;
+  padding: 14px 16px;
+}
+
+.scribe__text p {
+  margin: 6px 0 12px;
+  font-size: 14px;
+  line-height: 1.55;
+  max-width: 66ch;
+  color: #45525f;
+}
+
+.scribe__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.scribe button {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #0d6efd;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.scribe button.ghost {
+  background: transparent;
+  color: #5c6874;
+  border: 1px solid #d3dae0;
+}
+
+.scribe button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Идёт запись. Красная точка — единственное место, где красный уместен:
+   он означает ровно то, что означает на любой камере. */
+.scribe--live {
+  border-color: #f0b3aa;
+  background: #fff6f5;
+}
+
+.scribe__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d93025;
+  flex-shrink: 0;
+  animation: scribe-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes scribe-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* Мигание отключаем тем, кому оно мешает: постоянная точка сообщает то
+   же самое. */
+@media (prefers-reduced-motion: reduce) {
+  .scribe__dot { animation: none; }
+}
+
+.scribe--done {
+  color: #5c6874;
+}
+
+.scribe__note {
+  font-size: 13px;
+  color: #6b7681;
+}
+
+.scribe__err {
+  font-size: 13px;
+  color: #a02617;
+}
+
+@media (prefers-color-scheme: dark) {
+  .scribe {
+    background: #1b1f24;
+    border-color: #2c333b;
+    color: #e4e8ec;
+  }
+  .scribe--ask {
+    background: #16202c;
+    border-color: #274056;
+  }
+  .scribe--live {
+    background: #2a1917;
+    border-color: #5c2a22;
+  }
+  .scribe__text p {
+    color: #b9c2cb;
+  }
+}

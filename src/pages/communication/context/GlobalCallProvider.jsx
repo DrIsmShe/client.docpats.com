@@ -23,9 +23,16 @@
 //    Чтобы вернуться на P2P: поменять импорт обратно на useCall и вернуть
 //    старую версию CallUI.
 
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState, Suspense, lazy } from "react";
 import { useJitsiCall } from "../hooks/useJitsiCall";
+import { useCurrentUser } from "../hooks/useCurrentUserId";
 import CallUI from "../components/CallUI";
+
+// Лениво по той же причине, что и панель: провайдер вне <Routes>, а
+// окно черновика открывается один раз в конце приёма.
+const ScribeDraftModal = lazy(() =>
+  import("../components/ScribeDraftModal"),
+);
 
 const CallContext = createContext(null);
 
@@ -35,6 +42,16 @@ export function useCallContext() {
 
 export function GlobalCallProvider({ currentUserId, children }) {
   const call = useJitsiCall(currentUserId);
+
+  // Роль нужна записи приёма: панель показывается врачу и пациенту
+  // по-разному. Запрос тот же самый, что и за userId, — лишнего похода
+  // на сервер нет.
+  const { role } = useCurrentUser();
+
+  // Черновик, собранный из разговора. Показывается врачу поверх всего
+  // СРАЗУ после завершения записи: пока приём в памяти, правки занимают
+  // минуту, а через час — полчаса.
+  const [scribeDraft, setScribeDraft] = useState(null);
 
   const {
     callState,
@@ -46,6 +63,8 @@ export function GlobalCallProvider({ currentUserId, children }) {
     durationSec,
     endedInfo,
     jitsiContainerRef, // ← вместо remoteAudioRef/localVideoRef/remoteVideoRef
+    peerId,
+    dialogId,
     acceptCall,
     declineCall,
     cancelCall,
@@ -77,7 +96,30 @@ export function GlobalCallProvider({ currentUserId, children }) {
         onEnd={endCall}
         onToggleMute={toggleMute}
         onToggleVideo={toggleVideo}
+        /* Запись приёма.
+           Роль определяется ролью аккаунта: врач — тот, у кого она
+           doctor, остальные участники звонка — пациенты. Записывать
+           разговор двух пациентов между собой незачем, и панель у них
+           не появится: scribeRole останется null.
+           Комната та же, в которой идёт звонок, — она общая у обеих
+           сторон и единственное, что связывает их в момент разговора. */
+        scribeRole={
+          role === "doctor" ? "doctor" : role ? "patient" : null
+        }
+        scribeRoom={dialogId ? `dialog-${dialogId}` : null}
+        scribePeerUserId={peerId}
+        onScribeDraft={setScribeDraft}
       />
+
+      {/* Черновик приёма — врачу, поверх всего, сразу после записи. */}
+      {scribeDraft && (
+        <Suspense fallback={null}>
+          <ScribeDraftModal
+            data={scribeDraft}
+            onClose={() => setScribeDraft(null)}
+          />
+        </Suspense>
+      )}
     </CallContext.Provider>
   );
 }
