@@ -844,6 +844,25 @@ export default function PricingPage() {
     return "page.subtitle";
   }, [userRole]);
 
+  // Вкладка из адреса: /pricing?tab=clinics
+  //
+  // Нужна тем, кто приводит сюда человека с конкретным намерением.
+  // Полоса «Пробный период клиники закончился → Оплатить» вела на общий
+  // прайс, и владелец клиники попадал на тарифы ДЛЯ ВРАЧЕЙ — то есть на
+  // ответ не на свой вопрос. Ссылка, открывающая не то, за чем шли,
+  // читается как ошибка сайта, даже когда нужное лежит соседней
+  // вкладкой.
+  //
+  // Права параметр НЕ расширяет: ниже стоит проверка allowedTabKeys, и
+  // пациент, открывший ?tab=clinics, всё равно увидит свои тарифы.
+  // Адресная строка не источник прав.
+  const requestedTab = new URLSearchParams(location.search).get("tab");
+  useEffect(() => {
+    if (requestedTab && TABS.some((t) => t.key === requestedTab)) {
+      setActiveTab(requestedTab);
+    }
+  }, [requestedTab, TABS]);
+
   // Если активная вкладка недоступна роли — переключаемся на первую доступную.
   useEffect(() => {
     if (!allowedTabKeys.includes(activeTab)) {

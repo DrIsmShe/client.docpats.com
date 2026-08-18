@@ -82,7 +82,7 @@ export default function ClinicSubscriptionBanner({ subscription, role }) {
           . После этого карты пациентов останутся доступны, но новые записи
           создавать будет нельзя.
         </span>
-        <Link className="clinic-subscription-banner__cta" to="/pricing">
+        <Link className="clinic-subscription-banner__cta" to="/pricing?tab=clinics">
           Выбрать тариф
         </Link>
       </div>
@@ -113,7 +113,7 @@ export default function ClinicSubscriptionBanner({ subscription, role }) {
         выгрузка доступны по-прежнему — новые записи, приёмы и сотрудники
         создаются после оплаты тарифа.
       </span>
-      <Link className="clinic-subscription-banner__cta" to="/pricing">
+      <Link className="clinic-subscription-banner__cta" to="/pricing?tab=clinics">
         Оплатить
       </Link>
     </div>
