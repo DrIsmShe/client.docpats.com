@@ -14,7 +14,7 @@
 // distinguished by the `employeeMode` prop.
 
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate, Link } from "react-router-dom";
+import { Outlet, useNavigate, Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "../../axios";
 import { getClinicMe, getEmployeeMe, employeeLogout } from "../../api/clinic";
@@ -23,8 +23,21 @@ import ClinicNotificationBell from "../../components/notifications/ClinicNotific
 import ClinicSubscriptionBanner from "./ClinicSubscriptionBanner";
 import "./clinicLayout.css";
 
+// Страницы зоны /clinic, доступные ВРАЧУ, у которого клиники ещё нет.
+//
+// Это исключение для онбординга: врач должен иметь возможность зайти и
+// создать клинику. Список закрытый и короткий намеренно — раньше врача
+// без клиники пускали НА ЛЮБУЮ страницу зоны в расчёте на то, что
+// каждая страница сама себя защитит. Так и было написано в комментарии,
+// и так работало ровно до первой страницы, которая проверку забудет.
+//
+// Защита, разложенная по двадцати страницам, — это не защита, а
+// договорённость.
+const ONBOARDING_PATHS = ["/clinic", "/clinic/create"];
+
 export default function ClinicLayout({ employeeMode = false }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t, i18n } = useTranslation("clinic");
 
   const [loading, setLoading] = useState(true);
@@ -67,14 +80,25 @@ export default function ClinicLayout({ employeeMode = false }) {
             //   - hasClinic === false + any other role (patient, etc) →
             //     send to the patient cabinet.
             if (!data.hasClinic) {
-              if (data.role === "doctor") {
-                // Allowed — render layout; Hub/Create pages handle the rest.
-                // Internal clinic pages (dashboard/staff/patients) themselves
-                // require a clinic and will redirect to the hub if missing.
+              // Врач без клиники — законное состояние онбординга, но
+              // только на двух страницах: хаб и создание. На остальные
+              // ему смотреть не на что, и пускать его туда значит
+              // показывать оболочку клиники, которой у него нет.
+              const path = location.pathname.replace(/\/+$/, "") || "/clinic";
+              if (data.role === "doctor" && ONBOARDING_PATHS.includes(path)) {
                 setContext({ kind: "user", ...data });
                 setLoading(false);
                 return;
               }
+              if (data.role === "doctor") {
+                navigate("/clinic", { replace: true });
+                return;
+              }
+              // Все остальные — не в этой зоне. Пациент, попавший сюда
+              // по ссылке или из адресной строки, не должен увидеть даже
+              // шапку кабинета клиники: чужой интерфейс без данных
+              // выглядит как сбой и порождает вопросы, которых можно не
+              // создавать.
               navigate("/patient/home-page", { replace: true });
               return;
             }
@@ -99,7 +123,7 @@ export default function ClinicLayout({ employeeMode = false }) {
     return () => {
       cancelled = true;
     };
-  }, [employeeMode, navigate]);
+  }, [employeeMode, navigate, location.pathname]);
 
   async function handleLogout() {
     try {
