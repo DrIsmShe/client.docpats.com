@@ -55,6 +55,10 @@ export function useScribeRecorder() {
 
   const streamRef = useRef(null);
   const recorderRef = useRef(null);
+  // Отправки, которые ещё в пути. Нужны, чтобы «Завершить» дождался их,
+  // а не гадал по таймеру: при коротком приёме ВЕСЬ разговор лежит в
+  // последнем куске, и уйти он не успевает.
+  const inFlightRef = useRef(new Set());
   const sessionIdRef = useRef(null);
   const startedAtRef = useRef(0);
   const tickRef = useRef(null);
@@ -101,13 +105,44 @@ export function useScribeRecorder() {
       String(Math.max(0, Math.round((Date.now() - startedAtRef.current) / 1000) - CHUNK_MS / 1000)),
     );
 
-    try {
-      await axios.post(`${API}/sessions/${sessionId}/chunks`, form);
-    } catch {
-      // Потерянный кусок не должен останавливать приём: в черновике
-      // будет пробел, и врач увидит его в списке «не прозвучало».
-      // Ронять запись целиком из-за одной неудачной отправки хуже.
-    }
+    // Запрос кладём в набор незавершённых: на нём ждёт flush().
+    // Распознавание идёт СИНХРОННО внутри этого запроса, поэтому его
+    // успешное завершение означает, что реплика уже в базе — ждать
+    // чего-то ещё после него не нужно.
+    const p = axios
+      .post(`${API}/sessions/${sessionId}/chunks`, form)
+      .catch(() => {
+        // Потерянный кусок не должен останавливать приём: в черновике
+        // будет пробел, и врач увидит его в списке «не прозвучало».
+        // Ронять запись целиком из-за одной неудачной отправки хуже.
+      })
+      .finally(() => {
+        inFlightRef.current.delete(p);
+      });
+
+    inFlightRef.current.add(p);
+    return p;
+  }, []);
+
+  /**
+   * Дождаться, пока все куски долетят.
+   *
+   * Заменяет прежнюю паузу в полторы секунды — она была догадкой, а не
+   * ожиданием. При коротком приёме (короче интервала в 20 секунд) весь
+   * разговор лежит в ЕДИНСТВЕННОМ куске, который отправляется уже после
+   * stop(); полторы секунды на отправку и распознавание не хватало, и
+   * врач получал «речь не распознана» при исправно работавшем микрофоне.
+   *
+   * Потолок всё же есть: сеть может висеть минутами, а врач ждёт
+   * черновик. Лучше собрать его без последнего куска, чем не собрать.
+   */
+  const flush = useCallback(async (timeoutMs = 30000) => {
+    const pending = Array.from(inFlightRef.current);
+    if (!pending.length) return;
+    await Promise.race([
+      Promise.allSettled(pending),
+      new Promise((r) => setTimeout(r, timeoutMs)),
+    ]);
   }, []);
 
   const start = useCallback(
@@ -152,13 +187,50 @@ export function useScribeRecorder() {
     [sendChunk],
   );
 
+  /**
+   * Остановить запись и ДОЖДАТЬСЯ последнего куска.
+   *
+   * Возвращает промис не для красоты: ondataavailable после stop()
+   * срабатывает АСИНХРОННО, и без ожидания onstop вызывающий код
+   * побежит дальше, когда последнего куска ещё не существует — flush()
+   * найдёт пустой список и вернётся мгновенно. Ровно так и терялся
+   * короткий приём: весь разговор лежал в этом куске.
+   */
   const stop = useCallback(() => {
     if (tickRef.current) {
       clearInterval(tickRef.current);
       tickRef.current = null;
     }
+
     const rec = recorderRef.current;
-    if (rec && rec.state !== "inactive") {
+    recorderRef.current = null;
+
+    const releaseStream = () => {
+      const stream = streamRef.current;
+      if (stream) stream.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+      setState("ready");
+    };
+
+    if (!rec || rec.state === "inactive") {
+      releaseStream();
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve) => {
+      // Страховка от браузера, который onstop не пришлёт: приём не
+      // должен зависнуть на кнопке «Завершить».
+      const guard = setTimeout(() => {
+        releaseStream();
+        resolve();
+      }, 5000);
+
+      rec.onstop = () => {
+        clearTimeout(guard);
+        releaseStream();
+        resolve();
+      };
+
       // requestData перед stop — иначе последний неполный кусок
       // теряется, а это концовка приёма: назначения и рекомендации.
       try {
@@ -166,22 +238,21 @@ export function useScribeRecorder() {
       } catch {
         /* некоторые браузеры не поддерживают — тогда его отдаст stop */
       }
-      rec.stop();
-    }
-    recorderRef.current = null;
-
-    const stream = streamRef.current;
-    if (stream) stream.getTracks().forEach((t) => t.stop());
-    streamRef.current = null;
-
-    setState("ready");
+      try {
+        rec.stop();
+      } catch {
+        clearTimeout(guard);
+        releaseStream();
+        resolve();
+      }
+    });
   }, []);
 
   // Уход со страницы посреди приёма не должен оставлять микрофон
   // включённым: индикатор записи в браузере горел бы и после звонка.
   useEffect(() => () => stop(), [stop]);
 
-  return { state, error, seconds, probe, start, stop };
+  return { state, error, seconds, probe, start, stop, flush };
 }
 
 export default useScribeRecorder;
