@@ -24,9 +24,19 @@
 // ЗАКРЫТЬ БЕЗ СОХРАНЕНИЯ МОЖНО. Навязанный диалог, из которого нет
 // выхода, кончается тем, что в карту попадает непроверенный текст.
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "../../../axios";
 import "./scribeDraftModal.css";
+
+// Языки, на которые умеем переводить: те же, что у интерфейса.
+// Перевод на язык, которого нет в интерфейсе, некому будет прочитать.
+const LANGS = [
+  { code: "ru", label: "Русский" },
+  { code: "en", label: "English" },
+  { code: "az", label: "Azərbaycanca" },
+  { code: "tr", label: "Türkçe" },
+  { code: "ar", label: "العربية" },
+];
 
 const FIELDS = [
   { key: "complaints", label: "Жалобы", rows: 3 },
@@ -45,9 +55,49 @@ export default function ScribeDraftModal({ data, onClose }) {
     return out;
   });
   const [patientId, setPatientId] = useState("");
+  const [patientName, setPatientName] = useState("");
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [translating, setTranslating] = useState(false);
+
+  // Карту пациента ищем сами по участнику звонка. Просить врача вписать
+  // 24-символьный идентификатор — значит не дать ему сохранить черновик:
+  // он этот идентификатор нигде не видит.
+  useEffect(() => {
+    const uid = data?.patientUserId;
+    if (!uid) return;
+    axios
+      .get(`/api/v1/clinic/medical/patients/by-user/${uid}`)
+      .then((r) => {
+        const p = r.data?.patient;
+        if (!p) return;
+        setPatientId(p.id);
+        setPatientName(`${p.lastName} ${p.firstName}`.trim());
+      })
+      .catch(() => {
+        // Не нашли — оставляем ручной ввод: пациент мог быть не заведён
+        // в этой клинике, и молчаливый отказ хуже видимого поля.
+      });
+  }, [data?.patientUserId]);
+
+  async function translate(to) {
+    setTranslating(true);
+    setNotice(null);
+    try {
+      const { data: res } = await axios.post(
+        `/api/v1/scribe/sessions/${data.sessionId}/translate`,
+        { to, fields: values },
+      );
+      // Подставляем перевод В ПОЛЯ: врач видит результат и может его
+      // поправить перед сохранением, как и любой другой текст здесь.
+      setValues((v) => ({ ...v, ...res.fields }));
+    } catch (err) {
+      setNotice(err?.response?.data?.message ?? "Не удалось перевести");
+    } finally {
+      setTranslating(false);
+    }
+  }
 
   const notHeard = data?.draft?.notHeard || [];
   const dialogue = data?.dialogue || [];
@@ -114,6 +164,25 @@ export default function ScribeDraftModal({ data, onClose }) {
           </div>
         )}
 
+        {/* Перевод — отдельным действием и ПОСЛЕ правки: черновик
+            собран на языке разговора, и врач сначала сверяет его с тем,
+            что помнит, а переводит уже проверенное. */}
+        <div className="sdm-translate">
+          <span>Перевести черновик:</span>
+          {LANGS.map((l) => (
+            <button
+              key={l.code}
+              type="button"
+              className="sdm-lang"
+              disabled={translating || busy}
+              onClick={() => translate(l.code)}
+            >
+              {l.label}
+            </button>
+          ))}
+          {translating && <span className="sdm-translating">переводим…</span>}
+        </div>
+
         <div className="sdm-fields">
           {FIELDS.map((f) => (
             <label key={f.key} className="sdm-field">
@@ -145,11 +214,24 @@ export default function ScribeDraftModal({ data, onClose }) {
         )}
 
         <label className="sdm-field sdm-field--patient">
-          <span>Карта пациента (идентификатор)</span>
+          <span>
+            Карта пациента
+            {patientName && (
+              <b className="sdm-patient-name"> — {patientName}</b>
+            )}
+          </span>
+          {/* Поле остаётся видимым даже когда карта найдена: врач должен
+              видеть, КУДА сохраняет, и иметь возможность изменить —
+              например, если пациент заведён в клинике дважды. */}
           <input
             value={patientId}
-            onChange={(e) => setPatientId(e.target.value)}
-            placeholder="в какую карту сохранить"
+            onChange={(e) => {
+              setPatientId(e.target.value);
+              setPatientName("");
+            }}
+            placeholder={
+              patientName ? "" : "карта не найдена — укажите вручную"
+            }
           />
         </label>
 

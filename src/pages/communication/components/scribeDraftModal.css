@@ -177,3 +177,53 @@
   .sdm-line--doctor { background: #1c2530; }
   .sdm-line--patient { background: #22262a; }
 }
+
+/* Перевод черновика. Стоит между «не прозвучало» и полями: врач сначала
+   видит, чего не хватает, потом решает про язык, потом правит. */
+.sdm-translate {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: #5c6874;
+}
+
+.sdm-lang {
+  padding: 5px 12px;
+  border: 1px solid #d3dae0;
+  border-radius: 16px;
+  background: transparent;
+  font-size: 13px;
+  cursor: pointer;
+  color: #45525f;
+}
+
+.sdm-lang:hover:not(:disabled) {
+  border-color: #0d6efd;
+  color: #0d6efd;
+}
+
+.sdm-lang:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.sdm-translating {
+  color: #8b959f;
+}
+
+/* Найденная карта названа по имени: врач должен видеть, КУДА сохраняет,
+   а не идентификатор, который ему ничего не говорит. */
+.sdm-patient-name {
+  color: #1a7f37;
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  .sdm-lang {
+    border-color: #2c333b;
+    color: #b9c2cb;
+  }
+}

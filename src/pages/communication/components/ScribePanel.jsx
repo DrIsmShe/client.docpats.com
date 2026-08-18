@@ -179,7 +179,10 @@ export default function ScribePanel({
       await rec.flush();
       const { data } = await axios.post(`${API}/sessions/${session.id}/finish`);
       setNotice(null);
-      onDraft?.(data);
+      // Пациента передаём вместе с черновиком: карту клиники по нему
+      // найдёт окно, и врачу не придётся вписывать идентификатор,
+      // которого он нигде не видит.
+      onDraft?.({ ...data, patientUserId: peerUserId });
     } catch (err) {
       setNotice(err?.response?.data?.message ?? "Не удалось собрать черновик");
     } finally {
