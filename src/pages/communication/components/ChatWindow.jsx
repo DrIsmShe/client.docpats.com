@@ -1,6 +1,6 @@
 // client/src/pages/communication/components/ChatWindow.jsx
 import React from "react";
-import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback, lazy, Suspense } from "react";
 import { useChat } from "../hooks/useChat";
 import DialogList from "./DialogList";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,6 +11,8 @@ import { uploadAttachment } from "../api/uploadAttachment";
 import { useCallContext } from "../context/GlobalCallProvider";
 import { useMessageTranslation } from "../hooks/useMessageTranslation";
 import JitsiRoom from "./JitsiRoom";
+
+const ScribeDraftModal = lazy(() => import("./ScribeDraftModal"));
 
 const API = process.env.REACT_APP_API_URL || "http://localhost:11000";
 
@@ -1002,6 +1004,10 @@ function ChatWindow({
 
   const currentUserId = extractId(currentUser);
   const peerId = extractId(peerUser);
+
+  // Черновик приёма, собранный из разговора. Показывается врачу сразу
+  // после завершения записи, поверх чата.
+  const [scribeDraft, setScribeDraft] = useState(null);
 
   // Имя текущего пользователя для подписи в видеокомнате
   const myDisplayName =
@@ -2274,9 +2280,26 @@ function ChatWindow({
                 dialogId={dialogId}
                 displayName={myDisplayName}
                 onClose={() => setShowJitsi(false)}
+                /* Запись приёма: собеседник по диалогу и есть вторая
+                   сторона разговора. Без него врач не сможет начать
+                   сеанс, и панель не появится. */
+                scribePeerUserId={peerId}
+                onScribeDraft={setScribeDraft}
               />
             </div>
           </div>
+        )}
+
+        {/* Черновик приёма — врачу, сразу после записи. Лениво: окно
+            открывается один раз в конце приёма, а ChatWindow грузится
+            при каждом открытии переписки. */}
+        {scribeDraft && (
+          <Suspense fallback={null}>
+            <ScribeDraftModal
+              data={scribeDraft}
+              onClose={() => setScribeDraft(null)}
+            />
+          </Suspense>
         )}
 
         {/* Share modal */}

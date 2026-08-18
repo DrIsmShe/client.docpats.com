@@ -19,6 +19,8 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import useVideoRoom from "../hooks/useVideoRoom";
+import { useCurrentUser } from "../hooks/useCurrentUserId";
+import ScribePanel from "./ScribePanel";
 
 const LABELS = {
   dialog: {
@@ -57,7 +59,17 @@ export default function JitsiRoom({
   dialogId,
   displayName,
   onClose,
+  // Запись приёма. Необязательный: без собеседника врач не сможет
+  // начать сеанс, и панель просто не появится — консилиум на несколько
+  // человек записывать этим механизмом нельзя, там у каждого свой
+  // микрофон и «вторая сторона» не одна.
+  scribePeerUserId = null,
+  onScribeDraft = null,
 }) {
+  // Роль решает, что показать: врачу кнопку, пациенту запрос согласия.
+  // Берём здесь, а не пропсом: комната используется из трёх мест, и
+  // прокидывать роль через каждое значило бы забыть в одном.
+  const { role } = useCurrentUser();
   const { status, error, start, stop, containerRef } = useVideoRoom({
     source,
     id,
@@ -180,6 +192,33 @@ export default function JitsiRoom({
           display: active ? "block" : "none",
         }}
       />
+
+      {/* Панель записи приёма. Внутри комнаты, а не в оверлее звонка:
+          на этом экране Jitsi занимает всё, и оверлей CallUI не
+          участвует вовсе — панель, встроенная туда, здесь никогда бы не
+          появилась.
+
+          Прижата к низу над собственной панелью Jitsi и с большим
+          z-index: iframe перекрывает всё, что лежит ниже него. */}
+      {active && role && dialogId && scribePeerUserId && (
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            bottom: 96,
+            transform: "translateX(-50%)",
+            width: "min(560px, 94vw)",
+            zIndex: 10,
+          }}
+        >
+          <ScribePanel
+            role={role === "doctor" ? "doctor" : "patient"}
+            room={`dialog-${dialogId}`}
+            peerUserId={scribePeerUserId}
+            onDraft={onScribeDraft}
+          />
+        </div>
+      )}
 
       {!active && (
         <div
