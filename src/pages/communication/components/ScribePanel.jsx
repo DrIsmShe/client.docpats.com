@@ -54,14 +54,48 @@ export default function ScribePanel({
     }
   }, []);
 
-  // Пациент узнаёт о запросе согласия не сам по себе, а по событию
-  // сокета. Здесь — опрос как запасной путь: событие может не дойти,
-  // а спросить согласие обязательно.
+  /**
+   * Поиск сеанса ПО КОМНАТЕ.
+   *
+   * Без него модуль не работает вовсе: сеанс создаёт врач, и его
+   * идентификатор существует только у врача. Пациент знает лишь
+   * комнату — и без поиска по ней он никогда не узнал бы, что у него
+   * спрашивают согласие, а врач ждал бы ответа, которого не будет.
+   *
+   * Врачу это тоже нужно: перезагрузил страницу посреди приёма — и без
+   * поиска по комнате его собственная запись стала бы недоступна ему
+   * самому.
+   */
+  const lookup = useCallback(async () => {
+    if (!room) return null;
+    try {
+      const { data } = await axios.get(
+        `${API}/sessions/by-room/${encodeURIComponent(room)}`,
+      );
+      if (data.session) setSession(data.session);
+      return data.session;
+    } catch {
+      return null;
+    }
+  }, [room]);
+
+  // Пока сеанса нет — ищем по комнате; когда есть — следим за ним.
+  // Один интервал на оба случая: два таймера на одну задачу однажды
+  // разойдутся, и отладить это будет нечем.
   useEffect(() => {
-    if (!session?.id) return undefined;
-    pollRef.current = setInterval(() => poll(session.id), 4000);
+    if (!room) return undefined;
+    // Первый запрос сразу: ждать четыре секунды, чтобы показать запрос
+    // согласия, — это четыре секунды разговора под запись, на которую
+    // человек ещё не согласился.
+    if (session?.id) poll(session.id);
+    else lookup();
+
+    pollRef.current = setInterval(() => {
+      if (session?.id) poll(session.id);
+      else lookup();
+    }, 4000);
     return () => clearInterval(pollRef.current);
-  }, [session?.id, poll]);
+  }, [room, session?.id, poll, lookup]);
 
   // Как только обе стороны согласились — начинаем писать свой микрофон.
   useEffect(() => {

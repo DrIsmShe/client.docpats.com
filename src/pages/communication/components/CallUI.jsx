@@ -32,14 +32,24 @@ import React, { useRef, useState, useEffect, Suspense, lazy } from "react";
 const ScribePanel = lazy(() => import("./ScribePanel"));
 
 const styles = `
-  /* Панель записи приёма внутри карточки звонка. Ограничена по ширине:
-     карточка узкая, а текст запроса согласия длинный, и без ограничения
-     он растянул бы оверлей. */
+  /* Панель записи приёма. Отдельный слой над всем содержимым оверлея:
+     z-index выше карточки (3) и кнопок (5), pointer-events возвращён —
+     внутри карточки во время видео он выключен, и кнопка не нажималась.
+     Прижата к низу: верх занят панелью самого Jitsi. */
   .call-scribe {
-    width: 100%;
-    max-width: 520px;
-    margin: 12px auto 4px;
+    position: absolute;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    z-index: 10;
+    pointer-events: auto;
+    width: min(560px, 92vw);
     text-align: left;
+  }
+  /* В аудиозвонке кнопки завершения стоят по центру снизу — поднимаем
+     панель над ними, чтобы не перекрывала «положить трубку». */
+  .call-overlay:not(.has-video) .call-scribe {
+    bottom: 120px;
   }
 
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
@@ -428,6 +438,28 @@ export default function CallUI({
 
         {showVideoStage && <div className="call-video-dim" />}
 
+        {/* Панель записи приёма — СВОЙ слой, а не часть карточки.
+            В видеозвонке у .call-card стоит pointer-events: none (она
+            становится подписью поверх видео), и кнопка внутри неё не
+            нажималась вовсе. Плюс карточка шириной 320px и прижата к
+            верху — там же, где собственная панель Jitsi.
+            Поэтому отдельный слой внизу: он кликабелен и в аудио, и в
+            видео, и ни с чем не спорит за место. */}
+        {scribeRole && scribeRoom && callState === "active" && (
+          <div className="call-scribe">
+            {/* fallback={null}: панель появляется через долю секунды, и
+                заглушка «загрузка» выглядела бы поломкой. */}
+            <Suspense fallback={null}>
+              <ScribePanel
+                role={scribeRole}
+                room={scribeRoom}
+                peerUserId={scribePeerUserId}
+                onDraft={onScribeDraft}
+              />
+            </Suspense>
+          </div>
+        )}
+
         <div className="call-card">
           <div className={`call-avatar-wrap ${isRinging ? "ringing" : ""}`}>
             {avatar ? (
@@ -441,23 +473,6 @@ export default function CallUI({
 
           <div className="call-name">{name}</div>
 
-          {/* Панель записи приёма. Только в АКТИВНОМ звонке: во время
-              дозвона записывать нечего, а кнопка там путала бы. */}
-          {scribeRole && scribeRoom && callState === "active" && (
-            <div className="call-scribe">
-              {/* fallback={null}: панель появляется через долю секунды
-                  после начала звонка, и заглушка «загрузка» на её месте
-                  выглядела бы поломкой, а не ожиданием. */}
-              <Suspense fallback={null}>
-                <ScribePanel
-                  role={scribeRole}
-                  room={scribeRoom}
-                  peerUserId={scribePeerUserId}
-                  onDraft={onScribeDraft}
-                />
-              </Suspense>
-            </div>
-          )}
 
           {isVideoCall && !showVideoStage && (
             <div className="call-type-badge">🎥 Видеозвонок</div>
