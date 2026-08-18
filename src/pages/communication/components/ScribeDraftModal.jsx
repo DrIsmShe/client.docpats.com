@@ -26,6 +26,7 @@
 
 import { useEffect, useState } from "react";
 import axios from "../../../axios";
+import { searchPatients, createPatient } from "../../../api/clinic";
 import "./scribeDraftModal.css";
 
 // Языки, на которые умеем переводить: те же, что у интерфейса.
@@ -61,25 +62,144 @@ export default function ScribeDraftModal({ data, onClose }) {
   const [saved, setSaved] = useState(false);
   const [translating, setTranslating] = useState(false);
 
-  // Карту пациента ищем сами по участнику звонка. Просить врача вписать
-  // 24-символьный идентификатор — значит не дать ему сохранить черновик:
-  // он этот идентификатор нигде не видит.
+  // Поиск карты, когда её не нашли по аккаунту. Нужен для звонков из
+  // переписки: приёма нет, значит и карты может не быть — пациент
+  // обратился в клинику впервые.
+  const [query, setQuery] = useState("");
+  const [found, setFound] = useState(null);
+  const [searching, setSearching] = useState(false);
+  const [creating, setCreating] = useState(false);
+
+  // Куда сохраняем: в карту клиники или в карту частной практики.
+  //
+  // Врач об этом думать не должен — он просто ведёт приём. Определяем
+  // сами: сначала пробуем клинику, и если её нет (частный врач, у него
+  // нет арендатора), переходим на частный путь.
+  const [target, setTarget] = useState(null); // "clinic" | "private"
+  const [privateType, setPrivateType] = useState(null);
+
+  // Карта пациента.
+  //
+  // Два пути, и первый ЛУЧШЕ второго:
+  //
+  //   patientRef пришёл с сервера — приём знал карту заранее (телемед).
+  //   Это достоверные данные, искать нечего;
+  //
+  //   не пришёл — звонок из переписки, ищем по аккаунту участника.
+  //   Поиск может не найти: карта не связана с аккаунтом или пациент в
+  //   клинике впервые.
+  //
+  // В обоих случаях врач не должен вписывать 24-символьный
+  // идентификатор, которого он нигде не видит.
   useEffect(() => {
+    if (data?.patientRef) {
+      setPatientId(data.patientRef);
+      // Имя подтянем тем же запросом, если знаем аккаунт; если нет —
+      // покажем хотя бы то, что карта определена приёмом.
+      setPatientName((prev) => prev || "определена приёмом");
+    }
+  }, [data?.patientRef]);
+
+  useEffect(() => {
+    // Приём уже дал карту — поиск не нужен и может только запутать,
+    // подставив другую.
+    if (data?.patientRef) {
+      setTarget("clinic");
+      return;
+    }
     const uid = data?.patientUserId;
     if (!uid) return;
+
+    let cancelled = false;
+
+    // Сначала клиника. Отказ здесь означает не поломку, а отсутствие
+    // клиники у этого врача, — и тогда путь другой, а не тупик.
     axios
       .get(`/api/v1/clinic/medical/patients/by-user/${uid}`)
       .then((r) => {
+        if (cancelled) return;
+        setTarget("clinic");
         const p = r.data?.patient;
         if (!p) return;
         setPatientId(p.id);
         setPatientName(`${p.lastName} ${p.firstName}`.trim());
       })
-      .catch(() => {
-        // Не нашли — оставляем ручной ввод: пациент мог быть не заведён
-        // в этой клинике, и молчаливый отказ хуже видимого поля.
+      .catch(() =>
+        axios
+          .get(`/api/v1/scribe/private-patient/by-user/${uid}`)
+          .then((r) => {
+            if (cancelled) return;
+            setTarget("private");
+            const p = r.data?.patient;
+            if (!p) return;
+            setPatientId(p.id);
+            setPrivateType(p.patientTypeModel);
+            setPatientName(
+              `${p.lastName || ""} ${p.firstName || ""}`.trim() ||
+                "ваш пациент",
+            );
+          })
+          .catch(() => {
+            // Ни там, ни там. Оставляем ручной путь: молчаливый отказ
+            // хуже видимого поля.
+          }),
+      );
+
+    return () => {
+      cancelled = true;
+    };
+  }, [data?.patientUserId, data?.patientRef]);
+
+  async function runSearch() {
+    const q = query.trim();
+    if (q.length < 2) {
+      setNotice("Введите фамилию, телефон или почту");
+      return;
+    }
+    setSearching(true);
+    setNotice(null);
+    try {
+      // Что искать — решаем по виду строки, а не заставляем врача
+      // выбирать поле: он ищет человека, а не заполняет форму.
+      const isPhone = /^[+\d][\d\s()-]{4,}$/.test(q);
+      const isEmail = q.includes("@");
+      const res = await searchPatients(
+        isPhone ? { phone: q } : isEmail ? { email: q } : { lastName: q },
+      );
+      setFound(res.items || []);
+    } catch (err) {
+      setNotice(err?.response?.data?.message ?? "Поиск не удался");
+    } finally {
+      setSearching(false);
+    }
+  }
+
+  async function createCard() {
+    const name = (data?.patientName || "").trim().split(/\s+/);
+    setCreating(true);
+    setNotice(null);
+    try {
+      const res = await createPatient({
+        firstName: name[1] || "Пациент",
+        lastName: name[0] || "Без фамилии",
+        // Аккаунт пациенту НЕ выпускаем: он у него уже есть — он в
+        // звонке. Выпустить второй значило бы развести одного человека
+        // на две учётные записи.
+        createProvisionalUser: false,
       });
-  }, [data?.patientUserId]);
+      const created = res.patient || res;
+      setPatientId(created.id || created._id);
+      setPatientName(`${created.lastName || ""} ${created.firstName || ""}`.trim());
+      setFound(null);
+    } catch (err) {
+      setNotice(
+        err?.response?.data?.message ??
+          "Не удалось завести карту. Заведите её в разделе «Пациенты» и вернитесь.",
+      );
+    } finally {
+      setCreating(false);
+    }
+  }
 
   async function translate(to) {
     setTranslating(true);
@@ -100,6 +220,7 @@ export default function ScribeDraftModal({ data, onClose }) {
   }
 
   const notHeard = data?.draft?.notHeard || [];
+  const other = data?.draft?.other || [];
   const dialogue = data?.dialogue || [];
 
   async function save() {
@@ -110,10 +231,22 @@ export default function ScribeDraftModal({ data, onClose }) {
     setBusy(true);
     setNotice(null);
     try {
-      await axios.post(
-        `/api/v1/clinic/medical/patients/${patientId.trim()}/from-scribe/${data.sessionId}`,
-        values,
-      );
+      if (target === "private") {
+        // Частная практика: своя карта, свой путь, клиники в записи нет.
+        await axios.post(
+          `/api/v1/scribe/sessions/${data.sessionId}/save-private`,
+          {
+            patientRef: patientId.trim(),
+            patientTypeModel: privateType || "NewPatientPolyclinic",
+            fields: values,
+          },
+        );
+      } else {
+        await axios.post(
+          `/api/v1/clinic/medical/patients/${patientId.trim()}/from-scribe/${data.sessionId}`,
+          values,
+        );
+      }
       setSaved(true);
     } catch (err) {
       setNotice(err?.response?.data?.message ?? "Не удалось сохранить запись");
@@ -161,6 +294,33 @@ export default function ScribeDraftModal({ data, onClose }) {
                 <li key={i}>{g}</li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {/* Прозвучало, но не разложилось по разделам.
+            ГЛАВНЫЙ БЛОК ЭТОГО ОКНА после самих полей.
+
+            Разговор на приёме идёт вперемешку — симптом, лекарство,
+            снова «когда началось», «да, было» в ответ на вопрос двумя
+            репликами выше. Шесть разделов это форма КАРТЫ, а не форма
+            РЕЧИ, и часть сказанного в них не укладывается никогда.
+
+            Такое нельзя терять молча: врач перестанет перечитывать
+            расшифровку и не хватится пропавшего. Поэтому — отдельным
+            блоком, дословно, чтобы он сам решил, куда это отнести. */}
+        {other.length > 0 && (
+          <div className="sdm-other">
+            <strong>Прозвучало, но не разложилось по разделам:</strong>
+            <ul>
+              {other.map((o, i) => (
+                <li key={i}>{o}</li>
+              ))}
+            </ul>
+            <p>
+              Перенесите в нужные поля то, что относится к приёму. Мы не
+              стали угадывать раздел: ошибиться разделом хуже, чем оставить
+              выбор врачу.
+            </p>
           </div>
         )}
 
@@ -229,11 +389,79 @@ export default function ScribeDraftModal({ data, onClose }) {
               setPatientId(e.target.value);
               setPatientName("");
             }}
-            placeholder={
-              patientName ? "" : "карта не найдена — укажите вручную"
-            }
+            placeholder={patientName ? "" : "карта не выбрана"}
           />
         </label>
+
+        {/* Карты нет — ищем или заводим прямо здесь.
+            Раньше врач упирался в поле, куда нечего вписать, и весь
+            записанный приём пропадал. Тупик посреди готовой работы —
+            худшее, что может сделать инструмент. */}
+        {!patientName && target === "private" && (
+          <div className="sdm-find">
+            <p className="sdm-find__hint">
+              Карта этого пациента у вас не найдена. Заведите её в разделе
+              «Мои пациенты» и вернитесь — черновик останется здесь, пока
+              открыто окно.
+            </p>
+          </div>
+        )}
+
+        {!patientName && target !== "private" && (
+          <div className="sdm-find">
+            <p className="sdm-find__hint">
+              Карта пациента не определилась. Найдите её по фамилии,
+              телефону или почте — или заведите новую.
+            </p>
+            <div className="sdm-find__row">
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && runSearch()}
+                placeholder="Фамилия, телефон или почта"
+              />
+              <button type="button" disabled={searching} onClick={runSearch}>
+                {searching ? "Ищем…" : "Найти"}
+              </button>
+              <button
+                type="button"
+                className="ghost"
+                disabled={creating}
+                onClick={createCard}
+              >
+                {creating ? "Заводим…" : "Завести карту"}
+              </button>
+            </div>
+
+            {found && found.length === 0 && (
+              <p className="sdm-find__empty">
+                В клинике таких пациентов нет — заведите карту.
+              </p>
+            )}
+
+            {found && found.length > 0 && (
+              <ul className="sdm-find__list">
+                {found.map((p) => (
+                  <li key={p.id || p._id}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPatientId(p.id || p._id);
+                        setPatientName(
+                          `${p.lastName || ""} ${p.firstName || ""}`.trim(),
+                        );
+                        setFound(null);
+                      }}
+                    >
+                      {p.lastName} {p.firstName}
+                      {p.phone ? ` · ${p.phone}` : ""}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
 
         {notice && <p className="sdm-notice">{notice}</p>}
 

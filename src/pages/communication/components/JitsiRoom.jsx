@@ -64,6 +64,7 @@ export default function JitsiRoom({
   // человек записывать этим механизмом нельзя, там у каждого свой
   // микрофон и «вторая сторона» не одна.
   scribePeerUserId = null,
+  scribePeerName = "",
   onScribeDraft = null,
 }) {
   // Роль решает, что показать: врачу кнопку, пациенту запрос согласия.
@@ -200,7 +201,18 @@ export default function JitsiRoom({
 
           Прижата к низу над собственной панелью Jitsi и с большим
           z-index: iframe перекрывает всё, что лежит ниже него. */}
-      {active && role && dialogId && scribePeerUserId && (
+      {active &&
+        role &&
+        // Панель нужна там, где есть ВТОРАЯ СТОРОНА: либо звонок из
+        // переписки (знаем собеседника), либо телемед-приём (пациента
+        // знает сам приём). Консилиум на несколько человек этим
+        // механизмом не записывается — там сторон больше двух.
+        ((dialogId && scribePeerUserId) ||
+          // Телемед-приём: пациента и карту знает сам приём. Обе стороны
+          // получают ОДИН И ТОТ ЖЕ идентификатор сеанса — он и служит
+          // ключом комнаты записи. Имя комнаты Jitsi (telemed-<joinKey>)
+          // для этого не годится: у пациента joinKey нет.
+          ((source === "telemed" || source === "telemed-patient") && id)) && (
         <div
           style={{
             position: "absolute",
@@ -213,8 +225,13 @@ export default function JitsiRoom({
         >
           <ScribePanel
             role={role === "doctor" ? "doctor" : "patient"}
-            room={`dialog-${dialogId}`}
+            room={dialogId ? `dialog-${dialogId}` : `telemed-${id}`}
             peerUserId={scribePeerUserId}
+            peerName={scribePeerName}
+            /* Идентификатор приёма шлёт только врач: сеанс записи
+               создаёт он, и карту сервер берёт оттуда. Пациент лишь
+               находит уже созданный сеанс по комнате. */
+            telemedSessionId={source === "telemed" ? id : null}
             onDraft={onScribeDraft}
           />
         </div>

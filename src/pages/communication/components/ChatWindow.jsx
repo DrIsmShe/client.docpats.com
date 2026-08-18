@@ -2284,6 +2284,9 @@ function ChatWindow({
                    сторона разговора. Без него врач не сможет начать
                    сеанс, и панель не появится. */
                 scribePeerUserId={peerId}
+                /* Имя собеседника — чтобы завести карту одним нажатием,
+                   а не переписывать его с экрана звонка. */
+                scribePeerName={dialogTitle || ""}
                 onScribeDraft={setScribeDraft}
               />
             </div>

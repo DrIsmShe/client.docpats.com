@@ -32,7 +32,9 @@ function fmt(sec) {
 export default function ScribePanel({
   role, // "doctor" | "patient"
   room,
-  peerUserId, // для врача: userId пациента
+  peerUserId, // для врача: userId пациента (звонок из переписки)
+  peerName = "", // имя собеседника — для создания карты одним нажатием
+  telemedSessionId = null, // телемед-приём: карта известна ему заранее
   onDraft, // врач: получить черновик после завершения
 }) {
   const [session, setSession] = useState(null);
@@ -123,6 +125,9 @@ export default function ScribePanel({
       const { data } = await axios.post(`${API}/sessions`, {
         room,
         patientUserId: peerUserId,
+        // У телемед-приёма карта и пациент известны заранее — сервер
+        // возьмёт их из сеанса, а не будет искать по аккаунту.
+        telemedSessionId,
       });
       setSession(data.session);
       setNotice("Ждём согласия пациента — до этого не записывается ничего");
@@ -182,7 +187,10 @@ export default function ScribePanel({
       // Пациента передаём вместе с черновиком: карту клиники по нему
       // найдёт окно, и врачу не придётся вписывать идентификатор,
       // которого он нигде не видит.
-      onDraft?.({ ...data, patientUserId: peerUserId });
+      // patientRef приходит с сервера, когда приём знал карту. Тогда
+      // окно не станет искать её по аккаунту — поиск может не найти, а
+      // эта карта достоверна.
+      onDraft?.({ ...data, patientUserId: peerUserId, patientName: peerName });
     } catch (err) {
       setNotice(err?.response?.data?.message ?? "Не удалось собрать черновик");
     } finally {
