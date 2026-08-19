@@ -213,16 +213,11 @@ export default function JitsiRoom({
           // ключом комнаты записи. Имя комнаты Jitsi (telemed-<joinKey>)
           // для этого не годится: у пациента joinKey нет.
           ((source === "telemed" || source === "telemed-patient") && id)) && (
-        <div
-          style={{
-            position: "absolute",
-            left: "50%",
-            bottom: 96,
-            transform: "translateX(-50%)",
-            width: "min(560px, 94vw)",
-            zIndex: 10,
-          }}
-        >
+        // Позиция — в scribePanel.css (.scribe-dock), а не здесь: на
+        // телефоне панель обязана уходить наверх, чтобы не накрыть полосу
+        // управления Jitsi с кнопкой микрофона, а inline-стиль медиа-запрос
+        // выразить не умеет.
+        <div className="scribe-dock">
           <ScribePanel
             role={role === "doctor" ? "doctor" : "patient"}
             room={dialogId ? `dialog-${dialogId}` : `telemed-${id}`}

@@ -51,6 +51,16 @@ const styles = `
   .call-overlay:not(.has-video) .call-scribe {
     bottom: 120px;
   }
+  /* На телефоне кнопки занимают низ экрана и в ВИДЕОрежиме — включая
+     микрофон. Панель шириной почти во весь экран накрывала их и забирала
+     касания себе: снаружи это выглядит как «видео есть, звука нет».
+     Поднимаем так же, как уже сделано для аудио. */
+  @media (max-width: 820px), (max-height: 560px) {
+    .call-scribe {
+      bottom: 120px;
+      width: min(560px, 90vw);
+    }
+  }
 
   @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
 
