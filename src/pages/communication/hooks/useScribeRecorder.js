@@ -31,8 +31,8 @@ import i18n from "../../../i18n";
 
 const API = "/api/v1/scribe";
 
-/** Язык интерфейса — лучшая доступная догадка о языке приёма. */
-function currentLang() {
+/** Язык интерфейса — им подставляется переключатель языка приёма. */
+export function currentLang() {
   return String(i18n?.language ?? "")
     .slice(0, 2)
     .toLowerCase();
@@ -70,6 +70,8 @@ export function useScribeRecorder() {
   const sessionIdRef = useRef(null);
   const startedAtRef = useRef(0);
   const tickRef = useRef(null);
+  // Язык приёма, выбранный врачом до начала записи.
+  const langRef = useRef("");
 
   /** Можно ли вообще писать в этом браузере и на этом устройстве. */
   const probe = useCallback(async () => {
@@ -108,11 +110,16 @@ export function useScribeRecorder() {
 
     const form = new FormData();
     form.append("audio", blob, "chunk.webm");
-    // Язык приёма. Раньше не передавался вовсе, и распознаватель получал
-    // русскую подсказку-глоссарий на любую речь: на азербайджанском приёме
-    // он бросал аудио и возвращал саму подсказку — в черновике оказывались
-    // названия препаратов, которых никто не произносил.
-    form.append("lang", currentLang());
+    // Язык приёма — его выбирает врач ПЕРЕД записью, и он зафиксирован на
+    // всю запись (langRef), а не читается из интерфейса на каждый кусок:
+    // переключив язык страницы посреди приёма, врач разорвал бы расшифровку
+    // на две разноязычные половины.
+    //
+    // Раньше язык не передавался вовсе, и распознаватель получал русскую
+    // подсказку-глоссарий на любую речь: азербайджанский приём возвращался
+    // то списком препаратов из подсказки, то русской транслитерацией
+    // азербайджанских слов.
+    form.append("lang", langRef.current || currentLang());
     form.append(
       "startSec",
       String(Math.max(0, Math.round((Date.now() - startedAtRef.current) / 1000) - CHUNK_MS / 1000)),
@@ -159,8 +166,11 @@ export function useScribeRecorder() {
   }, []);
 
   const start = useCallback(
-    async (sessionId) => {
+    async (sessionId, lang = "") => {
       sessionIdRef.current = sessionId;
+      langRef.current = String(lang || "")
+        .slice(0, 2)
+        .toLowerCase();
       const mime = pickMime();
       if (!mime) return false;
 

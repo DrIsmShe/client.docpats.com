@@ -18,10 +18,50 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "../../../axios";
-import useScribeRecorder from "../hooks/useScribeRecorder";
+import useScribeRecorder, { currentLang } from "../hooks/useScribeRecorder";
 import "./scribePanel.css";
 
 const API = "/api/v1/scribe";
+
+// ─── ЯЗЫК ПРИЁМА ───────────────────────────────────────────────────────
+//
+// Спрашиваем явно, а не берём из интерфейса. Язык страницы и язык разговора
+// расходятся сплошь и рядом: врач с русским интерфейсом ведёт приём
+// по-азербайджански. Для распознавателя это не мелочь — на неверно
+// угаданном языке он не ошибается по мелочи, а выдаёт связную чушь:
+// азербайджанская речь возвращалась русской транслитерацией
+// («хайрус, латин, маэрхан»), похожей на текст ровно настолько, чтобы
+// её можно было принять за расшифровку.
+//
+// ЯЗЫКИ РАСПОЗНАВАНИЯ — НЕ ЯЗЫКИ ИНТЕРФЕЙСА, и связывать их нельзя.
+// Интерфейс переведён на пять языков: это решение продуктовое. Whisper
+// понимает около сотни: это возможность модели. Приём на испанском бывает
+// и в клинике с русским интерфейсом.
+//
+// Поэтому первым пунктом стоит «Определить автоматически», и это не
+// запасной вариант, а честный ответ для всего, чего нет в списке. Пустой
+// язык означает «решай сам»: на языках, которые модель знает хорошо
+// (испанский, французский, немецкий), она справляется без подсказки.
+// Подставить вместо этого русский было бы худшим из возможных ответов —
+// на неверно названном языке распознаватель выдаёт не «неточно», а связную
+// чушь: азербайджанская речь возвращалась русской транслитерацией.
+//
+// Список ниже — не предел возможностей, а короткий путь к частым языкам.
+// Подписи на самих языках: выбирает тот, кто на этом языке и говорит.
+const SPEECH_LANGS = [
+  { code: "", label: "Определить автоматически" },
+  { code: "az", label: "Azərbaycanca" },
+  { code: "ru", label: "Русский" },
+  { code: "tr", label: "Türkçe" },
+  { code: "en", label: "English" },
+  { code: "ar", label: "العربية" },
+  { code: "fa", label: "فارسی" },
+  { code: "ka", label: "ქართული" },
+  { code: "uk", label: "Українська" },
+  { code: "es", label: "Español" },
+  { code: "fr", label: "Français" },
+  { code: "de", label: "Deutsch" },
+];
 
 function fmt(sec) {
   const m = Math.floor(sec / 60);
@@ -40,6 +80,12 @@ export default function ScribePanel({
   const [session, setSession] = useState(null);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState(null);
+  // Язык интерфейса — только начальное значение переключателя, а не ответ.
+  // Нет его в списке — начинаем с автоопределения, а не с русского: угадать
+  // мимо здесь дороже, чем не угадывать вовсе.
+  const [speechLang, setSpeechLang] = useState(
+    () => SPEECH_LANGS.find((l) => l.code === currentLang())?.code ?? "",
+  );
   const rec = useScribeRecorder();
   const pollRef = useRef(null);
 
@@ -102,7 +148,7 @@ export default function ScribePanel({
   // Как только обе стороны согласились — начинаем писать свой микрофон.
   useEffect(() => {
     if (session?.status === "recording" && rec.state === "ready") {
-      rec.start(session.id);
+      rec.start(session.id, speechLang);
     }
     if (
       (session?.status === "revoked" || session?.status === "declined") &&
@@ -128,6 +174,9 @@ export default function ScribePanel({
         // У телемед-приёма карта и пациент известны заранее — сервер
         // возьмёт их из сеанса, а не будет искать по аккаунту.
         telemedSessionId,
+        // Язык приёма кладём В СЕАНС: он должен действовать и на речь
+        // пациента, а его браузер о выборе врача не знает.
+        lang: speechLang,
       });
       setSession(data.session);
       setNotice("Ждём согласия пациента — до этого не записывается ничего");
@@ -262,6 +311,22 @@ export default function ScribePanel({
   if (!session) {
     return (
       <div className="scribe">
+        {/* Язык спрашиваем ДО начала записи: поменять его потом нельзя —
+            распознавание идёт по ходу приёма, кусок за куском. */}
+        <label className="scribe__lang">
+          Язык приёма:
+          <select
+            value={speechLang}
+            disabled={busy}
+            onChange={(e) => setSpeechLang(e.target.value)}
+          >
+            {SPEECH_LANGS.map((l) => (
+              <option key={l.code || "auto"} value={l.code}>
+                {l.label}
+              </option>
+            ))}
+          </select>
+        </label>
         <button type="button" disabled={busy} onClick={startRecording}>
           Вести запись приёма
         </button>

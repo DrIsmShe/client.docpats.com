@@ -42,6 +42,31 @@ const ORDER = [
   "laboratoryTestResults",
 ];
 
+// ЯЗЫКИ РАСПОЗНАВАНИЯ — НЕ ЯЗЫКИ ИНТЕРФЕЙСА. Интерфейс переведён на пять,
+// распознаватель понимает около сотни, и надиктовка на испанском возможна
+// в клинике с любым интерфейсом.
+//
+// «Определить автоматически» — честный ответ для всего, чего нет в списке:
+// пустой язык означает «решай сам». Подставить вместо него русский было бы
+// хуже всего — на неверно названном языке распознаватель выдаёт не
+// «неточно», а связную чушь.
+//
+// Подписи на самих языках: выбирает тот, кто на этом языке и диктует.
+const SPEECH_LANGS = [
+  { code: "", label: "Авто" },
+  { code: "az", label: "Azərbaycanca" },
+  { code: "ru", label: "Русский" },
+  { code: "tr", label: "Türkçe" },
+  { code: "en", label: "English" },
+  { code: "ar", label: "العربية" },
+  { code: "fa", label: "فارسی" },
+  { code: "ka", label: "ქართული" },
+  { code: "uk", label: "Українська" },
+  { code: "es", label: "Español" },
+  { code: "fr", label: "Français" },
+  { code: "de", label: "Deutsch" },
+];
+
 /** Запасные подписи — на случай, если словарь не догрузился. */
 const FALLBACK_LABELS = {
   complaints: "Complaints",
@@ -72,6 +97,9 @@ const CSS = `
 .dct-spacer{flex:1}
 .dct-btn{border:0;border-radius:10px;padding:9px 16px;font-size:13.5px;font-weight:600;cursor:pointer;transition:.15s}
 .dct-btn:disabled{opacity:.55;cursor:not-allowed}
+.dct-lang{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#64748b;white-space:nowrap}
+.dct-lang select{font:inherit;color:#0f172a;background:#fff;border:1px solid #cbd5e1;border-radius:9px;padding:6px 8px;cursor:pointer}
+.dct-lang select:disabled{opacity:.55;cursor:not-allowed}
 .dct-rec{background:#dc2626;color:#fff}
 .dct-rec:hover:not(:disabled){background:#b91c1c}
 .dct-stop{background:#0f172a;color:#fff}
@@ -144,8 +172,19 @@ export default function DictationPanel({ patientId, onApply, onApplyField }) {
   const [taken, setTaken] = useState([]);
   const [skipped, setSkipped] = useState([]);
   const [notes, setNotes] = useState([]);
+  // Язык интерфейса — только начальное значение переключателя, а не ответ:
+  // врач с русским интерфейсом диктует по-азербайджански сплошь и рядом.
+  // Нет языка интерфейса в списке — начинаем с автоопределения, а не с
+  // русского: угадать мимо здесь дороже, чем не угадывать вовсе.
+  const [speechLang, setSpeechLang] = useState(() => {
+    const ui = String(i18n?.language ?? "").slice(0, 2).toLowerCase();
+    return SPEECH_LANGS.find((l) => l.code === ui)?.code ?? "";
+  });
 
   const recorderRef = useRef(null);
+  // Отправка живёт в useCallback и о смене состояния не узнает — держим
+  // выбранный язык в ref, чтобы он не устаревал внутри неё.
+  const langRef = useRef(speechLang);
   const chunksRef = useRef([]);
   const streamRef = useRef(null);
   const tickRef = useRef(null);
@@ -218,12 +257,13 @@ export default function DictationPanel({ patientId, onApply, onApplyField }) {
       setBusy(true);
       setError("");
       try {
-        // Язык надиктовки: без него распознаватель получал русскую
-        // подсказку-глоссарий на любую речь и на других языках возвращал
-        // саму подсказку вместо расшифровки.
+        // Язык надиктовки берём из переключателя над кнопкой записи.
+        // Без него распознаватель получал русскую подсказку-глоссарий на
+        // любую речь и на других языках возвращал саму подсказку вместо
+        // расшифровки.
         const created = await uploadDictation(patientId, blob, {
           durationSec,
-          lang: String(i18n.language ?? "").slice(0, 2).toLowerCase(),
+          lang: langRef.current,
         });
         setJob(created);
         poll(created.id);
@@ -239,8 +279,12 @@ export default function DictationPanel({ patientId, onApply, onApplyField }) {
         setBusy(false);
       }
     },
-    [patientId, poll, t, i18n],
+    [patientId, poll, t],
   );
+
+  useEffect(() => {
+    langRef.current = speechLang;
+  }, [speechLang]);
 
   const start = useCallback(async () => {
     setError("");
@@ -419,16 +463,36 @@ export default function DictationPanel({ patientId, onApply, onApplyField }) {
             </button>
           </>
         ) : (
-          <button
-            type="button"
-            className="dct-btn dct-rec"
-            onClick={start}
-            disabled={busy || Boolean(working) || Boolean(draft)}
-          >
-            {busy
-              ? t("dictation.sending", "Отправляем…")
-              : t("dictation.record", "Записать")}
-          </button>
+          <>
+            {/* Язык надиктовки — до записи. Угадывать его по языку
+                интерфейса нельзя: на неверном языке распознаватель выдаёт
+                не «немного неточно», а связную чушь — азербайджанская речь
+                возвращалась русской транслитерацией. */}
+            <label className="dct-lang">
+              {t("dictation.langLabel", "Язык:")}
+              <select
+                value={speechLang}
+                disabled={busy || Boolean(working) || Boolean(draft)}
+                onChange={(e) => setSpeechLang(e.target.value)}
+              >
+                {SPEECH_LANGS.map((l) => (
+                  <option key={l.code || "auto"} value={l.code}>
+                    {l.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button
+              type="button"
+              className="dct-btn dct-rec"
+              onClick={start}
+              disabled={busy || Boolean(working) || Boolean(draft)}
+            >
+              {busy
+                ? t("dictation.sending", "Отправляем…")
+                : t("dictation.record", "Записать")}
+            </button>
+          </>
         )}
       </div>
 

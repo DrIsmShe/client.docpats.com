@@ -102,10 +102,39 @@
   color: #a02617;
 }
 
+/* Язык приёма — выбирается до начала записи. */
+.scribe__lang {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #6b7681;
+}
+
+.scribe__lang select {
+  font: inherit;
+  color: #1a2533;
+  background: #fff;
+  border: 1px solid #ccd4dd;
+  border-radius: 8px;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+.scribe__lang select:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 @media (prefers-color-scheme: dark) {
   .scribe {
     background: #1b1f24;
     border-color: #2c333b;
+    color: #e4e8ec;
+  }
+  .scribe__lang select {
+    background: #232830;
+    border-color: #39414b;
     color: #e4e8ec;
   }
   .scribe--ask {
