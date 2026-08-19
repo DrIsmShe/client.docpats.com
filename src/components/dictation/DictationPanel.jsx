@@ -134,7 +134,7 @@ function pickMimeType() {
  *   требует пояснения, а текст диагноза без кода — наоборот, не срабатывает.
  */
 export default function DictationPanel({ patientId, onApply, onApplyField }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [ready, setReady] = useState(null); // null — ещё не знаем
   const [recording, setRecording] = useState(false);
   const [elapsed, setElapsed] = useState(0);
@@ -218,7 +218,13 @@ export default function DictationPanel({ patientId, onApply, onApplyField }) {
       setBusy(true);
       setError("");
       try {
-        const created = await uploadDictation(patientId, blob, { durationSec });
+        // Язык надиктовки: без него распознаватель получал русскую
+        // подсказку-глоссарий на любую речь и на других языках возвращал
+        // саму подсказку вместо расшифровки.
+        const created = await uploadDictation(patientId, blob, {
+          durationSec,
+          lang: String(i18n.language ?? "").slice(0, 2).toLowerCase(),
+        });
         setJob(created);
         poll(created.id);
       } catch (err) {
@@ -233,7 +239,7 @@ export default function DictationPanel({ patientId, onApply, onApplyField }) {
         setBusy(false);
       }
     },
-    [patientId, poll, t],
+    [patientId, poll, t, i18n],
   );
 
   const start = useCallback(async () => {

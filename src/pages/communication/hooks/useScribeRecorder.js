@@ -27,8 +27,16 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "../../../axios";
+import i18n from "../../../i18n";
 
 const API = "/api/v1/scribe";
+
+/** Язык интерфейса — лучшая доступная догадка о языке приёма. */
+function currentLang() {
+  return String(i18n?.language ?? "")
+    .slice(0, 2)
+    .toLowerCase();
+}
 
 // Двадцать секунд: короче — счёт запросов к распознаванию растёт быстрее
 // пользы, длиннее — врач дольше ждёт черновик после «Завершить».
@@ -100,6 +108,11 @@ export function useScribeRecorder() {
 
     const form = new FormData();
     form.append("audio", blob, "chunk.webm");
+    // Язык приёма. Раньше не передавался вовсе, и распознаватель получал
+    // русскую подсказку-глоссарий на любую речь: на азербайджанском приёме
+    // он бросал аудио и возвращал саму подсказку — в черновике оказывались
+    // названия препаратов, которых никто не произносил.
+    form.append("lang", currentLang());
     form.append(
       "startSec",
       String(Math.max(0, Math.round((Date.now() - startedAtRef.current) / 1000) - CHUNK_MS / 1000)),
