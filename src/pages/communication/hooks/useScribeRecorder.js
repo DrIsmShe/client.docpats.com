@@ -31,6 +31,23 @@ import i18n from "../../../i18n";
 
 const API = "/api/v1/scribe";
 
+/**
+ * Можно ли вообще писать приём на этом устройстве.
+ *
+ * НА ТЕЛЕФОНАХ — НЕЛЬЗЯ, и это не осторожность, а свойство платформы.
+ * Микрофон уже занят звонком, а второй захват с того же устройства мобильные
+ * браузеры (особенно iOS) не делят, а передают: звонок остаётся без звука.
+ * Врач нажимал «Вести запись приёма» и терял консультацию — кнопка, ломающая
+ * приём, хуже отсутствующей кнопки.
+ *
+ * Признак — основной указатель. Телефоны и планшеты сообщают «coarse»,
+ * настольные машины «fine» даже с сенсорным экраном.
+ */
+export function canRecordHere() {
+  if (typeof window === "undefined" || !window.matchMedia) return true;
+  return !window.matchMedia("(pointer: coarse)").matches;
+}
+
 /** Язык интерфейса — им подставляется переключатель языка приёма. */
 export function currentLang() {
   return String(i18n?.language ?? "")
@@ -72,6 +89,50 @@ export function useScribeRecorder() {
   const tickRef = useRef(null);
   // Язык приёма, выбранный врачом до начала записи.
   const langRef = useRef("");
+  // Микрофон, выбранный врачом. Пусто — системный по умолчанию.
+  const deviceIdRef = useRef("");
+
+  /**
+   * Список микрофонов.
+   *
+   * Названия устройств браузер отдаёт ТОЛЬКО после выданного разрешения:
+   * до него у всех пунктов пустая метка, и выбирать не из чего. Поэтому
+   * список возвращается как есть, а решает вызывающий: показать выбор или
+   * сперва попросить доступ.
+   */
+  const listDevices = useCallback(async () => {
+    if (!navigator.mediaDevices?.enumerateDevices) return [];
+    try {
+      const all = await navigator.mediaDevices.enumerateDevices();
+      return all
+        .filter((d) => d.kind === "audioinput")
+        .map((d) => ({ deviceId: d.deviceId, label: d.label }));
+    } catch {
+      return [];
+    }
+  }, []);
+
+  /** Запомнить выбранный микрофон — им пойдёт и проверка, и запись. */
+  const selectDevice = useCallback((deviceId) => {
+    deviceIdRef.current = String(deviceId || "");
+  }, []);
+
+  // Ограничения одни на probe и на start: проверять одним микрофоном, а
+  // писать другим — верный способ проверить не то.
+  const audioConstraints = useCallback(
+    () => ({
+      // Выключены намеренно — см. шапку файла.
+      echoCancellation: false,
+      noiseSuppression: false,
+      autoGainControl: true,
+      // exact: если выбранного микрофона уже нет (отключили), лучше явная
+      // ошибка, чем тихая запись не с того устройства.
+      ...(deviceIdRef.current
+        ? { deviceId: { exact: deviceIdRef.current } }
+        : {}),
+    }),
+    [],
+  );
 
   /** Можно ли вообще писать в этом браузере и на этом устройстве. */
   const probe = useCallback(async () => {
@@ -82,12 +143,7 @@ export function useScribeRecorder() {
     }
     try {
       const s = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          // Выключены намеренно — см. шапку файла.
-          echoCancellation: false,
-          noiseSuppression: false,
-          autoGainControl: true,
-        },
+        audio: audioConstraints(),
       });
       // Поток сразу отпускаем: это была проверка, а не начало записи.
       s.getTracks().forEach((t) => t.stop());
@@ -102,7 +158,7 @@ export function useScribeRecorder() {
       setState("error");
       return false;
     }
-  }, []);
+  }, [audioConstraints]);
 
   const sendChunk = useCallback(async (blob) => {
     const sessionId = sessionIdRef.current;
@@ -176,11 +232,7 @@ export function useScribeRecorder() {
 
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            echoCancellation: false,
-            noiseSuppression: false,
-            autoGainControl: true,
-          },
+          audio: audioConstraints(),
         });
         streamRef.current = stream;
 
@@ -207,7 +259,7 @@ export function useScribeRecorder() {
         return false;
       }
     },
-    [sendChunk],
+    [sendChunk, audioConstraints],
   );
 
   /**
@@ -275,7 +327,17 @@ export function useScribeRecorder() {
   // включённым: индикатор записи в браузере горел бы и после звонка.
   useEffect(() => () => stop(), [stop]);
 
-  return { state, error, seconds, probe, start, stop, flush };
+  return {
+    state,
+    error,
+    seconds,
+    probe,
+    start,
+    stop,
+    flush,
+    listDevices,
+    selectDevice,
+  };
 }
 
 export default useScribeRecorder;

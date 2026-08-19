@@ -21,6 +21,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import useVideoRoom from "../hooks/useVideoRoom";
 import { useCurrentUser } from "../hooks/useCurrentUserId";
 import ScribePanel from "./ScribePanel";
+import { canRecordHere } from "../hooks/useScribeRecorder";
 
 const LABELS = {
   dialog: {
@@ -264,6 +265,14 @@ export default function JitsiRoom({
               >
                 {labels.start}
               </button>
+              {/* Предупреждение ДО звонка, а не в нём: врач, узнавший о
+                  недоступности записи посреди приёма, приём уже потерял. */}
+              {role === "doctor" && !canRecordHere() && (
+                <div style={{ fontSize: 13, opacity: 0.65, maxWidth: 420 }}>
+                  Запись приёма ведётся только с компьютера: на телефоне
+                  микрофон занят звонком.
+                </div>
+              )}
             </>
           )}
 

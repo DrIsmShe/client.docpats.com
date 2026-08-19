@@ -194,3 +194,75 @@
     color: #b9c2cb;
   }
 }
+
+/* Настройка перед записью: язык, микрофон и кнопка — в строку, пояснение
+   отдельным блоком под ними. */
+.scribe--setup {
+  display: block;
+}
+
+.scribe__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Пояснение свёрнуто: врачу, читавшему его вчера, оно только мешает. */
+.scribe__how {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #5c6874;
+}
+
+.scribe__how summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+.scribe__how p {
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+/* Пункты согласия — списком, а не сплошным абзацем: человек решает про
+   запись своего голоса и должен видеть, что именно ему обещают. */
+.scribe__facts {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.scribe__facts li {
+  margin-bottom: 6px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .scribe__how {
+    color: #9aa4ae;
+  }
+  .scribe__how summary {
+    color: #6ea8fe;
+  }
+  .scribe__facts {
+    color: #c6ced6;
+  }
+}
+
+/* Практический совет пациенту — отдельно от пунктов согласия и тише их:
+   согласие тут главное, а это подсказка. */
+.scribe__tip {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #6b7681;
+}
+
+@media (prefers-color-scheme: dark) {
+  .scribe__tip {
+    color: #9aa4ae;
+  }
+}

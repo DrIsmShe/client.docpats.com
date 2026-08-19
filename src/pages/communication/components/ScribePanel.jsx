@@ -18,7 +18,10 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "../../../axios";
-import useScribeRecorder, { currentLang } from "../hooks/useScribeRecorder";
+import useScribeRecorder, {
+  currentLang,
+  canRecordHere,
+} from "../hooks/useScribeRecorder";
 import "./scribePanel.css";
 
 const API = "/api/v1/scribe";
@@ -88,8 +91,50 @@ export default function ScribePanel({
   );
   const rec = useScribeRecorder();
   const pollRef = useRef(null);
+  // Считаем один раз: устройство посреди приёма не меняется.
+  const canRecord = useRef(canRecordHere()).current;
+  const toldUnsupportedRef = useRef(false);
+  const [mics, setMics] = useState([]);
+  const [micId, setMicId] = useState("");
 
   const isDoctor = role === "doctor";
+
+  // Список микрофонов — только врачу и только на пригодном устройстве.
+  //
+  // Названия браузер отдаёт лишь после выданного разрешения: до него все
+  // пункты безымянные. Поэтому если имён нет, показываем не пустой список,
+  // а кнопку «Показать микрофоны» — она спросит доступ и перечитает.
+  const refreshMics = useCallback(async () => {
+    const list = await rec.listDevices();
+    setMics(list);
+    return list;
+  }, [rec]);
+
+  useEffect(() => {
+    if (!isDoctor || !canRecord) return;
+    refreshMics();
+  }, [isDoctor, canRecord, refreshMics]);
+
+  // Сообщаем серверу, что писать с этого устройства нельзя.
+  //
+  // Отдельным путём, а не отказом: телефон ничего не решает, он не умеет, а
+  // «отказался» — решение человека и закрывает сеанс безвозвратно. Врачу это
+  // нужно, чтобы не ждать ответа, которого не будет.
+  useEffect(() => {
+    if (canRecord || toldUnsupportedRef.current) return;
+    if (!session?.id || session.status !== "awaiting_consent") return;
+    const me = (session.participants || []).find((p) => p.role === role);
+    if (me?.consent !== "pending") return;
+
+    toldUnsupportedRef.current = true;
+    axios
+      .post(`${API}/sessions/${session.id}/unsupported`)
+      .then(({ data }) => setSession(data.session))
+      .catch(() => {
+        // Не смогли сказать — не беда: писать всё равно не будем, а врач
+        // увидит, что согласия нет. Повторять незачем.
+      });
+  }, [canRecord, session?.id, session?.status, session?.participants, role]);
 
   /** Обе стороны следят за состоянием сеанса: согласие приходит извне. */
   const poll = useCallback(async (id) => {
@@ -254,6 +299,18 @@ export default function ScribePanel({
 
     const mine = session.participants?.find((p) => p.role === "patient");
 
+    // С телефона писать нельзя — и спрашивать согласие не на что: записи не
+    // будет. Одна строка вместо карточки согласия, без кнопок и без доступа
+    // к микрофону.
+    if (!canRecord) {
+      return (
+        <div className="scribe scribe--done">
+          Запись приёма с телефона недоступна — она возможна только с
+          компьютера. Разговор не записывается.
+        </div>
+      );
+    }
+
     if (session.status === "awaiting_consent" && mine?.consent === "pending") {
       return (
         <div className="scribe scribe--ask">
@@ -261,9 +318,50 @@ export default function ScribePanel({
             <strong>Врач просит разрешение записать приём.</strong>
             <p>
               Запись нужна, чтобы врач не отвлекался на заполнение карты и
-              смотрел на вас, а не в экран. Аудио не сохраняется — из него
-              делается черновик записи, который врач проверит и подпишет.
-              Отказ ни на что не влияет: приём пройдёт как обычно.
+              смотрел на вас, а не в экран. Отказ ни на что не влияет: приём
+              пройдёт как обычно.
+            </p>
+            {/* Обстоятельно и по пунктам: человек решает про запись своего
+                голоса, и решает один раз. Каждое утверждение здесь — про то,
+                как система устроена на самом деле, а не обещание. */}
+            <ul className="scribe__facts">
+              <li>
+                <strong>Аудио не сохраняется.</strong> Речь распознаётся на
+                лету, звук нигде не записывается на диск. В карте остаётся
+                только текст.
+              </li>
+              <li>
+                <strong>Пишется только ваш микрофон.</strong> Врач записывает
+                себя, вы — себя. Общей дорожки нет.
+              </li>
+              <li>
+                <strong>Прекратить можно в любой момент.</strong> Кнопка
+                «Прекратить» будет видна всё время записи, и сказанное вами
+                удаляется — не перестаёт записываться, а именно удаляется.
+              </li>
+              <li>
+                <strong>Пока вы не ответили, не пишется ничего</strong> — ни
+                ваш голос, ни голос врача.
+              </li>
+              <li>
+                <strong>Текст попадает в вашу карту, а не куда-то ещё.</strong>{" "}
+                Из него собирается черновик приёма; врач его проверяет,
+                правит и подписывает сам. Система за врача ничего не
+                подписывает.
+              </li>
+            </ul>
+            {/* Одна строка, отдельно от пунктов согласия и намеренно
+                короткая.
+                Причина не в качестве звука, а в авторстве: эхоподавление в
+                записи выключено, и с колонок голос врача попадёт в дорожку
+                пациента — его слова окажутся приписаны пациенту. Это та же
+                подмена, от которой защищает раздельное хранение реплик,
+                только в другую сторону.
+                Про микрофон пациенту не пишем: он пришёл на приём, а не
+                настраивать оборудование. Наушники есть почти у всех. */}
+            <p className="scribe__tip">
+              Если есть возможность — наденьте наушники: с колонок голос врача
+              попадёт в вашу запись и будет записан как ваши слова.
             </p>
           </div>
           <div className="scribe__actions">
@@ -308,28 +406,112 @@ export default function ScribePanel({
 
   // ─── Врач ───────────────────────────────────────────────────────
 
-  if (!session) {
+  // С телефона врач приём не запишет: микрофон занят звонком. Кнопку не
+  // показываем вовсе — нажатие отобрало бы микрофон у консультации.
+  if (!canRecord) {
     return (
-      <div className="scribe">
-        {/* Язык спрашиваем ДО начала записи: поменять его потом нельзя —
-            распознавание идёт по ходу приёма, кусок за куском. */}
-        <label className="scribe__lang">
-          Язык приёма:
-          <select
-            value={speechLang}
-            disabled={busy}
-            onChange={(e) => setSpeechLang(e.target.value)}
-          >
-            {SPEECH_LANGS.map((l) => (
-              <option key={l.code || "auto"} value={l.code}>
-                {l.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <button type="button" disabled={busy} onClick={startRecording}>
-          Вести запись приёма
-        </button>
+      <div className="scribe scribe--done">
+        Запись приёма ведётся только с компьютера: на телефоне микрофон занят
+        звонком.
+      </div>
+    );
+  }
+
+  if (!session) {
+    const named = mics.filter((m) => m.label);
+
+    return (
+      <div className="scribe scribe--setup">
+        <div className="scribe__row">
+          {/* Язык спрашиваем ДО начала записи: поменять его потом нельзя —
+              распознавание идёт по ходу приёма, кусок за куском. */}
+          <label className="scribe__lang">
+            Язык приёма:
+            <select
+              value={speechLang}
+              disabled={busy}
+              onChange={(e) => setSpeechLang(e.target.value)}
+            >
+              {SPEECH_LANGS.map((l) => (
+                <option key={l.code || "auto"} value={l.code}>
+                  {l.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          {/* Микрофон выбираем явно. Без выбора запись идёт через устройство,
+              назначенное системой по умолчанию, — и оно запросто окажется
+              встроенным, пока звонок идёт через внешний. */}
+          {named.length > 0 ? (
+            <label className="scribe__lang">
+              Микрофон:
+              <select
+                value={micId}
+                disabled={busy}
+                onChange={(e) => {
+                  setMicId(e.target.value);
+                  rec.selectDevice(e.target.value);
+                }}
+              >
+                <option value="">Системный по умолчанию</option>
+                {named.map((m) => (
+                  <option key={m.deviceId} value={m.deviceId}>
+                    {m.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : (
+            <button
+              type="button"
+              className="ghost"
+              disabled={busy}
+              onClick={async () => {
+                // Названия устройств появляются только после разрешения.
+                await rec.probe();
+                await refreshMics();
+              }}
+            >
+              Показать микрофоны
+            </button>
+          )}
+
+          <button type="button" disabled={busy} onClick={startRecording}>
+            Вести запись приёма
+          </button>
+        </div>
+
+        {/* Обстоятельно — один раз, до начала. Врач, узнавший про наушники
+            после приёма, приём уже испортил. */}
+        <details className="scribe__how">
+          <summary>Как получить разборчивую запись</summary>
+          <p>
+            <strong>Наденьте наушники.</strong> Подавление эха в записи
+            выключено намеренно — оно срезает тихую речь, а её труднее всего
+            восстановить потом по памяти. Обратная сторона: с колонок голос
+            пациента попадёт в ваш микрофон, и в расшифровке его слова
+            окажутся приписаны вам. «У меня, кажется, воспаление лёгких» от
+            пациента — жалоба, от врача — диагноз.
+          </p>
+          <p>
+            <strong>Выберите микрофон здесь, а не только в звонке.</strong>
+            Запись идёт отдельным потоком: если внешний микрофон выбран
+            только в настройках звонка, писаться будет всё равно системный.
+          </p>
+          <p>
+            <strong>Расстояние важнее цены.</strong> Гарнитура в пяти
+            сантиметрах от рта разборчивее дорогого микрофона в двух метрах.
+            Держите 15–25 см и чуть в стороне от прямого выдоха. Гулкий
+            кабинет с голыми стенами вредит сильнее ровного шума.
+          </p>
+          <p>
+            Записывается <strong>только ваш микрофон</strong>: пациент пишет
+            себя сам. Запись начнётся лишь после его согласия, и он может
+            прекратить её в любой момент — тогда сказанное им удаляется.
+          </p>
+        </details>
+
         {rec.error && <span className="scribe__err">{rec.error}</span>}
         {notice && <span className="scribe__note">{notice}</span>}
       </div>
@@ -337,6 +519,18 @@ export default function ScribePanel({
   }
 
   if (session.status === "awaiting_consent") {
+    // Пациент с телефона писать не может — ответа не будет, и ждать его
+    // значит потратить приём впустую. Говорим прямо, а не «ждём согласия».
+    const peer = session.participants?.find((p) => p.role === "patient");
+    if (peer?.consent === "unsupported") {
+      return (
+        <div className="scribe scribe--done">
+          Пациент подключился с телефона — записать приём не получится: там
+          микрофон занят звонком. Карту придётся заполнить как обычно.
+        </div>
+      );
+    }
+
     return (
       <div className="scribe">
         <span className="scribe__note">
