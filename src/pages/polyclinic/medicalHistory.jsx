@@ -1,9 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
 import { useTranslation } from "react-i18next";
+import {
+  savePdfFromElement,
+  uploadPdfFromElement,
+} from "../../lib/pdfExport";
 
 /* ─────────────────────────── CSS ─────────────────────────── */
 const CSS = `
@@ -81,6 +83,7 @@ const CSS = `
   border:1.5px solid var(--teal-border);
 }
 .mh-btn-outline:hover { background:var(--teal-pale); }
+.mh-btn:disabled { opacity:.6; cursor:progress; transform:none; }
 
 /* ── LAYOUT ── */
 .mh-layout { display:grid; grid-template-columns:1fr 220px; gap:20px; align-items:start; }
@@ -202,7 +205,7 @@ export default function MedicalHistory() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userId, setUserId] = useState("");
   const [doctorInfo, setDoctorInfo] = useState(null);
-  const pdfRef = useRef();
+  const [pdfBusy, setPdfBusy] = useState(false);
   const API_BASE = process.env.REACT_APP_API_URL;
 
   /* ── Auth ── */
@@ -284,51 +287,38 @@ export default function MedicalHistory() {
     return t("ageText", { age });
   };
 
-  /* ── PDF download ── */
+  /* ── PDF ── */
+  const pdfBaseName = () =>
+    `${medicalHistory.diagnosis || "medical_history"}_medical_history`;
+
   const downloadPDF = async () => {
+    if (pdfBusy) return;
+    setPdfBusy(true);
     try {
-      const element = document.getElementById("mh-pdf-content");
-      const canvas = await html2canvas(element, {
-        useCORS: true,
-        allowTaint: true,
-        logging: true,
-        scale: 2,
-      });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const imgWidth = 190;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-      pdf.save(
-        `${medicalHistory.diagnosis || "medical_history"}_medical_history.pdf`,
-      );
+      await savePdfFromElement("mh-pdf-content", pdfBaseName());
     } catch (error) {
-      console.error("Ошибка при создании PDF: ", error);
+      console.error("Ошибка при создании PDF:", error);
+      alert(t("pdf.downloadError"));
+    } finally {
+      setPdfBusy(false);
     }
   };
 
-  /* ── PDF upload ── */
   const uploadPDF = async () => {
-    const element = document.getElementById("mh-pdf-content");
-    const canvas = await html2canvas(element);
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "mm", "a4");
-    pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
-    const pdfBlob = pdf.output("blob");
-    const pdfFile = new File(
-      [pdfBlob],
-      `${medicalHistory.diagnosis || "history"}_medical_history.pdf`,
-      { type: "application/pdf" },
-    );
-    const formData = new FormData();
-    formData.append("file", pdfFile);
+    if (pdfBusy) return;
+    setPdfBusy(true);
     try {
-      const response = await axios.post(`${API_BASE}/api/upload`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      alert(t("pdf.uploadSuccess", { link: response.data.fileUrl }));
+      const link = await uploadPdfFromElement("mh-pdf-content", pdfBaseName());
+      alert(t("pdf.uploadSuccess", { link }));
     } catch (error) {
+      console.error(
+        "Ошибка при отправке PDF:",
+        error?.response?.status,
+        error?.response?.data || error?.message,
+      );
       alert(t("pdf.uploadError"));
+    } finally {
+      setPdfBusy(false);
     }
   };
 
@@ -407,10 +397,18 @@ export default function MedicalHistory() {
       <div className="mh-body">
         {/* ── Actions ── */}
         <div className="mh-actions">
-          <button className="mh-btn mh-btn-primary" onClick={downloadPDF}>
+          <button
+            className="mh-btn mh-btn-primary"
+            onClick={downloadPDF}
+            disabled={pdfBusy}
+          >
             ⬇ {t("buttons.downloadPdf")}
           </button>
-          <button className="mh-btn mh-btn-outline" onClick={uploadPDF}>
+          <button
+            className="mh-btn mh-btn-outline"
+            onClick={uploadPDF}
+            disabled={pdfBusy}
+          >
             ☁ {t("buttons.uploadPdf")}
           </button>
         </div>

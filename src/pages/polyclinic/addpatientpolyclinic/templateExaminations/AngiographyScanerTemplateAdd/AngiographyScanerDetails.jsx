@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { useTranslation } from "react-i18next";
+import {
+  savePdfFromElement,
+  uploadPdfFromElement,
+} from "../../../../../lib/pdfExport";
 
 /* ─────────────────────────── CSS ─────────────────────────── */
 const CSS = `
@@ -199,20 +201,12 @@ export default function AngiographyScanerDetails() {
   }, [id, t]);
 
   /* ── PDF download ── */
+  const pdfBaseName = () =>
+    `${data?.diagnosis || "angiography"}_medical_history`;
+
   const downloadPDF = async () => {
     try {
-      const element = document.getElementById("ang-pdf-content");
-      const canvas = await html2canvas(element, {
-        useCORS: true,
-        allowTaint: true,
-        scale: 2,
-      });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const imgWidth = 190;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-      pdf.save(`${data?.diagnosis || "angiography"}_medical_history.pdf`);
+      await savePdfFromElement("ang-pdf-content", pdfBaseName());
     } catch (error) {
       console.error("Error creating PDF: ", error);
     }
@@ -221,23 +215,8 @@ export default function AngiographyScanerDetails() {
   /* ── PDF upload ── */
   const uploadPDF = async () => {
     try {
-      const element = document.getElementById("ang-pdf-content");
-      const canvas = await html2canvas(element, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
-      const pdfBlob = pdf.output("blob");
-      const pdfFile = new File(
-        [pdfBlob],
-        `${data?.diagnosis || "angiography"}_medical_history.pdf`,
-        { type: "application/pdf" },
-      );
-      const formData = new FormData();
-      formData.append("file", pdfFile);
-      const response = await axios.post(`${API_BASE}/api/upload`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      alert(`PDF uploaded! Link: ${response.data.fileUrl}`);
+      const link = await uploadPdfFromElement("ang-pdf-content", pdfBaseName());
+      alert(`PDF uploaded! Link: ${link}`);
     } catch (error) {
       console.error("PDF upload error:", error);
       alert("PDF upload error");

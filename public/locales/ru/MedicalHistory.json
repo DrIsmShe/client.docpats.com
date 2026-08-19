@@ -35,7 +35,8 @@
   },
   "pdf": {
     "uploadSuccess": "PDF успешно загружен! Ссылка: {{link}}",
-    "uploadError": "Ошибка при загрузке PDF."
+    "uploadError": "Ошибка при загрузке PDF.",
+    "downloadError": "Ошибка при создании PDF."
   },
   "ageText": "{{age}} лет"
 }

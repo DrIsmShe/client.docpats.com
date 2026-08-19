@@ -34,7 +34,8 @@
   },
   "pdf": {
     "uploadSuccess": "PDF uğurla yükləndi! Keçid: {{link}}",
-    "uploadError": "PDF yüklənərkən xəta baş verdi."
+    "uploadError": "PDF yüklənərkən xəta baş verdi.",
+    "downloadError": "PDF yaradılarkən xəta baş verdi."
   },
   "ageText": "{{age}} yaş"
 }

@@ -34,7 +34,8 @@
   },
   "pdf": {
     "uploadSuccess": "PDF başarıyla yüklendi! Bağlantı: {{link}}",
-    "uploadError": "PDF yüklenirken hata oluştu."
+    "uploadError": "PDF yüklenirken hata oluştu.",
+    "downloadError": "PDF oluşturulurken hata oluştu."
   },
   "ageText": "{{age}} yaş"
 }

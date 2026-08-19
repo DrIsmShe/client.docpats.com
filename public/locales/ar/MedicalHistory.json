@@ -35,7 +35,8 @@
   },
   "pdf": {
     "uploadSuccess": "تم رفع ملف PDF بنجاح! الرابط: {{link}}",
-    "uploadError": "حدث خطأ أثناء رفع ملف PDF."
+    "uploadError": "حدث خطأ أثناء رفع ملف PDF.",
+    "downloadError": "حدث خطأ أثناء إنشاء ملف PDF."
   },
   "ageText": "عمر المريض {{age}} سنة"
 }

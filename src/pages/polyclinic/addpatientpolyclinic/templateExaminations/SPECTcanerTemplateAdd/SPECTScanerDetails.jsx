@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { useTranslation } from "react-i18next";
+import {
+  savePdfFromElement,
+  uploadPdfFromElement,
+} from "../../../../../lib/pdfExport";
 
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Lora:wght@600;700&display=swap');
@@ -144,17 +146,11 @@ export default function SPECTScanerDetails() {
     fetchDetails();
   }, [id, t]);
 
+  const pdfBaseName = () => ctData?.diagnosis || "medical_history";
+
   const downloadPDF = async () => {
     try {
-      const element = document.getElementById("spe-pdf-content");
-      const canvas = await html2canvas(element, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const imgWidth = 190;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const fileName = ctData?.diagnosis || "medical_history";
-      pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-      pdf.save(`${fileName}.pdf`);
+      await savePdfFromElement("spe-pdf-content", pdfBaseName());
     } catch (error) {
       console.error("PDF error", error);
     }
@@ -162,22 +158,8 @@ export default function SPECTScanerDetails() {
 
   const uploadPDF = async () => {
     try {
-      const element = document.getElementById("spe-pdf-content");
-      const canvas = await html2canvas(element, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
-      const pdfBlob = pdf.output("blob");
-      const fileName = ctData?.diagnosis || "medical_history";
-      const pdfFile = new File([pdfBlob], `${fileName}.pdf`, {
-        type: "application/pdf",
-      });
-      const formData = new FormData();
-      formData.append("file", pdfFile);
-      const response = await axios.post(`${API_BASE}/api/uploadr`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      alert(response.data.fileUrl);
+      const link = await uploadPdfFromElement("spe-pdf-content", pdfBaseName());
+      alert(link);
     } catch (error) {
       console.error("Upload error", error);
     }

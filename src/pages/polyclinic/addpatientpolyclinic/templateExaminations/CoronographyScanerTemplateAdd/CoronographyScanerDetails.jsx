@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { useTranslation } from "react-i18next";
+import {
+  savePdfFromElement,
+  uploadPdfFromElement,
+} from "../../../../../lib/pdfExport";
 
 /* ─────────────────────────── CSS ─────────────────────────── */
 const CSS = `
@@ -195,21 +197,12 @@ export default function CoronographyScanerDetails() {
     fetchCTScanDetails();
   }, [id, t]);
 
+  const pdfBaseName = () =>
+    `${data?.diagnosis || "medical_history"}_medical_history`;
+
   const downloadPDF = async () => {
     try {
-      const element = document.getElementById("cor-pdf-content");
-      const canvas = await html2canvas(element, {
-        useCORS: true,
-        allowTaint: true,
-        scale: 2,
-      });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const imgWidth = 190;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      const fileName = data?.diagnosis || "medical_history";
-      pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-      pdf.save(`${fileName}_medical_history.pdf`);
+      await savePdfFromElement("cor-pdf-content", pdfBaseName());
     } catch (error) {
       console.error("Error creating PDF: ", error);
     }
@@ -217,23 +210,9 @@ export default function CoronographyScanerDetails() {
 
   const uploadPDF = async () => {
     try {
-      const element = document.getElementById("cor-pdf-content");
-      const canvas = await html2canvas(element, { scale: 2 });
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
-      const pdfBlob = pdf.output("blob");
-      const fileName = data?.diagnosis || "medical_history";
-      const pdfFile = new File([pdfBlob], `${fileName}_medical_history.pdf`, {
-        type: "application/pdf",
-      });
-      const formData = new FormData();
-      formData.append("file", pdfFile);
-      const response = await axios.post(`${API_BASE}/api/uploadr`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const link = await uploadPdfFromElement("cor-pdf-content", pdfBaseName());
       alert(
-        `${t("CoronographyScanerDetails.page.messages.uploadSuccess")} ${response.data.fileUrl}`,
+        `${t("CoronographyScanerDetails.page.messages.uploadSuccess")} ${link}`,
       );
     } catch (error) {
       console.error("PDF upload error:", error);

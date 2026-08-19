@@ -34,7 +34,8 @@
   },
   "pdf": {
     "uploadSuccess": "PDF uploaded! Link: {{link}}",
-    "uploadError": "Error uploading PDF."
+    "uploadError": "Error uploading PDF.",
+    "downloadError": "Error generating PDF."
   },
   "ageText": "{{age}} years"
 }
