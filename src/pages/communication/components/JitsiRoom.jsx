@@ -18,37 +18,24 @@
 // a Fullscreen-API button gives true immersive mode.
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import useVideoRoom from "../hooks/useVideoRoom";
 import { useCurrentUser } from "../hooks/useCurrentUserId";
 import ScribePanel from "./ScribePanel";
 import { canRecordHere } from "../hooks/useScribeRecorder";
 
-const LABELS = {
-  dialog: {
-    hint: "Видеозвонок через защищённый сервер клиники",
-    start: "Начать видеозвонок",
-  },
-  consilium: {
-    hint: "Видеоконференция консилиума — защищённый сервер клиники",
-    start: "Начать видеоконференцию",
-  },
-  "consilium-patient": {
-    hint: "Видеоконсилиум — защищённый сервер DocPats",
-    start: "Войти в консилиум",
-  },
-  telemed: {
-    hint: "Видеоприём — защищённый сервер клиники",
-    start: "Начать видеоприём",
-  },
-  "telemed-patient": {
-    hint: "Онлайн-консультация — защищённый сервер DocPats",
-    start: "Войти в консультацию",
-  },
-  appointment: {
-    hint: "Видеоконсультация — защищённый сервер DocPats",
-    start: "Войти в видеоконсультацию",
-  },
-};
+// Ключи подписей звонка. Совпадают с именами source и с секцией
+// call.hint / call.start в словаре Communication.
+const LABEL_KEYS = [
+  "dialog",
+  "consilium",
+  "consilium-patient",
+  "telemed",
+  "telemed-patient",
+  "appointment",
+];
+
+
 
 function getFsElement() {
   return document.fullscreenElement || document.webkitFullscreenElement || null;
@@ -82,7 +69,10 @@ export default function JitsiRoom({
   const rootRef = useRef(null);
   const [isFs, setIsFs] = useState(false);
 
-  const labels = LABELS[source] || LABELS.dialog;
+  // Подписи — по ключу source из словаря. Неизвестный source падает на
+  // dialog: пустая кнопка хуже неточной подписи.
+  const { t } = useTranslation("Communication");
+  const labelKey = LABEL_KEYS.includes(source) ? source : "dialog";
   const active = status === "active";
 
   // ── Keep local state in sync with the browser's native fullscreen ──
@@ -249,7 +239,9 @@ export default function JitsiRoom({
         >
           {status === "idle" && (
             <>
-              <div style={{ fontSize: 15, opacity: 0.8 }}>{labels.hint}</div>
+              <div style={{ fontSize: 15, opacity: 0.8 }}>
+                {t(`call.hint.${labelKey}`)}
+              </div>
               <button
                 onClick={start}
                 style={{
@@ -263,14 +255,16 @@ export default function JitsiRoom({
                   cursor: "pointer",
                 }}
               >
-                {labels.start}
+                {t(`call.start.${labelKey}`)}
               </button>
               {/* Предупреждение ДО звонка, а не в нём: врач, узнавший о
                   недоступности записи посреди приёма, приём уже потерял. */}
               {role === "doctor" && !canRecordHere() && (
                 <div style={{ fontSize: 13, opacity: 0.65, maxWidth: 420 }}>
-                  Запись приёма ведётся только с компьютера: на телефоне
-                  микрофон занят звонком.
+                  {t(
+                    "call.scribeDesktopOnly",
+                    "Запись приёма ведётся только с компьютера: на телефоне микрофон занят звонком.",
+                  )}
                 </div>
               )}
             </>
@@ -278,14 +272,14 @@ export default function JitsiRoom({
 
           {status === "loading" && (
             <div style={{ fontSize: 14, opacity: 0.8 }}>
-              Подключение к видеокомнате…
+              {t("call.connecting", "Подключение к видеокомнате…")}
             </div>
           )}
 
           {status === "error" && (
             <>
               <div style={{ fontSize: 14, color: "#f87171" }}>
-                Не удалось подключиться к видео
+                {t("call.connectFailed", "Не удалось подключиться к видео")}
                 {error?.message ? `: ${error.message}` : ""}
               </div>
               <button
@@ -300,7 +294,7 @@ export default function JitsiRoom({
                   cursor: "pointer",
                 }}
               >
-                Повторить
+                {t("call.retry", "Повторить")}
               </button>
             </>
           )}
@@ -322,8 +316,8 @@ export default function JitsiRoom({
           <button
             onClick={toggleFullscreen}
             style={iconBtn}
-            aria-label={isFs ? "Выйти из полного экрана" : "На весь экран"}
-            title={isFs ? "Выйти из полного экрана" : "На весь экран"}
+            aria-label={isFs ? t("call.fsExit", "Выйти из полного экрана") : t("call.fsEnter", "На весь экран")}
+            title={isFs ? t("call.fsExit", "Выйти из полного экрана") : t("call.fsEnter", "На весь экран")}
           >
             {isFs ? "🗗" : "⛶"}
           </button>
@@ -331,8 +325,8 @@ export default function JitsiRoom({
         <button
           onClick={handleClose}
           style={{ ...iconBtn, fontSize: 18 }}
-          aria-label="Закрыть видео"
-          title="Закрыть"
+          aria-label={t("call.closeVideo", "Закрыть видео")}
+          title={t("call.close", "Закрыть")}
         >
           ×
         </button>

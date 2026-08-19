@@ -23,6 +23,7 @@
 // Дизайн (стили, аватар, кнопки, backdrop) — сохранён 1:1 из v5.
 
 import React, { useRef, useState, useEffect, Suspense, lazy } from "react";
+import { useTranslation } from "react-i18next";
 
 // Лениво: CallUI живёт ВНЕ <Routes> и потому целиком лежит во входном
 // бандле. Панель записи нужна только в активном звонке, а входной бандл
@@ -319,17 +320,19 @@ const styles = `
   }
 `;
 
-function formatStatus(callState, endedInfo) {
-  if (callState === "ringing_out") return "Вызов…";
-  if (callState === "ringing_in") return "Входящий звонок";
-  if (callState === "active") return "Звонок активен";
+// t передаётся параметром: функция живёт на уровне модуля, а хук
+// доступен только внутри компонента.
+function formatStatus(callState, endedInfo, t) {
+  if (callState === "ringing_out") return t("call.state.ringingOut", "Вызов…");
+  if (callState === "ringing_in") return t("call.state.ringingIn", "Входящий звонок");
+  if (callState === "active") return t("call.state.active", "Звонок активен");
   if (callState === "ended") {
-    if (!endedInfo) return "Звонок завершён";
-    if (endedInfo.reason === "declined") return "Отклонено";
-    if (endedInfo.reason === "no_answer") return "Нет ответа";
-    if (endedInfo.reason === "busy") return "Абонент занят";
-    if (endedInfo.reason === "failed") return "Ошибка соединения";
-    return "Звонок завершён";
+    if (!endedInfo) return t("call.state.ended", "Звонок завершён");
+    if (endedInfo.reason === "declined") return t("call.state.declined", "Отклонено");
+    if (endedInfo.reason === "no_answer") return t("call.state.noAnswer", "Нет ответа");
+    if (endedInfo.reason === "busy") return t("call.state.busy", "Абонент занят");
+    if (endedInfo.reason === "failed") return t("call.state.failed", "Ошибка соединения");
+    return t("call.state.ended", "Звонок завершён");
   }
   return "";
 }
@@ -369,6 +372,9 @@ export default function CallUI({
   onScribeDraft = null,
 }) {
   // [FULLSCREEN] Хуки ДОЛЖНЫ быть до раннего return (правила хуков React).
+  // Русский текст остаётся вторым аргументом t(): пока словарь грузится по
+  // сети, показывается он, а не голый ключ.
+  const { t } = useTranslation("Communication");
   const overlayRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -492,7 +498,7 @@ export default function CallUI({
             <div className="call-timer">{formattedDuration}</div>
           ) : callState === "ended" ? (
             <div className="call-ended-info">
-              <div>{formatStatus(callState, endedInfo)}</div>
+              <div>{formatStatus(callState, endedInfo, t)}</div>
               {endedInfo?.durationSec > 0 && (
                 <div style={{ marginTop: 4 }}>
                   {formatDurLabel(endedInfo.durationSec)}
@@ -505,7 +511,7 @@ export default function CallUI({
                 callState === "ringing_in" ? "call-ring-label" : "call-status"
               }
             >
-              {formatStatus(callState, endedInfo)}
+              {formatStatus(callState, endedInfo, t)}
             </div>
           )}
 
@@ -514,13 +520,13 @@ export default function CallUI({
               <>
                 <button className="call-btn btn-decline" onClick={onDecline}>
                   <div className="call-btn-icon">📵</div>
-                  <span className="call-btn-label">Отклонить</span>
+                  <span className="call-btn-label">{t("call.btn.decline", "Отклонить")}</span>
                 </button>
                 <button className="call-btn btn-accept" onClick={onAccept}>
                   <div className="call-btn-icon">
                     {isVideoCall ? "📹" : "📞"}
                   </div>
-                  <span className="call-btn-label">Принять</span>
+                  <span className="call-btn-label">{t("call.btn.accept", "Принять")}</span>
                 </button>
               </>
             )}
@@ -528,7 +534,7 @@ export default function CallUI({
             {callState === "ringing_out" && (
               <button className="call-btn btn-cancel" onClick={onCancel}>
                 <div className="call-btn-icon">📵</div>
-                <span className="call-btn-label">Отменить</span>
+                <span className="call-btn-label">{t("call.btn.cancel", "Отменить")}</span>
               </button>
             )}
 
@@ -540,7 +546,7 @@ export default function CallUI({
                 >
                   <div className="call-btn-icon">{isMuted ? "🔇" : "🎙"}</div>
                   <span className="call-btn-label">
-                    {isMuted ? "Включить" : "Выкл. mic"}
+                    {isMuted ? t("call.btn.micOn", "Включить") : t("call.btn.micOff", "Выкл. mic")}
                   </span>
                 </button>
 
@@ -553,7 +559,7 @@ export default function CallUI({
                       {isVideoEnabled ? "📹" : "📷"}
                     </div>
                     <span className="call-btn-label">
-                      {isVideoEnabled ? "Камера вкл" : "Камера выкл"}
+                      {isVideoEnabled ? t("call.btn.camOn", "Камера вкл") : t("call.btn.camOff", "Камера выкл")}
                     </span>
                   </button>
                 )}
@@ -568,14 +574,14 @@ export default function CallUI({
                       {isFullscreen ? "🗗" : "⛶"}
                     </div>
                     <span className="call-btn-label">
-                      {isFullscreen ? "Свернуть" : "Во весь экран"}
+                      {isFullscreen ? t("call.btn.fsOff", "Свернуть") : t("call.btn.fsOn", "Во весь экран")}
                     </span>
                   </button>
                 )}
 
                 <button className="call-btn btn-end" onClick={onEnd}>
                   <div className="call-btn-icon">📵</div>
-                  <span className="call-btn-label">Завершить</span>
+                  <span className="call-btn-label">{t("call.btn.hangup", "Завершить")}</span>
                 </button>
               </>
             )}

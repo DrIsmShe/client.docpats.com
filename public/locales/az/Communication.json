@@ -1,0 +1,162 @@
+{
+  "scribe": {
+    "consent": {
+      "title": "Həkim qəbulu yazmaq üçün icazə istəyir.",
+      "lead": "Yazı ona görə lazımdır ki, həkim kartı doldurmağa yayınmasın və ekrana yox, sizə baxsın. İmtina heç nəyə təsir etmir: qəbul həmişəki kimi keçəcək.",
+      "facts": {
+        "audioTerm": "Səs saxlanılmır.",
+        "audioText": "Nitq dərhal mətnə çevrilir, səsin özü heç yerdə diskə yazılmır. Kartda yalnız mətn qalır.",
+        "ownMicTerm": "Yalnız sizin mikrofonunuz yazılır.",
+        "ownMicText": "Həkim özünü, siz özünüzü yazırsınız. Ümumi səs yolu yoxdur.",
+        "stopTerm": "İstənilən an dayandıra bilərsiniz.",
+        "stopText": "«Dayandır» düyməsi yazı boyu görünəcək, dediyiniz isə silinir — sadəcə yazılmağı dayandırmır, məhz silinir.",
+        "beforeTerm": "Siz cavab verməyincə heç nə yazılmır",
+        "beforeText": "— nə sizin səsiniz, nə həkimin səsi.",
+        "cardTerm": "Mətn başqa yerə yox, sizin kartınıza düşür.",
+        "cardText": "Ondan qəbulun qaralaması yığılır; həkim onu özü yoxlayır, düzəldir və imzalayır. Sistem həkimin əvəzinə heç nə imzalamır."
+      },
+      "tip": "İmkanınız varsa, qulaqlıq taxın: dinamikdən gələn həkim səsi sizin yazınıza düşəcək və sizin sözləriniz kimi yazılacaq.",
+      "allow": "İcazə verirəm",
+      "decline": "Lazım deyil"
+    },
+    "patient": {
+      "live": "Qəbul yazılır",
+      "stop": "Dayandır",
+      "revoked": "Yazı dayandırıldı, dediyiniz silindi",
+      "mobile": "Telefondan qəbulu yazmaq mümkün deyil — bu yalnız kompüterdən olur. Söhbət yazılmır."
+    },
+    "doctor": {
+      "mobile": "Qəbul yalnız kompüterdən yazılır: telefonda mikrofon zəngə məşğuldur.",
+      "start": "Qəbulu yaz",
+      "langLabel": "Qəbulun dili:",
+      "micLabel": "Mikrofon:",
+      "micDefault": "Sistem üzrə susmaya görə",
+      "micShow": "Mikrofonları göstər",
+      "waiting": "Pasiyentin razılığını gözləyirik. Cavabdan əvvəl heç nə yazılmır.",
+      "peerMobile": "Pasiyent telefondan qoşulub — qəbulu yazmaq alınmayacaq: orada mikrofon zəngə məşğuldur. Kartı həmişəki kimi doldurmalı olacaqsınız.",
+      "declined": "Pasiyent yazıdan imtina etdi — kartı həmişəki kimi doldurun",
+      "revoked": "Pasiyent yazını dayandırdı. Qaralamanı ona qədər səslənənlərdən yığmaq olar.",
+      "collect": "Qaralamanı yığ",
+      "live": "Yazı gedir",
+      "finish": "Bitir və qaralamanı yığ"
+    },
+    "how": {
+      "summary": "Aydın yazı necə alınır",
+      "headphonesTerm": "Qulaqlıq taxın.",
+      "headphonesText": "Yazıda əks-səda söndürülməsi qəsdən söndürülüb — o, sakit nitqi kəsir, sonradan yaddaşdan bərpa etmək isə ən çətini məhz odur. Əvəzində: dinamikdən gələn pasiyent səsi sizin mikrofonunuza düşür və şifrədə onun sözləri sizə aid edilir. Pasiyentin «deyəsən, ağciyər iltihabım var» sözü şikayətdir, həkimdən eşidilsə — diaqnoz.",
+      "micTerm": "Mikrofonu burada seçin, təkcə zəngdə yox.",
+      "micText": "Yazı ayrıca axınla gedir: xarici mikrofon yalnız zəng tənzimləmələrində seçilibsə, yazılan yenə də sistem mikrofonu olacaq.",
+      "distanceTerm": "Məsafə qiymətdən vacibdir.",
+      "distanceText": "Ağızdan beş santimetr aralı qulaqlıq iki metrdəki bahalı mikrofondan aydındır. 15–25 sm saxlayın və birbaşa nəfəs axınından bir az kənarda. Divarları çılpaq, əks-sədalı kabinet bərabər səs-küydən daha çox zərər verir.",
+      "ownMicText": "Yalnız sizin mikrofonunuz yazılır: pasiyent özünü özü yazır. Yazı yalnız onun razılığından sonra başlayacaq və o, istənilən an dayandıra bilər — onda dediyi silinir."
+    },
+    "notice": {
+      "awaitingConsent": "Pasiyentin razılığını gözləyirik — ona qədər heç nə yazılmır",
+      "startFailed": "Yazını başlatmaq alınmadı",
+      "answerFailed": "Cavabı göndərmək alınmadı",
+      "stopped": "Yazı dayandırıldı, dediyiniz silindi",
+      "stopFailed": "Yazını dayandırmaq alınmadı",
+      "collecting": "Qaralamanı yığırıq…",
+      "collectFailed": "Qaralamanı yığmaq alınmadı"
+    },
+    "langAuto": "Avtomatik təyin et"
+  },
+  "draft": {
+    "savedTitle": "Qaralama karta yazıldı",
+    "savedLead": "YENİ qeyd yaradıldı — kartdakı əvvəlkilər dəyişmədi. Yenidən oxuyandan sonra imzalayın.",
+    "open": "Qeydi aç",
+    "close": "Bağla",
+    "title": "Qəbulun qaralaması",
+    "lead": "Söhbətdən yığılıb. Yoxlayın və düzəldin — karta xanalarda qalan düşəcək. Qeyd qaralama kimi saxlanılacaq, imza isə ayrıca əməliyyatdır.",
+    "notHeard": "Söhbətdə səslənmədi:",
+    "otherTitle": "Səsləndi, amma bölmələrə ayrılmadı:",
+    "otherHint": "Qəbula aid olanı lazımi xanalara köçürün. Bölməni özümüz təxmin etmədik: bölmədə səhv etmək seçimi həkimə buraxmaqdan pisdir.",
+    "translate": "Qaralamanı tərcümə et:",
+    "translating": "tərcümə edilir…",
+    "transcript": "Söhbətin şifrəsi ({{count}} replika)",
+    "speakerDoctor": "Həkim",
+    "speakerPatient": "Pasiyent",
+    "empty": "səslənmədi",
+    "patientCard": "Pasiyentin kartı",
+    "noCard": "kart seçilməyib",
+    "definedByVisit": "qəbulla müəyyən edilib",
+    "yourPatient": "sizin pasiyentiniz",
+    "findHintPrivate": "Bu pasiyentin kartı sizdə tapılmadı. Onu «Mənim pasiyentlərim» bölməsində yaradın və qayıdın — qaralama burada qalacaq, nə qədər ki",
+    "findHintClinic": "Pasiyentin kartı müəyyən olunmadı. Onu soyad, telefon və ya poçt üzrə tapın — ya da yenisini yaradın.",
+    "searchPlaceholder": "Soyad, telefon və ya poçt",
+    "search": "Tap",
+    "searching": "Axtarırıq…",
+    "createCard": "Kart yarat",
+    "creating": "Yaradılır…",
+    "notFound": "Klinikada belə pasiyent yoxdur — kart yaradın.",
+    "save": "Karta yaz",
+    "saving": "Yazılır…",
+    "closeNoSave": "Yazmadan bağla",
+    "fields": {
+      "complaints": "Şikayətlər",
+      "anamnesisMorbi": "Xəstəliyin anamnezi",
+      "anamnesisVitae": "Həyat anamnezi",
+      "statusPreasens": "Obyektiv müayinə",
+      "diagnosisText": "Diaqnoz",
+      "recommendations": "Təyinatlar və tövsiyələr"
+    },
+    "notice": {
+      "needQuery": "Soyad, telefon və ya poçt daxil edin",
+      "searchFailed": "Axtarış alınmadı",
+      "createFailed": "Kart yaratmaq alınmadı. Onu «Pasiyentlər» bölməsində yaradın və qayıdın.",
+      "translateFailed": "Tərcümə alınmadı",
+      "needCard": "Qeydin yazılacağı pasiyent kartını göstərin",
+      "saveFailed": "Qeydi yazmaq alınmadı"
+    },
+    "newPatientFirstName": "Pasiyent",
+    "newPatientLastName": "Soyadsız"
+  },
+  "call": {
+    "hint": {
+      "dialog": "Klinikanın qorunan serveri üzərindən videozəng",
+      "consilium": "Konsiliumun videokonfransı — klinikanın qorunan serveri",
+      "consilium-patient": "Videokonsilium — DocPats-ın qorunan serveri",
+      "telemed": "Videoqəbul — klinikanın qorunan serveri",
+      "telemed-patient": "Onlayn konsultasiya — DocPats-ın qorunan serveri",
+      "appointment": "Videokonsultasiya — DocPats-ın qorunan serveri"
+    },
+    "start": {
+      "dialog": "Videozəngə başla",
+      "consilium": "Videokonfransa başla",
+      "consilium-patient": "Konsiliuma daxil ol",
+      "telemed": "Videoqəbula başla",
+      "telemed-patient": "Konsultasiyaya daxil ol",
+      "appointment": "Videokonsultasiyaya daxil ol"
+    },
+    "scribeDesktopOnly": "Qəbul yalnız kompüterdən yazılır: telefonda mikrofon zəngə məşğuldur.",
+    "connecting": "Video otağa qoşulur…",
+    "connectFailed": "Videoya qoşulmaq alınmadı",
+    "retry": "Təkrar cəhd",
+    "fsEnter": "Tam ekran",
+    "fsExit": "Tam ekrandan çıx",
+    "closeVideo": "Videonu bağla",
+    "close": "Bağla",
+    "state": {
+      "ringingOut": "Zəng edilir…",
+      "ringingIn": "Gələn zəng",
+      "active": "Zəng gedir",
+      "ended": "Zəng bitdi",
+      "declined": "Rədd edildi",
+      "noAnswer": "Cavab yoxdur",
+      "busy": "Abunəçi məşğuldur",
+      "failed": "Bağlantı xətası"
+    },
+    "btn": {
+      "decline": "Rədd et",
+      "accept": "Qəbul et",
+      "cancel": "Ləğv et",
+      "hangup": "Bitir",
+      "micOn": "Aç",
+      "micOff": "Mikrofonu söndür",
+      "camOn": "Kamera açıq",
+      "camOff": "Kamera bağlı",
+      "fsOn": "Tam ekran",
+      "fsOff": "Kiçilt"
+    }
+  }
+}

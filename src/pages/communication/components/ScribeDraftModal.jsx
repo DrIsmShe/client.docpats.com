@@ -25,6 +25,7 @@
 // выхода, кончается тем, что в карту попадает непроверенный текст.
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "../../../axios";
 import { searchPatients, createPatient } from "../../../api/clinic";
 import "./scribeDraftModal.css";
@@ -40,15 +41,18 @@ const LANGS = [
 ];
 
 const FIELDS = [
-  { key: "complaints", label: "Жалобы", rows: 3 },
-  { key: "anamnesisMorbi", label: "Анамнез заболевания", rows: 3 },
-  { key: "anamnesisVitae", label: "Анамнез жизни", rows: 2 },
-  { key: "statusPreasens", label: "Объективный осмотр", rows: 3 },
-  { key: "diagnosisText", label: "Диагноз", rows: 2 },
-  { key: "recommendations", label: "Назначения и рекомендации", rows: 3 },
+  { key: "complaints", rows: 3 },
+  { key: "anamnesisMorbi", rows: 3 },
+  { key: "anamnesisVitae", rows: 2 },
+  { key: "statusPreasens", rows: 3 },
+  { key: "diagnosisText", rows: 2 },
+  { key: "recommendations", rows: 3 },
 ];
 
 export default function ScribeDraftModal({ data, onClose }) {
+  // Русский текст остаётся вторым аргументом t(): пока словарь грузится по
+  // сети, показывается он, а не голый ключ.
+  const { t } = useTranslation("Communication");
   const [values, setValues] = useState(() => {
     const d = data?.draft || {};
     const out = {};
@@ -98,9 +102,9 @@ export default function ScribeDraftModal({ data, onClose }) {
       setPatientId(data.patientRef);
       // Имя подтянем тем же запросом, если знаем аккаунт; если нет —
       // покажем хотя бы то, что карта определена приёмом.
-      setPatientName((prev) => prev || "определена приёмом");
+      setPatientName((prev) => prev || t("draft.definedByVisit", "определена приёмом"));
     }
-  }, [data?.patientRef]);
+  }, [data?.patientRef, t]);
 
   useEffect(() => {
     // Приём уже дал карту — поиск не нужен и может только запутать,
@@ -138,7 +142,7 @@ export default function ScribeDraftModal({ data, onClose }) {
             setPrivateType(p.patientTypeModel);
             setPatientName(
               `${p.lastName || ""} ${p.firstName || ""}`.trim() ||
-                "ваш пациент",
+                t("draft.yourPatient", "ваш пациент"),
             );
           })
           .catch(() => {
@@ -150,12 +154,12 @@ export default function ScribeDraftModal({ data, onClose }) {
     return () => {
       cancelled = true;
     };
-  }, [data?.patientUserId, data?.patientRef]);
+  }, [data?.patientUserId, data?.patientRef, t]);
 
   async function runSearch() {
     const q = query.trim();
     if (q.length < 2) {
-      setNotice("Введите фамилию, телефон или почту");
+      setNotice(t("draft.notice.needQuery", "Введите фамилию, телефон или почту"));
       return;
     }
     setSearching(true);
@@ -170,7 +174,7 @@ export default function ScribeDraftModal({ data, onClose }) {
       );
       setFound(res.items || []);
     } catch (err) {
-      setNotice(err?.response?.data?.message ?? "Поиск не удался");
+      setNotice(err?.response?.data?.message ?? t("draft.notice.searchFailed", "Поиск не удался"));
     } finally {
       setSearching(false);
     }
@@ -182,8 +186,8 @@ export default function ScribeDraftModal({ data, onClose }) {
     setNotice(null);
     try {
       const res = await createPatient({
-        firstName: name[1] || "Пациент",
-        lastName: name[0] || "Без фамилии",
+        firstName: name[1] || t("draft.newPatientFirstName", "Пациент"),
+        lastName: name[0] || t("draft.newPatientLastName", "Без фамилии"),
         // Аккаунт пациенту НЕ выпускаем: он у него уже есть — он в
         // звонке. Выпустить второй значило бы развести одного человека
         // на две учётные записи.
@@ -196,7 +200,7 @@ export default function ScribeDraftModal({ data, onClose }) {
     } catch (err) {
       setNotice(
         err?.response?.data?.message ??
-          "Не удалось завести карту. Заведите её в разделе «Пациенты» и вернитесь.",
+          t("draft.notice.createFailed", "Не удалось завести карту. Заведите её в разделе «Пациенты» и вернитесь."),
       );
     } finally {
       setCreating(false);
@@ -215,7 +219,7 @@ export default function ScribeDraftModal({ data, onClose }) {
       // поправить перед сохранением, как и любой другой текст здесь.
       setValues((v) => ({ ...v, ...res.fields }));
     } catch (err) {
-      setNotice(err?.response?.data?.message ?? "Не удалось перевести");
+      setNotice(err?.response?.data?.message ?? t("draft.notice.translateFailed", "Не удалось перевести"));
     } finally {
       setTranslating(false);
     }
@@ -227,7 +231,7 @@ export default function ScribeDraftModal({ data, onClose }) {
 
   async function save() {
     if (!patientId.trim()) {
-      setNotice("Укажите карту пациента, в которую сохранить запись");
+      setNotice(t("draft.notice.needCard", "Укажите карту пациента, в которую сохранить запись"));
       return;
     }
     setBusy(true);
@@ -267,7 +271,7 @@ export default function ScribeDraftModal({ data, onClose }) {
       setSavedId(createdId);
       setSaved(true);
     } catch (err) {
-      setNotice(err?.response?.data?.message ?? "Не удалось сохранить запись");
+      setNotice(err?.response?.data?.message ?? t("draft.notice.saveFailed", "Не удалось сохранить запись"));
     } finally {
       setBusy(false);
     }
@@ -277,10 +281,12 @@ export default function ScribeDraftModal({ data, onClose }) {
     return (
       <div className="sdm-overlay" role="dialog" aria-modal="true">
         <div className="sdm">
-          <h2>Черновик сохранён в карту</h2>
+          <h2>{t("draft.savedTitle", "Черновик сохранён в карту")}</h2>
           <p className="sdm-lead">
-            Создана НОВАЯ запись — прежние в карте не изменились. Подпишите
-            её, когда перечитаете.
+            {t(
+              "draft.savedLead",
+              "Создана НОВАЯ запись — прежние в карте не изменились. Подпишите её, когда перечитаете.",
+            )}
           </p>
           <div className="sdm-actions">
             {savedId && (
@@ -293,7 +299,7 @@ export default function ScribeDraftModal({ data, onClose }) {
                 target="_blank"
                 rel="noreferrer"
               >
-                Открыть запись
+                {t("draft.open", "Открыть запись")}
               </a>
             )}
             <button type="button" onClick={onClose}>
@@ -308,18 +314,19 @@ export default function ScribeDraftModal({ data, onClose }) {
   return (
     <div className="sdm-overlay" role="dialog" aria-modal="true">
       <div className="sdm">
-        <h2>Черновик приёма</h2>
+        <h2>{t("draft.title", "Черновик приёма")}</h2>
         <p className="sdm-lead">
-          Собран из разговора. Проверьте и поправьте — в карту попадёт то,
-          что останется в полях. Запись сохранится черновиком, подпись —
-          отдельным действием.
+          {t(
+            "draft.lead",
+            "Собран из разговора. Проверьте и поправьте — в карту попадёт то, что останется в полях. Запись сохранится черновиком, подпись — отдельным действием.",
+          )}
         </p>
 
         {/* Чего в разговоре не было — до полей, а не после: это то,
             что врачу предстоит дописать. */}
         {notHeard.length > 0 && (
           <div className="sdm-gaps">
-            <strong>В разговоре не прозвучало:</strong>
+            <strong>{t("draft.notHeard", "В разговоре не прозвучало:")}</strong>
             <ul>
               {notHeard.map((g, i) => (
                 <li key={i}>{g}</li>
@@ -341,16 +348,17 @@ export default function ScribeDraftModal({ data, onClose }) {
             блоком, дословно, чтобы он сам решил, куда это отнести. */}
         {other.length > 0 && (
           <div className="sdm-other">
-            <strong>Прозвучало, но не разложилось по разделам:</strong>
+            <strong>{t("draft.otherTitle", "Прозвучало, но не разложилось по разделам:")}</strong>
             <ul>
               {other.map((o, i) => (
                 <li key={i}>{o}</li>
               ))}
             </ul>
             <p>
-              Перенесите в нужные поля то, что относится к приёму. Мы не
-              стали угадывать раздел: ошибиться разделом хуже, чем оставить
-              выбор врачу.
+              {t(
+                "draft.otherHint",
+                "Перенесите в нужные поля то, что относится к приёму. Мы не стали угадывать раздел: ошибиться разделом хуже, чем оставить выбор врачу.",
+              )}
             </p>
           </div>
         )}
@@ -359,7 +367,7 @@ export default function ScribeDraftModal({ data, onClose }) {
             собран на языке разговора, и врач сначала сверяет его с тем,
             что помнит, а переводит уже проверенное. */}
         <div className="sdm-translate">
-          <span>Перевести черновик:</span>
+          <span>{t("draft.translate", "Перевести черновик:")}</span>
           {LANGS.map((l) => (
             <button
               key={l.code}
@@ -371,20 +379,20 @@ export default function ScribeDraftModal({ data, onClose }) {
               {l.label}
             </button>
           ))}
-          {translating && <span className="sdm-translating">переводим…</span>}
+          {translating && <span className="sdm-translating">{t("draft.translating", "переводим…")}</span>}
         </div>
 
         <div className="sdm-fields">
           {FIELDS.map((f) => (
             <label key={f.key} className="sdm-field">
-              <span>{f.label}</span>
+              <span>{t(`draft.fields.${f.key}`)}</span>
               <textarea
                 rows={f.rows}
                 value={values[f.key]}
                 onChange={(e) =>
                   setValues((v) => ({ ...v, [f.key]: e.target.value }))
                 }
-                placeholder="не прозвучало"
+                placeholder={t("draft.empty", "не прозвучало")}
               />
             </label>
           ))}
@@ -392,11 +400,14 @@ export default function ScribeDraftModal({ data, onClose }) {
 
         {dialogue.length > 0 && (
           <details className="sdm-transcript">
-            <summary>Расшифровка разговора ({dialogue.length} реплик)</summary>
+            <summary>{t("draft.transcript", {
+                count: dialogue.length,
+                defaultValue: "Расшифровка разговора ({{count}} реплик)",
+              })}</summary>
             <ul>
               {dialogue.map((d, i) => (
                 <li key={i} className={`sdm-line sdm-line--${d.speaker}`}>
-                  <strong>{d.speaker === "doctor" ? "Врач" : "Пациент"}:</strong>{" "}
+                  <strong>{d.speaker === "doctor" ? t("draft.speakerDoctor", "Врач") : t("draft.speakerPatient", "Пациент")}:</strong>{" "}
                   {d.text}
                 </li>
               ))}
@@ -406,7 +417,7 @@ export default function ScribeDraftModal({ data, onClose }) {
 
         <label className="sdm-field sdm-field--patient">
           <span>
-            Карта пациента
+            {t("draft.patientCard", "Карта пациента")}
             {patientName && (
               <b className="sdm-patient-name"> — {patientName}</b>
             )}
@@ -420,7 +431,7 @@ export default function ScribeDraftModal({ data, onClose }) {
               setPatientId(e.target.value);
               setPatientName("");
             }}
-            placeholder={patientName ? "" : "карта не выбрана"}
+            placeholder={patientName ? "" : t("draft.noCard", "карта не выбрана")}
           />
         </label>
 
@@ -441,18 +452,20 @@ export default function ScribeDraftModal({ data, onClose }) {
         {!patientName && target !== "private" && (
           <div className="sdm-find">
             <p className="sdm-find__hint">
-              Карта пациента не определилась. Найдите её по фамилии,
-              телефону или почте — или заведите новую.
+              {t(
+                "draft.findHintClinic",
+                "Карта пациента не определилась. Найдите её по фамилии, телефону или почте — или заведите новую.",
+              )}
             </p>
             <div className="sdm-find__row">
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && runSearch()}
-                placeholder="Фамилия, телефон или почта"
+                placeholder={t("draft.searchPlaceholder", "Фамилия, телефон или почта")}
               />
               <button type="button" disabled={searching} onClick={runSearch}>
-                {searching ? "Ищем…" : "Найти"}
+                {searching ? t("draft.searching", "Ищем…") : t("draft.search", "Найти")}
               </button>
               <button
                 type="button"
@@ -460,13 +473,13 @@ export default function ScribeDraftModal({ data, onClose }) {
                 disabled={creating}
                 onClick={createCard}
               >
-                {creating ? "Заводим…" : "Завести карту"}
+                {creating ? t("draft.creating", "Заводим…") : t("draft.createCard", "Завести карту")}
               </button>
             </div>
 
             {found && found.length === 0 && (
               <p className="sdm-find__empty">
-                В клинике таких пациентов нет — заведите карту.
+                {t("draft.notFound", "В клинике таких пациентов нет — заведите карту.")}
               </p>
             )}
 
@@ -498,12 +511,12 @@ export default function ScribeDraftModal({ data, onClose }) {
 
         <div className="sdm-actions">
           <button type="button" disabled={busy} onClick={save}>
-            {busy ? "Сохраняем…" : "Сохранить в карту"}
+            {busy ? t("draft.saving", "Сохраняем…") : t("draft.save", "Сохранить в карту")}
           </button>
           {/* Выход без сохранения обязателен: навязанный диалог кончается
               тем, что в карту попадает непроверенный текст. */}
           <button type="button" className="ghost" onClick={onClose}>
-            Закрыть без сохранения
+            {t("draft.closeNoSave", "Закрыть без сохранения")}
           </button>
         </div>
       </div>

@@ -1,0 +1,162 @@
+{
+  "scribe": {
+    "consent": {
+      "title": "Doktor muayeneyi kaydetmek için izin istiyor.",
+      "lead": "Kayıt, doktorun kartı doldurmakla oyalanmadan ekrana değil size bakabilmesi için gerekli. Reddetmeniz hiçbir şeyi değiştirmez: muayene her zamanki gibi geçer.",
+      "facts": {
+        "audioTerm": "Ses saklanmıyor.",
+        "audioText": "Konuşma anında metne çevriliyor, sesin kendisi hiçbir yere kaydedilmiyor. Kartta yalnızca metin kalıyor.",
+        "ownMicTerm": "Yalnızca sizin mikrofonunuz kaydediliyor.",
+        "ownMicText": "Doktor kendini, siz kendinizi kaydediyorsunuz. Ortak bir ses yolu yok.",
+        "stopTerm": "İstediğiniz anda durdurabilirsiniz.",
+        "stopText": "«Durdur» düğmesi kayıt boyunca görünür kalır ve söyledikleriniz silinir — sadece kaydedilmeyi bırakmaz, silinir.",
+        "beforeTerm": "Siz yanıtlayana kadar hiçbir şey kaydedilmez",
+        "beforeText": "— ne sizin sesiniz ne de doktorun sesi.",
+        "cardTerm": "Metin başka bir yere değil, sizin kartınıza gider.",
+        "cardText": "Ondan muayenenin taslağı oluşturulur; doktor onu kendisi kontrol eder, düzeltir ve imzalar. Sistem doktorun yerine hiçbir şey imzalamaz."
+      },
+      "tip": "Mümkünse kulaklık takın: hoparlörden gelen doktor sesi sizin kaydınıza girer ve sizin sözleriniz olarak yazılır.",
+      "allow": "İzin veriyorum",
+      "decline": "Gerek yok"
+    },
+    "patient": {
+      "live": "Muayene kaydediliyor",
+      "stop": "Durdur",
+      "revoked": "Kayıt durduruldu, söyledikleriniz silindi",
+      "mobile": "Telefondan muayene kaydı mümkün değil — yalnızca bilgisayardan yapılabilir. Bu görüşme kaydedilmiyor."
+    },
+    "doctor": {
+      "mobile": "Muayene yalnızca bilgisayardan kaydedilir: telefonda mikrofon görüşme tarafından kullanılıyor.",
+      "start": "Muayeneyi kaydet",
+      "langLabel": "Muayene dili:",
+      "micLabel": "Mikrofon:",
+      "micDefault": "Sistem varsayılanı",
+      "micShow": "Mikrofonları göster",
+      "waiting": "Hastanın onayını bekliyoruz. Yanıt gelene kadar hiçbir şey kaydedilmiyor.",
+      "peerMobile": "Hasta telefondan bağlandı — kayıt alınamayacak: orada mikrofon görüşme tarafından kullanılıyor. Kartı her zamanki gibi doldurmanız gerekecek.",
+      "declined": "Hasta kaydı reddetti — kartı her zamanki gibi doldurun",
+      "revoked": "Hasta kaydı durdurdu. Taslak, o ana kadar söylenenlerden oluşturulabilir.",
+      "collect": "Taslağı oluştur",
+      "live": "Kayıt sürüyor",
+      "finish": "Bitir ve taslağı oluştur"
+    },
+    "how": {
+      "summary": "Anlaşılır kayıt nasıl alınır",
+      "headphonesTerm": "Kulaklık takın.",
+      "headphonesText": "Kayıtta yankı engelleme bilerek kapalı — sessiz konuşmayı kesiyor, sonradan hafızadan geri getirmesi en zor olan da o. Bedeli şu: hoparlörden gelen hasta sesi sizin mikrofonunuza girer ve deşifrede onun sözleri size atfedilir. Hastadan gelen «galiba zatürre oldum» bir şikâyettir, doktordan gelirse teşhistir.",
+      "micTerm": "Mikrofonu burada seçin, yalnızca görüşmede değil.",
+      "micText": "Kayıt ayrı bir akış olarak gider: harici mikrofon yalnızca görüşme ayarlarında seçildiyse, yine de sistem mikrofonu kaydedilir.",
+      "distanceTerm": "Mesafe fiyattan önemlidir.",
+      "distanceText": "Ağızdan beş santim uzaktaki bir kulaklık, iki metredeki pahalı mikrofondan daha anlaşılırdır. 15–25 cm mesafede ve doğrudan nefes akışının biraz yanında tutun. Çıplak duvarlı, yankılı bir oda düzenli gürültüden daha çok zarar verir.",
+      "ownMicText": "Yalnızca sizin mikrofonunuz kaydedilir: hasta kendini kendi kaydeder. Kayıt ancak onun onayından sonra başlar ve o istediği anda durdurabilir — o zaman söyledikleri silinir."
+    },
+    "notice": {
+      "awaitingConsent": "Hastanın onayını bekliyoruz — o ana kadar hiçbir şey kaydedilmiyor",
+      "startFailed": "Kayıt başlatılamadı",
+      "answerFailed": "Yanıt gönderilemedi",
+      "stopped": "Kayıt durduruldu, söyledikleriniz silindi",
+      "stopFailed": "Kayıt durdurulamadı",
+      "collecting": "Taslak oluşturuluyor…",
+      "collectFailed": "Taslak oluşturulamadı"
+    },
+    "langAuto": "Otomatik algıla"
+  },
+  "draft": {
+    "savedTitle": "Taslak karta kaydedildi",
+    "savedLead": "YENİ bir kayıt oluşturuldu — karttaki öncekiler değişmedi. Yeniden okuduktan sonra imzalayın.",
+    "open": "Kaydı aç",
+    "close": "Kapat",
+    "title": "Muayene taslağı",
+    "lead": "Görüşmeden oluşturuldu. Kontrol edip düzeltin — alanlarda kalan karta gider. Kayıt taslak olarak saklanır, imza ayrı bir işlemdir.",
+    "notHeard": "Görüşmede geçmedi:",
+    "otherTitle": "Söylendi ama bölümlere ayrılamadı:",
+    "otherHint": "Muayeneye ait olanı uygun alanlara taşıyın. Bölümü tahmin etmedik: yanlış bölüme koymak, seçimi doktora bırakmaktan kötüdür.",
+    "translate": "Taslağı çevir:",
+    "translating": "çevriliyor…",
+    "transcript": "Görüşmenin deşifresi ({{count}} replik)",
+    "speakerDoctor": "Doktor",
+    "speakerPatient": "Hasta",
+    "empty": "geçmedi",
+    "patientCard": "Hasta kartı",
+    "noCard": "kart seçilmedi",
+    "definedByVisit": "muayeneyle belirlendi",
+    "yourPatient": "sizin hastanız",
+    "findHintPrivate": "Bu hastanın kartı sizde bulunamadı. «Hastalarım» bölümünden oluşturup geri dönün — taslak burada kalır, şu süre boyunca",
+    "findHintClinic": "Hasta kartı belirlenemedi. Soyadı, telefon veya e-posta ile bulun — ya da yeni bir kart oluşturun.",
+    "searchPlaceholder": "Soyadı, telefon veya e-posta",
+    "search": "Bul",
+    "searching": "Aranıyor…",
+    "createCard": "Kart oluştur",
+    "creating": "Oluşturuluyor…",
+    "notFound": "Klinikte böyle bir hasta yok — kart oluşturun.",
+    "save": "Karta kaydet",
+    "saving": "Kaydediliyor…",
+    "closeNoSave": "Kaydetmeden kapat",
+    "fields": {
+      "complaints": "Şikâyetler",
+      "anamnesisMorbi": "Hastalık öyküsü",
+      "anamnesisVitae": "Özgeçmiş",
+      "statusPreasens": "Fizik muayene",
+      "diagnosisText": "Tanı",
+      "recommendations": "Reçete ve öneriler"
+    },
+    "notice": {
+      "needQuery": "Soyadı, telefon veya e-posta girin",
+      "searchFailed": "Arama başarısız oldu",
+      "createFailed": "Kart oluşturulamadı. «Hastalar» bölümünden oluşturup geri dönün.",
+      "translateFailed": "Çeviri yapılamadı",
+      "needCard": "Kaydın yazılacağı hasta kartını belirtin",
+      "saveFailed": "Kayıt kaydedilemedi"
+    },
+    "newPatientFirstName": "Hasta",
+    "newPatientLastName": "Soyadsız"
+  },
+  "call": {
+    "hint": {
+      "dialog": "Kliniğin güvenli sunucusu üzerinden görüntülü arama",
+      "consilium": "Konsültasyon görüntülü konferansı — kliniğin güvenli sunucusu",
+      "consilium-patient": "Görüntülü konsültasyon — DocPats güvenli sunucusu",
+      "telemed": "Görüntülü muayene — kliniğin güvenli sunucusu",
+      "telemed-patient": "Çevrimiçi konsültasyon — DocPats güvenli sunucusu",
+      "appointment": "Görüntülü konsültasyon — DocPats güvenli sunucusu"
+    },
+    "start": {
+      "dialog": "Görüntülü aramayı başlat",
+      "consilium": "Görüntülü konferansı başlat",
+      "consilium-patient": "Konsültasyona katıl",
+      "telemed": "Görüntülü muayeneyi başlat",
+      "telemed-patient": "Konsültasyona katıl",
+      "appointment": "Görüntülü konsültasyona katıl"
+    },
+    "scribeDesktopOnly": "Muayene yalnızca bilgisayardan kaydedilir: telefonda mikrofon görüşme tarafından kullanılıyor.",
+    "connecting": "Görüntü odasına bağlanılıyor…",
+    "connectFailed": "Görüntüye bağlanılamadı",
+    "retry": "Tekrar dene",
+    "fsEnter": "Tam ekran",
+    "fsExit": "Tam ekrandan çık",
+    "closeVideo": "Görüntüyü kapat",
+    "close": "Kapat",
+    "state": {
+      "ringingOut": "Aranıyor…",
+      "ringingIn": "Gelen arama",
+      "active": "Görüşme sürüyor",
+      "ended": "Görüşme bitti",
+      "declined": "Reddedildi",
+      "noAnswer": "Cevap yok",
+      "busy": "Hat meşgul",
+      "failed": "Bağlantı hatası"
+    },
+    "btn": {
+      "decline": "Reddet",
+      "accept": "Kabul et",
+      "cancel": "İptal",
+      "hangup": "Bitir",
+      "micOn": "Aç",
+      "micOff": "Mikrofonu kapat",
+      "camOn": "Kamera açık",
+      "camOff": "Kamera kapalı",
+      "fsOn": "Tam ekran",
+      "fsOff": "Küçült"
+    }
+  }
+}

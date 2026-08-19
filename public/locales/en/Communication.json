@@ -1,0 +1,162 @@
+{
+  "scribe": {
+    "consent": {
+      "title": "The doctor is asking permission to record the visit.",
+      "lead": "The recording lets the doctor look at you instead of the screen, without breaking off to fill in your chart. Declining changes nothing: the visit goes ahead as usual.",
+      "facts": {
+        "audioTerm": "The audio is not kept.",
+        "audioText": "Speech is transcribed as it goes; the sound itself is never written to disk. Only text remains in the chart.",
+        "ownMicTerm": "Only your own microphone is recorded.",
+        "ownMicText": "The doctor records themselves, you record yourself. There is no shared track.",
+        "stopTerm": "You can stop at any moment.",
+        "stopText": "A “Stop” button stays visible the whole time, and what you said is deleted — not merely no longer recorded, but deleted.",
+        "beforeTerm": "Until you answer, nothing is recorded",
+        "beforeText": "— neither your voice nor the doctor's.",
+        "cardTerm": "The text goes into your chart and nowhere else.",
+        "cardText": "It becomes a draft of the visit; the doctor checks it, edits it and signs it personally. The system signs nothing on the doctor's behalf."
+      },
+      "tip": "If you can, put on headphones: from speakers the doctor's voice reaches your recording and is written down as your words.",
+      "allow": "I agree",
+      "decline": "No, thanks"
+    },
+    "patient": {
+      "live": "The visit is being recorded",
+      "stop": "Stop",
+      "revoked": "Recording stopped, what you said has been deleted",
+      "mobile": "Recording a visit from a phone is not possible — only from a computer. This conversation is not being recorded."
+    },
+    "doctor": {
+      "mobile": "Visits can only be recorded from a computer: on a phone the microphone is taken by the call.",
+      "start": "Record the visit",
+      "langLabel": "Language of the visit:",
+      "micLabel": "Microphone:",
+      "micDefault": "System default",
+      "micShow": "Show microphones",
+      "waiting": "Waiting for the patient's consent. Nothing is recorded until they answer.",
+      "peerMobile": "The patient joined from a phone — recording will not work: the microphone there is taken by the call. You will have to fill in the chart as usual.",
+      "declined": "The patient declined the recording — fill in the chart as usual",
+      "revoked": "The patient stopped the recording. A draft can still be assembled from what was said before that.",
+      "collect": "Assemble the draft",
+      "live": "Recording",
+      "finish": "Finish and assemble the draft"
+    },
+    "how": {
+      "summary": "How to get a clear recording",
+      "headphonesTerm": "Put on headphones.",
+      "headphonesText": "Echo cancellation is switched off in the recording on purpose — it clips quiet speech, which is the hardest thing to reconstruct from memory afterwards. The trade-off: from speakers the patient's voice reaches your microphone, and in the transcript their words are attributed to you. “I think I have pneumonia” from a patient is a complaint; from a doctor it is a diagnosis.",
+      "micTerm": "Choose the microphone here, not only in the call.",
+      "micText": "The recording runs as a separate stream: if the external microphone is selected only in the call settings, the system one will still be recorded.",
+      "distanceTerm": "Distance matters more than price.",
+      "distanceText": "A headset five centimetres from the mouth is clearer than an expensive microphone two metres away. Keep it 15–25 cm away and slightly off the direct breath. A bare, echoing room hurts more than steady background noise.",
+      "ownMicText": "Only your own microphone is recorded: the patient records themselves. Recording starts only after their consent, and they can stop it at any moment — then what they said is deleted."
+    },
+    "notice": {
+      "awaitingConsent": "Waiting for the patient's consent — nothing is recorded until then",
+      "startFailed": "Could not start the recording",
+      "answerFailed": "Could not send the answer",
+      "stopped": "Recording stopped, what you said has been deleted",
+      "stopFailed": "Could not stop the recording",
+      "collecting": "Assembling the draft…",
+      "collectFailed": "Could not assemble the draft"
+    },
+    "langAuto": "Detect automatically"
+  },
+  "draft": {
+    "savedTitle": "Draft saved to the chart",
+    "savedLead": "A NEW entry was created — existing ones in the chart are unchanged. Sign it once you have re-read it.",
+    "open": "Open the entry",
+    "close": "Close",
+    "title": "Visit draft",
+    "lead": "Assembled from the conversation. Check and correct it — whatever stays in the fields goes into the chart. The entry is saved as a draft; signing is a separate action.",
+    "notHeard": "Not mentioned in the conversation:",
+    "otherTitle": "Said, but not sorted into sections:",
+    "otherHint": "Move whatever belongs to the visit into the right fields. We did not guess the section: putting it in the wrong one is worse than leaving the choice to the doctor.",
+    "translate": "Translate the draft:",
+    "translating": "translating…",
+    "transcript": "Conversation transcript ({{count}} lines)",
+    "speakerDoctor": "Doctor",
+    "speakerPatient": "Patient",
+    "empty": "not mentioned",
+    "patientCard": "Patient chart",
+    "noCard": "no chart selected",
+    "definedByVisit": "determined by the visit",
+    "yourPatient": "your patient",
+    "findHintPrivate": "No chart for this patient was found. Create it under “My patients” and come back — the draft stays here while",
+    "findHintClinic": "The patient chart could not be determined. Find it by surname, phone or email — or create a new one.",
+    "searchPlaceholder": "Surname, phone or email",
+    "search": "Find",
+    "searching": "Searching…",
+    "createCard": "Create a chart",
+    "creating": "Creating…",
+    "notFound": "No such patients in the clinic — create a chart.",
+    "save": "Save to the chart",
+    "saving": "Saving…",
+    "closeNoSave": "Close without saving",
+    "fields": {
+      "complaints": "Complaints",
+      "anamnesisMorbi": "History of the illness",
+      "anamnesisVitae": "Past medical history",
+      "statusPreasens": "Physical examination",
+      "diagnosisText": "Diagnosis",
+      "recommendations": "Prescriptions and advice"
+    },
+    "notice": {
+      "needQuery": "Enter a surname, phone or email",
+      "searchFailed": "The search failed",
+      "createFailed": "Could not create the chart. Create it under “Patients” and come back.",
+      "translateFailed": "Could not translate",
+      "needCard": "Specify the patient chart to save this entry into",
+      "saveFailed": "Could not save the entry"
+    },
+    "newPatientFirstName": "Patient",
+    "newPatientLastName": "No surname"
+  },
+  "call": {
+    "hint": {
+      "dialog": "Video call over the clinic's secure server",
+      "consilium": "Case conference video call — the clinic's secure server",
+      "consilium-patient": "Video case conference — DocPats secure server",
+      "telemed": "Video visit — the clinic's secure server",
+      "telemed-patient": "Online consultation — DocPats secure server",
+      "appointment": "Video consultation — DocPats secure server"
+    },
+    "start": {
+      "dialog": "Start the video call",
+      "consilium": "Start the video conference",
+      "consilium-patient": "Join the case conference",
+      "telemed": "Start the video visit",
+      "telemed-patient": "Join the consultation",
+      "appointment": "Join the video consultation"
+    },
+    "scribeDesktopOnly": "Visits can only be recorded from a computer: on a phone the microphone is taken by the call.",
+    "connecting": "Connecting to the video room…",
+    "connectFailed": "Could not connect to the video",
+    "retry": "Try again",
+    "fsEnter": "Full screen",
+    "fsExit": "Exit full screen",
+    "closeVideo": "Close the video",
+    "close": "Close",
+    "state": {
+      "ringingOut": "Calling…",
+      "ringingIn": "Incoming call",
+      "active": "Call in progress",
+      "ended": "Call ended",
+      "declined": "Declined",
+      "noAnswer": "No answer",
+      "busy": "The line is busy",
+      "failed": "Connection error"
+    },
+    "btn": {
+      "decline": "Decline",
+      "accept": "Accept",
+      "cancel": "Cancel",
+      "hangup": "Hang up",
+      "micOn": "Unmute",
+      "micOff": "Mute",
+      "camOn": "Camera on",
+      "camOff": "Camera off",
+      "fsOn": "Full screen",
+      "fsOff": "Exit full screen"
+    }
+  }
+}

@@ -17,6 +17,7 @@
 // вторая сторона, — не право.
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "../../../axios";
 import useScribeRecorder, {
   currentLang,
@@ -51,8 +52,11 @@ const API = "/api/v1/scribe";
 //
 // Список ниже — не предел возможностей, а короткий путь к частым языкам.
 // Подписи на самих языках: выбирает тот, кто на этом языке и говорит.
+//
+// «Авто» переводится (ключ i18n), названия языков — нет: каждый написан на
+// себе самом, и переводить «Türkçe» на турецкий незачем.
 const SPEECH_LANGS = [
-  { code: "", label: "Определить автоматически" },
+  { code: "", key: "langAuto", label: "Определить автоматически" },
   { code: "az", label: "Azərbaycanca" },
   { code: "ru", label: "Русский" },
   { code: "tr", label: "Türkçe" },
@@ -65,6 +69,16 @@ const SPEECH_LANGS = [
   { code: "fr", label: "Français" },
   { code: "de", label: "Deutsch" },
 ];
+
+// Пункты согласия — порядком, а не вёрсткой. Текст каждого лежит в словаре
+// двумя ключами: выделенное начало и продолжение. Разметка внутри
+// переводимой строки заставила бы переводчика таскать теги, а порядок слов
+// в языках разный.
+const CONSENT_FACTS = ["audio", "ownMic", "stop", "before", "card"];
+
+// Советы врачу — так же двумя ключами. Последний пункт идёт без выделения
+// и отдельной строкой.
+const HOW_ITEMS = ["headphones", "mic", "distance"];
 
 function fmt(sec) {
   const m = Math.floor(sec / 60);
@@ -89,6 +103,9 @@ export default function ScribePanel({
   const [speechLang, setSpeechLang] = useState(
     () => SPEECH_LANGS.find((l) => l.code === currentLang())?.code ?? "",
   );
+  // Русский текст остаётся вторым аргументом t(): пока словарь грузится по
+  // сети, показывается он, а не голый ключ. Так же сделано в DictationPanel.
+  const { t } = useTranslation("Communication");
   const rec = useScribeRecorder();
   const pollRef = useRef(null);
   // Считаем один раз: устройство посреди приёма не меняется.
@@ -224,9 +241,9 @@ export default function ScribePanel({
         lang: speechLang,
       });
       setSession(data.session);
-      setNotice("Ждём согласия пациента — до этого не записывается ничего");
+      setNotice(t("scribe.notice.awaitingConsent", "Ждём согласия пациента — до этого не записывается ничего"));
     } catch (err) {
-      setNotice(err?.response?.data?.message ?? "Не удалось начать запись");
+      setNotice(err?.response?.data?.message ?? t("scribe.notice.startFailed", "Не удалось начать запись"));
     } finally {
       setBusy(false);
     }
@@ -242,7 +259,7 @@ export default function ScribePanel({
       );
       setSession(data.session);
     } catch {
-      setNotice("Не удалось отправить ответ");
+      setNotice(t("scribe.notice.answerFailed", "Не удалось отправить ответ"));
     } finally {
       setBusy(false);
     }
@@ -254,9 +271,9 @@ export default function ScribePanel({
       rec.stop();
       const { data } = await axios.post(`${API}/sessions/${session.id}/revoke`);
       setSession(data.session);
-      setNotice("Запись прекращена, сказанное вами удалено");
+      setNotice(t("scribe.notice.stopped", "Запись прекращена, сказанное вами удалено"));
     } catch {
-      setNotice("Не удалось прекратить запись");
+      setNotice(t("scribe.notice.stopFailed", "Не удалось прекратить запись"));
     } finally {
       setBusy(false);
     }
@@ -264,7 +281,7 @@ export default function ScribePanel({
 
   async function finish() {
     setBusy(true);
-    setNotice("Собираем черновик…");
+    setNotice(t("scribe.notice.collecting", "Собираем черновик…"));
     try {
       // stop() теперь ЖДЁТ последнего куска: без этого flush() увидел бы
       // пустую очередь — кусок ещё не создан.
@@ -286,7 +303,7 @@ export default function ScribePanel({
       // эта карта достоверна.
       onDraft?.({ ...data, patientUserId: peerUserId, patientName: peerName });
     } catch (err) {
-      setNotice(err?.response?.data?.message ?? "Не удалось собрать черновик");
+      setNotice(err?.response?.data?.message ?? t("scribe.notice.collectFailed", "Не удалось собрать черновик"));
     } finally {
       setBusy(false);
     }
@@ -305,8 +322,10 @@ export default function ScribePanel({
     if (!canRecord) {
       return (
         <div className="scribe scribe--done">
-          Запись приёма с телефона недоступна — она возможна только с
-          компьютера. Разговор не записывается.
+          {t(
+            "scribe.patient.mobile",
+            "Запись приёма с телефона недоступна — она возможна только с компьютера. Разговор не записывается.",
+          )}
         </div>
       );
     }
@@ -315,40 +334,28 @@ export default function ScribePanel({
       return (
         <div className="scribe scribe--ask">
           <div className="scribe__text">
-            <strong>Врач просит разрешение записать приём.</strong>
+            <strong>
+              {t("scribe.consent.title", "Врач просит разрешение записать приём.")}
+            </strong>
             <p>
-              Запись нужна, чтобы врач не отвлекался на заполнение карты и
-              смотрел на вас, а не в экран. Отказ ни на что не влияет: приём
-              пройдёт как обычно.
+              {t(
+                "scribe.consent.lead",
+                "Запись нужна, чтобы врач не отвлекался на заполнение карты и смотрел на вас, а не в экран. Отказ ни на что не влияет: приём пройдёт как обычно.",
+              )}
             </p>
             {/* Обстоятельно и по пунктам: человек решает про запись своего
                 голоса, и решает один раз. Каждое утверждение здесь — про то,
-                как система устроена на самом деле, а не обещание. */}
+                как система устроена на самом деле, а не обещание.
+                Выделенная часть и остальное — ОТДЕЛЬНЫЕ ключи: вёрстка внутри
+                переводимой строки заставила бы переводчика таскать теги, а
+                порядок слов в языках разный. */}
             <ul className="scribe__facts">
-              <li>
-                <strong>Аудио не сохраняется.</strong> Речь распознаётся на
-                лету, звук нигде не записывается на диск. В карте остаётся
-                только текст.
-              </li>
-              <li>
-                <strong>Пишется только ваш микрофон.</strong> Врач записывает
-                себя, вы — себя. Общей дорожки нет.
-              </li>
-              <li>
-                <strong>Прекратить можно в любой момент.</strong> Кнопка
-                «Прекратить» будет видна всё время записи, и сказанное вами
-                удаляется — не перестаёт записываться, а именно удаляется.
-              </li>
-              <li>
-                <strong>Пока вы не ответили, не пишется ничего</strong> — ни
-                ваш голос, ни голос врача.
-              </li>
-              <li>
-                <strong>Текст попадает в вашу карту, а не куда-то ещё.</strong>{" "}
-                Из него собирается черновик приёма; врач его проверяет,
-                правит и подписывает сам. Система за врача ничего не
-                подписывает.
-              </li>
+              {CONSENT_FACTS.map((f) => (
+                <li key={f}>
+                  <strong>{t(`scribe.consent.facts.${f}Term`)}</strong>{" "}
+                  {t(`scribe.consent.facts.${f}Text`)}
+                </li>
+              ))}
             </ul>
             {/* Одна строка, отдельно от пунктов согласия и намеренно
                 короткая.
@@ -360,13 +367,15 @@ export default function ScribePanel({
                 Про микрофон пациенту не пишем: он пришёл на приём, а не
                 настраивать оборудование. Наушники есть почти у всех. */}
             <p className="scribe__tip">
-              Если есть возможность — наденьте наушники: с колонок голос врача
-              попадёт в вашу запись и будет записан как ваши слова.
+              {t(
+                "scribe.consent.tip",
+                "Если есть возможность — наденьте наушники: с колонок голос врача попадёт в вашу запись и будет записан как ваши слова.",
+              )}
             </p>
           </div>
           <div className="scribe__actions">
             <button type="button" disabled={busy} onClick={() => answerConsent(true)}>
-              Разрешаю
+              {t("scribe.consent.allow", "Разрешаю")}
             </button>
             <button
               type="button"
@@ -374,7 +383,7 @@ export default function ScribePanel({
               disabled={busy}
               onClick={() => answerConsent(false)}
             >
-              Не нужно
+              {t("scribe.consent.decline", "Не нужно")}
             </button>
           </div>
         </div>
@@ -385,9 +394,9 @@ export default function ScribePanel({
       return (
         <div className="scribe scribe--live">
           <span className="scribe__dot" aria-hidden="true" />
-          <span>Идёт запись приёма</span>
+          <span>{t("scribe.patient.live", "Идёт запись приёма")}</span>
           <button type="button" className="ghost" disabled={busy} onClick={revoke}>
-            Прекратить
+            {t("scribe.patient.stop", "Прекратить")}
           </button>
         </div>
       );
@@ -396,7 +405,10 @@ export default function ScribePanel({
     if (session.status === "revoked") {
       return (
         <div className="scribe scribe--done">
-          Запись прекращена, сказанное вами удалено
+          {t(
+            "scribe.patient.revoked",
+            "Запись прекращена, сказанное вами удалено",
+          )}
         </div>
       );
     }
@@ -411,8 +423,10 @@ export default function ScribePanel({
   if (!canRecord) {
     return (
       <div className="scribe scribe--done">
-        Запись приёма ведётся только с компьютера: на телефоне микрофон занят
-        звонком.
+        {t(
+          "scribe.doctor.mobile",
+          "Запись приёма ведётся только с компьютера: на телефоне микрофон занят звонком.",
+        )}
       </div>
     );
   }
@@ -426,7 +440,7 @@ export default function ScribePanel({
           {/* Язык спрашиваем ДО начала записи: поменять его потом нельзя —
               распознавание идёт по ходу приёма, кусок за куском. */}
           <label className="scribe__lang">
-            Язык приёма:
+            {t("scribe.doctor.langLabel", "Язык приёма:")}
             <select
               value={speechLang}
               disabled={busy}
@@ -434,7 +448,7 @@ export default function ScribePanel({
             >
               {SPEECH_LANGS.map((l) => (
                 <option key={l.code || "auto"} value={l.code}>
-                  {l.label}
+                  {l.key ? t(`scribe.${l.key}`, l.label) : l.label}
                 </option>
               ))}
             </select>
@@ -445,7 +459,7 @@ export default function ScribePanel({
               встроенным, пока звонок идёт через внешний. */}
           {named.length > 0 ? (
             <label className="scribe__lang">
-              Микрофон:
+              {t("scribe.doctor.micLabel", "Микрофон:")}
               <select
                 value={micId}
                 disabled={busy}
@@ -454,7 +468,9 @@ export default function ScribePanel({
                   rec.selectDevice(e.target.value);
                 }}
               >
-                <option value="">Системный по умолчанию</option>
+                <option value="">
+                  {t("scribe.doctor.micDefault", "Системный по умолчанию")}
+                </option>
                 {named.map((m) => (
                   <option key={m.deviceId} value={m.deviceId}>
                     {m.label}
@@ -473,43 +489,28 @@ export default function ScribePanel({
                 await refreshMics();
               }}
             >
-              Показать микрофоны
+              {t("scribe.doctor.micShow", "Показать микрофоны")}
             </button>
           )}
 
           <button type="button" disabled={busy} onClick={startRecording}>
-            Вести запись приёма
+            {t("scribe.doctor.start", "Вести запись приёма")}
           </button>
         </div>
 
         {/* Обстоятельно — один раз, до начала. Врач, узнавший про наушники
             после приёма, приём уже испортил. */}
         <details className="scribe__how">
-          <summary>Как получить разборчивую запись</summary>
-          <p>
-            <strong>Наденьте наушники.</strong> Подавление эха в записи
-            выключено намеренно — оно срезает тихую речь, а её труднее всего
-            восстановить потом по памяти. Обратная сторона: с колонок голос
-            пациента попадёт в ваш микрофон, и в расшифровке его слова
-            окажутся приписаны вам. «У меня, кажется, воспаление лёгких» от
-            пациента — жалоба, от врача — диагноз.
-          </p>
-          <p>
-            <strong>Выберите микрофон здесь, а не только в звонке.</strong>
-            Запись идёт отдельным потоком: если внешний микрофон выбран
-            только в настройках звонка, писаться будет всё равно системный.
-          </p>
-          <p>
-            <strong>Расстояние важнее цены.</strong> Гарнитура в пяти
-            сантиметрах от рта разборчивее дорогого микрофона в двух метрах.
-            Держите 15–25 см и чуть в стороне от прямого выдоха. Гулкий
-            кабинет с голыми стенами вредит сильнее ровного шума.
-          </p>
-          <p>
-            Записывается <strong>только ваш микрофон</strong>: пациент пишет
-            себя сам. Запись начнётся лишь после его согласия, и он может
-            прекратить её в любой момент — тогда сказанное им удаляется.
-          </p>
+          <summary>
+            {t("scribe.how.summary", "Как получить разборчивую запись")}
+          </summary>
+          {HOW_ITEMS.map((k) => (
+            <p key={k}>
+              <strong>{t(`scribe.how.${k}Term`)}</strong>{" "}
+              {t(`scribe.how.${k}Text`)}
+            </p>
+          ))}
+          <p>{t("scribe.how.ownMicText")}</p>
         </details>
 
         {rec.error && <span className="scribe__err">{rec.error}</span>}
@@ -525,8 +526,10 @@ export default function ScribePanel({
     if (peer?.consent === "unsupported") {
       return (
         <div className="scribe scribe--done">
-          Пациент подключился с телефона — записать приём не получится: там
-          микрофон занят звонком. Карту придётся заполнить как обычно.
+          {t(
+            "scribe.doctor.peerMobile",
+            "Пациент подключился с телефона — записать приём не получится: там микрофон занят звонком. Карту придётся заполнить как обычно.",
+          )}
         </div>
       );
     }
@@ -534,7 +537,10 @@ export default function ScribePanel({
     return (
       <div className="scribe">
         <span className="scribe__note">
-          Ждём согласия пациента. До ответа не записывается ничего.
+          {t(
+            "scribe.doctor.waiting",
+            "Ждём согласия пациента. До ответа не записывается ничего.",
+          )}
         </span>
       </div>
     );
@@ -543,7 +549,10 @@ export default function ScribePanel({
   if (session.status === "declined") {
     return (
       <div className="scribe scribe--done">
-        Пациент отказался от записи — заполните карту как обычно
+        {t(
+          "scribe.doctor.declined",
+          "Пациент отказался от записи — заполните карту как обычно",
+        )}
       </div>
     );
   }
@@ -551,10 +560,12 @@ export default function ScribePanel({
   if (session.status === "revoked") {
     return (
       <div className="scribe scribe--done">
-        Пациент прекратил запись. Черновик можно собрать из того, что
-        прозвучало до этого.
+        {t(
+          "scribe.doctor.revoked",
+          "Пациент прекратил запись. Черновик можно собрать из того, что прозвучало до этого.",
+        )}
         <button type="button" disabled={busy} onClick={finish}>
-          Собрать черновик
+          {t("scribe.doctor.collect", "Собрать черновик")}
         </button>
       </div>
     );
@@ -563,9 +574,11 @@ export default function ScribePanel({
   return (
     <div className="scribe scribe--live">
       <span className="scribe__dot" aria-hidden="true" />
-      <span>Запись идёт · {fmt(rec.seconds)}</span>
+      <span>
+        {t("scribe.doctor.live", "Запись идёт")} · {fmt(rec.seconds)}
+      </span>
       <button type="button" disabled={busy} onClick={finish}>
-        Завершить и собрать черновик
+        {t("scribe.doctor.finish", "Завершить и собрать черновик")}
       </button>
       {notice && <span className="scribe__note">{notice}</span>}
     </div>
