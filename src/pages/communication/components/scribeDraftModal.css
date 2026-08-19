@@ -143,6 +143,24 @@
   cursor: pointer;
 }
 
+/* Ссылка на созданную запись — рядом с «Закрыть», но выглядит как
+   основное действие: именно её врач и ищет после сохранения. */
+.sdm-open {
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 22px;
+  border-radius: 8px;
+  background: #0d6efd;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sdm-open:hover {
+  background: #0b5ed7;
+}
+
 .sdm-actions button.ghost {
   background: transparent;
   color: #5c6874;

@@ -60,6 +60,8 @@ export default function ScribeDraftModal({ data, onClose }) {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState(null);
   const [saved, setSaved] = useState(false);
+  // id созданной записи — чтобы открыть именно её, а не искать по карте.
+  const [savedId, setSavedId] = useState(null);
   const [translating, setTranslating] = useState(false);
 
   // Поиск карты, когда её не нашли по аккаунту. Нужен для звонков из
@@ -231,9 +233,17 @@ export default function ScribeDraftModal({ data, onClose }) {
     setBusy(true);
     setNotice(null);
     try {
+      // Идентификатор СОЗДАННОЙ записи запоминаем и показываем ссылкой.
+      //
+      // Сохранение всегда СОЗДАЁТ новую запись, а не дописывает открытую.
+      // Без ссылки врач шёл искать её сам и открывал соседнюю — ту, что
+      // была в карте раньше. Выглядело это как «сохранил одно, в истории
+      // болезни другое», хотя сохранённое лежало рядом нетронутым.
+      let createdId = null;
+
       if (target === "private") {
         // Частная практика: своя карта, свой путь, клиники в записи нет.
-        await axios.post(
+        const { data: res } = await axios.post(
           `/api/v1/scribe/sessions/${data.sessionId}/save-private`,
           {
             patientRef: patientId.trim(),
@@ -241,12 +251,20 @@ export default function ScribeDraftModal({ data, onClose }) {
             fields: values,
           },
         );
+        // Ссылку даём только на поликлиническую карту: страница просмотра
+        // подтягивает пациента как NewPatientPolyclinic и на записи другого
+        // типа отвечает 404. Вести врача в тупик хуже, чем не вести никуда.
+        if ((privateType || "NewPatientPolyclinic") === "NewPatientPolyclinic") {
+          createdId = res?.encounterId ?? null;
+        }
       } else {
         await axios.post(
           `/api/v1/clinic/medical/patients/${patientId.trim()}/from-scribe/${data.sessionId}`,
           values,
         );
       }
+
+      setSavedId(createdId);
       setSaved(true);
     } catch (err) {
       setNotice(err?.response?.data?.message ?? "Не удалось сохранить запись");
@@ -261,10 +279,23 @@ export default function ScribeDraftModal({ data, onClose }) {
         <div className="sdm">
           <h2>Черновик сохранён в карту</h2>
           <p className="sdm-lead">
-            Запись создана черновиком — подпишите её в карте пациента, когда
-            перечитаете.
+            Создана НОВАЯ запись — прежние в карте не изменились. Подпишите
+            её, когда перечитаете.
           </p>
           <div className="sdm-actions">
+            {savedId && (
+              // Ссылка именно на созданную запись. Искать её в карте
+              // глазами — верный способ открыть соседнюю и решить, что
+              // сохранилось не то.
+              <a
+                className="sdm-open"
+                href={`/dp/patient-polyclinic-medical-history/${savedId}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Открыть запись
+              </a>
+            )}
             <button type="button" onClick={onClose}>
               Закрыть
             </button>
