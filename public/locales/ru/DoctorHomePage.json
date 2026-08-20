@@ -97,7 +97,8 @@
         "unknown_author": "Автор неизвестен"
       },
       "scientific_articles": "Научные статьи"
-    }
+    },
+    "book_patient": "Записать пациента на приём"
   },
   "my_clinic": "Поликлиника",
   "chat": "Чат",

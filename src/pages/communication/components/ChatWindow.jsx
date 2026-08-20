@@ -1477,11 +1477,34 @@ function ChatWindow({
               📞
             </button>
 
-            {/* Видеозвонок (Jitsi) */}
+            {/* Видеозвонок.
+                Идёт через ТУ ЖЕ сигнализацию, что и аудио (call:initiate →
+                call:incoming), поэтому у второй стороны появляется окно
+                входящего вызова с «Принять / Отклонить».
+                Раньше кнопка просто открывала комнату Jitsi у себя:
+                собеседник ничего не видел и, чтобы связь появилась, должен
+                был сам нажать «Начать видеозвонок» — то есть звонка как
+                такового не было, была общая комната.
+                Групповой диалог (персонального собеседника нет) по-прежнему
+                открывает комнату напрямую: звонить там некому лично. */}
             <button
               className="icon-button"
               title="Video call"
-              onClick={() => setShowJitsi(true)}
+              onClick={() => {
+                if (!peerId) {
+                  setShowJitsi(true);
+                  return;
+                }
+                if (callState !== "idle") return;
+                initiateCall({
+                  targetDialogId: dialogId,
+                  targetPeerId: peerId,
+                  peerName: dialogTitle || "Unknown",
+                  peerAvatar: dialogAvatar,
+                  type: "video",
+                });
+              }}
+              style={{ opacity: callState !== "idle" ? 0.4 : 1 }}
             >
               🎥
             </button>

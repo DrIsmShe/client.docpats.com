@@ -1050,18 +1050,10 @@ export default function PatientMyAppointmentsPage() {
                       </button>
                     )}
 
-                    {a.channel === "whatsapp" &&
-                      a.status === "confirmed" &&
-                      a.whatsApp?.phone && (
-                        <a
-                          href={`https://wa.me/${a.whatsApp.phone}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="ma-btn ma-btn-whatsapp"
-                        >
-                          💬 WhatsApp
-                        </a>
-                      )}
+                    {/* Кнопка WhatsApp убрана: приём — это медицинские данные,
+                        а в потребительском мессенджере они остаются без аудита
+                        и без нашего шифрования. Онлайн-приём — кнопка «Видео»
+                        выше, вопросы врачу — чат платформы. */}
 
                     {["confirmed", "pending"].includes(a.status) && (
                       <button

@@ -29,12 +29,49 @@ import { Modal } from "react-bootstrap";
 import AuditTimeline from "./AuditTimelinesPage.jsx";
 import { useTranslation } from "react-i18next";
 import JitsiRoom from "../../communication/components/JitsiRoom.jsx";
+import { useCurrentUser } from "../../communication/hooks/useCurrentUserId";
+import BookPatientModal from "./BookPatientModal.jsx";
 
 // Statuses where joining a video call no longer makes sense.
 const VIDEO_TERMINAL = ["cancelled", "completed", "no_show", "refunded"];
 
+/**
+ * Дата календаря в "YYYY-MM-DD" по ЛОКАЛЬНОМУ времени.
+ *
+ * Через toISOString() делать нельзя: календарь отдаёт полночь по местному
+ * времени, а в Баку (+04) это 20:00 предыдущих суток по UTC — день уезжал
+ * назад, и врач открывал расписание не того дня.
+ */
+function toLocalYMD(d) {
+  const dt = d instanceof Date ? d : new Date(d);
+  const m = String(dt.getMonth() + 1).padStart(2, "0");
+  const day = String(dt.getDate()).padStart(2, "0");
+  return `${dt.getFullYear()}-${m}-${day}`;
+}
+
+/** Слот уже прошёл? Пять минут допуска — столько же, сколько на сервере. */
+function isPastSlot(iso) {
+  return new Date(iso).getTime() < Date.now() - 5 * 60 * 1000;
+}
+
+/** Часы:минуты слота в зоне расписания врача. */
+function slotTimeLabel(iso, timezone) {
+  try {
+    return new Intl.DateTimeFormat("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: timezone || undefined,
+    }).format(new Date(iso));
+  } catch {
+    return new Date(iso).toLocaleTimeString();
+  }
+}
+
 export default function DoctorAppointmentsPage() {
   const { t } = useTranslation();
+
+  // Своё имя — подпись в видеокомнате приёма.
+  const { name: myName } = useCurrentUser();
 
   const [appointments, setAppointments] = useState([]);
   const [blockedDays, setBlockedDays] = useState([]);
@@ -45,15 +82,17 @@ export default function DoctorAppointmentsPage() {
   const [date, setDate] = useState(new Date());
   const [deleting, setDeleting] = useState(null);
   const [showDayModal, setShowDayModal] = useState(false);
-  const [selectedDayAppointments, setSelectedDayAppointments] = useState([]);
   const [selectedDay, setSelectedDay] = useState(null);
+  // День врача с сервера: слоты расписания + кто на них записан.
+  const [dayData, setDayData] = useState(null);
+  const [dayLoading, setDayLoading] = useState(false);
+  // Слот, на который врач записывает пациента (открывает форму).
+  const [bookingSlot, setBookingSlot] = useState(null);
   const [showAuditModal, setShowAuditModal] = useState(false);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
   const API_BASE = process.env.REACT_APP_API_URL;
   const tooltipRef = useRef(null);
-  const [showWhatsappModal, setShowWhatsappModal] = useState(false);
-  const [selectedAppointment, setSelectedAppointment] = useState(null);
-  const [whatsappPhone, setWhatsappPhone] = useState("");
+  // Состояние окна WhatsApp удалено вместе с самим каналом.
 
   // Video call modal state.
   const [videoApptId, setVideoApptId] = useState(null);
@@ -192,10 +231,32 @@ export default function DoctorAppointmentsPage() {
     fetchBlockedDays();
   }, []);
 
+  /* ================= 📆 День врача: реальные слоты расписания =================
+     Раньше модал дня рисовал десять строк 08:00–17:00, ни на чём не
+     основанных: пациент выбирал время из настоящего генератора слотов
+     (интервалы по дням недели, свой шаг, зона расписания), а врач смотрел на
+     выдуманную сетку. Записывать из неё было нельзя — такого слота у пациента
+     не существует. Теперь обе стороны берут слоты из одного источника. */
+  const fetchDay = async (day) => {
+    const dateStr = toLocalYMD(day);
+    setDayLoading(true);
+    try {
+      const res = await axios.get(
+        `${API_BASE}/schedule/doctor-schedule/day/${dateStr}`,
+        { withCredentials: true },
+      );
+      setDayData(res.data || null);
+    } catch (err) {
+      console.error("Error loading day:", err);
+      setDayData(null);
+    } finally {
+      setDayLoading(false);
+    }
+  };
+
   const handleDayClick = (day) => {
-    const formatted = day.toISOString().slice(0, 10);
-    const normalize = (d) =>
-      d ? new Date(d).toISOString().slice(0, 10) : null;
+    const formatted = toLocalYMD(day);
+    const normalize = (d) => (d ? toLocalYMD(new Date(d)) : null);
 
     const isBlocked = blockedDays.some((d) => normalize(d.date) === formatted);
 
@@ -205,13 +266,9 @@ export default function DoctorAppointmentsPage() {
       return;
     }
 
-    const dayAppointments = appointments.filter(
-      (a) => normalize(a.startsAt) === formatted,
-    );
-
-    setSelectedDayAppointments(dayAppointments);
     setSelectedDay(day);
     setShowDayModal(true);
+    fetchDay(day);
   };
 
   // Can the doctor join a video call for this appointment?
@@ -474,14 +531,20 @@ export default function DoctorAppointmentsPage() {
 
                           {a.status === "pending" && (
                             <>
+                              {/* Подтверждение приёма.
+                                  Раньше кнопка открывала окно WhatsApp, и
+                                  подтвердить приём иначе было нельзя. Теперь
+                                  подтверждает напрямую тем же эндпоинтом
+                                  статуса, что и отмена, — а он, в отличие от
+                                  /confirm, шлёт пациенту уведомление
+                                  «Приём подтверждён» (eventBus). */}
                               <Button
                                 size="sm"
                                 variant="success"
                                 disabled={updating === a._id}
-                                onClick={() => {
-                                  setSelectedAppointment(a);
-                                  setShowWhatsappModal(true);
-                                }}
+                                onClick={() =>
+                                  handleStatusChange(a._id, "confirmed")
+                                }
                               >
                                 <FaCheckCircle className="me-1" />
                                 {t("doctor_appointments_page.status_confirmed")}
@@ -513,19 +576,12 @@ export default function DoctorAppointmentsPage() {
                         </div>
 
                         <div className="d-flex justify-content-center gap-2">
-                          {a.channel === "whatsapp" &&
-                            a.status === "confirmed" &&
-                            a.whatsApp?.phone && (
-                              <a
-                                href={`https://wa.me/${a.whatsApp.phone}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="btn btn-success btn-sm"
-                              >
-                                💬 WhatsApp
-                              </a>
-                            )}
-
+                          {/* Кнопки WhatsApp здесь больше нет. Приём — это PHI:
+                              в потребительском WhatsApp разговор остаётся без
+                              аудита (hipaa_audit_logs), без нашего шифрования,
+                              без записи приёма и без перевода сообщений.
+                              Онлайн-приём идёт через «Видео» выше, переписка —
+                              через чат платформы. */}
                           <Button
                             variant="outline-info"
                             size="sm"
@@ -567,9 +623,11 @@ export default function DoctorAppointmentsPage() {
             onChange={setDate}
             onClickDay={handleDayClick}
             tileContent={({ date }) => {
-              const formatted = date.toISOString().slice(0, 10);
-              const normalize = (d) =>
-                d ? new Date(d).toISOString().slice(0, 10) : null;
+              // Локальная дата, а не UTC: в Баку (+04) toISOString() у полуночи
+              // отдаёт предыдущие сутки, и раскраска съезжала на день
+              // относительно открывающегося расписания.
+              const formatted = toLocalYMD(date);
+              const normalize = (d) => (d ? toLocalYMD(new Date(d)) : null);
 
               const busyAppointments = appointments.filter(
                 (a) => normalize(a.startsAt) === formatted,
@@ -653,71 +711,181 @@ export default function DoctorAppointmentsPage() {
                 </tr>
               </thead>
               <tbody>
-                {Array.from({ length: 10 }, (_, i) => {
-                  const hour = 8 + i;
-                  const slotTime = `${hour.toString().padStart(2, "0")}:00`;
+                {dayLoading && (
+                  <tr>
+                    <td colSpan="4" className="py-4">
+                      <Spinner animation="border" size="sm" />
+                    </td>
+                  </tr>
+                )}
 
-                  const appointment = selectedDayAppointments.find((a) => {
-                    return new Date(a.startsAt).getHours() === hour;
-                  });
+                {!dayLoading &&
+                  (dayData?.slots || []).map((s) => {
+                    const time = slotTimeLabel(s.start, dayData?.timezone);
+                    const appt = s.appointment;
 
-                  if (appointment) {
-                    const fullName = `${
-                      appointment?.patient?.firstName || ""
-                    } ${appointment?.patient?.lastName || ""}`.trim();
+                    if (s.status === "busy" && appt) {
+                      const name = appt.patient?.name || "—";
+                      return (
+                        <tr key={s.start} className="table-success">
+                          <td>
+                            {time}
+                            {s.outOfSchedule && (
+                              <Badge bg="warning" text="dark" className="ms-1">
+                                {t(
+                                  "doctor_appointments_page.out_of_schedule",
+                                  "вне сетки",
+                                )}
+                              </Badge>
+                            )}
+                          </td>
+                          <td>
+                            {name}
+                            {appt.patient?.kind === "private" && (
+                              <Badge bg="secondary" className="ms-1">
+                                {t(
+                                  "doctor_appointments_page.private_patient",
+                                  "приватный",
+                                )}
+                              </Badge>
+                            )}
+                          </td>
+                          <td>
+                            {appt.type === "video"
+                              ? t("doctor_appointments_page.online")
+                              : t("doctor_appointments_page.offline")}
+                          </td>
+                          <td>
+                            <Badge
+                              bg={
+                                appt.status === "pending"
+                                  ? "warning"
+                                  : appt.status === "confirmed"
+                                    ? "success"
+                                    : appt.status === "cancelled"
+                                      ? "danger"
+                                      : appt.status === "completed"
+                                        ? "info"
+                                        : "secondary"
+                              }
+                            >
+                              {t(
+                                "doctor_appointments_page.status_" + appt.status,
+                              )}
+                            </Badge>
+                          </td>
+                        </tr>
+                      );
+                    }
 
+                    // Свободный слот — кликабельная строка: врач нажимает на
+                    // время и сразу записывает пациента. Прошедшее время
+                    // некликабельно: записать в него нельзя (сервер отвечает
+                    // 400 PAST_TIME), и предлагать это бессмысленно.
+                    const past = isPastSlot(s.start);
                     return (
-                      <tr key={hour} className="table-success">
-                        <td>{slotTime}</td>
-                        <td>{fullName}</td>
-                        <td>
-                          {appointment.type === "video"
-                            ? t("doctor_appointments_page.online")
-                            : t("doctor_appointments_page.offline")}
+                      <tr
+                        key={s.start}
+                        className="table-light"
+                        style={{
+                          cursor: past ? "default" : "pointer",
+                          opacity: past ? 0.55 : 1,
+                        }}
+                        onClick={() => !past && setBookingSlot(s)}
+                        title={
+                          past
+                            ? t(
+                                "doctor_appointments_page.past_slot",
+                                "Время уже прошло",
+                              )
+                            : t(
+                                "doctor_appointments_page.book_here",
+                                "Записать пациента на это время",
+                              )
+                        }
+                      >
+                        <td>{time}</td>
+                        <td colSpan="2" className="text-muted">
+                          {t("doctor_appointments_page.free_slot")}
                         </td>
                         <td>
-                          <Badge
-                            bg={
-                              appointment.status === "pending"
-                                ? "warning"
-                                : appointment.status === "confirmed"
-                                  ? "success"
-                                  : appointment.status === "cancelled"
-                                    ? "danger"
-                                    : appointment.status === "completed"
-                                      ? "info"
-                                      : "secondary"
-                            }
-                          >
-                            {t(
-                              "doctor_appointments_page.status_" +
-                                appointment.status,
-                            )}
-                          </Badge>
+                          {!past && (
+                            <Button size="sm" variant="outline-success">
+                              + {t("doctor_appointments_page.book", "Записать")}
+                            </Button>
+                          )}
                         </td>
                       </tr>
                     );
-                  }
+                  })}
 
-                  return (
-                    <tr key={hour} className="table-light">
-                      <td>{slotTime}</td>
-                      <td colSpan="3" className="text-muted">
-                        {t("doctor_appointments_page.free_slot")}
-                      </td>
-                    </tr>
-                  );
-                })}
+                {!dayLoading && (dayData?.slots || []).length === 0 && (
+                  <tr>
+                    <td colSpan="4" className="text-muted py-4">
+                      {dayData?.reason === "day_off"
+                        ? t(
+                            "doctor_appointments_page.day_off",
+                            "Этот день закрыт в вашем расписании",
+                          )
+                        : dayData?.reason === "no_schedule"
+                          ? t(
+                              "doctor_appointments_page.no_schedule",
+                              "Расписание ещё не заполнено",
+                            )
+                          : t(
+                              "doctor_appointments_page.no_intervals",
+                              "В этот день приёма нет",
+                            )}
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </Table>
           </Modal.Body>
 
-          <Modal.Footer>
+          <Modal.Footer className="d-flex justify-content-between">
+            {/* Срочный пациент: время вне сетки. Врач вправе принять, но
+                действие осознанное — приём помечается offSchedule. */}
+            <Button
+              variant="outline-warning"
+              onClick={() => setBookingSlot({ manual: true })}
+            >
+              +{" "}
+              {t(
+                "doctor_appointments_page.book_manual",
+                "Записать на другое время",
+              )}
+            </Button>
             <Button variant="secondary" onClick={() => setShowDayModal(false)}>
               {t("doctor_appointments_page.close")}
             </Button>
           </Modal.Footer>
         </Modal>
+
+        {/* Запись пациента врачом — по клику на слот */}
+        <BookPatientModal
+          show={!!bookingSlot}
+          onHide={() => setBookingSlot(null)}
+          slot={bookingSlot?.manual ? null : bookingSlot}
+          date={selectedDay ? toLocalYMD(selectedDay) : null}
+          timezone={dayData?.timezone}
+          onBooked={async (appt, notified) => {
+            setBookingSlot(null);
+            setMessage(
+              notified
+                ? t(
+                    "doctor_appointments_page.booked_notified",
+                    "Пациент записан, уведомление отправлено",
+                  )
+                : t("doctor_appointments_page.booked", "Пациент записан"),
+            );
+            setTimeout(() => setMessage(""), 4000);
+            // Обновляем и день, и общий список приёмов — запись должна
+            // появиться в обоих местах сразу, без перезагрузки страницы.
+            if (selectedDay) await fetchDay(selectedDay);
+            await fetchAppointments();
+          }}
+        />
 
         {/* Audit modal */}
         <Modal
@@ -751,55 +919,8 @@ export default function DoctorAppointmentsPage() {
             </Button>
           </Modal.Footer>
         </Modal>
-        <Modal
-          show={showWhatsappModal}
-          onHide={() => setShowWhatsappModal(false)}
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>
-              {t("doctor_appointments_page.whatsapp_title")}
-            </Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body>
-            <p className="text-muted">
-              {t("doctor_appointments_page.whatsapp_description")}
-            </p>
-
-            <input
-              className="form-control"
-              value={selectedAppointment?.whatsApp?.phone || ""}
-              readOnly
-            />
-          </Modal.Body>
-
-          <Modal.Footer>
-            <Button
-              variant="secondary"
-              onClick={() => setShowWhatsappModal(false)}
-            >
-              {t("doctor_appointments_page.cancel")}
-            </Button>
-
-            <Button
-              variant="success"
-              onClick={async () => {
-                await axios.patch(
-                  `${API_BASE}/schedule/appointment/appointments/${selectedAppointment._id}/confirm`,
-                  {},
-                  { withCredentials: true },
-                );
-
-                setShowWhatsappModal(false);
-                setWhatsappPhone("");
-                fetchAppointments();
-              }}
-            >
-              {t("doctor_appointments_page.confirm_and_open_whatsapp")}
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        {/* Окно «подтвердить и открыть WhatsApp» удалено вместе с самим
+            каналом: подтверждение теперь делает кнопка в строке приёма. */}
 
         {/* Video call modal (freelance appointment) */}
         <Modal
@@ -814,7 +935,10 @@ export default function DoctorAppointmentsPage() {
               <JitsiRoom
                 source="appointment"
                 id={videoApptId}
-                displayName="Dr. Radiolog"
+                /* Своё настоящее имя: пациент видит эту подпись в комнате.
+                   Здесь стояло жёстко вписанное «Dr. Radiolog» — так каждый
+                   врач платформы представлялся пациенту чужим именем. */
+                displayName={myName || "Doctor"}
                 onClose={() => setVideoApptId(null)}
               />
             )}

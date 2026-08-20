@@ -403,10 +403,7 @@
     "no_appointment_selected": "Не выбрано ни одного приёма."
   },
   "doctor_appointments_page": {
-    "whatsapp_title": "WhatsApp-консультация",
-    "whatsapp_description": "Укажите номер WhatsApp для этой консультации",
     "cancel": "Отмена",
-    "confirm_and_open_whatsapp": "Подтвердить и открыть WhatsApp",
     "loading": "Загрузка...",
     "error_loading": "Не удалось загрузить приёмы.",
     "page_title": "Мои приёмы",
@@ -447,7 +444,17 @@
     "calendar_blocked_reason": "Заблокировано, причина:",
     "day_schedule_title": "Расписание на",
     "free_slot": "Свободно",
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "out_of_schedule": "вне сетки",
+    "private_patient": "приватный",
+    "book_here": "Записать пациента на это время",
+    "book": "Записать",
+    "day_off": "Этот день закрыт в вашем расписании",
+    "no_schedule": "Расписание ещё не заполнено",
+    "no_intervals": "В этот день приёма нет",
+    "book_manual": "Записать на другое время",
+    "booked": "Пациент записан",
+    "booked_notified": "Пациент записан, уведомление отправлено"
   },
   "article_form": {
     "create_title": "Создать новую статью",
@@ -854,7 +861,11 @@
       "myClinics": "Мои клиники",
       "appointments": "Записи на приём",
       "clinicPanel": "Панель клиники",
-      "logout": "Выйти"
+      "logout": "Выйти",
+      "myLabResults": "Мои анализы",
+      "invite": "Пригласить друга",
+      "consentRequests": "Запросы доступа",
+      "telemed": "Онлайн-консультации"
     },
     "clinicRoles": {
       "owner": "Владелец",
@@ -957,7 +968,8 @@
       "polyclinic": "Поликлиника",
       "myProfile": "Мой профиль",
       "surgery": "Хирургия",
-      "modeling": "Моделирование"
+      "modeling": "Моделирование",
+      "navigation": "Навигация"
     }
   },
   "footer": {
@@ -1432,5 +1444,59 @@
     "appointmentsNoun": "приёмов проведено",
     "yearsNoun": "г. на DocPats",
     "monthsNoun": "мес. на DocPats"
-  }
+  },
+  "book_patient": {
+    "title": "Записать пациента",
+    "manual_time": "время вручную",
+    "mode_existing": "Мой пациент",
+    "mode_new": "Новый",
+    "search": "Поиск по имени или телефону",
+    "empty": "Никого не найдено",
+    "kind_private": "Приватный пациент",
+    "kind_registered": "Зарегистрирован",
+    "no_account": "без аккаунта",
+    "first_name": "Имя",
+    "last_name": "Фамилия",
+    "phone": "Телефон",
+    "phone_hint": "Необязательно. По телефону проверяется, не заведён ли уже такой пациент.",
+    "time": "Время приёма",
+    "time_hint": "Время по вашему расписанию. Приём вне сетки будет помечен, но слот займёт.",
+    "type": "Тип приёма",
+    "type_offline": "Очно",
+    "type_video": "Онлайн",
+    "notes": "Заметка (видна только вам)",
+    "cancel": "Отмена",
+    "submit": "Записать",
+    "out_of_schedule": "Это время вне вашего расписания. Записать всё равно?",
+    "book_anyway": "Да, записать",
+    "err_no_patient": "Выберите пациента",
+    "err_name": "Укажите имя и фамилию",
+    "err_time": "Укажите время приёма",
+    "err_generic": "Не удалось создать запись"
+  },
+  "booking_page": {
+    "title": "Записать пациента на приём",
+    "subtitle": "Выберите день и свободное время. Пациент увидит это время занятым.",
+    "to_journal": "Журнал приёмов",
+    "to_schedule": "Моё расписание",
+    "manual": "Другое время",
+    "day_off": "Этот день закрыт в вашем расписании",
+    "no_schedule": "Расписание ещё не заполнено",
+    "no_intervals": "В этот день приёма нет",
+    "manual_hint": "Срочного пациента всё равно можно записать — кнопкой «Другое время».",
+    "free_count": "Свободно",
+    "busy": "Занято",
+    "book_here": "Записать на это время",
+    "online": "Онлайн",
+    "offline": "Очно",
+    "out_of_schedule": "вне сетки",
+    "timezone": "Часовой пояс",
+    "booked": "Пациент записан",
+    "booked_notified": "Пациент записан, уведомление отправлено",
+    "legend_busy": "Есть записи",
+    "legend_free": "Свободно",
+    "legend_blocked": "Закрыто"
+  },
+  "book_patient_menu": "Записать на приём",
+  "create_clinic": "Создать клинику"
 }

@@ -166,5 +166,8 @@
   "examPrepTag": "Testlər və imtahanlar · yalnız həkimlər üçün",
   "examPrepText": "İmtahana hazırlıq: səhvlərin təhlili ilə testlər və imtahanlar",
   "examPrepDoctorsOnly": "İmtahana hazırlıq bölməsi yalnız həkimlər üçündür. Zəhmət olmasa həkim kimi daxil olun.",
-  "analyticsTag": "DOCPATS · Sİ SİNTEZİ"
+  "analyticsTag": "DOCPATS · Sİ SİNTEZİ",
+  "bookPatientTag": "Qəbul · yalnız həkimlər üçün",
+  "bookPatientText": "Pasiyenti qəbula yazdır — təqvim və boş vaxtlar",
+  "bookPatientDoctorsOnly": "Pasiyent yazdırmaq yalnız həkimlər üçündür. Həkim kimi daxil olun."
 }

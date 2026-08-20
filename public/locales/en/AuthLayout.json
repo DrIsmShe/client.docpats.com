@@ -166,5 +166,8 @@
   "examPrepTag": "Tests & exams · doctors only",
   "examPrepText": "Exam prep: tests and exams with answer explanations",
   "examPrepDoctorsOnly": "Exam prep is available to doctors only. Please sign in as a doctor.",
-  "analyticsTag": "DOCPATS · AI SYNTHESIS"
+  "analyticsTag": "DOCPATS · AI SYNTHESIS",
+  "bookPatientTag": "Appointments · doctors only",
+  "bookPatientText": "Book a patient — calendar and free slots",
+  "bookPatientDoctorsOnly": "Booking patients is available to doctors only. Sign in as a doctor."
 }

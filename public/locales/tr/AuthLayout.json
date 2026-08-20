@@ -166,5 +166,8 @@
   "examPrepTag": "Testler ve sınavlar · yalnızca doktorlar için",
   "examPrepText": "Sınav hazırlığı: hata çözümlemeli testler ve sınavlar",
   "examPrepDoctorsOnly": "Sınav hazırlığı bölümü yalnızca doktorlar içindir. Lütfen doktor olarak giriş yapın.",
-  "analyticsTag": "DOCPATS · YZ SENTEZİ"
+  "analyticsTag": "DOCPATS · YZ SENTEZİ",
+  "bookPatientTag": "Randevu · yalnızca doktorlar",
+  "bookPatientText": "Hasta randevusu oluştur — takvim ve boş saatler",
+  "bookPatientDoctorsOnly": "Hasta kaydı yalnızca doktorlar içindir. Doktor olarak giriş yapın."
 }

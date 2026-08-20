@@ -17,7 +17,7 @@ import { useState, useEffect } from "react";
  * панели.
  */
 export function useCurrentUser() {
-  const [user, setUser] = useState({ userId: null, role: null });
+  const [user, setUser] = useState({ userId: null, role: null, name: "" });
 
   useEffect(() => {
     fetch(
@@ -29,7 +29,14 @@ export function useCurrentUser() {
         if (!data) return;
         const u = data.user || data;
         const id = u.id || u._id;
-        if (id) setUser({ userId: String(id), role: u.role || null });
+        // Имя нужно звонку: в комнате Jitsi участник подписывается им.
+        // Без него собеседник видел чужую подпись — там стояло имя того,
+        // КОМУ звонят, то есть каждый видел на экране самого себя.
+        const name =
+          [u.firstName, u.lastName].filter(Boolean).join(" ") ||
+          u.username ||
+          "";
+        if (id) setUser({ userId: String(id), role: u.role || null, name });
       })
       .catch(() => {});
   }, []);

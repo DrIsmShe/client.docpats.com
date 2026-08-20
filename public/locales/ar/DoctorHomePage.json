@@ -97,7 +97,8 @@
         "unknown_author": "المؤلف غير معروف"
       },
       "scientific_articles": "المقالات العلمية"
-    }
+    },
+    "book_patient": "حجز موعد لمريض"
   },
   "my_clinic": "عيادتي",
   "chat": "الدردشة",

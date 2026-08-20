@@ -44,6 +44,7 @@ import { getSocket } from "../socket";
 // Она шлёт POST /communication/video/token { kind:"dialog", id:dialogId }.
 // Если называется getTelemedToken — импортируй её и переименуй вызовы ниже.
 import { getDialogVideoToken } from "../../../api/videoApi";
+import { startRingtone, stopRingtone } from "../lib/ringtone";
 import { track } from "../../../lib/analytics";
 import { CALL_STARTED } from "../../../lib/events";
 
@@ -69,16 +70,19 @@ function loadJitsiScript() {
   return externalApiPromise;
 }
 
-export function useJitsiCall(currentUserId) {
+export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
   const socket = getSocket();
 
   // ─── REFS ─────────────────────────────────────────────────────────────────
+  // Своё имя — подпись участника в комнате Jitsi. В ref, а не в зависимости
+  // mountJitsiRoom: приходит асинхронно (запрос профиля) и не должен
+  // пересобирать функцию монтирования посреди звонка.
+  const selfNameRef = useRef(displayName);
   const callTypeRef = useRef("audio"); // "audio" | "video"
   const durationSecRef = useRef(0);
   const callIdRef = useRef(null);
   const dialogIdRef = useRef(null);
   const timerRef = useRef(null);
-  const ringtoneRef = useRef(null);
 
   // Jitsi
   const jitsiApiRef = useRef(null); // JitsiMeetExternalAPI instance
@@ -98,6 +102,9 @@ export function useJitsiCall(currentUserId) {
   const [endedInfo, setEndedInfo] = useState(null);
 
   // ─── SYNC REFS ────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (displayName) selfNameRef.current = displayName;
+  }, [displayName]);
   useEffect(() => {
     callIdRef.current = callId;
   }, [callId]);
@@ -121,19 +128,13 @@ export function useJitsiCall(currentUserId) {
   }, []);
 
   // ─── RINGTONE (входящий) ─────────────────────────────────────────────────────
+  // Мелодия синтезируется в ringtone.js: файла /sounds/ringtone.mp3 в сборке
+  // нет, и прежний Audio(...).play() молча отваливался 404 — входящий вызов
+  // приходил беззвучно.
   useEffect(() => {
-    if (callState === "ringing_in") {
-      try {
-        ringtoneRef.current = new Audio("/sounds/ringtone.mp3");
-        ringtoneRef.current.loop = true;
-        ringtoneRef.current.volume = 0.7;
-        ringtoneRef.current.play().catch(() => {});
-      } catch (_) {}
-    } else if (ringtoneRef.current) {
-      ringtoneRef.current.pause();
-      ringtoneRef.current.currentTime = 0;
-      ringtoneRef.current = null;
-    }
+    if (callState === "ringing_in") startRingtone();
+    else stopRingtone();
+    return stopRingtone;
   }, [callState]);
 
   // ─── JITSI: DISPOSE ──────────────────────────────────────────────────────────
@@ -216,7 +217,8 @@ export function useJitsiCall(currentUserId) {
           width: "100%",
           height: "100%",
           userInfo: {
-            displayName: peerInfo?.name || "User",
+            // СВОЁ имя, а не собеседника: подпись видит вторая сторона.
+            displayName: selfNameRef.current || "User",
           },
           configOverwrite: {
             // [FIX] Отключаем prejoin ДВУМЯ способами — старый флаг
@@ -280,8 +282,11 @@ export function useJitsiCall(currentUserId) {
         setTimeout(() => setCallState("idle"), 3000);
       }
     },
+    // Имя участника берётся из ref — peerInfo здесь больше не нужен, и без
+    // него функция не пересобирается посреди звонка (а вместе с ней и
+    // подписка на socket-события ниже).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [peerInfo, cleanup],
+    [cleanup],
   );
 
   // ─── INITIATE (caller) ────────────────────────────────────────────────────────

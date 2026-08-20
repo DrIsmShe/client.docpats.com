@@ -356,10 +356,7 @@
     "no_appointment_selected": "لم يتم اختيار أي موعد."
   },
   "doctor_appointments_page": {
-    "whatsapp_title": "استشارة عبر واتساب",
-    "whatsapp_description": "يرجى إدخال رقم واتساب لهذه الاستشارة",
     "cancel": "إلغاء",
-    "confirm_and_open_whatsapp": "تأكيد وفتح واتساب",
     "loading": "جارٍ التحميل...",
     "error_loading": "فشل تحميل المواعيد.",
     "page_title": "مواعيدي",
@@ -400,7 +397,17 @@
     "calendar_blocked_reason": "السبب:",
     "day_schedule_title": "جدول اليوم:",
     "free_slot": "وقت متاح",
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "out_of_schedule": "خارج الجدول",
+    "private_patient": "خاص",
+    "book_here": "حجز مريض في هذا الوقت",
+    "book": "حجز",
+    "day_off": "هذا اليوم مغلق في جدولك",
+    "no_schedule": "لم يتم إعداد الجدول بعد",
+    "no_intervals": "لا توجد مواعيد في هذا اليوم",
+    "book_manual": "الحجز في وقت آخر",
+    "booked": "تم حجز المريض",
+    "booked_notified": "تم حجز المريض وإرسال الإشعار"
   },
   "article_form": {
     "create_title": "إنشاء مقالة جديدة",
@@ -816,7 +823,11 @@
       "myClinics": "عياداتي",
       "appointments": "المواعيد",
       "clinicPanel": "لوحة العيادة",
-      "logout": "تسجيل الخروج"
+      "logout": "تسجيل الخروج",
+      "myLabResults": "تحاليلي",
+      "invite": "دعوة صديق",
+      "consentRequests": "طلبات الوصول",
+      "telemed": "استشارات عبر الإنترنت"
     },
     "clinicRoles": {
       "owner": "المالك",
@@ -891,7 +902,8 @@
       "polyclinic": "العيادة الخارجية",
       "myProfile": "ملفي الشخصي",
       "surgery": "الجراحة",
-      "modeling": "النمذجة"
+      "modeling": "النمذجة",
+      "navigation": "التنقل"
     }
   },
   "footer": {
@@ -1375,5 +1387,59 @@
     "appointmentsNoun": "موعد أُجري",
     "yearsNoun": "سنة في DocPats",
     "monthsNoun": "شهر في DocPats"
-  }
+  },
+  "book_patient": {
+    "title": "حجز موعد لمريض",
+    "manual_time": "وقت يدوي",
+    "mode_existing": "مريضي",
+    "mode_new": "جديد",
+    "search": "البحث بالاسم أو الهاتف",
+    "empty": "لم يتم العثور على أحد",
+    "kind_private": "مريض خاص",
+    "kind_registered": "مسجَّل",
+    "no_account": "بدون حساب",
+    "first_name": "الاسم",
+    "last_name": "اللقب",
+    "phone": "الهاتف",
+    "phone_hint": "اختياري. يُستخدم الهاتف للتحقق مما إذا كان هذا المريض موجودًا بالفعل.",
+    "time": "وقت الموعد",
+    "time_hint": "بتوقيت جدولك. الموعد خارج الجدول يُميَّز لكنه يشغل الوقت أيضًا.",
+    "type": "نوع الموعد",
+    "type_offline": "حضوري",
+    "type_video": "عبر الإنترنت",
+    "notes": "ملاحظة (تظهر لك فقط)",
+    "cancel": "إلغاء",
+    "submit": "حجز",
+    "out_of_schedule": "هذا الوقت خارج جدولك. هل تريد الحجز على أي حال؟",
+    "book_anyway": "نعم، احجز",
+    "err_no_patient": "اختر مريضًا",
+    "err_name": "أدخل الاسم واللقب",
+    "err_time": "أدخل وقت الموعد",
+    "err_generic": "تعذّر إنشاء الموعد"
+  },
+  "booking_page": {
+    "title": "حجز موعد لمريض",
+    "subtitle": "اختر اليوم والوقت المتاح. سيرى المريض هذا الوقت محجوزًا.",
+    "to_journal": "سجل المواعيد",
+    "to_schedule": "جدولي",
+    "manual": "وقت آخر",
+    "day_off": "هذا اليوم مغلق في جدولك",
+    "no_schedule": "لم يتم إعداد الجدول بعد",
+    "no_intervals": "لا توجد مواعيد في هذا اليوم",
+    "manual_hint": "يمكن حجز مريض عاجل عبر زر «وقت آخر».",
+    "free_count": "متاح",
+    "busy": "محجوز",
+    "book_here": "الحجز في هذا الوقت",
+    "online": "عبر الإنترنت",
+    "offline": "حضوري",
+    "out_of_schedule": "خارج الجدول",
+    "timezone": "المنطقة الزمنية",
+    "booked": "تم حجز المريض",
+    "booked_notified": "تم حجز المريض وإرسال الإشعار",
+    "legend_busy": "توجد مواعيد",
+    "legend_free": "متاح",
+    "legend_blocked": "مغلق"
+  },
+  "book_patient_menu": "حجز موعد",
+  "create_clinic": "إنشاء عيادة"
 }

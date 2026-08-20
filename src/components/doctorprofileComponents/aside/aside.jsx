@@ -19,6 +19,7 @@ import {
   LuUserCheck,
   LuHospital,
   LuCalendarClock,
+  LuCalendarPlus,
   LuMessagesSquare,
   LuLogOut,
   LuBuilding2,
@@ -595,6 +596,17 @@ export default function Aside() {
               <LuCirclePlus />
             </span>
             {t("create_clinic", { defaultValue: "Создать клинику" })}
+          </Link>
+          {/* Запись пациента — регистратурное действие, к нему ходят чаще
+              всего остального в этом разделе, поэтому отдельным пунктом, а не
+              вглубь журнала приёмов. */}
+          <Link className="dp2-item is-chat" to="/doctor/book-patient">
+            <span className="dp2-icon">
+              <LuCalendarPlus />
+            </span>
+            {t("book_patient_menu", {
+              defaultValue: "Записать на приём",
+            })}
           </Link>
           <div
             className="dp2-item is-chat"

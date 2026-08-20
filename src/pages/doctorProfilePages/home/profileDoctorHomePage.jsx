@@ -31,6 +31,7 @@ import {
   LuUserCheck,
   LuHospital,
   LuCalendarClock,
+  LuCalendarPlus,
   LuMessagesSquare,
   LuActivity,
   LuTrendingUp,
@@ -101,6 +102,32 @@ const S = `
     gap: 20px;
     flex-wrap: wrap;
     position: relative;
+  }
+  /* Кнопка записи пациента: собственная строка под приветствием, во всю
+     ширину шапки — её должно быть видно раньше всего остального. */
+  .hp-hero-cta { position: relative; margin-top: 18px; }
+  .hp-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 26px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff !important;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(14,165,233,.28);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .hp-cta-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 30px rgba(14,165,233,.36);
+    color: #fff !important;
+  }
+  .hp-cta-btn svg { width: 20px; height: 20px; }
+  @media (max-width: 600px) {
+    .hp-cta-btn { width: 100%; justify-content: center; }
   }
   .hp-greeting-block { display: flex; align-items: center; gap: 16px; min-width: 0; flex: 1; }
   .hp-avatar {
@@ -1533,6 +1560,19 @@ export default function ProfileDoctorHomePage() {
                 </span>
               )}
             </div>
+          </div>
+
+          {/* Запись пациента — главное регистратурное действие врача.
+              Крупной кнопкой прямо в шапке: к нему обращаются чаще, чем
+              к любому другому разделу, а искать его в меню каждый раз —
+              это лишние два клика на каждого пациента. */}
+          <div className="hp-hero-cta">
+            <Link to="/doctor/book-patient" className="hp-cta-btn">
+              <LuCalendarPlus />
+              {t("doctor_home.book_patient", {
+                defaultValue: "Записать пациента на приём",
+              })}
+            </Link>
           </div>
         </div>
 

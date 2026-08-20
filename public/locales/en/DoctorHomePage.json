@@ -97,7 +97,8 @@
         "unknown_author": "Unknown author"
       },
       "scientific_articles": "Scientific articles"
-    }
+    },
+    "book_patient": "Book a patient"
   },
   "my_clinic": "My clinic",
   "chat": "Chat",

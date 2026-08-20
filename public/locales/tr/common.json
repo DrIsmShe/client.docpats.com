@@ -325,10 +325,7 @@
     "no_appointment_selected": "Herhangi bir randevu seçilmedi."
   },
   "doctor_appointments_page": {
-    "whatsapp_title": "WhatsApp Danışmanlığı",
-    "whatsapp_description": "Bu danışmanlık için WhatsApp numarasını belirtin",
     "cancel": "İptal",
-    "confirm_and_open_whatsapp": "Onayla ve WhatsApp’ı aç",
     "loading": "Yükleniyor...",
     "error_loading": "Randevular yüklenemedi.",
     "page_title": "Randevularım",
@@ -369,7 +366,17 @@
     "calendar_blocked_reason": "Engel nedeni:",
     "day_schedule_title": "Gün Programı:",
     "free_slot": "Boş zaman",
-    "close": "Kapat"
+    "close": "Kapat",
+    "out_of_schedule": "plan dışı",
+    "private_patient": "özel",
+    "book_here": "Bu saate hasta kaydet",
+    "book": "Kaydet",
+    "day_off": "Bu gün takviminizde kapalı",
+    "no_schedule": "Takviminiz henüz oluşturulmadı",
+    "no_intervals": "Bu gün randevu yok",
+    "book_manual": "Başka saate kaydet",
+    "booked": "Hasta kaydedildi",
+    "booked_notified": "Hasta kaydedildi, bildirim gönderildi"
   },
   "article_form": {
     "create_title": "Yeni makale oluştur",
@@ -816,7 +823,11 @@
       "myClinics": "Kliniklerim",
       "appointments": "Randevular",
       "clinicPanel": "Klinik paneli",
-      "logout": "Çıkış yap"
+      "logout": "Çıkış yap",
+      "myLabResults": "Tahlillerim",
+      "invite": "Arkadaş davet et",
+      "consentRequests": "Erişim talepleri",
+      "telemed": "Çevrimiçi konsültasyonlar"
     },
     "clinicRoles": {
       "owner": "Sahip",
@@ -907,7 +918,8 @@
       "polyclinic": "Poliklinik",
       "myProfile": "Profilim",
       "surgery": "Cerrahi",
-      "modeling": "Modelleme"
+      "modeling": "Modelleme",
+      "navigation": "Gezinme"
     }
   },
   "footer": {
@@ -1381,5 +1393,59 @@
     "appointmentsNoun": "randevu yapıldı",
     "yearsNoun": "yıl DocPats'ta",
     "monthsNoun": "ay DocPats'ta"
-  }
+  },
+  "book_patient": {
+    "title": "Hasta kaydet",
+    "manual_time": "saati elle gir",
+    "mode_existing": "Hastam",
+    "mode_new": "Yeni",
+    "search": "Ad veya telefonla ara",
+    "empty": "Kimse bulunamadı",
+    "kind_private": "Özel hasta",
+    "kind_registered": "Kayıtlı",
+    "no_account": "hesabı yok",
+    "first_name": "Ad",
+    "last_name": "Soyad",
+    "phone": "Telefon",
+    "phone_hint": "Zorunlu değil. Telefon, bu hastanın zaten kayıtlı olup olmadığını kontrol eder.",
+    "time": "Randevu saati",
+    "time_hint": "Takviminizin saat diliminde. Plan dışı randevu işaretlenir ama saati doldurur.",
+    "type": "Randevu türü",
+    "type_offline": "Yüz yüze",
+    "type_video": "Çevrimiçi",
+    "notes": "Not (yalnızca siz görürsünüz)",
+    "cancel": "İptal",
+    "submit": "Kaydet",
+    "out_of_schedule": "Bu saat takviminizin dışında. Yine de kaydedilsin mi?",
+    "book_anyway": "Evet, kaydet",
+    "err_no_patient": "Hasta seçin",
+    "err_name": "Ad ve soyad girin",
+    "err_time": "Randevu saatini girin",
+    "err_generic": "Randevu oluşturulamadı"
+  },
+  "booking_page": {
+    "title": "Hasta randevusu oluştur",
+    "subtitle": "Gün ve boş saat seçin. Hasta bu saati dolu görecek.",
+    "to_journal": "Randevu kaydı",
+    "to_schedule": "Takvimim",
+    "manual": "Başka saat",
+    "day_off": "Bu gün takviminizde kapalı",
+    "no_schedule": "Takviminiz henüz oluşturulmadı",
+    "no_intervals": "Bu gün randevu yok",
+    "manual_hint": "Acil hasta yine de kaydedilebilir — «Başka saat» düğmesiyle.",
+    "free_count": "Boş",
+    "busy": "Dolu",
+    "book_here": "Bu saate kaydet",
+    "online": "Çevrimiçi",
+    "offline": "Yüz yüze",
+    "out_of_schedule": "plan dışı",
+    "timezone": "Saat dilimi",
+    "booked": "Hasta kaydedildi",
+    "booked_notified": "Hasta kaydedildi, bildirim gönderildi",
+    "legend_busy": "Randevu var",
+    "legend_free": "Boş",
+    "legend_blocked": "Kapalı"
+  },
+  "book_patient_menu": "Hasta kaydet",
+  "create_clinic": "Klinik oluştur"
 }

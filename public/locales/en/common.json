@@ -287,10 +287,7 @@
     "load_error": "Failed to load archived appointments."
   },
   "doctor_appointments_page": {
-    "whatsapp_title": "WhatsApp Consultation",
-    "whatsapp_description": "Specify the WhatsApp number for this consultation",
     "cancel": "Cancel",
-    "confirm_and_open_whatsapp": "Confirm and open WhatsApp",
     "loading": "Loading...",
     "error_loading": "Failed to load appointments.",
     "page_title": "My Appointments",
@@ -331,7 +328,17 @@
     "calendar_blocked_reason": "Blocked because:",
     "day_schedule_title": "Schedule for",
     "free_slot": "Free slot",
-    "close": "Close"
+    "close": "Close",
+    "out_of_schedule": "off-schedule",
+    "private_patient": "private",
+    "book_here": "Book a patient for this time",
+    "book": "Book",
+    "day_off": "This day is closed in your schedule",
+    "no_schedule": "Your schedule is not set up yet",
+    "no_intervals": "No appointments on this day",
+    "book_manual": "Book another time",
+    "booked": "Patient booked",
+    "booked_notified": "Patient booked, notification sent"
   },
   "article_form": {
     "create_title": "Create a new article",
@@ -796,7 +803,11 @@
       "myClinics": "My clinics",
       "appointments": "Appointments",
       "clinicPanel": "Clinic panel",
-      "logout": "Sign out"
+      "logout": "Sign out",
+      "myLabResults": "My lab results",
+      "invite": "Invite a friend",
+      "consentRequests": "Access requests",
+      "telemed": "Online consultations"
     },
     "clinicRoles": {
       "owner": "Owner",
@@ -878,7 +889,8 @@
       "polyclinic": "Polyclinic",
       "myProfile": "My profile",
       "surgery": "Surgery",
-      "modeling": "Modeling"
+      "modeling": "Modeling",
+      "navigation": "Navigation"
     }
   },
   "footer": {
@@ -1357,5 +1369,59 @@
     "appointmentsNoun": "appointments held",
     "yearsNoun": "yr on DocPats",
     "monthsNoun": "mo on DocPats"
-  }
+  },
+  "book_patient": {
+    "title": "Book a patient",
+    "manual_time": "custom time",
+    "mode_existing": "My patient",
+    "mode_new": "New",
+    "search": "Search by name or phone",
+    "empty": "Nobody found",
+    "kind_private": "Private patient",
+    "kind_registered": "Registered",
+    "no_account": "no account",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "phone": "Phone",
+    "phone_hint": "Optional. The phone is used to check whether this patient already exists.",
+    "time": "Appointment time",
+    "time_hint": "Time in your schedule's zone. An off-schedule visit is marked but still takes the slot.",
+    "type": "Visit type",
+    "type_offline": "In person",
+    "type_video": "Online",
+    "notes": "Note (visible only to you)",
+    "cancel": "Cancel",
+    "submit": "Book",
+    "out_of_schedule": "This time is outside your schedule. Book anyway?",
+    "book_anyway": "Yes, book it",
+    "err_no_patient": "Select a patient",
+    "err_name": "Enter first and last name",
+    "err_time": "Enter the appointment time",
+    "err_generic": "Could not create the appointment"
+  },
+  "booking_page": {
+    "title": "Book a patient",
+    "subtitle": "Pick a day and a free time. The patient will see this time as taken.",
+    "to_journal": "Appointments",
+    "to_schedule": "My schedule",
+    "manual": "Custom time",
+    "day_off": "This day is closed in your schedule",
+    "no_schedule": "Your schedule is not set up yet",
+    "no_intervals": "No appointments on this day",
+    "manual_hint": "An urgent patient can still be booked — use “Custom time”.",
+    "free_count": "Free",
+    "busy": "Taken",
+    "book_here": "Book this time",
+    "online": "Online",
+    "offline": "In person",
+    "out_of_schedule": "off-schedule",
+    "timezone": "Time zone",
+    "booked": "Patient booked",
+    "booked_notified": "Patient booked, notification sent",
+    "legend_busy": "Has appointments",
+    "legend_free": "Free",
+    "legend_blocked": "Closed"
+  },
+  "book_patient_menu": "Book a patient",
+  "create_clinic": "Create a clinic"
 }

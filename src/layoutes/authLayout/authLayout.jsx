@@ -1006,6 +1006,19 @@ export default function AuthLayout() {
       setExamNote(true);
     }
   };
+
+  // Запись пациента на приём. Карточка видна всем, но раздел врачебный:
+  // врача уводим прямо в календарь записи, остальным — заметка. Кидать
+  // гостя на /doctor/* и ждать, что охрана раздела вернёт его на логин,
+  // было бы хуже: человек упёрся бы в пустой экран входа без объяснения.
+  const [bookNote, setBookNote] = useState(false);
+  const handleBookPatientClick = () => {
+    if (["doctor", "admin", "superadmin"].includes(userRole)) {
+      navigate("/doctor/book-patient");
+    } else {
+      setBookNote(true);
+    }
+  };
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
@@ -1239,6 +1252,71 @@ export default function AuthLayout() {
                         {t("examPrepDoctorsOnly", {
                           defaultValue:
                             "Раздел «Подготовка к экзаменам» доступен только врачам. Войдите как врач.",
+                        })}
+                      </div>
+                    )}
+                  </motion.div>
+
+                  {/* Записать пациента на приём — врачебный раздел, тот же
+                      гейт по роли, что и у подготовки к экзаменам. */}
+                  <motion.div variants={item} style={{ marginBottom: 12 }}>
+                    <div
+                      className="dp-news-card"
+                      role="button"
+                      tabIndex={0}
+                      style={{ cursor: "pointer" }}
+                      onClick={handleBookPatientClick}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          handleBookPatientClick();
+                        }
+                      }}
+                    >
+                      <div
+                        className="dp-news-card-accent"
+                        style={{
+                          background:
+                            "linear-gradient(180deg, #38bdf8, #0369a1)",
+                        }}
+                      />
+                      <div className="dp-news-card-body">
+                        <div className="dp-news-card-icon">🗓</div>
+                        <div className="dp-news-card-copy">
+                          <div className="dp-news-card-tag">
+                            {"DocPats · "}
+                            {t("bookPatientTag", {
+                              defaultValue: "Приём · только для врачей",
+                            })}
+                          </div>
+                          <div className="dp-news-card-text">
+                            {t("bookPatientText", {
+                              defaultValue:
+                                "Записать пациента на приём — календарь и свободные слоты",
+                            })}
+                          </div>
+                        </div>
+                        <span className="dp-news-card-arrow">
+                          <Arrow />
+                        </span>
+                      </div>
+                    </div>
+                    {bookNote && (
+                      <div
+                        style={{
+                          marginTop: 8,
+                          padding: "8px 12px",
+                          borderRadius: 10,
+                          background: "rgba(56,189,248,.15)",
+                          border: "1px solid rgba(56,189,248,.4)",
+                          color: "#bae6fd",
+                          fontSize: 13,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {t("bookPatientDoctorsOnly", {
+                          defaultValue:
+                            "Запись пациентов доступна только врачам. Войдите как врач.",
                         })}
                       </div>
                     )}

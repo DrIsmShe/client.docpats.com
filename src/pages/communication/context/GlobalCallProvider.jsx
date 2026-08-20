@@ -41,12 +41,12 @@ export function useCallContext() {
 }
 
 export function GlobalCallProvider({ currentUserId, children }) {
-  const call = useJitsiCall(currentUserId);
-
   // Роль нужна записи приёма: панель показывается врачу и пациенту
-  // по-разному. Запрос тот же самый, что и за userId, — лишнего похода
-  // на сервер нет.
-  const { role } = useCurrentUser();
+  // по-разному. Имя — подпись в комнате звонка. Запрос тот же самый, что
+  // и за userId, — лишнего похода на сервер нет.
+  const { role, name } = useCurrentUser();
+
+  const call = useJitsiCall(currentUserId, { displayName: name });
 
   // Черновик, собранный из разговора. Показывается врачу поверх всего
   // СРАЗУ после завершения записи: пока приём в памяти, правки занимают
@@ -108,6 +108,9 @@ export function GlobalCallProvider({ currentUserId, children }) {
         }
         scribeRoom={dialogId ? `dialog-${dialogId}` : null}
         scribePeerUserId={peerId}
+        /* Имя собеседника — чтобы завести карту одним нажатием, а не
+           переписывать его с экрана звонка. */
+        scribePeerName={peerInfo?.name || ""}
         onScribeDraft={setScribeDraft}
       />
 

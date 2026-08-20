@@ -5,6 +5,7 @@
 
 const ICONS = {
   appointment_booked: "📅",
+  appointment_booked_by_doctor: "📅",
   appointment_confirmed: "📅",
   appointment_completed: "✅",
   appointment_cancelled: "❌",

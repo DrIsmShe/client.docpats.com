@@ -369,6 +369,7 @@ export default function CallUI({
   scribeRole = null, // "doctor" | "patient"
   scribeRoom = null,
   scribePeerUserId = null,
+  scribePeerName = "",
   onScribeDraft = null,
 }) {
   // [FULLSCREEN] Хуки ДОЛЖНЫ быть до раннего return (правила хуков React).
@@ -470,6 +471,7 @@ export default function CallUI({
                 role={scribeRole}
                 room={scribeRoom}
                 peerUserId={scribePeerUserId}
+                peerName={scribePeerName}
                 onDraft={onScribeDraft}
               />
             </Suspense>

@@ -97,7 +97,8 @@
         "unknown_author": "Yazar bilinmiyor"
       },
       "scientific_articles": "Bilimsel makaleler"
-    }
+    },
+    "book_patient": "Hasta randevusu oluştur"
   },
   "my_clinic": "Kliniğim",
   "chat": "Sohbet",

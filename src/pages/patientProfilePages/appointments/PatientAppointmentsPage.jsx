@@ -530,7 +530,6 @@ export default function PatientAppointmentsPage() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [contactPhone, setContactPhone] = useState("");
 
   const [filters, setFilters] = useState({
     country: "",
@@ -609,11 +608,9 @@ export default function PatientAppointmentsPage() {
      🔹 Запись
   ============================================================ */
   const handleBook = async (slot) => {
-    if (type === "video" && !/^\d{10,15}$/.test(contactPhone)) {
-      setError(t("error_whatsapp_required"));
-      return;
-    }
-
+    // Требование номера WhatsApp для онлайн-приёма убрано вместе с самим
+    // каналом: приём идёт в видеокомнате платформы, номер для него не нужен
+    // и был обязательным барьером на пути к записи.
     if (!selectedDoctor) {
       setError(t("error_select_doctor"));
       return;
@@ -633,10 +630,6 @@ export default function PatientAppointmentsPage() {
           startsAt: slot.start,
           endsAt: slot.end,
           type,
-          contact:
-            type === "video"
-              ? { phone: contactPhone, source: "patient" }
-              : null,
         },
         { withCredentials: true },
       );
@@ -644,7 +637,6 @@ export default function PatientAppointmentsPage() {
       setMessage(t("success_created"));
       setError("");
       setSlots([]);
-      setContactPhone("");
       setTimeout(() => setMessage(""), 4000);
     } catch (err) {
       setError(err.response?.data?.message || t("error_create"));
@@ -830,7 +822,7 @@ export default function PatientAppointmentsPage() {
         </div>
       </div>
 
-      {/* ===== Тип приёма, дата, WhatsApp ===== */}
+      {/* ===== Тип приёма и дата ===== */}
       {selectedDoctor && (
         <div className="pa-card">
           {/* Тип */}
@@ -896,22 +888,8 @@ export default function PatientAppointmentsPage() {
             </div>
           </div>
 
-          {/* WhatsApp */}
-          {type === "video" && (
-            <div className="pa-field">
-              <label className="pa-label">📱 {t("whatsapp_label")}</label>
-              <input
-                type="tel"
-                className="pa-input"
-                placeholder="994501234567"
-                value={contactPhone}
-                onChange={(e) =>
-                  setContactPhone(e.target.value.replace(/\D/g, ""))
-                }
-              />
-              <span className="pa-small-note">{t("whatsapp_hint")}</span>
-            </div>
-          )}
+          {/* Поле номера WhatsApp удалено: онлайн-приём проходит в
+              видеокомнате платформы, и телефон для него не требуется. */}
         </div>
       )}
 

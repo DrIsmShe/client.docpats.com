@@ -325,10 +325,7 @@
     "no_appointment_selected": "Heç bir qəbul seçilməyib."
   },
   "doctor_appointments_page": {
-    "whatsapp_title": "WhatsApp konsultasiyası",
-    "whatsapp_description": "Bu konsultasiya üçün WhatsApp nömrəsini göstərin",
     "cancel": "Ləğv et",
-    "confirm_and_open_whatsapp": "Təsdiqlə və WhatsApp aç",
     "loading": "Yüklənir...",
     "error_loading": "Qəbul məlumatlarını yükləmək mümkün olmadı.",
     "page_title": "Mənim qəbul tarixlərim",
@@ -369,7 +366,17 @@
     "calendar_blocked_reason": "Bloklanma səbəbi:",
     "day_schedule_title": "Günün cədvəli:",
     "free_slot": "Boş vaxt",
-    "close": "Bağla"
+    "close": "Bağla",
+    "out_of_schedule": "cədvəldən kənar",
+    "private_patient": "şəxsi",
+    "book_here": "Bu vaxta pasiyent yazdır",
+    "book": "Yazdır",
+    "day_off": "Bu gün cədvəlinizdə bağlıdır",
+    "no_schedule": "Cədvəl hələ doldurulmayıb",
+    "no_intervals": "Bu gün qəbul yoxdur",
+    "book_manual": "Başqa vaxta yazdır",
+    "booked": "Pasiyent yazıldı",
+    "booked_notified": "Pasiyent yazıldı, bildiriş göndərildi"
   },
   "article_form": {
     "create_title": "Yeni məqalə yarat",
@@ -817,7 +824,11 @@
       "myClinics": "Kliniklərim",
       "appointments": "Qəbullar",
       "clinicPanel": "Klinika paneli",
-      "logout": "Çıxış"
+      "logout": "Çıxış",
+      "myLabResults": "Analizlərim",
+      "invite": "Dostu dəvət et",
+      "consentRequests": "Giriş sorğuları",
+      "telemed": "Onlayn konsultasiyalar"
     },
     "clinicRoles": {
       "owner": "Sahib",
@@ -987,7 +998,8 @@
       "polyclinic": "Poliklinika",
       "myProfile": "Mənim profilim",
       "surgery": "Cərrahiyyə",
-      "modeling": "Modelləşdirmə"
+      "modeling": "Modelləşdirmə",
+      "navigation": "Naviqasiya"
     }
   },
   "footer": {
@@ -1463,5 +1475,59 @@
     "appointmentsNoun": "qəbul keçirilib",
     "yearsNoun": "il DocPats-da",
     "monthsNoun": "ay DocPats-da"
-  }
+  },
+  "book_patient": {
+    "title": "Pasiyenti qəbula yazdır",
+    "manual_time": "vaxt əl ilə",
+    "mode_existing": "Mənim pasiyentim",
+    "mode_new": "Yeni",
+    "search": "Ad və ya telefonla axtarış",
+    "empty": "Heç kim tapılmadı",
+    "kind_private": "Şəxsi pasiyent",
+    "kind_registered": "Qeydiyyatdan keçib",
+    "no_account": "hesabı yoxdur",
+    "first_name": "Ad",
+    "last_name": "Soyad",
+    "phone": "Telefon",
+    "phone_hint": "Məcburi deyil. Telefon üzrə belə pasiyentin artıq olub-olmadığı yoxlanılır.",
+    "time": "Qəbul vaxtı",
+    "time_hint": "Cədvəlinizin vaxt zonası ilə. Cədvəldən kənar qəbul işarələnir, amma vaxtı tutur.",
+    "type": "Qəbul növü",
+    "type_offline": "Əyani",
+    "type_video": "Onlayn",
+    "notes": "Qeyd (yalnız sizə görünür)",
+    "cancel": "Ləğv et",
+    "submit": "Yazdır",
+    "out_of_schedule": "Bu vaxt cədvəlinizdən kənardır. Yenə də yazdırılsın?",
+    "book_anyway": "Bəli, yazdır",
+    "err_no_patient": "Pasiyenti seçin",
+    "err_name": "Ad və soyadı yazın",
+    "err_time": "Qəbul vaxtını göstərin",
+    "err_generic": "Qeyd yaradıla bilmədi"
+  },
+  "booking_page": {
+    "title": "Pasiyenti qəbula yazdır",
+    "subtitle": "Gün və boş vaxt seçin. Pasiyent bu vaxtı tutulmuş görəcək.",
+    "to_journal": "Qəbul jurnalı",
+    "to_schedule": "Cədvəlim",
+    "manual": "Başqa vaxt",
+    "day_off": "Bu gün cədvəlinizdə bağlıdır",
+    "no_schedule": "Cədvəl hələ doldurulmayıb",
+    "no_intervals": "Bu gün qəbul yoxdur",
+    "manual_hint": "Təcili pasiyenti yenə də yazdırmaq olar — «Başqa vaxt» düyməsi ilə.",
+    "free_count": "Boş",
+    "busy": "Tutulub",
+    "book_here": "Bu vaxta yazdır",
+    "online": "Onlayn",
+    "offline": "Əyani",
+    "out_of_schedule": "cədvəldən kənar",
+    "timezone": "Saat qurşağı",
+    "booked": "Pasiyent yazıldı",
+    "booked_notified": "Pasiyent yazıldı, bildiriş göndərildi",
+    "legend_busy": "Qeydlər var",
+    "legend_free": "Boş",
+    "legend_blocked": "Bağlı"
+  },
+  "book_patient_menu": "Qəbula yazdır",
+  "create_clinic": "Klinika yarat"
 }
