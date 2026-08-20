@@ -169,5 +169,7 @@
   "analyticsTag": "DOCPATS · YZ SENTEZİ",
   "bookPatientTag": "Randevu · yalnızca doktorlar",
   "bookPatientText": "Hasta randevusu oluştur — takvim ve boş saatler",
-  "bookPatientDoctorsOnly": "Hasta kaydı yalnızca doktorlar içindir. Doktor olarak giriş yapın."
+  "bookPatientDoctorsOnly": "Hasta kaydı yalnızca doktorlar içindir. Doktor olarak giriş yapın.",
+  "doctorsOnlyTag": "yalnızca doktorlar",
+  "synthesisDoctorsOnly": "Bilimsel makale oluşturma yalnızca doktorlara açıktır. Doktor olarak giriş yapın."
 }

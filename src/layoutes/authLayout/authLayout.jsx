@@ -1019,6 +1019,18 @@ export default function AuthLayout() {
       setBookNote(true);
     }
   };
+
+  // Создание научной статьи по источникам — тоже врачебный раздел.
+  // Сервер закрыт (requireDoctorRole на /api/user-synthesis), здесь — чтобы
+  // пациент не упирался в пустую страницу без объяснения.
+  const [synthesisNote, setSynthesisNote] = useState(false);
+  const handleSynthesisClick = () => {
+    if (["doctor", "admin", "superadmin"].includes(userRole)) {
+      navigate("/public/user-synthesis");
+    } else {
+      setSynthesisNote(true);
+    }
+  };
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
@@ -1322,11 +1334,23 @@ export default function AuthLayout() {
                     )}
                   </motion.div>
 
+                  {/* Создание научной статьи — врачебный раздел (сервер
+                      закрывает /api/user-synthesis через requireDoctorRole).
+                      Карточка остаётся видимой как витрина возможностей
+                      платформы, но клик гейтится по роли, как у экзаменов. */}
                   <motion.div variants={item} style={{ marginBottom: 12 }}>
-                    <Link
-                      to="/public/user-synthesis"
+                    <div
                       className="dp-news-card"
-                      style={{ textDecoration: "none" }}
+                      role="button"
+                      tabIndex={0}
+                      style={{ cursor: "pointer" }}
+                      onClick={handleSynthesisClick}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          handleSynthesisClick();
+                        }
+                      }}
                     >
                       <div
                         className="dp-news-card-accent"
@@ -1340,7 +1364,9 @@ export default function AuthLayout() {
                         <div className="dp-news-card-copy">
                           <div className="dp-news-card-tag">
                             {"DocPats · AI Synthesis · "}
-                            {t("freeTag", { defaultValue: "Бесплатно" })}
+                            {t("doctorsOnlyTag", {
+                              defaultValue: "только для врачей",
+                            })}
                           </div>
                           <div className="dp-news-card-text">
                             {t("synthesisText", {
@@ -1353,7 +1379,26 @@ export default function AuthLayout() {
                           <Arrow />
                         </span>
                       </div>
-                    </Link>
+                    </div>
+                    {synthesisNote && (
+                      <div
+                        style={{
+                          marginTop: 8,
+                          padding: "8px 12px",
+                          borderRadius: 10,
+                          background: "rgba(184,48,48,.15)",
+                          border: "1px solid rgba(184,48,48,.4)",
+                          color: "#fecaca",
+                          fontSize: 13,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {t("synthesisDoctorsOnly", {
+                          defaultValue:
+                            "Создание научных статей доступно только врачам. Войдите как врач.",
+                        })}
+                      </div>
+                    )}
                   </motion.div>
                   <motion.div className="dp-news-card-wrap" variants={item}>
                     <a

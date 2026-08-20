@@ -270,6 +270,35 @@ export default function UserSynthesisPage() {
   const [myArticles, setMyArticles] = useState([]);
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");
+  // Доступ к разделу: checking | allowed | guest | denied.
+  const [access, setAccess] = useState("checking");
+
+  // Роль спрашиваем у сессии напрямую: лимит генераций для пациента теперь
+  // отвечает 403, и по нему нельзя отличить «не врач» от «сервер прилёг».
+  useEffect(() => {
+    let alive = true;
+    fetch(
+      `${process.env.REACT_APP_API_URL || "http://localhost:11000"}/common-for-user`,
+      { credentials: "include" },
+    )
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!alive) return;
+        const u = data?.user || data;
+        if (!data || data.authenticated === false || !u?.role) {
+          return setAccess("guest");
+        }
+        setAccess(
+          ["doctor", "admin", "superadmin"].includes(u.role)
+            ? "allowed"
+            : "denied",
+        );
+      })
+      .catch(() => alive && setAccess("guest"));
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   const isLoggedIn = detectLoggedIn(limit);
   const isPatient = limit?.role === "patient" || limit?.role === "user";
@@ -378,17 +407,37 @@ export default function UserSynthesisPage() {
   };
   const dateLocale = dateLocaleMap[i18n.language] || "ru-RU";
 
+  // Сколько статей в месяц даёт тариф — по данным сервера.
+  //
+  // Раньше эти числа лежали в файлах переводов и разошлись с действительностью
+  // все сразу: баннер пробного периода обещал 10 статей рядом со счётчиком
+  // «2 / 4», Doctor Start продавал 3 вместо 4, Growth — 15 вместо 12, Pro —
+  // «безлимит» вместо 25. Теперь витрина берёт числа оттуда же, откуда берётся
+  // запрет (aiPlanLimits.js), и разойтись им больше негде.
+  const planArticles = (key) => limit?.catalog?.[key]?.articles;
+
+  const planLimitLabel = (key) => {
+    const n = planArticles(key);
+    if (n === undefined) return t(`plans.${key}.limit`, ""); // тариф вне каталога
+    if (n === -1) return t("plans.unlimited", "безлимит");
+    // Переменная называется n, а не count: имя count включает у i18next
+    // правила множественного числа и требует ключей с суффиксами _one/_other,
+    // которых в словарях нет — подпись просто не находилась бы.
+    return t("plans.perMonthCount", { n, defaultValue: `${n} статей/мес` });
+  };
+
   // ─── Render-функция для одного пункта плана ───
   const renderPlanItem = (p) => {
     // Trial-баннер врача (для залогиненного врача в trial)
     if (p.isTrial) {
+      const trialCount = planArticles(limit?.plan) ?? limit?.limit;
       return (
         <div key={p.key} className="us-trial-banner">
           <div className="us-trial-banner-title">
             {t("plans.trialBanner.title")}
           </div>
           <div className="us-trial-banner-text">
-            {t("plans.trialBanner.text")}
+            {t("plans.trialBanner.text", { n: trialCount })}
           </div>
           <Link to="/pricing" className="us-trial-banner-cta">
             {t("plans.trialBanner.cta")}
@@ -410,7 +459,7 @@ export default function UserSynthesisPage() {
             </span>
           )}
         </span>
-        <span className="us-plan-limit">{t(`plans.${p.key}.limit`)}</span>
+        <span className="us-plan-limit">{planLimitLabel(p.key)}</span>
         <span className="us-plan-price">
           {p.isFree
             ? t("plans.freeForever")
@@ -419,6 +468,72 @@ export default function UserSynthesisPage() {
       </div>
     );
   };
+
+  // ── Раздел только для врачей ──────────────────────────────────────────
+  // Пока идёт проверка, не показываем ничего: мигнуть формой создания
+  // статьи перед пациентом и тут же её отобрать — хуже, чем секунда пустоты.
+  // Настоящий запрет стоит на сервере (requireDoctorRole на /api/user-synthesis);
+  // здесь — объяснение, почему страница пуста.
+  if (access === "checking") return null;
+
+  if (access !== "allowed") {
+    return (
+      <>
+        <style>{CSS}</style>
+        <div className="us-page" dir={isRTL ? "rtl" : "ltr"}>
+          <div className="us-topbar">
+            <span>{t("topbar.brand")}</span>
+            <span>{t("topbar.createArticle")}</span>
+          </div>
+
+          <div
+            style={{
+              maxWidth: 560,
+              margin: "80px auto",
+              padding: "28px 26px",
+              border: "1px solid var(--rule)",
+              borderRadius: 6,
+              background: "var(--paper2)",
+              textAlign: "center",
+            }}
+          >
+            <div style={{ fontSize: 34, marginBottom: 10 }}>🩺</div>
+            <h1 style={{ fontSize: 22, marginBottom: 10 }}>
+              {t("gate.title", "Раздел только для врачей")}
+            </h1>
+            <p style={{ opacity: 0.75, lineHeight: 1.6, marginBottom: 20 }}>
+              {access === "guest"
+                ? t(
+                    "gate.guest",
+                    "Создание научной статьи по медицинским источникам доступно врачам платформы. Войдите в аккаунт врача.",
+                  )
+                : t(
+                    "gate.denied",
+                    "Создание научной статьи по медицинским источникам доступно только врачам.",
+                  )}
+            </p>
+            <div
+              style={{
+                display: "flex",
+                gap: 10,
+                justifyContent: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              {access === "guest" && (
+                <Link to="/login" className="us-btn-primary">
+                  {t("gate.login", "Войти как врач")}
+                </Link>
+              )}
+              <Link to="/public/news" className="us-nav-back">
+                {t("gate.back", "К медицинским новостям")}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

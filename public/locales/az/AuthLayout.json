@@ -169,5 +169,7 @@
   "analyticsTag": "DOCPATS · Sİ SİNTEZİ",
   "bookPatientTag": "Qəbul · yalnız həkimlər üçün",
   "bookPatientText": "Pasiyenti qəbula yazdır — təqvim və boş vaxtlar",
-  "bookPatientDoctorsOnly": "Pasiyent yazdırmaq yalnız həkimlər üçündür. Həkim kimi daxil olun."
+  "bookPatientDoctorsOnly": "Pasiyent yazdırmaq yalnız həkimlər üçündür. Həkim kimi daxil olun.",
+  "doctorsOnlyTag": "yalnız həkimlər üçün",
+  "synthesisDoctorsOnly": "Elmi məqalə yaratmaq yalnız həkimlər üçündür. Həkim kimi daxil olun."
 }

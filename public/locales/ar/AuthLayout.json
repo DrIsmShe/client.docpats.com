@@ -169,5 +169,7 @@
   "analyticsTag": "DOCPATS · توليف بالذكاء الاصطناعي",
   "bookPatientTag": "المواعيد · للأطباء فقط",
   "bookPatientText": "حجز موعد لمريض — التقويم والأوقات المتاحة",
-  "bookPatientDoctorsOnly": "حجز المرضى متاح للأطباء فقط. سجّل الدخول كطبيب."
+  "bookPatientDoctorsOnly": "حجز المرضى متاح للأطباء فقط. سجّل الدخول كطبيب.",
+  "doctorsOnlyTag": "للأطباء فقط",
+  "synthesisDoctorsOnly": "إنشاء المقالات العلمية متاح للأطباء فقط. سجّل الدخول كطبيب."
 }

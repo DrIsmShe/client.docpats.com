@@ -107,12 +107,11 @@
     "upgradeCta": "View all plans →",
     "trialBanner": {
       "title": "🎁 You have Doctor Growth free for 6 months",
-      "text": "Limit — 10 articles per month. After trial ends, automatic switch to Doctor Basic.",
+      "text": "Limit — {{n}} articles per month. When the trial ends, the account switches to the free tier automatically.",
       "cta": "View pricing →"
     },
     "guest": {
-      "name": "Guest",
-      "limit": "1 article"
+      "name": "Guest"
     },
     "patient_free": {
       "name": "Patient Free",
@@ -127,20 +126,16 @@
       "limit": "20 articles/mo"
     },
     "doctor_trial": {
-      "name": "Doctor Growth (trial)",
-      "limit": "15 articles/mo"
+      "name": "Doctor Growth (trial)"
     },
     "doctor_basic": {
-      "name": "Doctor Start",
-      "limit": "3 articles/mo"
+      "name": "Doctor Start"
     },
     "doctor_super": {
-      "name": "Doctor Growth",
-      "limit": "15 articles/mo"
+      "name": "Doctor Growth"
     },
     "doctor_pro": {
-      "name": "Doctor Pro",
-      "limit": "unlimited"
+      "name": "Doctor Pro"
     },
     "sectionPatients": "For patients",
     "sectionDoctors": "For doctors",
@@ -148,7 +143,9 @@
       "title": "🎁 Doctors — 6 months of Doctor Growth free",
       "text": "When you register as a doctor — full platform access for 6 months at no cost.",
       "cta": "Register as a doctor →"
-    }
+    },
+    "perMonthCount": "{{n}} articles/mo",
+    "unlimited": "unlimited"
   },
   "result": {
     "abstract": "Abstract",
@@ -182,5 +179,12 @@
     "copied": "Text copied",
     "copyFailed": "Failed to copy",
     "sourcesUsed": "Sources used"
+  },
+  "gate": {
+    "title": "Doctors only",
+    "guest": "Creating a scientific article from medical sources is available to platform doctors. Sign in with a doctor account.",
+    "denied": "Creating a scientific article from medical sources is available to doctors only.",
+    "login": "Sign in as a doctor",
+    "back": "Back to medical news"
   }
 }

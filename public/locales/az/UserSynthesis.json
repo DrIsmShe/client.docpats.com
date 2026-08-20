@@ -107,12 +107,11 @@
     "upgradeCta": "Bütün tariflər →",
     "trialBanner": {
       "title": "🎁 6 ay boyunca pulsuz Doctor Growth",
-      "text": "Limit — ayda 10 məqalə. Sınaq müddətindən sonra avtomatik olaraq Doctor Basic-ə keçir.",
+      "text": "Limit — ayda {{n}} məqalə. Sınaq müddəti bitdikdə hesab avtomatik olaraq pulsuz səviyyəyə keçir.",
       "cta": "Tarifləri gör →"
     },
     "guest": {
-      "name": "Qonaq",
-      "limit": "1 məqalə"
+      "name": "Qonaq"
     },
     "patient_free": {
       "name": "Patient Free",
@@ -127,20 +126,16 @@
       "limit": "Ayda 20 məqalə"
     },
     "doctor_trial": {
-      "name": "Doctor Growth (trial)",
-      "limit": "Ayda 15 məqalə"
+      "name": "Doctor Growth (trial)"
     },
     "doctor_basic": {
-      "name": "Doctor Start",
-      "limit": "Ayda 3 məqalə"
+      "name": "Doctor Start"
     },
     "doctor_super": {
-      "name": "Doctor Growth",
-      "limit": "Ayda 15 məqalə"
+      "name": "Doctor Growth"
     },
     "doctor_pro": {
-      "name": "Doctor Pro",
-      "limit": "Limitsiz"
+      "name": "Doctor Pro"
     },
     "sectionPatients": "Pasientlər üçün",
     "sectionDoctors": "Həkimlər üçün",
@@ -148,7 +143,9 @@
       "title": "🎁 Həkimlərə — 6 ay pulsuz Doctor Growth",
       "text": "Həkim kimi qeydiyyatdan keçdikdə — 6 ay ərzində platformaya tam giriş pulsuz.",
       "cta": "Həkim kimi qeydiyyatdan keç →"
-    }
+    },
+    "perMonthCount": "ayda {{n}} məqalə",
+    "unlimited": "limitsiz"
   },
   "result": {
     "abstract": "Annotasiya",
@@ -182,5 +179,12 @@
     "copied": "Mətn kopyalandı",
     "copyFailed": "Kopyalanmadı",
     "sourcesUsed": "İstifadə edilən mənbələr"
+  },
+  "gate": {
+    "title": "Bölmə yalnız həkimlər üçündür",
+    "guest": "Tibbi mənbələr üzrə elmi məqalə yaratmaq platformanın həkimləri üçündür. Həkim hesabı ilə daxil olun.",
+    "denied": "Tibbi mənbələr üzrə elmi məqalə yaratmaq yalnız həkimlər üçündür.",
+    "login": "Həkim kimi daxil ol",
+    "back": "Tibbi xəbərlərə"
   }
 }

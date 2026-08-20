@@ -169,5 +169,7 @@
   "analyticsTag": "DOCPATS · AI SYNTHESIS",
   "bookPatientTag": "Appointments · doctors only",
   "bookPatientText": "Book a patient — calendar and free slots",
-  "bookPatientDoctorsOnly": "Booking patients is available to doctors only. Sign in as a doctor."
+  "bookPatientDoctorsOnly": "Booking patients is available to doctors only. Sign in as a doctor.",
+  "doctorsOnlyTag": "doctors only",
+  "synthesisDoctorsOnly": "Creating scientific articles is available to doctors only. Sign in as a doctor."
 }
