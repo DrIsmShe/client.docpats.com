@@ -14,10 +14,12 @@
 //   • Socket-сигнализация звонков (call.gateway.js): call:initiate / call:incoming
 //     / call:accept / call:decline / call:cancel / call:end — те же события, что
 //     и у P2P-версии. Звонок доходит и принимается — эта часть уже работает.
-//   • Эндпоинт токена: POST /communication/video/token { kind:"dialog", id:dialogId }
-//     → { token, domain, room }, где room = `dialog-${dialogId}`.
-//     Оба участника звонка = участники диалога → оба получают токен на ОДНУ
-//     комнату dialog-${dialogId} → встречаются в ней через JVB.
+//   • Эндпоинт токена: POST /communication/video/token { kind:"call", id:callId }
+//     → { token, domain, room }, где room = `call-${callId}`.
+//     Комната принадлежит ЗВОНКУ, а не диалогу: список допущенных ведёт
+//     сигнализация и пополняет его при каждом приглашении. На dialog-комнате
+//     конференция была невозможна — пропуск туда получают только участники
+//     переписки, а приглашённый третий в чужой переписке не состоит.
 //   • Паттерн монтирования Jitsi — по образцу useVideoRoom.js.
 //
 // Что НЕ трогается:
@@ -33,17 +35,12 @@
 // поэтому UI менять почти не нужно. Отличия: вместо remoteAudioRef монтируется
 // Jitsi в jitsiContainerRef; видео — в том же контейнере.
 //
-// ВАЖНО про токен: этот хук вызывает getDialogVideoToken(dialogId) из videoApi.
-// Если у тебя функция называется иначе (getTelemedToken и т.п.) — поправь импорт
-// ниже. Она должна слать POST /communication/video/token {kind:"dialog", id}
-// и возвращать { token, domain, room }.
+// ВАЖНО про токен: хук вызывает getCallVideoToken(callId) из videoApi —
+// POST /communication/video/token {kind:"call", id} → { token, domain, room }.
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { getSocket } from "../socket";
-// ⚠️ ПОДСТАВЬ СВОЮ функцию токена из videoApi.
-// Она шлёт POST /communication/video/token { kind:"dialog", id:dialogId }.
-// Если называется getTelemedToken — импортируй её и переименуй вызовы ниже.
-import { getDialogVideoToken } from "../../../api/videoApi";
+import { getCallVideoToken } from "../../../api/videoApi";
 import { startRingtone, stopRingtone } from "../lib/ringtone";
 import { track } from "../../../lib/analytics";
 import { CALL_STARTED } from "../../../lib/events";
@@ -100,6 +97,16 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
   const [isVideoEnabled, setIsVideoEnabled] = useState(false);
   const [durationSec, setDurationSec] = useState(0);
   const [endedInfo, setEndedInfo] = useState(null);
+  // Судьба приглашений — ПО КАЖДОМУ человеку, а не одна на всех.
+  // Одно общее поле врало начиная с четвёртого участника: позвали
+  // второго — статус первого терялся, его кнопка снова становилась
+  // активной, и «в разговоре» рядом с ним не показывалось.
+  // { [userId]: "ringing" | "joined" | "declined" | "no_answer" | "busy" | ... }
+  const [inviteStatus, setInviteStatus] = useState({});
+  // Сколько человек в разговоре. Приходит с сервера: считать на клиенте
+  // нельзя — приглашённый не получает события о собственном входе и
+  // остался бы с единицей, сидя втроём.
+  const [participantCount, setParticipantCount] = useState(1);
 
   // ─── SYNC REFS ────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -126,6 +133,16 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
     clearInterval(timerRef.current);
     timerRef.current = null;
   }, []);
+
+  // Состояние конференции сбрасываем в одном месте, а не в каждом из
+  // четырёх путей завершения звонка — иначе счётчик участников однажды
+  // переживёт звонок и следующий разговор начнётся с «трое в комнате».
+  useEffect(() => {
+    if (callState === "idle") {
+      setParticipantCount(1);
+      setInviteStatus({});
+    }
+  }, [callState]);
 
   // ─── RINGTONE (входящий) ─────────────────────────────────────────────────────
   // Мелодия синтезируется в ringtone.js: файла /sounds/ringtone.mp3 в сборке
@@ -186,13 +203,19 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
   // Монтирует Jitsi-комнату dialog-${dialogId}. Оба участника звонка вызывают
   // это с одним dialogId → попадают в одну комнату → медиа через JVB.
   const mountJitsiRoom = useCallback(
-    async (dId, isVideo) => {
+    async (cId, isVideo) => {
       try {
         await loadJitsiScript();
 
-        // Токен на комнату dialog-${dId} через СУЩЕСТВУЮЩИЙ эндпоинт.
-        // getDialogVideoToken шлёт POST /communication/video/token {kind:"dialog", id:dId}.
-        const { token, domain, room } = await getDialogVideoToken(dId);
+        // Комната ЗВОНКА, а не диалога: POST /communication/video/token
+        // {kind:"call", id:callId}.
+        //
+        // Раньше здесь была dialog-${dialogId}, и это делало конференцию
+        // невозможной: пропуск в такую комнату выдаётся только участникам
+        // переписки, а приглашённый третий человек в чужой личной переписке
+        // не состоит. Список допущенных в комнату звонка ведёт сигнализация
+        // и пополняет его при каждом приглашении.
+        const { token, domain, room } = await getCallVideoToken(cId);
 
         // Ждём, пока контейнер появится в DOM (React мог ещё не отрендерить)
         const waitContainer = (attempt = 0) =>
@@ -233,10 +256,41 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
             // Для аудиозвонка достаточно startWithVideoMuted: камера не
             // транслируется, а звук идёт нормально (как в видеозвонке).
             disableDeepLinking: true,
+            // Приглашение средствами Jitsi ОСТАЁТСЯ выключенным, и это не
+            // недосмотр. Наш Jitsi поднят с JWT-авторизацией: пропуск в
+            // комнату выдаёт только сервер и только участнику диалога
+            // (video.controller.js). Ссылка из джитсёвого «Пригласить»
+            // токена не несёт, и приглашённый упрётся в отказ. Кнопка,
+            // ведущая в тупик, хуже отсутствующей.
+            // Третий участник добавляется групповым диалогом — там пропуск
+            // получает каждый участник.
             disableInviteFunctions: true,
+
+            // Панель — родная джитсёвая, а не четыре кнопки. Убраны только
+            // запись и трансляция: разговор врача с пациентом — это PHI,
+            // и его запись мимо нашего аудита и шифрования недопустима.
+            // Запись приёма в проекте своя, со своим согласием и хранением.
             toolbarButtons: isVideo
-              ? ["microphone", "camera", "hangup", "tileview"]
-              : ["microphone", "hangup"],
+              ? [
+                  "microphone",
+                  "camera",
+                  "desktop",
+                  "tileview",
+                  "participants-pane",
+                  "raisehand",
+                  "videoquality",
+                  "filmstrip",
+                  "fullscreen",
+                  "settings",
+                  "hangup",
+                ]
+              : [
+                  "microphone",
+                  "participants-pane",
+                  "raisehand",
+                  "settings",
+                  "hangup",
+                ],
           },
           interfaceConfigOverwrite: {
             MOBILE_APP_PROMO: false,
@@ -262,10 +316,24 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
           setIsMuted(muted);
         });
 
-        // Собеседник вышел / комната закрылась → завершаем звонок
+        // Кто-то вышел. Завершаем звонок, только когда в комнате не осталось
+        // никого, кроме нас.
+        //
+        // Раньше здесь стоял безусловный handleEnd, и это делало разговор
+        // строго парным: в конференции втроём выход одного клал связь у
+        // оставшихся двоих. Для звонка один-на-один поведение не меняется —
+        // ушёл собеседник, счётчик стал 1, звонок завершается как прежде.
         api.addEventListener("participantLeft", () => {
-          console.log("📞 [jitsi-call] peer left → ending");
-          handleEnd(callIdRef.current, "ended");
+          let left = 0;
+          try {
+            left = api.getNumberOfParticipants();
+          } catch (_) {
+            // Метода нет в этой сборке Jitsi — считаем комнату пустой,
+            // то есть ведём себя как раньше. Хуже прежнего не станет.
+            left = 1;
+          }
+          console.log("📞 [jitsi-call] participant left, осталось:", left);
+          if (left <= 1) handleEnd(callIdRef.current, "ended");
         });
         api.addEventListener("readyToClose", () => {
           console.log("📞 [jitsi-call] readyToClose → ending");
@@ -326,8 +394,8 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
       setCallState("active");
       startTimer();
       const isVideo = callTypeRef.current === "video";
-      // Монтируем Jitsi-комнату dialog-${dialogId} — callee
-      await mountJitsiRoom(dialogIdRef.current, isVideo);
+      // Комната звонка — та же и у звонящего, и у принявшего.
+      await mountJitsiRoom(incomingCallId, isVideo);
     },
     [socket, startTimer, mountJitsiRoom],
   );
@@ -381,9 +449,9 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
       setCallId(cId);
       callIdRef.current = cId;
       const isVideo = callTypeRef.current === "video";
-      // caller тоже заходит в dialog-${dialogId}; ждём пока callee примет —
-      // но можно зайти сразу, Jitsi-комната ждёт второго участника
-      await mountJitsiRoom(dialogIdRef.current, isVideo);
+      // Звонящий заходит в комнату сразу, не дожидаясь ответа: Jitsi
+      // спокойно ждёт остальных.
+      await mountJitsiRoom(cId, isVideo);
     };
 
     // CALLEE: входящий
@@ -498,6 +566,29 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
       }
     };
 
+    const markInvite = (who, state) =>
+      setInviteStatus((prev) => ({ ...prev, [String(who)]: state }));
+
+    // Состав приходит с сервера целиком — он единственный, кто знает
+    // правду обо всех сторонах разговора.
+    const onParticipants = ({ count }) => {
+      if (typeof count === "number") setParticipantCount(Math.max(1, count));
+    };
+    const onParticipantJoined = ({ userId: who }) => markInvite(who, "joined");
+    const onParticipantLeft = ({ userId: who }) => markInvite(who, "left");
+    const onParticipantDeclined = ({ userId: who }) =>
+      markInvite(who, "declined");
+    const onParticipantNoAnswer = ({ userId: who }) =>
+      markInvite(who, "no_answer");
+    const onInviteFailed = ({ userId: who, reason }) =>
+      markInvite(who, reason || "failed");
+
+    socket.on("call:participants", onParticipants);
+    socket.on("call:participant_joined", onParticipantJoined);
+    socket.on("call:participant_left", onParticipantLeft);
+    socket.on("call:participant_declined", onParticipantDeclined);
+    socket.on("call:participant_no_answer", onParticipantNoAnswer);
+    socket.on("call:invite_failed", onInviteFailed);
     socket.on("call:initiated", onInitiated);
     socket.on("call:incoming", onIncoming);
     socket.on("call:accepted", onAccepted);
@@ -509,6 +600,12 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
     socket.on("connect", onReconnect);
 
     return () => {
+      socket.off("call:participants", onParticipants);
+      socket.off("call:participant_joined", onParticipantJoined);
+      socket.off("call:participant_left", onParticipantLeft);
+      socket.off("call:participant_declined", onParticipantDeclined);
+      socket.off("call:participant_no_answer", onParticipantNoAnswer);
+      socket.off("call:invite_failed", onInviteFailed);
       socket.off("call:initiated", onInitiated);
       socket.off("call:incoming", onIncoming);
       socket.off("call:accepted", onAccepted);
@@ -520,6 +617,26 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
       socket.off("connect", onReconnect);
     };
   }, [socket, callState, startTimer, stopTimer, cleanup, mountJitsiRoom]);
+
+  // ─── ПРИГЛАШЕНИЕ В ИДУЩИЙ РАЗГОВОР ──────────────────────────────────────────
+  //
+  // dialogId здесь — личная переписка С ПРИГЛАШАЕМЫМ, а не диалог, из
+  // которого начали звонок. По ней сервер и проверяет право позвать:
+  // добавить можно того, с кем переписка уже есть. Без этой привязки
+  // кнопка «добавить» стала бы способом звонить кому угодно по id.
+  const inviteParticipant = useCallback(
+    ({ userId: inviteeId, dialogId: peerDialogId }) => {
+      const cId = callIdRef.current;
+      if (!cId || !inviteeId || !peerDialogId) return;
+      socket.emit("call:invite", {
+        callId: cId,
+        userId: inviteeId,
+        dialogId: peerDialogId,
+      });
+      setInviteStatus((prev) => ({ ...prev, [String(inviteeId)]: "ringing" }));
+    },
+    [socket],
+  );
 
   // ─── FORMAT DURATION ─────────────────────────────────────────────────────────
   const formatDuration = (sec) => {
@@ -551,6 +668,10 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
     endCall,
     toggleMute,
     toggleVideo,
+    // Конференция
+    inviteParticipant,
+    inviteStatus,
+    participantCount,
     // НОВОЕ: сюда монтируется Jitsi. В UII повесь <div ref={jitsiContainerRef} />
     // вместо <audio ref={remoteAudioRef} />. Для аудиозвонка div можно скрыть
     // (visibility:hidden — НЕ display:none, чтобы медиа не останавливалось),

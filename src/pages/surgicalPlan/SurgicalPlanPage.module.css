@@ -1,0 +1,508 @@
+/* client/src/pages/surgicalPlan/SurgicalPlanPage.module.css
+ *
+ * Палитра та же, что у соседних страниц симуляции: тёмно-зелёный #0d6b5e
+ * как основной, светлые бирюзовые границы. Новых фирменных цветов не вводим.
+ *
+ * Цветовое кодирование замечаний одно на весь экран: красный — исполнять
+ * нельзя, янтарный — врач обязан увидеть, зелёный — приятная новость.
+ * Тот же смысл несут рамка вердикта и колонка нормы в таблице.
+ */
+
+.page {
+  padding: 32px 24px 56px;
+  max-width: 1280px;
+  margin: 0 auto;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  color: #16211f;
+}
+
+/* ─── Шапка ─────────────────────────────────────────────────────────── */
+.hero {
+  border: 1px solid #d9e7e4;
+  border-radius: 18px;
+  background:
+    radial-gradient(120% 140% at 100% 0%, #e9f7f4 0%, rgba(233, 247, 244, 0) 55%),
+    linear-gradient(180deg, #ffffff 0%, #fbfdfd 100%);
+  padding: 24px 28px;
+  margin-bottom: 22px;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0d6b5e;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+
+.lead {
+  margin: 0;
+  max-width: 70ch;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #4a5a57;
+}
+
+/* ─── Две колонки ───────────────────────────────────────────────────── */
+.columns {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  border: 1px solid #d9e7e4;
+  border-radius: 16px;
+  background: #fff;
+  padding: 20px 22px 24px;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.panelTitle {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+
+.panelHead .panelTitle {
+  margin: 0;
+  margin-inline-end: auto;
+}
+
+/* ─── Поля ──────────────────────────────────────────────────────────── */
+.field {
+  margin-bottom: 18px;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+.hint {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #6b7d79;
+}
+
+.muted {
+  color: #6b7d79;
+  font-size: 12.5px;
+  font-weight: 400;
+}
+
+.select,
+.textarea,
+.measurementInput input {
+  width: 100%;
+  border: 1px solid #d3e0dd;
+  border-radius: 9px;
+  padding: 9px 11px;
+  font: inherit;
+  font-size: 14px;
+  color: #16211f;
+  background: #fff;
+}
+
+.select:focus,
+.textarea:focus,
+.measurementInput input:focus {
+  outline: none;
+  border-color: #0d6b5e;
+  box-shadow: 0 0 0 3px rgba(13, 107, 94, 0.12);
+}
+
+.select:disabled {
+  background: #f4f8f7;
+  color: #4a5a57;
+}
+
+.textarea {
+  resize: vertical;
+  line-height: 1.55;
+}
+
+/* ─── Сегментированный переключатель ────────────────────────────────── */
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.segment {
+  border: 1px solid #d3e0dd;
+  background: #fff;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font: inherit;
+  font-size: 13px;
+  color: #4a5a57;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.segment:hover {
+  border-color: #0d6b5e;
+}
+
+.segmentActive {
+  background: #0d6b5e;
+  border-color: #0d6b5e;
+  color: #fff;
+}
+
+/* ─── Измерения ─────────────────────────────────────────────────────── */
+.measurements {
+  display: grid;
+  gap: 9px;
+}
+
+.measurement {
+  display: grid;
+  grid-template-columns: 1fr 128px;
+  align-items: center;
+  gap: 10px;
+}
+
+.measurementLabel {
+  font-size: 13px;
+  color: #364644;
+}
+
+.measurementInput {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.unit {
+  font-size: 12px;
+  color: #6b7d79;
+  min-width: 46px;
+}
+
+/* ─── Кнопки ────────────────────────────────────────────────────────── */
+.primaryBtn {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background: #0d6b5e;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 16px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.primaryBtn:hover:not(:disabled) {
+  background: #0a564c;
+}
+
+.primaryBtn:disabled {
+  background: #a9c6c1;
+  cursor: not-allowed;
+}
+
+.iconBtn {
+  border: 1px solid #d3e0dd;
+  background: #fff;
+  border-radius: 7px;
+  padding: 4px 9px;
+  font: inherit;
+  font-size: 12px;
+  color: #6b7d79;
+  cursor: pointer;
+}
+
+.iconBtn:hover {
+  border-color: #c0392b;
+  color: #c0392b;
+}
+
+/* ─── Вердикт ───────────────────────────────────────────────────────── */
+.verdict {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
+.verdictOk {
+  background: #e6f6ef;
+  color: #0d6b45;
+}
+
+.verdictBad {
+  background: #fdecea;
+  color: #a5281c;
+}
+
+.placeholder {
+  margin: 0;
+  padding: 28px 0;
+  text-align: center;
+  color: #8a9a97;
+  font-size: 14px;
+}
+
+.summary {
+  margin: 0 0 16px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #263634;
+}
+
+/* ─── Карточка операции ─────────────────────────────────────────────── */
+.opCard {
+  border: 1px solid #dfeae8;
+  border-radius: 12px;
+  padding: 14px 16px 12px;
+  margin-bottom: 12px;
+  background: #fcfefe;
+}
+
+.opCardUnknown {
+  border-color: #f0c9c4;
+  background: #fefaf9;
+}
+
+.opHead {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.opTitle {
+  font-size: 14.5px;
+  font-weight: 600;
+  margin-inline-end: auto;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 3px 9px;
+  white-space: nowrap;
+}
+
+/* «точно» и «выведено» — самое важное различие на экране: врач должен
+   видеть, где его поняли буквально, а где система додумала за него. */
+.badgeExplicit {
+  background: #e6f6ef;
+  color: #0d6b45;
+}
+
+.badgeInferred {
+  background: #fff4e2;
+  color: #96601a;
+}
+
+.param {
+  margin-bottom: 12px;
+}
+
+.paramLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 13px;
+  color: #364644;
+  margin-bottom: 4px;
+}
+
+.paramValue {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 14px;
+  color: #0d6b5e;
+}
+
+.slider {
+  width: 100%;
+  accent-color: #0d6b5e;
+  cursor: pointer;
+}
+
+.paramScale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #8a9a97;
+  margin-top: 2px;
+}
+
+.opNote {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #6b7d79;
+}
+
+/* ─── Блоки ─────────────────────────────────────────────────────────── */
+.block {
+  margin-top: 18px;
+}
+
+.blockTitle {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b7d79;
+  margin: 0 0 9px;
+}
+
+.note {
+  border-inline-start: 3px solid #d3e0dd;
+  padding: 2px 0 2px 11px;
+  margin-bottom: 10px;
+  display: grid;
+  gap: 3px;
+}
+
+.note strong {
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.note span {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #6b7d79;
+}
+
+.noteBlocking {
+  border-inline-start-color: #c0392b;
+}
+
+/* ─── Таблица ───────────────────────────────────────────────────────── */
+.tableWrap {
+  /* Таблица шире колонки на узких экранах — прокручиваем её саму,
+     а не страницу целиком. */
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table th {
+  text-align: start;
+  font-weight: 600;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #8a9a97;
+  padding: 0 10px 7px 0;
+  border-bottom: 1px solid #e4ecea;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 8px 10px 8px 0;
+  border-bottom: 1px solid #f0f5f4;
+  vertical-align: baseline;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.direction {
+  color: #6b7d79;
+  font-size: 12.5px;
+}
+
+.normOk {
+  color: #6b7d79;
+  white-space: nowrap;
+}
+
+.normBad {
+  color: #a5281c;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.statusText {
+  font-weight: 400;
+  font-size: 12px;
+}
+
+/* ─── Замечания ─────────────────────────────────────────────────────── */
+.finding {
+  border-radius: 9px;
+  padding: 9px 12px;
+  margin-bottom: 7px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.findingError {
+  background: #fdecea;
+  color: #8c2118;
+}
+
+.findingWarning {
+  background: #fff4e2;
+  color: #7d4f13;
+}
+
+.findingInfo {
+  background: #e6f6ef;
+  color: #0b5638;
+}
+
+.alertError {
+  margin-top: 14px;
+  border-radius: 9px;
+  padding: 10px 12px;
+  background: #fdecea;
+  color: #8c2118;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.meta {
+  margin: 18px 0 0;
+  font-size: 11.5px;
+  color: #98a8a5;
+}

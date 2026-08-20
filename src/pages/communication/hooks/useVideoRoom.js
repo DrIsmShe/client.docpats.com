@@ -10,6 +10,8 @@
 //   - telemed-patient   → virtual visit (PATIENT side)
 //   - appointment       → freelance video consultation (doctor + patient, both
 //                         by their own session)
+//   - webinar           → встреча по ссылке: право войти определяют её
+//                         правила (ссылка или список), а не диалог
 //
 // Backward compatible: the chat still calls useVideoRoom({ dialogId }). New
 // callers use useVideoRoom({ source: "consilium"|"consilium-patient"|"telemed"|"telemed-patient"|"appointment", id }).
@@ -23,6 +25,7 @@
 // locally, "https://meet.docpats.com" in prod).
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { getWebinarToken } from "../../../api/webinar";
 import {
   getDialogVideoToken,
   getConsiliumVideoToken,
@@ -77,6 +80,12 @@ function fetchToken({ source, id, displayName }) {
   if (source === "telemed-patient") {
     return getPatientTelemedVideoToken(id, displayName);
   }
+  // Вебинар: пропуск выдаёт собственный эндпоинт встречи, потому что
+  // право войти определяется её правилами (ссылка или список), а не
+  // участием в диалоге.
+  if (source === "webinar") {
+    return getWebinarToken(id, displayName);
+  }
   if (source === "appointment") {
     return getAppointmentVideoToken(id, displayName);
   }
@@ -86,7 +95,7 @@ function fetchToken({ source, id, displayName }) {
 
 /**
  * @param {object} opts
- * @param {"dialog"|"consilium"|"consilium-patient"|"telemed"|"telemed-patient"|"appointment"} [opts.source="dialog"]
+ * @param {"dialog"|"consilium"|"consilium-patient"|"telemed"|"telemed-patient"|"appointment"|"webinar"} [opts.source="dialog"]
  * @param {string} [opts.id]        Room source id.
  * @param {string} [opts.dialogId]  Back-compat alias for source="dialog".
  * @param {string} [opts.displayName]
@@ -153,7 +162,14 @@ export default function useVideoRoom({
         width: "100%",
         height: "100%",
         configOverwrite: {
+          // Prejoin выключаем ДВУМЯ флагами. Старый prejoinPageEnabled свежие
+          // сборки Jitsi игнорируют, нужен prejoinConfig.enabled — иначе
+          // участник застревает на экране «Присоединиться к встрече» и в
+          // комнату не входит. В useJitsiCall это уже починено; здесь тот же
+          // недосмотр оставался, а именно этим путём идёт конференция в
+          // групповом диалоге.
           prejoinPageEnabled: false,
+          prejoinConfig: { enabled: false },
           disableDeepLinking: true,
         },
         userInfo: displayName ? { displayName } : undefined,

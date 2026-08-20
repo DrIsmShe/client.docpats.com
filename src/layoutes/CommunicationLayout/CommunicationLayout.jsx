@@ -2,10 +2,40 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useParams, useLocation } from "react-router-dom";
 import DialogList from "../../pages/communication/components/DialogList";
+import NewGroupModal from "../../pages/communication/components/NewGroupModal";
 import { useDialogs } from "../../pages/communication/hooks/useDialogs";
 import { useCurrentUser } from "../../pages/communication/hooks/useCurrentUser";
 
 const MOBILE_BP = 650;
+
+// У десктопного сайдбара своих стилей в проекте не было — классы стояли
+// голыми. Добавляем ровно то, что нужно кнопке: шапка становится строкой,
+// чтобы «+ Группа» встала справа от заголовка. Остальную вёрстку не трогаем.
+const desktopStyles = `
+  .communication-sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .comm-new-group {
+    flex-shrink: 0;
+    border: 1px solid #d3e0dd;
+    background: #fff;
+    border-radius: 8px;
+    padding: 5px 11px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0d6b5e;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .comm-new-group:hover {
+    background: #0d6b5e;
+    border-color: #0d6b5e;
+    color: #fff;
+  }
+`;
 
 const mobileStyles = `
   .mobile-comm-page {
@@ -104,6 +134,10 @@ export default function CommunicationLayout() {
     ? "/doctor/communication"
     : "/patient/communication";
 
+  // Групповой диалог = комната конференции: разговор втроём и больше
+  // возможен только там, где пропуск в Jitsi получает каждый участник.
+  const [groupOpen, setGroupOpen] = useState(false);
+
   // ── MOBILE: нет открытого диалога → только список ────────────────────────
   if (isMobile && !dialogId) {
     return (
@@ -150,8 +184,19 @@ export default function CommunicationLayout() {
   // ── DESKTOP ──────────────────────────────────────────────────────────────
   return (
     <div className="communication-layout">
+      <style>{desktopStyles}</style>
       <div className="communication-sidebar">
-        <div className="communication-sidebar-header">💬 Messages</div>
+        <div className="communication-sidebar-header">
+          <span style={{ marginInlineEnd: "auto" }}>💬 Messages</span>
+          <button
+            type="button"
+            className="comm-new-group"
+            onClick={() => setGroupOpen(true)}
+            title="Создать группу — общий чат и комната конференции"
+          >
+            + Группа
+          </button>
+        </div>
         <div className="communication-dialogs">
           {loading ? (
             <div style={{ padding: 20 }}>Loading...</div>
@@ -170,6 +215,14 @@ export default function CommunicationLayout() {
           context={{ dialogs, loading, setActiveDialog, setCurrentUser }}
         />
       </div>
+
+      {groupOpen && (
+        <NewGroupModal
+          dialogs={dialogs}
+          basePath={basePath}
+          onClose={() => setGroupOpen(false)}
+        />
+      )}
     </div>
   );
 }

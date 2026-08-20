@@ -48,6 +48,19 @@ const IconMultiView = () => (
   </svg>
 );
 
+// Текст, превращающийся в измеримые величины: строки слева, шкала справа.
+const IconPromptToPlan = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"
+    strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M3 6h8M3 10h6M3 14h8M3 18h5" />
+    <path d="M14.5 12h6.5" opacity="0.55" />
+    <circle cx="17" cy="12" r="1.9" />
+    <path d="M14.5 7h6.5M14.5 17h6.5" opacity="0.55" />
+    <circle cx="19.6" cy="7" r="1.4" />
+    <circle cx="16.2" cy="17" r="1.4" />
+  </svg>
+);
+
 const IconArrow = () => (
   <svg className={styles.cardArrow} width="16" height="16" viewBox="0 0 24 24"
     fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
@@ -94,6 +107,22 @@ const VARIANTS = [
       "Объём и контур",
       "История по пациенту",
       "До / после",
+    ],
+  },
+  {
+    key: "variant3",
+    route: "/dp/simulation/plan",
+    Icon: IconPromptToPlan,
+    alt: false,
+    kickerDefault: "Вариант 3 · прототип",
+    titleDefault: "Запрос словами",
+    leadDefault:
+      "Опишите желаемый результат обычными словами — система разложит запрос по каталогу операций, посчитает измерения «до/после» и скажет, чего в запросе не хватило. Дальше план правится ползунками.",
+    chipsDefault: [
+      "Свободный текст",
+      "Миллиметры и градусы",
+      "Таблица до / после",
+      "Ринопластика, профиль",
     ],
   },
 ];

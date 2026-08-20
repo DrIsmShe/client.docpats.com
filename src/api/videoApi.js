@@ -31,6 +31,24 @@ export const getDialogVideoToken = (dialogId) =>
       track(VIDEO_ROOM_JOINED, { context: "dialog" });
       return res.data;
     });
+
+/**
+ * Token for a call room — the room of ONE call, not of a dialog.
+ *
+ * A dialog room only admits dialog participants, so a third person invited
+ * into an ongoing 1:1 call could never get a pass — that is exactly what made
+ * conferences impossible. The call room's guest list lives in the call
+ * signalling gateway and follows who was actually invited.
+ *
+ * @param {string} callId
+ */
+export const getCallVideoToken = (callId) =>
+  axios
+    .post("/communication/video/token", { kind: "call", id: callId })
+    .then((res) => {
+      track(VIDEO_ROOM_JOINED, { context: "call" });
+      return res.data;
+    });
 /**
  * Token for a consilium group video call — DOCTOR / clinic side.
  * @param {string} consiliumId
@@ -141,6 +159,7 @@ export const getAppointmentVideoToken = (appointmentId, displayName) =>
     });
 export default {
   getDialogVideoToken,
+  getCallVideoToken,
   getConsiliumVideoToken,
   getPatientConsiliumVideoToken,
   getMyConsilia,

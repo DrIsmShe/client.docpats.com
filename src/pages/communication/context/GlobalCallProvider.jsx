@@ -72,6 +72,10 @@ export function GlobalCallProvider({ currentUserId, children }) {
     toggleMute,
     toggleVideo,
     callId,
+    // Конференция: приглашение третьего и далее прямо из разговора.
+    inviteParticipant,
+    inviteStatus,
+    participantCount,
   } = call;
 
   return (
@@ -96,6 +100,9 @@ export function GlobalCallProvider({ currentUserId, children }) {
         onEnd={endCall}
         onToggleMute={toggleMute}
         onToggleVideo={toggleVideo}
+        onInvite={inviteParticipant}
+        inviteStatus={inviteStatus}
+        participantCount={participantCount}
         /* Запись приёма.
            Роль определяется ролью аккаунта: врач — тот, у кого она
            doctor, остальные участники звонка — пациенты. Записывать

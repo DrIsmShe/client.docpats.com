@@ -33,6 +33,7 @@ const LABEL_KEYS = [
   "telemed",
   "telemed-patient",
   "appointment",
+  "webinar",
 ];
 
 

@@ -31,6 +31,9 @@ import { useTranslation } from "react-i18next";
 // нет вовсе. Локальная граница Suspense здесь безопасна: до звонка
 // CallUI возвращает null и грузить нечего.
 const ScribePanel = lazy(() => import("./ScribePanel"));
+// Окно «добавить участника» — тоже лениво: CallUI висит на каждой странице,
+// а открывают его только во время разговора.
+const AddParticipantModal = lazy(() => import("./AddParticipantModal"));
 
 const styles = `
   /* Панель записи приёма. Отдельный слой над всем содержимым оверлея:
@@ -140,6 +143,33 @@ const styles = `
     z-index: 2;
     pointer-events: none;
   }
+  /* Кнопка «добавить участника». Верх экрана: низ занят панелью Jitsi. */
+  .call-invite-layer {
+    position: absolute;
+    top: 16px;
+    inset-inline-end: 16px;
+    z-index: 10;
+    pointer-events: auto;
+  }
+  .call-invite-btn {
+    border: 1px solid rgba(255,255,255,.35);
+    background: rgba(0,0,0,.45);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .call-invite-btn:hover {
+    background: rgba(0,0,0,.65);
+    border-color: rgba(255,255,255,.6);
+  }
+  /* Активный видеозвонок отдан интерфейсу Jitsi целиком. */
+  .call-card-hidden { display: none; }
   .call-card {
     position: relative;
     z-index: 3;
@@ -361,6 +391,10 @@ export default function CallUI({
   onCancel,
   onEnd,
   onToggleMute,
+  // Конференция: приглашение третьего и далее прямо из разговора.
+  onInvite = null,
+  inviteStatus = {},
+  participantCount = 1,
   onToggleVideo,
   // ─── Запись приёма (необязательные) ───
   // Без них CallUI ведёт себя ровно как раньше: панель не появляется.
@@ -375,6 +409,7 @@ export default function CallUI({
   // [FULLSCREEN] Хуки ДОЛЖНЫ быть до раннего return (правила хуков React).
   // Русский текст остаётся вторым аргументом t(): пока словарь грузится по
   // сети, показывается он, а не голый ключ.
+  const [inviteOpen, setInviteOpen] = useState(false);
   const { t } = useTranslation("Communication");
   const overlayRef = useRef(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -453,7 +488,10 @@ export default function CallUI({
         */}
         <div ref={jitsiContainerRef} className="call-jitsi-container" />
 
-        {showVideoStage && <div className="call-video-dim" />}
+        {/* Затемняющий градиент убран вместе с карточкой: он существовал,
+            чтобы имя и кнопки поверх видео читались. Теперь в активном
+            видеозвонке интерфейс джитсёвый, а градиент только гасил бы его
+            нижнюю панель. */}
 
         {/* Панель записи приёма — СВОЙ слой, а не часть карточки.
             В видеозвонке у .call-card стоит pointer-events: none (она
@@ -478,7 +516,40 @@ export default function CallUI({
           </div>
         )}
 
-        <div className="call-card">
+        {/* Приглашение третьего — свой слой, как у панели записи.
+            Внизу экрана стоит панель Jitsi, поэтому кнопка уходит вверх:
+            двум панелям управления в одном месте тесно. */}
+        {callState === "active" && onInvite && (
+          <div className="call-invite-layer">
+            <button
+              type="button"
+              className="call-invite-btn"
+              onClick={() => setInviteOpen(true)}
+            >
+              + Участник
+              {participantCount > 1 ? ` · ${participantCount}` : ""}
+            </button>
+          </div>
+        )}
+
+        {inviteOpen && (
+          <Suspense fallback={null}>
+            <AddParticipantModal
+              onInvite={onInvite}
+              inviteStatus={inviteStatus}
+              onClose={() => setInviteOpen(false)}
+            />
+          </Suspense>
+        )}
+
+        {/* Своя карточка нужна на дозвоне и в аудиозвонке: там Jitsi не
+            виден (его накрывает backdrop), и другого интерфейса просто нет.
+            В активном ВИДЕОзвонке она уходит — там показывается родная
+            панель Jitsi, и две панели управления спорили бы за одно место
+            внизу экрана. Завершение звонка при этом не теряется: джитсёвая
+            «трубка» поднимает readyToClose, а его уже слушает useJitsiCall
+            и закрывает звонок на сервере. */}
+        <div className={`call-card${showVideoStage ? " call-card-hidden" : ""}`}>
           <div className={`call-avatar-wrap ${isRinging ? "ringing" : ""}`}>
             {avatar ? (
               <img src={avatar} alt={name} className="call-avatar" />
