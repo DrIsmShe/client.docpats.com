@@ -37,7 +37,7 @@ export default function DashboardLayout() {
         }
       } catch (e) {
         // Не авторизован — оставляем значения по умолчанию,
-        // публичные страницы /public/news и /public/articles работают без логина
+        // публичные страницы /news и /articles работают без логина
         console.error("Auth check error (news):", e);
       }
     })();

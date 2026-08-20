@@ -525,7 +525,7 @@ export default function UserSynthesisPage() {
                   {t("gate.login", "Войти как врач")}
                 </Link>
               )}
-              <Link to="/public/news" className="us-nav-back">
+              <Link to="/news" className="us-nav-back">
                 {t("gate.back", "К медицинским новостям")}
               </Link>
             </div>
@@ -545,7 +545,7 @@ export default function UserSynthesisPage() {
         </div>
 
         <nav className="us-nav">
-          <Link to="/public/news" className="us-nav-back">
+          <Link to="/news" className="us-nav-back">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
               <path
                 d="M10 3L5 8l5 5"
@@ -557,7 +557,7 @@ export default function UserSynthesisPage() {
             </svg>
             {t("nav.back")}
           </Link>
-          <Link to="/public/news" className="us-nav-logo">
+          <Link to="/news" className="us-nav-logo">
             Doc<span>Pats</span>
           </Link>
           <span className="us-nav-tag">{t("nav.tag")}</span>

@@ -89,7 +89,7 @@ export default function Header({
           <div className="dp-nav-links">
             <a
               className="dp-nav-link"
-              href="/public/news"
+              href="/news"
               style={{ color: "white" }}
             >
               {t("nav.newsLink", { defaultValue: "Medical News" })}

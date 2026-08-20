@@ -26,7 +26,7 @@ export default function AboutPage() {
 
         {/* NAV */}
         <nav className="ab-nav">
-          <Link to="/public/news" className="ab-nav-back">
+          <Link to="/news" className="ab-nav-back">
             <svg
               width="14"
               height="14"
@@ -44,7 +44,7 @@ export default function AboutPage() {
             </svg>
             {t("nav.back")}
           </Link>
-          <Link to="/public/news" className="ab-nav-logo">
+          <Link to="/news" className="ab-nav-logo">
             Doc<span>Pats</span>
           </Link>
           <div className="ab-nav-right">
@@ -100,7 +100,7 @@ export default function AboutPage() {
                   <div className="ab-editor-name">{t("editor.name")}</div>
                   <div className="ab-editor-title">{t("editor.title")}</div>
                   <p className="ab-editor-bio">{t("editor.bio")}</p>
-                  <Link to="/public/news" className="ab-editor-profile">
+                  <Link to="/news" className="ab-editor-profile">
                     {t("editor.profileLink")}
                   </Link>
                 </div>
@@ -156,7 +156,7 @@ export default function AboutPage() {
               Doc<span>Pats</span>
             </span>
             <span className="ab-footer-tag">{t("footer.tag")}</span>
-            <Link to="/public/articles" className="ab-footer-link">
+            <Link to="/articles" className="ab-footer-link">
               {t("footer.link")}
             </Link>
           </div>

@@ -6,7 +6,7 @@
 //
 // Данные из DTO: clinic.publications [{id,title,abstract,imageUrl,authorName,readTime,url}].
 // Пустой список → блок не рендерится. Ссылка — обычный <a href={p.url}>
-// (внутренний /public/articles/:id), как в текущей странице.
+// (внутренний /public/doctor-profile/article-detail-for-all/:id).
 //
 // Контракт: ({ clinic, config }).
 
@@ -47,9 +47,11 @@ export default function PublicationsBlock({ clinic, config = {} }) {
         {pubs.map((p) => {
           const img = resolveUrl(p.imageUrl);
           // url приходит из DTO уже корректный (мнение/научная). Фолбэк —
-          // защита от старого DTO с битым /public/articles/:id.
+          // защита от старого DTO с битым /articles/:id (это адрес синтез-
+          // статьи, а не публикации врача). Старая форма /public/articles/:id
+          // теперь редиректит на /articles/:id — ловим обе.
           let href = p.url || "";
-          if (!href || /\/public\/articles\//.test(href)) {
+          if (!href || /^\/(public\/)?articles\//.test(href)) {
             href = p.id
               ? `/public/doctor-profile/article-detail-for-all/${p.id}`
               : href;

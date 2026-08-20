@@ -349,10 +349,10 @@ export default function SynthesisPage() {
 
         {/* NAV */}
         <nav className="sy-nav">
-          <Link to="/public/news" className="sy-nav-back">
+          <Link to="/news" className="sy-nav-back">
             ← {t("nav_news")}
           </Link>
-          <Link to="/public/news" className="sy-nav-logo">
+          <Link to="/news" className="sy-nav-logo">
             Doc<span>Pats</span>
           </Link>
           <span className="sy-nav-tag">{t("nav_tag")}</span>
@@ -401,7 +401,7 @@ export default function SynthesisPage() {
             {status === "success" && articles.length > 0 && (
               <>
                 <Link
-                  to={`/public/articles/${articles[0]._id}`}
+                  to={`/articles/${articles[0]._id}`}
                   className="sy-hero-link"
                 >
                   <article className="sy-hero-card">
@@ -444,7 +444,7 @@ export default function SynthesisPage() {
                       {articles.slice(1).map((a) => (
                         <Link
                           key={a._id}
-                          to={`/public/articles/${a._id}`}
+                          to={`/articles/${a._id}`}
                           className="sy-card-link"
                         >
                           <article className="sy-card">
@@ -517,7 +517,7 @@ export default function SynthesisPage() {
               </span>
               <span className="sy-footer-tag">{t("footer_tag")}</span>
             </div>
-            <Link to="/public/news" className="sy-footer-link">
+            <Link to="/news" className="sy-footer-link">
               {t("all_news")}
             </Link>
           </div>

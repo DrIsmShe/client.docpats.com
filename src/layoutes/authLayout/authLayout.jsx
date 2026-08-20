@@ -1082,7 +1082,7 @@ export default function AuthLayout() {
           <div className="dp-nav-inner">
             {/* Left links */}
             <div className="dp-nav-links">
-              <a className="dp-nav-link" href="/public/news">
+              <a className="dp-nav-link" href="/news">
                 {t("nav.newsLink") || "Medical News"}
               </a>
             </div>
@@ -1434,7 +1434,7 @@ export default function AuthLayout() {
                   </motion.div>
                   {/* News card */}
                   <motion.div className="dp-news-card-wrap" variants={item}>
-                    <a href="/public/news" className="dp-news-card">
+                    <a href="/news" className="dp-news-card">
                       <div className="dp-news-card-accent" />
                       <div className="dp-news-card-body">
                         <div className="dp-news-card-icon">📰</div>
@@ -1461,7 +1461,7 @@ export default function AuthLayout() {
                       куда. Теперь вкладка листает аналитику внутри ленты, а
                       целая витрина открывается отсюда — осознанным переходом. */}
                   <motion.div className="dp-news-card-wrap" variants={item}>
-                    <a href="/public/articles" className="dp-news-card">
+                    <a href="/articles" className="dp-news-card">
                       <div className="dp-news-card-accent" />
                       <div className="dp-news-card-body">
                         <div className="dp-news-card-icon">🧬</div>
@@ -2149,7 +2149,7 @@ export default function AuthLayout() {
                 >
                   {t("footer.contact") || "Contact"}
                 </a>
-                <a className="dp-footer-link" href="/public/about">
+                <a className="dp-footer-link" href="/about">
                   {t("footer.about") || "О проекте"}
                 </a>
                 <Link className="dp-footer-link" to="/clinic/staff-login">

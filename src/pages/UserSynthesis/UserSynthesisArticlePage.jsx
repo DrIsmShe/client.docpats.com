@@ -99,7 +99,7 @@ export default function UserSynthesisArticlePage() {
             </svg>
             {t("nav.back")}
           </button>
-          <Link to="/public/news" className="usa-nav-logo">
+          <Link to="/news" className="usa-nav-logo">
             Doc<span>Pats</span>
           </Link>
           <Link to="/public/user-synthesis" className="usa-nav-tag">

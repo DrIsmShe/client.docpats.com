@@ -132,7 +132,7 @@ export default function UserSynthesisResultPage() {
             </svg>
             {t("nav.newArticle")}
           </Link>
-          <Link to="/public/news" className="ur-nav-logo">
+          <Link to="/news" className="ur-nav-logo">
             Doc<span>Pats</span>
           </Link>
           <div style={{ display: "flex", gap: 8 }}>

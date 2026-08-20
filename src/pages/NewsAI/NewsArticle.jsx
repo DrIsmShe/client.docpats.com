@@ -317,7 +317,7 @@ export default function NewsArticle() {
             onClick={() =>
               window.history.length > 1
                 ? navigate(-1)
-                : navigate("/public/news")
+                : navigate("/news")
             }
           >
             <BackArrow />

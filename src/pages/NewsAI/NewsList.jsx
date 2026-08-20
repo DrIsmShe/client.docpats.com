@@ -178,7 +178,7 @@ function mergeAndSort(ai, pub, sci, doc = [], syn = [], sortBy = "date_desc") {
 }
 function getItemLink(item, { isAuthenticated, userRole } = {}) {
   if (item._sourceType === "ai")
-    return `/public/news/${item._original?.slug || item._id}`;
+    return `/news/${item._original?.slug || item._id}`;
   if (item._sourceType === "article") {
     if (!isAuthenticated)
       return `/public/doctor-profile/article-detail-for-all/${item._id}`;
@@ -198,7 +198,7 @@ function getItemLink(item, { isAuthenticated, userRole } = {}) {
   if (item._sourceType === "synthesis") {
     // Отдельная страница статьи остаётся прежней — меняется только то, откуда
     // на неё попадают: из общей ленты, а не с отдельной вкладки-перехода.
-    return `/public/articles/${item._id}`;
+    return `/articles/${item._id}`;
   }
   if (item._sourceType === "doctor") {
     if (!isAuthenticated)

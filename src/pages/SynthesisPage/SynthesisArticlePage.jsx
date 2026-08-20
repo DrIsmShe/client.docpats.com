@@ -706,7 +706,7 @@ export default function SynthesisArticlePage() {
             onClick={() =>
               window.history.length > 1
                 ? navigate(-1)
-                : navigate("/public/articles")
+                : navigate("/articles")
             }
           >
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
@@ -720,7 +720,7 @@ export default function SynthesisArticlePage() {
             </svg>
             {t("nav_ai.all_articles")}
           </button>
-          <Link to="/public/news" className="sa-nav-logo">
+          <Link to="/news" className="sa-nav-logo">
             Doc<span>Pats</span>
           </Link>
           <span className="sa-nav-tag">{t("nav_ai.analytics")}</span>

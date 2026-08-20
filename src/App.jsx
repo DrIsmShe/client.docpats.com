@@ -1,5 +1,11 @@
 import { lazy, Suspense } from "react";
-import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  BrowserRouter,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import AnalyticsRouteTracker from "./lib/AnalyticsRouteTracker";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -665,6 +671,23 @@ function RouteFallback() {
   );
 }
 
+/**
+ * Старые адреса публичного контента жили под /public/*, а sitemap и SEO
+ * edge-функция всегда указывали на корневые /about, /articles, /news.
+ * Канонический адрес теперь корневой; /public/* остаётся рабочим и уводит
+ * на него редиректом — чтобы уже проиндексированные ссылки не ломались.
+ *
+ * Строим цель из pathname, а не из useParams: одному компоненту достаточно
+ * снять префикс, вместо шести редиректов с ручной сборкой параметров.
+ * search и hash переносим — у новости язык приезжает в ?locale=.
+ */
+function StripPublicPrefix() {
+  const { pathname, search, hash } = useLocation();
+  return (
+    <Navigate to={pathname.replace(/^\/public/, "") + search + hash} replace />
+  );
+}
+
 function App() {
   const currentUserId = useCurrentUserId();
   return (
@@ -698,6 +721,32 @@ function App() {
               path="/user-synthesis/my/:id"
               element={<UserSynthesisResultPage />}
             />
+            {/* ── Публичный контент: корневые адреса ─────────────────────
+                /about, /articles, /news лежат в корне, а не под /public.
+                Так их видят sitemap (server/common/sitemap) и SEO
+                edge-функция (netlify/edge-functions/seo.js) — обе всегда
+                строили именно корневые URL. Пока роутов не было, бот с
+                /news/<slug> проваливался в catch-all /:slug/:section и
+                получал «клиника не найдена».
+
+                Статический сегмент всегда весомее динамического, поэтому
+                эти маршруты выигрывают у /:slug и /:slug/:section
+                независимо от порядка объявления. Slug'и news/articles/about
+                вдобавок зарезервированы в clinic.model.js — клиника такой
+                адрес не займёт.
+
+                Layout тот же, что у /public: общий шапка-подвал шелл. */}
+            <Route element={<DashboardLayout />}>
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/articles" element={<SynthesisPage />} />
+              <Route path="/articles/:id" element={<SynthesisArticlePage />} />
+              <Route
+                path="/articles/:id/:lang"
+                element={<SynthesisArticlePage />}
+              />
+              <Route path="/news" element={<NewsList />} />
+              <Route path="/news/:slug" element={<NewsArticle />} />
+            </Route>
             <Route path="/public" element={<DashboardLayout />}>
               {/* <Route path="/clinic/accept" element={<InvitationAcceptPage />} />
               <Route
@@ -709,15 +758,14 @@ function App() {
                 path="user-synthesis/my/:id"
                 element={<UserSynthesisArticlePage />}
               />
-              <Route path="about" element={<AboutPage />} />
-              <Route path="articles" element={<SynthesisPage />} />
-              <Route path="news/:slug" element={<NewsArticle />} />
-              <Route path="articles/:id" element={<SynthesisArticlePage />} />
-              <Route
-                path="articles/:id/:lang"
-                element={<SynthesisArticlePage />}
-              />
-              <Route path="news" element={<NewsList />} />
+              {/* Контент переехал в корень (блок роутов выше). Здесь
+                  остаются только редиректы для старых ссылок. */}
+              <Route path="about" element={<StripPublicPrefix />} />
+              <Route path="articles" element={<StripPublicPrefix />} />
+              <Route path="articles/:id" element={<StripPublicPrefix />} />
+              <Route path="articles/:id/:lang" element={<StripPublicPrefix />} />
+              <Route path="news" element={<StripPublicPrefix />} />
+              <Route path="news/:slug" element={<StripPublicPrefix />} />
 
               <Route
                 path="doctor-profile/article-detail-for-all/:id"

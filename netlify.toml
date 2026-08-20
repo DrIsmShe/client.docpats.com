@@ -11,6 +11,41 @@
   status = 200
   force = true
 
+# Публичный контент переехал с /public/* в корень (/news, /articles, /about).
+# Отдаём настоящий 301 — иначе бот получает SPA-шелл и клиентский редирект,
+# а вес старого адреса на новый не переносится. Порядок важен: правила ниже
+# должны стоять до catch-all на index.html. /public/doctor-profile/* и
+# /public/doctor/* остаются на месте и сюда не попадают.
+[[redirects]]
+  from = "/public/news"
+  to = "/news"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/public/news/*"
+  to = "/news/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/public/articles"
+  to = "/articles"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/public/articles/*"
+  to = "/articles/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/public/about"
+  to = "/about"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

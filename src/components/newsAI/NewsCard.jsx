@@ -149,7 +149,7 @@ export default function NewsCard({
         ? t("types.newsFull")
         : news.type || "");
   const icon = typeIcon ?? (isResearch ? "⚗" : "📡");
-  const link = href || (news.slug ? `/public/news/${news.slug}` : null);
+  const link = href || (news.slug ? `/news/${news.slug}` : null);
 
   const dateStr = news.publishedAt
     ? new Date(news.publishedAt).toLocaleDateString(
