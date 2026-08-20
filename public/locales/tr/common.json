@@ -376,7 +376,8 @@
     "no_intervals": "Bu gün randevu yok",
     "book_manual": "Başka saate kaydet",
     "booked": "Hasta kaydedildi",
-    "booked_notified": "Hasta kaydedildi, bildirim gönderildi"
+    "booked_notified": "Hasta kaydedildi, bildirim gönderildi",
+    "past_slot": "Bu saat çoktan geçti"
   },
   "article_form": {
     "create_title": "Yeni makale oluştur",
@@ -1444,7 +1445,8 @@
     "booked_notified": "Hasta kaydedildi, bildirim gönderildi",
     "legend_busy": "Randevu var",
     "legend_free": "Boş",
-    "legend_blocked": "Kapalı"
+    "legend_blocked": "Kapalı",
+    "past": "Bu saat çoktan geçti"
   },
   "book_patient_menu": "Hasta kaydet",
   "create_clinic": "Klinik oluştur"

@@ -376,7 +376,8 @@
     "no_intervals": "Bu gün qəbul yoxdur",
     "book_manual": "Başqa vaxta yazdır",
     "booked": "Pasiyent yazıldı",
-    "booked_notified": "Pasiyent yazıldı, bildiriş göndərildi"
+    "booked_notified": "Pasiyent yazıldı, bildiriş göndərildi",
+    "past_slot": "Bu vaxt artıq keçib"
   },
   "article_form": {
     "create_title": "Yeni məqalə yarat",
@@ -1526,7 +1527,8 @@
     "booked_notified": "Pasiyent yazıldı, bildiriş göndərildi",
     "legend_busy": "Qeydlər var",
     "legend_free": "Boş",
-    "legend_blocked": "Bağlı"
+    "legend_blocked": "Bağlı",
+    "past": "Bu vaxt artıq keçib"
   },
   "book_patient_menu": "Qəbula yazdır",
   "create_clinic": "Klinika yarat"

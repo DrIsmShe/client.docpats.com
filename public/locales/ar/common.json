@@ -407,7 +407,8 @@
     "no_intervals": "لا توجد مواعيد في هذا اليوم",
     "book_manual": "الحجز في وقت آخر",
     "booked": "تم حجز المريض",
-    "booked_notified": "تم حجز المريض وإرسال الإشعار"
+    "booked_notified": "تم حجز المريض وإرسال الإشعار",
+    "past_slot": "لقد مضى هذا الوقت"
   },
   "article_form": {
     "create_title": "إنشاء مقالة جديدة",
@@ -1438,7 +1439,8 @@
     "booked_notified": "تم حجز المريض وإرسال الإشعار",
     "legend_busy": "توجد مواعيد",
     "legend_free": "متاح",
-    "legend_blocked": "مغلق"
+    "legend_blocked": "مغلق",
+    "past": "لقد مضى هذا الوقت"
   },
   "book_patient_menu": "حجز موعد",
   "create_clinic": "إنشاء عيادة"

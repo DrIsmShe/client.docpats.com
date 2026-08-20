@@ -338,7 +338,8 @@
     "no_intervals": "No appointments on this day",
     "book_manual": "Book another time",
     "booked": "Patient booked",
-    "booked_notified": "Patient booked, notification sent"
+    "booked_notified": "Patient booked, notification sent",
+    "past_slot": "This time has already passed"
   },
   "article_form": {
     "create_title": "Create a new article",
@@ -1420,7 +1421,8 @@
     "booked_notified": "Patient booked, notification sent",
     "legend_busy": "Has appointments",
     "legend_free": "Free",
-    "legend_blocked": "Closed"
+    "legend_blocked": "Closed",
+    "past": "This time has already passed"
   },
   "book_patient_menu": "Book a patient",
   "create_clinic": "Create a clinic"
