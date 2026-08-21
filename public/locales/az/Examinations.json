@@ -588,7 +588,7 @@
     "createNew": "Yeni şablon yarat",
     "deletedSuccess": "Şablon uğurla silindi",
     "deleteError": "Silinmə zamanı xəta baş verdi",
-    "confirmDelete": "Вы уверены, что хотите удалить этот шаблон?"
+    "confirmDelete": "Bu şablonu silmək istədiyinizə əminsiniz?"
   },
   "TempStatusPreasensDetail": {
     "messages": {
