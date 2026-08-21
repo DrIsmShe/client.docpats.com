@@ -39,30 +39,42 @@ const styles = `
   /* Панель записи приёма. Отдельный слой над всем содержимым оверлея:
      z-index выше карточки (3) и кнопок (5), pointer-events возвращён —
      внутри карточки во время видео он выключен, и кнопка не нажималась.
-     Прижата к низу: верх занят панелью самого Jitsi. */
+
+     ВЕРХ, а не низ. Низ в видеозвонке занят целиком самим Jitsi: полоса
+     управления, над ней строка автоматических субтитров, слева подпись
+     собеседника, справа окошко «сам себя». Панель шириной в пол-экрана
+     садилась ровно на них. Свободна верхняя полоса по центру: слева у
+     Jitsi водяной знак, справа лента участников. */
   .call-scribe {
     position: absolute;
     left: 50%;
-    bottom: 24px;
+    top: 58px;
     transform: translateX(-50%);
     z-index: 10;
     pointer-events: auto;
-    width: min(560px, 92vw);
+    /* Не дотягиваться до ленты участников у правого края и до водяного
+       знака у левого — отсюда вычет, а не просто проценты ширины. */
+    width: clamp(280px, calc(100vw - 420px), 560px);
+    /* Согласие пациента — это несколько абзацев; на низком окне панель
+       иначе уходит под полосу Jitsi вместо того, чтобы прокручиваться. */
+    max-height: calc(100dvh - 150px);
+    overflow-y: auto;
     text-align: left;
   }
-  /* В аудиозвонке кнопки завершения стоят по центру снизу — поднимаем
-     панель над ними, чтобы не перекрывала «положить трубку». */
+  /* В аудиозвонке Jitsi не виден вовсе (его накрывает backdrop), а верх
+     занимает своя карточка с аватаром и именем. Панель возвращается
+     вниз — но выше кнопки «положить трубку». */
   .call-overlay:not(.has-video) .call-scribe {
+    top: auto;
     bottom: 120px;
+    max-height: calc(100dvh - 240px);
+    width: min(560px, 92vw);
   }
-  /* На телефоне кнопки занимают низ экрана и в ВИДЕОрежиме — включая
-     микрофон. Панель шириной почти во весь экран накрывала их и забирала
-     касания себе: снаружи это выглядит как «видео есть, звука нет».
-     Поднимаем так же, как уже сделано для аудио. */
+  /* На телефоне лента участников у Jitsi уходит вниз, и верхняя полоса
+     свободна целиком — панели можно отдать почти всю ширину. */
   @media (max-width: 820px), (max-height: 560px) {
     .call-scribe {
-      bottom: 120px;
-      width: min(560px, 90vw);
+      width: min(560px, 92vw);
     }
   }
 
@@ -143,11 +155,14 @@ const styles = `
     z-index: 2;
     pointer-events: none;
   }
-  /* Кнопка «добавить участника». Верх экрана: низ занят панелью Jitsi. */
+  /* Кнопка «добавить участника». Верх по центру: снизу полоса управления
+     Jitsi и субтитры, справа его лента участников (кнопка стояла ровно
+     на её первой плитке), слева водяной знак. */
   .call-invite-layer {
     position: absolute;
-    top: 16px;
-    inset-inline-end: 16px;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 10;
     pointer-events: auto;
   }
@@ -168,8 +183,6 @@ const styles = `
     background: rgba(0,0,0,.65);
     border-color: rgba(255,255,255,.6);
   }
-  /* Активный видеозвонок отдан интерфейсу Jitsi целиком. */
-  .call-card-hidden { display: none; }
   .call-card {
     position: relative;
     z-index: 3;
@@ -181,16 +194,24 @@ const styles = `
     width: 320px;
     max-width: 92vw;
   }
-  .call-overlay.has-video .call-card {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    padding-top: 28px;
-    padding-bottom: 20px;
-    gap: 10px;
-    pointer-events: none;
-  }
+  /* Активный видеозвонок отдан интерфейсу Jitsi целиком: у него свои
+     микрофон, камера, полный экран и «трубка» — те же четыре кнопки.
+
+     Правило стоит ПОСЛЕ .call-card и повторяет его класс в селекторе.
+     Раньше оно шло выше и с той же специфичностью, поэтому
+     '.call-card { display: flex }' его перебивало: карточка НИКОГДА не
+     скрывалась. Хуже того, 'transform' на ней делал её блоком отсчёта
+     для 'position: fixed' кнопок, и «панель управления снизу» уезжала
+     наверх — прямо на аватар, имя и таймер той же карточки. Это и был
+     ком из наложений в верху экрана. */
+  .call-card.call-card-hidden { display: none; }
+  /* Правил вида '.call-overlay.has-video .call-<что-то>' здесь больше
+     нет намеренно: они уменьшали аватар, имя и таймер и уводили кнопки
+     вниз экрана — то есть описывали карточку поверх видео, которой
+     теперь не существует. Пока карточка скрыта, они ничего не делали,
+     но первое же из них ('position: fixed' на кнопках) снова стало бы
+     ловушкой: 'transform' на карточке делает её блоком отсчёта, и
+     «снизу» превращается в «сверху». */
   .call-avatar-wrap {
     position: relative;
     margin-bottom: 8px;
@@ -208,13 +229,6 @@ const styles = `
   @keyframes callPulse {
     0%   { transform: scale(1);   opacity: 0.6; }
     100% { transform: scale(1.5); opacity: 0; }
-  }
-  .call-overlay.has-video .call-avatar-wrap { margin-bottom: 4px; }
-  .call-overlay.has-video .call-avatar,
-  .call-overlay.has-video .call-avatar-placeholder {
-    width: 56px !important;
-    height: 56px !important;
-    font-size: 22px !important;
   }
   .call-avatar {
     width: 100px;
@@ -243,7 +257,6 @@ const styles = `
     letter-spacing: -0.3px;
     text-shadow: 0 1px 6px rgba(0,0,0,0.4);
   }
-  .call-overlay.has-video .call-name { font-size: 18px; }
   .call-status {
     font-size: 14px;
     color: rgba(255,255,255,0.65);
@@ -260,7 +273,6 @@ const styles = `
     font-variant-numeric: tabular-nums;
     text-shadow: 0 1px 6px rgba(0,0,0,0.5);
   }
-  .call-overlay.has-video .call-timer { font-size: 15px; }
   .call-buttons {
     display: flex;
     gap: 24px;
@@ -268,19 +280,6 @@ const styles = `
     align-items: center;
     justify-content: center;
     pointer-events: auto;
-  }
-  .call-overlay.has-video .call-buttons {
-    position: fixed;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 0;
-    z-index: 5;
-    background: rgba(0,0,0,0.35);
-    backdrop-filter: blur(12px);
-    padding: 14px 24px;
-    border-radius: 60px;
-    gap: 20px;
   }
   .call-btn {
     display: flex;
@@ -303,11 +302,6 @@ const styles = `
     align-items: center;
     justify-content: center;
     font-size: 26px;
-  }
-  .call-overlay.has-video .call-btn-icon {
-    width: 52px;
-    height: 52px;
-    font-size: 22px;
   }
   .call-btn-label {
     font-size: 11px;
@@ -493,13 +487,10 @@ export default function CallUI({
             видеозвонке интерфейс джитсёвый, а градиент только гасил бы его
             нижнюю панель. */}
 
-        {/* Панель записи приёма — СВОЙ слой, а не часть карточки.
-            В видеозвонке у .call-card стоит pointer-events: none (она
-            становится подписью поверх видео), и кнопка внутри неё не
-            нажималась вовсе. Плюс карточка шириной 320px и прижата к
-            верху — там же, где собственная панель Jitsi.
-            Поэтому отдельный слой внизу: он кликабелен и в аудио, и в
-            видео, и ни с чем не спорит за место. */}
+        {/* Панель записи приёма — СВОЙ слой, а не часть карточки: в
+            видеозвонке карточки нет вовсе, и панель внутри неё исчезла бы
+            вместе с ней. Место слоя — в .call-scribe: в видео сверху (низ
+            занят интерфейсом Jitsi), в аудио снизу над «трубкой». */}
         {scribeRole && scribeRoom && callState === "active" && (
           <div className="call-scribe">
             {/* fallback={null}: панель появляется через долю секунды, и
@@ -517,8 +508,8 @@ export default function CallUI({
         )}
 
         {/* Приглашение третьего — свой слой, как у панели записи.
-            Внизу экрана стоит панель Jitsi, поэтому кнопка уходит вверх:
-            двум панелям управления в одном месте тесно. */}
+            Верх по центру: снизу полоса управления Jitsi, справа его
+            лента участников. */}
         {callState === "active" && onInvite && (
           <div className="call-invite-layer">
             <button
