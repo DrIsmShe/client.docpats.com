@@ -221,6 +221,21 @@ export default function ScribePanel({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.status, rec.state]);
 
+  // Черновик собран (или собрать не удалось) — сеанс кончился, и панель
+  // должна вернуться к началу: язык, микрофон, «Вести запись приёма».
+  //
+  // Без этого приём записывался ровно один раз. Поиск по комнате такой
+  // сеанс уже не отдаёт (ready и failed не входят в список живых), но
+  // у той стороны, которая его вела, он остаётся в состоянии компонента,
+  // и панель продолжает опрашивать мёртвый сеанс вместо того, чтобы
+  // искать новый. Отпускаем его здесь — на сервере он никуда не делся,
+  // черновик уже отдан.
+  useEffect(() => {
+    if (session?.status === "ready" || session?.status === "failed") {
+      setSession(null);
+    }
+  }, [session?.status]);
+
   async function startRecording() {
     setBusy(true);
     setNotice(null);
@@ -586,16 +601,35 @@ export default function ScribePanel({
     );
   }
 
-  return (
-    <div className="scribe scribe--live">
-      <span className="scribe__dot" aria-hidden="true" />
-      <span>
-        {t("scribe.doctor.live", "Запись идёт")} · {fmt(rec.seconds)}
-      </span>
-      <button type="button" disabled={busy} onClick={finish}>
-        {t("scribe.doctor.finish", "Завершить и собрать черновик")}
-      </button>
-      {notice && <span className="scribe__note">{notice}</span>}
-    </div>
-  );
+  // ЯВНО recording, а не «всё остальное». Раньше сюда проваливались и
+  // finishing, и ready, и failed: черновик уже собран, запись давно
+  // остановлена, а панель показывала мигающую точку и «Запись идёт» с
+  // таймером на нуле. Полоса записи, горящая когда записи нет, — худшее,
+  // что может сообщить интерфейс о согласии: человек напротив видит её и
+  // думает, что его пишут.
+  if (session.status === "recording") {
+    return (
+      <div className="scribe scribe--live">
+        <span className="scribe__dot" aria-hidden="true" />
+        <span>
+          {t("scribe.doctor.live", "Запись идёт")} · {fmt(rec.seconds)}
+        </span>
+        <button type="button" disabled={busy} onClick={finish}>
+          {t("scribe.doctor.finish", "Завершить и собрать черновик")}
+        </button>
+        {notice && <span className="scribe__note">{notice}</span>}
+      </div>
+    );
+  }
+
+  // finishing — распознавание идёт, кнопки нажимать нечего и незачем.
+  if (session.status === "finishing") {
+    return (
+      <div className="scribe scribe--done">
+        {t("scribe.notice.collecting", "Собираем черновик…")}
+      </div>
+    );
+  }
+
+  return null;
 }
