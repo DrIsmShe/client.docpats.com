@@ -171,6 +171,26 @@ export default function useVideoRoom({
           prejoinPageEnabled: false,
           prejoinConfig: { enabled: false },
           disableDeepLinking: true,
+
+          // Полный экран — только своей кнопкой комнаты (⛶ в правом
+          // верхнем углу JitsiRoom). Джитсёвая разворачивает документ
+          // ВНУТРИ iframe, а браузер поднимает сам iframe в top layer:
+          // панель записи приёма (.scribe-dock) лежит рядом с iframe и
+          // просто перестаёт отрисовываться. Врач жал полный экран и
+          // терял запись приёма. Своя кнопка разворачивает всю комнату
+          // вместе с панелью.
+          toolbarButtons: [
+            "microphone",
+            "camera",
+            "desktop",
+            "tileview",
+            "participants-pane",
+            "raisehand",
+            "videoquality",
+            "filmstrip",
+            "settings",
+            "hangup",
+          ],
         },
         userInfo: displayName ? { displayName } : undefined,
       });

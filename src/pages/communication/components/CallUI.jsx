@@ -155,9 +155,10 @@ const styles = `
     z-index: 2;
     pointer-events: none;
   }
-  /* Кнопка «добавить участника». Верх по центру: снизу полоса управления
-     Jitsi и субтитры, справа его лента участников (кнопка стояла ровно
-     на её первой плитке), слева водяной знак. */
+  /* Верхний ряд кнопок: полный экран и «добавить участника». Верх по
+     центру: снизу полоса управления Jitsi и субтитры, справа его лента
+     участников (кнопка стояла ровно на её первой плитке), слева
+     водяной знак. */
   .call-invite-layer {
     position: absolute;
     top: 12px;
@@ -165,6 +166,33 @@ const styles = `
     transform: translateX(-50%);
     z-index: 10;
     pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  /* Полный экран. Кнопка НАША, а не джитсёвая, и это принципиально:
+     джитсёвая разворачивает документ внутри iframe, браузер поднимает
+     iframe в top layer, и панель записи приёма вместе с этой кнопкой
+     перестаёт отрисовываться. Наша разворачивает весь оверлей. */
+  .call-icon-btn {
+    width: 34px;
+    height: 34px;
+    flex: none;
+    border: 1px solid rgba(255,255,255,.35);
+    background: rgba(0,0,0,.45);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .call-icon-btn:hover {
+    background: rgba(0,0,0,.65);
+    border-color: rgba(255,255,255,.6);
   }
   .call-invite-btn {
     border: 1px solid rgba(255,255,255,.35);
@@ -507,19 +535,46 @@ export default function CallUI({
           </div>
         )}
 
-        {/* Приглашение третьего — свой слой, как у панели записи.
-            Верх по центру: снизу полоса управления Jitsi, справа его
-            лента участников. */}
-        {callState === "active" && onInvite && (
+        {/* Верхний ряд: полный экран и приглашение третьего. Свой слой,
+            как у панели записи. Верх по центру: снизу полоса управления
+            Jitsi, справа его лента участников.
+
+            Кнопка полного экрана здесь, а не в карточке (карточки в
+            видеозвонке нет) и не в панели Jitsi: джитсёвая разворачивает
+            iframe, браузер поднимает его в top layer, и панель записи
+            приёма исчезает с экрана. Эта разворачивает оверлей целиком —
+            вместе с панелью. */}
+        {callState === "active" && (showVideoStage || onInvite) && (
           <div className="call-invite-layer">
-            <button
-              type="button"
-              className="call-invite-btn"
-              onClick={() => setInviteOpen(true)}
-            >
-              + Участник
-              {participantCount > 1 ? ` · ${participantCount}` : ""}
-            </button>
+            {showVideoStage && (
+              <button
+                type="button"
+                className="call-icon-btn"
+                onClick={toggleFullscreen}
+                aria-label={
+                  isFullscreen
+                    ? t("call.btn.fsOff", "Свернуть")
+                    : t("call.btn.fsOn", "Во весь экран")
+                }
+                title={
+                  isFullscreen
+                    ? t("call.btn.fsOff", "Свернуть")
+                    : t("call.btn.fsOn", "Во весь экран")
+                }
+              >
+                {isFullscreen ? "🗗" : "⛶"}
+              </button>
+            )}
+            {onInvite && (
+              <button
+                type="button"
+                className="call-invite-btn"
+                onClick={() => setInviteOpen(true)}
+              >
+                + Участник
+                {participantCount > 1 ? ` · ${participantCount}` : ""}
+              </button>
+            )}
           </div>
         )}
 
