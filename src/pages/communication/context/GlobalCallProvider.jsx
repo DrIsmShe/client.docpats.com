@@ -76,6 +76,7 @@ export function GlobalCallProvider({ currentUserId, children }) {
     inviteParticipant,
     inviteStatus,
     participantCount,
+    peerOffline,
   } = call;
 
   return (
@@ -93,6 +94,7 @@ export function GlobalCallProvider({ currentUserId, children }) {
         formattedDuration={formattedDuration}
         durationSec={durationSec}
         endedInfo={endedInfo}
+        peerOffline={peerOffline}
         jitsiContainerRef={jitsiContainerRef}
         onAccept={() => acceptCall(callId)}
         onDecline={() => declineCall(callId)}

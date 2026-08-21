@@ -144,6 +144,7 @@
     "close": "Bağla",
     "state": {
       "ringingOut": "Zəng edilir…",
+      "offlineNotified": "Şəbəkədə deyil — bildiriş göndərildi",
       "ringingIn": "Gələn zəng",
       "active": "Zəng gedir",
       "ended": "Zəng bitdi",
@@ -152,6 +153,8 @@
       "busy": "Abunəçi məşğuldur",
       "failed": "Bağlantı xətası"
     },
+    "peerOffline": "Şəbəkədə deyil",
+    "peerOfflineHint": "Həmsöhbət şəbəkədə deyil",
     "btn": {
       "decline": "Rədd et",
       "accept": "Qəbul et",

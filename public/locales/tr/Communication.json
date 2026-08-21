@@ -144,6 +144,7 @@
     "close": "Kapat",
     "state": {
       "ringingOut": "Aranıyor…",
+      "offlineNotified": "Çevrimdışı — bildirim gönderildi",
       "ringingIn": "Gelen arama",
       "active": "Görüşme sürüyor",
       "ended": "Görüşme bitti",
@@ -152,6 +153,8 @@
       "busy": "Hat meşgul",
       "failed": "Bağlantı hatası"
     },
+    "peerOffline": "Çevrimdışı",
+    "peerOfflineHint": "Karşı taraf çevrimdışı",
     "btn": {
       "decline": "Reddet",
       "accept": "Kabul et",

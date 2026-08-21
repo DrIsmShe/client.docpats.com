@@ -10,6 +10,8 @@ import { useBlockStatus } from "../hooks/useBlockStatus";
 import { uploadAttachment } from "../api/uploadAttachment";
 import { useCallContext } from "../context/GlobalCallProvider";
 import { useMessageTranslation } from "../hooks/useMessageTranslation";
+import { usePeerPresence } from "../hooks/usePeerPresence";
+import { useTranslation } from "react-i18next";
 import JitsiRoom from "./JitsiRoom";
 
 const ScribeDraftModal = lazy(() => import("./ScribeDraftModal"));
@@ -1005,6 +1007,20 @@ function ChatWindow({
   const currentUserId = extractId(currentUser);
   const peerId = extractId(peerUser);
 
+  // Звонить тому, кого нет на сайте, бессмысленно: экран входящего
+  // показывать некому, и звонящий 45 секунд слушает гудки в пустоту.
+  // Пуш о вызове ему всё равно уйдёт (call.gateway.js), но начинать
+  // разговор, которого не будет, — не нужно.
+  //
+  // null означает «не знаем» и кнопки НЕ гасит: в групповом диалоге
+  // личного собеседника нет вовсе, а до ответа сервера запрещать звонок
+  // не за что.
+  const peerOnline = usePeerPresence(peerId);
+  const callBlocked = peerOnline === false;
+  // Русский текст вторым аргументом: пока словарь грузится, показывается
+  // он, а не голый ключ (та же схема, что в ScribePanel).
+  const { t } = useTranslation("Communication");
+
   // Черновик приёма, собранный из разговора. Показывается врачу сразу
   // после завершения записи, поверх чата.
   const [scribeDraft, setScribeDraft] = useState(null);
@@ -1452,7 +1468,11 @@ function ChatWindow({
             <div className="chat-header-info">
               <div className="chat-title">{dialogTitle || "Untitled"}</div>
               <div className="chat-status">
-                {typingUsers.size > 0 ? "typing…" : ""}
+                {typingUsers.size > 0
+                  ? "typing…"
+                  : callBlocked
+                    ? t("call.peerOffline", "Не в сети")
+                    : ""}
               </div>
             </div>
           </div>
@@ -1461,9 +1481,14 @@ function ChatWindow({
             {/* Аудио звонок */}
             <button
               className="icon-button"
-              title="Audio call"
+              title={
+                callBlocked
+                  ? t("call.peerOfflineHint", "Собеседник не в сети")
+                  : "Audio call"
+              }
+              disabled={callBlocked}
               onClick={() => {
-                if (callState !== "idle" || !peerId) return;
+                if (callState !== "idle" || !peerId || callBlocked) return;
                 initiateCall({
                   targetDialogId: dialogId,
                   targetPeerId: peerId,
@@ -1472,7 +1497,7 @@ function ChatWindow({
                   type: "audio",
                 });
               }}
-              style={{ opacity: callState !== "idle" ? 0.4 : 1 }}
+              style={{ opacity: callState !== "idle" || callBlocked ? 0.4 : 1 }}
             >
               📞
             </button>
@@ -1489,13 +1514,21 @@ function ChatWindow({
                 открывает комнату напрямую: звонить там некому лично. */}
             <button
               className="icon-button"
-              title="Video call"
+              title={
+                callBlocked
+                  ? t("call.peerOfflineHint", "Собеседник не в сети")
+                  : "Video call"
+              }
+              // Групповой диалог кнопку не теряет: там peerId нет, значит и
+              // callBlocked никогда не выставится — она по-прежнему просто
+              // открывает общую комнату.
+              disabled={callBlocked}
               onClick={() => {
                 if (!peerId) {
                   setShowJitsi(true);
                   return;
                 }
-                if (callState !== "idle") return;
+                if (callState !== "idle" || callBlocked) return;
                 initiateCall({
                   targetDialogId: dialogId,
                   targetPeerId: peerId,
@@ -1504,7 +1537,7 @@ function ChatWindow({
                   type: "video",
                 });
               }}
-              style={{ opacity: callState !== "idle" ? 0.4 : 1 }}
+              style={{ opacity: callState !== "idle" || callBlocked ? 0.4 : 1 }}
             >
               🎥
             </button>

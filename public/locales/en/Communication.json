@@ -144,6 +144,7 @@
     "close": "Close",
     "state": {
       "ringingOut": "Calling…",
+      "offlineNotified": "Offline — notification sent",
       "ringingIn": "Incoming call",
       "active": "Call in progress",
       "ended": "Call ended",
@@ -152,6 +153,8 @@
       "busy": "The line is busy",
       "failed": "Connection error"
     },
+    "peerOffline": "Offline",
+    "peerOfflineHint": "The other person is offline",
     "btn": {
       "decline": "Decline",
       "accept": "Accept",

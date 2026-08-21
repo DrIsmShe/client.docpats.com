@@ -107,6 +107,10 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
   // нельзя — приглашённый не получает события о собственном входе и
   // остался бы с единицей, сидя втроём.
   const [participantCount, setParticipantCount] = useState(1);
+  // Собеседника нет на сайте: сервер сказал это сразу после call:initiate.
+  // Гудки продолжаются — вызываемому ушёл пуш, и он ещё может успеть
+  // открыть кабинет; но звонящий должен понимать, чего ждёт.
+  const [peerOffline, setPeerOffline] = useState(false);
 
   // ─── SYNC REFS ────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -375,6 +379,7 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
     }) => {
       if (callState !== "idle") return;
       callTypeRef.current = type;
+      setPeerOffline(false);
       setCallState("ringing_out");
       setPeerId(targetPeerId);
       setPeerInfo({ name: peerName, avatar: peerAvatar });
@@ -462,6 +467,10 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
     };
 
     // CALLEE: входящий
+    // Сервер не смог показать вызываемому экран входящего — вкладки нет.
+    // Вместо неё ушёл пуш; звонок при этом продолжает звонить.
+    const onPeerOffline = () => setPeerOffline(true);
+
     const onIncoming = ({
       callId: cId,
       dialogId: dId,
@@ -470,6 +479,11 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
       type,
     }) => {
       if (callState !== "idle") {
+        // Тот же вызов, присланный повторно (сервер досылает его при
+        // подключении — по пушу или после обрыва связи), — это дубликат,
+        // а не второй звонок. Ответить на него «занято» значило бы
+        // положить трубку самому себе.
+        if (cId && cId === callIdRef.current) return;
         socket.emit("call:decline", { callId: cId });
         return;
       }
@@ -562,6 +576,10 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
       if (callIdRef.current) {
         cleanup();
         setCallState("idle");
+        // Ссылку тоже гасим: без этого ref переживал разрыв и врал о
+        // звонке, которого уже нет. Сервер, если вызов ещё идёт, пришлёт
+        // call:incoming повторно сразу после подключения.
+        callIdRef.current = null;
         setCallId(null);
         setPeerId(null);
         setPeerInfo(null);
@@ -597,6 +615,7 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
     socket.on("call:participant_no_answer", onParticipantNoAnswer);
     socket.on("call:invite_failed", onInviteFailed);
     socket.on("call:initiated", onInitiated);
+    socket.on("call:offline", onPeerOffline);
     socket.on("call:incoming", onIncoming);
     socket.on("call:accepted", onAccepted);
     socket.on("call:declined", onDeclined);
@@ -614,6 +633,7 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
       socket.off("call:participant_no_answer", onParticipantNoAnswer);
       socket.off("call:invite_failed", onInviteFailed);
       socket.off("call:initiated", onInitiated);
+      socket.off("call:offline", onPeerOffline);
       socket.off("call:incoming", onIncoming);
       socket.off("call:accepted", onAccepted);
       socket.off("call:declined", onDeclined);
@@ -675,6 +695,7 @@ export function useJitsiCall(currentUserId, { displayName = "" } = {}) {
     endCall,
     toggleMute,
     toggleVideo,
+    peerOffline,
     // Конференция
     inviteParticipant,
     inviteStatus,

@@ -374,8 +374,15 @@ const styles = `
 
 // t передаётся параметром: функция живёт на уровне модуля, а хук
 // доступен только внутри компонента.
-function formatStatus(callState, endedInfo, t) {
-  if (callState === "ringing_out") return t("call.state.ringingOut", "Вызов…");
+function formatStatus(callState, endedInfo, t, peerOffline = false) {
+  if (callState === "ringing_out") {
+    // Гудки идут, но экрана входящего у собеседника нет — ему ушёл пуш.
+    // Честная подпись вместо молчаливого «Вызов…»: человек понимает, чего
+    // он ждёт и почему ответа может не быть.
+    return peerOffline
+      ? t("call.state.offlineNotified", "Не в сети — отправлено уведомление")
+      : t("call.state.ringingOut", "Вызов…");
+  }
   if (callState === "ringing_in") return t("call.state.ringingIn", "Входящий звонок");
   if (callState === "active") return t("call.state.active", "Звонок активен");
   if (callState === "ended") {
@@ -409,6 +416,7 @@ export default function CallUI({
   formattedDuration,
   durationSec,
   endedInfo,
+  peerOffline = false,
   jitsiContainerRef, // ← НОВОЕ: контейнер, куда useJitsiCall монтирует Jitsi
   onAccept,
   onDecline,
@@ -621,7 +629,7 @@ export default function CallUI({
             <div className="call-timer">{formattedDuration}</div>
           ) : callState === "ended" ? (
             <div className="call-ended-info">
-              <div>{formatStatus(callState, endedInfo, t)}</div>
+              <div>{formatStatus(callState, endedInfo, t, peerOffline)}</div>
               {endedInfo?.durationSec > 0 && (
                 <div style={{ marginTop: 4 }}>
                   {formatDurLabel(endedInfo.durationSec, t)}
@@ -634,7 +642,7 @@ export default function CallUI({
                 callState === "ringing_in" ? "call-ring-label" : "call-status"
               }
             >
-              {formatStatus(callState, endedInfo, t)}
+              {formatStatus(callState, endedInfo, t, peerOffline)}
             </div>
           )}
 

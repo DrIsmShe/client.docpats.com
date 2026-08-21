@@ -144,6 +144,7 @@
     "close": "إغلاق",
     "state": {
       "ringingOut": "جارٍ الاتصال…",
+      "offlineNotified": "غير متصل — تم إرسال إشعار",
       "ringingIn": "مكالمة واردة",
       "active": "المكالمة جارية",
       "ended": "انتهت المكالمة",
@@ -152,6 +153,8 @@
       "busy": "الخط مشغول",
       "failed": "خطأ في الاتصال"
     },
+    "peerOffline": "غير متصل",
+    "peerOfflineHint": "الطرف الآخر غير متصل",
     "btn": {
       "decline": "رفض",
       "accept": "قبول",
