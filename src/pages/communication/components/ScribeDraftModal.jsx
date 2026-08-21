@@ -303,7 +303,7 @@ export default function ScribeDraftModal({ data, onClose }) {
               </a>
             )}
             <button type="button" onClick={onClose}>
-              Закрыть
+              {t("draft.close", "Закрыть")}
             </button>
           </div>
         </div>
@@ -442,9 +442,10 @@ export default function ScribeDraftModal({ data, onClose }) {
         {!patientName && target === "private" && (
           <div className="sdm-find">
             <p className="sdm-find__hint">
-              Карта этого пациента у вас не найдена. Заведите её в разделе
-              «Мои пациенты» и вернитесь — черновик останется здесь, пока
-              открыто окно.
+              {t(
+                "draft.noCardHint",
+                "Карта этого пациента у вас не найдена. Заведите её в разделе «Мои пациенты» и вернитесь — черновик останется здесь, пока открыто окно.",
+              )}
             </p>
           </div>
         )}

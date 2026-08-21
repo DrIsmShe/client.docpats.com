@@ -15,18 +15,22 @@
 // по идентификатору.
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { getDialogs } from "../api/communicationApi";
 
-const STATUS_TEXT = {
-  ringing: "Звоним…",
-  joined: "В разговоре",
-  declined: "Отклонил вызов",
-  no_answer: "Не ответил",
-  left: "Вышел",
-  busy: "Занят другим звонком",
-  not_allowed: "Нельзя пригласить этого человека",
-  failed: "Не удалось пригласить",
+// Состояния приглашения — ключами, а не готовым текстом: окно открывают
+// из звонка, а звонок бывает на пяти языках. Русский остаётся вторым
+// аргументом t(): пока словарь грузится по сети, видно его, а не ключ.
+const STATUS_KEYS = {
+  ringing: ["invite.status.ringing", "Звоним…"],
+  joined: ["invite.status.joined", "В разговоре"],
+  declined: ["invite.status.declined", "Отклонил вызов"],
+  no_answer: ["invite.status.noAnswer", "Не ответил"],
+  left: ["invite.status.left", "Вышел"],
+  busy: ["invite.status.busy", "Занят другим звонком"],
+  not_allowed: ["invite.status.notAllowed", "Нельзя пригласить этого человека"],
+  failed: ["invite.status.failed", "Не удалось пригласить"],
 };
 
 export default function AddParticipantModal({
@@ -34,6 +38,7 @@ export default function AddParticipantModal({
   inviteStatus = {},
   onClose,
 }) {
+  const { t } = useTranslation("Communication");
   const [dialogs, setDialogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -46,7 +51,7 @@ export default function AddParticipantModal({
         if (!cancelled) setDialogs(res?.data || []);
       })
       .catch((err) => {
-        if (!cancelled) setError(err?.message || "Не удалось загрузить список");
+        if (!cancelled) setError(true);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -67,7 +72,10 @@ export default function AddParticipantModal({
         id,
         // dialogId личной переписки — им сервер проверяет право позвать.
         dialogId: String(dialog._id),
-        name: dialog.displayName || peer.username || "Без имени",
+        name:
+          dialog.displayName ||
+          peer.username ||
+          t("invite.noName", "Без имени"),
         avatarUrl: dialog.avatarUrl || null,
       });
     }
@@ -76,7 +84,7 @@ export default function AddParticipantModal({
     );
     const q = query.trim().toLowerCase();
     return q ? list.filter((p) => p.name.toLowerCase().includes(q)) : list;
-  }, [dialogs, query]);
+  }, [dialogs, query, t]);
 
   // Статусы приходят картой userId → состояние: позвать можно нескольких
   // подряд, и судьба каждого приглашения должна быть видна своя.
@@ -89,36 +97,46 @@ export default function AddParticipantModal({
         className="apm-modal"
         role="dialog"
         aria-modal="true"
-        aria-label="Добавить участника"
+        aria-label={t("invite.title", "Добавить участника")}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="apm-head">
-          <h2 className="apm-title">Добавить участника</h2>
+          <h2 className="apm-title">
+            {t("invite.title", "Добавить участника")}
+          </h2>
           <button type="button" className="apm-close" onClick={onClose}>
             ✕
           </button>
         </div>
 
         <p className="apm-lead">
-          Человеку поступит вызов. Приняв его, он окажется в этом же разговоре.
+          {t(
+            "invite.lead",
+            "Человеку поступит вызов. Приняв его, он окажется в этом же разговоре.",
+          )}
         </p>
 
         <input
           className="apm-search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Поиск по имени"
+          placeholder={t("invite.search", "Поиск по имени")}
         />
 
         {loading ? (
-          <p className="apm-note">Загружаем список…</p>
+          <p className="apm-note">{t("invite.loading", "Загружаем список…")}</p>
         ) : error ? (
-          <p className="apm-note apm-note-error">{error}</p>
+          <p className="apm-note apm-note-error">
+            {t("invite.loadFailed", "Не удалось загрузить список")}
+          </p>
         ) : people.length === 0 ? (
           <p className="apm-note">
             {query
-              ? "Никого не нашлось."
-              : "Пригласить можно тех, с кем уже есть личная переписка."}
+              ? t("invite.nobodyFound", "Никого не нашлось.")
+              : t(
+                  "invite.empty",
+                  "Пригласить можно тех, с кем уже есть личная переписка.",
+                )}
           </p>
         ) : (
           <div className="apm-list">
@@ -143,7 +161,7 @@ export default function AddParticipantModal({
                         state === "joined" ? " apm-status-ok" : ""
                       }`}
                     >
-                      {STATUS_TEXT[state] || state}
+                      {STATUS_KEYS[state] ? t(...STATUS_KEYS[state]) : state}
                     </span>
                   ) : null}
                   <button
@@ -154,7 +172,7 @@ export default function AddParticipantModal({
                       onInvite({ userId: person.id, dialogId: person.dialogId })
                     }
                   >
-                    {busy ? "…" : "Позвать"}
+                    {busy ? "…" : t("invite.call", "Позвать")}
                   </button>
                 </div>
               );

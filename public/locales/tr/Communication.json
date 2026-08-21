@@ -110,7 +110,8 @@
       "saveFailed": "Kayıt kaydedilemedi"
     },
     "newPatientFirstName": "Hasta",
-    "newPatientLastName": "Soyadsız"
+    "newPatientLastName": "Soyadsız",
+    "noCardHint": "Bu hastaya ait kart bulunamadı. «Hastalarım» bölümünde bir kart oluşturup geri dönün — bu pencere açık kaldığı sürece taslak burada kalır."
   },
   "call": {
     "hint": {
@@ -119,7 +120,8 @@
       "consilium-patient": "Görüntülü konsültasyon — DocPats güvenli sunucusu",
       "telemed": "Görüntülü muayene — kliniğin güvenli sunucusu",
       "telemed-patient": "Çevrimiçi konsültasyon — DocPats güvenli sunucusu",
-      "appointment": "Görüntülü konsültasyon — DocPats güvenli sunucusu"
+      "appointment": "Görüntülü konsültasyon — DocPats güvenli sunucusu",
+      "webinar": "Web semineri — DocPats güvenli sunucusu"
     },
     "start": {
       "dialog": "Görüntülü aramayı başlat",
@@ -127,7 +129,8 @@
       "consilium-patient": "Konsültasyona katıl",
       "telemed": "Görüntülü muayeneyi başlat",
       "telemed-patient": "Konsültasyona katıl",
-      "appointment": "Görüntülü konsültasyona katıl"
+      "appointment": "Görüntülü konsültasyona katıl",
+      "webinar": "Web seminerine katıl"
     },
     "scribeDesktopOnly": "Muayene yalnızca bilgisayardan kaydedilir: telefonda mikrofon görüşme tarafından kullanılıyor.",
     "connecting": "Görüntü odasına bağlanılıyor…",
@@ -157,7 +160,44 @@
       "camOn": "Kamera açık",
       "camOff": "Kamera kapalı",
       "fsOn": "Tam ekran",
-      "fsOff": "Küçült"
+      "fsOff": "Küçült",
+      "invite": "+ Katılımcı"
+    },
+    "durationLabel": "Süre: {{time}}",
+    "videoBadge": "Görüntülü arama"
+  },
+  "invite": {
+    "title": "Katılımcı ekle",
+    "lead": "Kişiye bir arama gidecek. Aramayı kabul ettiğinde aynı görüşmeye katılır.",
+    "search": "İsme göre ara",
+    "loading": "Liste yükleniyor…",
+    "loadFailed": "Liste yüklenemedi",
+    "nobodyFound": "Kimse bulunamadı.",
+    "empty": "Yalnızca özel yazışmanız olan kişileri davet edebilirsiniz.",
+    "call": "Çağır",
+    "noName": "İsimsiz",
+    "status": {
+      "ringing": "Aranıyor…",
+      "joined": "Görüşmede",
+      "declined": "Aramayı reddetti",
+      "noAnswer": "Yanıt vermedi",
+      "left": "Ayrıldı",
+      "busy": "Başka bir görüşmede",
+      "notAllowed": "Bu kişi davet edilemez",
+      "failed": "Davet edilemedi"
     }
+  },
+  "webinar": {
+    "loading": "Toplantı yükleniyor…",
+    "eyebrow": "Toplantı",
+    "youAreHost": "sunucu sizsiniz",
+    "status": {
+      "scheduled": "Toplantı henüz başlamadı — ilk katılan siz olacaksınız.",
+      "live": "Toplantı devam ediyor.",
+      "ended": "Toplantı sona erdi."
+    },
+    "lobbyNote": "Giriş bekleme odası üzerinden — sunucu sizi içeri alacak.",
+    "endedClosed": "Toplantı sona erdi, artık katılamazsınız.",
+    "notInvited": "Bu toplantıya davet edilmediniz. Sunucudan sizi eklemesini isteyin."
   }
 }

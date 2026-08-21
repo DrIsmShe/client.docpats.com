@@ -389,13 +389,15 @@ function formatStatus(callState, endedInfo, t) {
   return "";
 }
 
-function formatDurLabel(sec) {
+// t параметром, как и у formatStatus: функция живёт на уровне модуля,
+// а хук доступен только внутри компонента.
+function formatDurLabel(sec, t) {
   if (!sec) return "";
   const m = Math.floor(sec / 60)
     .toString()
     .padStart(2, "0");
   const s = (sec % 60).toString().padStart(2, "0");
-  return `Длительность: ${m}:${s}`;
+  return t("call.durationLabel", "Длительность: {{time}}", { time: `${m}:${s}` });
 }
 
 export default function CallUI({
@@ -571,7 +573,7 @@ export default function CallUI({
                 className="call-invite-btn"
                 onClick={() => setInviteOpen(true)}
               >
-                + Участник
+                {t("call.btn.invite", "+ Участник")}
                 {participantCount > 1 ? ` · ${participantCount}` : ""}
               </button>
             )}
@@ -610,7 +612,9 @@ export default function CallUI({
 
 
           {isVideoCall && !showVideoStage && (
-            <div className="call-type-badge">🎥 Видеозвонок</div>
+            <div className="call-type-badge">
+              🎥 {t("call.videoBadge", "Видеозвонок")}
+            </div>
           )}
 
           {callState === "active" ? (
@@ -620,7 +624,7 @@ export default function CallUI({
               <div>{formatStatus(callState, endedInfo, t)}</div>
               {endedInfo?.durationSec > 0 && (
                 <div style={{ marginTop: 4 }}>
-                  {formatDurLabel(endedInfo.durationSec)}
+                  {formatDurLabel(endedInfo.durationSec, t)}
                 </div>
               )}
             </div>

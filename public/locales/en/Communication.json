@@ -110,7 +110,8 @@
       "saveFailed": "Could not save the entry"
     },
     "newPatientFirstName": "Patient",
-    "newPatientLastName": "No surname"
+    "newPatientLastName": "No surname",
+    "noCardHint": "No card for this patient was found. Create one in “My patients” and come back — the draft stays here as long as this window is open."
   },
   "call": {
     "hint": {
@@ -119,7 +120,8 @@
       "consilium-patient": "Video case conference — DocPats secure server",
       "telemed": "Video visit — the clinic's secure server",
       "telemed-patient": "Online consultation — DocPats secure server",
-      "appointment": "Video consultation — DocPats secure server"
+      "appointment": "Video consultation — DocPats secure server",
+      "webinar": "Webinar — DocPats secure server"
     },
     "start": {
       "dialog": "Start the video call",
@@ -127,7 +129,8 @@
       "consilium-patient": "Join the case conference",
       "telemed": "Start the video visit",
       "telemed-patient": "Join the consultation",
-      "appointment": "Join the video consultation"
+      "appointment": "Join the video consultation",
+      "webinar": "Join the webinar"
     },
     "scribeDesktopOnly": "Visits can only be recorded from a computer: on a phone the microphone is taken by the call.",
     "connecting": "Connecting to the video room…",
@@ -157,7 +160,44 @@
       "camOn": "Camera on",
       "camOff": "Camera off",
       "fsOn": "Full screen",
-      "fsOff": "Exit full screen"
+      "fsOff": "Exit full screen",
+      "invite": "+ Participant"
+    },
+    "durationLabel": "Duration: {{time}}",
+    "videoBadge": "Video call"
+  },
+  "invite": {
+    "title": "Add a participant",
+    "lead": "The person will get a call. Once they answer, they join this same conversation.",
+    "search": "Search by name",
+    "loading": "Loading the list…",
+    "loadFailed": "Could not load the list",
+    "nobodyFound": "No one found.",
+    "empty": "You can invite only people you already have a private chat with.",
+    "call": "Invite",
+    "noName": "No name",
+    "status": {
+      "ringing": "Calling…",
+      "joined": "In the call",
+      "declined": "Declined the call",
+      "noAnswer": "No answer",
+      "left": "Left",
+      "busy": "Busy on another call",
+      "notAllowed": "This person cannot be invited",
+      "failed": "Could not invite"
     }
+  },
+  "webinar": {
+    "loading": "Loading the meeting…",
+    "eyebrow": "Meeting",
+    "youAreHost": "you are the host",
+    "status": {
+      "scheduled": "The meeting has not started yet — you will be the first to join.",
+      "live": "The meeting is in progress.",
+      "ended": "The meeting has ended."
+    },
+    "lobbyNote": "Entry is through the waiting room — the host will let you in.",
+    "endedClosed": "The meeting has ended; you can no longer join.",
+    "notInvited": "You were not invited to this meeting. Ask the host to add you."
   }
 }

@@ -13,21 +13,29 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import JitsiRoom from "../communication/components/JitsiRoom";
 import { useCurrentUser } from "../communication/hooks/useCurrentUserId";
 import { errorText, getWebinar } from "../../api/webinar";
 import styles from "./WebinarsPage.module.css";
 
-const STATUS_NOTE = {
-  scheduled: "Встреча ещё не начиналась — вы войдёте первым.",
-  live: "Встреча идёт.",
-  ended: "Встреча завершена.",
+// Ключами, а не готовым текстом: страницу открывают по разосланной
+// ссылке, и язык открывшего заранее неизвестен. Русский остаётся вторым
+// аргументом t() — пока словарь грузится, видно его, а не ключ.
+const STATUS_KEYS = {
+  scheduled: [
+    "webinar.status.scheduled",
+    "Встреча ещё не начиналась — вы войдёте первым.",
+  ],
+  live: ["webinar.status.live", "Встреча идёт."],
+  ended: ["webinar.status.ended", "Встреча завершена."],
 };
 
 export default function WebinarRoomPage() {
   const { id } = useParams();
   const { name } = useCurrentUser();
+  const { t } = useTranslation("Communication");
 
   const [webinar, setWebinar] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -47,7 +55,9 @@ export default function WebinarRoomPage() {
   if (loading) {
     return (
       <div className={styles.page}>
-        <p className={styles.muted}>Загружаем встречу…</p>
+        <p className={styles.muted}>
+          {t("webinar.loading", "Загружаем встречу…")}
+        </p>
       </div>
     );
   }
@@ -66,16 +76,22 @@ export default function WebinarRoomPage() {
     <div className={styles.page}>
       <header className={styles.hero}>
         <span className={styles.eyebrow}>
-          Встреча{webinar.isModerator ? " · вы ведущий" : ""}
+          {t("webinar.eyebrow", "Встреча")}
+          {webinar.isModerator
+            ? ` · ${t("webinar.youAreHost", "вы ведущий")}`
+            : ""}
         </span>
         <h1 className={styles.title}>{webinar.title}</h1>
         {webinar.description ? (
           <p className={styles.lead}>{webinar.description}</p>
         ) : null}
         <p className={styles.muted}>
-          {STATUS_NOTE[webinar.status] || ""}
+          {STATUS_KEYS[webinar.status] ? t(...STATUS_KEYS[webinar.status]) : ""}
           {webinar.lobbyEnabled && !webinar.isModerator
-            ? " Вход через комнату ожидания — ведущий впустит вас."
+            ? ` ${t(
+                "webinar.lobbyNote",
+                "Вход через комнату ожидания — ведущий впустит вас.",
+              )}`
             : ""}
         </p>
       </header>
@@ -83,8 +99,11 @@ export default function WebinarRoomPage() {
       {!canEnter ? (
         <div className={styles.alertError}>
           {webinar.status === "ended"
-            ? "Встреча завершена, войти уже нельзя."
-            : "Вас не приглашали на эту встречу. Попросите ведущего добавить вас."}
+            ? t("webinar.endedClosed", "Встреча завершена, войти уже нельзя.")
+            : t(
+                "webinar.notInvited",
+                "Вас не приглашали на эту встречу. Попросите ведущего добавить вас.",
+              )}
         </div>
       ) : (
         <section className={styles.panel}>

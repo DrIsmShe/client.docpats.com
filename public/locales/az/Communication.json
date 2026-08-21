@@ -30,7 +30,7 @@
       "start": "Qəbulu yaz",
       "langLabel": "Qəbulun dili:",
       "micLabel": "Mikrofon:",
-      "micDefault": "Sistem üzrə susmaya görə",
+      "micDefault": "Sistem üzrə standart",
       "micShow": "Mikrofonları göstər",
       "waiting": "Pasiyentin razılığını gözləyirik. Cavabdan əvvəl heç nə yazılmır.",
       "peerMobile": "Pasiyent telefondan qoşulub — qəbulu yazmaq alınmayacaq: orada mikrofon zəngə məşğuldur. Kartı həmişəki kimi doldurmalı olacaqsınız.",
@@ -110,7 +110,8 @@
       "saveFailed": "Qeydi yazmaq alınmadı"
     },
     "newPatientFirstName": "Pasiyent",
-    "newPatientLastName": "Soyadsız"
+    "newPatientLastName": "Soyadsız",
+    "noCardHint": "Bu pasiyentin kartı sizdə tapılmadı. Onu «Mənim pasiyentlərim» bölməsində yaradın və qayıdın — pəncərə açıq qaldıqca qaralama burada saxlanılır."
   },
   "call": {
     "hint": {
@@ -119,7 +120,8 @@
       "consilium-patient": "Videokonsilium — DocPats-ın qorunan serveri",
       "telemed": "Videoqəbul — klinikanın qorunan serveri",
       "telemed-patient": "Onlayn konsultasiya — DocPats-ın qorunan serveri",
-      "appointment": "Videokonsultasiya — DocPats-ın qorunan serveri"
+      "appointment": "Videokonsultasiya — DocPats-ın qorunan serveri",
+      "webinar": "Vebinar — DocPats-ın qorunan serveri"
     },
     "start": {
       "dialog": "Videozəngə başla",
@@ -127,7 +129,8 @@
       "consilium-patient": "Konsiliuma daxil ol",
       "telemed": "Videoqəbula başla",
       "telemed-patient": "Konsultasiyaya daxil ol",
-      "appointment": "Videokonsultasiyaya daxil ol"
+      "appointment": "Videokonsultasiyaya daxil ol",
+      "webinar": "Vebinara daxil ol"
     },
     "scribeDesktopOnly": "Qəbul yalnız kompüterdən yazılır: telefonda mikrofon zəngə məşğuldur.",
     "connecting": "Video otağa qoşulur…",
@@ -157,7 +160,44 @@
       "camOn": "Kamera açıq",
       "camOff": "Kamera bağlı",
       "fsOn": "Tam ekran",
-      "fsOff": "Kiçilt"
+      "fsOff": "Kiçilt",
+      "invite": "+ İştirakçı"
+    },
+    "durationLabel": "Müddət: {{time}}",
+    "videoBadge": "Videozəng"
+  },
+  "invite": {
+    "title": "İştirakçı əlavə et",
+    "lead": "Həmin şəxsə zəng gedəcək. Zəngi qəbul etsə, elə bu söhbətə qoşulacaq.",
+    "search": "Ada görə axtarış",
+    "loading": "Siyahı yüklənir…",
+    "loadFailed": "Siyahını yükləmək alınmadı",
+    "nobodyFound": "Heç kim tapılmadı.",
+    "empty": "Yalnız şəxsi yazışmanız olan şəxsləri dəvət etmək olar.",
+    "call": "Çağır",
+    "noName": "Adsız",
+    "status": {
+      "ringing": "Zəng edilir…",
+      "joined": "Söhbətdədir",
+      "declined": "Zəngi rədd etdi",
+      "noAnswer": "Cavab vermədi",
+      "left": "Çıxdı",
+      "busy": "Başqa zənglə məşğuldur",
+      "notAllowed": "Bu şəxsi dəvət etmək olmaz",
+      "failed": "Dəvət etmək alınmadı"
     }
+  },
+  "webinar": {
+    "loading": "Görüş yüklənir…",
+    "eyebrow": "Görüş",
+    "youAreHost": "aparıcı sizsiniz",
+    "status": {
+      "scheduled": "Görüş hələ başlamayıb — ilk siz daxil olacaqsınız.",
+      "live": "Görüş davam edir.",
+      "ended": "Görüş bitib."
+    },
+    "lobbyNote": "Giriş gözləmə otağı vasitəsilədir — aparıcı sizi buraxacaq.",
+    "endedClosed": "Görüş bitib, artıq daxil olmaq mümkün deyil.",
+    "notInvited": "Siz bu görüşə dəvət olunmamısınız. Aparıcıdan sizi əlavə etməsini xahiş edin."
   }
 }
