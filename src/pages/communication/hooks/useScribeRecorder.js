@@ -73,6 +73,14 @@ function pickMime() {
   return MIME_CANDIDATES.find((m) => MediaRecorder.isTypeSupported(m)) || null;
 }
 
+// Идентификаторы, которыми Chrome обозначает роль, а не устройство.
+const ROLE_IDS = new Set(["default", "communications"]);
+
+// Приписку роли Chrome ставит перед настоящим именем и отделяет « - ».
+// Режем по первому такому разделителю: дальше идёт имя от Windows, и
+// в нём дефисы законны.
+const stripRolePrefix = (label) => String(label || "").replace(/^.*? - /, "");
+
 export function useScribeRecorder() {
   const [state, setState] = useState("idle"); // idle | ready | recording | error
   const [error, setError] = useState(null);
@@ -99,14 +107,35 @@ export function useScribeRecorder() {
    * до него у всех пунктов пустая метка, и выбирать не из чего. Поэтому
    * список возвращается как есть, а решает вызывающий: показать выбор или
    * сперва попросить доступ.
+   *
+   * РОЛИ, А НЕ УСТРОЙСТВА. Chrome добавляет к списку псевдоустройства
+   * «default» и «communications». Это не отдельные микрофоны, а роли,
+   * назначенные системой одному из имеющихся: один физический микрофон
+   * приходит тремя пунктами, и два из них ещё и с припиской «По
+   * умолчанию - » / «Оборудование - » на языке Chrome — не на языке
+   * интерфейса. Роль отбрасываем, если тот же микрофон есть в списке сам
+   * по себе (сверяем groupId): выбор от этого не беднеет, а список
+   * перестаёт троиться. Уцелевшую роль (микрофон виден только через неё)
+   * помечаем полем role — подпись ей даст вызывающий, на своём языке.
    */
   const listDevices = useCallback(async () => {
     if (!navigator.mediaDevices?.enumerateDevices) return [];
     try {
       const all = await navigator.mediaDevices.enumerateDevices();
-      return all
-        .filter((d) => d.kind === "audioinput")
-        .map((d) => ({ deviceId: d.deviceId, label: d.label }));
+      const mics = all.filter((d) => d.kind === "audioinput");
+      const realGroups = new Set(
+        mics.filter((d) => !ROLE_IDS.has(d.deviceId)).map((d) => d.groupId),
+      );
+      return mics
+        .filter((d) => !ROLE_IDS.has(d.deviceId) || !realGroups.has(d.groupId))
+        .map((d) => {
+          const role = ROLE_IDS.has(d.deviceId) ? d.deviceId : "";
+          return {
+            deviceId: d.deviceId,
+            role,
+            label: role ? stripRolePrefix(d.label) : d.label,
+          };
+        });
     } catch {
       return [];
     }

@@ -32,6 +32,8 @@
       "micLabel": "Microphone:",
       "micDefault": "System default",
       "micShow": "Show microphones",
+      "micRoleDefault": "{{name}} — system default",
+      "micRoleComms": "{{name}} — communications device",
       "waiting": "Waiting for the patient's consent. Nothing is recorded until they answer.",
       "peerMobile": "The patient joined from a phone — recording will not work: the microphone there is taken by the call. You will have to fill in the chart as usual.",
       "peerMobileRetry": "Try again",

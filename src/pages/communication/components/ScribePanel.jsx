@@ -449,6 +449,20 @@ export default function ScribePanel({
   if (!session) {
     const named = mics.filter((m) => m.label);
 
+    // Подпись пункта. Роль («системный по умолчанию», «устройство связи»)
+    // Chrome подписывает сам и на своём языке — свою подпись ставим на её
+    // место, иначе в арабском интерфейсе висит русская приписка.
+    const micText = (m) =>
+      m.role === "default"
+        ? t("scribe.doctor.micRoleDefault", "{{name}} — системный по умолчанию", {
+            name: m.label,
+          })
+        : m.role === "communications"
+          ? t("scribe.doctor.micRoleComms", "{{name}} — устройство связи", {
+              name: m.label,
+            })
+          : m.label;
+
     return (
       <div className="scribe scribe--setup">
         <div className="scribe__row">
@@ -488,7 +502,7 @@ export default function ScribePanel({
                 </option>
                 {named.map((m) => (
                   <option key={m.deviceId} value={m.deviceId}>
-                    {m.label}
+                    {micText(m)}
                   </option>
                 ))}
               </select>

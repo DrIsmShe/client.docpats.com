@@ -32,6 +32,8 @@
       "micLabel": "Mikrofon:",
       "micDefault": "Sistem varsayılanı",
       "micShow": "Mikrofonları göster",
+      "micRoleDefault": "{{name}} — sistem varsayılanı",
+      "micRoleComms": "{{name}} — iletişim cihazı",
       "waiting": "Hastanın onayını bekliyoruz. Yanıt gelene kadar hiçbir şey kaydedilmiyor.",
       "peerMobile": "Hasta telefondan bağlandı — kayıt alınamayacak: orada mikrofon görüşme tarafından kullanılıyor. Kartı her zamanki gibi doldurmanız gerekecek.",
       "peerMobileRetry": "Tekrar dene",
