@@ -1446,7 +1446,12 @@
     "legend_busy": "Randevu var",
     "legend_free": "Boş",
     "legend_blocked": "Kapalı",
-    "past": "Bu saat çoktan geçti"
+    "past": "Bu saat çoktan geçti",
+    "past_day": "Bu gün geçti: randevular görünür ama değiştirilemez.",
+    "st_completed": "gerçekleşti",
+    "st_cancelled": "iptal edildi",
+    "st_no_show": "gelmedi",
+    "st_refunded": "iade"
   },
   "book_patient_menu": "Hasta kaydet",
   "create_clinic": "Klinik oluştur"

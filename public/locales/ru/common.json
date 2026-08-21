@@ -1497,7 +1497,12 @@
     "legend_busy": "Есть записи",
     "legend_free": "Свободно",
     "legend_blocked": "Закрыто",
-    "past": "Время уже прошло"
+    "past": "Время уже прошло",
+    "past_day": "День уже прошёл: приёмы видны, но изменить их нельзя.",
+    "st_completed": "состоялся",
+    "st_cancelled": "отменён",
+    "st_no_show": "не пришёл",
+    "st_refunded": "возврат"
   },
   "book_patient_menu": "Записать на приём",
   "create_clinic": "Создать клинику"

@@ -522,6 +522,14 @@ export default function PatientAppointmentsPage() {
   const currentLang = (i18n.language || "ru").split("-")[0];
   const isRTL = currentLang === "ar";
 
+  // Сегодня в формате поля <input type="date"> — "YYYY-MM-DD".
+  //
+  // Локаль "sv-SE" выбрана не ради шведского: она единственная из ходовых
+  // даёт ровно ISO-формат и делает это в МЕСТНОЙ зоне. toISOString() здесь
+  // не годится — он переводит в UTC, и для пациента восточнее Гринвича
+  // вечером «сегодня» превращается во вчера.
+  const todayStr = new Date().toLocaleDateString("sv-SE");
+
   const [doctors, setDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [date, setDate] = useState("");
@@ -873,13 +881,20 @@ export default function PatientAppointmentsPage() {
                   type="date"
                   className="pa-input"
                   value={date}
+                  // Прошедший день выбрать нельзя: приём, который уже
+                  // «прошёл», не проведёшь и не отменишь осмысленно.
+                  // Это лишь удобство — тем же занят сервер: слоты в
+                  // прошлом не выдаются, а запись на них отклоняется.
+                  min={todayStr}
                   onChange={(e) => setDate(e.target.value)}
                 />
               </div>
               <button
                 type="button"
                 className="pa-btn pa-btn-primary"
-                disabled={!date}
+                // min у поля браузер соблюдает не везде (и не мешает
+                // вписать дату руками) — повторяем проверку здесь.
+                disabled={!date || date < todayStr}
                 onClick={() => loadSlots(selectedDoctor.userId, date, type)}
               >
                 <IconSearch />

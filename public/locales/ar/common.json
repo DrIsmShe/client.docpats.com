@@ -1440,7 +1440,12 @@
     "legend_busy": "توجد مواعيد",
     "legend_free": "متاح",
     "legend_blocked": "مغلق",
-    "past": "لقد مضى هذا الوقت"
+    "past": "لقد مضى هذا الوقت",
+    "past_day": "هذا اليوم مضى: المواعيد ظاهرة لكن لا يمكن تغييرها.",
+    "st_completed": "تمّ",
+    "st_cancelled": "أُلغي",
+    "st_no_show": "لم يحضر",
+    "st_refunded": "مُسترد"
   },
   "book_patient_menu": "حجز موعد",
   "create_clinic": "إنشاء عيادة"

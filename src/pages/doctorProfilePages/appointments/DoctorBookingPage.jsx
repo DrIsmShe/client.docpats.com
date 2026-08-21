@@ -40,6 +40,15 @@ function startOfToday() {
   return d;
 }
 
+// Исход приёма — подписью на слоте. Живые записи (pending/confirmed) в
+// карте отсутствуют намеренно: у них исхода ещё нет, и подписывать нечего.
+const STATUS_LABEL = {
+  completed: { key: "st_completed", ru: "состоялся" },
+  cancelled: { key: "st_cancelled", ru: "отменён" },
+  no_show: { key: "st_no_show", ru: "не пришёл" },
+  refunded: { key: "st_refunded", ru: "возврат" },
+};
+
 /** Слот уже прошёл? Пять минут допуска — как и на сервере. */
 function isPastSlot(iso) {
   return new Date(iso).getTime() < Date.now() - 5 * 60 * 1000;
@@ -191,7 +200,10 @@ export default function DoctorBookingPage() {
           })
           .catch(() => ({ data: { data: [] } })),
       ]);
-      setAppointments((appts.data?.data || []).filter((a) => !a.isArchived));
+      // Архивные НЕ отбрасываем: приём старше семи дней уезжает в архив
+      // автоматически, и с прежним фильтром прошлые месяцы в календаре
+      // выглядели пустыми — искать в них было нечего и не по чему.
+      setAppointments(appts.data?.data || []);
       setBlockedDays(blocked.data?.data || []);
     } catch (err) {
       console.error("Ошибка загрузки календаря:", err);
@@ -221,6 +233,9 @@ export default function DoctorBookingPage() {
   useEffect(() => {
     load(date);
   }, [date, load]);
+
+  // День уже прошёл — страница переходит в режим «только смотреть».
+  const isPastDay = date < startOfToday();
 
   const slots = day?.slots || [];
   // «Свободно» считаем только по тем слотам, в которые реально можно
@@ -276,21 +291,34 @@ export default function DoctorBookingPage() {
                 value={date}
                 locale="ru-RU"
                 minDetail="month"
-                /* Прошедшие дни выбрать нельзя — записывать в них нечего.
-                   minDate заодно убирает у календаря стрелку в прошлое. */
-                minDate={startOfToday()}
-                tileDisabled={({ date: d }) => d < startOfToday()}
+                /* Прошлое ОТКРЫТО для просмотра.
+                   Раньше здесь стояли minDate + tileDisabled: они убирали у
+                   календаря стрелку назад и гасили прошедшие дни целиком —
+                   врач не мог посмотреть, кто у него был на прошлой неделе,
+                   не говоря о прошлом годе. А смотреть свой журнал он вправе:
+                   это его приёмы.
+                   Запрет остался там, где он и нужен, — на изменении:
+                   прошедшие слоты не нажимаются, «Другое время» в прошлом
+                   дне не предлагается, а сервер отвечает 400 PAST_TIME на
+                   любую попытку записать задним числом. */
                 tileContent={({ date: d }) => {
                   const ymd = toLocalYMD(d);
                   const isBlocked = blockedDays.some(
                     (b) => b?.date && toLocalYMD(new Date(b.date)) === ymd,
                   );
-                  const isBusy = appointments.some(
-                    (a) =>
-                      a?.startsAt &&
-                      toLocalYMD(new Date(a.startsAt)) === ymd &&
-                      ["pending", "confirmed"].includes(a.status),
-                  );
+                  const isBusy = appointments.some((a) => {
+                    if (!a?.startsAt) return false;
+                    if (toLocalYMD(new Date(a.startsAt)) !== ymd) return false;
+                    // Впереди днём с записями считается только живая запись.
+                    if (["pending", "confirmed"].includes(a.status)) return true;
+                    // Позади — состоявшийся приём. Отменённый визит день не
+                    // помечает: приёма не было. Открыть такой день и увидеть
+                    // отмену всё равно можно.
+                    return (
+                      new Date(a.startsAt) < new Date() &&
+                      a.status !== "cancelled"
+                    );
+                  });
                   return (
                     <div
                       className={
@@ -337,14 +365,27 @@ export default function DoctorBookingPage() {
                   )}
                 </div>
 
-                <Button
-                  variant="outline-warning"
-                  size="sm"
-                  onClick={() => setBookingSlot({ manual: true })}
-                >
-                  + {t("booking_page.manual", "Другое время")}
-                </Button>
+                {/* Ручная запись — только в настоящем и будущем: в
+                    прошедшем дне записывать уже нечего. */}
+                {!isPastDay && (
+                  <Button
+                    variant="outline-warning"
+                    size="sm"
+                    onClick={() => setBookingSlot({ manual: true })}
+                  >
+                    + {t("booking_page.manual", "Другое время")}
+                  </Button>
+                )}
               </div>
+
+              {isPastDay && (
+                <Alert variant="secondary" className="py-2 mb-3">
+                  {t(
+                    "booking_page.past_day",
+                    "День уже прошёл: приёмы видны, но изменить их нельзя.",
+                  )}
+                </Alert>
+              )}
 
               {loading && (
                 <div className="text-center py-4">
@@ -411,6 +452,19 @@ export default function DoctorBookingPage() {
                           {busy && s.outOfSchedule && (
                             <Badge bg="warning" text="dark">
                               {t("booking_page.out_of_schedule", "вне сетки")}
+                            </Badge>
+                          )}
+                          {/* Чем кончился приём. Показываем только исход,
+                              отличный от живой записи: в прошлом дне
+                              отменённый приём иначе не отличить от
+                              состоявшегося — а это разные ответы на вопрос
+                              «кто у меня был». */}
+                          {busy && STATUS_LABEL[appt?.status] && (
+                            <Badge bg="light" text="dark">
+                              {t(
+                                `booking_page.${STATUS_LABEL[appt.status].key}`,
+                                STATUS_LABEL[appt.status].ru,
+                              )}
                             </Badge>
                           )}
                         </button>

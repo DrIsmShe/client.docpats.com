@@ -1449,7 +1449,12 @@
     "legend_busy": "Qeydlər var",
     "legend_free": "Boş",
     "legend_blocked": "Bağlı",
-    "past": "Bu vaxt artıq keçib"
+    "past": "Bu vaxt artıq keçib",
+    "past_day": "Bu gün artıq keçib: qəbullar görünür, lakin dəyişdirilə bilməz.",
+    "st_completed": "baş tutdu",
+    "st_cancelled": "ləğv edildi",
+    "st_no_show": "gəlmədi",
+    "st_refunded": "geri qaytarıldı"
   },
   "book_patient_menu": "Qəbula yazdır",
   "create_clinic": "Klinika yarat"

@@ -1422,7 +1422,12 @@
     "legend_busy": "Has appointments",
     "legend_free": "Free",
     "legend_blocked": "Closed",
-    "past": "This time has already passed"
+    "past": "This time has already passed",
+    "past_day": "This day is in the past: appointments are visible but cannot be changed.",
+    "st_completed": "completed",
+    "st_cancelled": "cancelled",
+    "st_no_show": "no-show",
+    "st_refunded": "refunded"
   },
   "book_patient_menu": "Book a patient",
   "create_clinic": "Create a clinic"
