@@ -34,6 +34,7 @@
       "micShow": "Mikrofonları göster",
       "waiting": "Hastanın onayını bekliyoruz. Yanıt gelene kadar hiçbir şey kaydedilmiyor.",
       "peerMobile": "Hasta telefondan bağlandı — kayıt alınamayacak: orada mikrofon görüşme tarafından kullanılıyor. Kartı her zamanki gibi doldurmanız gerekecek.",
+      "peerMobileRetry": "Tekrar dene",
       "declined": "Hasta kaydı reddetti — kartı her zamanki gibi doldurun",
       "revoked": "Hasta kaydı durdurdu. Taslak, o ana kadar söylenenlerden oluşturulabilir.",
       "collect": "Taslağı oluştur",

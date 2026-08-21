@@ -34,6 +34,7 @@
       "micShow": "Mikrofonları göstər",
       "waiting": "Pasiyentin razılığını gözləyirik. Cavabdan əvvəl heç nə yazılmır.",
       "peerMobile": "Pasiyent telefondan qoşulub — qəbulu yazmaq alınmayacaq: orada mikrofon zəngə məşğuldur. Kartı həmişəki kimi doldurmalı olacaqsınız.",
+      "peerMobileRetry": "Yenidən cəhd edin",
       "declined": "Pasiyent yazıdan imtina etdi — kartı həmişəki kimi doldurun",
       "revoked": "Pasiyent yazını dayandırdı. Qaralamanı ona qədər səslənənlərdən yığmaq olar.",
       "collect": "Qaralamanı yığ",
