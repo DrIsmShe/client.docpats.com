@@ -11,6 +11,21 @@
   status = 200
   force = true
 
+# RSS и news-sitemap живут там же, где sitemap: их собирает бэкенд из базы
+# новостного движка. Агрегаторы и Google News ищут эти файлы в корне
+# домена, поэтому проксируем, а не отдаём с поддомена.
+[[redirects]]
+  from = "/rss.xml"
+  to = "https://backend.docpats.com/rss.xml"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/news-sitemap.xml"
+  to = "https://backend.docpats.com/news-sitemap.xml"
+  status = 200
+  force = true
+
 # Публичный контент переехал с /public/* в корень (/news, /articles, /about).
 # Отдаём настоящий 301 — иначе бот получает SPA-шелл и клиентский редирект,
 # а вес старого адреса на новый не переносится. Порядок важен: правила ниже
@@ -61,6 +76,12 @@
 
 [[edge_functions]]
   path = "/news/*"
+  function = "seo"
+
+# Витрина клиники. Была в sitemap, но боту доставался пустой SPA-шелл:
+# в списке edge-функций её просто не было.
+[[edge_functions]]
+  path = "/clinics/*"
   function = "seo"
 
 [[edge_functions]]

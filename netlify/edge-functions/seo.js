@@ -120,6 +120,114 @@ export default async function handler(request, context) {
     }
   }
 
+  // ── Витрина клиники: /clinics/<slug> ──
+  //
+  // Страница есть в sitemap, но SEO-обработки у неё не было вовсе: бот
+  // получал пустой SPA-шелл. А это единственная публичная страница, ради
+  // которой клиника вообще заводит витрину.
+  //
+  // Тип MedicalClinic, а не Organization: для медицинской организации
+  // Google понимает адрес, телефон, специализации и рейтинг как единое
+  // целое и показывает их в выдаче. Отдельным блоком, а не через общий
+  // schemaType ниже: у клиники другой набор полей, и попытка втиснуть её
+  // в форму статьи дала бы разметку с headline и datePublished, которых
+  // у клиники нет.
+  const clinicMatch = url.pathname.match(/^\/clinics\/([a-z0-9-]+)\/?$/i);
+  if (clinicMatch) {
+    try {
+      const slug = clinicMatch[1];
+      const res = await fetch(
+        `https://backend.docpats.com/api/v1/public/clinics/${encodeURIComponent(slug)}`,
+      );
+      if (!res.ok) return context.next();
+      const clinic = await res.json();
+      if (!clinic?.name) return context.next();
+
+      const pageUrl = `https://docpats.com/clinics/${slug}`;
+      const title = escAttr(clinic.name);
+      const desc = escAttr(
+        (clinic.description || clinic.slogan || `Клиника ${clinic.name}`)
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0, 155),
+      );
+      const image =
+        clinic.coverImage || clinic.logo || "https://docpats.com/og-default.jpg";
+
+      const address = clinic.address || {};
+      const hasAddress = address.country || address.city || address.street;
+
+      const rating =
+        clinic.rating?.count > 0 && clinic.rating?.avg > 0
+          ? {
+              "@type": "AggregateRating",
+              ratingValue: clinic.rating.avg,
+              reviewCount: clinic.rating.count,
+              bestRating: 5,
+              worstRating: 1,
+            }
+          : undefined;
+
+      const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "MedicalClinic",
+        name: clinic.name,
+        description: desc,
+        url: pageUrl,
+        image,
+        logo: clinic.logo || undefined,
+        telephone: clinic.callCenterPhone || clinic.contacts?.phone || undefined,
+        email: clinic.contacts?.email || undefined,
+        address: hasAddress
+          ? {
+              "@type": "PostalAddress",
+              addressCountry: address.country || undefined,
+              addressLocality: address.city || undefined,
+              streetAddress: address.street || undefined,
+            }
+          : undefined,
+        medicalSpecialty: clinic.specializations?.length
+          ? clinic.specializations
+          : undefined,
+        aggregateRating: rating,
+        parentOrganization: {
+          "@type": "Organization",
+          name: "DocPats",
+          url: "https://docpats.com",
+        },
+      };
+
+      const response = await context.next();
+      let html = await response.text();
+      html = html
+        .replace(/<title>.*?<\/title>/gs, "")
+        .replace(/<meta name="description"[^>]*\/?>/gi, "")
+        .replace(/<link rel="canonical"[^>]*\/?>/gi, "");
+
+      const inject = `
+    <title>${title} | DocPats</title>
+    <meta name="description" content="${desc}">
+    <link rel="canonical" href="${pageUrl}">
+    <meta property="og:type" content="business.business">
+    <meta property="og:title" content="${title}">
+    <meta property="og:description" content="${desc}">
+    <meta property="og:url" content="${pageUrl}">
+    <meta property="og:image" content="${escAttr(image)}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${title}">
+    <meta name="twitter:description" content="${desc}">
+    <meta name="twitter:image" content="${escAttr(image)}">
+    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`;
+
+      html = html.replace("</head>", inject + "</head>");
+      return new Response(html, {
+        headers: { "content-type": "text/html; charset=utf-8" },
+      });
+    } catch {
+      return context.next();
+    }
+  }
+
   const articleMatch = url.pathname.match(
     /^\/articles\/([a-f0-9]{24})(?:\/([a-z]{2}))?$/,
   );
@@ -147,6 +255,13 @@ export default async function handler(request, context) {
   try {
     let title, desc, pageUrl, publishedAt, imageUrl, locale, schemaType;
     let aggregateRating; // для врача — звёзды в выдаче Google
+    // dateModified поисковики учитывают отдельно от datePublished: без него
+    // обновлённый материал в выдаче выглядит настолько же старым, как в день
+    // публикации. medicalSpecialty — то, по чему врача вообще ищут.
+    let modifiedAt, medicalSpecialty;
+    // hreflang в сыром HTML — до того, как отработает JS. Helmet ставит те
+    // же теги, но уже после рендера; часть роботов до этого не доходит.
+    let alternateLinks = "";
 
     if (articleMatch) {
       const articleId = articleMatch[1];
@@ -179,6 +294,7 @@ export default async function handler(request, context) {
       ).replace(/"/g, "&quot;");
       pageUrl = `https://docpats.com/articles/${articleId}${urlLocale ? "/" + urlLocale : ""}`;
       publishedAt = article.createdAt;
+      modifiedAt = article.updatedAt || article.createdAt;
       imageUrl = "https://docpats.com/og-default.jpg";
     } else if (newsMatch) {
       const slug = newsMatch[1];
@@ -200,8 +316,19 @@ export default async function handler(request, context) {
       desc = (article.aiSummaryShort || article.summary || "")
         .slice(0, 155)
         .replace(/"/g, "&quot;");
-      pageUrl = `https://docpats.com/news/${slug}${urlLocale ? "?locale=" + urlLocale : ""}`;
+      // Английская версия живёт на голом адресе; ?locale=en нормализуем в
+      // него же, иначе в индекс попадут два адреса с одним содержимым.
+      const newsBase = `https://docpats.com/news/${slug}`;
+      const localeHref = (c) => (c === "en" ? newsBase : `${newsBase}?locale=${c}`);
+      pageUrl = urlLocale ? localeHref(urlLocale) : newsBase;
+      alternateLinks = [
+        `<link rel="alternate" hreflang="x-default" href="${newsBase}">`,
+        ...["ru", "en", "az", "tr", "ar"].map(
+          (c) => `<link rel="alternate" hreflang="${c}" href="${localeHref(c)}">`,
+        ),
+      ].join("\n    ");
       publishedAt = article.publishedAt;
+      modifiedAt = article.updatedAt || article.publishedAt;
       imageUrl = article.imageUrl || "https://docpats.com/og-default.jpg";
     } else if (doctorArticleMatch) {
       const articleId = doctorArticleMatch[1];
@@ -222,6 +349,7 @@ export default async function handler(request, context) {
         .replace(/"/g, "&quot;");
       pageUrl = `https://docpats.com/public/doctor-profile/article-detail-for-all/${articleId}`;
       publishedAt = article.createdAt;
+      modifiedAt = article.updatedAt || article.createdAt;
       imageUrl = article.imageUrl || "https://docpats.com/og-default.jpg";
     } else if (scientificArticleMatch) {
       const articleId = scientificArticleMatch[1];
@@ -242,6 +370,7 @@ export default async function handler(request, context) {
         .replace(/"/g, "&quot;");
       pageUrl = `https://docpats.com/public/doctor/article-scientific-detail-for-all/${articleId}`;
       publishedAt = article.createdAt;
+      modifiedAt = article.updatedAt || article.createdAt;
       imageUrl = article.imageUrl || "https://docpats.com/og-default.jpg";
     } else if (doctorProfileMatch) {
       const doctorId = doctorProfileMatch[1];
@@ -264,6 +393,7 @@ export default async function handler(request, context) {
         doctor.user?.specialization?.name ||
         "";
 
+      medicalSpecialty = specName || undefined;
       title = `${fullName} — ${specName} | DocPats`.replace(/"/g, "&quot;");
       desc = (
         doctor.about || `Профиль врача ${fullName}, специальность: ${specName}`
@@ -319,6 +449,7 @@ export default async function handler(request, context) {
     <title>${title} | DocPats</title>
     <meta name="description" content="${desc}">
     <link rel="canonical" href="${pageUrl}">
+    ${alternateLinks}
     <meta property="og:type" content="${schemaType === "Physician" ? "profile" : "article"}">
     <meta property="og:title" content="${title}">
     <meta property="og:description" content="${desc}">
@@ -338,7 +469,14 @@ export default async function handler(request, context) {
       url: pageUrl,
       inLanguage: locale,
       datePublished: publishedAt || undefined,
+      dateModified: modifiedAt || undefined,
+      // Явная привязка разметки к странице. Без неё Google связывает
+      // объект со страницей по догадке, а на SPA, где один шелл обслуживает
+      // все адреса, догадка регулярно промахивается.
+      mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
       image: imageUrl,
+      medicalSpecialty:
+        schemaType === "Physician" ? medicalSpecialty : undefined,
       aggregateRating:
         schemaType === "Physician" ? aggregateRating : undefined,
       publisher:

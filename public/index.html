@@ -25,6 +25,15 @@
 
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://docpats.com/" />
+    <!-- Автообнаружение фида: по этой строке читалки и агрегаторы находят
+         RSS сами, без ручного ввода адреса. Без неё фид существует, но о
+         нём знает только тот, кому дали ссылку. -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="DocPats — медицинские новости"
+      href="https://docpats.com/rss.xml"
+    />
     <meta property="og:title" content="DOCPATS – Digital Medical Ecosystem" />
     <meta
       property="og:description"

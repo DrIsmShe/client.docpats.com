@@ -22,6 +22,21 @@ const SPECIALTY_CONFIG = {
 /* Languages that use RTL layout */
 const RTL_LOCALES = new Set(["ar"]);
 
+// Языки, которые страница действительно умеет показывать. Нужен именно
+// список, а не «любой код из адреса»: ?locale=zz иначе ушёл бы в запрос к
+// API и в атрибут <html lang>, где ему делать нечего.
+const SUPPORTED_LOCALES = new Set(["en", "ru", "az", "ar", "tr"]);
+
+/** Язык из адреса — если он там есть и мы его поддерживаем. */
+function localeFromUrl() {
+  try {
+    const code = new URLSearchParams(window.location.search).get("locale");
+    return code && SUPPORTED_LOCALES.has(code) ? code : null;
+  } catch {
+    return null;
+  }
+}
+
 /* ─── Reading progress bar ──────────────────────────────── */
 function ReadingProgress({ color }) {
   const [pct, setPct] = useState(0);
@@ -71,8 +86,17 @@ export default function NewsArticle() {
   const [error, setError] = useState(false);
   const [translatedContent, setTranslatedContent] = useState(null);
   const [translating, setTranslating] = useState(false);
+  // Язык берём СНАЧАЛА из адреса и только потом из localStorage.
+  //
+  // Раньше адрес не читался вовсе, хотя ?locale= в нём проставлялся при
+  // переключении языка. Ссылка /news/<slug>?locale=az открывалась на
+  // языке прошлого визита: поисковик и edge-функция считали страницу
+  // азербайджанской (мета собирается по этому же параметру), а человек
+  // видел английский текст. Пока таких адресов не было в sitemap, это
+  // ломало только пересланные ссылки; с языковыми URL в индексе это стало
+  // бы расхождением меты и содержимого.
   const [locale, setLocale] = useState(
-    () => localStorage.getItem("locale") || "en",
+    () => localeFromUrl() || localStorage.getItem("locale") || "en",
   );
   /* current locale + layout direction */
 
@@ -98,13 +122,27 @@ export default function NewsArticle() {
   useEffect(() => {
     loadArticle();
   }, [slug]);
+
+  // Язык из адреса дотягиваем и до интерфейса. Без этого текст статьи
+  // азербайджанский, а подписи вокруг — с прошлого визита; и запомнить
+  // выбор тоже надо, иначе переход на соседнюю страницу его теряет.
+  useEffect(() => {
+    const fromUrl = localeFromUrl();
+    if (!fromUrl) return;
+    localStorage.setItem("locale", fromUrl);
+    document.cookie = `locale=${fromUrl};path=/;max-age=31536000`;
+    if (i18n.language !== fromUrl) i18n.changeLanguage(fromUrl);
+  }, [slug, i18n]);
   const changeLocale = (code) => {
     setLocale(code);
     localStorage.setItem("locale", code);
     i18n.changeLanguage(code);
     document.cookie = `locale=${code};path=/;max-age=31536000`;
-    // Обновляем URL с locale параметром
-    const newUrl = `/news/${article.slug}?locale=${code}`;
+    // Обновляем URL с locale параметром. Для английского — голый адрес:
+    // он и есть английская версия, а ?locale=en был бы вторым адресом с
+    // тем же содержимым и разошёлся бы с canonical.
+    const newUrl =
+      code === "en" ? `/news/${article.slug}` : `/news/${article.slug}?locale=${code}`;
     window.history.replaceState(null, "", newUrl);
   };
   /* ── auto-translate body ── */
@@ -239,9 +277,22 @@ export default function NewsArticle() {
       </>
     );
 
-  /* ════════════════════════════════════════════════════════════
-     MAIN
-  ════════════════════════════════════════════════════════════ */
+  /* ── Языковые адреса одной и той же новости ──────────────────
+     Английский живёт на голом адресе, остальные — на ?locale=xx.
+     Отдельного ?locale=en нет намеренно: он был бы вторым адресом с тем
+     же содержимым, то есть дублем, который поисковику пришлось бы
+     склеивать.
+
+     canonical у каждой версии свой. Это существенно: если бы все пять
+     указывали на голый адрес, Google оставил бы в индексе только его, а
+     переводы выбросил — canonical сильнее hreflang, и вся языковая
+     разметка оказалась бы бесполезной. */
+  const newsBaseUrl = `https://docpats.com/news/${article.slug}`;
+  const localeUrl = (code) =>
+    code === "en" ? newsBaseUrl : `${newsBaseUrl}?locale=${code}`;
+  const canonicalUrl = localeUrl(locale);
+  const description = article.aiSummaryShort || article.summary || "";
+
   return (
     <>
       <style>{CSS}</style>
@@ -252,10 +303,16 @@ export default function NewsArticle() {
           name="description"
           content={article.aiSummaryShort || article.summary || ""}
         />
-        <link
-          rel="canonical"
-          href={`https://docpats.com/news/${article.slug}`}
-        />
+        <link rel="canonical" href={canonicalUrl} />
+        {/* hreflang: связывает языковые версии между собой. Указывать
+            обязательно НА РАЗНЫЕ адреса — пять ссылок на один URL, как
+            было в sitemap, не значат ничего. */}
+        <link rel="alternate" hrefLang="x-default" href={newsBaseUrl} />
+        <link rel="alternate" hrefLang="en" href={localeUrl("en")} />
+        <link rel="alternate" hrefLang="ru" href={localeUrl("ru")} />
+        <link rel="alternate" hrefLang="az" href={localeUrl("az")} />
+        <link rel="alternate" hrefLang="tr" href={localeUrl("tr")} />
+        <link rel="alternate" hrefLang="ar" href={localeUrl("ar")} />
         <html lang={locale} />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={article.title} />
@@ -265,7 +322,7 @@ export default function NewsArticle() {
         />
         <meta
           property="og:url"
-          content={`https://docpats.com/news/${article.slug}`}
+          content={canonicalUrl}
         />
         <meta
           property="og:image"
@@ -290,7 +347,7 @@ export default function NewsArticle() {
             "@type": "NewsArticle",
             headline: article.title,
             description: article.aiSummaryShort || article.summary || "",
-            url: `https://docpats.com/news/${article.slug}`,
+            url: canonicalUrl,
             datePublished: article.publishedAt,
             image: article.imageUrl || "https://docpats.com/og-default.jpg",
             publisher: {
