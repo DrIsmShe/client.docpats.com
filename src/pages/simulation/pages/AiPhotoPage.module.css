@@ -1,0 +1,177 @@
+/* Обвязка страницы «ИИ по фото». Сам редактор приносит своё оформление
+   (Surgery.module.css / Simulator.module.css) — здесь только шаги вокруг
+   него, поэтому набор правил намеренно короткий. */
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.head {
+  margin-bottom: 20px;
+}
+
+.kicker {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.title {
+  margin: 0 0 10px;
+  font-size: 26px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #111827;
+}
+
+.lead {
+  margin: 0 0 10px;
+  max-width: 70ch;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #374151;
+}
+
+/* Предупреждение о природе результата — не украшение: врач показывает
+   картинку пациенту, и разница между иллюстрацией и прогнозом должна
+   быть видна раньше, чем он нажмёт «сгенерировать». */
+.warn {
+  margin: 0;
+  max-width: 70ch;
+  padding: 10px 14px;
+  border-inline-start: 3px solid #b45309;
+  background: #fffbeb;
+  border-radius: 0 8px 8px 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #78350f;
+}
+
+.warn a {
+  color: #92400e;
+  text-underline-offset: 2px;
+}
+
+.error {
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  font-size: 13.5px;
+}
+
+.card {
+  margin-bottom: 16px;
+  padding: 18px 20px;
+  background: #fff;
+  border: 1px solid #e8e6e1;
+  border-radius: 12px;
+}
+
+.cardTitle {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.select,
+.input {
+  min-width: 200px;
+  flex: 1 1 200px;
+  padding: 9px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  color: #111827;
+}
+
+.select:focus,
+.input:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+
+.primary,
+.secondary {
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.primary {
+  border: none;
+  background: #0f766e;
+  color: #fff;
+}
+.primary:hover {
+  background: #115e59;
+}
+
+.secondary {
+  border: 1px solid #d1d5db;
+  background: #fff;
+  color: #374151;
+}
+.secondary:hover {
+  background: #f9fafb;
+}
+
+.muted {
+  margin: 0 0 12px;
+  font-size: 13.5px;
+  color: #6b7280;
+}
+
+/* Настоящий input прячем, а не заменяем кнопкой с ref: label сохраняет
+   доступность с клавиатуры и чтение скринридером бесплатно. */
+.upload input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 1px dashed #9ca3af;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.upload:hover {
+  border-color: #0f766e;
+  background: #f0fdfa;
+}
+
+.upload:focus-within {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}

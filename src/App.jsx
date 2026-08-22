@@ -575,6 +575,7 @@ const PlanEditorPage = lazy(() =>
 );
 const HelpPage = lazy(() => import("./pages/simulation/pages/HelpPage.jsx"));
 const SimulationHubPage = lazy(() => import("./pages/simulation/pages/SimulationHubPage.jsx"));
+const AiPhotoPage = lazy(() => import("./pages/simulation/pages/AiPhotoPage.jsx"));
 const SurgicalPlanPage = lazy(() => import("./pages/surgicalPlan/SurgicalPlanPage.jsx"));
 const WebinarsPage = lazy(() => import("./pages/webinar/WebinarsPage.jsx"));
 const WebinarRoomPage = lazy(() => import("./pages/webinar/WebinarRoomPage.jsx"));
@@ -960,6 +961,7 @@ function App() {
               <Route path="simulation/help" element={<HelpPage />} />
               {/* Разбор запроса врача в типизированный план операции. */}
               <Route path="simulation/plan" element={<SurgicalPlanPage />} />
+              <Route path="simulation/ai" element={<AiPhotoPage />} />
               <Route path="simulation/face" element={<PlanListPage />} />
               <Route
                 path="simulation/face/plans/:id"
