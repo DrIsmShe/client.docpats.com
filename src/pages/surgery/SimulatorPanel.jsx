@@ -19,6 +19,7 @@ export default function SimulatorPanel({ cas }) {
   const { t, i18n } = useTranslation("Surgery");
 
   const overlayRef = useRef(null);
+  const imgRef = useRef(null);
   const [photos, setPhotos] = useState([]);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -264,14 +265,44 @@ export default function SimulatorPanel({ cas }) {
     }
   };
 
-  const handleImgLoad = (e) => {
-    const img = e.target;
-    if (overlayRef.current) {
-      overlayRef.current.width = img.naturalWidth;
-      overlayRef.current.height = img.naturalHeight;
-    }
-    setImgLoaded(true);
-  };
+  const handleImgLoad = () => setImgLoaded(true);
+
+  // Размер канваса задаётся ЗДЕСЬ, а не в onLoad изображения, и это не
+  // вкусовщина.
+  //
+  // Канвас рендерится под условием {imgLoaded && …}, то есть появляется в
+  // DOM только ПОСЛЕ того, как onLoad отработал. Присвоение размеров внутри
+  // onLoad попадало в overlayRef.current === null, молча ничего не делало,
+  // и канвас монтировался с дефолтными 300×150 — навсегда.
+  //
+  // Последствие было не косметическим: координаты мазка считаются как
+  // canvas.width / rect.width, поэтому врач красил нос, а в маску попадало
+  // крошечное пятно в другом месте кадра. Модель перерисовывала не то, и
+  // результат выглядел как «другой человек, ничего не изменилось».
+  useEffect(() => {
+    const img = imgRef.current;
+    const canvas = overlayRef.current;
+    if (!img || !canvas) return;
+
+    const w = img.naturalWidth;
+    const h = img.naturalHeight;
+    if (!w || !h) return;
+    if (canvas.width === w && canvas.height === h) return;
+
+    // Присвоение width/height очищает содержимое канваса — при смене
+    // фотографии это ровно то, что нужно: старая маска к новому снимку
+    // не относится.
+    canvas.width = w;
+    canvas.height = h;
+    setHasMask(false);
+  }, [imgLoaded, selectedPhoto]);
+
+  // Изображение из кеша браузера может не выдать onLoad вовсе: событие
+  // успевает пройти до подписки. Тогда imgLoaded остаётся false, и канвас
+  // не появляется — рисовать не по чему.
+  useEffect(() => {
+    if (imgRef.current?.complete && !imgLoaded) setImgLoaded(true);
+  }, [selectedPhoto, imgLoaded]);
 
   return (
     <>
@@ -404,6 +435,7 @@ export default function SimulatorPanel({ cas }) {
                 <img
                   src={photoUrl(selectedPhoto.filename)}
                   alt={t("simulator.sourcePhoto")}
+                  ref={imgRef}
                   className={sim.canvasImg}
                   onLoad={handleImgLoad}
                   draggable={false}
