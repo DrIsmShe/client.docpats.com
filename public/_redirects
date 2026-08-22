@@ -1,3 +1,9 @@
-/sitemap.xml  https://backend.docpats.com/sitemap.xml  200
-/robots.txt   https://backend.docpats.com/robots.txt   200
+# ВНИМАНИЕ: этот файл Netlify читает РАНЬШЕ netlify.toml, и catch-all внизу
+# перехватывает всё, чего нет выше, — правила из toml для такого адреса уже
+# не рассматриваются. Любой адрес, который должен уходить на бэкенд, обязан
+# быть перечислен ЗДЕСЬ, а не только в netlify.toml.
+/sitemap.xml       https://backend.docpats.com/sitemap.xml       200
+/robots.txt        https://backend.docpats.com/robots.txt        200
+/rss.xml           https://backend.docpats.com/rss.xml           200
+/news-sitemap.xml  https://backend.docpats.com/news-sitemap.xml  200
 /* /index.html 200
