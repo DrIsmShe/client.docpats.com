@@ -1,0 +1,12 @@
+{
+  "callToAction": "Bir meslektaşınızla paylaşın",
+  "note": "Bu içerik açık ve ücretsizdir — bağlantıyı dilediğinize gönderebilirsiniz.",
+  "share": "Paylaş",
+  "copy": "Bağlantıyı kopyala",
+  "copied": "Kopyalandı",
+  "email": "E-posta",
+  "aria": {
+    "region": "İçeriği paylaş",
+    "shareVia": "{{network}} ile paylaş"
+  }
+}

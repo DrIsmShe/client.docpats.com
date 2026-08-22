@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import FooterAI from "../../components/newsAI/footer/footer";
+import ShareButtons from "../../components/share/ShareButtons";
 import { Helmet } from "react-helmet-async";
 /* ─────────────────────────────────────────────────────────────
    Specialty → accent colour map
@@ -290,7 +291,7 @@ export default function NewsArticle() {
   const newsBaseUrl = `https://docpats.com/news/${article.slug}`;
   const localeUrl = (code) =>
     code === "en" ? newsBaseUrl : `${newsBaseUrl}?locale=${code}`;
-  const canonicalUrl = localeUrl(locale);
+  const pageUrl = localeUrl(locale);
   const description = article.aiSummaryShort || article.summary || "";
 
   return (
@@ -303,7 +304,7 @@ export default function NewsArticle() {
           name="description"
           content={article.aiSummaryShort || article.summary || ""}
         />
-        <link rel="canonical" href={canonicalUrl} />
+        <link rel="canonical" href={pageUrl} />
         {/* hreflang: связывает языковые версии между собой. Указывать
             обязательно НА РАЗНЫЕ адреса — пять ссылок на один URL, как
             было в sitemap, не значат ничего. */}
@@ -322,7 +323,7 @@ export default function NewsArticle() {
         />
         <meta
           property="og:url"
-          content={canonicalUrl}
+          content={pageUrl}
         />
         <meta
           property="og:image"
@@ -347,7 +348,7 @@ export default function NewsArticle() {
             "@type": "NewsArticle",
             headline: article.title,
             description: article.aiSummaryShort || article.summary || "",
-            url: canonicalUrl,
+            url: pageUrl,
             datePublished: article.publishedAt,
             image: article.imageUrl || "https://docpats.com/og-default.jpg",
             publisher: {
@@ -560,6 +561,20 @@ export default function NewsArticle() {
                   )}
             </div>
           </div>
+
+          {/* ── ПОДЕЛИТЬСЯ ──
+              Ставится ДО блока источника и ВНЕ его условия: тот блок
+              рисуется только при наличии article.canonicalUrl (ссылки на
+              первоисточник), и кнопки, вложенные в него, пропадали бы у
+              части материалов без всякой причины.
+              Отдаём pageUrl — адрес текущей языковой версии, чтобы коллега
+              открыл ровно то, что читает отправитель, а не английский
+              вариант вместо азербайджанского. */}
+          <ShareButtons
+            url={pageUrl}
+            title={article.title}
+            accent={spec.color}
+          />
 
           {/* ── FOOTER ── */}
           {article.canonicalUrl && (

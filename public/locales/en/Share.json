@@ -1,0 +1,12 @@
+{
+  "callToAction": "Share with a colleague",
+  "note": "This material is open and free — the link can be sent to anyone.",
+  "share": "Share",
+  "copy": "Copy link",
+  "copied": "Copied",
+  "email": "Email",
+  "aria": {
+    "region": "Share this material",
+    "shareVia": "Share via {{network}}"
+  }
+}
