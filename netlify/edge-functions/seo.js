@@ -20,15 +20,15 @@ export default async function handler(request, context) {
 
       const inject = `
     <title>${title}</title>
-    <meta name="description" content="${desc}">
-    <link rel="canonical" href="${pageUrl}">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="${title}">
-    <meta property="og:description" content="${desc}">
-    <meta property="og:url" content="${pageUrl}">
-    <meta property="og:image" content="${image}">
-    <meta name="twitter:card" content="summary_large_image">
-    <script type="application/ld+json">${JSON.stringify({
+    <meta name="description" content="${desc}" data-seo="edge">
+    <link rel="canonical" href="${pageUrl}" data-seo="edge">
+    <meta data-seo="edge" property="og:type" content="website">
+    <meta data-seo="edge" property="og:title" content="${title}">
+    <meta data-seo="edge" property="og:description" content="${desc}">
+    <meta data-seo="edge" property="og:url" content="${pageUrl}">
+    <meta data-seo="edge" property="og:image" content="${image}">
+    <meta data-seo="edge" name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json" data-seo="edge">${JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebSite",
       name: "DocPats",
@@ -85,14 +85,14 @@ export default async function handler(request, context) {
       const inject = `
     <title>${escAttr(title)}</title>
     <meta name="description" content="${escAttr(desc)}">
-    <link rel="canonical" href="${pageUrl}">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="${escAttr(title)}">
-    <meta property="og:description" content="${escAttr(desc)}">
-    <meta property="og:url" content="${pageUrl}">
-    <meta property="og:image" content="${image}">
-    <meta name="twitter:card" content="summary_large_image">
-    <script type="application/ld+json">${JSON.stringify({
+    <link rel="canonical" href="${pageUrl}" data-seo="edge">
+    <meta data-seo="edge" property="og:type" content="article">
+    <meta data-seo="edge" property="og:title" content="${escAttr(title)}">
+    <meta data-seo="edge" property="og:description" content="${escAttr(desc)}">
+    <meta data-seo="edge" property="og:url" content="${pageUrl}">
+    <meta data-seo="edge" property="og:image" content="${image}">
+    <meta data-seo="edge" name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json" data-seo="edge">${JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebPage",
       name: heading,
@@ -199,25 +199,30 @@ export default async function handler(request, context) {
 
       const response = await context.next();
       let html = await response.text();
+      // Та же чистка, что и у материалов: без неё og-теги оболочки
+      // остаются рядом с нашими и страница отдаёт два комплекта.
       html = html
         .replace(/<title>.*?<\/title>/gs, "")
-        .replace(/<meta name="description"[^>]*\/?>/gi, "")
-        .replace(/<link rel="canonical"[^>]*\/?>/gi, "");
+        .replace(/<meta[^>]+name="description"[^>]*>/gi, "")
+        .replace(/<meta[^>]+property="og:[^"]*"[^>]*>/gi, "")
+        .replace(/<meta[^>]+name="twitter:[^"]*"[^>]*>/gi, "")
+        .replace(/<link[^>]+rel="canonical"[^>]*>/gi, "")
+        .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/gi, "");
 
       const inject = `
     <title>${title} | DocPats</title>
-    <meta name="description" content="${desc}">
-    <link rel="canonical" href="${pageUrl}">
-    <meta property="og:type" content="business.business">
-    <meta property="og:title" content="${title}">
-    <meta property="og:description" content="${desc}">
-    <meta property="og:url" content="${pageUrl}">
-    <meta property="og:image" content="${escAttr(image)}">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="${title}">
-    <meta name="twitter:description" content="${desc}">
-    <meta name="twitter:image" content="${escAttr(image)}">
-    <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`;
+    <meta name="description" content="${desc}" data-seo="edge">
+    <link rel="canonical" href="${pageUrl}" data-seo="edge">
+    <meta data-seo="edge" property="og:type" content="business.business">
+    <meta data-seo="edge" property="og:title" content="${title}">
+    <meta data-seo="edge" property="og:description" content="${desc}">
+    <meta data-seo="edge" property="og:url" content="${pageUrl}">
+    <meta data-seo="edge" property="og:image" content="${escAttr(image)}">
+    <meta data-seo="edge" name="twitter:card" content="summary_large_image">
+    <meta data-seo="edge" name="twitter:title" content="${title}">
+    <meta data-seo="edge" name="twitter:description" content="${desc}">
+    <meta data-seo="edge" name="twitter:image" content="${escAttr(image)}">
+    <script type="application/ld+json" data-seo="edge">${JSON.stringify(jsonLd)}</script>`;
 
       html = html.replace("</head>", inject + "</head>");
       return new Response(html, {
@@ -322,9 +327,9 @@ export default async function handler(request, context) {
       const localeHref = (c) => (c === "en" ? newsBase : `${newsBase}?locale=${c}`);
       pageUrl = urlLocale ? localeHref(urlLocale) : newsBase;
       alternateLinks = [
-        `<link rel="alternate" hreflang="x-default" href="${newsBase}">`,
+        `<link data-seo="edge" rel="alternate" hreflang="x-default" href="${newsBase}">`,
         ...["ru", "en", "az", "tr", "ar"].map(
-          (c) => `<link rel="alternate" hreflang="${c}" href="${localeHref(c)}">`,
+          (c) => `<link data-seo="edge" rel="alternate" hreflang="${c}" href="${localeHref(c)}">`,
         ),
       ].join("\n    ");
       publishedAt = article.publishedAt;
@@ -429,38 +434,40 @@ export default async function handler(request, context) {
     const response = await context.next();
     let html = await response.text();
 
+    // Вырезаем то, что принесла оболочка index.html: свои значения
+    // подставляем ниже. Регулярки НЕ привязаны к порядку атрибутов —
+    // прежние требовали rel/property сразу после имени тега и молча
+    // переставали совпадать при любой правке шаблона.
     html = html
       .replace(/<title>.*?<\/title>/gs, "")
-      .replace(/<meta name="description"[^>]*\/?>/gi, "")
-      .replace(/<meta property="og:title"[^>]*\/?>/gi, "")
-      .replace(/<meta property="og:description"[^>]*\/?>/gi, "")
-      .replace(/<meta property="og:type"[^>]*\/?>/gi, "")
-      .replace(/<meta property="og:url"[^>]*\/?>/gi, "")
-      .replace(/<meta property="og:image"[^>]*\/?>/gi, "")
-      .replace(/<meta property="og:locale"[^>]*\/?>/gi, "")
-      .replace(/<meta name="twitter:card"[^>]*\/?>/gi, "")
-      .replace(/<meta name="twitter:title"[^>]*\/?>/gi, "")
-      .replace(/<meta name="twitter:description"[^>]*\/?>/gi, "")
-      .replace(/<meta name="twitter:image"[^>]*\/?>/gi, "")
-      .replace(/<link rel="canonical"[^>]*\/?>/gi, "")
-      .replace(/<link rel="alternate"[^>]*\/?>/gi, "");
+      .replace(/<meta[^>]+name="description"[^>]*>/gi, "")
+      .replace(/<meta[^>]+property="og:[^"]*"[^>]*>/gi, "")
+      .replace(/<meta[^>]+name="twitter:[^"]*"[^>]*>/gi, "")
+      .replace(/<link[^>]+rel="canonical"[^>]*>/gi, "")
+      // Только языковые alternate. Без уточнения по hreflang сюда попала
+      // бы и ссылка автообнаружения RSS — она тоже rel="alternate".
+      .replace(/<link[^>]+rel="alternate"[^>]+hreflang="[^"]*"[^>]*>/gi, "")
+      // Оболочка несёт JSON-LD про платформу целиком (SoftwareApplication).
+      // На странице материала он не к месту и давал третью разметку на
+      // одну страницу.
+      .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/gi, "");
 
     const inject = `
     <title>${title} | DocPats</title>
-    <meta name="description" content="${desc}">
-    <link rel="canonical" href="${pageUrl}">
+    <meta name="description" content="${desc}" data-seo="edge">
+    <link rel="canonical" href="${pageUrl}" data-seo="edge">
     ${alternateLinks}
-    <meta property="og:type" content="${schemaType === "Physician" ? "profile" : "article"}">
-    <meta property="og:title" content="${title}">
-    <meta property="og:description" content="${desc}">
-    <meta property="og:url" content="${pageUrl}">
-    <meta property="og:image" content="${imageUrl}">
-    <meta property="og:locale" content="${locale}">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="${title}">
-    <meta name="twitter:description" content="${desc}">
-    <meta name="twitter:image" content="${imageUrl}">
-    <script type="application/ld+json">${JSON.stringify({
+    <meta data-seo="edge" property="og:type" content="${schemaType === "Physician" ? "profile" : "article"}">
+    <meta data-seo="edge" property="og:title" content="${title}">
+    <meta data-seo="edge" property="og:description" content="${desc}">
+    <meta data-seo="edge" property="og:url" content="${pageUrl}">
+    <meta data-seo="edge" property="og:image" content="${imageUrl}">
+    <meta data-seo="edge" property="og:locale" content="${locale}">
+    <meta data-seo="edge" name="twitter:card" content="summary_large_image">
+    <meta data-seo="edge" name="twitter:title" content="${title}">
+    <meta data-seo="edge" name="twitter:description" content="${desc}">
+    <meta data-seo="edge" name="twitter:image" content="${imageUrl}">
+    <script type="application/ld+json" data-seo="edge">${JSON.stringify({
       "@context": "https://schema.org",
       "@type": schemaType,
       headline: schemaType !== "Physician" ? title : undefined,

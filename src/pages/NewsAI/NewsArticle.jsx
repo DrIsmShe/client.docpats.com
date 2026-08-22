@@ -4,6 +4,7 @@ import axios from "axios";
 import { useTranslation } from "react-i18next";
 import FooterAI from "../../components/newsAI/footer/footer";
 import ShareButtons from "../../components/share/ShareButtons";
+import { useDropEdgeSeoTags } from "../../lib/useDropEdgeSeoTags";
 import { Helmet } from "react-helmet-async";
 /* ─────────────────────────────────────────────────────────────
    Specialty → accent colour map
@@ -180,6 +181,10 @@ export default function NewsArticle() {
       setLoading(false);
     }
   };
+
+  // Мета-теги здесь пишет Helmet, поэтому комплект от edge-функции надо
+  // снять — иначе на странице два canonical и двенадцать hreflang.
+  useDropEdgeSeoTags(Boolean(article));
 
   /* ── derived values ── */
   const spec = SPECIALTY_CONFIG[article?.specialty] || SPECIALTY_CONFIG.general;
