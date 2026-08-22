@@ -443,6 +443,17 @@ export default function SimulatorPanel({ cas }) {
               onChange={(e) => setCustomPrompt(e.target.value)}
               rows={2}
             />
+            {/* Модель изображений не выполняет действия и не понимает
+                градусов — сервер переписывает текст врача в описание
+                желаемого вида. Сказать об этом здесь честнее, чем молча
+                подменить запрос: иначе результат «сделал наоборот»
+                выглядит поломкой, а не непониманием. */}
+            <p className={sim.sectionHint}>
+              {t(
+                "simulator.wishesCompilerHint",
+                "Пишите на любом языке и своими словами — запрос будет переведён для модели. Величины в градусах и миллиметрах она не отрабатывает: они станут «слегка», «заметно».",
+              )}
+            </p>
           </div>
 
           <label className={`${styles.checkRow} ${sim.disclaimer}`}>
@@ -546,6 +557,25 @@ export default function SimulatorPanel({ cas }) {
                       {t("simulator.falaiProcessing")}
                     </span>
                   </div>
+                )}
+
+                {/* Что реально ушло в модель. Без этого разобраться,
+                    почему результат не тот — запрос врача виноват или его
+                    перевод, — нельзя ни ему, ни нам. */}
+                {activeSimId === s._id && s.promptCompiled && s.promptRaw && (
+                  <details className={sim.sectionHint} style={{ padding: "6px 0" }}>
+                    <summary style={{ cursor: "pointer" }}>
+                      {t("simulator.promptSent", "Что было отправлено модели")}
+                    </summary>
+                    <p style={{ margin: "6px 0 0" }}>
+                      <b>{t("simulator.promptYours", "Ваш запрос")}:</b>{" "}
+                      {s.promptRaw}
+                    </p>
+                    <p style={{ margin: "4px 0 0", opacity: 0.85 }}>
+                      <b>{t("simulator.promptModel", "Для модели")}:</b>{" "}
+                      {s.prompt}
+                    </p>
+                  </details>
                 )}
 
                 {s.status === "done" && activeSimId === s._id && (
