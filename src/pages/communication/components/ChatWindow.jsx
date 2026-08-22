@@ -444,6 +444,9 @@ const styles = `
     height: 62px;
     background: #ffffff;
     border-bottom: 1px solid #eaecf0;
+    /* z-index без position не работал вовсе. Нужен теперь по-настоящему:
+       подсказка у кнопки звонка выпадает вниз, на ленту сообщений. */
+    position: relative;
     z-index: 10;
     gap: 10px;
     flex-shrink: 0;
@@ -469,6 +472,8 @@ const styles = `
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.3;
   }
   .chat-header-info .chat-status { font-size: 11px; color: #6b7280; min-height: 14px; }
+  .chat-header-info .chat-status.online { color: #059669; }
+  .chat-header-info .chat-status.unknown { color: #b45309; }
   .chat-header-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
   .chat-header-actions .icon-button {
     background: none; border: none;
@@ -478,6 +483,36 @@ const styles = `
     color: #6b7280; transition: background 0.15s;
   }
   .chat-header-actions .icon-button:hover { background: #f0f2f5; }
+
+  /* Подсказка у кнопки звонка.
+     Атрибут title на disabled-кнопке браузер не показывает: события мыши
+     до неё не доходят, поэтому hover ловит обёртка — она не disabled.
+     По той же причине title больше не используется вовсе: иначе у
+     работающей кнопки всплывали бы два тултипа сразу.
+     Подсказка падает ВНИЗ: .chat-wrapper обрезает overflow, и всё, что
+     выше шапки, было бы срезано.
+     Селектор с [data-hint] — чтобы без текста не всплывал пустой
+     чёрный прямоугольник. */
+  .call-hint { position: relative; display: flex; }
+  .call-hint[data-blocked] { cursor: not-allowed; }
+  .call-hint[data-hint]::after {
+    content: attr(data-hint);
+    position: absolute; top: calc(100% + 6px); right: 0;
+    background: #111827; color: #ffffff;
+    font-size: 11px; line-height: 1.35; white-space: nowrap;
+    padding: 5px 9px; border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.18);
+    opacity: 0; visibility: hidden; transform: translateY(-3px);
+    transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+    pointer-events: none; z-index: 30;
+  }
+  .call-hint[data-hint]:hover::after {
+    opacity: 1; visibility: visible; transform: translateY(0);
+  }
+  /* Жёлтая подсказка — «кнопка работает, но статус собеседника
+     проверить не удалось»: это предупреждение, а не запрет. */
+  .call-hint[data-tone="warn"]::after { background: #b45309; }
+
   .block-button {
     background: none; border: none;
     width: 34px; height: 34px; border-radius: 8px;
@@ -956,6 +991,11 @@ function ChatWindow({
   currentUser,
   dialogs = [],
   peerUser,
+  // "private" | "group". Нужен, чтобы отличить групповой диалог (личного
+  // собеседника нет по определению) от ещё не загруженного списка
+  // диалогов — в мобильном виде ChatWindow рисуется до его загрузки, и
+  // по одному лишь отсутствию peerUser эти случаи неразличимы.
+  dialogType,
   dialogTitle,
   dialogAvatar,
   onShareMessage,
@@ -1012,11 +1052,21 @@ function ChatWindow({
   // Пуш о вызове ему всё равно уйдёт (call.gateway.js), но начинать
   // разговор, которого не будет, — не нужно.
   //
-  // null означает «не знаем» и кнопки НЕ гасит: в групповом диалоге
+  // Состояния, кроме "offline", кнопки НЕ гасят: в групповом диалоге
   // личного собеседника нет вовсе, а до ответа сервера запрещать звонок
-  // не за что.
-  const peerOnline = usePeerPresence(peerId);
-  const callBlocked = peerOnline === false;
+  // не за что. Про "unknown" при этом честно предупреждаем — см. ниже.
+  const presence = usePeerPresence(peerId);
+  const callBlocked = presence === "offline";
+
+  // Групповой диалог или ещё не загруженный. Различать обязательно:
+  // в группе личный звонок невозможен в принципе, а во время загрузки
+  // он просто пока не готов — и это разные подписи на кнопке.
+  const dialogKind = !dialogType
+    ? "loading"
+    : dialogType === "private"
+      ? "private"
+      : "group";
+
   // Русский текст вторым аргументом: пока словарь грузится, показывается
   // он, а не голый ключ (та же схема, что в ScribePanel).
   const { t } = useTranslation("Communication");
@@ -1040,6 +1090,73 @@ function ChatWindow({
   const shownTranslationsRef = useRef(new Map()); // messageId → originalText
 
   const { callState, initiateCall } = useCallContext();
+
+  // ── Состояние кнопок звонка ───────────────────────────────────────────────
+  //
+  // Одно место, где решается и «можно ли нажать», и «что написать при
+  // наведении». Раньше это расходилось: кнопка гасла по callState через
+  // opacity, но disabled ставился только по офлайну — она выглядела
+  // выключенной, нажималась и молча ничего не делала.
+  //
+  // Подсказку рисует обёртка, а не сам title: у disabled-кнопки hover не
+  // срабатывает, и нативный тултип на ней не появляется никогда.
+  const callBusy = callState !== "idle";
+
+  // Причина, по которой кнопка не работает. null — работает.
+  const audioBlockReason = callBusy
+    ? "busy"
+    : dialogKind === "loading"
+      ? "loading"
+      : dialogKind === "group"
+        ? "group" // личный аудиозвонок в группе невозможен
+        : callBlocked
+          ? "offline"
+          : null;
+
+  // У видео причин на одну меньше: в группе оно открывает общую комнату
+  // Jitsi, звонить там лично некому, но кнопка осмысленна.
+  const videoBlockReason = callBusy
+    ? "busy"
+    : dialogKind === "loading"
+      ? "loading"
+      : callBlocked
+        ? "offline"
+        : null;
+
+  const blockReasonText = (reason) => {
+    if (reason === "busy") return t("call.busyHint", "Идёт другой звонок");
+    if (reason === "loading") return t("call.loadingHint", "Диалог загружается");
+    if (reason === "group")
+      return t("call.groupAudioHint", "В группе доступен только видеозвонок");
+    if (reason === "offline")
+      return t("call.peerOfflineHint", "Собеседник не в сети");
+    return null;
+  };
+
+  // Что показать при наведении. Порядок важен: сперва причина запрета,
+  // затем предупреждение о неизвестном статусе, и только потом обычное
+  // название кнопки.
+  //
+  // "unknown" кнопку не гасит (запрещать по незнанию хуже, чем позволить
+  // лишний вызов), но и молчать о нём нельзя: иначе звонок уходит в
+  // пустоту, а человек не понимает почему.
+  const callHint = (reason, label) => {
+    const blocked = blockReasonText(reason);
+    if (blocked) return { text: blocked, tone: "block" };
+    if (presence === "unknown") {
+      return {
+        text: t(
+          "call.presenceUnknownHint",
+          "Не удалось проверить, в сети ли собеседник",
+        ),
+        tone: "warn",
+      };
+    }
+    return { text: label, tone: "plain" };
+  };
+
+  const audioHint = callHint(audioBlockReason, t("call.audio", "Аудиозвонок"));
+  const videoHint = callHint(videoBlockReason, t("call.video", "Видеозвонок"));
   const {
     toggleTranslation: _toggleTranslation,
     isTranslated,
@@ -1467,40 +1584,52 @@ function ChatWindow({
             )}
             <div className="chat-header-info">
               <div className="chat-title">{dialogTitle || "Untitled"}</div>
-              <div className="chat-status">
+              {/* Статус симметричен: раньше подпись была только у офлайна,
+                  а «в сети» показывалось пустотой — подтверждения, что
+                  звонить можно, человек не получал вовсе. */}
+              <div className={`chat-status ${presence}`}>
                 {typingUsers.size > 0
                   ? "typing…"
-                  : callBlocked
-                    ? t("call.peerOffline", "Не в сети")
-                    : ""}
+                  : presence === "online"
+                    ? t("call.peerOnline", "В сети")
+                    : presence === "offline"
+                      ? t("call.peerOffline", "Не в сети")
+                      : presence === "unknown"
+                        ? t("call.peerUnknown", "Статус неизвестен")
+                        : ""}
               </div>
             </div>
           </div>
 
           <div className="chat-header-actions">
-            {/* Аудио звонок */}
-            <button
-              className="icon-button"
-              title={
-                callBlocked
-                  ? t("call.peerOfflineHint", "Собеседник не в сети")
-                  : "Audio call"
-              }
-              disabled={callBlocked}
-              onClick={() => {
-                if (callState !== "idle" || !peerId || callBlocked) return;
-                initiateCall({
-                  targetDialogId: dialogId,
-                  targetPeerId: peerId,
-                  peerName: dialogTitle || "Unknown",
-                  peerAvatar: dialogAvatar,
-                  type: "audio",
-                });
-              }}
-              style={{ opacity: callState !== "idle" || callBlocked ? 0.4 : 1 }}
+            {/* Аудио звонок.
+                Обёртка нужна ровно ради подсказки: у disabled-кнопки
+                hover не срабатывает, поэтому title на ней был мёртвым
+                кодом — человек видел погасшую кнопку без объяснения. */}
+            <span
+              className="call-hint"
+              data-hint={audioHint.text}
+              data-tone={audioHint.tone}
+              data-blocked={audioBlockReason ? "" : undefined}
             >
-              📞
-            </button>
+              <button
+                className="icon-button"
+                disabled={Boolean(audioBlockReason)}
+                onClick={() => {
+                  if (audioBlockReason || !peerId) return;
+                  initiateCall({
+                    targetDialogId: dialogId,
+                    targetPeerId: peerId,
+                    peerName: dialogTitle || "Unknown",
+                    peerAvatar: dialogAvatar,
+                    type: "audio",
+                  });
+                }}
+                style={{ opacity: audioBlockReason ? 0.4 : 1 }}
+              >
+                📞
+              </button>
+            </span>
 
             {/* Видеозвонок.
                 Идёт через ТУ ЖЕ сигнализацию, что и аудио (call:initiate →
@@ -1512,35 +1641,37 @@ function ChatWindow({
                 такового не было, была общая комната.
                 Групповой диалог (персонального собеседника нет) по-прежнему
                 открывает комнату напрямую: звонить там некому лично. */}
-            <button
-              className="icon-button"
-              title={
-                callBlocked
-                  ? t("call.peerOfflineHint", "Собеседник не в сети")
-                  : "Video call"
-              }
-              // Групповой диалог кнопку не теряет: там peerId нет, значит и
-              // callBlocked никогда не выставится — она по-прежнему просто
-              // открывает общую комнату.
-              disabled={callBlocked}
-              onClick={() => {
-                if (!peerId) {
-                  setShowJitsi(true);
-                  return;
-                }
-                if (callState !== "idle" || callBlocked) return;
-                initiateCall({
-                  targetDialogId: dialogId,
-                  targetPeerId: peerId,
-                  peerName: dialogTitle || "Unknown",
-                  peerAvatar: dialogAvatar,
-                  type: "video",
-                });
-              }}
-              style={{ opacity: callState !== "idle" || callBlocked ? 0.4 : 1 }}
+            <span
+              className="call-hint"
+              data-hint={videoHint.text}
+              data-tone={videoHint.tone}
+              data-blocked={videoBlockReason ? "" : undefined}
             >
-              🎥
-            </button>
+              <button
+                className="icon-button"
+                // Групповой диалог кнопку не теряет: там peerId нет, значит
+                // и offline не выставится — она по-прежнему просто открывает
+                // общую комнату.
+                disabled={Boolean(videoBlockReason)}
+                onClick={() => {
+                  if (videoBlockReason) return;
+                  if (!peerId) {
+                    setShowJitsi(true);
+                    return;
+                  }
+                  initiateCall({
+                    targetDialogId: dialogId,
+                    targetPeerId: peerId,
+                    peerName: dialogTitle || "Unknown",
+                    peerAvatar: dialogAvatar,
+                    type: "video",
+                  });
+                }}
+                style={{ opacity: videoBlockReason ? 0.4 : 1 }}
+              >
+                🎥
+              </button>
+            </span>
 
             {/* Блокировка */}
             <button

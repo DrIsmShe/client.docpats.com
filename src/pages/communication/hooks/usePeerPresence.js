@@ -12,19 +12,34 @@
 //   2. те же события user:online / user:offline — чтобы снимок не
 //      устаревал, пока чат открыт.
 //
-// Возвращает ТРИ состояния, и это важно: null — «не знаем». Пока ответ не
-// пришёл или сокет молчит, запрещать звонок нельзя: отнять кнопку по
-// незнанию хуже, чем позволить лишний вызов.
+// Возвращает СТРОКУ-СОСТОЯНИЕ, а не булев флаг с null. Прежний null
+// склеивал два разных случая — «ответа ещё нет» и «сервер ответил, что
+// не знает», — и оба молча выглядели как «звонить можно», без единого
+// слова пользователю. Разделены, чтобы про второй можно было честно
+// предупредить:
+//
+//   "none"    — личного собеседника нет вовсе (групповой диалог);
+//   "pending" — вопрос задан, ответа ещё нет;
+//   "unknown" — ответа не будет: сервер не знает, ack не дождались или
+//               наш собственный сокет отвалился;
+//   "online" / "offline" — точный ответ.
+//
+// Запрещать звонок можно ТОЛЬКО на "offline". На "unknown" нельзя:
+// отнять кнопку по незнанию хуже, чем позволить лишний вызов.
 
 import { useEffect, useState } from "react";
 import { getSocket } from "../socket";
 
+// Ack без таймаута при мёртвом сокете не приходит НИКОГДА, и состояние
+// навсегда осталось бы "pending" — то есть визуально «ещё грузится».
+const ASK_TIMEOUT_MS = 5000;
+
 export function usePeerPresence(peerId) {
-  const [online, setOnline] = useState(null); // null | true | false
+  const [status, setStatus] = useState("none");
 
   useEffect(() => {
     if (!peerId) {
-      setOnline(null);
+      setStatus("none");
       return undefined;
     }
 
@@ -33,37 +48,51 @@ export function usePeerPresence(peerId) {
     // Диалог мог смениться, пока летел ответ, — иначе присвоим чужое.
     let alive = true;
 
-    setOnline(null);
+    setStatus("pending");
 
     const ask = () =>
-      socket.emit("presence:get", { userId: id }, (res) => {
-        if (!alive) return;
-        setOnline(res?.known ? Boolean(res.online) : null);
-      });
+      socket
+        .timeout(ASK_TIMEOUT_MS)
+        .emit("presence:get", { userId: id }, (err, res) => {
+          if (!alive) return;
+          if (err || !res?.known) {
+            setStatus("unknown");
+            return;
+          }
+          setStatus(res.online ? "online" : "offline");
+        });
 
     ask();
     // Переподключились — снимок мог устареть, пока связи не было.
     socket.on("connect", ask);
 
-    const onOnline = ({ userId }) => {
-      if (String(userId) === id) setOnline(true);
-    };
-    const onOffline = ({ userId }) => {
-      if (String(userId) === id) setOnline(false);
+    // Упал наш собственный сокет: прежний ответ больше ничего не значит,
+    // и новых user:online / user:offline мы уже не услышим.
+    const onDisconnect = () => {
+      if (alive) setStatus("unknown");
     };
 
+    const onOnline = ({ userId }) => {
+      if (String(userId) === id) setStatus("online");
+    };
+    const onOffline = ({ userId }) => {
+      if (String(userId) === id) setStatus("offline");
+    };
+
+    socket.on("disconnect", onDisconnect);
     socket.on("user:online", onOnline);
     socket.on("user:offline", onOffline);
 
     return () => {
       alive = false;
       socket.off("connect", ask);
+      socket.off("disconnect", onDisconnect);
       socket.off("user:online", onOnline);
       socket.off("user:offline", onOffline);
     };
   }, [peerId]);
 
-  return online;
+  return status;
 }
 
 export default usePeerPresence;

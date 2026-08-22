@@ -189,6 +189,9 @@ function ChatPage() {
     currentUser: user,
     dialogs,
     peerUser: activeDialog?.peerUser,
+    // Мобильный вид рисует ChatWindow ещё до загрузки списка диалогов,
+    // поэтому там undefined значит «грузится», а не «группа».
+    dialogType: activeDialog?.type,
     dialogTitle: activeDialog?.displayName,
     dialogAvatar: activeDialog?.avatarUrl,
     onShareMessage: handleShareMessage,
