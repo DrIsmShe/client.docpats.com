@@ -4,6 +4,8 @@
 # быть перечислен ЗДЕСЬ, а не только в netlify.toml.
 /sitemap.xml       https://backend.docpats.com/sitemap.xml       200
 /robots.txt        https://backend.docpats.com/robots.txt        200
+# Дочерние файлы sitemap-индекса: /sitemap-news-1.xml и т.п.
+/sitemap-*         https://backend.docpats.com/sitemap-:splat         200
 /rss.xml           https://backend.docpats.com/rss.xml           200
 /news-sitemap.xml  https://backend.docpats.com/news-sitemap.xml  200
 /* /index.html 200

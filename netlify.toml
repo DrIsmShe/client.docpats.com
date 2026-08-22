@@ -11,6 +11,16 @@
   status = 200
   force = true
 
+# Дочерние файлы sitemap-индекса. /sitemap.xml выше — сам индекс, одним
+# файлом он весил 48 МБ при пределе Google в 50 МБ.
+# Дублируется в public/_redirects, и это не лишнее: Netlify читает тот
+# файл РАНЬШЕ, и без записи там сюда управление не дойдёт.
+[[redirects]]
+  from = "/sitemap-*"
+  to = "https://backend.docpats.com/sitemap-:splat"
+  status = 200
+  force = true
+
 # RSS и news-sitemap живут там же, где sitemap: их собирает бэкенд из базы
 # новостного движка. Агрегаторы и Google News ищут эти файлы в корне
 # домена, поэтому проксируем, а не отдаём с поддомена.
