@@ -13,10 +13,12 @@
 // принимается со знанием того, что будет показано, а не вслепую.
 
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "../../axios";
 import "./doctorTrainingStats.css";
 
 export default function TrainingVisibilityToggle() {
+  const { t } = useTranslation();
   const [data, setData] = useState(null);
   const [enabled, setEnabled] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -63,7 +65,7 @@ export default function TrainingVisibilityToggle() {
           disabled={busy}
           onChange={(e) => toggle(e.target.checked)}
         />
-        <span>Показывать учебную активность на моём профиле</span>
+        <span>{t("training.toggleLabel")}</span>
       </label>
 
       {/* Ровно то, что увидят пациенты. Решение принимается со знанием
@@ -71,26 +73,26 @@ export default function TrainingVisibilityToggle() {
       <div className="tvt-preview">
         {data.radiology.cases > 0 && (
           <span>
-            снимков разобрано: <b>{data.radiology.cases}</b>
+            {t("training.casesReviewed")} <b>{data.radiology.cases}</b>
             {data.radiology.accuracy !== null &&
-              `, средний балл ${data.radiology.accuracy} %`}
+              t("training.avgScore", { value: data.radiology.accuracy })}
           </span>
         )}
         {data.exam.answered > 0 && (
           <span>
-            вопросов пройдено: <b>{data.exam.answered}</b>
-            {data.exam.accuracy !== null && `, верно ${data.exam.accuracy} %`}
+            {t("training.questionsAnswered")} <b>{data.exam.answered}</b>
+            {data.exam.accuracy !== null &&
+              t("training.correct", { value: data.exam.accuracy })}
           </span>
         )}
         {data.radiology.accuracy === null && data.radiology.cases > 0 && (
           <span className="tvt-hint">
-            Процент появится, когда случаев станет больше: по нескольким он
-            меняется слишком сильно от одной ошибки.
+            {t("training.accuracyHint")}
           </span>
         )}
       </div>
 
-      {saved && <span className="tvt-saved">Сохранено</span>}
+      {saved && <span className="tvt-saved">{t("training.saved")}</span>}
     </div>
   );
 }

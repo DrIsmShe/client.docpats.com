@@ -1566,8 +1566,10 @@ function ChatWindow({
     );
   };
 
-  if (!dialogId) return <div className="empty">Select a dialog</div>;
-  if (!isReady) return <div className="empty">Loading messages…</div>;
+  if (!dialogId)
+    return <div className="empty">{t("common:chat.selectDialog")}</div>;
+  if (!isReady)
+    return <div className="empty">{t("common:chat.loadingMessages")}</div>;
 
   return (
     <>

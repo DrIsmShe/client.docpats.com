@@ -1,6 +1,7 @@
 // client/src/pages/ChatPage.jsx
 
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useEffect, useState, useMemo, useRef } from "react";
 import ChatWindow from "../communication/components/ChatWindow";
 import DialogList from "../communication/components/DialogList";
@@ -126,6 +127,7 @@ const styles = `
 `;
 
 function ChatPage() {
+  const { t } = useTranslation();
   const { dialogId } = useParams();
   const navigate = useNavigate();
 
@@ -208,7 +210,7 @@ function ChatPage() {
           <div className="mobile-topbar">
             <div className="mobile-topbar-inner">
               <span style={{ fontSize: 20 }}>💬</span>
-              <span className="mobile-topbar-title">Messages</span>
+              <span className="mobile-topbar-title">{t("chat.messages")}</span>
               {!loading && dialogs.length > 0 && (
                 <span className="mobile-topbar-count">{dialogs.length}</span>
               )}
@@ -258,9 +260,9 @@ function ChatPage() {
         <div className="chatpage-empty">
           <div className="chatpage-empty-box">
             <span className="chatpage-empty-icon">🩺</span>
-            <div className="chatpage-empty-title">Select a dialog</div>
+            <div className="chatpage-empty-title">{t("chat.selectDialog")}</div>
             <div className="chatpage-empty-subtitle">
-              Choose a patient or colleague from the list on the left
+              {t("chat.selectDialogHint")}
             </div>
           </div>
         </div>

@@ -724,7 +724,17 @@
     "galleryEmpty": "Hələ foto yoxdur",
     "galleryLimit": "Maksimum 20 foto",
     "galleryError": "Foto yüklənmədi",
-    "reviewError": "Statusu dəyişmək mümkün olmadı"
+    "reviewError": "Statusu dəyişmək mümkün olmadı",
+    "i18nTitle": "Vitrin dilləri",
+    "i18nHint": "Vitrin ziyarətçinin dilində göstərilir. Tərcümə yoxdursa, orijinal dil göstərilir — bütün dilləri doldurmaq məcburi deyil.",
+    "origLang": "Orijinal dil",
+    "sloganLabel": "Şüar",
+    "contentTitle": "Klinikanın kontenti",
+    "customPagesTitle": "Sayt səhifələri",
+    "customPagesHint": "Vitrin bloklarından ayrıca səhifələr yaradın (Aksiyalar, Həkim haqqında, Qiymətlər).",
+    "customPagesManage": "Səhifələri idarə et →",
+    "layoutTitle": "Vitrin blokları",
+    "themeTitle": "Vitrin dizaynı"
   },
   "layout": {
     "brandName": "DocPats Klinika",
@@ -1799,5 +1809,32 @@
         "generic": "Qəbul yadda saxlanılmadı"
       }
     }
+  },
+  "notifications": {
+    "title": "Bildirişlər",
+    "back": "← İdarə paneli",
+    "empty": "Bildiriş yoxdur",
+    "markAll": "Hamısını oxunmuş kimi işarələ",
+    "delete": "Sil",
+    "viewAll": "Bütün bildirişlər"
+  },
+  "reviews": {
+    "title": "Rəylər",
+    "subtitle": "Pasiyent rəylərinin moderasiyası",
+    "back": "← İdarə paneli",
+    "empty": "Rəy yoxdur",
+    "emptyFeedback": "Hələ boşdur",
+    "noText": "Mətn yoxdur",
+    "approve": "Təsdiq et",
+    "reject": "Rədd et",
+    "noteLabel": "Qeyd: ",
+    "rejectNotePrompt": "Rədd səbəbi",
+    "moderateFailed": "Əməliyyat alınmadı",
+    "doctorsNote": "Pasiyentlərin həkimlərə rəyləri. Saytınızın həkim səhifələrində göstərilir. Rəy həkimə aiddir və onun profilində yaşayır — klinika kabinetindən dəyişmək olmaz.",
+    "commentsNote": "Həkimlərinizə və onların nəşrlərinə şərhlər. Platformadakı ümumi müzakirənin hissəsidir — klinika kabinetindən redaktə olunmur.",
+    "doctorReply": "Həkimin cavabı: ",
+    "onDoctor": "Həkim: ",
+    "onArticle": "Məqalə: ",
+    "isReply": "cavab"
   }
 }

@@ -724,7 +724,17 @@
     "galleryEmpty": "No photos yet",
     "galleryLimit": "Maximum 20 photos",
     "galleryError": "Failed to upload photo",
-    "reviewError": "Failed to change status"
+    "reviewError": "Failed to change status",
+    "i18nTitle": "Showcase languages",
+    "i18nHint": "The showcase is shown in the visitor's language. Where a translation is missing, the original language is shown, so filling every language is optional.",
+    "origLang": "Original language",
+    "sloganLabel": "Slogan",
+    "contentTitle": "Clinic content",
+    "customPagesTitle": "Site pages",
+    "customPagesHint": "Build separate pages (Promotions, About the doctor, Prices) from showcase blocks.",
+    "customPagesManage": "Manage pages →",
+    "layoutTitle": "Showcase blocks",
+    "themeTitle": "Showcase design"
   },
   "layout": {
     "brandName": "DocPats Clinic",
@@ -1799,5 +1809,32 @@
         "generic": "Failed to save the visit"
       }
     }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "back": "← Dashboard",
+    "empty": "No notifications",
+    "markAll": "Mark all as read",
+    "delete": "Delete",
+    "viewAll": "All notifications"
+  },
+  "reviews": {
+    "title": "Reviews",
+    "subtitle": "Moderating patient reviews",
+    "back": "← Dashboard",
+    "empty": "No reviews",
+    "emptyFeedback": "Nothing yet",
+    "noText": "No text",
+    "approve": "Approve",
+    "reject": "Reject",
+    "noteLabel": "Note: ",
+    "rejectNotePrompt": "Reason for rejection",
+    "moderateFailed": "The action failed",
+    "doctorsNote": "Patient reviews of doctors. Shown on the doctor pages of your site. A review belongs to the doctor and lives on their profile — it cannot be changed from the clinic cabinet.",
+    "commentsNote": "Comments on your doctors and their publications. Part of the platform-wide discussion — they cannot be edited from the clinic cabinet.",
+    "doctorReply": "Doctor's reply: ",
+    "onDoctor": "Doctor: ",
+    "onArticle": "Article: ",
+    "isReply": "reply"
   }
 }

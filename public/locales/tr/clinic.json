@@ -724,7 +724,17 @@
     "galleryEmpty": "Henüz fotoğraf yok",
     "galleryLimit": "En fazla 20 fotoğraf",
     "galleryError": "Fotoğraf yüklenemedi",
-    "reviewError": "Durum değiştirilemedi"
+    "reviewError": "Durum değiştirilemedi",
+    "i18nTitle": "Vitrin dilleri",
+    "i18nHint": "Vitrin ziyaretçinin dilinde gösterilir. Çeviri yoksa özgün dil gösterilir; tüm dilleri doldurmak zorunlu değildir.",
+    "origLang": "Özgün dil",
+    "sloganLabel": "Slogan",
+    "contentTitle": "Klinik içeriği",
+    "customPagesTitle": "Site sayfaları",
+    "customPagesHint": "Vitrin bloklarından ayrı sayfalar oluşturun (Kampanyalar, Doktor hakkında, Fiyatlar).",
+    "customPagesManage": "Sayfaları yönet →",
+    "layoutTitle": "Vitrin blokları",
+    "themeTitle": "Vitrin tasarımı"
   },
   "layout": {
     "brandName": "DocPats Klinik",
@@ -1799,5 +1809,32 @@
         "generic": "Görüşme kaydedilemedi"
       }
     }
+  },
+  "notifications": {
+    "title": "Bildirimler",
+    "back": "← Panel",
+    "empty": "Bildirim yok",
+    "markAll": "Tümünü okundu işaretle",
+    "delete": "Sil",
+    "viewAll": "Tüm bildirimler"
+  },
+  "reviews": {
+    "title": "Değerlendirmeler",
+    "subtitle": "Hasta değerlendirmelerinin denetimi",
+    "back": "← Panel",
+    "empty": "Değerlendirme yok",
+    "emptyFeedback": "Henüz boş",
+    "noText": "Metin yok",
+    "approve": "Onayla",
+    "reject": "Reddet",
+    "noteLabel": "Not: ",
+    "rejectNotePrompt": "Ret nedeni",
+    "moderateFailed": "İşlem başarısız",
+    "doctorsNote": "Hastaların doktorlara verdiği değerlendirmeler. Sitenizin doktor sayfalarında görünür. Değerlendirme doktora aittir ve profilinde durur; klinik panelinden değiştirilemez.",
+    "commentsNote": "Doktorlarınıza ve yayınlarına yapılan yorumlar. Platform genelindeki tartışmanın parçasıdır; klinik panelinden düzenlenemez.",
+    "doctorReply": "Doktorun yanıtı: ",
+    "onDoctor": "Doktor: ",
+    "onArticle": "Makale: ",
+    "isReply": "yanıt"
   }
 }

@@ -388,7 +388,10 @@ export default function ArenaHubPage() {
               <div key={p.place} className="arena-board-row">
                 <span className="arena-place">{p.place}</span>
                 <span style={{ flex: 1, minWidth: 0 }}>
-                  {p.name} <small style={{ color: "#8b9aab" }}>· {p.rank}</small>
+                  {p.name}{" "}
+                  <small style={{ color: "#8b9aab" }}>
+                    · {p.rankKey ? t(`ranks.${p.rankKey}`, { defaultValue: p.rank }) : p.rank}
+                  </small>
                 </span>
                 <strong>{p.xp} XP</strong>
               </div>
@@ -450,7 +453,9 @@ function ArenaHero({ profile }) {
   return (
     <div className="arena-hero">
       <div className="arena-hero-main">
-        <div className="arena-rank">{r.title}</div>
+        <div className="arena-rank">
+          {r.key ? t(`ranks.${r.key}`, { defaultValue: r.title }) : r.title}
+        </div>
         <div className="arena-xp">{profile.xp} XP</div>
         <div className="arena-bar">
           <div
@@ -459,7 +464,14 @@ function ArenaHero({ profile }) {
           />
         </div>
         <div className="arena-eyebrow" style={{ marginTop: 6 }}>
-          {r.nextTitle ? t("rankNext", { rank: r.nextTitle, xp: toNext }) : t("rankMax")}
+          {r.nextTitle
+            ? t("rankNext", {
+                rank: r.nextKey
+                  ? t(`ranks.${r.nextKey}`, { defaultValue: r.nextTitle })
+                  : r.nextTitle,
+                xp: toNext,
+              })
+            : t("rankMax")}
         </div>
       </div>
       <div className="arena-hero-stats">

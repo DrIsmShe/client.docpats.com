@@ -126,7 +126,13 @@
   "forgot_password": "Forgot password?",
   "reset_password": "Reset password",
   "language": "Language",
-  "chat": "Chat",
+  "chat": {
+    "messages": "Messages",
+    "newGroup": "+ Group",
+    "selectDialog": "Select a dialog",
+    "selectDialogHint": "To start a conversation, select a patient or colleague from the list on the left",
+    "loadingMessages": "Loading messages…"
+  },
   "doctor_profile": "Doctor Profile",
   "patient_profile": "Patient Profile",
   "specialization": "Specialization",
@@ -688,6 +694,11 @@
     "articles": {
       "title": "📖 Doctor’s articles",
       "none": "This doctor has no published articles yet."
+    },
+    "self": {
+      "note": "This is your public page — patients, colleagues and search engines see it.",
+      "cabinet": "My dashboard",
+      "viewAsVisitor": "View as a visitor"
     }
   },
   "headerPatient": {
@@ -1430,5 +1441,51 @@
     "st_refunded": "refunded"
   },
   "book_patient_menu": "Book a patient",
-  "create_clinic": "Create a clinic"
+  "create_clinic": "Create a clinic",
+  "booking": {
+    "title": "Book an appointment",
+    "note": "Pick a time and leave your contacts. This is a request: the clinic will call to confirm.",
+    "noSlots": "No free time in the next two weeks. Call the clinic and the front desk will find a slot.",
+    "dayEmpty": "No appointments on this day",
+    "name": "Your name",
+    "phone": "Phone",
+    "message": "What is bothering you (optional)",
+    "submit": "Send request",
+    "sending": "Sending…",
+    "doneTitle": "Request sent",
+    "doneText": "The clinic will contact you to confirm. The time is reserved only after confirmation.",
+    "slotTaken": "That time was just taken. Please pick another.",
+    "tooMany": "Too many requests in a row. Try again later.",
+    "failed": "Could not send the request. Try again later."
+  },
+  "publicPage": {
+    "doctorsTitle": "Specialists",
+    "doctorPublications": "Doctor's publications",
+    "doctorReviews": "Reviews",
+    "verified": "Verified profile",
+    "experienceYears": "{{count}} years of experience",
+    "kindOpinion": "Opinion",
+    "kindScientific": "Scientific",
+    "commentsTitle": "Comments",
+    "commentsGateTitle": "Join the discussion",
+    "commentsGateSub": "Sign in to DocPats to comment and rate articles.",
+    "commentsGateSubDoctor": "Sign in to DocPats to leave a comment for the doctor.",
+    "login": "Sign in",
+    "register": "Sign up",
+    "likeNeedsLogin": "Sign in to rate the article",
+    "views": "{{count}} views",
+    "readTime": "{{count}} min read",
+    "articleLinks": "Sources:",
+    "backToDoctor": "Back to the doctor"
+  },
+  "title": "Dr.",
+  "training": {
+    "toggleLabel": "Show my training activity on my profile",
+    "casesReviewed": "images reviewed:",
+    "avgScore": ", average score {{value}}%",
+    "questionsAnswered": "questions answered:",
+    "correct": ", correct {{value}}%",
+    "accuracyHint": "The percentage appears once there are more cases: with only a few, a single mistake swings it too much.",
+    "saved": "Saved"
+  }
 }

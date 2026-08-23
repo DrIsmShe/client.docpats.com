@@ -59,10 +59,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "cross-env NODE_OPTIONS=--max_old_space_size=4096 GENERATE_SOURCEMAP=false CI=false react-scripts build",
-    "postbuild": "node scripts/assert-build.cjs",
+    "postbuild": "node scripts/assert-build.cjs && node scripts/check-locale-usage.cjs && node scripts/check-hardcoded-text.cjs",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "check:locales": "node scripts/check-locales.cjs"
+    "check:locales": "node scripts/check-locales.cjs",
+    "check:locale-usage": "node scripts/check-locale-usage.cjs",
+    "check:hardcoded": "node scripts/check-hardcoded-text.cjs"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",

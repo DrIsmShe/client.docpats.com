@@ -124,7 +124,13 @@
   "forgot_password": "هل نسيت كلمة المرور؟",
   "reset_password": "إعادة تعيين كلمة المرور",
   "language": "اللغة",
-  "chat": "الدردشة",
+  "chat": {
+    "messages": "الرسائل",
+    "newGroup": "+ مجموعة",
+    "selectDialog": "اختر محادثة",
+    "selectDialogHint": "لبدء محادثة، اختر مريضًا أو زميلًا من القائمة على اليسار",
+    "loadingMessages": "جارٍ تحميل الرسائل…"
+  },
   "doctor_profile": "ملف الطبيب",
   "patient_profile": "ملف المريض",
   "specialization": "التخصص",
@@ -726,6 +732,11 @@
     "articles": {
       "title": "📖 مقالات الطبيب",
       "none": "لا توجد مقالات منشورة لهذا الطبيب بعد."
+    },
+    "self": {
+      "note": "هذه صفحتك العامة — يراها المرضى والزملاء ومحركات البحث.",
+      "cabinet": "لوحتي",
+      "viewAsVisitor": "عرض كزائر"
     }
   },
   "headerPatient": {
@@ -1448,5 +1459,51 @@
     "st_refunded": "مُسترد"
   },
   "book_patient_menu": "حجز موعد",
-  "create_clinic": "إنشاء عيادة"
+  "create_clinic": "إنشاء عيادة",
+  "booking": {
+    "title": "حجز موعد",
+    "note": "اختر الوقت المناسب واترك بيانات التواصل. هذا طلب: ستتصل بك العيادة للتأكيد.",
+    "noSlots": "لا يوجد وقت متاح خلال الأسبوعين القادمين. اتصل بالعيادة وسيحدد الاستقبال موعدًا.",
+    "dayEmpty": "لا توجد مواعيد في هذا اليوم",
+    "name": "اسمك",
+    "phone": "الهاتف",
+    "message": "ما الذي يزعجك (اختياري)",
+    "submit": "إرسال الطلب",
+    "sending": "جارٍ الإرسال…",
+    "doneTitle": "تم إرسال الطلب",
+    "doneText": "ستتواصل معك العيادة للتأكيد. لا يُحجز الوقت إلا بعد التأكيد.",
+    "slotTaken": "تم حجز هذا الوقت للتو. اختر وقتًا آخر.",
+    "tooMany": "طلبات كثيرة متتالية. حاول لاحقًا.",
+    "failed": "تعذّر إرسال الطلب. حاول لاحقًا."
+  },
+  "publicPage": {
+    "doctorsTitle": "الأخصائيون",
+    "doctorPublications": "منشورات الطبيب",
+    "doctorReviews": "التقييمات",
+    "verified": "ملف موثّق",
+    "experienceYears": "{{count}} سنوات خبرة",
+    "kindOpinion": "رأي",
+    "kindScientific": "علمي",
+    "commentsTitle": "التعليقات",
+    "commentsGateTitle": "شارك في النقاش",
+    "commentsGateSub": "سجّل الدخول إلى DocPats للتعليق وتقييم المقالات.",
+    "commentsGateSubDoctor": "سجّل الدخول إلى DocPats لترك تعليق للطبيب.",
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "likeNeedsLogin": "سجّل الدخول لتقييم المقال",
+    "views": "{{count}} مشاهدة",
+    "readTime": "{{count}} دقيقة قراءة",
+    "articleLinks": "المصادر:",
+    "backToDoctor": "العودة إلى الطبيب"
+  },
+  "title": "د.",
+  "training": {
+    "toggleLabel": "إظهار نشاطي التدريبي في ملفي",
+    "casesReviewed": "صور تم تحليلها:",
+    "avgScore": "، متوسط الدرجة {{value}}%",
+    "questionsAnswered": "أسئلة تمت الإجابة عنها:",
+    "correct": "، صحيحة {{value}}%",
+    "accuracyHint": "تظهر النسبة عند زيادة عدد الحالات: مع القليل منها يغيّرها خطأ واحد كثيرًا.",
+    "saved": "تم الحفظ"
+  }
 }

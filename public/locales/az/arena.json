@@ -413,5 +413,13 @@
       "ducts": "Axarlar / boşluq sistemi",
       "doppler": "Qan axını (Doppler, lazım olarsa)"
     }
+  },
+  "ranks": {
+    "student": "Tələbə",
+    "intern": "İntern",
+    "resident": "Rezident",
+    "doctor": "Həkim",
+    "expert": "Ekspert",
+    "professor": "Professor"
   }
 }

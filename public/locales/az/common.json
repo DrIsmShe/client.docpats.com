@@ -134,7 +134,13 @@
   "specialization": "İxtisas",
   "experience": "Təcrübə",
   "education": "Təhsil",
-  "chat": "Çat",
+  "chat": {
+    "messages": "Mesajlar",
+    "newGroup": "+ Qrup",
+    "selectDialog": "Dialoq seçin",
+    "selectDialogHint": "Söhbətə başlamaq üçün soldakı siyahıdan pasiyent və ya həmkar seçin",
+    "loadingMessages": "Mesajlar yüklənir…"
+  },
   "articles": "Məqalələr",
   "edit_article": "Məqaləni redaktə et",
   "delete_article": "Məqaləni sil",
@@ -727,6 +733,11 @@
     "articles": {
       "title": "📖 Həkimin məqalələri",
       "none": "Həkimin hələ heç bir məqaləsi dərc olunmayıb."
+    },
+    "self": {
+      "note": "Bu sizin ictimai səhifənizdir — onu pasiyentlər, həmkarlar və axtarış sistemləri görür.",
+      "cabinet": "Kabinetim",
+      "viewAsVisitor": "Ziyarətçi kimi bax"
     }
   },
   "headerPatient": {
@@ -1457,5 +1468,51 @@
     "st_refunded": "geri qaytarıldı"
   },
   "book_patient_menu": "Qəbula yazdır",
-  "create_clinic": "Klinika yarat"
+  "create_clinic": "Klinika yarat",
+  "booking": {
+    "title": "Qəbula yazıl",
+    "note": "Uyğun vaxtı seçin və əlaqə məlumatlarını qoyun. Bu müraciətdir: klinika zəng edib təsdiqləyəcək.",
+    "noSlots": "Yaxın iki həftədə boş vaxt yoxdur. Klinikaya zəng edin — qeydiyyat vaxt seçəcək.",
+    "dayEmpty": "Bu gün qəbul yoxdur",
+    "name": "Adınız",
+    "phone": "Telefon",
+    "message": "Sizi nə narahat edir (istəyə görə)",
+    "submit": "Müraciəti göndər",
+    "sending": "Göndərilir…",
+    "doneTitle": "Müraciət göndərildi",
+    "doneText": "Klinika təsdiq üçün sizinlə əlaqə saxlayacaq. Vaxt yalnız təsdiqdən sonra saxlanılır.",
+    "slotTaken": "Bu vaxt indicə tutuldu. Başqasını seçin.",
+    "tooMany": "Ardıcıl çox müraciət. Sonra yenidən cəhd edin.",
+    "failed": "Müraciəti göndərmək alınmadı. Sonra cəhd edin."
+  },
+  "publicPage": {
+    "doctorsTitle": "Mütəxəssislər",
+    "doctorPublications": "Həkimin nəşrləri",
+    "doctorReviews": "Rəylər",
+    "verified": "Profil təsdiqlənib",
+    "experienceYears": "{{count}} il təcrübə",
+    "kindOpinion": "Rəy",
+    "kindScientific": "Elmi",
+    "commentsTitle": "Şərhlər",
+    "commentsGateTitle": "Müzakirəyə qoşulun",
+    "commentsGateSub": "Şərh yazmaq və məqalələri qiymətləndirmək üçün DocPats hesabına daxil olun.",
+    "commentsGateSubDoctor": "Həkimə şərh yazmaq üçün DocPats hesabına daxil olun.",
+    "login": "Daxil ol",
+    "register": "Qeydiyyatdan keç",
+    "likeNeedsLogin": "Məqaləni qiymətləndirmək üçün daxil olun",
+    "views": "{{count}} baxış",
+    "readTime": "{{count}} dəq oxu",
+    "articleLinks": "Mənbələr:",
+    "backToDoctor": "Həkimə qayıt"
+  },
+  "title": "Dr.",
+  "training": {
+    "toggleLabel": "Təlim fəaliyyətimi profilimdə göstər",
+    "casesReviewed": "şəkil təhlil edilib:",
+    "avgScore": ", orta bal {{value}} %",
+    "questionsAnswered": "sual cavablandırılıb:",
+    "correct": ", düzgün {{value}} %",
+    "accuracyHint": "Faiz hallar çoxaldıqda görünəcək: az sayda halda bir səhv onu həddindən artıq dəyişir.",
+    "saved": "Yadda saxlanıldı"
+  }
 }

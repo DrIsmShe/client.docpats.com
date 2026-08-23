@@ -132,7 +132,13 @@
   "specialization": "Uzmanlık",
   "experience": "Deneyim",
   "education": "Eğitim",
-  "chat": "Sohbet",
+  "chat": {
+    "messages": "Mesajlar",
+    "newGroup": "+ Grup",
+    "selectDialog": "Bir sohbet seçin",
+    "selectDialogHint": "Sohbete başlamak için soldaki listeden bir hasta veya meslektaş seçin",
+    "loadingMessages": "Mesajlar yükleniyor…"
+  },
   "articles": "Makaleler",
   "edit_article": "Makaleyi düzenle",
   "delete_article": "Makaleyi sil",
@@ -726,6 +732,11 @@
     "articles": {
       "title": "📖 Doktorun makaleleri",
       "none": "Doktorun henüz yayımlanmış makalesi yok."
+    },
+    "self": {
+      "note": "Bu sizin herkese açık sayfanız — hastalar, meslektaşlar ve arama motorları görür.",
+      "cabinet": "Panelim",
+      "viewAsVisitor": "Ziyaretçi olarak görüntüle"
     }
   },
   "headerPatient": {
@@ -1454,5 +1465,51 @@
     "st_refunded": "iade"
   },
   "book_patient_menu": "Hasta kaydet",
-  "create_clinic": "Klinik oluştur"
+  "create_clinic": "Klinik oluştur",
+  "booking": {
+    "title": "Randevu al",
+    "note": "Uygun bir saat seçin ve iletişim bilgilerinizi bırakın. Bu bir taleptir: klinik arayıp onaylayacak.",
+    "noSlots": "Önümüzdeki iki hafta boş saat yok. Kliniği arayın, danışma size saat ayarlayacak.",
+    "dayEmpty": "Bu gün randevu yok",
+    "name": "Adınız",
+    "phone": "Telefon",
+    "message": "Şikâyetiniz (isteğe bağlı)",
+    "submit": "Talebi gönder",
+    "sending": "Gönderiliyor…",
+    "doneTitle": "Talep gönderildi",
+    "doneText": "Klinik onay için sizinle iletişime geçecek. Saat yalnızca onaydan sonra kesinleşir.",
+    "slotTaken": "Bu saat az önce doldu. Lütfen başka bir saat seçin.",
+    "tooMany": "Arka arkaya çok fazla talep. Daha sonra deneyin.",
+    "failed": "Talep gönderilemedi. Daha sonra deneyin."
+  },
+  "publicPage": {
+    "doctorsTitle": "Uzmanlar",
+    "doctorPublications": "Doktorun yayınları",
+    "doctorReviews": "Değerlendirmeler",
+    "verified": "Doğrulanmış profil",
+    "experienceYears": "{{count}} yıl deneyim",
+    "kindOpinion": "Görüş",
+    "kindScientific": "Bilimsel",
+    "commentsTitle": "Yorumlar",
+    "commentsGateTitle": "Tartışmaya katılın",
+    "commentsGateSub": "Yorum yapmak ve makaleleri değerlendirmek için DocPats hesabınıza girin.",
+    "commentsGateSubDoctor": "Doktora yorum bırakmak için DocPats hesabınıza girin.",
+    "login": "Giriş yap",
+    "register": "Kayıt ol",
+    "likeNeedsLogin": "Makaleyi değerlendirmek için giriş yapın",
+    "views": "{{count}} görüntülenme",
+    "readTime": "{{count}} dk okuma",
+    "articleLinks": "Kaynaklar:",
+    "backToDoctor": "Doktora dön"
+  },
+  "title": "Dr.",
+  "training": {
+    "toggleLabel": "Eğitim etkinliğimi profilimde göster",
+    "casesReviewed": "görüntü incelendi:",
+    "avgScore": ", ortalama puan {{value}} %",
+    "questionsAnswered": "soru yanıtlandı:",
+    "correct": ", doğru {{value}} %",
+    "accuracyHint": "Yüzde, vaka sayısı arttığında görünür: az sayıda vakada tek bir hata oranı çok değiştirir.",
+    "saved": "Kaydedildi"
+  }
 }

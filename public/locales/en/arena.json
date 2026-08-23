@@ -413,5 +413,13 @@
       "ducts": "Ducts / collecting system",
       "doppler": "Blood flow (Doppler, if needed)"
     }
+  },
+  "ranks": {
+    "student": "Student",
+    "intern": "Intern",
+    "resident": "Resident",
+    "doctor": "Doctor",
+    "expert": "Expert",
+    "professor": "Professor"
   }
 }

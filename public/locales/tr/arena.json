@@ -413,5 +413,13 @@
       "ducts": "Kanallar / toplayıcı sistem",
       "doppler": "Kan akımı (Doppler, gerekirse)"
     }
+  },
+  "ranks": {
+    "student": "Öğrenci",
+    "intern": "İntörn",
+    "resident": "Asistan",
+    "doctor": "Doktor",
+    "expert": "Uzman",
+    "professor": "Profesör"
   }
 }

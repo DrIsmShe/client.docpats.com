@@ -1194,12 +1194,11 @@ export default function DoctorDetailsForAll() {
               {doctorProfile?.isSelf ? (
                 <div className="dd-self">
                   <div className="dd-self-note">
-                    Это ваша публичная страница — её видят пациенты, коллеги и
-                    поисковые системы.
+                    {t("doctorDetails.self.note")}
                   </div>
                   <div className="dd-btns-row">
                     <Link to="/doctor/home-page" className="dd-btn dd-btn-primary">
-                      Мой кабинет
+                      {t("doctorDetails.self.cabinet")}
                     </Link>
                     <a
                       className="dd-btn dd-btn-outline"
@@ -1207,7 +1206,7 @@ export default function DoctorDetailsForAll() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Посмотреть как посетитель
+                      {t("doctorDetails.self.viewAsVisitor")}
                     </a>
                   </div>
                 </div>

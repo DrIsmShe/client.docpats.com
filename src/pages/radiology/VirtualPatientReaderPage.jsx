@@ -308,11 +308,19 @@ export default function VirtualPatientReaderPage() {
           <div className="arena-reward-xp">+{game.pointsAwarded} XP</div>
           <div className="arena-reward-row">
             <span>🔥 {t("reader.streakDays", { n: game.streak })}</span>
-            <span>{t("reader.rank", { title: game.rank?.title })}</span>
+            <span>{t("reader.rank", {
+                title: game.rank?.key
+                  ? t(`ranks.${game.rank.key}`, { defaultValue: game.rank?.title })
+                  : game.rank?.title,
+              })}</span>
           </div>
           {game.rankedUp && (
             <div className="arena-reward-rankup">
-              🎉 {t("reader.rankedUp", { title: game.rank?.title })}
+              🎉 {t("reader.rankedUp", {
+                title: game.rank?.key
+                  ? t(`ranks.${game.rank.key}`, { defaultValue: game.rank?.title })
+                  : game.rank?.title,
+              })}
             </div>
           )}
           {(game.unlocked?.length ?? 0) > 0 && (
