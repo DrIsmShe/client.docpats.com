@@ -9,7 +9,6 @@
     "clinicalInfo": "Clinical information",
     "caseHistories": "Case histories",
     "conductedExaminations": "Conducted examinations",
-
     "ctScan": "CT Scan",
     "mri": "MRI",
     "ultrasound": "Ultrasound",
@@ -37,7 +36,6 @@
     "changePassword": "Change Password",
     "changeEmail": "Change Email"
   },
-
   "generalInfo": {
     "firstName": "First name",
     "lastName": "Last name",
@@ -49,7 +47,6 @@
     "dpMessengerNumber": "DP messenger number",
     "email": "Email"
   },
-
   "clinicalInfo": {
     "chronicDiseases": "Chronic diseases",
     "operations": "Operations",
@@ -58,7 +55,6 @@
     "immunization": "Immunization",
     "badHabits": "Bad habits"
   },
-
   "tables": {
     "date": "Date",
     "diagnosis": "Diagnosis",
@@ -68,11 +64,9 @@
     "examName": "Name of examination",
     "examResult": "Result of examination"
   },
-
   "scans": {
     "unknownDoctor": "Unknown doctor"
   },
-
   "labTests": {
     "bloodGeneral": "General blood test",
     "bloodBiochemistry": "Blood biochemistry",
@@ -86,12 +80,10 @@
     "other": "Other tests",
     "labName": "Laboratory name"
   },
-
   "states": {
     "loading": "Loading...",
     "patientNotFound": "Patient not found"
   },
-
   "buttons": {
     "choosePhoto": "Choose Photo",
     "save": "Save Changes",
@@ -109,7 +101,6 @@
     "generating": "Generating",
     "aiGeneratedSummaryDisclaimer": "AI-generated summary. For professional reference only."
   },
-
   "values": {
     "notSpecified": "Not specified",
     "unknown": "Unknown",
@@ -118,12 +109,10 @@
     "woman": "Woman",
     "chooseCountry": "Select country"
   },
-
   "messages": {
     "loading": "Loading...",
     "photoNotSelected": "No photo selected"
   },
-
   "avatar_choose": {
     "chooseAvatar": "Choose Avatar"
   },
@@ -136,13 +125,11 @@
     "errorLoadingData": "Error while loading data",
     "notEnoughClinicalData": "Not enough clinical data to generate summary."
   },
-
   "gender": {
     "man": "Man",
     "woman": "Woman",
     "unknown": "Unknown"
   },
-
   "exams": {
     "date": "Date of admission",
     "name": "Name of examination",
@@ -150,5 +137,17 @@
     "labName": "Laboratory",
     "unknownDoctor": "Unknown doctor",
     "notSpecified": "Not specified"
+  },
+  "labType": {
+    "BloodTestGeneral": "Complete blood count",
+    "BloodTestBiochemistry": "Blood chemistry",
+    "UrineTest": "Urinalysis",
+    "StoolTest": "Stool test",
+    "HormonePanel": "Hormone panel",
+    "TumorMarkers": "Tumour markers",
+    "PCR": "PCR",
+    "Immunology": "Immunology",
+    "GeneticScreening": "Genetic screening",
+    "Other": "Other"
   }
 }

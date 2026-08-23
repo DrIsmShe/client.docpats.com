@@ -141,5 +141,17 @@
     "placeholder": "E-poçt, telefon və ya sənəd",
     "search": "Axtar",
     "title": "Pasiyent axtarışı"
+  },
+  "labLevel": {
+    "far": "normadan xeyli kənarda",
+    "out": "normadan kənarda",
+    "borderline": "normanın sərhədində",
+    "normal": "norma daxilində",
+    "unknown": "blankda norma göstərilməyib"
+  },
+  "prescriptionStatus": {
+    "active": "Aktiv",
+    "completed": "Tamamlanıb",
+    "cancelled": "Ləğv edilib"
   }
 }

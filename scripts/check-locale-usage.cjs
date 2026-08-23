@@ -212,6 +212,33 @@ function literalKeys(src, names) {
     let m;
     while ((m = re.exec(src))) keys.add(m[1]);
   }
+  for (const k of keysFromConfig(src)) keys.add(k);
+  return keys;
+}
+
+/**
+ * Ключи, записанные в объектах-справочниках, а не переданные в t() прямо.
+ *
+ * Так устроена навигация витрины:
+ *   const NAV_DEFS = [{ type: "whyUs", key: "publicClinic.navAbout", def: "О нас" }];
+ *   t(d.key, { defaultValue: d.def })
+ *
+ * Для t() ключ здесь — переменная, поэтому проверка выше его не видела: все
+ * девять пунктов меню витрины не были переведены ни на один язык, а
+ * defaultValue исправно подставлял русский. Ловим по имени свойства
+ * (key / labelKey / titleKey / i18nKey / transKey) и по виду значения —
+ * ключ выглядит как «слово.слово», без пробелов.
+ *
+ * Свойство key часто хранит и обычные идентификаторы («variant1», "all"),
+ * поэтому берём только значения с точкой: без неё это почти наверняка не
+ * путь в словаре, и ложные срабатывания были бы сплошным шумом.
+ */
+function keysFromConfig(src) {
+  const keys = new Set();
+  const re =
+    /\b(?:i18nKey|labelKey|titleKey|transKey|key)\s*:\s*["']([A-Za-z0-9_$]+(?:\.[A-Za-z0-9_$]+)+)["']/g;
+  let m;
+  while ((m = re.exec(src))) keys.add(m[1]);
   return keys;
 }
 

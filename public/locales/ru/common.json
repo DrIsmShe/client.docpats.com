@@ -1366,7 +1366,8 @@
     "statsDoctors_few": "врача",
     "statsDoctors_many": "врачей",
     "statsDoctors_other": "врача",
-    "navAllArticles": "Все статьи →"
+    "navAllArticles": "Все статьи →",
+    "navServices": "Услуги и цены"
   },
   "profileMain": {
     "noUserId": "Не удалось определить пользователя.",
@@ -1665,5 +1666,18 @@
     "disable": "Выключить пуш",
     "blocked": "Уведомления заблокированы в настройках браузера",
     "blockedHint": "Разрешите уведомления в настройках браузера"
+  },
+  "consentRequestModal": {
+    "groups": {
+      "appointments": {
+        "title": "Приёмы и диагнозы"
+      },
+      "healthProfile": {
+        "title": "Профиль здоровья"
+      },
+      "imaging": {
+        "title": "Снимки и исследования"
+      }
+    }
   }
 }

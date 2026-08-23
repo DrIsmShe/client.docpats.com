@@ -3,7 +3,6 @@
     "moreAboutPatient": "Подробнее о пациенте {{firstName}} {{lastName}}",
     "patientCard": "Карта пациента"
   },
-
   "buttons": {
     "addMedicalHistory": "Добавить историю болезни",
     "addMedicalExamination": "Добавить обследование",
@@ -54,7 +53,6 @@
     "coronography": "Коронарография",
     "labTests": "Лабораторные анализы"
   },
-
   "generalInfo": {
     "firstName": "Имя",
     "lastName": "Фамилия",
@@ -66,7 +64,6 @@
     "dpMessengerNumber": "DP messenger номер",
     "email": "Электронная почта"
   },
-
   "clinicalInfo": {
     "chronicDiseases": "Хронические заболевания",
     "operations": "Операции",
@@ -75,7 +72,6 @@
     "immunization": "Иммунизация",
     "badHabits": "Вредные привычки"
   },
-
   "tables": {
     "date": "Дата",
     "diagnosis": "Диагноз",
@@ -85,11 +81,9 @@
     "examName": "Название обследования",
     "examResult": "Результат обследования"
   },
-
   "scans": {
     "unknownDoctor": "Неизвестный врач"
   },
-
   "labTests": {
     "bloodGeneral": "Общий анализ крови",
     "bloodBiochemistry": "Биохимия крови",
@@ -103,18 +97,15 @@
     "other": "Другие анализы",
     "labName": "Название лаборатории"
   },
-
   "states": {
     "loading": "Загрузка...",
     "patientNotFound": "Пациент не найден"
   },
-
   "gender": {
     "man": "Мужчина",
     "woman": "Женщина",
     "unknown": "Неизвестно"
   },
-
   "exams": {
     "date": "Дата приёма",
     "name": "Название обследования",
@@ -123,7 +114,6 @@
     "unknownDoctor": "Неизвестный врач",
     "notSpecified": "Не указано"
   },
-
   "values": {
     "notSpecified": "Не указано",
     "unknown": "Неизвестно",
@@ -132,12 +122,10 @@
     "woman": "Женщина",
     "chooseCountry": "Выберите страну"
   },
-
   "messages": {
     "loading": "Загрузка...",
     "photoNotSelected": "Фотография не выбрана"
   },
-
   "avatar_choose": {
     "chooseAvatar": "Выберите аватар"
   },
@@ -149,5 +137,17 @@
     "errorRetrievingPatientInfo": "Ошибка получения данных пациента",
     "errorLoadingData": "Ошибка загрузки данных",
     "notEnoughClinicalData": "Недостаточно клинических данных для генерации резюме."
+  },
+  "labType": {
+    "BloodTestGeneral": "Общий анализ крови",
+    "BloodTestBiochemistry": "Биохимия",
+    "UrineTest": "Анализ мочи",
+    "StoolTest": "Анализ кала",
+    "HormonePanel": "Гормоны",
+    "TumorMarkers": "Онкомаркеры",
+    "PCR": "ПЦР",
+    "Immunology": "Иммунология",
+    "GeneticScreening": "Генетический скрининг",
+    "Other": "Другое"
   }
 }

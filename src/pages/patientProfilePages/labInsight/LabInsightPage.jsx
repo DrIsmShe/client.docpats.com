@@ -29,12 +29,15 @@ const API = "/api/v1/lab-insight";
 
 // Слова уровня — здесь, а не на сервере: сервер отдаёт факт (насколько
 // вышло за границу), экран выбирает, как это назвать человеку.
+// В объекте теперь ключ, а не готовая подпись: строка здесь не видна
+// ни детектору разметки, ни сверке ключей, и на арабском экран
+// оставался русским.
 const LEVEL = {
-  far: { label: "заметно за пределами нормы", tone: "far" },
-  out: { label: "за пределами нормы", tone: "out" },
-  borderline: { label: "у границы нормы", tone: "borderline" },
-  normal: { label: "в пределах нормы", tone: "normal" },
-  unknown: { label: "норма на бланке не указана", tone: "unknown" },
+  far: { key: "labLevel.far", tone: "far" },
+  out: { key: "labLevel.out", tone: "out" },
+  borderline: { key: "labLevel.borderline", tone: "borderline" },
+  normal: { key: "labLevel.normal", tone: "normal" },
+  unknown: { key: "labLevel.unknown", tone: "unknown" },
 };
 
 function fmtDate(d) {
@@ -58,7 +61,7 @@ function ParamCard({ p }) {
       </header>
 
       <p className="li-param__level">
-        {level.label}
+        {t(level.key)}
         {/* Норма с бланка рядом с выводом — чтобы вывод можно было
             проверить, а не принять на веру. */}
         {p.refText ? (

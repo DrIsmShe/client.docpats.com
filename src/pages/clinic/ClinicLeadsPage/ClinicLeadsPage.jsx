@@ -15,10 +15,10 @@ import { listLeads, updateLeadStatus } from "../../../api/clinic";
 import "./clinicLeadsPage.css";
 
 const STATUS_TABS = [
-  { key: "new", label: "\u041D\u043E\u0432\u044B\u0435" },
-  { key: "in_progress", label: "\u0412 \u0440\u0430\u0431\u043E\u0442\u0435" },
-  { key: "closed", label: "\u0417\u0430\u043A\u0440\u044B\u0442\u044B\u0435" },
-  { key: "all", label: "\u0412\u0441\u0435" },
+  { key: "new", labelKey: "leads.tabs.new" },
+  { key: "in_progress", labelKey: "leads.tabs.in_progress" },
+  { key: "closed", labelKey: "leads.tabs.closed" },
+  { key: "all", labelKey: "leads.tabs.all" },
 ];
 
 const STATUS_LABEL = {
@@ -141,7 +141,7 @@ export default function ClinicLeadsPage() {
             onClick={() => setStatusTab(tab.key)}
             disabled={loading}
           >
-            {tab.label}
+            {t(tab.labelKey)}
           </button>
         ))}
       </div>

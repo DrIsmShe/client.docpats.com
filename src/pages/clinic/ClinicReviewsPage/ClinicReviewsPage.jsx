@@ -27,16 +27,16 @@ import "./clinicReviewsPage.css";
 // статьёй: отзыв врачу и комментарий. Они принадлежат врачу и общему
 // обсуждению, поэтому здесь только чтение — прятать их клиника не вправе.
 const SECTIONS = [
-  { key: "clinic", label: "О клинике" },
-  { key: "doctors", label: "Врачам" },
-  { key: "comments", label: "Комментарии" },
+  { key: "clinic", labelKey: "reviews.sections.clinic" },
+  { key: "doctors", labelKey: "reviews.sections.doctors" },
+  { key: "comments", labelKey: "reviews.sections.comments" },
 ];
 
 const STATUS_TABS = [
-  { key: "pending", label: "\u041D\u0430 \u043C\u043E\u0434\u0435\u0440\u0430\u0446\u0438\u0438" },
-  { key: "approved", label: "\u041E\u0434\u043E\u0431\u0440\u0435\u043D\u043D\u044B\u0435" },
-  { key: "rejected", label: "\u041E\u0442\u043A\u043B\u043E\u043D\u0451\u043D\u043D\u044B\u0435" },
-  { key: "all", label: "\u0412\u0441\u0435" },
+  { key: "pending", labelKey: "reviews.tabs.pending" },
+  { key: "approved", labelKey: "reviews.tabs.approved" },
+  { key: "rejected", labelKey: "reviews.tabs.rejected" },
+  { key: "all", labelKey: "reviews.tabs.all" },
 ];
 
 const STATUS_LABEL = {
@@ -233,7 +233,7 @@ export default function ClinicReviewsPage() {
             className={"rev-section " + (section === sec.key ? "is-active" : "")}
             onClick={() => setSection(sec.key)}
           >
-            {sec.label}
+            {t(sec.labelKey)}
           </button>
         ))}
       </div>
@@ -248,7 +248,7 @@ export default function ClinicReviewsPage() {
             onClick={() => setStatusTab(tab.key)}
             disabled={loading}
           >
-            {tab.label}
+            {t(tab.labelKey)}
           </button>
         ))}
       </div>

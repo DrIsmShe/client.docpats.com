@@ -1316,7 +1316,8 @@
     "experience_other": "{{count}} il təcrübə",
     "statsDoctors_one": "həkim",
     "statsDoctors_other": "həkim",
-    "navAllArticles": "Bütün məqalələr →"
+    "navAllArticles": "Bütün məqalələr →",
+    "navServices": "Xidmətlər və qiymətlər"
   },
   "profileMain": {
     "noUserId": "İstifadəçi müəyyən edilə bilmədi.",
@@ -1615,5 +1616,18 @@
     "disable": "Push-u söndür",
     "blocked": "Bildirişlər brauzer parametrlərində bloklanıb",
     "blockedHint": "Brauzer parametrlərində bildirişlərə icazə verin"
+  },
+  "consentRequestModal": {
+    "groups": {
+      "appointments": {
+        "title": "Qəbullar və diaqnozlar"
+      },
+      "healthProfile": {
+        "title": "Sağlamlıq profili"
+      },
+      "imaging": {
+        "title": "Təsvirlər və tədqiqatlar"
+      }
+    }
   }
 }

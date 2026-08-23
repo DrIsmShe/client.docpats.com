@@ -3,7 +3,6 @@
     "moreAboutPatient": "{{firstName}} {{lastName}} hakkında daha fazla bilgi",
     "patientCard": "Hasta Kartı"
   },
-
   "buttons": {
     "addMedicalHistory": "Tıbbi geçmiş ekle",
     "addMedicalExamination": "Tıbbi muayene ekle",
@@ -54,7 +53,6 @@
     "coronography": "Koroner anjiografi",
     "labTests": "Laboratuvar testleri"
   },
-
   "generalInfo": {
     "firstName": "Ad",
     "lastName": "Soyad",
@@ -66,7 +64,6 @@
     "dpMessengerNumber": "DP mesaj numarası",
     "email": "E-posta"
   },
-
   "clinicalInfo": {
     "chronicDiseases": "Kronik hastalıklar",
     "operations": "Ameliyatlar",
@@ -75,7 +72,6 @@
     "immunization": "Aşılama",
     "badHabits": "Kötü alışkanlıklar"
   },
-
   "tables": {
     "date": "Tarih",
     "diagnosis": "Tanı",
@@ -85,11 +81,9 @@
     "examName": "Muayene adı",
     "examResult": "Muayene sonucu"
   },
-
   "scans": {
     "unknownDoctor": "Bilinmeyen doktor"
   },
-
   "labTests": {
     "bloodGeneral": "Tam kan sayımı",
     "bloodBiochemistry": "Biyokimya",
@@ -103,12 +97,10 @@
     "other": "Diğer testler",
     "labName": "Laboratuvar adı"
   },
-
   "states": {
     "loading": "Yükleniyor...",
     "patientNotFound": "Hasta bulunamadı"
   },
-
   "errors": {
     "failedToLoad": "Veriler yüklenemedi",
     "errorRetrievingPatientInfo": "Hasta bilgisi alınırken hata oluştu",
@@ -118,13 +110,11 @@
     "pageNotFoundAlt": "Sayfa bulunamadı",
     "notEnoughClinicalData": "Özet oluşturmak için yeterli klinik veri yok."
   },
-
   "gender": {
     "man": "Erkek",
     "woman": "Kadın",
     "unknown": "Bilinmiyor"
   },
-
   "values": {
     "unknown": "Bilinmiyor",
     "notSpecified": "Belirtilmedi",
@@ -133,7 +123,6 @@
     "woman": "Kadın",
     "chooseCountry": "Ülke seçiniz"
   },
-
   "exams": {
     "date": "Kabul tarihi",
     "name": "Muayene adı",
@@ -142,13 +131,23 @@
     "unknownDoctor": "Bilinmeyen doktor",
     "notSpecified": "Belirtilmedi"
   },
-
   "messages": {
     "loading": "Yükleniyor...",
     "photoNotSelected": "Fotoğraf seçilmedi"
   },
-
   "avatar_choose": {
     "chooseAvatar": "Avatar seç"
+  },
+  "labType": {
+    "BloodTestGeneral": "Tam kan sayımı",
+    "BloodTestBiochemistry": "Biyokimya",
+    "UrineTest": "İdrar tahlili",
+    "StoolTest": "Dışkı tahlili",
+    "HormonePanel": "Hormon paneli",
+    "TumorMarkers": "Tümör belirteçleri",
+    "PCR": "PCR",
+    "Immunology": "İmmünoloji",
+    "GeneticScreening": "Genetik tarama",
+    "Other": "Diğer"
   }
 }

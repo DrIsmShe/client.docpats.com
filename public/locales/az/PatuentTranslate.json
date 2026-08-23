@@ -488,6 +488,17 @@
       "applying": "Tətbiq olunur…",
       "cancel": "Ləğv et",
       "close": "Bağla"
+    },
+    "groups": {
+      "appointments": {
+        "title": "Qəbullar və diaqnozlar"
+      },
+      "healthProfile": {
+        "title": "Sağlamlıq profili"
+      },
+      "imaging": {
+        "title": "Təsvirlər və tədqiqatlar"
+      }
     }
   }
 }

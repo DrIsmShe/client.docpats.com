@@ -488,6 +488,17 @@
       "applying": "جارٍ التطبيق…",
       "cancel": "إلغاء",
       "close": "إغلاق"
+    },
+    "groups": {
+      "appointments": {
+        "title": "المواعيد والتشخيصات"
+      },
+      "healthProfile": {
+        "title": "الملف الصحي"
+      },
+      "imaging": {
+        "title": "الصور والفحوصات"
+      }
     }
   }
 }

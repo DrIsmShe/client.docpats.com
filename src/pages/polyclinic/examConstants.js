@@ -9,18 +9,25 @@
 // вынесены намеренно: они собирают подписи через t() и подставляют состояние
 // компонента, то есть это разметка, а не справочник.
 
-/** Виды лабораторных анализов для выпадающего списка. */
+/**
+ * Виды лабораторных анализов для выпадающего списка.
+ *
+ * Здесь ключ, а не готовая подпись: строка в справочнике не видна ни
+ * детектору текста в разметке, ни сверке ключей, и список оставался
+ * русским на всех языках. value менять нельзя — по нему идёт
+ * сопоставление с полем testType из базы.
+ */
 export const SCAN_TEST_TYPES = [
-  { value: "BloodTestGeneral", label: "Общий анализ крови" },
-  { value: "BloodTestBiochemistry", label: "Биохимия" },
-  { value: "UrineTest", label: "Анализ мочи" },
-  { value: "StoolTest", label: "Анализ кала" },
-  { value: "HormonePanel", label: "Гормоны" },
-  { value: "TumorMarkers", label: "Онкомаркеры" },
-  { value: "PCR", label: "ПЦР" },
-  { value: "Immunology", label: "Иммунология" },
-  { value: "GeneticScreening", label: "Генетический скрининг" },
-  { value: "Other", label: "Другое" },
+  { value: "BloodTestGeneral", labelKey: "labType.BloodTestGeneral" },
+  { value: "BloodTestBiochemistry", labelKey: "labType.BloodTestBiochemistry" },
+  { value: "UrineTest", labelKey: "labType.UrineTest" },
+  { value: "StoolTest", labelKey: "labType.StoolTest" },
+  { value: "HormonePanel", labelKey: "labType.HormonePanel" },
+  { value: "TumorMarkers", labelKey: "labType.TumorMarkers" },
+  { value: "PCR", labelKey: "labType.PCR" },
+  { value: "Immunology", labelKey: "labType.Immunology" },
+  { value: "GeneticScreening", labelKey: "labType.GeneticScreening" },
+  { value: "Other", labelKey: "labType.Other" },
 ];
 
 /** Эндпоинты снимков — по одному на вид исследования. */

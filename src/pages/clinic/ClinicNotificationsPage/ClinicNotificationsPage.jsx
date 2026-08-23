@@ -21,9 +21,9 @@ import { useClinicZone } from "../../../lib/useClinicZone";
 import "./clinicNotificationsPage.css";
 
 const TABS = [
-  { key: "all", label: "Все" },
-  { key: "unread", label: "Непрочитанные" },
-  { key: "read", label: "Прочитанные" },
+  { key: "all", labelKey: "notifications.tabs.all" },
+  { key: "unread", labelKey: "notifications.tabs.unread" },
+  { key: "read", labelKey: "notifications.tabs.read" },
 ];
 
 function formatDate(value) {
@@ -141,7 +141,7 @@ export default function ClinicNotificationsPage() {
               onClick={() => setTab(item.key)}
               disabled={loading}
             >
-              {item.label}
+              {t(item.labelKey)}
             </button>
           ))}
         </div>

@@ -3,7 +3,6 @@
     "moreAboutPatient": "معلومات إضافية عن المريض {{firstName}} {{lastName}}",
     "patientCard": "بطاقة المريض"
   },
-
   "buttons": {
     "addMedicalHistory": "إضافة التاريخ الطبي",
     "addMedicalExamination": "إضافة فحص طبي",
@@ -54,7 +53,6 @@
     "coronography": "تصوير الشرايين التاجية",
     "labTests": "التحاليل المخبرية"
   },
-
   "generalInfo": {
     "firstName": "الاسم",
     "lastName": "اللقب",
@@ -66,7 +64,6 @@
     "dpMessengerNumber": "رقم DP Messenger",
     "email": "البريد الإلكتروني"
   },
-
   "clinicalInfo": {
     "chronicDiseases": "الأمراض المزمنة",
     "operations": "العمليات الجراحية",
@@ -75,7 +72,6 @@
     "immunization": "التطعيمات",
     "badHabits": "العادات السيئة"
   },
-
   "tables": {
     "date": "التاريخ",
     "diagnosis": "التشخيص",
@@ -85,11 +81,9 @@
     "examName": "اسم الفحص",
     "examResult": "نتيجة الفحص"
   },
-
   "scans": {
     "unknownDoctor": "طبيب غير معروف"
   },
-
   "labTests": {
     "bloodGeneral": "تحليل دم شامل",
     "bloodBiochemistry": "تحليل كيمياء الدم",
@@ -103,12 +97,10 @@
     "other": "فحوصات أخرى",
     "labName": "اسم المختبر"
   },
-
   "states": {
     "loading": "جارٍ التحميل...",
     "patientNotFound": "لم يتم العثور على المريض"
   },
-
   "errors": {
     "failedToLoad": "فشل تحميل البيانات",
     "errorRetrievingPatientInfo": "حدث خطأ أثناء استرجاع معلومات المريض",
@@ -118,13 +110,11 @@
     "pageNotFoundAlt": "الصفحة غير موجودة",
     "notEnoughClinicalData": "لا توجد بيانات سريرية كافية لإنشاء الملخص."
   },
-
   "gender": {
     "man": "ذكر",
     "woman": "أنثى",
     "unknown": "غير معروف"
   },
-
   "values": {
     "notSpecified": "غير محدد",
     "unknown": "غير معروف",
@@ -133,16 +123,13 @@
     "woman": "أنثى",
     "chooseCountry": "اختر البلد"
   },
-
   "messages": {
     "loading": "جارٍ التحميل...",
     "photoNotSelected": "لم يتم اختيار صورة"
   },
-
   "avatar_choose": {
     "chooseAvatar": "اختر صورة رمزية"
   },
-
   "exams": {
     "date": "تاريخ الاستقبال",
     "name": "اسم الفحص",
@@ -150,5 +137,17 @@
     "labName": "المختبر",
     "unknownDoctor": "طبيب غير معروف",
     "notSpecified": "غير محدد"
+  },
+  "labType": {
+    "BloodTestGeneral": "تحليل دم شامل",
+    "BloodTestBiochemistry": "كيمياء الدم",
+    "UrineTest": "تحليل البول",
+    "StoolTest": "تحليل البراز",
+    "HormonePanel": "لوحة الهرمونات",
+    "TumorMarkers": "دلالات الأورام",
+    "PCR": "تفاعل البوليميراز",
+    "Immunology": "المناعة",
+    "GeneticScreening": "الفحص الجيني",
+    "Other": "أخرى"
   }
 }

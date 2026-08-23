@@ -27,23 +27,25 @@ import { useClinicZone } from "../../../lib/useClinicZone";
 import { getAnalyticsOverview, listStaff } from "../../../api/clinic";
 import "./clinicAnalyticsPage.css";
 
+// Подписи периодов и статусов — в словаре: здесь только ключи, иначе
+// текст не виден ни одной из проверок перевода.
 const RANGE_OPTIONS = [
-  { key: "day", label: "\u0421\u0443\u0442\u043A\u0438" },
-  { key: "week", label: "\u041D\u0435\u0434\u0435\u043B\u044F" },
-  { key: "month", label: "\u041C\u0435\u0441\u044F\u0446" },
-  { key: "half_year", label: "\u041F\u043E\u043B\u0433\u043E\u0434\u0430" },
-  { key: "year", label: "\u0413\u043E\u0434" },
-  { key: "three_years", label: "3 \u0433\u043E\u0434\u0430" },
-  { key: "five_years", label: "5 \u043B\u0435\u0442" },
-  { key: "all", label: "\u0412\u0441\u0451 \u0432\u0440\u0435\u043C\u044F" },
+  { key: "day", labelKey: "analytics.range.day" },
+  { key: "week", labelKey: "analytics.range.week" },
+  { key: "month", labelKey: "analytics.range.month" },
+  { key: "half_year", labelKey: "analytics.range.half_year" },
+  { key: "year", labelKey: "analytics.range.year" },
+  { key: "three_years", labelKey: "analytics.range.three_years" },
+  { key: "five_years", labelKey: "analytics.range.five_years" },
+  { key: "all", labelKey: "analytics.range.all" },
 ];
 
 const STATUS_META = {
-  scheduled: { label: "\u0417\u0430\u043F\u043B\u0430\u043D\u0438\u0440\u043E\u0432\u0430\u043D\u043E", color: "#3d7fff" },
-  checked_in: { label: "\u041D\u0430 \u043F\u0440\u0438\u0451\u043C\u0435", color: "#7c3dff" },
-  completed: { label: "\u0417\u0430\u0432\u0435\u0440\u0448\u0435\u043D\u043E", color: "#22c55e" },
-  cancelled: { label: "\u041E\u0442\u043C\u0435\u043D\u0435\u043D\u043E", color: "#f59e0b" },
-  no_show: { label: "\u041D\u0435\u044F\u0432\u043A\u0430", color: "#ef4444" },
+  scheduled: { labelKey: "analytics.status.scheduled", color: "#3d7fff" },
+  checked_in: { labelKey: "analytics.status.checked_in", color: "#7c3dff" },
+  completed: { labelKey: "analytics.status.completed", color: "#22c55e" },
+  cancelled: { labelKey: "analytics.status.cancelled", color: "#f59e0b" },
+  no_show: { labelKey: "analytics.status.no_show", color: "#ef4444" },
 };
 
 function shortId(id) {
@@ -116,7 +118,7 @@ export default function ClinicAnalyticsPage() {
     const by = overview?.appointments?.byStatus || {};
     return Object.keys(STATUS_META).map((key) => ({
       key,
-      name: STATUS_META[key].label,
+      name: t(STATUS_META[key].labelKey),
       value: by[key] || 0,
       color: STATUS_META[key].color,
     }));
@@ -179,7 +181,7 @@ export default function ClinicAnalyticsPage() {
             onClick={() => setRange(opt.key)}
             disabled={loading}
           >
-            {opt.label}
+            {t(opt.labelKey)}
           </button>
         ))}
       </div>

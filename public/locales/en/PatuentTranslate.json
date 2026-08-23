@@ -488,6 +488,17 @@
       "applying": "Applying…",
       "cancel": "Cancel",
       "close": "Close"
+    },
+    "groups": {
+      "appointments": {
+        "title": "Appointments and diagnoses"
+      },
+      "healthProfile": {
+        "title": "Health profile"
+      },
+      "imaging": {
+        "title": "Imaging and studies"
+      }
     }
   }
 }

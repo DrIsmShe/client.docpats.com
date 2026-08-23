@@ -141,5 +141,17 @@
     "placeholder": "E-posta, telefon veya belge",
     "search": "Ara",
     "title": "Hasta ara"
+  },
+  "labLevel": {
+    "far": "referans aralığının belirgin dışında",
+    "out": "referans aralığının dışında",
+    "borderline": "aralığın sınırında",
+    "normal": "referans aralığında",
+    "unknown": "formda referans aralığı yok"
+  },
+  "prescriptionStatus": {
+    "active": "Etkin",
+    "completed": "Tamamlandı",
+    "cancelled": "İptal edildi"
   }
 }

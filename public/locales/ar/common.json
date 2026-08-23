@@ -1310,7 +1310,8 @@
     "statsDoctors_few": "أطباء",
     "statsDoctors_many": "طبيبًا",
     "statsDoctors_other": "طبيب",
-    "navAllArticles": "كل المقالات →"
+    "navAllArticles": "كل المقالات →",
+    "navServices": "الخدمات والأسعار"
   },
   "profileMain": {
     "noUserId": "تعذّر تحديد المستخدم.",
@@ -1612,5 +1613,18 @@
     "disable": "إيقاف الإشعارات الفورية",
     "blocked": "الإشعارات محظورة في إعدادات المتصفح",
     "blockedHint": "اسمح بالإشعارات من إعدادات المتصفح"
+  },
+  "consentRequestModal": {
+    "groups": {
+      "appointments": {
+        "title": "المواعيد والتشخيصات"
+      },
+      "healthProfile": {
+        "title": "الملف الصحي"
+      },
+      "imaging": {
+        "title": "الصور والفحوصات"
+      }
+    }
   }
 }

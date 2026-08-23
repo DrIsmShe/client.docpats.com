@@ -36,25 +36,27 @@ function BgField({ config, onChange, t }) {
 }
 
 // Доп. блоки, которые можно показать на странице раздела снизу.
+// Подписи — ключами: строка в массиве не видна ни одной проверке
+// перевода, и список оставался русским на всех языках.
 const PAGE_EXTRA_OPTIONS = [
-  { type: "cta", label: "Призыв к записи (CTA)" },
-  { type: "contacts", label: "Контакты" },
-  { type: "reviews", label: "Отзывы" },
-  { type: "doctors", label: "Специалисты" },
-  { type: "bento", label: "Отделения" },
+  { type: "cta", labelKey: "publicPage.blockType.cta" },
+  { type: "contacts", labelKey: "publicPage.blockType.contacts" },
+  { type: "reviews", labelKey: "publicPage.blockType.reviews" },
+  { type: "doctors", labelKey: "publicPage.blockType.doctors" },
+  { type: "bento", labelKey: "publicPage.blockType.bento" },
 ];
 
 // Разделы витрины для дропдауна ссылок (slug → метка). Сюда юзер НЕ вписывает
 // произвольный текст — выбирает из готового, поэтому 404 от опечаток нет.
 const SECTION_LINK_OPTIONS = [
-  { value: "about", label: "О клинике" },
-  { value: "departments", label: "Отделения" },
-  { value: "doctors", label: "Специалисты" },
-  { value: "articles", label: "Публикации" },
-  { value: "gallery", label: "Галерея" },
-  { value: "reviews", label: "Отзывы" },
-  { value: "faq", label: "Вопросы (FAQ)" },
-  { value: "contacts", label: "Контакты" },
+  { value: "about", labelKey: "publicPage.sectionLink.about" },
+  { value: "departments", labelKey: "publicPage.sectionLink.departments" },
+  { value: "doctors", labelKey: "publicPage.sectionLink.doctors" },
+  { value: "articles", labelKey: "publicPage.sectionLink.articles" },
+  { value: "gallery", labelKey: "publicPage.sectionLink.gallery" },
+  { value: "reviews", labelKey: "publicPage.sectionLink.reviews" },
+  { value: "faq", labelKey: "publicPage.sectionLink.faq" },
+  { value: "contacts", labelKey: "publicPage.sectionLink.contacts" },
 ];
 
 /**
@@ -100,7 +102,7 @@ function LinkPicker({ label, value, onChange, t, customPages = [] }) {
           },
           ...SECTION_LINK_OPTIONS.map((o) => ({
             value: o.value,
-            label: o.label,
+            label: t(o.labelKey),
           })),
           ...pages.map((p) => ({
             value: `dp/${p.slug}`,
@@ -391,7 +393,7 @@ function PageSettingsField({ config, onChange, t, sectionType, clinic }) {
       {PAGE_EXTRA_OPTIONS.filter((o) => o.type !== sectionType).map((o) => (
         <LabeledCheckbox
           key={o.type}
-          label={o.label}
+          label={t(o.labelKey)}
           checked={extras.includes(o.type)}
           onChange={(v) => toggleExtra(o.type, v)}
         />
@@ -503,10 +505,10 @@ function PageSettingsField({ config, onChange, t, sectionType, clinic }) {
 }
 
 const SPAN_OPTIONS = [
-  { value: "1x1", label: "1×1" },
-  { value: "2x1", label: "2×1 (шире)" },
-  { value: "1x2", label: "1×2 (выше)" },
-  { value: "2x2", label: "2×2 (крупная)" },
+  { value: "1x1", labelKey: "publicPage.tileSize.1x1" },
+  { value: "2x1", labelKey: "publicPage.tileSize.2x1" },
+  { value: "1x2", labelKey: "publicPage.tileSize.1x2" },
+  { value: "2x2", labelKey: "publicPage.tileSize.2x2" },
 ];
 
 function HeroForm({ config, onChange }) {
@@ -764,7 +766,12 @@ function BentoForm({ config, onChange, clinic }) {
                 label={t("publicPage.cfgSpan", { defaultValue: "Размер" })}
                 value={ov.span || "1x1"}
                 onChange={(v) => setOverride(key, { span: v })}
-                options={SPAN_OPTIONS}
+                // LabeledSelect ждёт готовые подписи, поэтому ключи
+                // разворачиваем здесь.
+                options={SPAN_OPTIONS.map((o) => ({
+                  value: o.value,
+                  label: t(o.labelKey),
+                }))}
               />
               <LabeledCheckbox
                 label={t("publicPage.cfgAccent", {

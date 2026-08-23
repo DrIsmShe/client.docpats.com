@@ -39,14 +39,18 @@ const ROUTE_RU = {
   other: "",
 };
 const STATUS_META = {
-  active: { label: "Активный", color: "#22c55e", bg: "rgba(34,197,94,.12)" },
+  active: {
+    key: "patientArea:prescriptionStatus.active",
+    color: "#22c55e",
+    bg: "rgba(34,197,94,.12)",
+  },
   completed: {
-    label: "Завершён",
+    key: "patientArea:prescriptionStatus.completed",
     color: "#94a3b8",
     bg: "rgba(148,163,184,.14)",
   },
   cancelled: {
-    label: "Отменён",
+    key: "patientArea:prescriptionStatus.cancelled",
     color: "#f87171",
     bg: "rgba(248,113,113,.12)",
   },
@@ -221,7 +225,7 @@ export default function MyPrescriptions() {
                     className="rxp-pill"
                     style={{ color: st.color, background: st.bg }}
                   >
-                    {st.label}
+                    {t(st.key)}
                   </span>
                 </div>
 

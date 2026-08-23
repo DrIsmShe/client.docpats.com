@@ -488,6 +488,17 @@
       "applying": "Применяем…",
       "cancel": "Отмена",
       "close": "Закрыть"
+    },
+    "groups": {
+      "appointments": {
+        "title": "Приёмы и диагнозы"
+      },
+      "healthProfile": {
+        "title": "Профиль здоровья"
+      },
+      "imaging": {
+        "title": "Снимки и исследования"
+      }
     }
   }
 }

@@ -734,7 +734,30 @@
     "customPagesHint": "Vitrin bloklarından ayrı sayfalar oluşturun (Kampanyalar, Doktor hakkında, Fiyatlar).",
     "customPagesManage": "Sayfaları yönet →",
     "layoutTitle": "Vitrin blokları",
-    "themeTitle": "Vitrin tasarımı"
+    "themeTitle": "Vitrin tasarımı",
+    "blockType": {
+      "cta": "Randevu çağrısı (CTA)",
+      "contacts": "İletişim",
+      "reviews": "Yorumlar",
+      "doctors": "Uzmanlar",
+      "bento": "Bölümler"
+    },
+    "sectionLink": {
+      "about": "Klinik hakkında",
+      "departments": "Bölümler",
+      "doctors": "Uzmanlar",
+      "articles": "Yayınlar",
+      "gallery": "Galeri",
+      "reviews": "Yorumlar",
+      "faq": "Sorular (SSS)",
+      "contacts": "İletişim"
+    },
+    "tileSize": {
+      "1x1": "1×1",
+      "2x1": "2×1 (daha geniş)",
+      "1x2": "1×2 (daha uzun)",
+      "2x2": "2×2 (büyük)"
+    }
   },
   "layout": {
     "brandName": "DocPats Klinik",
@@ -803,6 +826,19 @@
       "placeholders": {
         "icdSearch": "ICD-10'u kod (J45) veya ad (astım) ile ara...",
         "diagnosisText": "Kendi dilinizde tanı"
+      },
+      "fields": {
+        "complaints": "Şikâyetler",
+        "anamnesisMorbi": "Anamnesis morbi",
+        "anamnesisVitae": "Anamnesis vitae",
+        "statusPreasens": "Status praesens",
+        "statusLocalis": "Status localis",
+        "additionalDiagnosis": "Eşlik eden tanı",
+        "recommendations": "Öneriler",
+        "ctScanResults": "BT sonuçları",
+        "mriResults": "MR sonuçları",
+        "ultrasoundResults": "Ultrason sonuçları",
+        "laboratoryTestResults": "Laboratuvar sonuçları"
       }
     },
     "prescriptions": {
@@ -886,7 +922,15 @@
     },
     "tabs": {
       "labResults": "Laboratuvar sonuçları",
-      "summary": "Özet"
+      "summary": "Özet",
+      "encounters": "Hasta kayıtları",
+      "allergies": "Alerjiler",
+      "chronic": "Kronik hastalıklar",
+      "operations": "Ameliyatlar",
+      "family": "Aile öyküsü",
+      "immunization": "Aşılar",
+      "imaging": "Görüntüleme",
+      "prescriptions": "Reçeteler"
     },
     "labResults": {
       "listTitle": "Laboratuvar sonuçları",
@@ -960,6 +1004,24 @@
         "UrineAlbuminACR": "İdrar albümin/kreatinin",
         "StoolInflammation": "Bağırsak iltihabı",
         "Other": "Diğer"
+      }
+    },
+    "imaging": {
+      "types": {
+        "CT": "BT",
+        "MRI": "MR",
+        "USG": "Ultrason",
+        "XRay": "Röntgen",
+        "PET": "PET",
+        "SPECT": "SPECT",
+        "EEG": "EEG",
+        "ECG": "EKG",
+        "Holter": "Holter",
+        "Spirometry": "Spirometri",
+        "Doppler": "Doppler",
+        "Gastroscopy": "Gastroskopi",
+        "Colonoscopy": "Kolonoskopi",
+        "CapsuleEndoscopy": "Kapsül endoskopi"
       }
     }
   },
@@ -1401,7 +1463,14 @@
       "equipment": "Ekipman",
       "announcements": "Duyurular",
       "knowledge": "Bilgi Bankası",
-      "staff": "Personel"
+      "staff": "Personel",
+      "book": "Randevu al",
+      "pharmacy": "Eczane",
+      "vitrina": "Vitrin",
+      "publications": "Yayınlar",
+      "reviews": "Yorumlar",
+      "analytics": "Analitik",
+      "leads": "Talepler"
     }
   },
   "schedule": {
@@ -1816,7 +1885,12 @@
     "empty": "Bildirim yok",
     "markAll": "Tümünü okundu işaretle",
     "delete": "Sil",
-    "viewAll": "Tüm bildirimler"
+    "viewAll": "Tüm bildirimler",
+    "tabs": {
+      "all": "Tümü",
+      "unread": "Okunmamış",
+      "read": "Okunmuş"
+    }
   },
   "reviews": {
     "title": "Değerlendirmeler",
@@ -1835,6 +1909,55 @@
     "doctorReply": "Doktorun yanıtı: ",
     "onDoctor": "Doktor: ",
     "onArticle": "Makale: ",
-    "isReply": "yanıt"
+    "isReply": "yanıt",
+    "sections": {
+      "clinic": "Klinik hakkında",
+      "doctors": "Doktorlara",
+      "comments": "Yorumlar"
+    },
+    "tabs": {
+      "pending": "İncelemede",
+      "approved": "Onaylanmış",
+      "rejected": "Reddedilmiş",
+      "all": "Tümü"
+    }
+  },
+  "leads": {
+    "tabs": {
+      "new": "Yeni",
+      "in_progress": "İşlemde",
+      "closed": "Kapatılmış",
+      "all": "Tümü"
+    }
+  },
+  "analytics": {
+    "range": {
+      "day": "Gün",
+      "week": "Hafta",
+      "month": "Ay",
+      "half_year": "Altı ay",
+      "year": "Yıl",
+      "three_years": "3 yıl",
+      "five_years": "5 yıl",
+      "all": "Tüm zamanlar"
+    },
+    "status": {
+      "scheduled": "Planlandı",
+      "checked_in": "Muayenede",
+      "completed": "Tamamlandı",
+      "cancelled": "İptal edildi",
+      "no_show": "Gelmedi"
+    }
+  },
+  "publicClinic": {
+    "nav_whyUs": "Hakkımızda",
+    "nav_bento": "Bölümler",
+    "nav_priceList": "Hizmetler ve fiyatlar",
+    "nav_doctors": "Doktorlar",
+    "nav_publications": "Doktorlarımızın makaleleri",
+    "nav_gallery": "Galeri",
+    "nav_reviews": "Yorumlar",
+    "nav_faq": "Sorular",
+    "nav_contacts": "İletişim"
   }
 }

@@ -1313,7 +1313,8 @@
     "experience_other": "{{count}} yıl deneyim",
     "statsDoctors_one": "doktor",
     "statsDoctors_other": "doktor",
-    "navAllArticles": "Tüm makaleler →"
+    "navAllArticles": "Tüm makaleler →",
+    "navServices": "Hizmetler ve fiyatlar"
   },
   "profileMain": {
     "noUserId": "Kullanıcı belirlenemedi.",
@@ -1612,5 +1613,18 @@
     "disable": "Anlık bildirimi kapat",
     "blocked": "Bildirimler tarayıcı ayarlarında engellenmiş",
     "blockedHint": "Tarayıcı ayarlarından bildirimlere izin verin"
+  },
+  "consentRequestModal": {
+    "groups": {
+      "appointments": {
+        "title": "Randevular ve tanılar"
+      },
+      "healthProfile": {
+        "title": "Sağlık profili"
+      },
+      "imaging": {
+        "title": "Görüntüleme ve tetkikler"
+      }
+    }
   }
 }

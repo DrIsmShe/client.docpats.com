@@ -141,5 +141,17 @@
     "placeholder": "Enter email, phone or document",
     "search": "Search",
     "title": "Search patient"
+  },
+  "labLevel": {
+    "far": "well outside the reference range",
+    "out": "outside the reference range",
+    "borderline": "at the edge of the range",
+    "normal": "within the reference range",
+    "unknown": "no reference range on the form"
+  },
+  "prescriptionStatus": {
+    "active": "Active",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
   }
 }

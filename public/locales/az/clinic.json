@@ -734,7 +734,30 @@
     "customPagesHint": "Vitrin bloklarından ayrıca səhifələr yaradın (Aksiyalar, Həkim haqqında, Qiymətlər).",
     "customPagesManage": "Səhifələri idarə et →",
     "layoutTitle": "Vitrin blokları",
-    "themeTitle": "Vitrin dizaynı"
+    "themeTitle": "Vitrin dizaynı",
+    "blockType": {
+      "cta": "Qeydiyyata çağırış (CTA)",
+      "contacts": "Əlaqə",
+      "reviews": "Rəylər",
+      "doctors": "Mütəxəssislər",
+      "bento": "Şöbələr"
+    },
+    "sectionLink": {
+      "about": "Klinika haqqında",
+      "departments": "Şöbələr",
+      "doctors": "Mütəxəssislər",
+      "articles": "Nəşrlər",
+      "gallery": "Qalereya",
+      "reviews": "Rəylər",
+      "faq": "Suallar (FAQ)",
+      "contacts": "Əlaqə"
+    },
+    "tileSize": {
+      "1x1": "1×1",
+      "2x1": "2×1 (daha geniş)",
+      "1x2": "1×2 (daha hündür)",
+      "2x2": "2×2 (böyük)"
+    }
   },
   "layout": {
     "brandName": "DocPats Klinika",
@@ -803,6 +826,19 @@
       "placeholders": {
         "icdSearch": "İBT-10-u kod (J45) və ya ad (astma) ilə axtarın...",
         "diagnosisText": "Öz dilinizdə diaqnoz"
+      },
+      "fields": {
+        "complaints": "Şikayətlər",
+        "anamnesisMorbi": "Anamnesis morbi",
+        "anamnesisVitae": "Anamnesis vitae",
+        "statusPreasens": "Status praesens",
+        "statusLocalis": "Status localis",
+        "additionalDiagnosis": "Yanaşı diaqnoz",
+        "recommendations": "Tövsiyələr",
+        "ctScanResults": "KT nəticələri",
+        "mriResults": "MRT nəticələri",
+        "ultrasoundResults": "USM nəticələri",
+        "laboratoryTestResults": "Laborator nəticələr"
       }
     },
     "prescriptions": {
@@ -886,7 +922,15 @@
     },
     "tabs": {
       "labResults": "Laborator nəticələr",
-      "summary": "Xülasə"
+      "summary": "Xülasə",
+      "encounters": "Xəstəlik tarixçələri",
+      "allergies": "Allergiyalar",
+      "chronic": "Xroniki xəstəliklər",
+      "operations": "Əməliyyatlar",
+      "family": "Ailə anamnezi",
+      "immunization": "Peyvəndlər",
+      "imaging": "Təsvirlər",
+      "prescriptions": "Reseptlər"
     },
     "labResults": {
       "listTitle": "Laborator nəticələr",
@@ -960,6 +1004,24 @@
         "UrineAlbuminACR": "Sidik albumin/kreatinin",
         "StoolInflammation": "Bağırsaq iltihabı",
         "Other": "Digər"
+      }
+    },
+    "imaging": {
+      "types": {
+        "CT": "KT",
+        "MRI": "MRT",
+        "USG": "USM",
+        "XRay": "Rentgen",
+        "PET": "PET",
+        "SPECT": "SPECT",
+        "EEG": "EEQ",
+        "ECG": "EKQ",
+        "Holter": "Holter",
+        "Spirometry": "Spirometriya",
+        "Doppler": "Doppler",
+        "Gastroscopy": "Qastroskopiya",
+        "Colonoscopy": "Kolonoskopiya",
+        "CapsuleEndoscopy": "Kapsul endoskopiyası"
       }
     }
   },
@@ -1401,7 +1463,14 @@
       "equipment": "Avadanlıq",
       "announcements": "Elanlar",
       "knowledge": "Bilik Bazası",
-      "staff": "İşçilər"
+      "staff": "İşçilər",
+      "book": "Qəbula yazılma",
+      "pharmacy": "Aptek",
+      "vitrina": "Vitrin",
+      "publications": "Nəşrlər",
+      "reviews": "Rəylər",
+      "analytics": "Analitika",
+      "leads": "Müraciətlər"
     }
   },
   "schedule": {
@@ -1816,7 +1885,12 @@
     "empty": "Bildiriş yoxdur",
     "markAll": "Hamısını oxunmuş kimi işarələ",
     "delete": "Sil",
-    "viewAll": "Bütün bildirişlər"
+    "viewAll": "Bütün bildirişlər",
+    "tabs": {
+      "all": "Hamısı",
+      "unread": "Oxunmamış",
+      "read": "Oxunmuş"
+    }
   },
   "reviews": {
     "title": "Rəylər",
@@ -1835,6 +1909,55 @@
     "doctorReply": "Həkimin cavabı: ",
     "onDoctor": "Həkim: ",
     "onArticle": "Məqalə: ",
-    "isReply": "cavab"
+    "isReply": "cavab",
+    "sections": {
+      "clinic": "Klinika haqqında",
+      "doctors": "Həkimlərə",
+      "comments": "Şərhlər"
+    },
+    "tabs": {
+      "pending": "Moderasiyada",
+      "approved": "Təsdiqlənmiş",
+      "rejected": "Rədd edilmiş",
+      "all": "Hamısı"
+    }
+  },
+  "leads": {
+    "tabs": {
+      "new": "Yeni",
+      "in_progress": "İşdə",
+      "closed": "Bağlanmış",
+      "all": "Hamısı"
+    }
+  },
+  "analytics": {
+    "range": {
+      "day": "Sutka",
+      "week": "Həftə",
+      "month": "Ay",
+      "half_year": "Yarım il",
+      "year": "İl",
+      "three_years": "3 il",
+      "five_years": "5 il",
+      "all": "Bütün dövr"
+    },
+    "status": {
+      "scheduled": "Planlaşdırılıb",
+      "checked_in": "Qəbulda",
+      "completed": "Tamamlanıb",
+      "cancelled": "Ləğv edilib",
+      "no_show": "Gəlməyib"
+    }
+  },
+  "publicClinic": {
+    "nav_whyUs": "Haqqımızda",
+    "nav_bento": "Şöbələr",
+    "nav_priceList": "Xidmətlər və qiymətlər",
+    "nav_doctors": "Həkimlər",
+    "nav_publications": "Həkimlərimizin məqalələri",
+    "nav_gallery": "Qalereya",
+    "nav_reviews": "Rəylər",
+    "nav_faq": "Suallar",
+    "nav_contacts": "Əlaqə"
   }
 }

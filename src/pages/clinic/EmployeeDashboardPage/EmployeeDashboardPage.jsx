@@ -54,8 +54,7 @@ const QUICK_ACTIONS = [
     soon: false,
     to: "/clinic/employee/patients",
     labelKey: "employeeDashboard.actions.patients",
-    labelDefault:
-      "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435",
+    labelDefault: "Пациенты",
   },
   {
     key: "staff",

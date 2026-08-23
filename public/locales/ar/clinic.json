@@ -734,7 +734,30 @@
     "customPagesHint": "أنشئ صفحات منفصلة (العروض، عن الطبيب، الأسعار) من كتل الصفحة.",
     "customPagesManage": "إدارة الصفحات ←",
     "layoutTitle": "كتل الصفحة",
-    "themeTitle": "تصميم الصفحة"
+    "themeTitle": "تصميم الصفحة",
+    "blockType": {
+      "cta": "دعوة للحجز (CTA)",
+      "contacts": "جهات الاتصال",
+      "reviews": "المراجعات",
+      "doctors": "الاختصاصيون",
+      "bento": "الأقسام"
+    },
+    "sectionLink": {
+      "about": "عن العيادة",
+      "departments": "الأقسام",
+      "doctors": "الاختصاصيون",
+      "articles": "المنشورات",
+      "gallery": "المعرض",
+      "reviews": "المراجعات",
+      "faq": "الأسئلة الشائعة",
+      "contacts": "جهات الاتصال"
+    },
+    "tileSize": {
+      "1x1": "1×1",
+      "2x1": "2×1 (أعرض)",
+      "1x2": "1×2 (أطول)",
+      "2x2": "2×2 (كبيرة)"
+    }
   },
   "layout": {
     "brandName": "عيادة DocPats",
@@ -803,6 +826,19 @@
       "placeholders": {
         "icdSearch": "ابحث في ICD-10 بالرمز (J45) أو الاسم (الربو)...",
         "diagnosisText": "التشخيص بلغتك"
+      },
+      "fields": {
+        "complaints": "الشكاوى",
+        "anamnesisMorbi": "قصة المرض",
+        "anamnesisVitae": "قصة الحياة",
+        "statusPreasens": "الحالة العامة",
+        "statusLocalis": "الحالة الموضعية",
+        "additionalDiagnosis": "تشخيص مرافق",
+        "recommendations": "التوصيات",
+        "ctScanResults": "نتائج التصوير المقطعي",
+        "mriResults": "نتائج الرنين المغناطيسي",
+        "ultrasoundResults": "نتائج الموجات فوق الصوتية",
+        "laboratoryTestResults": "النتائج المخبرية"
       }
     },
     "prescriptions": {
@@ -886,7 +922,15 @@
     },
     "tabs": {
       "labResults": "نتائج المختبر",
-      "summary": "الملخص"
+      "summary": "الملخص",
+      "encounters": "السجلات المرضية",
+      "allergies": "الحساسية",
+      "chronic": "الأمراض المزمنة",
+      "operations": "العمليات",
+      "family": "التاريخ العائلي",
+      "immunization": "التطعيمات",
+      "imaging": "الصور",
+      "prescriptions": "الوصفات"
     },
     "labResults": {
       "listTitle": "نتائج المختبر",
@@ -960,6 +1004,24 @@
         "UrineAlbuminACR": "ألبومين/كرياتينين البول",
         "StoolInflammation": "التهاب الأمعاء",
         "Other": "أخرى"
+      }
+    },
+    "imaging": {
+      "types": {
+        "CT": "التصوير المقطعي",
+        "MRI": "الرنين المغناطيسي",
+        "USG": "الموجات فوق الصوتية",
+        "XRay": "الأشعة السينية",
+        "PET": "التصوير البوزيتروني",
+        "SPECT": "سبيكت",
+        "EEG": "تخطيط الدماغ",
+        "ECG": "تخطيط القلب",
+        "Holter": "هولتر",
+        "Spirometry": "قياس التنفس",
+        "Doppler": "دوبلر",
+        "Gastroscopy": "تنظير المعدة",
+        "Colonoscopy": "تنظير القولون",
+        "CapsuleEndoscopy": "تنظير الكبسولة"
       }
     }
   },
@@ -1401,7 +1463,14 @@
       "equipment": "المعدات",
       "announcements": "الإعلانات",
       "knowledge": "قاعدة المعرفة",
-      "staff": "الموظفون"
+      "staff": "الموظفون",
+      "book": "حجز موعد",
+      "pharmacy": "الصيدلية",
+      "vitrina": "الواجهة",
+      "publications": "المنشورات",
+      "reviews": "المراجعات",
+      "analytics": "التحليلات",
+      "leads": "الطلبات"
     }
   },
   "schedule": {
@@ -1828,7 +1897,12 @@
     "empty": "لا توجد إشعارات",
     "markAll": "تعليم الكل كمقروء",
     "delete": "حذف",
-    "viewAll": "كل الإشعارات"
+    "viewAll": "كل الإشعارات",
+    "tabs": {
+      "all": "الكل",
+      "unread": "غير المقروءة",
+      "read": "المقروءة"
+    }
   },
   "reviews": {
     "title": "التقييمات",
@@ -1847,6 +1921,55 @@
     "doctorReply": "رد الطبيب: ",
     "onDoctor": "الطبيب: ",
     "onArticle": "المقال: ",
-    "isReply": "رد"
+    "isReply": "رد",
+    "sections": {
+      "clinic": "عن العيادة",
+      "doctors": "عن الأطباء",
+      "comments": "التعليقات"
+    },
+    "tabs": {
+      "pending": "قيد المراجعة",
+      "approved": "المعتمدة",
+      "rejected": "المرفوضة",
+      "all": "الكل"
+    }
+  },
+  "leads": {
+    "tabs": {
+      "new": "جديدة",
+      "in_progress": "قيد العمل",
+      "closed": "مغلقة",
+      "all": "الكل"
+    }
+  },
+  "analytics": {
+    "range": {
+      "day": "يوم",
+      "week": "أسبوع",
+      "month": "شهر",
+      "half_year": "ستة أشهر",
+      "year": "سنة",
+      "three_years": "3 سنوات",
+      "five_years": "5 سنوات",
+      "all": "كل الوقت"
+    },
+    "status": {
+      "scheduled": "مُجدول",
+      "checked_in": "في الموعد",
+      "completed": "مكتمل",
+      "cancelled": "مُلغى",
+      "no_show": "لم يحضر"
+    }
+  },
+  "publicClinic": {
+    "nav_whyUs": "من نحن",
+    "nav_bento": "الأقسام",
+    "nav_priceList": "الخدمات والأسعار",
+    "nav_doctors": "الأطباء",
+    "nav_publications": "مقالات أطبائنا",
+    "nav_gallery": "المعرض",
+    "nav_reviews": "المراجعات",
+    "nav_faq": "الأسئلة",
+    "nav_contacts": "جهات الاتصال"
   }
 }

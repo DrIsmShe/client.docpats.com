@@ -272,10 +272,15 @@ const ScanTable = ({
                 <td>
                   <Link to={`${detailPath}/${scan._id}`}>
                     {nameKey === "testType"
-                      ? SCAN_TEST_TYPES.find((tt) => tt.value === scan.testType)
-                          ?.label ||
-                        scan.testType ||
-                        "—"
+                      ? (() => {
+                          const found = SCAN_TEST_TYPES.find(
+                            (tt) => tt.value === scan.testType,
+                          );
+                          // Запасной вариант — сырое значение из базы: если
+                          // в справочнике вида нет, лучше показать его код,
+                          // чем пустоту.
+                          return found ? t(found.labelKey) : scan.testType || "—";
+                        })()
                       : scan[nameKey] || "—"}
                   </Link>
                 </td>
@@ -345,18 +350,6 @@ export default function PatientDetail() {
   const [scansLoading, setScansLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const TEST_TYPES = [
-    { value: "BloodTestGeneral", label: "Общий анализ крови" },
-    { value: "BloodTestBiochemistry", label: "Биохимия" },
-    { value: "UrineTest", label: "Анализ мочи" },
-    { value: "StoolTest", label: "Анализ кала" },
-    { value: "HormonePanel", label: "Гормоны" },
-    { value: "TumorMarkers", label: "Онкомаркеры" },
-    { value: "PCR", label: "ПЦР" },
-    { value: "Immunology", label: "Иммунология" },
-    { value: "GeneticScreening", label: "Генетический скрининг" },
-    { value: "Other", label: "Другое" },
-  ];
 
   const printGender = (v) => {
     const raw = String(v ?? "")

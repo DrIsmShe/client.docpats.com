@@ -488,6 +488,17 @@
       "applying": "Uygulanıyor…",
       "cancel": "İptal",
       "close": "Kapat"
+    },
+    "groups": {
+      "appointments": {
+        "title": "Randevular ve tanılar"
+      },
+      "healthProfile": {
+        "title": "Sağlık profili"
+      },
+      "imaging": {
+        "title": "Görüntüleme ve tetkikler"
+      }
     }
   }
 }

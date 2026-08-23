@@ -1289,7 +1289,8 @@
     "experience_other": "{{count}} years of experience",
     "statsDoctors_one": "doctor",
     "statsDoctors_other": "doctors",
-    "navAllArticles": "All articles →"
+    "navAllArticles": "All articles →",
+    "navServices": "Services and prices"
   },
   "profileMain": {
     "noUserId": "Could not determine the user.",
@@ -1588,5 +1589,18 @@
     "disable": "Disable push",
     "blocked": "Notifications are blocked in your browser settings",
     "blockedHint": "Allow notifications in your browser settings"
+  },
+  "consentRequestModal": {
+    "groups": {
+      "appointments": {
+        "title": "Appointments and diagnoses"
+      },
+      "healthProfile": {
+        "title": "Health profile"
+      },
+      "imaging": {
+        "title": "Imaging and studies"
+      }
+    }
   }
 }

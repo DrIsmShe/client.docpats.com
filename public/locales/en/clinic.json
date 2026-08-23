@@ -734,7 +734,30 @@
     "customPagesHint": "Build separate pages (Promotions, About the doctor, Prices) from showcase blocks.",
     "customPagesManage": "Manage pages →",
     "layoutTitle": "Showcase blocks",
-    "themeTitle": "Showcase design"
+    "themeTitle": "Showcase design",
+    "blockType": {
+      "cta": "Call to action (CTA)",
+      "contacts": "Contacts",
+      "reviews": "Reviews",
+      "doctors": "Specialists",
+      "bento": "Departments"
+    },
+    "sectionLink": {
+      "about": "About the clinic",
+      "departments": "Departments",
+      "doctors": "Specialists",
+      "articles": "Publications",
+      "gallery": "Gallery",
+      "reviews": "Reviews",
+      "faq": "Questions (FAQ)",
+      "contacts": "Contacts"
+    },
+    "tileSize": {
+      "1x1": "1×1",
+      "2x1": "2×1 (wider)",
+      "1x2": "1×2 (taller)",
+      "2x2": "2×2 (large)"
+    }
   },
   "layout": {
     "brandName": "DocPats Clinic",
@@ -803,6 +826,19 @@
       "placeholders": {
         "icdSearch": "Search ICD-10 by code (J45) or name (asthma)...",
         "diagnosisText": "Diagnosis in your language"
+      },
+      "fields": {
+        "complaints": "Complaints",
+        "anamnesisMorbi": "Anamnesis morbi",
+        "anamnesisVitae": "Anamnesis vitae",
+        "statusPreasens": "Status praesens",
+        "statusLocalis": "Status localis",
+        "additionalDiagnosis": "Comorbid diagnosis",
+        "recommendations": "Recommendations",
+        "ctScanResults": "CT results",
+        "mriResults": "MRI results",
+        "ultrasoundResults": "Ultrasound results",
+        "laboratoryTestResults": "Laboratory results"
       }
     },
     "prescriptions": {
@@ -886,7 +922,15 @@
     },
     "tabs": {
       "labResults": "Lab Results",
-      "summary": "Summary"
+      "summary": "Summary",
+      "encounters": "Encounters",
+      "allergies": "Allergies",
+      "chronic": "Chronic conditions",
+      "operations": "Operations",
+      "family": "Family history",
+      "immunization": "Immunisations",
+      "imaging": "Imaging",
+      "prescriptions": "Prescriptions"
     },
     "labResults": {
       "listTitle": "Lab Results",
@@ -960,6 +1004,24 @@
         "UrineAlbuminACR": "Urine albumin/creatinine",
         "StoolInflammation": "Bowel inflammation",
         "Other": "Other"
+      }
+    },
+    "imaging": {
+      "types": {
+        "CT": "CT",
+        "MRI": "MRI",
+        "USG": "Ultrasound",
+        "XRay": "X-ray",
+        "PET": "PET",
+        "SPECT": "SPECT",
+        "EEG": "EEG",
+        "ECG": "ECG",
+        "Holter": "Holter",
+        "Spirometry": "Spirometry",
+        "Doppler": "Doppler",
+        "Gastroscopy": "Gastroscopy",
+        "Colonoscopy": "Colonoscopy",
+        "CapsuleEndoscopy": "Capsule endoscopy"
       }
     }
   },
@@ -1401,7 +1463,14 @@
       "equipment": "Equipment",
       "announcements": "Announcements",
       "knowledge": "Knowledge Base",
-      "staff": "Staff"
+      "staff": "Staff",
+      "book": "Book an appointment",
+      "pharmacy": "Pharmacy",
+      "vitrina": "Storefront",
+      "publications": "Publications",
+      "reviews": "Reviews",
+      "analytics": "Analytics",
+      "leads": "Leads"
     }
   },
   "schedule": {
@@ -1816,7 +1885,12 @@
     "empty": "No notifications",
     "markAll": "Mark all as read",
     "delete": "Delete",
-    "viewAll": "All notifications"
+    "viewAll": "All notifications",
+    "tabs": {
+      "all": "All",
+      "unread": "Unread",
+      "read": "Read"
+    }
   },
   "reviews": {
     "title": "Reviews",
@@ -1835,6 +1909,55 @@
     "doctorReply": "Doctor's reply: ",
     "onDoctor": "Doctor: ",
     "onArticle": "Article: ",
-    "isReply": "reply"
+    "isReply": "reply",
+    "sections": {
+      "clinic": "About the clinic",
+      "doctors": "About doctors",
+      "comments": "Comments"
+    },
+    "tabs": {
+      "pending": "Pending review",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "all": "All"
+    }
+  },
+  "leads": {
+    "tabs": {
+      "new": "New",
+      "in_progress": "In progress",
+      "closed": "Closed",
+      "all": "All"
+    }
+  },
+  "analytics": {
+    "range": {
+      "day": "Day",
+      "week": "Week",
+      "month": "Month",
+      "half_year": "Six months",
+      "year": "Year",
+      "three_years": "3 years",
+      "five_years": "5 years",
+      "all": "All time"
+    },
+    "status": {
+      "scheduled": "Scheduled",
+      "checked_in": "Checked in",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "no_show": "No-show"
+    }
+  },
+  "publicClinic": {
+    "nav_whyUs": "About us",
+    "nav_bento": "Departments",
+    "nav_priceList": "Services and prices",
+    "nav_doctors": "Doctors",
+    "nav_publications": "Articles by our doctors",
+    "nav_gallery": "Gallery",
+    "nav_reviews": "Reviews",
+    "nav_faq": "Questions",
+    "nav_contacts": "Contacts"
   }
 }

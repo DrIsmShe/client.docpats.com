@@ -734,7 +734,30 @@
     "customPagesHint": "Создавайте отдельные страницы (Акции, О враче, Цены) из блоков витрины.",
     "customPagesManage": "Управление страницами →",
     "layoutTitle": "Блоки витрины",
-    "themeTitle": "Оформление витрины"
+    "themeTitle": "Оформление витрины",
+    "blockType": {
+      "cta": "Призыв к записи (CTA)",
+      "contacts": "Контакты",
+      "reviews": "Отзывы",
+      "doctors": "Специалисты",
+      "bento": "Отделения"
+    },
+    "sectionLink": {
+      "about": "О клинике",
+      "departments": "Отделения",
+      "doctors": "Специалисты",
+      "articles": "Публикации",
+      "gallery": "Галерея",
+      "reviews": "Отзывы",
+      "faq": "Вопросы (FAQ)",
+      "contacts": "Контакты"
+    },
+    "tileSize": {
+      "1x1": "1×1",
+      "2x1": "2×1 (шире)",
+      "1x2": "1×2 (выше)",
+      "2x2": "2×2 (крупная)"
+    }
   },
   "layout": {
     "brandName": "DocPats Клиника",
@@ -803,6 +826,19 @@
       "placeholders": {
         "icdSearch": "Поиск МКБ-10 по коду (J45) или названию (астма)...",
         "diagnosisText": "Диагноз на вашем языке"
+      },
+      "fields": {
+        "complaints": "Жалобы",
+        "anamnesisMorbi": "Anamnesis morbi",
+        "anamnesisVitae": "Anamnesis vitae",
+        "statusPreasens": "Status praesens",
+        "statusLocalis": "Status localis",
+        "additionalDiagnosis": "Сопутствующий диагноз",
+        "recommendations": "Рекомендации",
+        "ctScanResults": "Результаты КТ",
+        "mriResults": "Результаты МРТ",
+        "ultrasoundResults": "Результаты УЗИ",
+        "laboratoryTestResults": "Лабораторные данные"
       }
     },
     "prescriptions": {
@@ -886,7 +922,15 @@
     },
     "tabs": {
       "labResults": "Анализы",
-      "summary": "Сводка"
+      "summary": "Сводка",
+      "encounters": "Истории болезни",
+      "allergies": "Аллергии",
+      "chronic": "Хронические заболевания",
+      "operations": "Операции",
+      "family": "Семейный анамнез",
+      "immunization": "Прививки",
+      "imaging": "Снимки",
+      "prescriptions": "Рецепты"
     },
     "labResults": {
       "listTitle": "Результаты анализов",
@@ -960,6 +1004,24 @@
         "UrineAlbuminACR": "Альбумин/креатинин мочи",
         "StoolInflammation": "Воспаление кишечника",
         "Other": "Другое"
+      }
+    },
+    "imaging": {
+      "types": {
+        "CT": "КТ",
+        "MRI": "МРТ",
+        "USG": "УЗИ",
+        "XRay": "Рентген",
+        "PET": "ПЭТ",
+        "SPECT": "ОФЭКТ",
+        "EEG": "ЭЭГ",
+        "ECG": "ЭКГ",
+        "Holter": "Холтер",
+        "Spirometry": "Спирометрия",
+        "Doppler": "Доплер",
+        "Gastroscopy": "Гастроскопия",
+        "Colonoscopy": "Колоноскопия",
+        "CapsuleEndoscopy": "Капсульная эндоскопия"
       }
     }
   },
@@ -1402,7 +1464,13 @@
       "equipment": "Оборудование",
       "announcements": "Объявления",
       "knowledge": "База знаний",
-      "staff": "Сотрудники"
+      "staff": "Сотрудники",
+      "pharmacy": "Аптека",
+      "vitrina": "Витрина",
+      "publications": "Публикации",
+      "reviews": "Отзывы",
+      "analytics": "Аналитика",
+      "leads": "Обращения"
     }
   },
   "schedule": {
@@ -1849,7 +1917,12 @@
     "empty": "Уведомлений нет",
     "markAll": "Отметить все прочитанными",
     "delete": "Удалить",
-    "viewAll": "Все уведомления"
+    "viewAll": "Все уведомления",
+    "tabs": {
+      "all": "Все",
+      "unread": "Непрочитанные",
+      "read": "Прочитанные"
+    }
   },
   "reviews": {
     "title": "Отзывы",
@@ -1868,6 +1941,55 @@
     "doctorReply": "Ответ врача: ",
     "onDoctor": "Врач: ",
     "onArticle": "Статья: ",
-    "isReply": "ответ"
+    "isReply": "ответ",
+    "sections": {
+      "clinic": "О клинике",
+      "doctors": "Врачам",
+      "comments": "Комментарии"
+    },
+    "tabs": {
+      "pending": "На модерации",
+      "approved": "Одобренные",
+      "rejected": "Отклонённые",
+      "all": "Все"
+    }
+  },
+  "leads": {
+    "tabs": {
+      "new": "Новые",
+      "in_progress": "В работе",
+      "closed": "Закрытые",
+      "all": "Все"
+    }
+  },
+  "analytics": {
+    "range": {
+      "day": "Сутки",
+      "week": "Неделя",
+      "month": "Месяц",
+      "half_year": "Полгода",
+      "year": "Год",
+      "three_years": "3 года",
+      "five_years": "5 лет",
+      "all": "Всё время"
+    },
+    "status": {
+      "scheduled": "Запланировано",
+      "checked_in": "На приёме",
+      "completed": "Завершено",
+      "cancelled": "Отменено",
+      "no_show": "Неявка"
+    }
+  },
+  "publicClinic": {
+    "nav_whyUs": "О нас",
+    "nav_bento": "Отделения",
+    "nav_priceList": "Услуги и цены",
+    "nav_doctors": "Врачи",
+    "nav_publications": "Статьи наших врачей",
+    "nav_gallery": "Галерея",
+    "nav_reviews": "Отзывы",
+    "nav_faq": "Вопросы",
+    "nav_contacts": "Контакты"
   }
 }

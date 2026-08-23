@@ -46,7 +46,6 @@
     "dpMessengerNumber": "DP mesenceri nömrəsi",
     "email": "Email"
   },
-
   "clinicalInfo": {
     "chronicDiseases": "Xroniki xəstəliklər",
     "operations": "Keçirilmiş əməliyyatlar",
@@ -55,7 +54,6 @@
     "immunization": "İmmunizasiya",
     "badHabits": "Zərərli vərdişlər"
   },
-
   "tables": {
     "date": "Tarix",
     "diagnosis": "Diaqnoz",
@@ -65,11 +63,9 @@
     "examName": "Müayinə adı",
     "examResult": "Müayinə nəticəsi"
   },
-
   "scans": {
     "unknownDoctor": "Naməlum həkim"
   },
-
   "labTests": {
     "bloodGeneral": "Ümumi qan analizi",
     "bloodBiochemistry": "Qanın biokimyası",
@@ -83,12 +79,10 @@
     "other": "Digər analizlər",
     "labName": "Laboratoriya adı"
   },
-
   "states": {
     "loading": "Yüklənir...",
     "patientNotFound": "Pasiyent tapılmadı"
   },
-
   "errors": {
     "failedToLoad": "Məlumatları yükləmək mümkün olmadı",
     "errorRetrievingPatientInfo": "Pasiyent məlumatı alınarkən xəta baş verdi",
@@ -98,13 +92,11 @@
     "pageNotFoundAlt": "Səhifə tapılmadı",
     "notEnoughClinicalData": "Xülasə yaratmaq üçün kifayət qədər klinik məlumat yoxdur."
   },
-
   "gender": {
     "man": "Kişi",
     "woman": "Qadın",
     "unknown": "Naməlum"
   },
-
   "exams": {
     "date": "Qəbul tarixi",
     "name": "Müayinə adı",
@@ -113,7 +105,6 @@
     "unknownDoctor": "Naməlum həkim",
     "notSpecified": "Göstərilməyib"
   },
-
   "buttons": {
     "choosePhoto": "Şəkil seç",
     "save": "Yadda saxla",
@@ -131,7 +122,6 @@
     "generating": "Yaradılır",
     "aiGeneratedSummaryDisclaimer": "Xülasə süni intellekt tərəfindən yaradılmışdır. Yalnız peşəkar istifadə üçün."
   },
-
   "values": {
     "notSpecified": "Göstərilməyib",
     "unknown": "Naməlum",
@@ -140,13 +130,23 @@
     "woman": "Qadın",
     "chooseCountry": "Ölkə seçin"
   },
-
   "messages": {
     "loading": "Yüklənir...",
     "photoNotSelected": "Şəkil seçilməyib"
   },
-
   "avatar_choose": {
     "chooseAvatar": "Avatar seçin"
+  },
+  "labType": {
+    "BloodTestGeneral": "Ümumi qan analizi",
+    "BloodTestBiochemistry": "Biokimya",
+    "UrineTest": "Sidik analizi",
+    "StoolTest": "Nəcis analizi",
+    "HormonePanel": "Hormonlar",
+    "TumorMarkers": "Onkomarkerlər",
+    "PCR": "PZR",
+    "Immunology": "İmmunologiya",
+    "GeneticScreening": "Genetik skrininq",
+    "Other": "Digər"
   }
 }
