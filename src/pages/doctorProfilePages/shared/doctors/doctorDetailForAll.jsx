@@ -308,6 +308,19 @@ const styles = `
     transform: translateY(-1px);
   }
 
+  /* Панель владельца профиля: пояснение + действия. */
+  .dd-self-note {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #64748b;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+  .dd-self .dd-btn { text-decoration: none; }
+
   .dd-btns-row {
     display: flex;
     gap: 10px;
@@ -1172,7 +1185,33 @@ export default function DoctorDetailsForAll() {
           {/* Message + Friend actions — только для авторизованных */}
           <div className="dd-card">
             <div className="dd-card-body">
-              {isAuthenticated ? (
+              {/* Врач на СВОЕЙ странице.
+                  Флаг приходит с сервера (isSelf в DTO): сессия там известна
+                  достоверно, и сравнивать идентификаторы на клиенте не нужно.
+                  Раньше владельцу предлагали написать самому себе и добавить
+                  себя в друзья — бэкенд такие запросы отклоняет, но кнопка,
+                  которая заведомо не сработает, выглядит поломкой. */}
+              {doctorProfile?.isSelf ? (
+                <div className="dd-self">
+                  <div className="dd-self-note">
+                    Это ваша публичная страница — её видят пациенты, коллеги и
+                    поисковые системы.
+                  </div>
+                  <div className="dd-btns-row">
+                    <Link to="/doctor/home-page" className="dd-btn dd-btn-primary">
+                      Мой кабинет
+                    </Link>
+                    <a
+                      className="dd-btn dd-btn-outline"
+                      href={`/public/doctor-profile/doctor-details/${id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Посмотреть как посетитель
+                    </a>
+                  </div>
+                </div>
+              ) : isAuthenticated ? (
                 <div className="dd-btns-row">
                   <button
                     className="dd-btn dd-btn-msg"
