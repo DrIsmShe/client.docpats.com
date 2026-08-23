@@ -381,19 +381,11 @@ export default function ClinicPublicPageSettings() {
     );
   }
 
-  // Публичный адрес клиники — /clinics/slug, а НЕ корневой /slug.
-  //
-  // Корневой адрес красивее и маршрут под него есть (App.jsx), но SEO-слой
-  // на него не распространяется: netlify/edge-functions/seo.js объявлен на
-  // /clinics/*, и по корневому слагу бот получает пустой SPA-шелл — без
-  // title, description и разметки MedicalClinic. Карта сайта и canonical
-  // тоже указывают на /clinics/slug.
-  //
-  // Здесь директор копирует ссылку, чтобы разослать её и положить в
-  // соцсети. Пока корневой адрес не покрыт edge-функцией, отдавать ему
-  // ссылку — значит гарантированно отправлять клиентов и краулеров на
-  // страницу без единого мета-тега.
-  const publicUrl = clinic?.slug ? `/clinics/${clinic.slug}` : null;
+  // Каноничный публичный адрес клиники — корневой /slug (не /clinics/slug).
+  // Отсюда директор копирует ссылку для рассылки и соцсетей, и этот же
+  // адрес netlify/edge-functions/seo.js объявляет каноническим: обработку
+  // корневого слага он выполняет наравне с /clinics/slug.
+  const publicUrl = clinic?.slug ? `/${clinic.slug}` : null;
 
   const fmtDate = (d) => {
     if (!d) return "";

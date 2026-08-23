@@ -1,3 +1,38 @@
+// Корневые сегменты, занятые самим приложением: по ним слаг клиники не
+// ищем. Это ускорение, а НЕ защита: если сегмент сюда не попал, публичный
+// API ответит 404 и запрос уйдёт дальше обычным путём. Ошибка в списке
+// стоит одного лишнего запроса, а не сломанной страницы.
+const RESERVED_ROOT = new Set([
+  "about",
+  "arena",
+  "articles",
+  "clinic",
+  "clinics",
+  "complete-registration",
+  "consultation",
+  "demo",
+  "diagnostics",
+  "docs",
+  "doctor",
+  "dp",
+  "education",
+  "login",
+  "medical-codes",
+  "news",
+  "patient",
+  "pay",
+  "payment",
+  "previsit",
+  "pricing",
+  "public",
+  "radiology",
+  "registration",
+  "terms-consent-page",
+  "top-doctors",
+  "user-synthesis",
+  "webinar",
+]);
+
 export default async function handler(request, context) {
   const url = new URL(request.url);
 
@@ -134,10 +169,27 @@ export default async function handler(request, context) {
   // schemaType ниже: у клиники другой набор полей, и попытка втиснуть её
   // в форму статьи дала бы разметку с headline и datePublished, которых
   // у клиники нет.
+  // Витрина живёт по двум адресам: корневому /<slug> и старому
+  // /clinics/<slug>. Корневой — тот, что кабинет выдаёт директору и который
+  // расходится по соцсетям и визиткам, поэтому канонический именно он;
+  // /clinics/<slug> обрабатываем тоже, чтобы уже разошедшиеся ссылки
+  // отдавали разметку и указывали на канонический адрес, а не выглядели
+  // для поисковика вторым независимым дублем страницы.
+  //
+  // Регулярка корневого адреса не допускает точку, поэтому запросы файлов
+  // (/favicon.ico, /og-image.jpg, /sitemap.xml) сюда не попадают и уходят
+  // дальше нетронутыми.
   const clinicMatch = url.pathname.match(/^\/clinics\/([a-z0-9-]+)\/?$/i);
-  if (clinicMatch) {
+  const rootMatch = url.pathname.match(/^\/([a-z0-9-]+)\/?$/i);
+  const clinicSlug =
+    clinicMatch?.[1] ||
+    (rootMatch && !RESERVED_ROOT.has(rootMatch[1].toLowerCase())
+      ? rootMatch[1]
+      : null);
+
+  if (clinicSlug) {
     try {
-      const slug = clinicMatch[1];
+      const slug = clinicSlug;
       const res = await fetch(
         `https://backend.docpats.com/api/v1/public/clinics/${encodeURIComponent(slug)}`,
       );
@@ -145,7 +197,7 @@ export default async function handler(request, context) {
       const clinic = await res.json();
       if (!clinic?.name) return context.next();
 
-      const pageUrl = `https://docpats.com/clinics/${slug}`;
+      const pageUrl = `https://docpats.com/${slug}`;
       const title = escAttr(clinic.name);
       const desc = escAttr(
         (clinic.description || clinic.slogan || `Клиника ${clinic.name}`)
@@ -595,5 +647,27 @@ export const config = {
     "/public/doctor-profile/article-detail-for-all/*",
     "/public/doctor/article-scientific-detail-for-all/*",
     "/public/doctor-profile/doctor-details/*",
+    // Витрина по корневому слагу. Односегментный шаблон URLPattern: под него
+    // попадает и /login, и /pricing — отсекаются они в RESERVED_ROOT, а всё
+    // незнакомое проверяется запросом к публичному API.
+    "/:slug",
+  ],
+  // Файлы в корне (favicon.ico, og-image.jpg, sitemap.xml, sw.js) шаблону
+  // "/:slug" тоже соответствуют. Внутри функции они отсеиваются регуляркой,
+  // но дешевле не запускать её вовсе.
+  excludedPath: [
+    "/*.js",
+    "/*.css",
+    "/*.json",
+    "/*.xml",
+    "/*.txt",
+    "/*.ico",
+    "/*.png",
+    "/*.jpg",
+    "/*.jpeg",
+    "/*.webp",
+    "/*.svg",
+    "/*.html",
+    "/*.map",
   ],
 };
