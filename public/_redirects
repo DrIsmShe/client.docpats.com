@@ -8,27 +8,21 @@
 /sitemap-*         https://backend.docpats.com/sitemap-:splat         200
 /rss.xml           https://backend.docpats.com/rss.xml           200
 /news-sitemap.xml  https://backend.docpats.com/news-sitemap.xml  200
-# Несуществующий ФАЙЛ должен отдавать 404, а не SPA-шелл со статусом 200.
+# ПОЧЕМУ ЗДЕСЬ НЕТ ПРАВИЛ «404 на несуществующий файл».
 #
-# Именно из-за catch-all ниже промах в имени картинки ничем себя не выдавал:
-# og-image.jpg и og-default.jpg месяцами возвращали 200 и text/html, а
-# отладчик превью сообщал не «файла нет», а «не удалось обработать
-# изображение». Правила без force срабатывают только когда файла на диске
-# действительно нет, поэтому существующие ассеты они не трогают.
+# Из-за catch-all ниже промах в имени файла ничем себя не выдаёт: og-image.jpg
+# и og-default.jpg месяцами возвращали 200 и text/html, а отладчик превью
+# сообщал не «файла нет», а «не удалось обработать изображение».
 #
-# Выше по файлу проксируются robots.txt, sitemap*.xml и rss.xml — их правила
-# идут раньше и продолжают работать.
-/*.jpg    /index.html  404
-/*.jpeg   /index.html  404
-/*.png    /index.html  404
-/*.webp   /index.html  404
-/*.svg    /index.html  404
-/*.gif    /index.html  404
-/*.ico    /index.html  404
-/*.css    /index.html  404
-/*.js     /index.html  404
-/*.map    /index.html  404
-/*.woff   /index.html  404
-/*.woff2  /index.html  404
+# Напрашивается правило вида "/*.jpg /index.html 404" — оно НЕ РАБОТАЕТ.
+# Проверено на проде: несуществующий .jpg по-прежнему отдавал 200. В движке
+# _redirects звёздочка поддерживается только как ЗАМЫКАЮЩАЯ ("/foo/*"), и
+# шаблон "/*.jpg" просто не совпадает ни с чем — запрос проваливается сюда же.
+#
+# Не путать с excludedPath в netlify/edge-functions/seo.js: там URLPattern,
+# другой движок, и "/*.css" в нём разбирается как ожидается.
+#
+# Отловить такой промах можно только запросом к живому адресу: content-type
+# у него будет text/html вместо image/*.
 
 /* /index.html 200
