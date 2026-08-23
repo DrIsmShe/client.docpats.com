@@ -112,7 +112,9 @@
       "oblique_left": "Yarım yan sol görünüş (45°).",
       "oblique_right": "Yarım yan sağ görünüş (45°).",
       "bottom_up": "Aşağıdan görünüş. Submammar büküşün qiymətləndirilməsi üçün."
-    }
+    },
+    "viewsCount_many": "{{count}} rakurs",
+    "viewsCount_few": "{{count}} rakurs"
   },
   "list": {
     "title": "Mənim simulyasiya planlarım",
@@ -132,7 +134,9 @@
       "newest": "Əvvəlcə yenilər",
       "oldest": "Əvvəlcə köhnələr",
       "label": "Ada görə"
-    }
+    },
+    "controlPointsCount_many": "{{count}} deformasiya nöqtəsi",
+    "controlPointsCount_few": "{{count}} deformasiya nöqtəsi"
   },
   "editor": {
     "title": "Plan redaktoru",
@@ -219,7 +223,9 @@
     "yesterdayAt": "dünən {{time}}",
     "daysAgo_zero": "bu gün",
     "daysAgo_one": "{{count}} gün əvvəl",
-    "daysAgo_other": "{{count}} gün əvvəl"
+    "daysAgo_other": "{{count}} gün əvvəl",
+    "daysAgo_many": "{{count}} gün əvvəl",
+    "daysAgo_few": "{{count}} gün əvvəl"
   },
   "tabs": {
     "editor": "Redaktor",
@@ -284,7 +290,9 @@
       "hint": "İşarələmək üçün üz seçin"
     },
     "rotationApplied": "Dönmə tətbiq edildi",
-    "statsVisible": "nöqtə"
+    "statsVisible": "nöqtə",
+    "count_many": "{{count}} nöqtə",
+    "count_few": "{{count}} nöqtə"
   },
   "measurements": {
     "title": "Ölçmələr",

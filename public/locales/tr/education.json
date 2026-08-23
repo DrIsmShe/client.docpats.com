@@ -584,5 +584,49 @@
     }
   },
   "machineTranslated": "Makine çevirisi",
-  "machineTranslatedHint": "Bu soru orijinal dilinden otomatik olarak çevrildi. Seçenekler ve doğru cevap orijinaldekiyle aynıdır."
+  "machineTranslatedHint": "Bu soru orijinal dilinden otomatik olarak çevrildi. Seçenekler ve doğru cevap orijinaldekiyle aynıdır.",
+  "adminManual": {
+    "form": {
+      "markCorrect": "doğru",
+      "submitBusy": "Oluşturuluyor…",
+      "target": "Sorular nereye eklensin",
+      "addCase": "➕ Vaka ekle",
+      "addOption": "Seçenek ekle",
+      "addQuestion": "➕ Soru ekle",
+      "caseHeader": "Vaka {{number}}",
+      "caseHint": "Bu alan doluysa metin BU vakanın HER alt sorusunun başına eklenir — vinyetler böyle çalışır. Boş bırakılırsa sorular tekil olur.",
+      "caseLabel": "Giriş / klinik vaka — isteğe bağlı",
+      "casePlaceholder": "Klinik vakayı anlatın: şikâyetler, öykü, muayene… Tekil sorular için boş bırakın.",
+      "casesTitle": "Vakalar ve sorular",
+      "correctTag": "doğru yanıt",
+      "explanationLabel": "Açıklama (isteğe bağlı)",
+      "explanationPlaceholder": "Doğru yanıtın neden doğru olduğunu değerlendirici ve öğrenen çözümde görür",
+      "lang": "Soruların dili",
+      "newProgramOption": "➕ Yeni test — elle oluştur",
+      "newTestName": "Elle test",
+      "optionPlaceholder": "Seçenek {{key}}",
+      "questionLabel": "Soru {{number}}",
+      "questionPlaceholder": "Alt soru metni. Örn.: Klinik diaqnoz nədir?",
+      "removeCase": "Vakayı sil",
+      "removeOption": "Seçeneği kaldır",
+      "removeQuestion": "Soruyu sil",
+      "submit": "Soruları oluştur"
+    },
+    "draftProgramTitle": "Elle giriş: {{name}}",
+    "errors": {
+      "emptyQuestion": "Vaka {{case}}, soru {{number}}: soru metnini girin",
+      "failed": "Sorular oluşturulamadı",
+      "fewOptions": "Vaka {{case}}, soru {{number}}: metinli en az iki seçenek gerekir",
+      "noCorrect": "Vaka {{case}}, soru {{number}}: doğru seçeneği işaretleyin",
+      "noQuestions": "En az bir soru ekleyin"
+    },
+    "notices": {
+      "done": "Oluşturulan soru: {{count}}. Aşağıdaki taslakları kontrol edip bankaya taşıyın."
+    },
+    "stages": {
+      "creating": "Sorular oluşturuluyor…"
+    },
+    "subtitle": "Soruları elle yazın — teker teker, klinik vaka olarak ya da birden çok vakayla birlikte. Vaka, ortak bir giriş ve ona bağlı birkaç alt sorudur; istediğiniz kadar vaka ekleyebilirsiniz. Her alt soru bankada ayrı bir soru olur, kendi vakasının girişi her birinin başına eklenir. Sorular aynı taslaklara düşer ve yayından önce incelemeden geçer.",
+    "title": "Testi elle yayımla"
+  }
 }

@@ -584,5 +584,49 @@
     }
   },
   "machineTranslated": "Maşın tərcüməsi",
-  "machineTranslatedHint": "Bu sual orijinal dildən avtomatik tərcümə olunub. Cavab variantları və düzgün cavab orijinaldakı ilə eynidir."
+  "machineTranslatedHint": "Bu sual orijinal dildən avtomatik tərcümə olunub. Cavab variantları və düzgün cavab orijinaldakı ilə eynidir.",
+  "adminManual": {
+    "form": {
+      "markCorrect": "düzgün",
+      "submitBusy": "Yaradılır…",
+      "target": "Suallar hara əlavə olunsun",
+      "addCase": "➕ Hal əlavə et",
+      "addOption": "Variant əlavə et",
+      "addQuestion": "➕ Sual əlavə et",
+      "caseHeader": "Hal {{number}}",
+      "caseHint": "Bu sahə doldurulubsa, mətn BU halın HƏR alt sualının əvvəlinə əlavə olunur — vinyetlər belə işləyir. Boşdursa, suallar təkdir.",
+      "caseLabel": "Giriş / klinik hal — istəyə görə",
+      "casePlaceholder": "Klinik halı təsvir edin: şikayətlər, anamnez, obyektiv baxış… Tək suallar üçün boş buraxın.",
+      "casesTitle": "Hallar və suallar",
+      "correctTag": "düzgün cavab",
+      "explanationLabel": "İzah (istəyə görə)",
+      "explanationPlaceholder": "Düzgün cavabın niyə düzgün olduğunu rəyçi və öyrənən təhlildə görəcək",
+      "lang": "Sualların dili",
+      "newProgramOption": "➕ Yeni test — əl ilə yarat",
+      "newTestName": "Əl ilə test",
+      "optionPlaceholder": "Variant {{key}}",
+      "questionLabel": "Sual {{number}}",
+      "questionPlaceholder": "Alt sualın mətni. Məs.: Klinik diaqnoz nədir?",
+      "removeCase": "Halı sil",
+      "removeOption": "Variantı çıxar",
+      "removeQuestion": "Sualı sil",
+      "submit": "Sualları yarat"
+    },
+    "draftProgramTitle": "Əl ilə daxiletmə: {{name}}",
+    "errors": {
+      "emptyQuestion": "Hal {{case}}, sual {{number}}: sualın mətnini daxil edin",
+      "failed": "Sualları yaratmaq alınmadı",
+      "fewOptions": "Hal {{case}}, sual {{number}}: mətnli ən azı iki variant lazımdır",
+      "noCorrect": "Hal {{case}}, sual {{number}}: düzgün variantı işarələyin",
+      "noQuestions": "Ən azı bir sual əlavə edin"
+    },
+    "notices": {
+      "done": "Yaradılan sual: {{count}}. Aşağıdakı qaralamaları yoxlayın və banka köçürün."
+    },
+    "stages": {
+      "creating": "Suallar yaradılır…"
+    },
+    "subtitle": "Sualları əl ilə yazın — bir-bir, klinik hal şəklində və ya bir neçə halla birlikdə. Hal — ümumi giriş və ona bir neçə alt sual; halları istənilən qədər əlavə etmək olar. Hər alt sual bankda ayrıca sual olacaq, öz halının girişi isə hər birinin əvvəlinə əlavə olunacaq. Suallar eyni qaralamalara düşür və dərcdən əvvəl baxışdan keçir.",
+    "title": "Testi əl ilə yerləşdir"
+  }
 }

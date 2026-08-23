@@ -275,7 +275,11 @@
     "casesCount_one": "{{count}} case",
     "casesCount_other": "{{count}} cases",
     "photosCount_one": "{{count}} photo",
-    "photosCount_other": "{{count}} photos"
+    "photosCount_other": "{{count}} photos",
+    "casesCount_many": "{{count}} cases",
+    "photosCount_few": "{{count}} photo",
+    "photosCount_many": "{{count}} photo",
+    "casesCount_few": "{{count}} cases"
   },
   "list": {
     "breadcrumb": "DocPats · Surgery",
@@ -302,7 +306,9 @@
     "perPageOption": "{{count}} per page",
     "nextPage": "Next",
     "perPage": "Per page",
-    "prevPage": "Previous"
+    "prevPage": "Previous",
+    "proceduresTypes_many": "{{count}} procedure types",
+    "proceduresTypes_few": "{{count}} procedure types"
   },
   "simulator": {
     "sourcePhoto": "Source photo",

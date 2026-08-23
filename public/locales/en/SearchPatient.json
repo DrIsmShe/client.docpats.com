@@ -43,5 +43,15 @@
     "title": "Patient already exists in private list",
     "text": "This patient has already been added by you."
   },
-  "openCard": "Open patient card"
+  "openCard": "Open patient card",
+  "searchPatient": {
+    "loadingSearch": "Searching...",
+    "openCard": "Open patient record",
+    "alert": {
+      "text": "You have already added this patient.",
+      "title": "The patient is already in the private list"
+    },
+    "heroSub": "Search a patient by name, email or UUID",
+    "tag": "DocPats · Polyclinic"
+  }
 }

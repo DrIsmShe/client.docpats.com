@@ -573,7 +573,8 @@
     "loadError": "حدث خطأ أثناء تحميل البيانات",
     "deleteError": "حدث خطأ أثناء الحذف",
     "deleted": "حُذف",
-    "noTags": "بدون وسوم"
+    "noTags": "بدون وسوم",
+    "noResults": "لا توجد قوالب"
   },
   "fields": {
     "templateTitle": "عنوان القالب",
@@ -641,7 +642,8 @@
   },
   "addAngiographyScanUpload": {
     "page": {
-      "title": "إضافة نتائج تصوير الأوعية"
+      "title": "إضافة نتائج تصوير الأوعية",
+      "outsideSpecialization": "⚠ تمت إضافة الفحص خارج تخصصك الأساسي."
     },
     "messages": {
       "success": "✅ تم إضافة نتيجة تصوير الأوعية بنجاح!",

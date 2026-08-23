@@ -76,7 +76,9 @@
     },
     "fields": {
       "titlePlaceholder": "العنوان",
-      "contentPlaceholder": "المحتوى"
+      "contentPlaceholder": "المحتوى",
+      "content": "المحتوى",
+      "title": "العنوان"
     },
     "buttons": {
       "save": "حفظ"

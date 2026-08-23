@@ -95,7 +95,8 @@
       "update": "تحديث",
       "delete": "حذف",
       "edit": "تعديل",
-      "cancel": "إلغاء"
+      "cancel": "إلغاء",
+      "back": "رجوع"
     }
   },
   "buttons": {
@@ -103,7 +104,8 @@
     "update": "تحديث",
     "delete": "حذف",
     "edit": "تعديل",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "back": "رجوع"
   },
   "CoronographyScanTemplateNameofexamDetail": {
     "title": "تفاصيل قالب اسم فحص تصوير الشرايين التاجية",

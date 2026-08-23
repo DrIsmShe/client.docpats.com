@@ -60,7 +60,8 @@
   },
   "body_ai": {
     "translating": "Çevriliyor...",
-    "translation_pending": "Çeviri hazırlanıyor — yayından sonra genellikle 10 dakikaya kadar sürer. Orijinali gösteriyoruz."
+    "translation_pending": "Çeviri hazırlanıyor — yayından sonra genellikle 10 dakikaya kadar sürer. Orijinali gösteriyoruz.",
+    "translating_hint": "İlk çeviri yaklaşık 30 sn sürer"
   },
   "topbar_title": "DocPats · Tıbbi Zekâ",
   "nav_news": "Haberler",
@@ -97,7 +98,11 @@
     "filters": "Filtreler",
     "apply": "Uygula",
     "reset": "Sıfırla",
-    "loadMore": "Daha fazla yükle"
+    "loadMore": "Daha fazla yükle",
+    "all": "Tümü",
+    "news": "Haberler",
+    "publications": "Yayınlar",
+    "research": "Dosyalarım"
   },
   "labels": {
     "category": "Kategori / uzmanlık",
@@ -185,7 +190,9 @@
     "loading": "Yükleniyor…",
     "empty": "Seçili filtreler için makale bulunamadı.",
     "loadMore": "Daha fazla makale yükle",
-    "loadingMore": "Yükleniyor…"
+    "loadingMore": "Yükleniyor…",
+    "articles_few": "makale",
+    "articles_many": "makale"
   },
   "body": {
     "translating": "Makale çevriliyor…",
@@ -242,5 +249,7 @@
     "scientific": "Bilimsel makale",
     "article": "Doktor yayını",
     "doctor": "Doktor"
-  }
+  },
+  "publications_few": "{{count}} yayın",
+  "publications_many": "{{count}} yayın"
 }

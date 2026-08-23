@@ -128,5 +128,14 @@
     "confirmDelete": "هل أنت متأكد أنك تريد حذف هذا القالب؟",
     "deleteError": "❌ فشل في حذف القالب.",
     "loadError": "فشل في تحميل قوالب أسماء الفحوصات."
+  },
+  "SpirometryScanerTemplateRecomendation": {
+    "contentPlaceholder": "المحتوى",
+    "errorDefault": "حدث خطأ أثناء إضافة القالب",
+    "networkError": "⚠️ خطأ في الشبكة",
+    "pageTitle": "إضافة قالب التوصيات",
+    "saveButton": "حفظ",
+    "successMessage": "✅ تم إضافة قالب التوصيات بنجاح.",
+    "titlePlaceholder": "العنوان"
   }
 }

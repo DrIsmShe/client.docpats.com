@@ -76,7 +76,9 @@
     },
     "fields": {
       "titlePlaceholder": "Başlık",
-      "contentPlaceholder": "İçerik"
+      "contentPlaceholder": "İçerik",
+      "content": "İçerik",
+      "title": "Başlık"
     },
     "buttons": {
       "save": "Kaydet"

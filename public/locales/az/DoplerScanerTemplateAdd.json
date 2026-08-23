@@ -76,7 +76,9 @@
     },
     "fields": {
       "titlePlaceholder": "Başlıq",
-      "contentPlaceholder": "Məzmun"
+      "contentPlaceholder": "Məzmun",
+      "content": "Məzmun",
+      "title": "Başlıq"
     },
     "buttons": {
       "save": "Yadda saxla"

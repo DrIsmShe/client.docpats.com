@@ -21,10 +21,25 @@ const path = require("node:path");
 const LOCALES = path.join(process.cwd(), "public", "locales");
 const REFERENCE = "ru";
 
-// Проверяем только те пространства имён, которые ведём по-настоящему
-// синхронно. Остальные исторически расходятся, и падать на них — значит
-// приучить всех запускать проверку с закрытыми глазами.
-const NAMESPACES = ["diagnostics", "arena", "modalities"];
+// Проверяем ВСЕ словари, а не избранные три.
+//
+// Раньше здесь стоял список из diagnostics/arena/modalities — «остальные
+// исторически расходятся». Из-за этого перекос между языками не ловился
+// нигде: заголовок карточки пациента был в русском и арабском, но не в
+// азербайджанском, и на азербайджанском страница показывала русский текст.
+// Ни сверка кода со словарём, ни детектор разметки такого не видят: ключ
+// существует, вызов на месте, паритет никто не смотрит.
+//
+// Накопленное расхождение (полторы тысячи ключей) заморожено в базовом
+// списке — падаем на новых и на устаревших записях, как в соседних
+// проверках.
+const NAMESPACES = fs
+  .readdirSync(path.join(LOCALES, REFERENCE))
+  .filter((f) => f.endsWith(".json"))
+  .map((f) => f.replace(/\.json$/, ""))
+  .sort();
+
+const BASELINE = path.join(process.cwd(), "scripts", "locales-parity-baseline.json");
 
 const read = (lang, ns) =>
   JSON.parse(fs.readFileSync(path.join(LOCALES, lang, `${ns}.json`), "utf8"));
@@ -49,20 +64,22 @@ const languages = fs
   .filter((d) => d.isDirectory())
   .map((d) => d.name);
 
-let problems = 0;
+// Каждое расхождение — одна строка «ns | lang | вид | ключ», чтобы список
+// можно было сравнивать построчно, как в соседних проверках.
+const findings = [];
+const verbose = process.argv.includes("--verbose");
 
 for (const ns of NAMESPACES) {
   const reference = flatten(read(REFERENCE, ns));
   const referenceKeys = Object.keys(reference);
-  console.log(`\n${ns}: эталон ${REFERENCE}, ключей ${referenceKeys.length}`);
+  if (verbose) console.log(`\n${ns}: эталон ${REFERENCE}, ключей ${referenceKeys.length}`);
 
   for (const lang of languages) {
     if (lang === REFERENCE) continue;
 
     const file = path.join(LOCALES, lang, `${ns}.json`);
     if (!fs.existsSync(file)) {
-      console.log(`  ${lang}: файла нет`);
-      problems += 1;
+      findings.push(`${ns} | ${lang} | файла нет`);
       continue;
     }
 
@@ -83,20 +100,59 @@ for (const ns of NAMESPACES) {
       .map((k) => `${k} (${reference[k].length} → ${Array.isArray(data[k]) ? data[k].length : "не список"})`);
 
     if (!missing.length && !extra.length && !empty.length && !shortLists.length) {
-      console.log(`  ${lang}: ок`);
+      if (verbose) console.log(`  ${lang}: ок`);
       continue;
     }
 
-    problems += 1;
-    if (missing.length) console.log(`  ${lang}: нет ключей — ${missing.join(", ")}`);
-    if (extra.length) console.log(`  ${lang}: лишние ключи — ${extra.join(", ")}`);
-    if (empty.length) console.log(`  ${lang}: пустые значения — ${empty.join(", ")}`);
-    if (shortLists.length) console.log(`  ${lang}: списки разной длины — ${shortLists.join(", ")}`);
+    for (const k of missing) findings.push(`${ns} | ${lang} | нет ключа | ${k}`);
+    for (const k of extra) findings.push(`${ns} | ${lang} | лишний ключ | ${k}`);
+    for (const k of empty) findings.push(`${ns} | ${lang} | пустое значение | ${k}`);
+    for (const k of shortLists) findings.push(`${ns} | ${lang} | список короче | ${k}`);
   }
 }
 
-if (problems) {
-  console.error(`\nРасхождений: ${problems}`);
-  process.exit(1);
+findings.sort();
+
+let baseline = [];
+if (fs.existsSync(BASELINE)) baseline = JSON.parse(fs.readFileSync(BASELINE, "utf8"));
+
+if (process.argv.includes("--update-baseline")) {
+  fs.writeFileSync(BASELINE, JSON.stringify(findings, null, 2) + "\n", "utf8");
+  console.log(`Базовый список обновлён: ${findings.length} записей.`);
+  process.exit(0);
 }
-console.log("\nВсе словари согласованы.");
+
+const known = new Set(baseline);
+const fresh = findings.filter((f) => !known.has(f));
+const current = new Set(findings);
+const stale = baseline.filter((f) => !current.has(f));
+
+if (!fresh.length && !stale.length) {
+  console.log(`Паритет словарей: ${findings.length} известных расхождений, новых нет.`);
+  process.exit(0);
+}
+
+if (fresh.length) {
+  console.error(`\nНОВЫЕ расхождения между языками (${fresh.length}):\n`);
+  for (const f of fresh.slice(0, 40)) console.error("  " + f);
+  if (fresh.length > 40) console.error(`  …и ещё ${fresh.length - 40}`);
+  console.error(
+    "\nКлюч есть в русском, но не во всех языках — i18next покажет русский\n" +
+      "текст или сам ключ. Добавьте перевод во ВСЕ языки.",
+  );
+}
+
+if (stale.length) {
+  console.error(`\nУстаревшие записи базового списка (${stale.length}):\n`);
+  for (const f of stale.slice(0, 40)) console.error("  " + f);
+  if (stale.length > 40) console.error(`  …и ещё ${stale.length - 40}`);
+  console.error("\nЭти расхождения закрыты — обновите список:\n  npm run check:locales -- --update-baseline");
+}
+
+// На сборщике не валим сборку — та же причина, что и в соседних проверках:
+// сорванный деплой дороже неполного перевода.
+if (process.env.NETLIFY) {
+  console.error("\nСборка продолжена: на выкатке проверка предупреждает, но не останавливает деплой.");
+  process.exit(0);
+}
+process.exit(1);

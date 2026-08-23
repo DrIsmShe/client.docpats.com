@@ -112,7 +112,9 @@
       "oblique_left": "Semi-lateral left view (45°).",
       "oblique_right": "Semi-lateral right view (45°).",
       "bottom_up": "Bottom-up view. For inframammary fold assessment."
-    }
+    },
+    "viewsCount_many": "{{count}} views",
+    "viewsCount_few": "{{count}} views"
   },
   "list": {
     "title": "My simulation plans",
@@ -132,7 +134,9 @@
       "newest": "Newest first",
       "oldest": "Oldest first",
       "label": "By name"
-    }
+    },
+    "controlPointsCount_many": "{{count}} deformation points",
+    "controlPointsCount_few": "{{count}} deformation points"
   },
   "editor": {
     "title": "Plan editor",
@@ -219,7 +223,9 @@
     "yesterdayAt": "yesterday at {{time}}",
     "daysAgo_zero": "today",
     "daysAgo_one": "{{count}} day ago",
-    "daysAgo_other": "{{count}} days ago"
+    "daysAgo_other": "{{count}} days ago",
+    "daysAgo_many": "{{count}} days ago",
+    "daysAgo_few": "{{count}} days ago"
   },
   "tabs": {
     "editor": "Editor",
@@ -284,7 +290,9 @@
       "hint": "Choose a face to annotate"
     },
     "rotationApplied": "Rotation applied",
-    "statsVisible": "points"
+    "statsVisible": "points",
+    "count_many": "{{count}} points",
+    "count_few": "{{count}} points"
   },
   "measurements": {
     "title": "Measurements",

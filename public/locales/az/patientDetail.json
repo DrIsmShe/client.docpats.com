@@ -1,6 +1,7 @@
 {
   "titles": {
-    "patientCard": "Xəstə Kartı"
+    "patientCard": "Xəstə Kartı",
+    "moreAboutPatient": "{{firstName}} {{lastName}} haqqında ətraflı"
   },
   "tabs": {
     "generalInfo": "Ümumi məlumat",

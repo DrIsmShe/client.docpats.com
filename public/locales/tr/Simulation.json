@@ -112,7 +112,9 @@
       "oblique_left": "Yarı yan sol görünüm (45°).",
       "oblique_right": "Yarı yan sağ görünüm (45°).",
       "bottom_up": "Alttan görünüm. İnframammarian katlanma değerlendirmesi için."
-    }
+    },
+    "viewsCount_many": "{{count}} açı",
+    "viewsCount_few": "{{count}} açı"
   },
   "list": {
     "title": "Simülasyon planlarım",
@@ -132,7 +134,9 @@
       "newest": "Önce en yeni",
       "oldest": "Önce en eski",
       "label": "İsme göre"
-    }
+    },
+    "controlPointsCount_many": "{{count}} deformasyon noktası",
+    "controlPointsCount_few": "{{count}} deformasyon noktası"
   },
   "editor": {
     "title": "Plan editörü",
@@ -219,7 +223,9 @@
     "yesterdayAt": "dün {{time}}",
     "daysAgo_zero": "bugün",
     "daysAgo_one": "{{count}} gün önce",
-    "daysAgo_other": "{{count}} gün önce"
+    "daysAgo_other": "{{count}} gün önce",
+    "daysAgo_many": "{{count}} gün önce",
+    "daysAgo_few": "{{count}} gün önce"
   },
   "tabs": {
     "editor": "Editör",
@@ -284,7 +290,9 @@
       "hint": "İşaretlemek için bir yüz seçin"
     },
     "rotationApplied": "Döndürme uygulandı",
-    "statsVisible": "nokta"
+    "statsVisible": "nokta",
+    "count_many": "{{count}} nokta",
+    "count_few": "{{count}} nokta"
   },
   "measurements": {
     "title": "Ölçümler",

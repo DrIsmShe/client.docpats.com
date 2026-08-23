@@ -275,7 +275,11 @@
     "casesCount_one": "{{count}} keys",
     "casesCount_other": "{{count}} keys",
     "photosCount_one": "{{count}} foto",
-    "photosCount_other": "{{count}} foto"
+    "photosCount_other": "{{count}} foto",
+    "casesCount_many": "{{count}} keys",
+    "photosCount_few": "{{count}} foto",
+    "photosCount_many": "{{count}} foto",
+    "casesCount_few": "{{count}} hal"
   },
   "list": {
     "breadcrumb": "DocPats · Cərrahiyyə",
@@ -302,7 +306,9 @@
     "perPageOption": "səhifədə {{count}}",
     "nextPage": "Sonrakı",
     "perPage": "Səhifədə",
-    "prevPage": "Əvvəlki"
+    "prevPage": "Əvvəlki",
+    "proceduresTypes_many": "{{count}} əməliyyat növü",
+    "proceduresTypes_few": "{{count}} əməliyyat növü"
   },
   "simulator": {
     "sourcePhoto": "Əsas foto",

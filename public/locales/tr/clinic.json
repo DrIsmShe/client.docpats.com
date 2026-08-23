@@ -1949,7 +1949,9 @@
         "fix": "Lütfen formdaki hataları düzeltin",
         "generic": "Oda kaydedilemedi"
       }
-    }
+    },
+    "staffCount_many": "doktor: {{count}}",
+    "staffCount_few": "doktor: {{count}}"
   },
   "equipment": {
     "back": "← Panel",
@@ -2033,7 +2035,9 @@
         "fix": "Lütfen formdaki hataları düzeltin",
         "generic": "Ekipman kaydedilemedi"
       }
-    }
+    },
+    "staffCount_few": "sorumlu: {{count}}",
+    "staffCount_many": "sorumlu: {{count}}"
   },
   "knowledge": {
     "back": "← Panel",
@@ -2159,7 +2163,9 @@
         "generic": "Konsültasyon oluşturulamadı"
       }
     },
-    "videoCall": "Video konferans"
+    "videoCall": "Video konferans",
+    "participantsCount_many": "katılımcı: {{count}}",
+    "participantsCount_few": "katılımcı: {{count}}"
   },
   "telemed": {
     "back": "← Panel",
@@ -2433,5 +2439,31 @@
     "noMatches": "Eşleşme yok",
     "searching": "Aranıyor…",
     "category": "kategori"
+  },
+  "booking": {
+    "confirm": "Randevu al",
+    "date": "Tarih",
+    "doctor": "Doktor",
+    "errCreate": "Randevu oluşturulamadı",
+    "errDoctors": "Doktor listesi yüklenemedi",
+    "loading": "Yükleniyor…",
+    "patient": "Hasta",
+    "reason": "Neden / not (isteğe bağlı)",
+    "searchBtn": "Ara",
+    "searchPlaceholder": "Soyad, telefon veya e-posta",
+    "searching": "Aranıyor…",
+    "selectDoctor": "Doktor seçin",
+    "success": "Hasta kaydedildi",
+    "title": "Randevu al",
+    "booking": "Randevu alınıyor…",
+    "conflict": "Bu saat az önce doldu. Başka birini seçin.",
+    "errSearch": "Hasta aramasında hata",
+    "errSlots": "Boş saatler yüklenemedi",
+    "freeSlots": "Boş saatler",
+    "noPatients": "Hasta bulunamadı",
+    "noPermission": "Hasta randevusu alma yetkiniz yok",
+    "noSlots": "Bu gün boş saat yok. Doktor çalışmıyor olabilir ya da gün tamamen dolu.",
+    "reasonPlaceholder": "örn. kontrol, konsültasyon",
+    "subtitle": "Bir doktor ve boş saat seçin, ardından hastayı bulun."
   }
 }

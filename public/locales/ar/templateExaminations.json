@@ -782,6 +782,10 @@
       "download": "تنزيل PDF",
       "upload": "تحميل PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "المعلومات العامة"
     }
   },
   "SPECTScanerDetails": {

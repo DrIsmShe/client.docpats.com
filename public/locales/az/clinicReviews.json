@@ -45,5 +45,9 @@
     }
   },
   "kindScientific": "Elmi",
-  "kindOpinion": "Rəy"
+  "kindOpinion": "Rəy",
+  "readTime_few": "{{count}} dəq oxu",
+  "readTime_many": "{{count}} dəq oxu",
+  "count_few": "{{count}} rəy",
+  "count_many": "{{count}} rəy"
 }

@@ -763,6 +763,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel Bilgi"
     }
   },
   "SPECTScanerDetails": {
@@ -921,5 +925,21 @@
   "sections": {
     "findings": "Bulgular",
     "general": "Genel bilgi"
+  },
+  "AngiographyScanerTemplateDiagnosisEdit": {
+    "buttons": {
+      "update": "Şablonu Güncelle"
+    },
+    "labels": {
+      "content": "İçerik",
+      "title": "Ad",
+      "titlePlaceholder": "Başlık giriniz...",
+      "contentPlaceholder": "İçeriği girin…"
+    },
+    "page": {
+      "success": "✅ Tanı şablonu başarıyla güncellendi!",
+      "error": "❌ Şablon güncellenirken hata",
+      "title": "Anjiyografi tanı şablonunu düzenle"
+    }
   }
 }

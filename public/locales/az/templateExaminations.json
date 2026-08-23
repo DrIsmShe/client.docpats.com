@@ -763,6 +763,10 @@
       "download": "PDF Yüklə",
       "upload": "PDF Göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Nəticələr",
+      "general": "Ümumi Məlumat"
     }
   },
   "SPECTScanerDetails": {
@@ -771,7 +775,8 @@
       "loading": "Yüklənir...",
       "noData": "Məlumat yoxdur",
       "errors": {
-        "fetchError": "Spirometriya məlumatlarını yükləmək mümkün olmadı."
+        "fetchError": "Spirometriya məlumatlarını yükləmək mümkün olmadı.",
+        "uploadError": "PDF yükləmə xətası"
       }
     },
     "fields": {
@@ -892,6 +897,33 @@
     "sections": {
       "findings": "Tapıntılar",
       "general": "Ümumi məlumat"
+    },
+    "buttons": {
+      "download": "PDF Yüklə",
+      "print": "Çap et",
+      "upload": "PDF Göndər"
+    },
+    "fields": {
+      "contrastUsed": "Kontrast istifadə olunub",
+      "date": "Tarix",
+      "diagnosis": "Diaqnoz",
+      "doctor": "Həkim",
+      "doctorComments": "Həkim rəyləri",
+      "images": "Şəkillər",
+      "nameofexam": "Müayinənin adı",
+      "no": "Xeyr",
+      "patient": "Pasiyent",
+      "recommendations": "Tövsiyələr",
+      "report": "Hesabat",
+      "yes": "Bəli"
+    },
+    "page": {
+      "loading": "Yüklənir...",
+      "noData": "Məlumat yoxdur",
+      "title": "Spirometriya detalları",
+      "errors": {
+        "fetchError": "Spirometriya məlumatlarını yükləmək alınmadı."
+      }
     }
   }
 }

@@ -1949,7 +1949,9 @@
         "fix": "Formadakı səhvləri düzəldin",
         "generic": "Kabinet yadda saxlanılmadı"
       }
-    }
+    },
+    "staffCount_many": "həkim: {{count}}",
+    "staffCount_few": "həkim: {{count}}"
   },
   "equipment": {
     "back": "← Panel",
@@ -2033,7 +2035,9 @@
         "fix": "Formadakı səhvləri düzəldin",
         "generic": "Avadanlıq yadda saxlanılmadı"
       }
-    }
+    },
+    "staffCount_few": "məsul: {{count}}",
+    "staffCount_many": "məsul: {{count}}"
   },
   "knowledge": {
     "back": "← Panel",
@@ -2159,7 +2163,9 @@
         "generic": "Konsilium yaradılmadı"
       }
     },
-    "videoCall": "Videokonfrans"
+    "videoCall": "Videokonfrans",
+    "participantsCount_many": "iştirakçı: {{count}}",
+    "participantsCount_few": "iştirakçı: {{count}}"
   },
   "telemed": {
     "back": "← Panel",
@@ -2433,5 +2439,31 @@
     "noMatches": "Uyğunluq yoxdur",
     "searching": "Axtarılır…",
     "category": "rubrika"
+  },
+  "booking": {
+    "confirm": "Qəbula yaz",
+    "date": "Tarix",
+    "doctor": "Həkim",
+    "errCreate": "Qəbul yaradılmadı",
+    "errDoctors": "Həkimlərin siyahısını yükləmək alınmadı",
+    "loading": "Yüklənir…",
+    "patient": "Pasiyent",
+    "reason": "Səbəb / qeyd (istəyə görə)",
+    "searchBtn": "Axtar",
+    "searchPlaceholder": "Soyad, telefon və ya e-poçt",
+    "searching": "Axtarılır…",
+    "selectDoctor": "Həkim seçin",
+    "success": "Pasiyent yazıldı",
+    "title": "Qəbula yazılma",
+    "booking": "Yazılır…",
+    "conflict": "Bu vaxt indicə tutuldu. Başqasını seçin.",
+    "errSearch": "Pasiyent axtarışında xəta",
+    "errSlots": "Boş vaxtları yükləmək alınmadı",
+    "freeSlots": "Boş vaxtlar",
+    "noPatients": "Pasiyent tapılmadı",
+    "noPermission": "Pasiyentləri qəbula yazmaq üçün icazə yoxdur",
+    "noSlots": "Bu gün boş vaxt yoxdur. Ola bilsin həkim işləmir və ya gün tam doludur.",
+    "reasonPlaceholder": "məsələn: təkrar qəbul, konsultasiya",
+    "subtitle": "Həkim və boş vaxt seçin, sonra pasiyenti tapın."
   }
 }

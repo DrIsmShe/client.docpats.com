@@ -225,7 +225,7 @@ export const SeverityBadge = ({ level }) => {
         background: bgs[level] || "#f5f5f5",
       }}
     >
-      {t("dp.patient.severity")} {level}
+      {t("common:dp.patient.severity")} {level}
     </span>
   );
 };
@@ -742,7 +742,7 @@ export default function PrivatePatientDetail() {
             }}
           />
           <div className="ppd-hero-info">
-            <div className="ppd-hero-tag">{t("dp.pageTitle.privatePatient")}</div>
+            <div className="ppd-hero-tag">{t("common:dp.pageTitle.privatePatient")}</div>
             <h1 className="ppd-hero-h1">
               {t("titles.moreAboutPatient", {
                 firstName: patient.firstName,
@@ -815,7 +815,7 @@ export default function PrivatePatientDetail() {
               navigate(`/dp/surgery/new?patientType=private&patientId=${pid}`)
             }
           >
-            {t("dp.patient.createSurgicalCase")}
+            {t("common:dp.patient.createSurgicalCase")}
           </button>
           {error && <div className="ppd-error-box">⚠️ {error}</div>}
         </div>
@@ -840,7 +840,7 @@ export default function PrivatePatientDetail() {
                 { id: "overview", label: t("tabs.generalInfo") },
                 { id: "clinical", label: t("tabs.clinicalInfo") },
                 { id: "history", label: t("tabs.caseHistories") },
-                { id: "surgery", label: "Хирургия" },
+                { id: "surgery", label: t("common:dp.patient.tabSurgery") },
               ].map((tab) => (
                 <button
                   key={tab.id}

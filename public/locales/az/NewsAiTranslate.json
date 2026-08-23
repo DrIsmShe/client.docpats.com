@@ -81,7 +81,8 @@
   },
   "body_ai": {
     "translating": "Tərcümə edilir...",
-    "translation_pending": "Tərcümə hazırlanır — adətən dərcdən sonra 10 dəqiqəyə qədər çəkir. Orijinalı göstəririk."
+    "translation_pending": "Tərcümə hazırlanır — adətən dərcdən sonra 10 dəqiqəyə qədər çəkir. Orijinalı göstəririk.",
+    "translating_hint": "İlk tərcümə təxminən 30 saniyə çəkir"
   },
   "topbar_title": "DocPats · Tibbi İntellekt",
   "nav_news": "Xəbərlər",
@@ -118,7 +119,11 @@
     "filters": "Filtrlər",
     "apply": "Tətbiq et",
     "reset": "Hamısını sıfırla",
-    "loadMore": "Daha çox yüklə"
+    "loadMore": "Daha çox yüklə",
+    "all": "Hamısı",
+    "news": "Xəbərlər",
+    "publications": "Nəşrlər",
+    "research": "Fayllarım"
   },
   "labels": {
     "category": "Kateqoriya / ixtisas",
@@ -191,7 +196,9 @@
     "loading": "Yüklənir…",
     "empty": "Seçilmiş filtrlər üçün məqalə tapılmadı.",
     "loadMore": "Daha çox yüklə",
-    "loadingMore": "Yüklənir…"
+    "loadingMore": "Yüklənir…",
+    "articles_few": "məqalə",
+    "articles_many": "məqalə"
   },
   "body": {
     "translating": "Məqalə tərcümə edilir…",
@@ -242,5 +249,7 @@
     "scientific": "Elmi məqalə",
     "article": "Həkim nəşri",
     "doctor": "Həkim"
-  }
+  },
+  "publications_few": "{{count}} nəşr",
+  "publications_many": "{{count}} nəşr"
 }

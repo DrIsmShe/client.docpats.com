@@ -724,7 +724,10 @@
       "report": "Report",
       "recommendations": "Recommendations",
       "contrastUsed": "Contrast Used",
-      "doctorComments": "Doctor Comments"
+      "doctorComments": "Doctor Comments",
+      "images": "Images",
+      "no": "No",
+      "yes": "Yes"
     },
     "buttons": {
       "download": "Download PDF",

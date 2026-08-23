@@ -584,5 +584,49 @@
     }
   },
   "machineTranslated": "Machine translation",
-  "machineTranslatedHint": "This question was translated automatically from the original language. The options and the correct answer are the same as in the original."
+  "machineTranslatedHint": "This question was translated automatically from the original language. The options and the correct answer are the same as in the original.",
+  "adminManual": {
+    "form": {
+      "markCorrect": "correct",
+      "submitBusy": "Creating…",
+      "target": "Where to add the questions",
+      "addCase": "➕ Add a case",
+      "addOption": "Add an option",
+      "addQuestion": "➕ Add a question",
+      "caseHeader": "Case {{number}}",
+      "caseHint": "If this field is filled in, the text is prepended to EVERY sub-question of THIS case — that is how vignettes work. Leave it empty for standalone questions.",
+      "caseLabel": "Introduction / clinical case — optional",
+      "casePlaceholder": "Describe the clinical case: complaints, history, examination… Leave empty for standalone questions.",
+      "casesTitle": "Cases and questions",
+      "correctTag": "correct answer",
+      "explanationLabel": "Explanation (optional)",
+      "explanationPlaceholder": "Why the correct answer is correct — the reviewer and the learner see it in the debrief",
+      "lang": "Question language",
+      "newProgramOption": "➕ New test — create manually",
+      "newTestName": "Manual test",
+      "optionPlaceholder": "Option {{key}}",
+      "questionLabel": "Question {{number}}",
+      "questionPlaceholder": "Sub-question text. E.g.: Klinik diaqnoz nədir?",
+      "removeCase": "Delete the case",
+      "removeOption": "Remove the option",
+      "removeQuestion": "Delete the question",
+      "submit": "Create the questions"
+    },
+    "draftProgramTitle": "Manual entry: {{name}}",
+    "errors": {
+      "emptyQuestion": "Case {{case}}, question {{number}}: enter the question text",
+      "failed": "Could not create the questions",
+      "fewOptions": "Case {{case}}, question {{number}}: at least two options with text are required",
+      "noCorrect": "Case {{case}}, question {{number}}: mark the correct option",
+      "noQuestions": "Add at least one question"
+    },
+    "notices": {
+      "done": "Questions created: {{count}}. Check the drafts below and move them to the bank."
+    },
+    "stages": {
+      "creating": "Creating the questions…"
+    },
+    "subtitle": "Type the questions by hand — one at a time, as a clinical case, or as several cases at once. A case is a shared introduction plus several sub-questions; you can add as many cases as you like. Each sub-question becomes a separate question in the bank, and its case introduction is prepended to each. The questions go into the same drafts and pass review before publication.",
+    "title": "Publish a test manually"
+  }
 }

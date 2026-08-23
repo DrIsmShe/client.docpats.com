@@ -111,7 +111,8 @@
     "messages": {
       "ǵsuccess": "✅ تم تحديث قالب التوصيات بنجاح!",
       "updateError": "❌ حدث خطأ أثناء تحديث قالب التوصيات.",
-      "fetchError": "❌ فشل تحميل قالب التوصيات."
+      "fetchError": "❌ فشل تحميل قالب التوصيات.",
+      "success": "✅ تم تحديث قالب التوصيات بنجاح!"
     }
   },
   "PETScanerTemplateRecomendationList": {

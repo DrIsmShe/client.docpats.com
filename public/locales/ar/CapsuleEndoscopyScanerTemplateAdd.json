@@ -303,5 +303,24 @@
       "deleteSuccess": "✅ تم حذف القالب بنجاح",
       "deleteError": "❌ فشل في حذف القالب"
     }
+  },
+  "CapsuleEndoscopyScanerTemplateDiagnosis": {
+    "buttons": {
+      "save": "حفظ"
+    },
+    "messages": {
+      "createSuccess": "✅ تم إضافة قالب التشخيص بنجاح",
+      "networkError": "⚠️ خطأ في الشبكة",
+      "createError": "❌ خطأ أثناء إضافة قالب التشخيص"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "أدخل نص التشخيص…"
+      },
+      "title": {
+        "placeholder": "أدخل عنوان التشخيص…"
+      }
+    },
+    "title": "إضافة قالب تشخيص لتنظير الكبسولة"
   }
 }

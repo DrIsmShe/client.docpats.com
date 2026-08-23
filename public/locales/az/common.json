@@ -769,7 +769,9 @@
     "verifyNone": "— Təsdiqlənməyib",
     "hiddenPrefix": "🔒 Gizlidir ·",
     "signInWord": "daxil olun",
-    "toSeeSuffix": " — görmək üçün"
+    "toSeeSuffix": " — görmək üçün",
+    "articlesWord_few": "məqalə",
+    "articlesWord_many": "məqalə"
   },
   "headerPatient": {
     "search": "Axtarış",
@@ -1196,7 +1198,9 @@
   "messages": {
     "loading": "Yüklənir...",
     "photoNotSelected": "Şəkil seçilməyib",
-    "noFileSelected": "Fayl seçilməyib"
+    "noFileSelected": "Fayl seçilməyib",
+    "logoutError": "Çıxış zamanı xəta baş verdi. Yenidən cəhd edin.",
+    "logoutSuccess": "Sistemdən uğurla çıxdınız."
   },
   "actions": {
     "archive": "Arxivə göndər",
@@ -1374,7 +1378,11 @@
     "minShort": "dəq",
     "priceEmpty": "Qiymət siyahısı hələ doldurulur.",
     "priceListTitle": "Xidmətlər və qiymətlər",
-    "servicesMore": "daha {{count}}"
+    "servicesMore": "daha {{count}}",
+    "experience_many": "{{count}} il təcrübə",
+    "statsDoctors_few": "həkim",
+    "statsDoctors_many": "həkim",
+    "experience_few": "{{count}} il təcrübə"
   },
   "profileMain": {
     "noUserId": "İstifadəçi müəyyən edilə bilmədi.",
@@ -1952,7 +1960,8 @@
   },
   "brand": {
     "hipaaCompliant": "HIPAA-ya uyğun",
-    "medicalPlatform": "Tibbi platforma"
+    "medicalPlatform": "Tibbi platforma",
+    "eyebrow": "Tibbi platforma"
   },
   "notif": {
     "all": "Hamısı",
@@ -2040,7 +2049,10 @@
       "phoneHint": "Ölkə kodu avtomatik əlavə olunur.",
       "dateHint": "Format: gg/aa/iiii.",
       "word": "Pasiyent",
-      "required": "Məcburi"
+      "required": "Məcburi",
+      "writeToPatient": "Pasiyentə yaz",
+      "opening": "Açılır…",
+      "tabSurgery": "Cərrahiyyə"
     },
     "ai": {
       "summaryTitle": "🩺 Pasiyent üzrə klinik xülasə",
@@ -2140,5 +2152,45 @@
       "optional": "— istəyə görə",
       "pageTitle": "Həkimin sorğusu → əməliyyat planı"
     }
+  },
+  "calendar": {
+    "book_modal": {
+      "department": "Şöbə",
+      "departmentNone": "— göstərilməyib —"
+    },
+    "detail_modal": {
+      "department": "Şöbə",
+      "departmentNone": "göstərilməyib"
+    }
+  },
+  "menu": {
+    "allDoctors": "Bütün həkimlər",
+    "appointments": "Qəbullar",
+    "articles": "Tibbi lent",
+    "home": "Əsas səhifə",
+    "logout": "Çıxış",
+    "myDoctors": "Həkimlərim",
+    "myMedicalFiles": "Tibbi sənədlərim",
+    "myMedicalHistories": "Xəstəlik tariximlərim",
+    "myOffice": "Kabinetim",
+    "myPrescriptions": "Reseptlərim"
+  },
+  "patients": {
+    "fields": {
+      "department": "Şöbə"
+    },
+    "wizard": {
+      "form": {
+        "departmentNone": "— göstərilməyib —"
+      }
+    }
+  },
+  "sections": {
+    "content": "Məzmun",
+    "doctors": "Həkimlər",
+    "medicine": "Tibb"
+  },
+  "user": {
+    "role": "Pasiyent"
   }
 }

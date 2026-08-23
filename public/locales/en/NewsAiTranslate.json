@@ -60,7 +60,8 @@
   },
   "body_ai": {
     "translating": "Translating...",
-    "translation_pending": "The translation is being prepared — it usually takes up to 10 minutes after publication. Showing the original."
+    "translation_pending": "The translation is being prepared — it usually takes up to 10 minutes after publication. Showing the original.",
+    "translating_hint": "The first translation takes about 30 s"
   },
   "topbar_title": "DocPats · Medical Intelligence",
   "nav_news": "News",
@@ -151,7 +152,9 @@
     "loading": "Loading …",
     "empty": "No articles found for the selected filters.",
     "loadMore": "Load more articles",
-    "loadingMore": "Loading…"
+    "loadingMore": "Loading…",
+    "articles_few": "articles",
+    "articles_many": "articles"
   },
   "body": {
     "translating": "Translating article…",
@@ -199,7 +202,11 @@
     "filters": "Filters",
     "apply": "Apply",
     "reset": "Reset all",
-    "loadMore": "Load more"
+    "loadMore": "Load more",
+    "all": "All",
+    "news": "News",
+    "publications": "Publications",
+    "research": "Files"
   },
   "labels": {
     "category": "Category / specialization",
@@ -242,5 +249,7 @@
     "scientific": "Scientific article",
     "article": "Doctor's publication",
     "doctor": "Doctor"
-  }
+  },
+  "publications_few": "{{count}} publication",
+  "publications_many": "{{count}} publication"
 }

@@ -178,7 +178,9 @@
     "print": "Print",
     "copied": "Text copied",
     "copyFailed": "Failed to copy",
-    "sourcesUsed": "Sources used"
+    "sourcesUsed": "Sources used",
+    "wordsCount_many": "{{words}} words",
+    "wordsCount_few": "{{words}} words"
   },
   "gate": {
     "title": "Doctors only",

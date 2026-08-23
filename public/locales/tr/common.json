@@ -768,7 +768,9 @@
     "verifyNone": "— Doğrulanmadı",
     "hiddenPrefix": "🔒 Gizli ·",
     "signInWord": "giriş yapın",
-    "toSeeSuffix": " — görmek için"
+    "toSeeSuffix": " — görmek için",
+    "articlesWord_few": "makale",
+    "articlesWord_many": "makale"
   },
   "headerPatient": {
     "search": "Arama",
@@ -1207,7 +1209,10 @@
   },
   "messages": {
     "loading": "Yükleniyor...",
-    "photoNotSelected": "Fotoğraf seçilmedi"
+    "photoNotSelected": "Fotoğraf seçilmedi",
+    "logoutError": "Çıkış yapılırken bir hata oluştu. Lütfen tekrar deneyin.",
+    "logoutSuccess": "Başarıyla çıkış yaptınız.",
+    "noFileSelected": "Dosya seçilmedi"
   },
   "avatar_choose": {
     "chooseAvatar": "Avatar seç"
@@ -1284,7 +1289,8 @@
       "close": "Kapat",
       "insertTemplate": "Şablonu ekle",
       "toTemplates": "Şablonlara git",
-      "createTemplate": "Yeni şablon oluştur"
+      "createTemplate": "Yeni şablon oluştur",
+      "chooseFile": "Dosya seç"
     },
     "validation": {
       "fillRequired": "{{field}} alanını doldurun.",
@@ -1371,7 +1377,11 @@
     "minShort": "dk",
     "priceEmpty": "Fiyat listesi henüz dolduruluyor.",
     "priceListTitle": "Hizmetler ve fiyatlar",
-    "servicesMore": "{{count}} tane daha"
+    "servicesMore": "{{count}} tane daha",
+    "experience_many": "{{count}} yıl deneyim",
+    "statsDoctors_few": "doktor",
+    "statsDoctors_many": "doktor",
+    "experience_few": "{{count}} yıl deneyim"
   },
   "profileMain": {
     "noUserId": "Kullanıcı belirlenemedi.",
@@ -1949,7 +1959,8 @@
   },
   "brand": {
     "hipaaCompliant": "HIPAA uyumlu",
-    "medicalPlatform": "Tıbbi platform"
+    "medicalPlatform": "Tıbbi platform",
+    "eyebrow": "Tıbbi platform"
   },
   "notif": {
     "all": "Tümü",
@@ -2037,7 +2048,10 @@
       "phoneHint": "Ülke kodu otomatik eklenir.",
       "dateHint": "Biçim: gg/aa/yyyy.",
       "word": "Hasta",
-      "required": "Zorunlu"
+      "required": "Zorunlu",
+      "writeToPatient": "Hastaya yaz",
+      "opening": "Açılıyor…",
+      "tabSurgery": "Cerrahi"
     },
     "ai": {
       "summaryTitle": "🩺 Hasta klinik özeti",
@@ -2137,5 +2151,45 @@
       "optional": "— isteğe bağlı",
       "pageTitle": "Doktorun isteği → ameliyat planı"
     }
+  },
+  "calendar": {
+    "book_modal": {
+      "department": "Bölüm",
+      "departmentNone": "— belirtilmedi —"
+    },
+    "detail_modal": {
+      "department": "Bölüm",
+      "departmentNone": "belirtilmedi"
+    }
+  },
+  "menu": {
+    "allDoctors": "Tüm doktorlar",
+    "appointments": "Randevular",
+    "articles": "Tıbbi akış",
+    "home": "Ana sayfa",
+    "logout": "Çıkış",
+    "myDoctors": "Doktorlarım",
+    "myMedicalFiles": "Tıbbi dosyalarım",
+    "myMedicalHistories": "Tıbbi geçmişim",
+    "myOffice": "Panelim",
+    "myPrescriptions": "Reçetelerim"
+  },
+  "patients": {
+    "fields": {
+      "department": "Bölüm"
+    },
+    "wizard": {
+      "form": {
+        "departmentNone": "— belirtilmedi —"
+      }
+    }
+  },
+  "sections": {
+    "content": "İçerik",
+    "doctors": "Doktorlar",
+    "medicine": "Tıp"
+  },
+  "user": {
+    "role": "Hasta"
   }
 }

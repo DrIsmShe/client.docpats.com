@@ -270,5 +270,20 @@
       "deleteSuccess": "✅ Şablon uğurla silindi",
       "deleteError": "❌ Şablon silinmədi"
     }
+  },
+  "CapsuleEndoscopyScanerTemplateDiagnosisList": {
+    "buttons": {
+      "delete": "🗑️ Sil",
+      "edit": "Redaktə et"
+    },
+    "confirm": {
+      "delete": "Bu şablonu silmək istədiyinizə əminsiniz?"
+    },
+    "messages": {
+      "deleteError": "❌ Diaqnoz şablonunu silmək alınmadı",
+      "deleteSuccess": "✅ Diaqnoz şablonu silindi",
+      "loadError": "Diaqnoz şablonlarının yüklənməsində xəta"
+    },
+    "title": "Kapsul endoskopiyası diaqnoz şablonları"
   }
 }

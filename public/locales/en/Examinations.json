@@ -636,7 +636,8 @@
   },
   "addAngiographyScanUpload": {
     "page": {
-      "title": "Add Angiography Results"
+      "title": "Add Angiography Results",
+      "outsideSpecialization": "⚠ The examination was added outside your primary specialization."
     },
     "messages": {
       "success": "✅ Angiography scan was added successfully!",
@@ -705,6 +706,68 @@
   "AddCoronographyScanUpload": {
     "page": {
       "title": "Add Coronography Results"
+    },
+    "buttons": {
+      "loading": "Loading...",
+      "submit": "Add results"
+    },
+    "fields": {
+      "contrastUsed": {
+        "label": "Was contrast used?"
+      },
+      "diagnosis": {
+        "label": "Doctor's Conclusion",
+        "placeholder": "Enter medical conclusion"
+      },
+      "files": {
+        "choose": "Choose files",
+        "details": {
+          "extension": "Extension",
+          "size": "Size",
+          "type": "Type"
+        },
+        "label": "Files (images, PDF, video, audio)",
+        "noneSelected": "No files selected",
+        "selected": "{{count}} file(s) selected",
+        "typeDescription": {
+          "audio": "Audio file",
+          "image": "Image",
+          "other": "File",
+          "pdf": "PDF document",
+          "video": "Video file"
+        }
+      },
+      "nameofexam": {
+        "label": "Examination name",
+        "placeholder": "Enter the title of the study"
+      },
+      "radiationDose": {
+        "label": "Radiation Dose (mSv)",
+        "placeholder": "Enter dose"
+      },
+      "recomandation": {
+        "label": "Doctor's Recommendations",
+        "placeholder": "Enter recommendations"
+      },
+      "report": {
+        "label": "Content",
+        "placeholder": "Enter description"
+      }
+    },
+    "messages": {
+      "errorPrefix": "❌ Error loading:",
+      "patientMissing": "Patient ID is missing!",
+      "success": "✅ The coronary angiography results have been added"
+    },
+    "templates": {
+      "list": "List of templates",
+      "modal": {
+        "close": "Close",
+        "insert": "Insert",
+        "title": "Select a template for \"{{field}}\""
+      },
+      "new": "New template",
+      "use": "Use template"
     }
   },
   "AddCapsulEndoscopyScanUpload": {

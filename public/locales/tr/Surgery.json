@@ -275,7 +275,11 @@
     "casesCount_one": "{{count}} vaka",
     "casesCount_other": "{{count}} vaka",
     "photosCount_one": "{{count}} fotoğraf",
-    "photosCount_other": "{{count}} fotoğraf"
+    "photosCount_other": "{{count}} fotoğraf",
+    "casesCount_many": "{{count}} vaka",
+    "photosCount_few": "{{count}} fotoğraf",
+    "photosCount_many": "{{count}} fotoğraf",
+    "casesCount_few": "{{count}} vaka"
   },
   "list": {
     "breadcrumb": "DocPats · Cerrahi",
@@ -302,7 +306,9 @@
     "perPageOption": "sayfada {{count}}",
     "nextPage": "Sonraki",
     "perPage": "Sayfada",
-    "prevPage": "Önceki"
+    "prevPage": "Önceki",
+    "proceduresTypes_many": "{{count}} ameliyat türü",
+    "proceduresTypes_few": "{{count}} işlem türü"
   },
   "simulator": {
     "sourcePhoto": "Kaynak fotoğraf",

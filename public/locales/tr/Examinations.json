@@ -573,7 +573,8 @@
     "loadError": "Veri yükleme hatası",
     "deleteError": "Şablon silinirken hata oluştu",
     "deleted": "Silindi",
-    "noTags": "Etiket yok"
+    "noTags": "Etiket yok",
+    "noResults": "Şablon bulunamadı"
   },
   "fields": {
     "createdAt": "Oluşturulma tarihi",
@@ -641,7 +642,8 @@
   },
   "addAngiographyScanUpload": {
     "page": {
-      "title": "Anjiyografi Sonuçları Ekle"
+      "title": "Anjiyografi Sonuçları Ekle",
+      "outsideSpecialization": "⚠ İnceleme ana uzmanlık alanınızın dışında eklendi."
     },
     "messages": {
       "success": "✅ Anjiyografi sonucu başarıyla eklendi!",

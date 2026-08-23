@@ -643,7 +643,8 @@
   },
   "addAngiographyScanUpload": {
     "page": {
-      "title": "Angioqrafiya nəticələrini əlavə et"
+      "title": "Angioqrafiya nəticələrini əlavə et",
+      "outsideSpecialization": "⚠ Müayinə sizin əsas ixtisasınızdan kənar əlavə edildi."
     },
     "messages": {
       "success": "✅ Angioqrafiya nəticələri uğurla əlavə olundu!",

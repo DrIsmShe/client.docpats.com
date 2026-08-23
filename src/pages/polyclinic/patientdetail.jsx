@@ -226,7 +226,7 @@ export const SeverityBadge = ({ level }) => {
         background: bgs[level] || "#f5f5f5",
       }}
     >
-      {t("dp.patient.severity")} {level}
+      {t("common:dp.patient.severity")} {level}
     </span>
   );
 };
@@ -776,7 +776,7 @@ export default function PatientDetail() {
             }}
           />
           <div className="ppd-hero-info">
-            <div className="ppd-hero-tag">{t("dp.pageTitle.patient")}</div>
+            <div className="ppd-hero-tag">{t("common:dp.pageTitle.patient")}</div>
             <h1 className="ppd-hero-h1">
               {t("titles.moreAboutPatient", {
                 firstName: patient.firstName,
@@ -841,14 +841,17 @@ export default function PatientDetail() {
               )
             }
           >
-            {t("dp.patient.createSurgicalCase")}
+            {t("common:dp.patient.createSurgicalCase")}
           </button>
           <button
             className="ppd-btn ppd-btn-outline"
             onClick={openChatWithPatient}
             disabled={chatLoading}
           >
-            💬 {chatLoading ? "Открываю…" : "Написать пациенту"}
+            💬{" "}
+            {chatLoading
+              ? t("common:dp.patient.opening")
+              : t("common:dp.patient.writeToPatient")}
           </button>
           {error && <div className="ppd-error-box">⚠ {error}</div>}
         </div>
@@ -870,7 +873,7 @@ export default function PatientDetail() {
                 { id: "overview", label: t("tabs.generalInfo") },
                 { id: "clinical", label: t("tabs.clinicalInfo") },
                 { id: "history", label: t("tabs.caseHistories") },
-                { id: "surgery", label: "Хирургия" },
+                { id: "surgery", label: t("common:dp.patient.tabSurgery") },
               ].map((tab) => (
                 <button
                   key={tab.id}

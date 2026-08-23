@@ -1187,7 +1187,9 @@
   "messages": {
     "loading": "جارٍ التحميل...",
     "photoNotSelected": "لم يتم اختيار صورة",
-    "noFileSelected": "لم يتم اختيار ملف"
+    "noFileSelected": "لم يتم اختيار ملف",
+    "logoutError": "حدث خطأ أثناء تسجيل الخروج. حاول مرة أخرى.",
+    "logoutSuccess": "تم تسجيل خروجك بنجاح."
   },
   "avatar_choose": {
     "chooseAvatar": "اختر صورة رمزية"
@@ -1691,7 +1693,21 @@
   },
   "no_notifications": "لا توجد إشعارات",
   "myLab": {
-    "openDetail": "فتح التفاصيل"
+    "openDetail": "فتح التفاصيل",
+    "colParam": "المؤشر",
+    "colRef": "طبيعي",
+    "colValue": "القيمة",
+    "eyebrow": "بوابة المريض",
+    "pdfError": "تعذّر إنشاء ملف PDF",
+    "sourceClinic": "العيادة",
+    "sourceLegacy": "الأرشيف",
+    "titleA": "وصفاتي",
+    "attached": "ملف النتيجة",
+    "empty": "لا توجد تحاليل بعد.",
+    "loadError": "تعذّر تحميل التحاليل",
+    "records": "النتائج",
+    "scan": "المسح",
+    "titleB": "التحاليل"
   },
   "notifSettings": {
     "title": "إعدادات الإشعارات",
@@ -1949,7 +1965,8 @@
   },
   "brand": {
     "hipaaCompliant": "متوافق مع HIPAA",
-    "medicalPlatform": "منصة طبية"
+    "medicalPlatform": "منصة طبية",
+    "eyebrow": "منصة طبية"
   },
   "notif": {
     "all": "الكل",
@@ -2037,7 +2054,10 @@
       "phoneHint": "يُضاف رمز الدولة تلقائيًا.",
       "dateHint": "الصيغة: يوم/شهر/سنة.",
       "word": "المريض",
-      "required": "إلزامي"
+      "required": "إلزامي",
+      "writeToPatient": "مراسلة المريض",
+      "opening": "جارٍ الفتح…",
+      "tabSurgery": "الجراحة"
     },
     "ai": {
       "summaryTitle": "🩺 الملخّص السريري للمريض",
@@ -2137,5 +2157,45 @@
       "optional": "— اختياري",
       "pageTitle": "طلب الطبيب ← خطة العملية"
     }
+  },
+  "calendar": {
+    "book_modal": {
+      "department": "القسم",
+      "departmentNone": "— غير محدد —"
+    },
+    "detail_modal": {
+      "department": "القسم",
+      "departmentNone": "غير محدد"
+    }
+  },
+  "menu": {
+    "allDoctors": "جميع الأطباء",
+    "appointments": "المواعيد",
+    "articles": "التغذية الطبية",
+    "home": "الصفحة الرئيسية",
+    "logout": "تسجيل الخروج",
+    "myDoctors": "أطبائي",
+    "myMedicalFiles": "ملفاتي الطبية",
+    "myMedicalHistories": "تاريخي الطبي",
+    "myOffice": "لوحتي",
+    "myPrescriptions": "وصفاتي الطبية"
+  },
+  "patients": {
+    "fields": {
+      "department": "القسم"
+    },
+    "wizard": {
+      "form": {
+        "departmentNone": "— غير محدد —"
+      }
+    }
+  },
+  "sections": {
+    "content": "المحتوى",
+    "doctors": "الأطباء",
+    "medicine": "الطب"
+  },
+  "user": {
+    "role": "مريض"
   }
 }

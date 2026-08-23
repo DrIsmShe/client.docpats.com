@@ -45,5 +45,9 @@
     }
   },
   "kindScientific": "Scientific",
-  "kindOpinion": "Opinion"
+  "kindOpinion": "Opinion",
+  "readTime_few": "{{count}} min read",
+  "readTime_many": "{{count}} min read",
+  "count_few": "{{count}} reviews",
+  "count_many": "{{count}} reviews"
 }

@@ -178,7 +178,9 @@
     "print": "Çap et",
     "copied": "Mətn kopyalandı",
     "copyFailed": "Kopyalanmadı",
-    "sourcesUsed": "İstifadə edilən mənbələr"
+    "sourcesUsed": "İstifadə edilən mənbələr",
+    "wordsCount_many": "{{words}} söz",
+    "wordsCount_few": "{{words}} söz"
   },
   "gate": {
     "title": "Bölmə yalnız həkimlər üçündür",

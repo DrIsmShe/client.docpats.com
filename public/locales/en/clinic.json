@@ -1949,7 +1949,9 @@
         "fix": "Please fix the errors in the form",
         "generic": "Failed to save the room"
       }
-    }
+    },
+    "staffCount_many": "doctors: {{count}}",
+    "staffCount_few": "doctors: {{count}}"
   },
   "equipment": {
     "back": "← Dashboard",
@@ -2033,7 +2035,9 @@
         "fix": "Please fix the errors in the form",
         "generic": "Failed to save the equipment"
       }
-    }
+    },
+    "staffCount_few": "responsible: {{count}}",
+    "staffCount_many": "responsible: {{count}}"
   },
   "knowledge": {
     "back": "← Dashboard",
@@ -2159,7 +2163,9 @@
         "generic": "Failed to create the consilium"
       }
     },
-    "videoCall": "Video conference"
+    "videoCall": "Video conference",
+    "participantsCount_many": "participants: {{count}}",
+    "participantsCount_few": "participants: {{count}}"
   },
   "telemed": {
     "back": "← Dashboard",
@@ -2433,5 +2439,31 @@
     "noMatches": "No matches",
     "searching": "Searching…",
     "category": "category"
+  },
+  "booking": {
+    "confirm": "Book appointment",
+    "date": "Date",
+    "doctor": "Doctor",
+    "errCreate": "Failed to create the appointment",
+    "errDoctors": "Could not load the doctor list",
+    "loading": "Loading…",
+    "patient": "Patient",
+    "reason": "Reason / note (optional)",
+    "searchBtn": "Search",
+    "searchPlaceholder": "Last name, phone, or email",
+    "searching": "Searching…",
+    "selectDoctor": "Choose a doctor",
+    "success": "Patient booked",
+    "title": "Book an appointment",
+    "booking": "Booking…",
+    "conflict": "That slot was just taken. Pick another.",
+    "errSearch": "Patient search failed",
+    "errSlots": "Could not load the free slots",
+    "freeSlots": "Free slots",
+    "noPatients": "No patients found",
+    "noPermission": "No permission to book patients",
+    "noSlots": "No free slots on this day. The doctor may not be working, or the day is fully booked.",
+    "reasonPlaceholder": "e.g. follow-up, consultation",
+    "subtitle": "Pick a doctor and a free slot, then find the patient."
   }
 }

@@ -36,5 +36,14 @@
       "upload": "Upload PDF",
       "print": "Print"
     }
+  },
+  "AngiographyScanerTemplateDiagnosis": {
+    "contentPlaceholder": "محتوى التشخيص",
+    "error": "فشل في إضافة القالب.",
+    "networkError": "خطأ في الشبكة",
+    "saveButton": "حفظ",
+    "success": "✅ تم إضافة قالب التشخيص بنجاح.",
+    "titlePlaceholder": "العنوان",
+    "titlePage": "إضافة قالب تشخيص (تصوير الأوعية)"
   }
 }

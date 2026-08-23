@@ -45,5 +45,9 @@
     }
   },
   "kindScientific": "Bilimsel",
-  "kindOpinion": "Görüş"
+  "kindOpinion": "Görüş",
+  "readTime_few": "{{count}} dk okuma",
+  "readTime_many": "{{count}} dk okuma",
+  "count_few": "{{count}} yorum",
+  "count_many": "{{count}} yorum"
 }

@@ -178,7 +178,9 @@
     "print": "Yazdır",
     "copied": "Metin kopyalandı",
     "copyFailed": "Kopyalanamadı",
-    "sourcesUsed": "Kullanılan kaynaklar"
+    "sourcesUsed": "Kullanılan kaynaklar",
+    "wordsCount_many": "{{words}} kelime",
+    "wordsCount_few": "{{words}} kelime"
   },
   "gate": {
     "title": "Yalnızca doktorlar için",
