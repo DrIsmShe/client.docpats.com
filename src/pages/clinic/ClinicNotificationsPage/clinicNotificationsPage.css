@@ -1,0 +1,194 @@
+/* Все уведомления клиники. Оформление то же, что у страницы отзывов
+   кабинета: одна зона — один язык интерфейса. */
+
+.cnp-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 24px 20px 56px;
+  font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  color: #292524;
+}
+
+.cnp-header {
+  margin-bottom: 20px;
+}
+.cnp-back {
+  display: inline-block;
+  font-size: 13px;
+  color: #0f766e;
+  text-decoration: none;
+  margin-bottom: 10px;
+}
+.cnp-back:hover {
+  text-decoration: underline;
+}
+.cnp-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cnp-count {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  background: #ef4444;
+  border-radius: 100px;
+  padding: 2px 9px;
+}
+
+.cnp-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.cnp-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.cnp-tab {
+  border: 1px solid #e7e5e4;
+  background: #fff;
+  color: #44403c;
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.cnp-tab:hover:not(:disabled) {
+  border-color: #0f766e;
+  color: #0f766e;
+}
+.cnp-tab.is-active {
+  background: #0f766e;
+  border-color: #0f766e;
+  color: #fff;
+}
+.cnp-mark-all {
+  border: 1px solid #e7e5e4;
+  background: #fff;
+  color: #44403c;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+.cnp-mark-all:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.cnp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cnp-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #f6fbfa;
+  border: 1px solid #d9ede9;
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.cnp-item.is-clickable {
+  cursor: pointer;
+}
+.cnp-item.is-clickable:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+/* Прочитанное гаснет, но остаётся: список — история, а не очередь. */
+.cnp-item.is-read {
+  background: #fff;
+  border-color: #ececea;
+  opacity: 0.72;
+}
+.cnp-item-body {
+  min-width: 0;
+  flex: 1;
+}
+.cnp-item-title {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.cnp-item.is-read .cnp-item-title {
+  font-weight: 600;
+}
+.cnp-item-msg {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #57534e;
+  margin-bottom: 6px;
+  word-break: break-word;
+}
+.cnp-item-date {
+  font-size: 12px;
+  color: #a8a29e;
+}
+.cnp-del {
+  border: none;
+  background: transparent;
+  color: #a8a29e;
+  font-size: 15px;
+  line-height: 1;
+  padding: 4px 6px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.cnp-del:hover:not(:disabled) {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+.cnp-del:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.cnp-empty,
+.cnp-error {
+  text-align: center;
+  padding: 40px 20px;
+  color: #78716c;
+  font-size: 15px;
+}
+.cnp-error button {
+  margin-top: 12px;
+  border: 1px solid #e7e5e4;
+  background: #fff;
+  font: inherit;
+  padding: 8px 18px;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.cnp-loading {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}
+.cnp-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3efe8;
+  border-top-color: #0f766e;
+  border-radius: 50%;
+  animation: cnp-spin 0.7s linear infinite;
+}
+@keyframes cnp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

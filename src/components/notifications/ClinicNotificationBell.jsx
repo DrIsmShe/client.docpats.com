@@ -10,11 +10,16 @@
 // Nothing about NotificationBell or the doctor/patient headers changes.
 
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import NotificationBell from "./NotificationBell.jsx";
+import { useClinicZone } from "../../lib/useClinicZone";
 
 export default function ClinicNotificationBell({ limit = 8 }) {
   const { t } = useTranslation("clinic");
+  // Адрес зависит от зоны: у сотрудника свой префикс, и ссылка из его
+  // колокольчика не должна выкидывать в зону владельца.
+  const { basePath } = useClinicZone();
   const [open, setOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const wrapRef = useRef(null);
@@ -68,6 +73,15 @@ export default function ClinicNotificationBell({ limit = 8 }) {
         <div style={styles.body}>
           <NotificationBell onUnreadChange={setUnreadCount} limit={limit} />
         </div>
+        {/* В колокольчике помещаются только последние. Раньше отсюда никуда
+            нельзя было перейти, и всё, что не поместилось, было недоступно. */}
+        <Link
+          to={`${basePath}/notifications`}
+          style={styles.footer}
+          onClick={() => setOpen(false)}
+        >
+          {t("notifications.viewAll", { defaultValue: "Все уведомления" })}
+        </Link>
       </div>
     </div>
   );
@@ -123,4 +137,14 @@ const styles = {
     borderBottom: "1px solid #f1f5f9",
   },
   body: { maxHeight: 380, overflowY: "auto" },
+  footer: {
+    display: "block",
+    padding: "10px 16px",
+    fontSize: 13,
+    fontWeight: 600,
+    color: "#0f766e",
+    textAlign: "center",
+    textDecoration: "none",
+    borderTop: "1px solid #f1f5f9",
+  },
 };

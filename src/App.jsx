@@ -601,6 +601,7 @@ const EmployeeBookAppointmentPage = lazy(() => import("./pages/clinic/EmployeeBo
 const ClinicAnalyticsPage = lazy(() => import("./pages/clinic/ClinicAnalyticsPage/ClinicAnalyticsPage"));
 const ClinicReviewsPage = lazy(() => import("./pages/clinic/ClinicReviewsPage/ClinicReviewsPage"));
 const ClinicLeadsPage = lazy(() => import("./pages/clinic/ClinicLeadsPage/ClinicLeadsPage"));
+const ClinicNotificationsPage = lazy(() => import("./pages/clinic/ClinicNotificationsPage/ClinicNotificationsPage.jsx"));
 const ClinicPatientsPage = lazy(() => import("./pages/clinic/ClinicPatientsPage/ClinicPatientsPage.jsx"));
 const ClinicPatientDetailPage = lazy(() => import("./pages/clinic/ClinicPatientDetailPage/ClinicPatientDetailPage.jsx"));
 const ClinicSchedulePage = lazy(() => import("./pages/clinic/ClinicSchedulePage/ClinicSchedulePage.jsx"));
@@ -870,6 +871,9 @@ function App() {
                   выбрасывал на /clinic/staff-login: авторизованному человеку
                   показывали форму входа. */}
               <Route path="leads" element={<ClinicLeadsPage />} />
+              {/* Все уведомления клиники. В колокольчике помещаются только
+                  последние, а посмотреть остальные в зоне клиники было негде. */}
+              <Route path="notifications" element={<ClinicNotificationsPage />} />
               <Route path="pages" element={<ClinicCustomPagesPage />} />
               <Route path="create" element={<CreateClinicPage />} />
               <Route path="dashboard" element={<ClinicDashboardPage />} />
@@ -972,6 +976,7 @@ function App() {
               <Route path="analytics" element={<ClinicAnalyticsPage />} />
               <Route path="reviews" element={<ClinicReviewsPage />} />
               <Route path="leads" element={<ClinicLeadsPage />} />
+              <Route path="notifications" element={<ClinicNotificationsPage />} />
               <Route
                 path="knowledge/:id"
                 element={<ClinicKnowledgeArticlePage />}

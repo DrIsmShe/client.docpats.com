@@ -342,6 +342,18 @@ export default function ClinicDashboardPage() {
               <span className="clinic-dashboard-action-arrow">→</span>
             </Link>
           )}
+          {/* Уведомления доступны всем, кто вообще попал в кабинет: это не
+              данные клиники, а сообщения лично этому пользователю. Гейта по
+              правам здесь нет намеренно. */}
+          <Link to="/clinic/notifications" className="clinic-dashboard-action">
+            <span className="clinic-dashboard-action-icon">🔔</span>
+            <span className="clinic-dashboard-action-label">
+              {t("dashboard.actions.notifications", {
+                defaultValue: "Уведомления",
+              })}
+            </span>
+            <span className="clinic-dashboard-action-arrow">→</span>
+          </Link>
           {/* Заявки с витрины. В зоне владельца входа на эту страницу не было
               вовсе — она жила только плиткой на дашборде сотрудника. Владелец
               и управляющий получают уведомление о новой заявке, но дойти до
