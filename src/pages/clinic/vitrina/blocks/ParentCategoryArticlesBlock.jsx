@@ -11,7 +11,7 @@
 // Контракт: ({ clinic, config }). config.title — заголовок секции.
 
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Section from "../components/Section.jsx";
 import {
@@ -43,10 +43,11 @@ export default function ParentCategoryArticlesBlock({ clinic, config = {} }) {
   const params = useParams();
   const slug = params.slug || clinic?.slug || "";
   const pageSlug = params.pageSlug || "";
-  const base = clinicBasePath(
-    typeof window !== "undefined" ? window.location.pathname : "",
-    slug,
-  );
+  // Путь берём из роутера, а не из window: при переходе внутри SPA window
+  // обновится, но компонент об этом не узнает — база осталась бы от прошлой
+  // страницы. Соседние блоки витрины уже читают useLocation.
+  const location = useLocation();
+  const base = clinicBasePath(location.pathname, slug);
 
   const [data, setData] = useState({ articles: [], subcategories: [] });
   const [loaded, setLoaded] = useState(false);

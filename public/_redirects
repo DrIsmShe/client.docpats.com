@@ -8,4 +8,27 @@
 /sitemap-*         https://backend.docpats.com/sitemap-:splat         200
 /rss.xml           https://backend.docpats.com/rss.xml           200
 /news-sitemap.xml  https://backend.docpats.com/news-sitemap.xml  200
+# Несуществующий ФАЙЛ должен отдавать 404, а не SPA-шелл со статусом 200.
+#
+# Именно из-за catch-all ниже промах в имени картинки ничем себя не выдавал:
+# og-image.jpg и og-default.jpg месяцами возвращали 200 и text/html, а
+# отладчик превью сообщал не «файла нет», а «не удалось обработать
+# изображение». Правила без force срабатывают только когда файла на диске
+# действительно нет, поэтому существующие ассеты они не трогают.
+#
+# Выше по файлу проксируются robots.txt, sitemap*.xml и rss.xml — их правила
+# идут раньше и продолжают работать.
+/*.jpg    /index.html  404
+/*.jpeg   /index.html  404
+/*.png    /index.html  404
+/*.webp   /index.html  404
+/*.svg    /index.html  404
+/*.gif    /index.html  404
+/*.ico    /index.html  404
+/*.css    /index.html  404
+/*.js     /index.html  404
+/*.map    /index.html  404
+/*.woff   /index.html  404
+/*.woff2  /index.html  404
+
 /* /index.html 200

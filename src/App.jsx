@@ -874,7 +874,6 @@ function App() {
               <Route path="create" element={<CreateClinicPage />} />
               <Route path="dashboard" element={<ClinicDashboardPage />} />
               <Route path="staff" element={<ClinicStaffPage />} />
-              <Route path="staff" element={<ClinicStaffPage />} />
               <Route path="departments" element={<ClinicDepartmentsPage />} />
               <Route path="rooms" element={<ClinicRoomsPage />} />
               <Route path="equipment" element={<ClinicEquipmentPage />} />
