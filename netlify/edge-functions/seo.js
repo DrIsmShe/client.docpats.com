@@ -295,6 +295,216 @@ export default async function handler(request, context) {
     }
   }
 
+  // ── Разделы витрины и кастомные страницы клиники ──
+  //   /<slug>/<раздел>                          — раздел витрины
+  //   /<slug>/dp/<страница>                     — кастомная страница
+  //   /<slug>/dp/<страница>/articles/<статья>   — статья страницы
+  //
+  // Разделы линкуются из меню витрины, кастомные страницы попадают в карту
+  // сайта, как только клиника их заведёт. До этой ветки бот приходил по обоим
+  // адресам и получал пустой шелл — ровно ту проблему, ради которой делалась
+  // разметка самой витрины, только уровнем ниже.
+  const SECTION_TITLES = {
+    about: "О клинике",
+    departments: "Отделения",
+    doctors: "Врачи",
+    articles: "Статьи",
+    gallery: "Галерея",
+    reviews: "Отзывы",
+    faq: "Вопросы и ответы",
+    contacts: "Контакты",
+    services: "Услуги и цены",
+  };
+
+  const sectionMatch = url.pathname.match(
+    /^\/(?:clinics\/)?([a-z0-9-]+)\/(about|departments|doctors|articles|gallery|reviews|faq|contacts|services)\/?$/i,
+  );
+  const dpArticleMatch = url.pathname.match(
+    /^\/(?:clinics\/)?([a-z0-9-]+)\/dp\/([a-z0-9-]+)\/articles\/([a-z0-9-]+)\/?$/i,
+  );
+  const dpPageMatch = dpArticleMatch
+    ? null
+    : url.pathname.match(/^\/(?:clinics\/)?([a-z0-9-]+)\/dp\/([a-z0-9-]+)\/?$/i);
+  const vitrinaPageMatch = sectionMatch || dpArticleMatch || dpPageMatch;
+
+  if (
+    vitrinaPageMatch &&
+    !RESERVED_ROOT.has(vitrinaPageMatch[1].toLowerCase())
+  ) {
+    try {
+      const clinicSlug = vitrinaPageMatch[1];
+      const clinicUrl = `https://docpats.com/${clinicSlug}`;
+      const api = `https://backend.docpats.com/api/v1/public/clinics/${encodeURIComponent(
+        clinicSlug,
+      )}`;
+
+      const clip = (v) =>
+        String(v || "")
+          .replace(/<[^>]*>/g, " ")
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0, 155);
+
+      // Относительный путь картинки живёт на медиа-домене — это делает
+      // resolveUrl на клиенте. Разбираться в этом на превью-карточке некому,
+      // поэтому всё, что не абсолютный адрес, заменяем общей картинкой.
+      const absImage = (v) =>
+        v && /^https?:\/\//.test(String(v))
+          ? String(v)
+          : "https://docpats.com/og-image.jpg";
+
+      let title;
+      let desc;
+      let image;
+      let jsonLd;
+      let pageUrl;
+      let ogType = "website";
+
+      if (sectionMatch) {
+        const section = sectionMatch[2].toLowerCase();
+        const res = await fetch(api);
+        if (!res.ok) return context.next();
+        const clinic = await res.json();
+        if (!clinic?.name) return context.next();
+
+        const label = SECTION_TITLES[section] || section;
+        pageUrl = `${clinicUrl}/${section}`;
+        title = escAttr(`${label} — ${clinic.name}`);
+        desc = escAttr(
+          clip(clinic.description) ||
+            clip(clinic.slogan) ||
+            `${label}: клиника ${clinic.name}`,
+        );
+        image = absImage(clinic.coverImage || clinic.logo);
+
+        jsonLd = {
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: `${label} — ${clinic.name}`,
+          url: pageUrl,
+          isPartOf: {
+            "@type": "MedicalClinic",
+            name: clinic.name,
+            url: clinicUrl,
+          },
+        };
+
+        // Раздел врачей — единственный, где список сам по себе и есть ответ на
+        // запрос («врачи клиники N»). Отдаём перечень, а не пустую обёртку.
+        if (section === "doctors" && Array.isArray(clinic.doctors)) {
+          jsonLd.mainEntity = {
+            "@type": "ItemList",
+            itemListElement: clinic.doctors.slice(0, 30).map((d, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              item: {
+                "@type": "Physician",
+                name: d.name,
+                url: d.id ? `${clinicUrl}/doctors/${d.id}` : undefined,
+                medicalSpecialty: d.specialization || undefined,
+              },
+            })),
+          };
+        }
+      } else if (dpArticleMatch) {
+        const pageSlug = dpArticleMatch[2];
+        const articleSlug = dpArticleMatch[3];
+        const res = await fetch(
+          `${api}/dp/${encodeURIComponent(pageSlug)}/articles/${encodeURIComponent(
+            articleSlug,
+          )}`,
+        );
+        if (!res.ok) return context.next();
+        const article = await res.json();
+        if (!article?.title) return context.next();
+
+        const clinicName = article.clinic?.name || "";
+        pageUrl = `${clinicUrl}/dp/${pageSlug}/articles/${articleSlug}`;
+        title = escAttr(
+          clinicName ? `${article.title} — ${clinicName}` : article.title,
+        );
+        desc = escAttr(
+          clip(article.metaDescription) ||
+            clip(article.excerpt) ||
+            article.title,
+        );
+        image = absImage(article.cover);
+        ogType = "article";
+
+        jsonLd = {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: article.title,
+          url: pageUrl,
+          image: /^https?:\/\//.test(String(article.cover || ""))
+            ? article.cover
+            : undefined,
+          description: clip(article.excerpt) || undefined,
+          datePublished: article.createdAt || undefined,
+          author: article.authors
+            ? { "@type": "Person", name: article.authors }
+            : undefined,
+          publisher: {
+            "@type": "MedicalClinic",
+            name: clinicName,
+            url: clinicUrl,
+          },
+        };
+      } else {
+        const pageSlug = dpPageMatch[2];
+        const res = await fetch(`${api}/pages/${encodeURIComponent(pageSlug)}`);
+        if (!res.ok) return context.next();
+        const page = await res.json();
+        if (!page?.title) return context.next();
+
+        const clinicName = page.clinic?.name || "";
+        pageUrl = `${clinicUrl}/dp/${pageSlug}`;
+        const heading = page.seo?.title || page.title;
+        title = escAttr(clinicName ? `${heading} — ${clinicName}` : heading);
+        desc = escAttr(clip(page.seo?.description) || heading);
+        image = "https://docpats.com/og-image.jpg";
+
+        jsonLd = {
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: heading,
+          url: pageUrl,
+          isPartOf: {
+            "@type": "MedicalClinic",
+            name: clinicName,
+            url: clinicUrl,
+          },
+        };
+      }
+
+      const response = await context.next();
+      let html = await response.text();
+      html = stripShellSeo(html);
+
+      const inject = `
+    <title>${title}</title>
+    <meta name="description" content="${desc}" data-seo="edge">
+    <link rel="canonical" href="${pageUrl}" data-seo="edge">
+    <meta data-seo="edge" property="og:type" content="${ogType}">
+    <meta data-seo="edge" property="og:title" content="${title}">
+    <meta data-seo="edge" property="og:description" content="${desc}">
+    <meta data-seo="edge" property="og:url" content="${pageUrl}">
+    <meta data-seo="edge" property="og:image" content="${escAttr(image)}">
+    <meta data-seo="edge" name="twitter:card" content="summary_large_image">
+    <meta data-seo="edge" name="twitter:title" content="${title}">
+    <meta data-seo="edge" name="twitter:description" content="${desc}">
+    <meta data-seo="edge" name="twitter:image" content="${escAttr(image)}">
+    <script type="application/ld+json" data-seo="edge">${JSON.stringify(jsonLd)}</script>`;
+
+      html = html.replace("</head>", inject + "</head>");
+      return new Response(html, {
+        headers: { "content-type": "text/html; charset=utf-8" },
+      });
+    } catch {
+      return context.next();
+    }
+  }
+
   // ── Витрина клиники: /clinics/<slug> ──
   //
   // Страница есть в sitemap, но SEO-обработки у неё не было вовсе: бот
@@ -794,6 +1004,19 @@ export const config = {
     // авторизованный раздел приложения.
     "/:slug/doctors/*",
     "/:slug/publications/*",
+    // Разделы витрины перечислены поимённо, а не шаблоном "/:slug/:section":
+    // тот покрыл бы половину приложения — /clinic/leads, /patient/home-page,
+    // /doctor/dashboard и так далее.
+    "/:slug/about",
+    "/:slug/departments",
+    "/:slug/doctors",
+    "/:slug/articles",
+    "/:slug/gallery",
+    "/:slug/reviews",
+    "/:slug/faq",
+    "/:slug/contacts",
+    "/:slug/services",
+    "/:slug/dp/*",
   ],
   // Файлы в корне (favicon.ico, og-image.jpg, sitemap.xml, sw.js) шаблону
   // "/:slug" тоже соответствуют. Внутри функции они отсеиваются регуляркой,
