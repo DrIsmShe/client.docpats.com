@@ -298,16 +298,14 @@ export default function PublicationDetailRenderer({ clinic, publication }) {
             <CommentSection refId={publication.id} targetType="Article" />
           ) : (
             <>
-              {/* Раньше здесь стояло только приглашение: режима чтения у
-                  CommentSection не существовало, хотя вызывающий код его уже
-                  предполагал. Теперь гость видит само обсуждение — на
-                  публичной странице клиники это и есть содержимое, ради
-                  которого её открыли, — а предложение войти идёт под ним. */}
-              <CommentSection
-                refId={publication.id}
-                targetType="Article"
-                readOnly
-              />
+              {/* Гостю показываем только приглашение.
+                  Режим чтения здесь пробовался и убран по факту проверки в
+                  браузере: список комментариев отдаёт
+                  GET /comments/add-comments/by-ref/:refId, а он закрыт
+                  authMiddleware — гость получал пустой блок и 401 в консоли.
+                  Чтобы обсуждение было видно с публичной страницы клиники,
+                  эндпоинт нужно открывать намеренно: он раскрывает имена
+                  комментаторов. */}
             <div className="vt-pubd-gate">
               <div className="vt-pubd-gate-ico">💬</div>
               <div className="vt-pubd-gate-title">
