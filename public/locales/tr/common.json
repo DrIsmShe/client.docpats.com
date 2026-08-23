@@ -132,13 +132,6 @@
   "specialization": "Uzmanlık",
   "experience": "Deneyim",
   "education": "Eğitim",
-  "chat": {
-    "messages": "Mesajlar",
-    "newGroup": "+ Grup",
-    "selectDialog": "Bir sohbet seçin",
-    "selectDialogHint": "Sohbete başlamak için soldaki listeden bir hasta veya meslektaş seçin",
-    "loadingMessages": "Mesajlar yükleniyor…"
-  },
   "articles": "Makaleler",
   "edit_article": "Makaleyi düzenle",
   "delete_article": "Makaleyi sil",
@@ -1511,5 +1504,13 @@
     "correct": ", doğru {{value}} %",
     "accuracyHint": "Yüzde, vaka sayısı arttığında görünür: az sayıda vakada tek bir hata oranı çok değiştirir.",
     "saved": "Kaydedildi"
-  }
+  },
+  "chatUi": {
+    "messages": "Mesajlar",
+    "newGroup": "+ Grup",
+    "selectDialog": "Bir sohbet seçin",
+    "selectDialogHint": "Sohbete başlamak için soldaki listeden bir hasta veya meslektaş seçin",
+    "loadingMessages": "Mesajlar yükleniyor…"
+  },
+  "chat": "Sohbet"
 }

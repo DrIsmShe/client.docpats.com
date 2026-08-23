@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { sh } from "../../../../lib/sanitizeHtml";
 
 export default function TempMriResultsDetail() {
-  const { t } = useTranslation("examinations"); // 🔥 подключение i18n
+  const { t } = useTranslation("Examinations"); // 🔥 подключение i18n
   const { id } = useParams();
   const navigate = useNavigate();
 

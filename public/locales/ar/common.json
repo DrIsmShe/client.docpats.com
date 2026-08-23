@@ -124,13 +124,6 @@
   "forgot_password": "هل نسيت كلمة المرور؟",
   "reset_password": "إعادة تعيين كلمة المرور",
   "language": "اللغة",
-  "chat": {
-    "messages": "الرسائل",
-    "newGroup": "+ مجموعة",
-    "selectDialog": "اختر محادثة",
-    "selectDialogHint": "لبدء محادثة، اختر مريضًا أو زميلًا من القائمة على اليسار",
-    "loadingMessages": "جارٍ تحميل الرسائل…"
-  },
   "doctor_profile": "ملف الطبيب",
   "patient_profile": "ملف المريض",
   "specialization": "التخصص",
@@ -1505,5 +1498,13 @@
     "correct": "، صحيحة {{value}}%",
     "accuracyHint": "تظهر النسبة عند زيادة عدد الحالات: مع القليل منها يغيّرها خطأ واحد كثيرًا.",
     "saved": "تم الحفظ"
-  }
+  },
+  "chatUi": {
+    "messages": "الرسائل",
+    "newGroup": "+ مجموعة",
+    "selectDialog": "اختر محادثة",
+    "selectDialogHint": "لبدء محادثة، اختر مريضًا أو زميلًا من القائمة على اليسار",
+    "loadingMessages": "جارٍ تحميل الرسائل…"
+  },
+  "chat": "الدردشة"
 }

@@ -38,13 +38,42 @@ const BASELINE = path.join(ROOT, "scripts", "i18n-baseline.json");
 const DEFAULT_NS = "common"; // из src/i18n.js
 
 // ── словари ──────────────────────────────────────────────────────────────
+//
+// Имя файла ищем БЕЗ учёта регистра, и это принципиально.
+//
+// Разработка идёт на Windows, сборка — на Linux у Netlify. fs.existsSync на
+// Windows находит Examinations.json по запросу examinations.json, на Linux —
+// нет. Проверка, снявшая базовый список на Windows, падала на сборщике с 34
+// «новыми» пропусками, которых на самом деле не было: словарь лежал рядом,
+// просто с заглавной буквы.
+//
+// Раздача статики у Netlify к регистру нечувствительна (проверено запросом:
+// /locales/ru/examinations.json и /Examinations.json отдают один JSON), так
+// что в браузере это работало всегда. Значит и проверка должна вести себя
+// так же — иначе она ломает сборку на дефекте, которого нет.
+//
+// Расхождение регистра при этом остаётся хрупкостью и о нём сообщается ниже.
+const filesByLower = new Map();
+{
+  const dir = path.join(LOCALES, REFERENCE);
+  if (fs.existsSync(dir)) {
+    for (const name of fs.readdirSync(dir)) {
+      filesByLower.set(name.toLowerCase(), name);
+    }
+  }
+}
+
+const caseMismatches = [];
+
 function loadNamespace(ns) {
-  const file = path.join(LOCALES, REFERENCE, `${ns}.json`);
-  if (!fs.existsSync(file)) return null;
+  const wanted = `${ns}.json`;
+  const actual = filesByLower.get(wanted.toLowerCase());
+  if (!actual) return null;
+  if (actual !== wanted) caseMismatches.push(`${ns} → ${actual}`);
   try {
-    return JSON.parse(fs.readFileSync(file, "utf8"));
+    return JSON.parse(fs.readFileSync(path.join(LOCALES, REFERENCE, actual), "utf8"));
   } catch (err) {
-    console.error(`Словарь ${REFERENCE}/${ns}.json не читается: ${err.message}`);
+    console.error(`Словарь ${REFERENCE}/${actual} не читается: ${err.message}`);
     process.exit(1);
   }
 }
@@ -66,6 +95,32 @@ function hasKey(ns, key) {
   // Пустое значение не лучше отсутствия: подпись исчезает, кнопка остаётся
   // без текста.
   return typeof cur === "string" ? cur.trim().length > 0 : cur != null;
+}
+
+/**
+ * Ключ указывает на ВЕТКУ, а не на строку.
+ *
+ * Отдельный дефект, который проверка выше пропускает: значение есть, оно не
+ * пустое — просто это объект. i18next вернёт не текст, и на экране появится
+ * сам ключ.
+ *
+ * Так ломается ключ, вокруг которого позже завели группу: был chat: "Чат",
+ * кто-то добавил chat.selectDialog — и подпись пункта меню исчезла во всех
+ * пяти языках. Сверка словарей между собой при этом довольна: паритет
+ * идеальный, ключи на месте.
+ *
+ * Законное исключение — t(key, { returnObjects: true }) для массивов
+ * (списки в AboutPage, TermsConsentPage). Такие вызовы пропускаем.
+ */
+function valueAt(ns, key) {
+  const dict = dictOf(ns);
+  if (!dict) return undefined;
+  let cur = dict;
+  for (const part of key.split(".")) {
+    if (!cur || typeof cur !== "object" || !(part in cur)) return undefined;
+    cur = cur[part];
+  }
+  return cur;
 }
 
 // ── обход исходников ─────────────────────────────────────────────────────
@@ -115,6 +170,22 @@ function translatorNames(src) {
   return [...names];
 }
 
+/** Ключи, вызванные с returnObjects: их значение и должно быть не строкой. */
+function objectKeys(src, names) {
+  const keys = new Set();
+  for (const name of names) {
+    const re = new RegExp(
+      // Только литеральные ключи в кавычках: t(`a.${b}`) с returnObjects
+      // выше всё равно не собирается, ключ там динамический.
+      "\\b" + name + "\\(\\s*[\"']([^\"']+)[\"']\\s*,[^)]*returnObjects",
+      "g",
+    );
+    let m;
+    while ((m = re.exec(src))) keys.add(m[1]);
+  }
+  return keys;
+}
+
 function literalKeys(src, names) {
   const keys = new Set();
   for (const name of names) {
@@ -134,6 +205,7 @@ for (const file of walk(SRC)) {
 
   const nss = namespacesOf(src);
   const names = translatorNames(src);
+  const asObjects = objectKeys(src, names);
 
   for (const key of literalKeys(src, names)) {
     // Явное пространство имён: t("clinic:dashboard.title").
@@ -148,13 +220,39 @@ for (const file of walk(SRC)) {
     // t("title") в шапке профиля врача, из-за которого там во всех языках
     // печаталось слово «title».
 
+    const rel = path.relative(ROOT, file).replace(/\\/g, "/");
+
     if (!candidates.some((ns) => hasKey(ns, bare))) {
-      misses.push(`${path.relative(ROOT, file).replace(/\\/g, "/")} → ${key}`);
+      misses.push(`${rel} → ${key}`);
+      continue;
+    }
+
+    // Ключ найден — но ведёт ли он к тексту?
+    if (!asObjects.has(key)) {
+      const resolved = candidates
+        .map((ns) => valueAt(ns, bare))
+        .find((v) => v !== undefined);
+      if (resolved && typeof resolved === "object" && !Array.isArray(resolved)) {
+        misses.push(`${rel} → ${key} (ключ ведёт к ветке, а не к тексту)`);
+      }
     }
   }
 }
 
 misses.sort();
+
+// Предупреждение, а не ошибка: сайт с таким расхождением работает, но держится
+// на том, что раздача не различает регистр. Стоит выровнять.
+if (caseMismatches.length) {
+  const uniq = [...new Set(caseMismatches)].sort();
+  console.warn(
+    `\nПространство имён и файл различаются регистром (${uniq.length}):`,
+  );
+  for (const m of uniq) console.warn("  " + m);
+  console.warn(
+    "Работает только потому, что раздача статики регистр не различает.\n",
+  );
+}
 
 // ── сравнение с базовым списком ──────────────────────────────────────────
 let baseline = [];
@@ -195,6 +293,24 @@ if (stale.length) {
   console.error(
     "\nЭти пропуски уже закрыты — уберите их: npm run check:locale-usage -- --update-baseline",
   );
+}
+
+// На сборщике Netlify не валим сборку.
+//
+// Эта проверка уже остановила выкатку сайта на ЛОЖНОМ срабатывании: базовый
+// список снят на Windows, где регистр имени файла не важен, а на Linux
+// словарь не нашёлся — 34 «новых» пропуска, которых не было. Цена ошибки
+// оказалась несоразмерной: прод не обновлялся, пока это не заметили.
+//
+// Непереведённая подпись — дефект, но сайт от неё работать не перестаёт.
+// Не выехавший деплой — перестаёт. Поэтому на машине разработчика проверка
+// падает, а на выкатке говорит громко и пропускает.
+if (process.env.NETLIFY) {
+  console.error(
+    "\nСборка продолжена: на выкатке эта проверка предупреждает, но не\n" +
+      "останавливает деплой. Исправьте и закоммитьте — локально она падает.",
+  );
+  process.exit(0);
 }
 
 process.exit(1);

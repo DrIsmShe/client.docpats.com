@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { sh } from "../../../../lib/sanitizeHtml";
 
 const TempStatusLocalisDetail = () => {
-  const { t } = useTranslation("examinations");
+  const { t } = useTranslation("Examinations");
 
   const { id } = useParams();
   const navigate = useNavigate();

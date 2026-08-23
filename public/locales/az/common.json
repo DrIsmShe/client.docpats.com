@@ -134,13 +134,6 @@
   "specialization": "İxtisas",
   "experience": "Təcrübə",
   "education": "Təhsil",
-  "chat": {
-    "messages": "Mesajlar",
-    "newGroup": "+ Qrup",
-    "selectDialog": "Dialoq seçin",
-    "selectDialogHint": "Söhbətə başlamaq üçün soldakı siyahıdan pasiyent və ya həmkar seçin",
-    "loadingMessages": "Mesajlar yüklənir…"
-  },
   "articles": "Məqalələr",
   "edit_article": "Məqaləni redaktə et",
   "delete_article": "Məqaləni sil",
@@ -1514,5 +1507,13 @@
     "correct": ", düzgün {{value}} %",
     "accuracyHint": "Faiz hallar çoxaldıqda görünəcək: az sayda halda bir səhv onu həddindən artıq dəyişir.",
     "saved": "Yadda saxlanıldı"
-  }
+  },
+  "chatUi": {
+    "messages": "Mesajlar",
+    "newGroup": "+ Qrup",
+    "selectDialog": "Dialoq seçin",
+    "selectDialogHint": "Söhbətə başlamaq üçün soldakı siyahıdan pasiyent və ya həmkar seçin",
+    "loadingMessages": "Mesajlar yüklənir…"
+  },
+  "chat": "Çat"
 }

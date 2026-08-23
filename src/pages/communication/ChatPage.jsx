@@ -210,7 +210,7 @@ function ChatPage() {
           <div className="mobile-topbar">
             <div className="mobile-topbar-inner">
               <span style={{ fontSize: 20 }}>💬</span>
-              <span className="mobile-topbar-title">{t("chat.messages")}</span>
+              <span className="mobile-topbar-title">{t("chatUi.messages")}</span>
               {!loading && dialogs.length > 0 && (
                 <span className="mobile-topbar-count">{dialogs.length}</span>
               )}
@@ -260,9 +260,9 @@ function ChatPage() {
         <div className="chatpage-empty">
           <div className="chatpage-empty-box">
             <span className="chatpage-empty-icon">🩺</span>
-            <div className="chatpage-empty-title">{t("chat.selectDialog")}</div>
+            <div className="chatpage-empty-title">{t("chatUi.selectDialog")}</div>
             <div className="chatpage-empty-subtitle">
-              {t("chat.selectDialogHint")}
+              {t("chatUi.selectDialogHint")}
             </div>
           </div>
         </div>

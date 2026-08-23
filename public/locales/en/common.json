@@ -126,13 +126,6 @@
   "forgot_password": "Forgot password?",
   "reset_password": "Reset password",
   "language": "Language",
-  "chat": {
-    "messages": "Messages",
-    "newGroup": "+ Group",
-    "selectDialog": "Select a dialog",
-    "selectDialogHint": "To start a conversation, select a patient or colleague from the list on the left",
-    "loadingMessages": "Loading messages…"
-  },
   "doctor_profile": "Doctor Profile",
   "patient_profile": "Patient Profile",
   "specialization": "Specialization",
@@ -1487,5 +1480,13 @@
     "correct": ", correct {{value}}%",
     "accuracyHint": "The percentage appears once there are more cases: with only a few, a single mistake swings it too much.",
     "saved": "Saved"
-  }
+  },
+  "chatUi": {
+    "messages": "Messages",
+    "newGroup": "+ Group",
+    "selectDialog": "Select a dialog",
+    "selectDialogHint": "To start a conversation, select a patient or colleague from the list on the left",
+    "loadingMessages": "Loading messages…"
+  },
+  "chat": "Chat"
 }

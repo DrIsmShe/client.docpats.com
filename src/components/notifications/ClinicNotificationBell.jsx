@@ -68,7 +68,7 @@ export default function ClinicNotificationBell({ limit = 8 }) {
           so fetches/listeners are not duplicated. */}
       <div style={{ ...styles.dropdown, display: open ? "block" : "none" }}>
         <div style={styles.head}>
-          {t("notifications", { defaultValue: "Уведомления" })}
+          {t("notifications.title", { defaultValue: "Уведомления" })}
         </div>
         <div style={styles.body}>
           <NotificationBell onUnreadChange={setUnreadCount} limit={limit} />

@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 
 export default function TempRecommendationsList() {
-  const { t } = useTranslation("examinations");
+  const { t } = useTranslation("Examinations");
 
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
