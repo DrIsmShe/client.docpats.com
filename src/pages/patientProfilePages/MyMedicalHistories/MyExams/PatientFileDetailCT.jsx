@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
@@ -393,6 +394,7 @@ async function downloadWithAuth(url, filename) {
 
 /* ===================== Основной компонент ===================== */
 export default function PatientFileDetailCT() {
+  const { t } = useTranslation("patientExam");
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -531,11 +533,11 @@ export default function PatientFileDetailCT() {
 
       {/* Хлебные крошки */}
       <nav style={{ marginBottom: 12, fontSize: 14 }}>
-        <Link to={`/patient/patient-profile/${id}`}>Личный кабинет</Link>{" "}
+        <Link to={`/patient/patient-profile/${id}`}>{t("nav.cabinet")}</Link>{" "}
         &nbsp;/&nbsp;
-        <Link to="/patient/get-patients-files">Мои медицинские файлы</Link>{" "}
+        <Link to="/patient/get-patients-files">{t("nav.myFiles")}</Link>{" "}
         &nbsp;/&nbsp;
-        <span>КТ — детали</span>
+        <span>{t("details.ctShort")}</span>
       </nav>
 
       <div
@@ -547,17 +549,17 @@ export default function PatientFileDetailCT() {
         }}
       >
         <button onClick={onBack} className="btn" style={btnStyle}>
-          ← Назад
+          {t("nav.back")}
         </button>
         <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>
-          Детали КТ-исследования
+          {t("details.ct")}
         </h1>
       </div>
 
       {loading && <Skeleton />}
       {!loading && error && <div style={alertStyle("error")}>{error}</div>}
       {!loading && !error && !item && (
-        <div style={alertStyle("warning")}>Данные не найдены.</div>
+        <div style={alertStyle("warning")}>{t("common.notFound")}</div>
       )}
 
       {!loading && !error && item && (
@@ -576,7 +578,7 @@ export default function PatientFileDetailCT() {
               className="btn"
               style={btnStyle}
             >
-              ⤓ Скачать PDF (сводка)
+              {t("common.downloadSummary")}
             </button>
           </div>
 
@@ -587,37 +589,37 @@ export default function PatientFileDetailCT() {
                 style={{ display: "grid", gridTemplateColumns: "1fr", gap: 24 }}
               >
                 <div>
-                  <h3 style={h3}>Основное</h3>
-                  <KV label="ID исследования" value={item._id} mono />
-                  <KV label="Дата" value={fmtDateTime(item.date)} />
+                  <h3 style={h3}>{t("card.main")}</h3>
+                  <KV label={t("card.studyId")} value={item._id} mono />
+                  <KV label={t("card.date")} value={fmtDateTime(item.date)} />
                   <KV
-                    label="Имя доктора (ФИО)"
+                    label={t("card.doctorFullName")}
                     value={getDisplayName(item.doctor)}
                   />
                   <KV
-                    label="Имя пациента (ФИО)"
+                    label={t("card.patientFullName")}
                     value={getDisplayName(item.patient)}
                   />
-                  <KV label="Дата рождения" value={dobDisplay} />
+                  <KV label={t("card.dob")} value={dobDisplay} />
                   <KV
-                    label="Контраст использован"
+                    label={t("measure.contrastUsedAlt")}
                     value={item.contrastUsed ? "Да" : "Нет"}
                   />
                   <KV
-                    label="Доза излучения (мЗв)"
+                    label={t("measure.radiationDose")}
                     value={item.radiationDose ?? "—"}
                   />
                 </div>
 
                 <div>
-                  <h3 style={h3}>Заключение</h3>
+                  <h3 style={h3}>{t("report.conclusion")}</h3>
                   <KV
-                    label="Наименование исследования"
+                    label={t("card.studyName")}
                     value={item.nameofexam || "—"}
                   />
-                  <KV label="Диагноз" value={item.diagnosis || "—"} />
-                  <KV label="Рекомендации" value={item.recomandation || "—"} />
-                  <KV label="Отчёт" value={<Pre value={item.report} />} />
+                  <KV label={t("report.diagnosis")} value={item.diagnosis || "—"} />
+                  <KV label={t("report.recommendations")} value={item.recomandation || "—"} />
+                  <KV label={t("report.title")} value={<Pre value={item.report} />} />
                 </div>
               </div>
             </section>
@@ -634,9 +636,9 @@ export default function PatientFileDetailCT() {
                 flexWrap: "wrap",
               }}
             >
-              <h3 style={h3}>Файлы ({item.files?.length || 0})</h3>
+              <h3 style={h3}>{t("media.filesPrefix")}{item.files?.length || 0})</h3>
               <div style={{ color: "#6b7280" }}>
-                Суммарный размер: {bytesToHuman(totalSize)}
+                {t("media.totalSize")} {bytesToHuman(totalSize)}
               </div>
             </div>
 
@@ -645,12 +647,12 @@ export default function PatientFileDetailCT() {
                 <table className="ct-table">
                   <thead>
                     <tr>
-                      <th>Имя</th>
-                      <th>Тип</th>
-                      <th>Формат</th>
-                      <th>Размер</th>
-                      <th>Study Type</th>
-                      <th>Действия</th>
+                      <th>{t("card.name")}</th>
+                      <th>{t("media.type")}</th>
+                      <th>{t("media.format")}</th>
+                      <th>{t("media.size")}</th>
+                      <th>{t("card.studyType")}</th>
+                      <th>{t("card.actions")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -677,10 +679,10 @@ export default function PatientFileDetailCT() {
                                   target="_blank"
                                   rel="noreferrer"
                                   style={{ textDecoration: "underline" }}
-                                  title="Открыть в новой вкладке"
+                                  title={t("common.openNewTab")}
                                 >
                                   <button style={{ padding: "5px" }}>
-                                    Скачать
+                                    {t("common.download")}
                                   </button>
                                 </a>
                               </div>
@@ -701,9 +703,9 @@ export default function PatientFileDetailCT() {
 
           {/* Медиа */}
           <section style={card}>
-            <h3 style={h3}>Медиа</h3>
+            <h3 style={h3}>{t("media.title")}</h3>
             <KV
-              label="PACS"
+              label={t("media.pacs")}
               value={
                 item.pacsLink ? (
                   <a
@@ -720,7 +722,7 @@ export default function PatientFileDetailCT() {
               mono
             />
             <KV
-              label="DICOM (rawData)"
+              label={t("media.dicomRaw")}
               value={
                 item.rawData ? (
                   <a
@@ -737,7 +739,7 @@ export default function PatientFileDetailCT() {
               mono
             />
             <KV
-              label="3D-модель"
+              label={t("media.model3d")}
               value={
                 item.threeDModel ? (
                   <a
@@ -756,7 +758,7 @@ export default function PatientFileDetailCT() {
 
             <div style={{ marginTop: 12 }}>
               <div style={{ fontWeight: 600, marginBottom: 8 }}>
-                Снимки ({item.images?.length || 0})
+                {t("media.scansPrefix")}{item.images?.length || 0})
               </div>
               {Array.isArray(item.images) && item.images.length > 0 ? (
                 <div style={gridImages}>
@@ -769,7 +771,7 @@ export default function PatientFileDetailCT() {
                         target="_blank"
                         rel="noreferrer"
                         style={thumbWrap}
-                        title="Открыть снимок"
+                        title={t("common.openScan")}
                       >
                         <img
                           src={href}
@@ -789,7 +791,7 @@ export default function PatientFileDetailCT() {
 
           {/* AI */}
           <section style={card}>
-            <h3 style={h3}>AI-анализ</h3>
+            <h3 style={h3}>{t("ai.analysis")}</h3>
             <div
               style={{
                 display: "grid",
@@ -798,25 +800,25 @@ export default function PatientFileDetailCT() {
               }}
             >
               <div>
-                <KV label="AI версия" value={item.aiVersion || "—"} />
-                <KV label="AI предсказание" value={item.aiPrediction || "—"} />
-                <KV label="Доверие модели" value={item.aiConfidence ?? "—"} />
+                <KV label={t("ai.version")} value={item.aiVersion || "—"} />
+                <KV label={t("ai.prediction")} value={item.aiPrediction || "—"} />
+                <KV label={t("ai.confidence")} value={item.aiConfidence ?? "—"} />
                 <KV
-                  label="Доверие предсказанию"
+                  label={t("ai.predictionConfidence")}
                   value={item.predictionConfidence ?? "—"}
                 />
                 <KV
-                  label="Время обработки (сек)"
+                  label={t("ai.processingTime")}
                   value={item.aiProcessingTime ?? "—"}
                 />
                 <KV
-                  label="Обработано"
+                  label={t("ai.processed")}
                   value={fmtDateTime(item.aiProcessedAt)}
                 />
               </div>
               <div>
                 <div style={{ marginBottom: 6, color: "#6b7280" }}>
-                  AI Findings (JSON)
+                  {t("ai.findingsJson")}
                 </div>
                 <pre style={preBox}>
                   {JSON.stringify(item.aiFindings ?? {}, null, 2)}
@@ -827,29 +829,29 @@ export default function PatientFileDetailCT() {
 
           {/* Риск/валидация */}
           <section style={card}>
-            <h3 style={h3}>Оценка риска и валидация</h3>
-            <KV label="Уровень риска" value={item.riskLevel || "—"} />
-            <KV label="Факторы риска" value={safeJoin(item.riskFactors)} />
+            <h3 style={h3}>{t("validation.riskAndValidation")}</h3>
+            <KV label={t("risk.level")} value={item.riskLevel || "—"} />
+            <KV label={t("risk.factors")} value={safeJoin(item.riskFactors)} />
             <KV
-              label="Валидировано врачом"
+              label={t("validation.byDoctor")}
               value={item.validatedByDoctor ? "Да" : "Нет"}
             />
             <KV
-              label="Заметки врача"
+              label={t("report.doctorNotes")}
               value={<Pre value={item.doctorNotes} />}
             />
-            <KV label="Создано" value={fmtDateTime(item.createdAt)} />
-            <KV label="Обновлено" value={fmtDateTime(item.updatedAt)} />
+            <KV label={t("card.created")} value={fmtDateTime(item.createdAt)} />
+            <KV label={t("card.updated")} value={fmtDateTime(item.updatedAt)} />
           </section>
 
           {/* Шаблоны */}
           <section style={card}>
-            <h3 style={h3}>Привязанные шаблоны</h3>
-            <KV label="Name of exam" value={tmpl(item.nameofexamTemplate)} />
-            <KV label="Report" value={tmpl(item.reportTemplate)} />
-            <KV label="Diagnosis" value={tmpl(item.diagnosisTemplate)} />
+            <h3 style={h3}>{t("links.templates")}</h3>
+            <KV label={t("card.examName")} value={tmpl(item.nameofexamTemplate)} />
+            <KV label={t("report.reportEn")} value={tmpl(item.reportTemplate)} />
+            <KV label={t("report.diagnosisEn")} value={tmpl(item.diagnosisTemplate)} />
             <KV
-              label="Recommendation"
+              label={t("report.recommendationEn")}
               value={tmpl(item.recomandationTemplate)}
             />
           </section>
@@ -857,7 +859,7 @@ export default function PatientFileDetailCT() {
           {/* Комментарии */}
           <section style={card}>
             <h3 style={h3}>
-              Комментарии врача ({item.doctorComments?.length || 0})
+              {t("media.doctorCommentsPrefix")}{item.doctorComments?.length || 0})
             </h3>
             {Array.isArray(item.doctorComments) &&
             item.doctorComments.length > 0 ? (

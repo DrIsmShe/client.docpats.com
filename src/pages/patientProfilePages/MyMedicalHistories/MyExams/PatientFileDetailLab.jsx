@@ -1,5 +1,6 @@
 // PatientFileDetailLab.jsx
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import html2canvas from "html2canvas";
@@ -17,6 +18,7 @@ const resolveHref = (u = "") => {
 };
 
 export default function PatientFileDetailLab() {
+  const { t } = useTranslation("patientExam");
   const { id } = useParams();
   const [labTest, setLabTest] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -62,9 +64,9 @@ export default function PatientFileDetailLab() {
 
   const printPage = () => window.print();
 
-  if (loading) return <p style={{ padding: 20 }}>Загрузка…</p>;
+  if (loading) return <p style={{ padding: 20 }}>{t("common.loading")}</p>;
   if (error) return <p style={{ padding: 20, color: "#b91c1c" }}>{error}</p>;
-  if (!labTest) return <p style={{ padding: 20 }}>Нет данных</p>;
+  if (!labTest) return <p style={{ padding: 20 }}>{t("common.noData")}</p>;
 
   return (
     <div style={{ padding: 20, maxWidth: 1100, margin: "0 auto" }}>
@@ -149,13 +151,13 @@ export default function PatientFileDetailLab() {
       `}</style>
 
       <h2 style={{ margin: "0 0 12px 0" }}>
-        Лабораторный анализ: {labTest.testType || "—"}
+        {t("params.labAnalysis")} {labTest.testType || "—"}
       </h2>
 
       <div id="labtest-details" className="lab-card">
         {/* Основная информация */}
         <div className="kv">
-          <div className="kv-label">Пациент</div>
+          <div className="kv-label">{t("card.patient")}</div>
           <div className="kv-value">
             {labTest?.patient?.firstName || "—"}{" "}
             {labTest?.patient?.lastName || ""}
@@ -163,7 +165,7 @@ export default function PatientFileDetailLab() {
         </div>
 
         <div className="kv">
-          <div className="kv-label">Врач</div>
+          <div className="kv-label">{t("card.doctor")}</div>
           <div className="kv-value">
             {labTest?.doctor?.firstName || "—"}{" "}
             {labTest?.doctor?.lastName || ""}
@@ -171,39 +173,39 @@ export default function PatientFileDetailLab() {
         </div>
 
         <div className="kv">
-          <div className="kv-label">Дата</div>
+          <div className="kv-label">{t("card.date")}</div>
           <div className="kv-value">
             {labTest?.date ? new Date(labTest.date).toLocaleDateString() : "—"}
           </div>
         </div>
 
         <div className="kv">
-          <div className="kv-label">Лаборатория</div>
+          <div className="kv-label">{t("card.lab")}</div>
           <div className="kv-value">{labTest.labName || "—"}</div>
         </div>
 
         <div className="kv">
-          <div className="kv-label">Предварительный диагноз</div>
+          <div className="kv-label">{t("report.preliminaryDiagnosis")}</div>
           <div className="kv-value">{labTest.diagnosis || "—"}</div>
         </div>
 
         <div className="kv">
-          <div className="kv-label">Заключение врача</div>
+          <div className="kv-label">{t("report.doctorConclusion")}</div>
           <div className="kv-value">{labTest.report || "—"}</div>
         </div>
 
         {/* 🧪 Показатели анализа */}
         <h4 style={{ marginTop: 20, marginBottom: 10 }}>
-          🧪 Показатели анализа
+          {t("params.labValues")}
         </h4>
 
         <table className="lab-table">
           <thead>
             <tr>
-              <th>Параметр</th>
-              <th>Значение</th>
-              <th>Ед. изм.</th>
-              <th>Норма</th>
+              <th>{t("table.parameter")}</th>
+              <th>{t("table.value")}</th>
+              <th>{t("table.unit")}</th>
+              <th>{t("table.norm")}</th>
             </tr>
           </thead>
           <tbody>
@@ -242,7 +244,7 @@ export default function PatientFileDetailLab() {
         {/* 📎 Файлы */}
         {Array.isArray(labTest.files) && labTest.files.length > 0 && (
           <div className="files" style={{ marginTop: 16 }}>
-            <h4 style={{ marginBottom: 8 }}>📎 Прикреплённые файлы</h4>
+            <h4 style={{ marginBottom: 8 }}>{t("media.attachedFiles")}</h4>
             <ul>
               {labTest.files.map((file, i) => (
                 <li key={i}>
@@ -266,7 +268,7 @@ export default function PatientFileDetailLab() {
         {Array.isArray(labTest.doctorComments) &&
           labTest.doctorComments.length > 0 && (
             <div className="comments" style={{ marginTop: 20 }}>
-              <h4 style={{ marginBottom: 8 }}>💬 Комментарии врачей</h4>
+              <h4 style={{ marginBottom: 8 }}>{t("media.doctorComments")}</h4>
               <ul>
                 {labTest.doctorComments.map((comment, idx) => (
                   <li key={idx} style={{ marginBottom: 8 }}>
@@ -296,10 +298,10 @@ export default function PatientFileDetailLab() {
         style={{ marginTop: 20, display: "flex", gap: 10, flexWrap: "wrap" }}
       >
         <button onClick={downloadPDF} className="btn btn-primary">
-          Скачать PDF
+          {t("common.downloadPdf")}
         </button>
         <button onClick={printPage} className="btn btn-secondary">
-          Печать
+          {t("common.print")}
         </button>
       </div>
     </div>

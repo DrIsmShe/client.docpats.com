@@ -1,5 +1,6 @@
 // client/src/pages/patient/PatientFileDetailAngiographyScan.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
@@ -322,6 +323,7 @@ const tmpl = (t) => (!t ? "—" : t.title || t.name || t.label || t._id || "—"
 
 /* ===================== Основной компонент ===================== */
 export default function PatientFileDetailAngiographyScan() {
+  const { t } = useTranslation("patientExam");
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -466,10 +468,10 @@ export default function PatientFileDetailAngiographyScan() {
 
       {/* Хлебные крошки */}
       <nav style={{ marginBottom: 12, fontSize: 14 }}>
-        <Link to="/patient/home">Личный кабинет</Link> &nbsp;/&nbsp;
-        <Link to="/patient/get-patients-files">Мои медицинские файлы</Link>{" "}
+        <Link to="/patient/home">{t("nav.cabinet")}</Link> &nbsp;/&nbsp;
+        <Link to="/patient/get-patients-files">{t("nav.myFiles")}</Link>{" "}
         &nbsp;/&nbsp;
-        <span>Ангиография — детали</span>
+        <span>{t("details.angioShort")}</span>
       </nav>
 
       <div
@@ -481,17 +483,17 @@ export default function PatientFileDetailAngiographyScan() {
         }}
       >
         <button onClick={onBack} className="btn" style={btnStyle}>
-          ← Назад
+          {t("nav.back")}
         </button>
         <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>
-          Детали ангиографии
+          {t("details.angio")}
         </h1>
       </div>
 
       {loading && <Skeleton />}
       {!loading && error && <div style={alertStyle("error")}>{error}</div>}
       {!loading && !error && !item && (
-        <div style={alertStyle("warning")}>Данные не найдены.</div>
+        <div style={alertStyle("warning")}>{t("common.notFound")}</div>
       )}
 
       {!loading && !error && item && (
@@ -510,7 +512,7 @@ export default function PatientFileDetailAngiographyScan() {
               className="btn"
               style={btnStyle}
             >
-              ⤓ Скачать PDF (сводка)
+              {t("common.downloadSummary")}
             </button>
           </div>
 
@@ -521,26 +523,26 @@ export default function PatientFileDetailAngiographyScan() {
                 style={{ display: "grid", gridTemplateColumns: "1fr", gap: 24 }}
               >
                 <div>
-                  <h3 style={h3}>Основное</h3>
-                  <KV label="ID исследования" value={item._id} mono />
-                  <KV label="Дата" value={fmtDateTime(item.date)} />
-                  <KV label="Врач" value={getDisplayName(item.doctor)} />
+                  <h3 style={h3}>{t("card.main")}</h3>
+                  <KV label={t("card.studyId")} value={item._id} mono />
+                  <KV label={t("card.date")} value={fmtDateTime(item.date)} />
+                  <KV label={t("card.doctor")} value={getDisplayName(item.doctor)} />
                   <KV
-                    label="Пациент"
+                    label={t("card.patient")}
                     value={getDisplayName(item.patient || item.patientId)}
                   />
-                  <KV label="Дата рождения" value={dobDisplay} />
+                  <KV label={t("card.dob")} value={dobDisplay} />
                 </div>
 
                 <div>
-                  <h3 style={h3}>Заключение</h3>
+                  <h3 style={h3}>{t("report.conclusion")}</h3>
                   <KV
-                    label="Наименование исследования"
+                    label={t("card.studyName")}
                     value={item.nameofexam || "—"}
                   />
-                  <KV label="Диагноз" value={item.diagnosis || "—"} />
-                  <KV label="Рекомендации" value={item.recomandation || "—"} />
-                  <KV label="Отчёт" value={<Pre value={item.report} />} />
+                  <KV label={t("report.diagnosis")} value={item.diagnosis || "—"} />
+                  <KV label={t("report.recommendations")} value={item.recomandation || "—"} />
+                  <KV label={t("report.title")} value={<Pre value={item.report} />} />
                 </div>
               </div>
             </section>
@@ -548,9 +550,9 @@ export default function PatientFileDetailAngiographyScan() {
 
           {/* Параметры ангиографии / кардио-показатели */}
           <section style={card}>
-            <h3 style={h3}>Параметры исследования</h3>
+            <h3 style={h3}>{t("params.study")}</h3>
             <KV
-              label="Доза облучения (мЗв)"
+              label={t("measure.exposureDose")}
               value={
                 typeof item.radiationDose === "number"
                   ? item.radiationDose
@@ -558,15 +560,15 @@ export default function PatientFileDetailAngiographyScan() {
               }
             />
             <KV
-              label="Контраст использовался"
+              label={t("measure.contrastUsed")}
               value={item.contrastUsed ? "Да" : "Нет"}
             />
             <KV
-              label="Doppler Findings"
+              label={t("measure.dopplerFindingsEn")}
               value={<Pre value={item.dopplerFindings} />}
             />
             <KV
-              label="Длительность мониторинга (мин)"
+              label={t("measure.monitorMinutes")}
               value={
                 typeof item.monitoringDuration === "number"
                   ? item.monitoringDuration
@@ -574,24 +576,24 @@ export default function PatientFileDetailAngiographyScan() {
               }
             />
             <KV
-              label="Макс. ЧСС"
+              label={t("measure.maxHr")}
               value={
                 typeof item.maxHeartRate === "number" ? item.maxHeartRate : "—"
               }
             />
             <KV
-              label="Мин. ЧСС"
+              label={t("measure.minHr")}
               value={
                 typeof item.minHeartRate === "number" ? item.minHeartRate : "—"
               }
             />
             <KV
-              label="Эпизоды аритмии"
+              label={t("measure.arrhythmiaEpisodes")}
               value={safeJoin(item.arrhythmiaEpisodes)}
             />
-            <KV label="Эхогенность" value={item.echogenicity ?? "—"} />
+            <KV label={t("measure.echogenicity")} value={item.echogenicity ?? "—"} />
             <KV
-              label="Частота датчика (МГц)"
+              label={t("measure.probeFrequency")}
               value={
                 typeof item.probeFrequency === "number"
                   ? item.probeFrequency
@@ -602,14 +604,14 @@ export default function PatientFileDetailAngiographyScan() {
 
           {/* Связанные исследования */}
           <section style={card}>
-            <h3 style={h3}>Связанные исследования</h3>
+            <h3 style={h3}>{t("links.relatedStudies")}</h3>
             <KV
-              label="Предыдущее исследование"
+              label={t("links.previousStudy")}
               value={item.previousStudy || "—"}
               mono
             />
             <KV
-              label="Связанные исследования"
+              label={t("links.relatedStudies")}
               value={safeJoin(
                 Array.isArray(item.relatedStudies)
                   ? item.relatedStudies.map(String)
@@ -621,14 +623,14 @@ export default function PatientFileDetailAngiographyScan() {
 
           {/* Флаги/качество/риск */}
           <section style={card}>
-            <h3 style={h3}>Качество и риск</h3>
-            <KV label="Оценка качества" value={item.imageQuality ?? "—"} />
+            <h3 style={h3}>{t("quality.andRisk")}</h3>
+            <KV label={t("quality.title")} value={item.imageQuality ?? "—"} />
             <KV
-              label="Нужен пересъём"
+              label={t("quality.needsRetake")}
               value={item.needsRetake ? "Да" : "Нет"}
             />
-            <KV label="Уровень риска" value={item.riskLevel ?? "—"} />
-            <KV label="Факторы риска" value={safeJoin(item.riskFactors)} />
+            <KV label={t("risk.level")} value={item.riskLevel ?? "—"} />
+            <KV label={t("risk.factors")} value={safeJoin(item.riskFactors)} />
           </section>
 
           {/* Файлы */}
@@ -642,9 +644,9 @@ export default function PatientFileDetailAngiographyScan() {
                 flexWrap: "wrap",
               }}
             >
-              <h3 style={h3}>Файлы ({item.files?.length || 0})</h3>
+              <h3 style={h3}>{t("media.filesPrefix")}{item.files?.length || 0})</h3>
               <div style={{ color: "#6b7280" }}>
-                Суммарный размер: {bytesToHuman(totalSize)}
+                {t("media.totalSize")} {bytesToHuman(totalSize)}
               </div>
             </div>
 
@@ -653,12 +655,12 @@ export default function PatientFileDetailAngiographyScan() {
                 <table className="ct-table">
                   <thead>
                     <tr>
-                      <th>Имя</th>
-                      <th>Тип</th>
-                      <th>Формат</th>
-                      <th>Размер</th>
-                      <th>Study Type</th>
-                      <th>Действия</th>
+                      <th>{t("card.name")}</th>
+                      <th>{t("media.type")}</th>
+                      <th>{t("media.format")}</th>
+                      <th>{t("media.size")}</th>
+                      <th>{t("card.studyType")}</th>
+                      <th>{t("card.actions")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -685,10 +687,10 @@ export default function PatientFileDetailAngiographyScan() {
                                   target="_blank"
                                   rel="noreferrer"
                                   style={{ textDecoration: "underline" }}
-                                  title="Открыть в новой вкладке"
+                                  title={t("common.openNewTab")}
                                 >
                                   <button style={{ padding: "5px" }}>
-                                    Скачать
+                                    {t("common.download")}
                                   </button>
                                 </a>
                               </div>
@@ -709,9 +711,9 @@ export default function PatientFileDetailAngiographyScan() {
 
           {/* Медиа */}
           <section style={card}>
-            <h3 style={h3}>Медиа</h3>
+            <h3 style={h3}>{t("media.title")}</h3>
             <KV
-              label="PACS"
+              label={t("media.pacs")}
               value={
                 item.pacsLink ? (
                   <a
@@ -728,7 +730,7 @@ export default function PatientFileDetailAngiographyScan() {
               mono
             />
             <KV
-              label="Сырые данные (rawData)"
+              label={t("media.rawData")}
               value={
                 item.rawData ? (
                   <a
@@ -746,7 +748,7 @@ export default function PatientFileDetailAngiographyScan() {
             />
             <div style={{ marginTop: 12 }}>
               <div style={{ fontWeight: 600, marginBottom: 8 }}>
-                Изображения ({item.images?.length || 0})
+                {t("media.imagesPrefix")}{item.images?.length || 0})
               </div>
               {Array.isArray(item.images) && item.images.length > 0 ? (
                 <div style={gridImages}>
@@ -759,7 +761,7 @@ export default function PatientFileDetailAngiographyScan() {
                         target="_blank"
                         rel="noreferrer"
                         style={thumbWrap}
-                        title="Открыть изображение"
+                        title={t("common.openImage")}
                       >
                         <img
                           src={href}
@@ -779,7 +781,7 @@ export default function PatientFileDetailAngiographyScan() {
 
           {/* AI */}
           <section style={card}>
-            <h3 style={h3}>AI-анализ</h3>
+            <h3 style={h3}>{t("ai.analysis")}</h3>
             <div
               style={{
                 display: "grid",
@@ -788,25 +790,25 @@ export default function PatientFileDetailAngiographyScan() {
               }}
             >
               <div>
-                <KV label="AI версия" value={item.aiVersion || "—"} />
-                <KV label="Доверие модели" value={item.aiConfidence ?? "—"} />
+                <KV label={t("ai.version")} value={item.aiVersion || "—"} />
+                <KV label={t("ai.confidence")} value={item.aiConfidence ?? "—"} />
                 <KV
-                  label="Время обработки (сек)"
+                  label={t("ai.processingTime")}
                   value={item.aiProcessingTime ?? "—"}
                 />
                 <KV
-                  label="Обработано"
+                  label={t("ai.processed")}
                   value={fmtDateTime(item.aiProcessedAt)}
                 />
-                <KV label="Предсказание" value={item.aiPrediction || "—"} />
+                <KV label={t("ai.predictionShort")} value={item.aiPrediction || "—"} />
                 <KV
-                  label="Доверие предсказания"
+                  label={t("ai.predictionConfidenceAlt")}
                   value={item.predictionConfidence ?? "—"}
                 />
               </div>
               <div>
                 <div style={{ marginBottom: 6, color: "#6b7280" }}>
-                  AI Findings (JSON)
+                  {t("ai.findingsJson")}
                 </div>
                 <pre style={preBox}>
                   {JSON.stringify(item.aiFindings ?? {}, null, 2)}
@@ -817,27 +819,27 @@ export default function PatientFileDetailAngiographyScan() {
 
           {/* Комментарии/валидация */}
           <section style={card}>
-            <h3 style={h3}>Валидация и комментарии</h3>
+            <h3 style={h3}>{t("validation.title")}</h3>
             <KV
-              label="Валидировано врачом"
+              label={t("validation.byDoctor")}
               value={item.validatedByDoctor ? "Да" : "Нет"}
             />
             <KV
-              label="Заметки врача"
+              label={t("report.doctorNotes")}
               value={<Pre value={item.doctorNotes} />}
             />
-            <KV label="Создано" value={fmtDateTime(item.createdAt)} />
-            <KV label="Обновлено" value={fmtDateTime(item.updatedAt)} />
+            <KV label={t("card.created")} value={fmtDateTime(item.createdAt)} />
+            <KV label={t("card.updated")} value={fmtDateTime(item.updatedAt)} />
           </section>
 
           {/* Шаблоны */}
           <section style={card}>
-            <h3 style={h3}>Привязанные шаблоны</h3>
-            <KV label="Name of exam" value={tmpl(item.nameofexamTemplate)} />
-            <KV label="Report" value={tmpl(item.reportTemplate)} />
-            <KV label="Diagnosis" value={tmpl(item.diagnosisTemplate)} />
+            <h3 style={h3}>{t("links.templates")}</h3>
+            <KV label={t("card.examName")} value={tmpl(item.nameofexamTemplate)} />
+            <KV label={t("report.reportEn")} value={tmpl(item.reportTemplate)} />
+            <KV label={t("report.diagnosisEn")} value={tmpl(item.diagnosisTemplate)} />
             <KV
-              label="Recommendation"
+              label={t("report.recommendationEn")}
               value={tmpl(item.recomandationTemplate)}
             />
           </section>
@@ -845,7 +847,7 @@ export default function PatientFileDetailAngiographyScan() {
           {/* Комментарии врача (список) */}
           <section style={card}>
             <h3 style={h3}>
-              Комментарии врача ({item.doctorComments?.length || 0})
+              {t("media.doctorCommentsPrefix")}{item.doctorComments?.length || 0})
             </h3>
             {Array.isArray(item.doctorComments) &&
             item.doctorComments.length > 0 ? (
