@@ -149,6 +149,12 @@ export default async function handler(request, context) {
     })}</script>`;
 
       html = html.replace("</head>", inject + "</head>");
+
+      // Материал раздела документации: заголовок и первый абзац. Полный текст
+      // не вставляем — он в markdown, и его разбор здесь превратился бы в
+      // отдельный конвертер.
+      html = injectBody(html, [tag("h1", heading), tag("p", desc)]);
+
       return new Response(html, {
         headers: { "content-type": "text/html; charset=utf-8" },
       });
@@ -287,6 +293,43 @@ export default async function handler(request, context) {
     <script type="application/ld+json" data-seo="edge">${JSON.stringify(jsonLd)}</script>`;
 
       html = html.replace("</head>", inject + "</head>");
+
+      // Материал страницы. У публикации тело идёт ТЕКСТОМ: HTML из редактора
+      // здесь никем не санитизируется, и вставлять его в нашу страницу значило
+      // бы исполнять чужие скрипты у каждого посетителя.
+      html = injectBody(
+        html,
+        isDoctor
+          ? [
+              tag("h1", data.name),
+              tag("p", data.specialization),
+              tag("p", data.about),
+              link(clinicUrl, clinicName),
+              Array.isArray(data.publications) && data.publications.length
+                ? tag("h2", "Публикации врача") +
+                  list(
+                    data.publications
+                      .slice(0, 40)
+                      .map((p) =>
+                        link(`${clinicUrl}/publications/${p.id}`, p.title),
+                      ),
+                  )
+                : "",
+            ]
+          : [
+              tag("h1", data.title),
+              tag("p", data.abstract),
+              data.author?.doctorId
+                ? link(
+                    `${clinicUrl}/doctors/${data.author.doctorId}`,
+                    data.author.name,
+                  )
+                : tag("p", data.author?.name),
+              tag("p", toText(data.content)),
+              link(clinicUrl, clinicName),
+            ],
+      );
+
       return new Response(html, {
         headers: { "content-type": "text/html; charset=utf-8" },
       });
@@ -359,6 +402,10 @@ export default async function handler(request, context) {
       let jsonLd;
       let pageUrl;
       let ogType = "website";
+      // Собираются по ходу ветки и используются ниже для материала страницы.
+      let bodyDoctors = null;
+      let bodyArticleText = "";
+      let bodyClinicName = "";
 
       if (sectionMatch) {
         const section = sectionMatch[2].toLowerCase();
@@ -367,6 +414,8 @@ export default async function handler(request, context) {
         const clinic = await res.json();
         if (!clinic?.name) return context.next();
 
+        bodyDoctors = Array.isArray(clinic.doctors) ? clinic.doctors : null;
+        bodyClinicName = clinic.name || "";
         const label = SECTION_TITLES[section] || section;
         pageUrl = `${clinicUrl}/${section}`;
         title = escAttr(`${label} — ${clinic.name}`);
@@ -419,6 +468,8 @@ export default async function handler(request, context) {
         if (!article?.title) return context.next();
 
         const clinicName = article.clinic?.name || "";
+        bodyClinicName = clinicName;
+        bodyArticleText = toText(article.body || article.excerpt || "");
         pageUrl = `${clinicUrl}/dp/${pageSlug}/articles/${articleSlug}`;
         title = escAttr(
           clinicName ? `${article.title} — ${clinicName}` : article.title,
@@ -458,6 +509,7 @@ export default async function handler(request, context) {
         if (!page?.title) return context.next();
 
         const clinicName = page.clinic?.name || "";
+        bodyClinicName = clinicName;
         pageUrl = `${clinicUrl}/dp/${pageSlug}`;
         const heading = page.seo?.title || page.title;
         title = escAttr(clinicName ? `${heading} — ${clinicName}` : heading);
@@ -497,6 +549,33 @@ export default async function handler(request, context) {
     <script type="application/ld+json" data-seo="edge">${JSON.stringify(jsonLd)}</script>`;
 
       html = html.replace("</head>", inject + "</head>");
+
+      // У раздела врачей материал — сам перечень со ссылками: именно он и есть
+      // ответ на запрос «врачи клиники N». У остальных разделов текста нет,
+      // поэтому ограничиваемся заголовком и возвратом на витрину.
+      html = injectBody(html, [
+        tag("h1", jsonLd.name || ""),
+        tag("p", desc),
+        sectionMatch && sectionMatch[2].toLowerCase() === "doctors" &&
+        Array.isArray(bodyDoctors) &&
+        bodyDoctors.length
+          ? list(
+              bodyDoctors
+                .slice(0, 40)
+                .map((d) =>
+                  d.id
+                    ? link(
+                        `${clinicUrl}/doctors/${d.id}`,
+                        [d.name, d.specialization].filter(Boolean).join(" — "),
+                      )
+                    : escHtml(d.name),
+                ),
+            )
+          : "",
+        bodyArticleText ? tag("p", bodyArticleText) : "",
+        link(clinicUrl, bodyClinicName || "Клиника"),
+      ]);
+
       return new Response(html, {
         headers: { "content-type": "text/html; charset=utf-8" },
       });
@@ -538,14 +617,51 @@ export default async function handler(request, context) {
   if (clinicSlug) {
     try {
       const slug = clinicSlug;
+
+      // Язык витрины. Описание и слоган приходят с сервера уже переведёнными,
+      // если у клиники есть перевод; если нет — сервер отдаёт язык оригинала и
+      // сообщает об этом полем language.
+      const askedLocale = (url.searchParams.get("locale") || "")
+        .slice(0, 2)
+        .toLowerCase();
+      const localeQuery = /^(ru|en|az|tr|ar)$/.test(askedLocale)
+        ? `?locale=${askedLocale}`
+        : "";
+
       const res = await fetch(
-        `https://backend.docpats.com/api/v1/public/clinics/${encodeURIComponent(slug)}`,
+        `https://backend.docpats.com/api/v1/public/clinics/${encodeURIComponent(slug)}${localeQuery}`,
       );
       if (!res.ok) return context.next();
       const clinic = await res.json();
       if (!clinic?.name) return context.next();
 
-      const pageUrl = `https://docpats.com/${slug}`;
+      const langs = Array.isArray(clinic.availableLanguages)
+        ? clinic.availableLanguages
+        : [];
+      const original = langs[0] || clinic.language || "ru";
+      const shown = clinic.language || original;
+      const base = `https://docpats.com/${slug}`;
+      const urlFor = (lang) => (lang === original ? base : `${base}?locale=${lang}`);
+
+      // canonical указывает на язык, который РЕАЛЬНО отдан, а не на который
+      // просили. Просят язык без перевода — сервер вернул оригинал, и адрес с
+      // ?locale= для него был бы вторым адресом одного и того же текста.
+      const pageUrl = urlFor(shown);
+
+      // hreflang связывает только версии с СОБСТВЕННЫМ текстом. Перечислять
+      // все пять языков, когда четыре показывают один и тот же русский текст,
+      // — не языковая разметка, а её видимость: поисковик не может
+      // проиндексировать пять версий одной страницы.
+      const alternates =
+        langs.length > 1
+          ? [
+              `<link data-seo="edge" rel="alternate" hreflang="x-default" href="${base}">`,
+              ...langs.map(
+                (l) =>
+                  `<link data-seo="edge" rel="alternate" hreflang="${l}" href="${urlFor(l)}">`,
+              ),
+            ].join("\n    ")
+          : "";
       const title = escAttr(clinic.name);
       const desc = escAttr(
         (clinic.description || clinic.slogan || `Клиника ${clinic.name}`)
@@ -573,6 +689,7 @@ export default async function handler(request, context) {
       const jsonLd = {
         "@context": "https://schema.org",
         "@type": "MedicalClinic",
+        inLanguage: shown,
         name: clinic.name,
         description: desc,
         url: pageUrl,
@@ -607,6 +724,8 @@ export default async function handler(request, context) {
     <title>${title} | DocPats</title>
     <meta name="description" content="${desc}" data-seo="edge">
     <link rel="canonical" href="${pageUrl}" data-seo="edge">
+    ${alternates}
+    <meta data-seo="edge" property="og:locale" content="${shown}">
     <meta data-seo="edge" property="og:type" content="business.business">
     <meta data-seo="edge" property="og:title" content="${title}">
     <meta data-seo="edge" property="og:description" content="${desc}">
@@ -619,6 +738,59 @@ export default async function handler(request, context) {
     <script type="application/ld+json" data-seo="edge">${JSON.stringify(jsonLd)}</script>`;
 
       html = html.replace("</head>", inject + "</head>");
+
+      // Материал витрины для тех, кто не выполняет JS: название, описание,
+      // контакты и — главное — ССЫЛКИ на врачей, разделы и публикации. Без них
+      // обходить страницу нечем, и всё, что глубже главной, обнаруживается
+      // только через карту сайта.
+      const sectionLinks = [
+        ["about", "О клинике"],
+        ["departments", "Отделения"],
+        ["doctors", "Врачи"],
+        ["articles", "Статьи"],
+        ["gallery", "Галерея"],
+        ["reviews", "Отзывы"],
+        ["faq", "Вопросы и ответы"],
+        ["contacts", "Контакты"],
+        ["services", "Услуги и цены"],
+      ].map(([key, label]) => link(`${base}/${key}`, label));
+
+      const addressLine = [address.country, address.city, address.street]
+        .filter(Boolean)
+        .join(", ");
+
+      html = injectBody(html, [
+        tag("h1", clinic.name),
+        tag("p", clinic.slogan),
+        tag("p", clinic.description),
+        addressLine ? tag("p", addressLine) : "",
+        clinic.callCenterPhone ? tag("p", clinic.callCenterPhone) : "",
+        Array.isArray(clinic.doctors) && clinic.doctors.length
+          ? tag("h2", "Врачи") +
+            list(
+              clinic.doctors
+                .slice(0, 40)
+                .map((d) =>
+                  d.id
+                    ? link(
+                        `${base}/doctors/${d.id}`,
+                        [d.name, d.specialization].filter(Boolean).join(" — "),
+                      )
+                    : escHtml(d.name),
+                ),
+            )
+          : "",
+        Array.isArray(clinic.publications) && clinic.publications.length
+          ? tag("h2", "Публикации") +
+            list(
+              clinic.publications
+                .slice(0, 40)
+                .map((p) => link(`${base}/publications/${p.id}`, p.title)),
+            )
+          : "",
+        tag("h2", "Разделы") + list(sectionLinks),
+      ]);
+
       return new Response(html, {
         headers: { "content-type": "text/html; charset=utf-8" },
       });
@@ -898,6 +1070,74 @@ export default async function handler(request, context) {
  */
 
 /** Экранирование для подстановки в атрибут HTML. */
+// ─── Содержимое для тех, кто не выполняет JS ───────────────────────────────
+//
+// В сыром HTML у SPA пусто: <div id="root"></div> и скрипты. Мета-теги мы
+// подставили, но у страницы нет ни текста, ни ЕДИНОЙ ССЫЛКИ. Для главной это
+// терпимо. Для платформы, где должны индексироваться десятки витрин, профилей
+// врачей и статей, это дыра: обходить нечего, граф ссылок не существует до
+// отрисовки, и карта сайта остаётся единственным каналом обнаружения.
+//
+// Поэтому в корневой div кладётся тот же материал, который через мгновение
+// отрисует React: заголовок, текст, ссылки. Клоакингом это не является —
+// подставляется ровно то, что видит посетитель. React при монтировании
+// заменяет содержимое контейнера своим, поэтому дублирования не будет.
+//
+// ВАЖНО: сюда нельзя класть HTML из редактора статей. На клиенте он проходит
+// через DOMPurify, здесь такой обработки нет, а вставка сырого тела статьи в
+// нашу страницу означала бы исполнение чужих скриптов у каждого посетителя.
+// Поэтому тело статьи идёт текстом: теги вырезаны, содержимое экранировано.
+
+function escHtml(v) {
+  return String(v ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/** HTML → текст: теги прочь, пробелы схлопнуть, длину ограничить. */
+function toText(html, limit = 4000) {
+  const plain = String(html ?? "")
+    .replace(/<(script|style)[\s\S]*?<\/\1>/gi, " ")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return plain.length > limit ? plain.slice(0, limit) + "…" : plain;
+}
+
+function tag(name, value) {
+  const text = escHtml(value).trim();
+  return text ? `<${name}>${text}</${name}>` : "";
+}
+
+function link(href, text) {
+  const label = escHtml(text).trim();
+  return label ? `<a href="${escAttr(href)}">${label}</a>` : "";
+}
+
+function list(items) {
+  const rows = items.filter(Boolean).map((i) => `<li>${i}</li>`);
+  return rows.length ? `<ul>${rows.join("")}</ul>` : "";
+}
+
+/**
+ * Положить материал в корневой контейнер.
+ *
+ * Инжект идёт ВНУТРЬ #root, а не рядом: React очищает контейнер при
+ * монтировании, поэтому у посетителя не останется второй копии текста.
+ */
+function injectBody(html, parts) {
+  const body = parts.filter(Boolean).join("\n");
+  if (!body) return html;
+  return html.replace(
+    '<div id="root"></div>',
+    `<div id="root"><main>${body}</main></div>`,
+  );
+}
+
 function stripShellSeo(html) {
   // Вырезать SEO-теги, которые принёс index.html: свои мы подставляем сами.
   //
