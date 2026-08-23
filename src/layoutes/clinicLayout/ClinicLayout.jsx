@@ -109,6 +109,39 @@ export default function ClinicLayout({ employeeMode = false }) {
       } catch (err) {
         if (cancelled) return;
         if (err.response?.status === 401) {
+          // В зоне сотрудника 401 означает лишь отсутствие СЕССИИ СОТРУДНИКА.
+          // Это не то же самое, что «не авторизован»: владелец и управляющий
+          // входят как пользователи DocPats, и сессии сотрудника у них нет
+          // никогда. Раньше им показывали форму входа сотрудника — человеку,
+          // который уже вошёл и имеет доступ к этой клинике.
+          //
+          // Попадают они сюда по ссылкам в /clinic/employee/*: уведомления,
+          // закладки, подсказки коллег. Поэтому прежде чем требовать вход,
+          // проверяем пользовательскую сессию и, если она есть, ПУСКАЕМ на
+          // запрошенную страницу.
+          //
+          // Именно пускаем, а не уводим в зону владельца: у 26 адресов
+          // зоны сотрудника (аптека, хирургия, симуляция, расписание,
+          // аналитика…) пары в зоне владельца нет вовсе, и перенос адреса
+          // приводил бы в «страница не найдена». Данные при этом те же:
+          // клинические эндпоинты скоупятся по сессии, а права проверяет
+          // сервер — пользователю без доступа он откажет сам.
+          if (employeeMode) {
+            try {
+              const asUser = await getClinicMe();
+              if (cancelled) return;
+              if (asUser?.authenticated && asUser?.hasClinic) {
+                setContext({ kind: "user", ...asUser });
+                setLoading(false);
+                return;
+              }
+            } catch {
+              // Пользовательской сессии тоже нет — значит вход действительно
+              // нужен, и ниже мы его и просим.
+            }
+            if (cancelled) return;
+          }
+
           navigate(employeeMode ? "/clinic/staff-login" : "/login", {
             replace: true,
           });
@@ -127,7 +160,10 @@ export default function ClinicLayout({ employeeMode = false }) {
 
   async function handleLogout() {
     try {
-      if (employeeMode) {
+      // По фактической сессии, а не по зоне: в зону сотрудника может попасть
+      // и пользователь DocPats (см. загрузку контекста выше), и employeeLogout
+      // для него не сработает.
+      if (context?.kind === "employee") {
         await employeeLogout();
         navigate("/clinic/staff-login", { replace: true });
       } else {
@@ -163,12 +199,13 @@ export default function ClinicLayout({ employeeMode = false }) {
   }
 
   // ─── Header label (clinic name or employee name) ───
-  const headerLabel = employeeMode
-    ? context?.employee
-      ? `${context.employee.firstName || ""} ${context.employee.lastName || ""}`.trim() ||
-        context.employee.email
-      : t("roles.member")
-    : context?.clinic?.name || t("layout.brandName");
+  const headerLabel =
+    context?.kind === "employee"
+      ? context?.employee
+        ? `${context.employee.firstName || ""} ${context.employee.lastName || ""}`.trim() ||
+          context.employee.email
+        : t("roles.member")
+      : context?.clinic?.name || t("layout.brandName");
 
   return (
     <div className="clinic-layout">

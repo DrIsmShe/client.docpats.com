@@ -354,6 +354,15 @@ export default function ClinicDashboardPage() {
             </span>
             <span className="clinic-dashboard-action-arrow">→</span>
           </Link>
+          {canRead("review") && (
+            <Link to="/clinic/reviews" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">⭐</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.reviews", { defaultValue: "Отзывы" })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
           {/* Заявки с витрины. В зоне владельца входа на эту страницу не было
               вовсе — она жила только плиткой на дашборде сотрудника. Владелец
               и управляющий получают уведомление о новой заявке, но дойти до

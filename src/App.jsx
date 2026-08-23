@@ -874,6 +874,10 @@ function App() {
               {/* Все уведомления клиники. В колокольчике помещаются только
                   последние, а посмотреть остальные в зоне клиники было негде. */}
               <Route path="notifications" element={<ClinicNotificationsPage />} />
+              {/* Отзывы. Страница написана для ОБЕИХ зон — это в её шапке, — но
+                  маршрута у владельца не было, как и у заявок: дойти до неё
+                  можно было только через зону сотрудника. */}
+              <Route path="reviews" element={<ClinicReviewsPage />} />
               <Route path="pages" element={<ClinicCustomPagesPage />} />
               <Route path="create" element={<CreateClinicPage />} />
               <Route path="dashboard" element={<ClinicDashboardPage />} />
