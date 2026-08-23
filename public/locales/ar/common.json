@@ -730,7 +730,13 @@
       "note": "هذه صفحتك العامة — يراها المرضى والزملاء ومحركات البحث.",
       "cabinet": "لوحتي",
       "viewAsVisitor": "عرض كزائر"
-    }
+    },
+    "articlesWord_zero": "مقالات",
+    "articlesWord_one": "مقالة",
+    "articlesWord_two": "مقالتان",
+    "articlesWord_few": "مقالات",
+    "articlesWord_many": "مقالة",
+    "articlesWord_other": "مقالة"
   },
   "headerPatient": {
     "search": "بحث",

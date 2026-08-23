@@ -730,7 +730,9 @@
       "note": "Bu sizin herkese açık sayfanız — hastalar, meslektaşlar ve arama motorları görür.",
       "cabinet": "Panelim",
       "viewAsVisitor": "Ziyaretçi olarak görüntüle"
-    }
+    },
+    "articlesWord_one": "makale",
+    "articlesWord_other": "makale"
   },
   "headerPatient": {
     "search": "Arama",

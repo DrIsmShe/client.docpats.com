@@ -731,7 +731,9 @@
       "note": "Bu sizin ictimai səhifənizdir — onu pasiyentlər, həmkarlar və axtarış sistemləri görür.",
       "cabinet": "Kabinetim",
       "viewAsVisitor": "Ziyarətçi kimi bax"
-    }
+    },
+    "articlesWord_one": "məqalə",
+    "articlesWord_other": "məqalə"
   },
   "headerPatient": {
     "search": "Axtarış",

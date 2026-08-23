@@ -777,7 +777,11 @@
       "note": "Это ваша публичная страница — её видят пациенты, коллеги и поисковые системы.",
       "cabinet": "Мой кабинет",
       "viewAsVisitor": "Посмотреть как посетитель"
-    }
+    },
+    "articlesWord_one": "статья",
+    "articlesWord_few": "статьи",
+    "articlesWord_many": "статей",
+    "articlesWord_other": "статьи"
   },
   "headerPatient": {
     "search": "Поиск",

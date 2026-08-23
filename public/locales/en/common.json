@@ -692,7 +692,9 @@
       "note": "This is your public page — patients, colleagues and search engines see it.",
       "cabinet": "My dashboard",
       "viewAsVisitor": "View as a visitor"
-    }
+    },
+    "articlesWord_one": "article",
+    "articlesWord_other": "articles"
   },
   "headerPatient": {
     "search": "Search",

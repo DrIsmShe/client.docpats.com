@@ -1083,7 +1083,8 @@ export default function DoctorDetails() {
                 </div>
               )}
               <div className="dd-hero-chip">
-                📄 <b>{articles.length}</b> статей
+                📄 <b>{articles.length}</b>{" "}
+                {t("doctorDetails.articlesWord", { count: articles.length })}
               </div>
             </div>
           </div>

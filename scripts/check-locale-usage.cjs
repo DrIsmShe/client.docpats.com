@@ -84,17 +84,36 @@ function dictOf(ns) {
   return cache.get(ns);
 }
 
+// Формы множественного числа i18next v22 (Intl.PluralRules). Ключ
+// articlesWord существует в словаре только как articlesWord_one,
+// _few, _many, _other — искать его точное имя бессмысленно.
+const PLURAL_SUFFIXES = ["_other", "_one", "_zero", "_two", "_few", "_many"];
+
 function hasKey(ns, key) {
   const dict = dictOf(ns);
   if (!dict) return false;
+  const parts = key.split(".");
+  const last = parts.pop();
   let cur = dict;
-  for (const part of key.split(".")) {
+  for (const part of parts) {
     if (!cur || typeof cur !== "object" || !(part in cur)) return false;
     cur = cur[part];
   }
+  if (!cur || typeof cur !== "object") return false;
+
+  if (!(last in cur)) {
+    // Ключ с числом: достаточно любой из форм — какая подойдёт, решит
+    // Intl.PluralRules языка, и у арабского их шесть, а у турецкого одна.
+    return PLURAL_SUFFIXES.some((sfx) => {
+      const v = cur[last + sfx];
+      return typeof v === "string" && v.trim().length > 0;
+    });
+  }
+
+  const value = cur[last];
   // Пустое значение не лучше отсутствия: подпись исчезает, кнопка остаётся
   // без текста.
-  return typeof cur === "string" ? cur.trim().length > 0 : cur != null;
+  return typeof value === "string" ? value.trim().length > 0 : value != null;
 }
 
 /**
