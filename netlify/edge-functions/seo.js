@@ -10,13 +10,11 @@ export default async function handler(request, context) {
       const desc =
         "DocPats — платформа с приоритетом на приватность данных: профили врачей и пациентов, AI-консультации, защищённый чат и видеозвонки, управление клиникой. 5 языков.";
       const pageUrl = "https://docpats.com/";
-      const image = "https://docpats.com/og-default.jpg";
+      const image = "https://docpats.com/og-image.jpg";
 
       const response = await context.next();
       let html = await response.text();
-      html = html
-        .replace(/<title>.*?<\/title>/gs, "")
-        .replace(/<meta name="description"[^>]*\/?>/gi, "");
+      html = stripShellSeo(html);
 
       const inject = `
     <title>${title}</title>
@@ -28,6 +26,9 @@ export default async function handler(request, context) {
     <meta data-seo="edge" property="og:url" content="${pageUrl}">
     <meta data-seo="edge" property="og:image" content="${image}">
     <meta data-seo="edge" name="twitter:card" content="summary_large_image">
+    <meta data-seo="edge" name="twitter:title" content="${title}">
+    <meta data-seo="edge" name="twitter:description" content="${desc}">
+    <meta data-seo="edge" name="twitter:image" content="${image}">
     <script type="application/ld+json" data-seo="edge">${JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -74,17 +75,15 @@ export default async function handler(request, context) {
 
       const title = `${heading} — DocPats`;
       const pageUrl = `https://docpats.com/docs/${section}`;
-      const image = "https://docpats.com/og-default.jpg";
+      const image = "https://docpats.com/og-image.jpg";
 
       const response = await context.next();
       let html = await response.text();
-      html = html
-        .replace(/<title>.*?<\/title>/gs, "")
-        .replace(/<meta name="description"[^>]*\/?>/gi, "");
+      html = stripShellSeo(html);
 
       const inject = `
     <title>${escAttr(title)}</title>
-    <meta name="description" content="${escAttr(desc)}">
+    <meta name="description" content="${escAttr(desc)}" data-seo="edge">
     <link rel="canonical" href="${pageUrl}" data-seo="edge">
     <meta data-seo="edge" property="og:type" content="article">
     <meta data-seo="edge" property="og:title" content="${escAttr(title)}">
@@ -92,6 +91,9 @@ export default async function handler(request, context) {
     <meta data-seo="edge" property="og:url" content="${pageUrl}">
     <meta data-seo="edge" property="og:image" content="${image}">
     <meta data-seo="edge" name="twitter:card" content="summary_large_image">
+    <meta data-seo="edge" name="twitter:title" content="${escAttr(title)}">
+    <meta data-seo="edge" name="twitter:description" content="${escAttr(desc)}">
+    <meta data-seo="edge" name="twitter:image" content="${image}">
     <script type="application/ld+json" data-seo="edge">${JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebPage",
@@ -152,7 +154,7 @@ export default async function handler(request, context) {
           .slice(0, 155),
       );
       const image =
-        clinic.coverImage || clinic.logo || "https://docpats.com/og-default.jpg";
+        clinic.coverImage || clinic.logo || "https://docpats.com/og-image.jpg";
 
       const address = clinic.address || {};
       const hasAddress = address.country || address.city || address.street;
@@ -199,15 +201,7 @@ export default async function handler(request, context) {
 
       const response = await context.next();
       let html = await response.text();
-      // Та же чистка, что и у материалов: без неё og-теги оболочки
-      // остаются рядом с нашими и страница отдаёт два комплекта.
-      html = html
-        .replace(/<title>.*?<\/title>/gs, "")
-        .replace(/<meta[^>]+name="description"[^>]*>/gi, "")
-        .replace(/<meta[^>]+property="og:[^"]*"[^>]*>/gi, "")
-        .replace(/<meta[^>]+name="twitter:[^"]*"[^>]*>/gi, "")
-        .replace(/<link[^>]+rel="canonical"[^>]*>/gi, "")
-        .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/gi, "");
+      html = stripShellSeo(html);
 
       const inject = `
     <title>${title} | DocPats</title>
@@ -300,7 +294,7 @@ export default async function handler(request, context) {
       pageUrl = `https://docpats.com/articles/${articleId}${urlLocale ? "/" + urlLocale : ""}`;
       publishedAt = article.createdAt;
       modifiedAt = article.updatedAt || article.createdAt;
-      imageUrl = "https://docpats.com/og-default.jpg";
+      imageUrl = "https://docpats.com/og-image.jpg";
     } else if (newsMatch) {
       const slug = newsMatch[1];
       const cookieHeader = request.headers.get("cookie") || "";
@@ -334,7 +328,7 @@ export default async function handler(request, context) {
       ].join("\n    ");
       publishedAt = article.publishedAt;
       modifiedAt = article.updatedAt || article.publishedAt;
-      imageUrl = article.imageUrl || "https://docpats.com/og-default.jpg";
+      imageUrl = article.imageUrl || "https://docpats.com/og-image.jpg";
     } else if (doctorArticleMatch) {
       const articleId = doctorArticleMatch[1];
       locale = "ru";
@@ -355,7 +349,7 @@ export default async function handler(request, context) {
       pageUrl = `https://docpats.com/public/doctor-profile/article-detail-for-all/${articleId}`;
       publishedAt = article.createdAt;
       modifiedAt = article.updatedAt || article.createdAt;
-      imageUrl = article.imageUrl || "https://docpats.com/og-default.jpg";
+      imageUrl = article.imageUrl || "https://docpats.com/og-image.jpg";
     } else if (scientificArticleMatch) {
       const articleId = scientificArticleMatch[1];
       locale = "ru";
@@ -376,7 +370,7 @@ export default async function handler(request, context) {
       pageUrl = `https://docpats.com/public/doctor/article-scientific-detail-for-all/${articleId}`;
       publishedAt = article.createdAt;
       modifiedAt = article.updatedAt || article.createdAt;
-      imageUrl = article.imageUrl || "https://docpats.com/og-default.jpg";
+      imageUrl = article.imageUrl || "https://docpats.com/og-image.jpg";
     } else if (doctorProfileMatch) {
       const doctorId = doctorProfileMatch[1];
       locale = "ru";
@@ -407,7 +401,7 @@ export default async function handler(request, context) {
         .replace(/"/g, "&quot;");
       pageUrl = `https://docpats.com/public/doctor-profile/doctor-details/${doctorId}`;
       publishedAt = null;
-      imageUrl = doctor.profileImage || "https://docpats.com/og-default.jpg";
+      imageUrl = doctor.profileImage || "https://docpats.com/og-image.jpg";
 
       // Агрегированный рейтинг — для rich snippet со звёздами в Google.
       try {
@@ -434,23 +428,7 @@ export default async function handler(request, context) {
     const response = await context.next();
     let html = await response.text();
 
-    // Вырезаем то, что принесла оболочка index.html: свои значения
-    // подставляем ниже. Регулярки НЕ привязаны к порядку атрибутов —
-    // прежние требовали rel/property сразу после имени тега и молча
-    // переставали совпадать при любой правке шаблона.
-    html = html
-      .replace(/<title>.*?<\/title>/gs, "")
-      .replace(/<meta[^>]+name="description"[^>]*>/gi, "")
-      .replace(/<meta[^>]+property="og:[^"]*"[^>]*>/gi, "")
-      .replace(/<meta[^>]+name="twitter:[^"]*"[^>]*>/gi, "")
-      .replace(/<link[^>]+rel="canonical"[^>]*>/gi, "")
-      // Только языковые alternate. Без уточнения по hreflang сюда попала
-      // бы и ссылка автообнаружения RSS — она тоже rel="alternate".
-      .replace(/<link[^>]+rel="alternate"[^>]+hreflang="[^"]*"[^>]*>/gi, "")
-      // Оболочка несёт JSON-LD про платформу целиком (SoftwareApplication).
-      // На странице материала он не к месту и давал третью разметку на
-      // одну страницу.
-      .replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/gi, "");
+    html = stripShellSeo(html);
 
     const inject = `
     <title>${title} | DocPats</title>
@@ -520,6 +498,40 @@ export default async function handler(request, context) {
  */
 
 /** Экранирование для подстановки в атрибут HTML. */
+function stripShellSeo(html) {
+  // Вырезать SEO-теги, которые принёс index.html: свои мы подставляем сами.
+  //
+  // Раньше каждая ветка чистила по-своему: страницы материала и клиники
+  // снимали весь набор, а главная и документация — только <title> и
+  // description. Из-за этого на / и /docs оставались og-теги оболочки, и
+  // они шли в <head> РАНЬШЕ наших. Разворачиватели ссылок берут первое
+  // вхождение — в Telegram и WhatsApp вместо названия раздела показывался
+  // общий заголовок платформы. Google подмены не замечал: <title> и
+  // description снимались во всех ветках.
+  //
+  // Регулярки намеренно не привязаны к порядку атрибутов: прежние требовали
+  // rel/property сразу после имени тега и молча переставали совпадать при
+  // любой правке шаблона.
+  return (
+    html
+      .replace(/<title>.*?<\/title>/gs, "")
+      .replace(/<meta[^>]+name="description"[^>]*>/gi, "")
+      .replace(/<meta[^>]+property="og:[^"]*"[^>]*>/gi, "")
+      .replace(/<meta[^>]+name="twitter:[^"]*"[^>]*>/gi, "")
+      .replace(/<link[^>]+rel="canonical"[^>]*>/gi, "")
+      // Только языковые alternate. Без уточнения по hreflang сюда попала бы
+      // и ссылка автообнаружения RSS — она тоже rel="alternate".
+      .replace(/<link[^>]+rel="alternate"[^>]+hreflang="[^"]*"[^>]*>/gi, "")
+      // Оболочка несёт JSON-LD про платформу целиком (SoftwareApplication).
+      // На конкретной странице он не к месту и давал лишнюю разметку.
+      // Наш блок несёт data-seo="edge" и под эту регулярку не подпадает.
+      .replace(
+        /<script type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/gi,
+        "",
+      )
+  );
+}
+
 function escAttr(s) {
   return String(s)
     .replace(/&/g, "&amp;")
@@ -562,12 +574,24 @@ function descriptionFromMarkdown(md, limit = 160) {
   return cut.slice(0, cut.lastIndexOf(" ")).trim() + "…";
 }
 
+// ЕДИНСТВЕННОЕ место, где объявляются адреса этой функции.
+//
+// Раньше объявления были размазаны по двум файлам: часть здесь, часть в
+// [[edge_functions]] внутри netlify.toml. Netlify объединяет их, но при
+// совпадении поля инлайновое объявление ПЕРЕКРЫВАЕТ toml — а `path`
+// совпадал. Из-за этого "/clinics/*", записанный только в netlify.toml,
+// молча не действовал: витрина клиники — единственная публичная страница,
+// ради которой клиника вообще заводит сайт, — отдавала боту пустой
+// SPA-шелл, хотя ветка её обработки в этом файле есть и написана.
+//
+// Ничего не добавлять в netlify.toml: список расширяется только здесь.
 export const config = {
   path: [
     "/",
     "/docs/*",
     "/articles/*",
     "/news/*",
+    "/clinics/*",
     "/public/doctor-profile/article-detail-for-all/*",
     "/public/doctor/article-scientific-detail-for-all/*",
     "/public/doctor-profile/doctor-details/*",

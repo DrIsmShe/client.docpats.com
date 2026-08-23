@@ -76,33 +76,8 @@
   to = "/index.html"
   status = 200
   
-[[edge_functions]]
-  path = "/docs/*"
-  function = "seo"
-
-[[edge_functions]]
-  path = "/articles/*"
-  function = "seo"
-
-[[edge_functions]]
-  path = "/news/*"
-  function = "seo"
-
-# Витрина клиники. Была в sitemap, но боту доставался пустой SPA-шелл:
-# в списке edge-функций её просто не было.
-[[edge_functions]]
-  path = "/clinics/*"
-  function = "seo"
-
-[[edge_functions]]
-  path = "/public/doctor-profile/article-detail-for-all/*"
-  function = "seo"
-
-[[edge_functions]]
-  path = "/public/doctor/article-scientific-detail-for-all/*"
-  function = "seo"
-
-[[edge_functions]]
-  path = "/public/doctor-profile/doctor-details/*"
-  function = "seo"
-
+# Edge-функция SEO объявляет свои адреса САМА — в netlify/edge-functions/seo.js,
+# в `export const config`. Здесь её объявлений быть не должно: Netlify при
+# совпадении поля отдаёт приоритет инлайновому объявлению, поэтому список
+# путей из этого файла целиком перекрывался списком из seo.js. Так "/clinics/*"
+# и выпал из обработки, оставаясь записанным здесь.

@@ -58,9 +58,12 @@ export default function MainLayout() {
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://docpats.com/" />
+        {/* Файл лежит в public/assets/screens/, а не в public/screens/ —
+            по прежнему адресу отдавался не 404, а SPA-шелл со статусом 200
+            (catch-all в _redirects), поэтому промах ничем себя не выдавал. */}
         <meta
           property="og:image"
-          content="https://docpats.com/screens/doctor-dashboard.png"
+          content="https://docpats.com/assets/screens/doctor-dashboard.png"
         />
 
         {/* JSON-LD */}
