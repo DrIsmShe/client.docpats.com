@@ -26,7 +26,7 @@ export default function NotificationBell({ onUnreadChange, limit = 6 }) {
       const endpoint =
         userRole === "patient"
           ? `${API_BASE}/notifications/get-notifications-for-patient`
-          : `${API_BASE}/notifications/get?type=unread`;
+          : `${API_BASE}/notifications/get`;
 
       const r2 = await fetch(endpoint, { credentials: "include" });
       const d2 = await r2.json();
@@ -48,8 +48,14 @@ export default function NotificationBell({ onUnreadChange, limit = 6 }) {
         }))
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
+      // Показываем ПОСЛЕДНИЕ уведомления, а не только непрочитанные.
+      //
+      // Раньше список был отфильтрован по !isRead, и «Прочитать все» опустошал
+      // его целиком: человек нажимал кнопку и терял всё, что в нём было, — а
+      // ссылки на полный список в кабинете клиники нет. Счётчик по-прежнему
+      // считает только непрочитанные, прочитанные показываются приглушённо.
       const unread = list.filter((n) => !n.isRead);
-      setNotifications(unread.slice(0, limit));
+      setNotifications(list.slice(0, limit));
       onUnreadChange?.(d2.unreadCount ?? unread.length);
     } catch (err) {
       console.error("❌ loadNotifications:", err);
@@ -113,7 +119,9 @@ export default function NotificationBell({ onUnreadChange, limit = 6 }) {
     } catch {
       /* игнор */
     }
-    setNotifications([]);
+    // Пометить прочитанным — не значит скрыть: список остаётся, гаснет
+    // только выделение и счётчик.
+    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
     onUnreadChange?.(0);
   };
 
@@ -131,8 +139,16 @@ export default function NotificationBell({ onUnreadChange, limit = 6 }) {
         /* игнор */
       }
     }
-    setNotifications((prev) => prev.filter((x) => x._id !== n._id));
-    onUnreadChange?.((prev) => (typeof prev === "number" ? Math.max(0, prev - 1) : 0));
+    // Открытое уведомление тоже остаётся в списке — просто становится
+    // прочитанным. Счётчик уменьшаем только если оно было непрочитанным.
+    setNotifications((prev) =>
+      prev.map((x) => (x._id === n._id ? { ...x, isRead: true } : x)),
+    );
+    if (!n.isRead) {
+      onUnreadChange?.((prev) =>
+        typeof prev === "number" ? Math.max(0, prev - 1) : 0,
+      );
+    }
     if (n.link) navigate(n.link);
   };
 
@@ -141,7 +157,7 @@ export default function NotificationBell({ onUnreadChange, limit = 6 }) {
     <div>
       {notifications.length === 0 ? (
         <div className="text-center text-muted small py-3">
-          {t("no_new_notifications")}
+          {t("no_notifications", { defaultValue: "Уведомлений нет" })}
         </div>
       ) : (
         <>
@@ -149,13 +165,20 @@ export default function NotificationBell({ onUnreadChange, limit = 6 }) {
             <div
               key={n._id || i}
               className="px-3 py-2 border-bottom"
-              style={{ cursor: n.link ? "pointer" : "default" }}
+              style={{
+                cursor: n.link ? "pointer" : "default",
+                opacity: n.isRead ? 0.62 : 1,
+                background: n.isRead ? "transparent" : "#f6fbfa",
+              }}
               onClick={() => (n.link ? openNotification(n) : null)}
             >
               <div style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
                 <span style={{ fontSize: 18, lineHeight: "20px" }}>{notificationIcon(n)}</span>
                 <div style={{ minWidth: 0, flex: 1 }}>
-                  <div className="fw-bold text-dark" style={{ fontSize: 14 }}>
+                  <div
+                    className={n.isRead ? "text-dark" : "fw-bold text-dark"}
+                    style={{ fontSize: 14 }}
+                  >
                     {n.title}
                   </div>
                   {n.message && (
