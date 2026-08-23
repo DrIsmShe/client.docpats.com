@@ -26,6 +26,13 @@ export default function CommentSection({
   targetType = "Doctor",
   onNewComment,
   onDeleteComment,
+  // Режим чтения: список видно, действий нет.
+  //
+  // Проп передавали со страницы врача (doctorDetailForAll) для гостя, но
+  // компонент его не принимал — и гость видел полноценную форму, которая при
+  // отправке упиралась в отказ сервера. Показать обсуждение и не предлагать
+  // писать в него — это и был замысел вызывающей стороны.
+  readOnly = false,
 }) {
   const { t } = useTranslation("CommentSection");
 
@@ -259,6 +266,7 @@ export default function CommentSection({
               {comment.content}
             </div>
 
+            {!readOnly && (
             <div className="d-flex gap-2 flex-wrap">
               <button
                 className="btn btn-sm btn-outline-primary"
@@ -296,6 +304,7 @@ export default function CommentSection({
                   </>
                 )}
             </div>
+            )}
           </>
         )}
 
@@ -353,6 +362,7 @@ export default function CommentSection({
     <div className="mt-4">
       <h4 className="mb-3">💬 {t("title")}</h4>
 
+      {!readOnly && (
       <form onSubmit={handleCreateComment} className="mb-4">
         <textarea
           className="form-control"
@@ -383,6 +393,7 @@ export default function CommentSection({
           </div>
         )}
       </form>
+      )}
 
       {loading && <p>{t("loading")}</p>}
       {error && <p className="text-danger">{error}</p>}

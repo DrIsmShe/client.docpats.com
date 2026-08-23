@@ -270,6 +270,17 @@ export default function DoctorDetailRenderer({ clinic, doctor }) {
               targetType="Doctor"
             />
           ) : (
+            <>
+              {/* Раньше здесь стояло только приглашение: режима чтения у
+                  CommentSection не существовало, хотя вызывающий код его уже
+                  предполагал. Теперь гость видит само обсуждение — на
+                  публичной странице клиники это и есть содержимое, ради
+                  которого её открыли, — а предложение войти идёт под ним. */}
+              <CommentSection
+                refId={doctor.id}
+                targetType="Doctor"
+                readOnly
+              />
             <div className="vt-doc-gate">
               <div className="vt-doc-gate-ico">💬</div>
               <div className="vt-doc-gate-title">
@@ -294,6 +305,7 @@ export default function DoctorDetailRenderer({ clinic, doctor }) {
                 </Link>
               </div>
             </div>
+            </>
           )}
         </section>
       </main>

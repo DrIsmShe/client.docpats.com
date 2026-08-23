@@ -297,6 +297,17 @@ export default function PublicationDetailRenderer({ clinic, publication }) {
           {!viewer.ready ? null : viewer.isAuthenticated ? (
             <CommentSection refId={publication.id} targetType="Article" />
           ) : (
+            <>
+              {/* Раньше здесь стояло только приглашение: режима чтения у
+                  CommentSection не существовало, хотя вызывающий код его уже
+                  предполагал. Теперь гость видит само обсуждение — на
+                  публичной странице клиники это и есть содержимое, ради
+                  которого её открыли, — а предложение войти идёт под ним. */}
+              <CommentSection
+                refId={publication.id}
+                targetType="Article"
+                readOnly
+              />
             <div className="vt-pubd-gate">
               <div className="vt-pubd-gate-ico">💬</div>
               <div className="vt-pubd-gate-title">
@@ -321,6 +332,7 @@ export default function PublicationDetailRenderer({ clinic, publication }) {
                 </Link>
               </div>
             </div>
+            </>
           )}
         </section>
       </main>
