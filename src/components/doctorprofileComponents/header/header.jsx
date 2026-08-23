@@ -222,7 +222,7 @@ export default function Header() {
   if (verificationStatus === "approved") {
     verificationBadge = (
       <span className="badge bg-success" style={{ fontSize: "0.65rem" }}>
-        ✔ Verified
+        {t("doctorDetails.verifyApproved")}
       </span>
     );
   } else if (verificationStatus === "pending") {
@@ -231,19 +231,19 @@ export default function Header() {
         className="badge bg-warning text-dark"
         style={{ fontSize: "0.65rem" }}
       >
-        ⏳ Pending
+        {t("doctorDetails.verifyPending")}
       </span>
     );
   } else if (verificationStatus === "rejected") {
     verificationBadge = (
       <span className="badge bg-danger" style={{ fontSize: "0.65rem" }}>
-        ✖ Rejected
+        {t("doctorDetails.verifyRejected")}
       </span>
     );
   } else {
     verificationBadge = (
       <span className="badge bg-secondary" style={{ fontSize: "0.65rem" }}>
-        — Not verified
+        {t("doctorDetails.verifyNone")}
       </span>
     );
   }
@@ -269,7 +269,7 @@ export default function Header() {
           >
             <img
               src={`${process.env.PUBLIC_URL}/logo_docpats_192.png`}
-              alt="Docpats Logo"
+              alt={t("header.logoAlt")}
               style={{ height: 34, objectFit: "contain" }}
             />
 
@@ -362,7 +362,7 @@ export default function Header() {
               >
                 <img
                   src={toFileUrl(profiledata)}
-                  alt="Profile"
+                  alt={t("header.profile")}
                   className="rounded-circle"
                   style={{
                     width: window.innerWidth < 768 ? 34 : 40,
@@ -468,7 +468,7 @@ export default function Header() {
               title={t("search")}
               className="form-control me-2"
             />
-            <button type="submit" title="Search" className="btn btn-primary">
+            <button type="submit" title={t("header.search")} className="btn btn-primary">
               <i className="bi bi-search"></i>
             </button>
           </form>

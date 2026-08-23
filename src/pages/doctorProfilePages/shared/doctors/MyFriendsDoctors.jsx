@@ -735,7 +735,7 @@ export default function MyFriendsDoctors() {
       <div className="mfd-header">
         <div className="mfd-header-inner">
           <div>
-            <div className="mfd-header-tag">DocPats · My Network</div>
+            <div className="mfd-header-tag">{t("network.pageTitle")}</div>
             <h2 className="mfd-header-title">{t("friends.title")}</h2>
             <div className="mfd-header-stats">
               <div className="mfd-stat-chip">
@@ -746,7 +746,7 @@ export default function MyFriendsDoctors() {
                 {t("friends.of") ? "" : "total"}
               </div>
               <div className="mfd-stat-chip">
-                стр. <b>&nbsp;{safePage}</b> / <b>{pageCount}</b>
+                {t("network.pageShort")} <b>&nbsp;{safePage}</b> / <b>{pageCount}</b>
               </div>
             </div>
           </div>
@@ -773,7 +773,7 @@ export default function MyFriendsDoctors() {
         {/* ── FILTERS ── */}
         <div className="mfd-filters">
           <div className="mfd-filters-head">
-            <div className="mfd-filters-title">Поиск и фильтры</div>
+            <div className="mfd-filters-title">{t("network.searchAndFilters")}</div>
             <button className="mfd-reset-btn" onClick={clearFilters}>
               ↺ {t("friends.resetFilters")}
             </button>
@@ -809,13 +809,13 @@ export default function MyFriendsDoctors() {
               </select>
             </div>
             <div className="mfd-field">
-              <label className="mfd-label">Страна</label>
+              <label className="mfd-label">{t("network.country")}</label>
               <select
                 className="mfd-select"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
               >
-                <option value="">Все страны</option>
+                <option value="">{t("network.allCountries")}</option>
                 {countryOptions.map((c) => (
                   <option key={c} value={c}>
                     {c}
@@ -831,7 +831,7 @@ export default function MyFriendsDoctors() {
           {visible.length === 0 ? (
             <div className="mfd-empty">
               <div className="mfd-empty-icon">🔍</div>
-              <div className="mfd-empty-title">Никого не найдено</div>
+              <div className="mfd-empty-title">{t("network.nobodyFound")}</div>
             </div>
           ) : (
             visible.map((friend, idx) => {

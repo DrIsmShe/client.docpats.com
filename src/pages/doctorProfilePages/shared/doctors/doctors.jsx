@@ -656,7 +656,7 @@ export default function DoctorsAll() {
       <div className="da-header">
         <div className="da-header-inner">
           <div>
-            <div className="da-header-tag">DocPats · Medical Specialists</div>
+            <div className="da-header-tag">{t("doctorsList.pageTitle")}</div>
             <h1 className="da-header-title">{t("doctors.title")}</h1>
             <div className="da-header-stats">
               <div className="da-stat-chip">
@@ -753,7 +753,7 @@ export default function DoctorsAll() {
               <div className="da-empty-icon">🩺</div>
               <div className="da-empty-title">{t("doctors.noResults")}</div>
               <div className="da-empty-sub">
-                Попробуйте изменить параметры поиска
+                {t("doctorsList.tryOtherFilters")}
               </div>
             </div>
           ) : (

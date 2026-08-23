@@ -696,6 +696,7 @@ const styles = `
 
 // ── Auth Gate Banner component ────────────────
 function AuthGateBanner({ message, sub }) {
+  const { t } = useTranslation("common");
   return (
     <div className="dd-auth-gate">
       <div className="dd-auth-gate-icon">🔒</div>
@@ -705,10 +706,10 @@ function AuthGateBanner({ message, sub }) {
       </div>
       <div className="dd-auth-gate-btns">
         <a href="/login" className="dd-auth-gate-link primary">
-          Войти
+          {t("auth.signIn")}
         </a>
         <a href="/register" className="dd-auth-gate-link outline">
-          Регистрация
+          {t("auth.signUp")}
         </a>
       </div>
     </div>
@@ -980,12 +981,12 @@ export default function DoctorDetails() {
   const [verificationStatus, setVerificationStatus] = useState("not_submitted");
   const verificationBadge = useMemo(() => {
     if (verificationStatus === "approved")
-      return <span className="dd-verify-badge approved">✔ Verified</span>;
+      return <span className="dd-verify-badge approved">{t("doctorDetails.verifyApproved")}</span>;
     if (verificationStatus === "pending")
-      return <span className="dd-verify-badge pending">⏳ Pending</span>;
+      return <span className="dd-verify-badge pending">{t("doctorDetails.verifyPending")}</span>;
     if (verificationStatus === "rejected")
-      return <span className="dd-verify-badge rejected">✖ Rejected</span>;
-    return <span className="dd-verify-badge unknown">— Not verified</span>;
+      return <span className="dd-verify-badge rejected">{t("doctorDetails.verifyRejected")}</span>;
+    return <span className="dd-verify-badge unknown">{t("doctorDetails.verifyNone")}</span>;
   }, [verificationStatus]);
 
   useEffect(() => {
@@ -1000,7 +1001,7 @@ export default function DoctorDetails() {
         <style>{styles}</style>
         <div className="dd-state">
           <div className="dd-spinner" />
-          <span>Загрузка...</span>
+          <span>{t("common.loadingDots")}</span>
         </div>
       </div>
     );
@@ -1019,7 +1020,7 @@ export default function DoctorDetails() {
       <div className="dd-wrap">
         <style>{styles}</style>
         <div className="dd-state">
-          <span>Профиль врача не найден</span>
+          <span>{t("doctorDetails.notFound")}</span>
         </div>
       </div>
     );
@@ -1063,7 +1064,7 @@ export default function DoctorDetails() {
 
           {/* Info */}
           <div className="dd-hero-info">
-            <div className="dd-hero-tag">DocPats · Doctor Profile</div>
+            <div className="dd-hero-tag">{t("doctorDetails.brandBadge")}</div>
             <div className="dd-hero-name">
               Dr. {fullName}
               {verificationBadge}
@@ -1161,7 +1162,7 @@ export default function DoctorDetails() {
                       }
                     }}
                   >
-                    💬 Написать врачу
+                    {t("doctorDetails.writeToDoctorIcon")}
                   </button>
 
                   {!isFriend ? (
@@ -1254,7 +1255,7 @@ export default function DoctorDetails() {
                       doctorProfile.phoneNumber || "—"
                     ) : (
                       <span className="dd-phone-hidden">
-                        🔒 Скрыто · <a href="/login">войдите</a>, чтобы увидеть
+                        {t("doctorDetails.hiddenPrefix")} <a href="/login">{t("doctorDetails.signInWord")}</a>{t("doctorDetails.toSeeSuffix")}
                       </span>
                     )}
                   </div>
@@ -1496,7 +1497,7 @@ export default function DoctorDetails() {
                               marginLeft: 6,
                             }}
                           >
-                            Научная
+                            {t("publications.scientific")}
                           </span>
                         )}
                       </Link>

@@ -1115,7 +1115,7 @@ export default function ArticlesFromDoctors() {
                     {t("articles-from-doctor.cards.noArticles")}
                   </div>
                   <div className="afd-empty-sub">
-                    Попробуйте изменить параметры поиска
+                    {t("doctorsList.tryOtherFilters")}
                   </div>
                 </div>
               )}

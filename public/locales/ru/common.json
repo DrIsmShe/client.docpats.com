@@ -253,7 +253,9 @@
     "cancel": "Отменить отправку",
     "archive": "Скрыть из панели",
     "openNewTab": "Открыть в новой вкладке",
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "enterCodeFromEmail": "Введите код из письма",
+    "documentPreview": "Просмотр документа"
   },
   "documentTypes": {
     "license": "Медицинская лицензия",
@@ -455,7 +457,8 @@
     "book_manual": "Записать на другое время",
     "booked": "Пациент записан",
     "booked_notified": "Пациент записан, уведомление отправлено",
-    "past_slot": "Время уже прошло"
+    "past_slot": "Время уже прошло",
+    "join_video": "Видео"
   },
   "article_form": {
     "create_title": "Создать новую статью",
@@ -653,7 +656,14 @@
     "errors": {
       "load": "Ошибка загрузки расписания",
       "save": "Ошибка при сохранении расписания"
-    }
+    },
+    "pageTitle": "DocPats · Расписание",
+    "start": "Начало",
+    "end": "Конец",
+    "slotMinutes": "Слот (мин)",
+    "kind": "Тип",
+    "loading": "Загрузка…",
+    "subtitle": "Настройте рабочие часы и временные слоты для приёмов"
   },
   "endorse": {
     "unknownDoctor": "Доктор",
@@ -798,7 +808,16 @@
       "rejected": "Отклонён",
       "none": "Не проверен"
     },
-    "phoneHidden": "Скрыто · <a>войдите</a>, чтобы увидеть"
+    "phoneHidden": "Скрыто · <a>войдите</a>, чтобы увидеть",
+    "writeToDoctorIcon": "💬 Написать врачу",
+    "brandBadge": "DocPats · Профиль врача",
+    "verifyApproved": "✔ Проверен",
+    "verifyPending": "⏳ На проверке",
+    "verifyRejected": "✖ Отклонён",
+    "verifyNone": "— Не проверен",
+    "hiddenPrefix": "🔒 Скрыто ·",
+    "signInWord": "войдите",
+    "toSeeSuffix": ", чтобы увидеть"
   },
   "headerPatient": {
     "search": "Поиск",
@@ -844,7 +863,9 @@
     "countLabel": "всего приёмов"
   },
   "brand": {
-    "eyebrow": "Медицинская платформа"
+    "eyebrow": "Медицинская платформа",
+    "hipaaCompliant": "Соответствует HIPAA",
+    "medicalPlatform": "Медицинская платформа"
   },
   "user": {
     "role": "Пациент"
@@ -979,7 +1000,8 @@
     "misc": {
       "loading": "Загрузка статей…",
       "updating": "обновление…",
-      "loadError": "Ошибка при загрузке статей."
+      "loadError": "Ошибка при загрузке статей.",
+      "noCountry": "Страна не указана"
     }
   },
   "aside": {
@@ -1692,7 +1714,9 @@
     "edit": "Изменить",
     "save": "Сохранить",
     "back": "Назад",
-    "remove": "Удалить"
+    "remove": "Удалить",
+    "cancelBtn": "Отмена",
+    "deleteBtn": "Удалить"
   },
   "consultation": {
     "title": "Консультация DocPats AI"
@@ -1878,5 +1902,92 @@
       "showArchived": "Показать архив",
       "title": "Поставщики"
     }
-  }
+  },
+  "aiDash": {
+    "title": "AI-аналитика практики",
+    "analysing": "Анализируем пациентов…",
+    "highRisk": "🔴 Пациенты с высоким риском",
+    "moderateRisk": "🟡 Умеренный риск",
+    "riskDistribution": "🧬 Распределение рисков",
+    "alerts": "⚡ Клинические алерты",
+    "complications": "📈 Прогноз осложнений",
+    "noExamsPrefix": "🗓 Без обследований (",
+    "about": "ℹ️ О дашборде",
+    "activeAlerts": "Активные алерты",
+    "highSeverity": "Высокая тяжесть",
+    "highRiskShort": "Высокий риск",
+    "hospitalisation30d": "Госпитализация (30 дн.)",
+    "deterioration72h": "Ухудшение (72 ч)",
+    "noAnalysis": "Нет AI-анализа",
+    "noPriorityRisk": "Нет приоритетного риска",
+    "noHighRisk": "Пациентов с высоким риском нет",
+    "noExams": "Без обследований",
+    "allExamined": "Все пациенты прошли обследование в последние 6 месяцев",
+    "analysedOf": "Проанализировано из",
+    "highRiskCount": "пациентов с высоким риском",
+    "daysWithoutExam": "дн. без обследования",
+    "risk": "риск",
+    "confidence": "Доверие AI",
+    "cache24h": "кэш 24 ч",
+    "sixMonths": "6 мес.)",
+    "aboutText1": "Аналитика строится на основе сохранённых AI Summary. Пациенты без сохранённого анализа не участвуют в расчётах.",
+    "aboutText2": "Откройте карточку пациента и сгенерируйте AI Clinical Summary. После сохранения пациент появится в этой аналитике."
+  },
+  "webinars": {
+    "title": "Мои встречи",
+    "new": "Новая встреча",
+    "byLink": "Встречи по ссылке",
+    "empty": "Встреч пока нет. Создайте первую — и разошлите ссылку.",
+    "note": "Для конференции, куда приходят по адресу, а не по звонку: разбор случая, консилиум, обучение.",
+    "namePlaceholder": "Разбор клинического случая",
+    "waitingRoom": "Комната ожидания — участники ждут, пока вы их впустите",
+    "video": "Видеосвязь",
+    "finish": "Завершить",
+    "when": "Когда",
+    "name": "Название"
+  },
+  "network": {
+    "pageTitle": "DocPats · Мои коллеги",
+    "searchAndFilters": "Поиск и фильтры",
+    "allCountries": "Все страны",
+    "country": "Страна",
+    "nobodyFound": "Никого не найдено",
+    "pageShort": "стр."
+  },
+  "doctorsList": {
+    "pageTitle": "DocPats · Врачи",
+    "tryOtherFilters": "Попробуйте изменить параметры поиска"
+  },
+  "publications": {
+    "myPageTitle": "DocPats · Мои публикации",
+    "doctorPageTitle": "DocPats · Публикации врача",
+    "yoursWillAppear": "Ваши публикации появятся здесь",
+    "doctorHasNone": "У этого врача пока нет опубликованных статей",
+    "originalPrefix": "Оригинал (",
+    "autoTranslatedPrefix": "🌍 Автоперевод (",
+    "scientific": "Научная",
+    "article": "Статья"
+  },
+  "anthro": {
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "firstNameExample": "Иван",
+    "lastNameExample": "Иванов",
+    "active": "Активные",
+    "archive": "Архив"
+  },
+  "notif": {
+    "all": "Все",
+    "unread": "Непрочитанные",
+    "read": "Прочитанные",
+    "empty": "Нет уведомлений",
+    "sent": "Отправленные",
+    "markAllRead": "Пометить всё как прочитанное",
+    "mark": "Отметить",
+    "updating": "Обновляем…",
+    "deleting": "Удаляем…",
+    "deleteOne": "Удалить уведомление",
+    "deleteConfirm": "Удалить это уведомление?"
+  },
+  "profileAbout": "О себе"
 }

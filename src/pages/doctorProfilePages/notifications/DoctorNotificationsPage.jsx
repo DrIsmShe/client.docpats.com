@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import {
   Spinner,
@@ -29,6 +30,7 @@ import NotificationSettings from "../../../components/shared/NotificationSetting
 
 const API_BASE = process.env.REACT_APP_API_URL;
 export default function DoctorNotificationsPage() {
+  const { t } = useTranslation("common");
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -174,7 +176,7 @@ export default function DoctorNotificationsPage() {
       <Row className="align-items-center mb-3">
         <Col xs="auto">
           <h3 className="d-flex align-items-center gap-2 mb-0">
-            <FaBell /> Уведомления{" "}
+            <FaBell /> {t("notifications")}{" "}
             {unreadCount > 0 && (
               <Badge bg="danger" pill>
                 {unreadCount}
@@ -191,12 +193,12 @@ export default function DoctorNotificationsPage() {
           >
             {marking ? (
               <>
-                <Spinner animation="border" size="sm" /> Обновление...
+                <Spinner animation="border" size="sm" /> {t("notif.updating")}
               </>
             ) : (
               <>
                 <FaCheckCircle className="me-2" />
-                Пометить всё как прочитанное
+                {t("notif.markAllRead")}
               </>
             )}
           </Button>
@@ -218,25 +220,25 @@ export default function DoctorNotificationsPage() {
               variant={activeTab === "all" ? "primary" : "outline-primary"}
               onClick={() => setActiveTab("all")}
             >
-              Все
+              {t("notif.all")}
             </Button>
             <Button
               variant={activeTab === "unread" ? "primary" : "outline-primary"}
               onClick={() => setActiveTab("unread")}
             >
-              Непрочитанные
+              {t("notif.unread")}
             </Button>
             <Button
               variant={activeTab === "read" ? "primary" : "outline-primary"}
               onClick={() => setActiveTab("read")}
             >
-              Прочитанные
+              {t("notif.read")}
             </Button>
             <Button
               variant={activeTab === "sent" ? "primary" : "outline-primary"}
               onClick={() => setActiveTab("sent")}
             >
-              Отправленные <FaPaperPlane className="ms-1" />
+              {t("notif.sent")} <FaPaperPlane className="ms-1" />
             </Button>
           </ButtonGroup>
         </Col>
@@ -264,7 +266,7 @@ export default function DoctorNotificationsPage() {
       {visibleNotifications.length === 0 ? (
         <Card className="p-4 text-center text-muted shadow-sm border-0">
           <FaRedo className="mb-2 fs-4 text-secondary" />
-          <div>Нет уведомлений</div>
+          <div>{t("notif.empty")}</div>
         </Card>
       ) : (
         visibleNotifications.map((n) => (
@@ -314,7 +316,7 @@ export default function DoctorNotificationsPage() {
                       variant="outline-success"
                       onClick={() => markOneAsRead(n._id)}
                     >
-                      Отметить
+                      {t("notif.mark")}
                     </Button>
                   )}
 
@@ -324,7 +326,7 @@ export default function DoctorNotificationsPage() {
                     variant="outline-danger"
                     onClick={() => setSelectedId(n._id)}
                   >
-                    <FaTrashAlt /> Удалить
+                    <FaTrashAlt /> {t("common.deleteBtn")}
                   </Button>
                 </div>
               </div>
@@ -336,16 +338,16 @@ export default function DoctorNotificationsPage() {
       {/* 🆕 Модальное окно подтверждения удаления */}
       <Modal show={!!selectedId} onHide={() => setSelectedId(null)} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Удалить уведомление</Modal.Title>
+          <Modal.Title>{t("notif.deleteOne")}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Вы уверены, что хотите удалить это уведомление?</Modal.Body>
+        <Modal.Body>{t("notif.deleteConfirm")}</Modal.Body>
         <Modal.Footer>
           <Button
             variant="secondary"
             onClick={() => setSelectedId(null)}
             disabled={deleting}
           >
-            Отмена
+            {t("common.cancelBtn")}
           </Button>
           <Button
             variant="danger"
@@ -354,7 +356,7 @@ export default function DoctorNotificationsPage() {
           >
             {deleting ? (
               <>
-                <Spinner animation="border" size="sm" /> Удаление...
+                <Spinner animation="border" size="sm" /> {t("notif.deleting")}
               </>
             ) : (
               "Удалить"

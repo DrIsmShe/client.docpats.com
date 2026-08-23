@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -378,6 +379,7 @@ const formatDate = (d) => {
 
 /* ─── SUB-COMPONENTS ─── */
 function PatientCard({ snapshot }) {
+  const { t } = useTranslation("common");
   const highCount = snapshot.highRisks?.length || 0;
 
   return (
@@ -401,16 +403,16 @@ function PatientCard({ snapshot }) {
               — {snapshot.topRiskReason}
             </>
           ) : (
-            <span style={{ color: "#a09890" }}>Нет приоритетного риска</span>
+            <span style={{ color: "#a09890" }}>{t("aiDash.noPriorityRisk")}</span>
           )}
         </div>
         <div className="aid-patient-tags">
           {snapshot.clinicalSeverity === "high" && (
-            <span className="aid-tag red">Высокая тяжесть</span>
+            <span className="aid-tag red">{t("aiDash.highSeverity")}</span>
           )}
           {highCount > 0 && (
             <span className="aid-tag red">
-              {highCount} риск{highCount > 1 ? "а" : ""}
+              {highCount} {t("aiDash.risk")}{highCount > 1 ? "а" : ""}
             </span>
           )}
           {snapshot.clinicalAlerts?.length > 0 && (
@@ -420,7 +422,7 @@ function PatientCard({ snapshot }) {
           )}
           {snapshot.daysSinceLastExam > 180 && (
             <span className="aid-tag gray">
-              {snapshot.daysSinceLastExam}д без обследования
+              {snapshot.daysSinceLastExam}{t("aiDash.daysWithoutExam")}
             </span>
           )}
         </div>
@@ -430,7 +432,7 @@ function PatientCard({ snapshot }) {
           {Math.round((snapshot.aiConfidence || 0) * 100)}%
         </div>
         <div style={{ fontSize: 10, color: "#a09890", marginTop: 2 }}>
-          AI confidence
+          {t("aiDash.confidence")}
         </div>
       </div>
     </Link>
@@ -452,6 +454,7 @@ function AlertCard({ snapshot }) {
 }
 
 function PrognosisBlock({ aggregated }) {
+  const { t } = useTranslation("common");
   if (!aggregated) return null;
   const hospPct = Math.round((aggregated.avgHospitalizationRisk || 0) * 100);
   const detPct = Math.round((aggregated.avgDeteriorationRisk || 0) * 100);
@@ -459,11 +462,11 @@ function PrognosisBlock({ aggregated }) {
   return (
     <div className="aid-prognosis-card">
       <div className="aid-section-title" style={{ marginBottom: 14 }}>
-        📈 Прогноз осложнений
+        {t("aiDash.complications")}
       </div>
       <div className="aid-prog-row">
         <div className="aid-prog-label">
-          <span>Госпитализация (30д)</span>
+          <span>{t("aiDash.hospitalisation30d")}</span>
           <span className="aid-prog-pct">{hospPct}%</span>
         </div>
         <div className="aid-prog-bar">
@@ -474,13 +477,13 @@ function PrognosisBlock({ aggregated }) {
         </div>
         {aggregated.highHospitalizationCount > 0 && (
           <div style={{ fontSize: 11, color: "#b91c1c", marginTop: 4 }}>
-            {aggregated.highHospitalizationCount} пациентов с высоким риском
+            {aggregated.highHospitalizationCount} {t("aiDash.highRiskCount")}
           </div>
         )}
       </div>
       <div className="aid-prog-row">
         <div className="aid-prog-label">
-          <span>Ухудшение (72ч)</span>
+          <span>{t("aiDash.deterioration72h")}</span>
           <span className="aid-prog-pct">{detPct}%</span>
         </div>
         <div className="aid-prog-bar">
@@ -491,7 +494,7 @@ function PrognosisBlock({ aggregated }) {
         </div>
         {aggregated.highDeteriorationCount > 0 && (
           <div style={{ fontSize: 11, color: "#b91c1c", marginTop: 4 }}>
-            {aggregated.highDeteriorationCount} пациентов с высоким риском
+            {aggregated.highDeteriorationCount} {t("aiDash.highRiskCount")}
           </div>
         )}
       </div>
@@ -500,11 +503,12 @@ function PrognosisBlock({ aggregated }) {
 }
 
 function DomainRiskBlock({ domainSummary }) {
+  const { t } = useTranslation("common");
   if (!domainSummary?.length) return null;
   return (
     <div className="aid-prognosis-card">
       <div className="aid-section-title" style={{ marginBottom: 12 }}>
-        🧬 Распределение рисков
+        {t("aiDash.riskDistribution")}
       </div>
       {domainSummary.map((d) => (
         <div key={d.domain} className="aid-domain-row">
@@ -527,6 +531,7 @@ function DomainRiskBlock({ domainSummary }) {
 
 /* ─── MAIN COMPONENT ─── */
 export default function DoctorAIDashboardWidget() {
+  const { t } = useTranslation("common");
   const API_BASE = process.env.REACT_APP_API_URL;
 
   const [data, setData] = useState(null);
@@ -585,7 +590,7 @@ export default function DoctorAIDashboardWidget() {
         <div className="aid-header-left">
           <div className="aid-header-icon">🧠</div>
           <div>
-            <h2 className="aid-header-title">AI Аналитика практики</h2>
+            <h2 className="aid-header-title">{t("aiDash.title")}</h2>
             <div className="aid-header-sub">
               {d?.generatedAt
                 ? `Обновлено ${formatDate(d.generatedAt)}`
@@ -595,7 +600,7 @@ export default function DoctorAIDashboardWidget() {
           </div>
         </div>
         <div className="aid-header-right">
-          {data?.fromCache && <span className="aid-badge-cache">кэш 24ч</span>}
+          {data?.fromCache && <span className="aid-badge-cache">{t("aiDash.cache24h")}</span>}
           <button
             className="aid-refresh-btn"
             onClick={handleRefresh}
@@ -611,7 +616,7 @@ export default function DoctorAIDashboardWidget() {
       {loading && (
         <div className="aid-loading">
           <div className="aid-pulse" />
-          <span>Анализируем пациентов...</span>
+          <span>{t("aiDash.analysing")}</span>
         </div>
       )}
 
@@ -627,10 +632,9 @@ export default function DoctorAIDashboardWidget() {
         <div style={{ padding: "40px" }}>
           <div className="aid-no-cache">
             <div style={{ fontSize: 40, marginBottom: 16 }}>🔬</div>
-            <h3>Нет AI-анализа</h3>
+            <h3>{t("aiDash.noAnalysis")}</h3>
             <p>
-              Откройте карточку пациента и сгенерируйте AI Clinical Summary.
-              После этого здесь появится аналитика по всей практике.
+              {t("aiDash.aboutText2")}
             </p>
           </div>
         </div>
@@ -645,24 +649,24 @@ export default function DoctorAIDashboardWidget() {
               <div className="aid-stat-num">
                 {d.highRiskPatients?.length || 0}
               </div>
-              <div className="aid-stat-label">Высокий риск</div>
+              <div className="aid-stat-label">{t("aiDash.highRiskShort")}</div>
             </div>
             <div className="aid-stat orange">
               <div className="aid-stat-num">
                 {d.patientsWithAlerts?.length || 0}
               </div>
-              <div className="aid-stat-label">Активные alerts</div>
+              <div className="aid-stat-label">{t("aiDash.activeAlerts")}</div>
             </div>
             <div className="aid-stat yellow">
               <div className="aid-stat-num">
                 {d.patientsWithoutRecentExams?.length || 0}
               </div>
-              <div className="aid-stat-label">Без обследований</div>
+              <div className="aid-stat-label">{t("aiDash.noExams")}</div>
             </div>
             <div className="aid-stat green">
               <div className="aid-stat-num">{d.totalPatientsWithCache}</div>
               <div className="aid-stat-label">
-                Проанализировано из {d.totalPatientsAnalyzed}
+                {t("aiDash.analysedOf")} {d.totalPatientsAnalyzed}
               </div>
             </div>
           </div>
@@ -674,7 +678,7 @@ export default function DoctorAIDashboardWidget() {
               {/* HIGH RISK PATIENTS */}
               <div className="aid-section">
                 <div className="aid-section-title">
-                  🔴 Пациенты с высоким риском
+                  {t("aiDash.highRisk")}
                   <span className="aid-section-count">
                     {d.highRiskPatients?.length || 0}
                   </span>
@@ -685,7 +689,7 @@ export default function DoctorAIDashboardWidget() {
                   ))
                 ) : (
                   <div className="aid-empty">
-                    Пациентов с высоким риском нет
+                    {t("aiDash.noHighRisk")}
                   </div>
                 )}
               </div>
@@ -694,7 +698,7 @@ export default function DoctorAIDashboardWidget() {
               {d.patientsWithAlerts?.length > 0 && (
                 <div className="aid-section">
                   <div className="aid-section-title">
-                    ⚡ Клинические алерты
+                    {t("aiDash.alerts")}
                     <span className="aid-section-count">
                       {d.patientsWithAlerts.length}
                     </span>
@@ -708,7 +712,7 @@ export default function DoctorAIDashboardWidget() {
               {/* WITHOUT RECENT EXAMS */}
               <div className="aid-section">
                 <div className="aid-section-title">
-                  🗓 Без обследований ({">"}6 мес.)
+                  {t("aiDash.noExamsPrefix")}{">"}{t("aiDash.sixMonths")}
                   <span className="aid-section-count">
                     {d.patientsWithoutRecentExams?.length || 0}
                   </span>
@@ -719,7 +723,7 @@ export default function DoctorAIDashboardWidget() {
                   ))
                 ) : (
                   <div className="aid-empty">
-                    Все пациенты прошли обследование в последние 6 месяцев
+                    {t("aiDash.allExamined")}
                   </div>
                 )}
               </div>
@@ -728,7 +732,7 @@ export default function DoctorAIDashboardWidget() {
               {d.moderateRiskPatients?.length > 0 && (
                 <div className="aid-section">
                   <div className="aid-section-title">
-                    🟡 Умеренный риск
+                    {t("aiDash.moderateRisk")}
                     <span className="aid-section-count">
                       {d.moderateRiskPatients.length}
                     </span>
@@ -760,11 +764,9 @@ export default function DoctorAIDashboardWidget() {
                     color: "#a09890",
                   }}
                 >
-                  ℹ️ О дашборде
+                  {t("aiDash.about")}
                 </div>
-                Аналитика строится на основе сохранённых AI Summary. Пациенты
-                без сгенерированного Summary не включаются в анализ. Данные
-                обновляются раз в 24 часа или по кнопке «Обновить».
+                {t("aiDash.aboutText1")}
               </div>
             </div>
           </div>

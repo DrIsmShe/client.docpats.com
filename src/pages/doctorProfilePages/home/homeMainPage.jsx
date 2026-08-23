@@ -919,7 +919,7 @@ export default function HomeMainPage() {
         <style>{styles}</style>
         <div className="hmp-state">
           <div className="hmp-spinner" />
-          <span>Загрузка...</span>
+          <span>{t("common.loadingDots")}</span>
         </div>
       </div>
     );
@@ -960,7 +960,7 @@ export default function HomeMainPage() {
             {doctorProfile?.profileImage ? (
               <img
                 src={getImgUrl(doctorProfile.profileImage)}
-                alt="Profile"
+                alt={t("header.profile")}
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = `${API_BASE}/uploads/default/default-patient-man.png`;
@@ -971,7 +971,7 @@ export default function HomeMainPage() {
             )}
           </div>
           <div className="hmp-hero-info">
-            <div className="hmp-hero-tag">DocPats · Doctor Profile</div>
+            <div className="hmp-hero-tag">{t("doctorDetails.brandBadge")}</div>
             <div className="hmp-hero-name">
               {t("title")} {data.firstName}&nbsp;{data.lastName}
             </div>
@@ -1004,7 +1004,7 @@ export default function HomeMainPage() {
                     ? getImgUrl(doctorProfile.profileImage)
                     : `${API_BASE}/uploads/default/default-patient-man.png`
                 }
-                alt="Profile"
+                alt={t("header.profile")}
                 onError={(e) => {
                   e.currentTarget.onerror = null;
                   e.currentTarget.src = `${API_BASE}/uploads/default/default-patient-man.png`;
@@ -1049,7 +1049,7 @@ export default function HomeMainPage() {
                       ? getImgUrl(doctorProfile.profileImage)
                       : `${API_BASE}/uploads/default/default-patient-man.png`
                   }
-                  alt="Profile"
+                  alt={t("header.profile")}
                   onError={(e) => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = `${API_BASE}/uploads/default/default-patient-man.png`;
@@ -1134,7 +1134,7 @@ export default function HomeMainPage() {
                   className="hmp-card-head-title"
                   style={{ marginBottom: 16 }}
                 >
-                  About
+                  {t("profileAbout")}
                 </h5>
                 {doctorProfile ? (
                   doctorProfile.about ? (
@@ -1181,7 +1181,7 @@ export default function HomeMainPage() {
                                 ? getImgUrl(doctorProfile.profileImage)
                                 : `${API_BASE}/assets/img/avatars/boy01.png`
                           }
-                          alt="Profile"
+                          alt={t("header.profile")}
                           onError={(e) => {
                             e.currentTarget.onerror = null;
                             e.currentTarget.src = `${API_BASE}/uploads/default/default-patient.png`;
@@ -1549,7 +1549,7 @@ export default function HomeMainPage() {
                       <img
                         key={avatar}
                         src={avatar}
-                        alt="Avatar"
+                        alt={t("common.avatarAlt")}
                         className={`hmp-av-opt${selectedAvatar === avatar ? " sel" : ""}`}
                         onClick={() => handleAvatarSelect(avatar)}
                       />
@@ -1689,7 +1689,7 @@ export default function HomeMainPage() {
                           required
                         />
                         <div className="hmp-otp-hint">
-                          Введите код из письма
+                          {t("verification.enterCodeFromEmail")}
                         </div>
                       </div>
                     </div>
@@ -1946,7 +1946,7 @@ export default function HomeMainPage() {
             <img
               style={{ width: 200 }}
               src={doctorProfile?.profileImage}
-              alt="Profile"
+              alt={t("header.profile")}
               className="rounded-circle"
             />
             <h2 style={{ fontFamily: "var(--font-d)", marginTop: 16 }}>

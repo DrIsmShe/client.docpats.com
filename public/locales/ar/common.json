@@ -228,7 +228,9 @@
     "cancel": "إلغاء الإرسال",
     "archive": "إخفاء من لوحة التحكم",
     "openNewTab": "فتح في علامة تبويب جديدة",
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "enterCodeFromEmail": "أدخل الرمز من البريد",
+    "documentPreview": "معاينة الوثيقة"
   },
   "documentTypes": {
     "license": "رخصة طبية",
@@ -408,7 +410,8 @@
     "book_manual": "الحجز في وقت آخر",
     "booked": "تم حجز المريض",
     "booked_notified": "تم حجز المريض وإرسال الإشعار",
-    "past_slot": "لقد مضى هذا الوقت"
+    "past_slot": "لقد مضى هذا الوقت",
+    "join_video": "فيديو"
   },
   "article_form": {
     "create_title": "إنشاء مقالة جديدة",
@@ -606,7 +609,14 @@
     "errors": {
       "load": "خطأ في تحميل الجدول",
       "save": "خطأ في حفظ الجدول"
-    }
+    },
+    "pageTitle": "DocPats · الجدول",
+    "start": "البداية",
+    "end": "النهاية",
+    "slotMinutes": "الفترة (دقيقة)",
+    "kind": "النوع",
+    "loading": "جارٍ التحميل…",
+    "subtitle": "اضبط ساعات عملك وفترات المواعيد"
   },
   "endorse": {
     "unknownDoctor": "طبيب",
@@ -753,7 +763,16 @@
       "rejected": "مرفوض",
       "none": "غير موثّق"
     },
-    "phoneHidden": "مخفي · <a>سجّل الدخول</a> لعرضه"
+    "phoneHidden": "مخفي · <a>سجّل الدخول</a> لعرضه",
+    "writeToDoctorIcon": "💬 مراسلة الطبيب",
+    "brandBadge": "DocPats · ملف الطبيب",
+    "verifyApproved": "✔ موثّق",
+    "verifyPending": "⏳ قيد المراجعة",
+    "verifyRejected": "✖ مرفوض",
+    "verifyNone": "— غير موثّق",
+    "hiddenPrefix": "🔒 مخفي ·",
+    "signInWord": "سجّل الدخول",
+    "toSeeSuffix": " لعرضه"
   },
   "headerPatient": {
     "search": "بحث",
@@ -914,7 +933,8 @@
     "misc": {
       "loading": "جاري تحميل المقالات…",
       "updating": "جاري التحديث…",
-      "loadError": "حدث خطأ أثناء تحميل المقالات."
+      "loadError": "حدث خطأ أثناء تحميل المقالات.",
+      "noCountry": "الدولة غير محدّدة"
     }
   },
   "aside": {
@@ -1636,7 +1656,9 @@
     "edit": "تعديل",
     "save": "حفظ",
     "back": "رجوع",
-    "remove": "حذف"
+    "remove": "حذف",
+    "cancelBtn": "إلغاء",
+    "deleteBtn": "حذف"
   },
   "consultation": {
     "title": "استشارة DocPats AI"
@@ -1825,5 +1847,96 @@
       "showArchived": "عرض الأرشيف",
       "title": "المورّدون"
     }
-  }
+  },
+  "aiDash": {
+    "title": "تحليلات الممارسة بالذكاء الاصطناعي",
+    "analysing": "جارٍ تحليل المرضى…",
+    "highRisk": "🔴 مرضى عالو الخطورة",
+    "moderateRisk": "🟡 خطورة متوسطة",
+    "riskDistribution": "🧬 توزيع المخاطر",
+    "alerts": "⚡ تنبيهات سريرية",
+    "complications": "📈 توقّع المضاعفات",
+    "noExamsPrefix": "🗓 بدون فحوصات (",
+    "about": "ℹ️ عن لوحة المعلومات",
+    "activeAlerts": "التنبيهات النشطة",
+    "highSeverity": "شدّة عالية",
+    "highRiskShort": "خطورة عالية",
+    "hospitalisation30d": "الإدخال للمستشفى (30 يومًا)",
+    "deterioration72h": "تدهور (72 ساعة)",
+    "noAnalysis": "لا يوجد تحليل بالذكاء الاصطناعي",
+    "noPriorityRisk": "لا توجد خطورة ذات أولوية",
+    "noHighRisk": "لا يوجد مرضى عالو الخطورة",
+    "noExams": "بدون فحوصات",
+    "allExamined": "خضع جميع المرضى للفحص خلال الأشهر الستة الماضية",
+    "analysedOf": "تم تحليل من أصل",
+    "highRiskCount": "مريضًا عالي الخطورة",
+    "daysWithoutExam": "يومًا بدون فحص",
+    "risk": "خطورة",
+    "confidence": "ثقة الذكاء الاصطناعي",
+    "cache24h": "ذاكرة مؤقتة 24 ساعة",
+    "sixMonths": "6 أشهر)",
+    "aboutText1": "تُبنى التحليلات على ملخّصات الذكاء الاصطناعي المحفوظة. لا يُدرج المرضى بلا تحليل محفوظ في الحسابات.",
+    "aboutText2": "افتح سجل المريض وأنشئ ملخّصًا سريريًا بالذكاء الاصطناعي. بعد الحفظ يظهر المريض في هذه التحليلات."
+  },
+  "webinars": {
+    "title": "اجتماعاتي",
+    "new": "اجتماع جديد",
+    "byLink": "اجتماعات عبر رابط",
+    "empty": "لا توجد اجتماعات بعد. أنشئ الأول وأرسل الرابط.",
+    "note": "لاجتماع يُنضمّ إليه بالعنوان لا بالاتصال: مناقشة حالة، استشارة، تدريب.",
+    "namePlaceholder": "مناقشة حالة سريرية",
+    "waitingRoom": "غرفة الانتظار — ينتظر المشاركون حتى تسمح لهم بالدخول",
+    "video": "اتصال مرئي",
+    "finish": "إنهاء",
+    "when": "متى",
+    "name": "الاسم"
+  },
+  "network": {
+    "pageTitle": "DocPats · شبكتي",
+    "searchAndFilters": "البحث والتصفية",
+    "allCountries": "كل الدول",
+    "country": "الدولة",
+    "nobodyFound": "لم يُعثر على أحد",
+    "pageShort": "ص."
+  },
+  "doctorsList": {
+    "pageTitle": "DocPats · الأطباء",
+    "tryOtherFilters": "جرّب تغيير معايير البحث"
+  },
+  "publications": {
+    "myPageTitle": "DocPats · منشوراتي",
+    "doctorPageTitle": "DocPats · منشورات الطبيب",
+    "yoursWillAppear": "ستظهر منشوراتك هنا",
+    "doctorHasNone": "لا توجد مقالات منشورة لهذا الطبيب بعد",
+    "originalPrefix": "الأصل (",
+    "autoTranslatedPrefix": "🌍 ترجمة آلية (",
+    "scientific": "علمية",
+    "article": "مقالة"
+  },
+  "anthro": {
+    "firstName": "الاسم",
+    "lastName": "اسم العائلة",
+    "firstNameExample": "أحمد",
+    "lastNameExample": "محمد",
+    "active": "النشطة",
+    "archive": "الأرشيف"
+  },
+  "brand": {
+    "hipaaCompliant": "متوافق مع HIPAA",
+    "medicalPlatform": "منصة طبية"
+  },
+  "notif": {
+    "all": "الكل",
+    "unread": "غير المقروءة",
+    "read": "المقروءة",
+    "empty": "لا توجد إشعارات",
+    "sent": "المُرسَلة",
+    "markAllRead": "تعليم الكل كمقروء",
+    "mark": "تعليم",
+    "updating": "جارٍ التحديث…",
+    "deleting": "جارٍ الحذف…",
+    "deleteOne": "حذف الإشعار",
+    "deleteConfirm": "حذف هذا الإشعار؟"
+  },
+  "profileAbout": "نبذة"
 }

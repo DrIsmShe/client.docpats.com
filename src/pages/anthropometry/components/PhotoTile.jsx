@@ -98,7 +98,7 @@ function PhotoTile({ photo, onClick, disabled }) {
               type="button"
               className={styles.photoTileDeleteBtn}
               onClick={handleDelete}
-              title="Удалить"
+              title={t("common:common.deleteBtn")}
             >
               ×
             </button>

@@ -339,7 +339,8 @@
     "book_manual": "Book another time",
     "booked": "Patient booked",
     "booked_notified": "Patient booked, notification sent",
-    "past_slot": "This time has already passed"
+    "past_slot": "This time has already passed",
+    "join_video": "Video"
   },
   "article_form": {
     "create_title": "Create a new article",
@@ -478,7 +479,9 @@
     "cancel": "Cancel submission",
     "archive": "Hide from dashboard",
     "openNewTab": "Open in new tab",
-    "close": "Close"
+    "close": "Close",
+    "enterCodeFromEmail": "Enter the code from the email",
+    "documentPreview": "Document preview"
   },
   "documentTypes": {
     "license": "Medical License",
@@ -568,7 +571,14 @@
     "errors": {
       "load": "Error loading schedule",
       "save": "Error saving schedule"
-    }
+    },
+    "pageTitle": "DocPats · Schedule Manager",
+    "start": "Start",
+    "end": "End",
+    "slotMinutes": "Slot (min)",
+    "kind": "Type",
+    "loading": "Loading…",
+    "subtitle": "Set your working hours and appointment time slots"
   },
   "endorse": {
     "unknownDoctor": "Doctor",
@@ -711,7 +721,16 @@
       "rejected": "Rejected",
       "none": "Not verified"
     },
-    "phoneHidden": "Hidden · <a>sign in</a> to see"
+    "phoneHidden": "Hidden · <a>sign in</a> to see",
+    "writeToDoctorIcon": "💬 Message the doctor",
+    "brandBadge": "DocPats · Doctor Profile",
+    "verifyApproved": "✔ Verified",
+    "verifyPending": "⏳ Pending",
+    "verifyRejected": "✖ Rejected",
+    "verifyNone": "— Not verified",
+    "hiddenPrefix": "🔒 Hidden ·",
+    "signInWord": "sign in",
+    "toSeeSuffix": " to see"
   },
   "headerPatient": {
     "search": "Search",
@@ -898,7 +917,8 @@
     "misc": {
       "loading": "Loading articles…",
       "updating": "updating…",
-      "loadError": "Failed to load articles."
+      "loadError": "Failed to load articles.",
+      "noCountry": "Country not specified"
     }
   },
   "aside": {
@@ -1615,7 +1635,9 @@
     "edit": "Edit",
     "save": "Save",
     "back": "Back",
-    "remove": "Delete"
+    "remove": "Delete",
+    "cancelBtn": "Cancel",
+    "deleteBtn": "Delete"
   },
   "consultation": {
     "title": "DocPats AI consultation"
@@ -1801,5 +1823,96 @@
       "showArchived": "Show archive",
       "title": "Suppliers"
     }
-  }
+  },
+  "aiDash": {
+    "title": "AI practice analytics",
+    "analysing": "Analysing patients…",
+    "highRisk": "🔴 High-risk patients",
+    "moderateRisk": "🟡 Moderate risk",
+    "riskDistribution": "🧬 Risk distribution",
+    "alerts": "⚡ Clinical alerts",
+    "complications": "📈 Complication forecast",
+    "noExamsPrefix": "🗓 Without examinations (",
+    "about": "ℹ️ About this dashboard",
+    "activeAlerts": "Active alerts",
+    "highSeverity": "High severity",
+    "highRiskShort": "High risk",
+    "hospitalisation30d": "Hospitalisation (30 d)",
+    "deterioration72h": "Deterioration (72 h)",
+    "noAnalysis": "No AI analysis",
+    "noPriorityRisk": "No priority risk",
+    "noHighRisk": "There are no high-risk patients",
+    "noExams": "Without examinations",
+    "allExamined": "All patients have been examined in the last 6 months",
+    "analysedOf": "Analysed of",
+    "highRiskCount": "high-risk patients",
+    "daysWithoutExam": "days without an examination",
+    "risk": "risk",
+    "confidence": "AI confidence",
+    "cache24h": "24 h cache",
+    "sixMonths": "6 months)",
+    "aboutText1": "The analytics are built from saved AI summaries. Patients without a saved analysis are not included in the calculations.",
+    "aboutText2": "Open the patient's record and generate an AI clinical summary. Once saved, the patient appears in these analytics."
+  },
+  "webinars": {
+    "title": "My meetings",
+    "new": "New meeting",
+    "byLink": "Meetings by link",
+    "empty": "No meetings yet. Create the first one and send out the link.",
+    "note": "For a conference people join by address rather than by call: case review, consultation, training.",
+    "namePlaceholder": "Clinical case review",
+    "waitingRoom": "Waiting room — participants wait until you let them in",
+    "video": "Video call",
+    "finish": "Finish",
+    "when": "When",
+    "name": "Name"
+  },
+  "network": {
+    "pageTitle": "DocPats · My Network",
+    "searchAndFilters": "Search and filters",
+    "allCountries": "All countries",
+    "country": "Country",
+    "nobodyFound": "Nobody found",
+    "pageShort": "p."
+  },
+  "doctorsList": {
+    "pageTitle": "DocPats · Medical Specialists",
+    "tryOtherFilters": "Try changing the search parameters"
+  },
+  "publications": {
+    "myPageTitle": "DocPats · My Publications",
+    "doctorPageTitle": "DocPats · Doctor Publications",
+    "yoursWillAppear": "Your publications will appear here",
+    "doctorHasNone": "This doctor has no published articles yet",
+    "originalPrefix": "Original (",
+    "autoTranslatedPrefix": "🌍 Auto translated (",
+    "scientific": "Scientific",
+    "article": "Article"
+  },
+  "anthro": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "firstNameExample": "John",
+    "lastNameExample": "Smith",
+    "active": "Active",
+    "archive": "Archive"
+  },
+  "brand": {
+    "hipaaCompliant": "HIPAA Compliant",
+    "medicalPlatform": "Medical Platform"
+  },
+  "notif": {
+    "all": "All",
+    "unread": "Unread",
+    "read": "Read",
+    "empty": "No notifications",
+    "sent": "Sent",
+    "markAllRead": "Mark everything as read",
+    "mark": "Mark",
+    "updating": "Updating…",
+    "deleting": "Deleting…",
+    "deleteOne": "Delete the notification",
+    "deleteConfirm": "Delete this notification?"
+  },
+  "profileAbout": "About"
 }

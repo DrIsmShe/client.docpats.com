@@ -505,7 +505,7 @@ export default function DoctorSchedulePage() {
       {/* ── HERO ── */}
       <div className="dsp-hero">
         <div className="dsp-hero-inner">
-          <div className="dsp-hero-tag">DocPats · Schedule Manager</div>
+          <div className="dsp-hero-tag">{t("schedule.pageTitle")}</div>
           <h1 className="dsp-hero-title">📅 {t("schedule.title")}</h1>
           <div className="dsp-hero-sub">
             {t("schedule.subtitle") ||
@@ -558,7 +558,7 @@ export default function DoctorSchedulePage() {
                     <div key={idx} className="dsp-interval-row">
                       {/* Type */}
                       <div className="dsp-field-wrap dsp-field-type">
-                        <span className="dsp-field-label">Тип</span>
+                        <span className="dsp-field-label">{t("schedule.kind")}</span>
                         <select
                           className="dsp-select"
                           value={interval.type}
@@ -582,7 +582,7 @@ export default function DoctorSchedulePage() {
 
                       {/* Start */}
                       <div className="dsp-field-wrap">
-                        <span className="dsp-field-label">Начало</span>
+                        <span className="dsp-field-label">{t("schedule.start")}</span>
                         <input
                           type="time"
                           className="dsp-input-time"
@@ -600,7 +600,7 @@ export default function DoctorSchedulePage() {
 
                       {/* End */}
                       <div className="dsp-field-wrap">
-                        <span className="dsp-field-label">Конец</span>
+                        <span className="dsp-field-label">{t("schedule.end")}</span>
                         <input
                           type="time"
                           className="dsp-input-time"
@@ -618,7 +618,7 @@ export default function DoctorSchedulePage() {
 
                       {/* Slot minutes */}
                       <div className="dsp-field-wrap">
-                        <span className="dsp-field-label">Слот (мин)</span>
+                        <span className="dsp-field-label">{t("schedule.slotMinutes")}</span>
                         <input
                           type="number"
                           className="dsp-input-num"
@@ -640,7 +640,7 @@ export default function DoctorSchedulePage() {
                       <button
                         className="dsp-del-btn"
                         onClick={() => handleDeleteInterval(day.dow, idx)}
-                        title="Удалить"
+                        title={t("common.deleteBtn")}
                       >
                         🗑
                       </button>

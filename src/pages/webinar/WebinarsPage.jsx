@@ -9,6 +9,7 @@
 // экран для него нужен другой — с поиском и импортом, а не с чекбоксами.
 
 import React, { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 import {
@@ -40,6 +41,7 @@ function formatWhen(value) {
 }
 
 export default function WebinarsPage() {
+  const { t } = useTranslation("common");
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -124,33 +126,30 @@ export default function WebinarsPage() {
   return (
     <div className={styles.page}>
       <header className={styles.hero}>
-        <span className={styles.eyebrow}>Видеосвязь</span>
-        <h1 className={styles.title}>Встречи по ссылке</h1>
+        <span className={styles.eyebrow}>{t("webinars.video")}</span>
+        <h1 className={styles.title}>{t("webinars.byLink")}</h1>
         <p className={styles.lead}>
-          Для конференции, куда приходят по адресу, а не по звонку: разбор
-          случая с коллегами, обучение, планёрка. Разговор с пациентом и
-          консилиум на трёх-пятерых по-прежнему удобнее начинать звонком из
-          чата — там дозвон и есть смысл.
+          {t("webinars.note")}
         </p>
       </header>
 
       <section className={styles.panel}>
-        <h2 className={styles.panelTitle}>Новая встреча</h2>
+        <h2 className={styles.panelTitle}>{t("webinars.new")}</h2>
         <form className={styles.form} onSubmit={handleCreate}>
           <label className={styles.field}>
-            <span className={styles.label}>Название</span>
+            <span className={styles.label}>{t("webinars.name")}</span>
             <input
               className={styles.input}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Разбор клинического случая"
+              placeholder={t("webinars.namePlaceholder")}
               maxLength={200}
               required
             />
           </label>
 
           <label className={styles.field}>
-            <span className={styles.label}>Когда</span>
+            <span className={styles.label}>{t("webinars.when")}</span>
             <input
               className={styles.input}
               type="datetime-local"
@@ -166,7 +165,7 @@ export default function WebinarsPage() {
               onChange={(e) => setLobbyEnabled(e.target.checked)}
             />
             <span>
-              Комната ожидания — участники ждут, пока вы их впустите
+              {t("webinars.waitingRoom")}
             </span>
           </label>
 
@@ -183,13 +182,13 @@ export default function WebinarsPage() {
       {error ? <div className={styles.alertError}>{error}</div> : null}
 
       <section className={styles.panel}>
-        <h2 className={styles.panelTitle}>Мои встречи</h2>
+        <h2 className={styles.panelTitle}>{t("webinars.title")}</h2>
 
         {loading ? (
-          <p className={styles.muted}>Загружаем…</p>
+          <p className={styles.muted}>{t("common.loadingDots")}</p>
         ) : items.length === 0 ? (
           <p className={styles.muted}>
-            Встреч пока нет. Создайте первую — и разошлите ссылку.
+            {t("webinars.empty")}
           </p>
         ) : (
           <ul className={styles.list}>
@@ -220,7 +219,7 @@ export default function WebinarsPage() {
                     {copied === item._id ? "Скопировано" : "Ссылка"}
                   </button>
                   <Link className={styles.btn} to={`/webinar/${item._id}`}>
-                    Войти
+                    {t("auth.signIn")}
                   </Link>
                   {item.status !== "ended" ? (
                     <button
@@ -228,7 +227,7 @@ export default function WebinarsPage() {
                       className={styles.btn}
                       onClick={() => handleEnd(item._id)}
                     >
-                      Завершить
+                      {t("webinars.finish")}
                     </button>
                   ) : (
                     <button
@@ -236,7 +235,7 @@ export default function WebinarsPage() {
                       className={`${styles.btn} ${styles.btnDanger}`}
                       onClick={() => handleDelete(item._id)}
                     >
-                      Удалить
+                      {t("common.deleteBtn")}
                     </button>
                   )}
                 </div>

@@ -417,7 +417,7 @@ export default function Aside() {
           </div>
           <div>
             <div className="dp2-brand-name">DocPats</div>
-            <div className="dp2-brand-sub">Medical Platform</div>
+            <div className="dp2-brand-sub">{t("brand.medicalPlatform")}</div>
           </div>
         </div>
 
@@ -425,7 +425,7 @@ export default function Aside() {
           <div className="dp2-avatar-wrap">
             <img
               src={getImgUrl(profiledata)}
-              alt="Profile"
+              alt={t("header.profile")}
               className="dp2-avatar"
               onError={(e) => {
                 e.target.onerror = null;
@@ -655,7 +655,7 @@ export default function Aside() {
         <div className="dp2-footer">
           <span className="dp2-badge">
             <span className="dp2-dot" />
-            HIPAA Compliant
+            {t("brand.hipaaCompliant")}
           </span>
           <span className="dp2-ver">v2.1.0</span>
         </div>

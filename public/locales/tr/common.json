@@ -377,7 +377,8 @@
     "book_manual": "Başka saate kaydet",
     "booked": "Hasta kaydedildi",
     "booked_notified": "Hasta kaydedildi, bildirim gönderildi",
-    "past_slot": "Bu saat çoktan geçti"
+    "past_slot": "Bu saat çoktan geçti",
+    "join_video": "Video"
   },
   "article_form": {
     "create_title": "Yeni makale oluştur",
@@ -516,7 +517,9 @@
     "cancel": "Gönderimi iptal et",
     "archive": "Panelden gizle",
     "openNewTab": "Yeni sekmede aç",
-    "close": "Kapat"
+    "close": "Kapat",
+    "enterCodeFromEmail": "E-postadaki kodu girin",
+    "documentPreview": "Belge önizleme"
   },
   "documentTypes": {
     "license": "Tıbbi Lisans",
@@ -606,7 +609,14 @@
     "errors": {
       "load": "Program yüklenirken hata oluştu",
       "save": "Program kaydedilirken hata oluştu"
-    }
+    },
+    "pageTitle": "DocPats · Takvim",
+    "start": "Başlangıç",
+    "end": "Bitiş",
+    "slotMinutes": "Slot (dk)",
+    "kind": "Tür",
+    "loading": "Yükleniyor…",
+    "subtitle": "Çalışma saatlerinizi ve randevu zaman dilimlerini ayarlayın"
   },
   "endorse": {
     "unknownDoctor": "Doktor",
@@ -749,7 +759,16 @@
       "rejected": "Reddedildi",
       "none": "Doğrulanmadı"
     },
-    "phoneHidden": "Gizli · görmek için <a>giriş yapın</a>"
+    "phoneHidden": "Gizli · görmek için <a>giriş yapın</a>",
+    "writeToDoctorIcon": "💬 Doktora yaz",
+    "brandBadge": "DocPats · Doktor profili",
+    "verifyApproved": "✔ Doğrulandı",
+    "verifyPending": "⏳ İnceleniyor",
+    "verifyRejected": "✖ Reddedildi",
+    "verifyNone": "— Doğrulanmadı",
+    "hiddenPrefix": "🔒 Gizli ·",
+    "signInWord": "giriş yapın",
+    "toSeeSuffix": " — görmek için"
   },
   "headerPatient": {
     "search": "Arama",
@@ -927,7 +946,8 @@
     "misc": {
       "loading": "Makaleler yükleniyor…",
       "updating": "güncelleniyor…",
-      "loadError": "Makaleler yüklenirken hata oluştu."
+      "loadError": "Makaleler yüklenirken hata oluştu.",
+      "noCountry": "Ülke belirtilmedi"
     }
   },
   "aside": {
@@ -1639,7 +1659,9 @@
     "edit": "Düzenle",
     "save": "Kaydet",
     "back": "Geri",
-    "remove": "Sil"
+    "remove": "Sil",
+    "cancelBtn": "İptal",
+    "deleteBtn": "Sil"
   },
   "consultation": {
     "title": "DocPats AI danışmanlığı"
@@ -1825,5 +1847,96 @@
       "showArchived": "Arşivi göster",
       "title": "Tedarikçiler"
     }
-  }
+  },
+  "aiDash": {
+    "title": "YZ pratik analitiği",
+    "analysing": "Hastalar analiz ediliyor…",
+    "highRisk": "🔴 Yüksek riskli hastalar",
+    "moderateRisk": "🟡 Orta risk",
+    "riskDistribution": "🧬 Risk dağılımı",
+    "alerts": "⚡ Klinik uyarılar",
+    "complications": "📈 Komplikasyon tahmini",
+    "noExamsPrefix": "🗓 Muayenesiz (",
+    "about": "ℹ️ Bu pano hakkında",
+    "activeAlerts": "Etkin uyarılar",
+    "highSeverity": "Yüksek şiddet",
+    "highRiskShort": "Yüksek risk",
+    "hospitalisation30d": "Hastaneye yatış (30 gün)",
+    "deterioration72h": "Kötüleşme (72 saat)",
+    "noAnalysis": "YZ analizi yok",
+    "noPriorityRisk": "Öncelikli risk yok",
+    "noHighRisk": "Yüksek riskli hasta yok",
+    "noExams": "Muayenesiz",
+    "allExamined": "Tüm hastalar son 6 ayda muayene oldu",
+    "analysedOf": "Analiz edildi:",
+    "highRiskCount": "yüksek riskli hasta",
+    "daysWithoutExam": "gün muayenesiz",
+    "risk": "risk",
+    "confidence": "YZ güveni",
+    "cache24h": "24 saat önbellek",
+    "sixMonths": "6 ay)",
+    "aboutText1": "Analitik, kaydedilmiş YZ özetlerine dayanır. Kaydedilmiş analizi olmayan hastalar hesaplamalara dahil edilmez.",
+    "aboutText2": "Hastanın kaydını açın ve YZ klinik özeti oluşturun. Kaydedildikten sonra hasta bu analitikte görünür."
+  },
+  "webinars": {
+    "title": "Toplantılarım",
+    "new": "Yeni toplantı",
+    "byLink": "Bağlantıyla toplantılar",
+    "empty": "Henüz toplantı yok. İlkini oluşturun ve bağlantıyı gönderin.",
+    "note": "Aramayla değil adresle katılınan konferans için: vaka tartışması, konsey, eğitim.",
+    "namePlaceholder": "Klinik vaka tartışması",
+    "waitingRoom": "Bekleme odası — katılımcılar siz izin verene kadar bekler",
+    "video": "Görüntülü görüşme",
+    "finish": "Bitir",
+    "when": "Ne zaman",
+    "name": "Ad"
+  },
+  "network": {
+    "pageTitle": "DocPats · Ağım",
+    "searchAndFilters": "Arama ve filtreler",
+    "allCountries": "Tüm ülkeler",
+    "country": "Ülke",
+    "nobodyFound": "Kimse bulunamadı",
+    "pageShort": "sf."
+  },
+  "doctorsList": {
+    "pageTitle": "DocPats · Doktorlar",
+    "tryOtherFilters": "Arama parametrelerini değiştirmeyi deneyin"
+  },
+  "publications": {
+    "myPageTitle": "DocPats · Yayınlarım",
+    "doctorPageTitle": "DocPats · Doktor yayınları",
+    "yoursWillAppear": "Yayınlarınız burada görünecek",
+    "doctorHasNone": "Bu doktorun henüz yayımlanmış makalesi yok",
+    "originalPrefix": "Orijinal (",
+    "autoTranslatedPrefix": "🌍 Otomatik çeviri (",
+    "scientific": "Bilimsel",
+    "article": "Makale"
+  },
+  "anthro": {
+    "firstName": "Ad",
+    "lastName": "Soyad",
+    "firstNameExample": "Ahmet",
+    "lastNameExample": "Yılmaz",
+    "active": "Etkin",
+    "archive": "Arşiv"
+  },
+  "brand": {
+    "hipaaCompliant": "HIPAA uyumlu",
+    "medicalPlatform": "Tıbbi platform"
+  },
+  "notif": {
+    "all": "Tümü",
+    "unread": "Okunmamış",
+    "read": "Okunmuş",
+    "empty": "Bildirim yok",
+    "sent": "Gönderilmiş",
+    "markAllRead": "Tümünü okundu işaretle",
+    "mark": "İşaretle",
+    "updating": "Güncelleniyor…",
+    "deleting": "Siliniyor…",
+    "deleteOne": "Bildirimi sil",
+    "deleteConfirm": "Bu bildirim silinsin mi?"
+  },
+  "profileAbout": "Hakkımda"
 }

@@ -545,7 +545,7 @@ export default function MyArticles() {
       <div className="ma-header">
         <div className="ma-header-inner">
           <div>
-            <div className="ma-header-tag">DocPats · My Publications</div>
+            <div className="ma-header-tag">{t("publications.myPageTitle")}</div>
             <h1 className="ma-header-title">{t("my_article.title")}</h1>
             <div className="ma-header-stats">
               <div className="ma-stat-chip">
@@ -663,7 +663,7 @@ export default function MyArticles() {
                   {t("my_article.no_articles")}
                 </div>
                 <div className="ma-empty-sub">
-                  Ваши публикации появятся здесь
+                  {t("publications.yoursWillAppear")}
                 </div>
               </div>
             </div>

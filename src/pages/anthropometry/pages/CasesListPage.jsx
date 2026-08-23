@@ -58,7 +58,7 @@ function CasesListPage() {
           }`}
           onClick={() => setView("active")}
         >
-          Активные
+          {t("common:anthro.active")}
         </button>
         <button
           type="button"
@@ -67,7 +67,7 @@ function CasesListPage() {
           }`}
           onClick={() => setView("archived")}
         >
-          Архив
+          {t("common:anthro.archive")}
         </button>
       </div>
 

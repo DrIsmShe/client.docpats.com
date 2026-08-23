@@ -140,7 +140,7 @@ function NewCaseModal({ isOpen, onClose }) {
                 className={`${styles.formLabel} ${styles.formLabelRequired}`}
                 htmlFor="firstName"
               >
-                Имя
+                {t("common:anthro.firstName")}
               </label>
               <input
                 id="firstName"
@@ -148,7 +148,7 @@ function NewCaseModal({ isOpen, onClose }) {
                 className={styles.formInput}
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Иван"
+                placeholder={t("common:anthro.firstNameExample")}
                 autoFocus
                 disabled={submitting}
               />
@@ -160,7 +160,7 @@ function NewCaseModal({ isOpen, onClose }) {
                 className={`${styles.formLabel} ${styles.formLabelRequired}`}
                 htmlFor="lastName"
               >
-                Фамилия
+                {t("common:anthro.lastName")}
               </label>
               <input
                 id="lastName"
@@ -168,7 +168,7 @@ function NewCaseModal({ isOpen, onClose }) {
                 className={styles.formInput}
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                placeholder="Иванов"
+                placeholder={t("common:anthro.lastNameExample")}
                 disabled={submitting}
               />
             </div>

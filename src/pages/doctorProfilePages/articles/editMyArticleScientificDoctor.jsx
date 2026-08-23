@@ -152,7 +152,7 @@ export default function EditMyArticleScientificDoctor() {
                   ? articleData.imageUrl
                   : "/images/avatar/1.jpg"
             }
-            alt="Article"
+            alt={t("publications.article")}
             style={{ maxWidth: "150px", borderRadius: "8px" }}
           />
 

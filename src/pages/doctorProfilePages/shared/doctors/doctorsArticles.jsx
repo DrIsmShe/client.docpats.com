@@ -464,7 +464,7 @@ export default function DoctorArticles() {
 
           {/* Text */}
           <div className="doa-header-text">
-            <div className="doa-header-tag">DocPats · Doctor Publications</div>
+            <div className="doa-header-tag">{t("publications.doctorPageTitle")}</div>
             <h1 className="doa-header-title">
               {t("articles-of-doctor.title")} <span>Dr. {doctorFullName}</span>
             </h1>
@@ -489,7 +489,7 @@ export default function DoctorArticles() {
               {t("articles-of-doctor.noArticlesYet")}
             </div>
             <div className="doa-empty-sub">
-              У этого врача пока нет опубликованных статей
+              {t("publications.doctorHasNone")}
             </div>
           </div>
         ) : (

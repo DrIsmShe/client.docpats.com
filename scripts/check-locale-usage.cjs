@@ -210,7 +210,14 @@ function literalKeys(src, names) {
   for (const name of names) {
     const re = new RegExp(`\\b${name}\\(\\s*["']([^"'\`]+)["']`, "g");
     let m;
-    while ((m = re.exec(src))) keys.add(m[1]);
+    while ((m = re.exec(src))) {
+      // Половина склейки — не ключ. В коде встречается
+      // t("page.status_" + status): искать «page.status_» в словаре
+      // бессмысленно, настоящий ключ собирается во время работы.
+      const after = src.slice(m.index + m[0].length).trimStart();
+      if (after.startsWith("+")) continue;
+      keys.add(m[1]);
+    }
   }
   for (const k of keysFromConfig(src)) keys.add(k);
   // Ключ со звёздочкой — не ключ, а запись в комментарии вида
