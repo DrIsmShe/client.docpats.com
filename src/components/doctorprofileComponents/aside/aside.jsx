@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 // Выход: сбросить кэш сессии и разорвать связь событий счётчика с человеком.
 import { clearSession } from "../../../api/session";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, Link, NavLink, useLocation } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { HiOutlineSparkles } from "react-icons/hi2";
@@ -193,6 +193,21 @@ const S = `
     border-color: rgba(56,189,248,0.1);
   }
   .dp2-item:hover::before { transform: scaleY(1); }
+
+  /* Активный пункт. Полоска слева та же, что на :hover, но остаётся на месте:
+     подсветка должна отвечать на вопрос «где я», а не «куда навёл мышь». */
+  .dp2-item.is-active {
+    background: var(--c-hover);
+    color: var(--c-text);
+    border-color: rgba(56,189,248,0.22);
+    font-weight: 500;
+  }
+  .dp2-item.is-active::before { transform: scaleY(1); }
+  .dp2-item.is-active .dp2-icon {
+    background: rgba(56,189,248,0.18);
+    color: var(--c-accent);
+    box-shadow: 0 0 10px rgba(56,189,248,0.2);
+  }
   .dp2-item:hover .dp2-icon { background: rgba(56,189,248,0.14); color: var(--c-accent); box-shadow: 0 0 10px rgba(56,189,248,0.15); }
 
   .dp2-icon {
@@ -281,6 +296,11 @@ export default function Aside() {
     "uploads/default/default-patient-man.png",
   );
   const location = useLocation();
+
+  // Класс пункта меню. NavLink передаёт isActive, вычисленный по текущему
+  // адресу, — сравнивать пути вручную не нужно.
+  const itemClass = ({ isActive }) =>
+    "dp2-item is-chat" + (isActive ? " is-active" : "");
   const popupMessage = location.state?.message || null;
   const [showModal, setShowModal] = useState(false);
 
@@ -423,19 +443,19 @@ export default function Aside() {
         <TrialBanner />
         <div className="dp2-scroll">
           <div className="dp2-group">{t("profile") || "Личное"}</div>
-          <Link
-            className="dp2-item is-chat"
+          <NavLink
+            className={itemClass}
             to={`/doctor/doctor-profile/${userId}`}
           >
             <span className="dp2-icon">
               <LuSquareUserRound />
             </span>
             {t("profile")}
-          </Link>
+          </NavLink>
 
           <div className="dp2-group">{t("digestAi")}</div>
-          <Link
-            className="dp2-item is-chat"
+          <NavLink
+            className={itemClass}
             to="/public/user-synthesis"
             target="_blank"
             rel="noopener noreferrer"
@@ -444,24 +464,24 @@ export default function Aside() {
               <HiOutlineSparkles />
             </span>
             {t("aiSynthesis")}
-          </Link>
-          <Link className="dp2-item is-chat" to="/doctor/invite">
+          </NavLink>
+          <NavLink className={itemClass} to="/doctor/invite">
             <span className="dp2-icon">🎁</span>
             {t("referral.nav", { defaultValue: "Пригласить (+бонус)" })}
-          </Link>
-          <Link className="dp2-item is-chat" to="/doctor/news">
+          </NavLink>
+          <NavLink className={itemClass} to="/doctor/news">
             <span className="dp2-icon">
               <LuNewspaper />
             </span>
             {t("medical_feed")}
-          </Link>
+          </NavLink>
 
-          <Link className="dp2-item is-chat" to="/doctor/consultation-ai">
+          <NavLink className={itemClass} to="/doctor/consultation-ai">
             <span className="dp2-icon">
               <TbStethoscope />
             </span>
             {t("ai_medical_consultation")}
-          </Link>
+          </NavLink>
 
           {/* Второе мнение — работа с материалами РЕАЛЬНОГО пациента
               (modules/diagnostics). Стоит рядом с ИИ-консультацией, то есть
@@ -469,145 +489,145 @@ export default function Aside() {
               «Обучение»: врач не должен путать разбор своего пациента с
               тренажёром. По той же причине названия разведены по смыслу —
               «Второе мнение» против «Тренажёра диагностики». */}
-          <Link className="dp2-item is-chat" to="/diagnostics">
+          <NavLink className={itemClass} to="/diagnostics">
             <span className="dp2-icon">
               <LuStethoscope />
             </span>
             {t("diagnostics_second_opinion", { defaultValue: "Второе мнение" })}
-          </Link>
+          </NavLink>
 
           {/* Справочник кодов МКБ (modules/medicalCodes). Стоит среди
               клинических инструментов, а не в «Обучении»: это рабочий
               справочник для заполнения карты и направлений, а не учебный
               материал. */}
-          <Link className="dp2-item is-chat" to="/doctor/medical-codes">
+          <NavLink className={itemClass} to="/doctor/medical-codes">
             <span className="dp2-icon">
               <LuBookMarked />
             </span>
             {t("medical_codes", { defaultValue: "Справочник кодов" })}
-          </Link>
+          </NavLink>
 
           {/* Доказательная медицина (modules/ebm). Рядом со справочником
               кодов и «Вторым мнением» — это инструмент для решения у постели
               больного, а не учебный материал: врач приходит сюда с конкретным
               вопросом по конкретному пациенту. */}
-          <Link className="dp2-item is-chat" to="/doctor/evidence">
+          <NavLink className={itemClass} to="/doctor/evidence">
             <span className="dp2-icon">
               <LuLibraryBig />
             </span>
             {t("evidence_based", { defaultValue: "Доказательная медицина" })}
-          </Link>
+          </NavLink>
 
           <div className="dp2-group">
             {t("education", { defaultValue: "Обучение" })}
           </div>
-          <Link className="dp2-item is-chat" to="/education">
+          <NavLink className={itemClass} to="/education">
             <span className="dp2-icon">
               <LuGraduationCap />
             </span>
             {t("education_prep", { defaultValue: "Подготовка к экзаменам" })}
-          </Link>
-          <Link className="dp2-item is-chat" to="/arena">
+          </NavLink>
+          <NavLink className={itemClass} to="/arena">
             <span className="dp2-icon">🎯</span>
             {t("arena_trainer", { defaultValue: "Тренажёр диагностики" })}
-          </Link>
+          </NavLink>
 
           <div className="dp2-group">{t("articles") || "Статьи"}</div>
-          <Link className="dp2-item is-chat" to="/doctor/create-my-articles">
+          <NavLink className={itemClass} to="/doctor/create-my-articles">
             <span className="dp2-icon">
               <LuPencilLine />
             </span>
             {t("create_article")}
-          </Link>
-          <Link className="dp2-item is-chat" to="/doctor/my-articles">
+          </NavLink>
+          <NavLink className={itemClass} to="/doctor/my-articles">
             <span className="dp2-icon">
               <LuFileText />
             </span>
             {t("my_articles")}
-          </Link>
-          {/* <Link className="dp2-item is-chat" to="/doctor/all-articles-here">
+          </NavLink>
+          {/* <NavLink className={itemClass} to="/doctor/all-articles-here">
             <span className="dp2-icon">
               <GrArticle />
             </span>
             {t("articles")}
-          </Link> */}
+          </NavLink> */}
 
           <div className="dp2-group">{t("scientific_articles")}</div>
 
-          <Link
-            className="dp2-item is-chat"
+          <NavLink
+            className={itemClass}
             to="/doctor/create-my-articles-scientific"
           >
             <span className="dp2-icon">
               <LuFlaskConical />
             </span>
             {t("create_scientific_article")}
-          </Link>
+          </NavLink>
 
-          <Link
-            className="dp2-item is-chat"
+          <NavLink
+            className={itemClass}
             to="/doctor/my-articles-scientific"
           >
             <span className="dp2-icon">
               <LuGraduationCap />
             </span>
             {t("my_scientific_articles")}
-          </Link>
+          </NavLink>
 
-          {/* <Link
-            className="dp2-item is-chat"
+          {/* <NavLink
+            className={itemClass}
             to="/doctor/all-articles-scientific-here"
           >
             <span className="dp2-icon">
               <GrArticle />
             </span>
             {t("scientific_articles")}
-          </Link> */}
+          </NavLink> */}
 
           <div className="dp2-group">{t("colleagues") || "Коллеги"}</div>
-          <Link className="dp2-item is-chat" to="/doctor/all-doctors">
+          <NavLink className={itemClass} to="/doctor/all-doctors">
             <span className="dp2-icon">
               <LuUsers />
             </span>
             {t("colleagues")}
-          </Link>
-          <Link className="dp2-item is-chat" to="/doctor/my-friends-doctors">
+          </NavLink>
+          <NavLink className={itemClass} to="/doctor/my-friends-doctors">
             <span className="dp2-icon">
               <LuUserCheck />
             </span>
             {t("my_friends_colleagues")}
-          </Link>
+          </NavLink>
 
           <div className="dp2-group">{t("my_clinic") || "Клиника"}</div>
-          <Link className="dp2-item is-chat" to="/dp/polyclinic">
+          <NavLink className={itemClass} to="/dp/polyclinic">
             <span className="dp2-icon">
               <LuHospital />
             </span>
             {t("my_clinic")}
-          </Link>
-          <Link className="dp2-item is-chat" to="/doctor/my-clinics">
+          </NavLink>
+          <NavLink className={itemClass} to="/doctor/my-clinics">
             <span className="dp2-icon">
               <LuBuilding2 />
             </span>
             {t("my_clinics", { defaultValue: "Мои клиники" })}
-          </Link>
-          <Link className="dp2-item is-chat" to="/clinic">
+          </NavLink>
+          <NavLink className={itemClass} to="/clinic">
             <span className="dp2-icon">
               <LuCirclePlus />
             </span>
             {t("create_clinic", { defaultValue: "Создать клинику" })}
-          </Link>
+          </NavLink>
           {/* Запись пациента — регистратурное действие, к нему ходят чаще
               всего остального в этом разделе, поэтому отдельным пунктом, а не
               вглубь журнала приёмов. */}
-          <Link className="dp2-item is-chat" to="/doctor/book-patient">
+          <NavLink className={itemClass} to="/doctor/book-patient">
             <span className="dp2-icon">
               <LuCalendarPlus />
             </span>
             {t("book_patient_menu", {
               defaultValue: "Записать на приём",
             })}
-          </Link>
+          </NavLink>
           <div
             className="dp2-item is-chat"
             onClick={() => navigate("doctor-dashboard-main")}
@@ -617,12 +637,12 @@ export default function Aside() {
             </span>
             {t("appointments_dashboard")}
           </div>
-          <Link className="dp2-item is-chat" to="/doctor/communication">
+          <NavLink className={itemClass} to="/doctor/communication">
             <span className="dp2-icon">
               <LuMessagesSquare />
             </span>
             {t("chat")}
-          </Link>
+          </NavLink>
 
           <div className="dp2-item is-logout" onClick={handleLogout}>
             <span className="dp2-icon">
