@@ -878,6 +878,33 @@ function App() {
                   маршрута у владельца не было, как и у заявок: дойти до неё
                   можно было только через зону сотрудника. */}
               <Route path="reviews" element={<ClinicReviewsPage />} />
+              {/* Страницы, которые были заведены ТОЛЬКО в зоне сотрудника,
+                  хотя владелец старше по правам и должен иметь к ним доступ
+                  по своему адресу. Раньше он попадал туда лишь ссылкой в
+                  /clinic/employee/*, а до правки layout — и вовсе на форму
+                  входа сотрудника.
+
+                  Компоненты зононезависимы: адрес и переходы внутри них
+                  строит useClinicZone, данные скоупятся по сессии, права
+                  проверяет сервер.
+
+                  vitrina и marketing сюда не входят намеренно: это те же
+                  страницы, что public-page и pages выше, просто под другими
+                  именами. Заводить им вторые адреса — плодить дубли. */}
+              <Route path="analytics" element={<ClinicAnalyticsPage />} />
+              <Route path="schedule" element={<EmployeeSchedulePage />} />
+              <Route path="book" element={<EmployeeBookAppointmentPage />} />
+              <Route path="pharmacy" element={<PharmacyCatalogPage />} />
+              <Route
+                path="pharmacy/requisitions"
+                element={<PharmacyRequisitionsPage />}
+              />
+              <Route path="pharmacy/dispense" element={<PharmacyDispensePage />} />
+              <Route path="pharmacy/reports" element={<PharmacyReportsPage />} />
+              <Route
+                path="pharmacy/suppliers"
+                element={<PharmacySuppliersPage />}
+              />
               <Route path="pages" element={<ClinicCustomPagesPage />} />
               <Route path="create" element={<CreateClinicPage />} />
               <Route path="dashboard" element={<ClinicDashboardPage />} />

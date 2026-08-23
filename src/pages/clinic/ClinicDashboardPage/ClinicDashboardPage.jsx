@@ -354,6 +354,37 @@ export default function ClinicDashboardPage() {
             </span>
             <span className="clinic-dashboard-action-arrow">→</span>
           </Link>
+          {canRead("analytics") && (
+            <Link to="/clinic/analytics" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">📈</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.analytics", {
+                  defaultValue: "Аналитика",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
+          {canRead("schedule") && (
+            <Link to="/clinic/schedule" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">📅</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.schedule", {
+                  defaultValue: "Расписание",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
+          {canRead("pharmacy") && (
+            <Link to="/clinic/pharmacy" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">💊</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.pharmacy", { defaultValue: "Аптека" })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
           {canRead("review") && (
             <Link to="/clinic/reviews" className="clinic-dashboard-action">
               <span className="clinic-dashboard-action-icon">⭐</span>
