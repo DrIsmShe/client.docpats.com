@@ -694,7 +694,18 @@
       "viewAsVisitor": "View as a visitor"
     },
     "articlesWord_one": "article",
-    "articlesWord_other": "articles"
+    "articlesWord_other": "articles",
+    "badge": "Doctor Profile",
+    "loading": "Loading…",
+    "notFound": "Doctor profile not found",
+    "writeToDoctor": "Message the doctor",
+    "verify": {
+      "approved": "Verified",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "none": "Not verified"
+    },
+    "phoneHidden": "Hidden · <a>sign in</a> to see"
   },
   "headerPatient": {
     "search": "Search",
@@ -1266,7 +1277,8 @@
     "experience_one": "{{count}} year of experience",
     "experience_other": "{{count}} years of experience",
     "statsDoctors_one": "doctor",
-    "statsDoctors_other": "doctors"
+    "statsDoctors_other": "doctors",
+    "navAllArticles": "All articles →"
   },
   "profileMain": {
     "noUserId": "Could not determine the user.",
@@ -1471,7 +1483,8 @@
     "views": "{{count}} views",
     "readTime": "{{count}} min read",
     "articleLinks": "Sources:",
-    "backToDoctor": "Back to the doctor"
+    "backToDoctor": "Back to the doctor",
+    "categoryGalleryTitle": "Gallery"
   },
   "title": "Dr.",
   "training": {
@@ -1490,5 +1503,41 @@
     "selectDialogHint": "To start a conversation, select a patient or colleague from the list on the left",
     "loadingMessages": "Loading messages…"
   },
-  "chat": "Chat"
+  "chat": "Chat",
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Sign up"
+  },
+  "a11y": {
+    "close": "Close",
+    "prev": "Previous",
+    "next": "Next",
+    "menu": "Menu",
+    "breadcrumb": "Breadcrumb"
+  },
+  "topDoctors": {
+    "sub": "Sorted by rating based on real patient reviews.",
+    "specialtyPlaceholder": "Specialty (e.g. Cardiologist)",
+    "show": "Show",
+    "empty": "No doctors found. Try another specialty."
+  },
+  "paymentClaim": {
+    "doneTitle": "Thank you, noted",
+    "title": "Have you sent the payment?",
+    "note": "The bank does not notify us of incoming payments automatically. Press the button and we will know what to look for in the statement. The plan is activated after reconciliation, within one business day.",
+    "hintLabel": "Anything that helps us find the payment — optional",
+    "hintPlaceholder": "transfer date, last 4 digits of the card, payment number",
+    "sending": "Sending…",
+    "submit": "Yes, I have paid"
+  },
+  "previsit": {
+    "loading": "Loading…",
+    "doneTitle": "Thank you, the form has been sent",
+    "urgentTitle": "Do not wait for your appointment.",
+    "urgentBody": "You reported: {{signs}}. With these signs you should seek help today — call emergency services or go to the nearest emergency department.",
+    "doneLead": "The doctor will see your answers before the appointment. If anything changes, mention it at the visit.",
+    "title": "Tell us about yourself before the visit",
+    "lead": "It takes three minutes. The doctor reads your answers in advance, so the visit leaves more time for examination and conversation instead of questioning.",
+    "note": "Only the doctor you are booked with sees these answers. This is not a diagnosis and does not replace a visit."
+  }
 }

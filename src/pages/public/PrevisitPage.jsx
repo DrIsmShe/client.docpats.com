@@ -14,12 +14,14 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import axios from "../../axios";
 import "./previsit.css";
 
 const API = "/api/v1/previsit";
 
 export default function PrevisitPage() {
+  const { t } = useTranslation();
   const { token } = useParams();
   const [intake, setIntake] = useState(null);
   const [answers, setAnswers] = useState({});
@@ -85,29 +87,28 @@ export default function PrevisitPage() {
     );
   }
 
-  if (!intake) return <div className="pv-page">Загружаем…</div>;
+  if (!intake) return <div className="pv-page">{t("previsit.loading")}</div>;
 
   if (done) {
     return (
       <div className="pv-page">
-        <h1>Спасибо, анкета отправлена</h1>
+        <h1>{t("previsit.doneTitle")}</h1>
 
         {/* Срочные признаки говорим СРАЗУ, а не откладываем до приёма:
             человек, отметивший боль в груди, не должен ждать записи. */}
         {done.urgent.length > 0 && (
           <div className="pv-urgent">
-            <strong>Не ждите приёма.</strong>
+            <strong>{t("previsit.urgentTitle")}</strong>
             <p>
-              Вы отметили: {done.urgent.join(", ")}. С такими признаками нужно
-              обратиться за помощью сегодня — в скорую или в ближайшее
-              приёмное отделение.
+              {t("previsit.urgentBody", {
+                signs: done.urgent.join(", "),
+              })}
             </p>
           </div>
         )}
 
         <p className="pv-lead">
-          Врач увидит ваши ответы до приёма. Если что-то изменится, расскажите
-          об этом на встрече.
+          {t("previsit.doneLead")}
         </p>
       </div>
     );
@@ -115,10 +116,9 @@ export default function PrevisitPage() {
 
   return (
     <div className="pv-page">
-      <h1>Расскажите о себе до приёма</h1>
+      <h1>{t("previsit.title")}</h1>
       <p className="pv-lead">
-        Это займёт три минуты. Врач прочитает ответы заранее — и на приёме
-        останется больше времени на осмотр и разговор, а не на расспрос.
+        {t("previsit.lead")}
       </p>
 
       <form onSubmit={submit} className="pv-form">
@@ -180,8 +180,7 @@ export default function PrevisitPage() {
         </button>
 
         <p className="pv-note">
-          Ответы видит только врач, к которому вы записаны. Это не диагноз и
-          не замена приёму.
+          {t("previsit.note")}
         </p>
       </form>
     </div>

@@ -149,7 +149,7 @@ export default function CategoryGalleryBlock({ clinic, config = {} }) {
             type="button"
             className="vt-lb-close"
             onClick={close}
-            aria-label="close"
+            aria-label={t("common:a11y.close")}
           >
             ✕
           </button>
@@ -159,7 +159,7 @@ export default function CategoryGalleryBlock({ clinic, config = {} }) {
                 type="button"
                 className="vt-lb-nav vt-lb-prev"
                 onClick={prev}
-                aria-label="prev"
+                aria-label={t("common:a11y.prev")}
               >
                 ‹
               </button>
@@ -167,7 +167,7 @@ export default function CategoryGalleryBlock({ clinic, config = {} }) {
                 type="button"
                 className="vt-lb-nav vt-lb-next"
                 onClick={next}
-                aria-label="next"
+                aria-label={t("common:a11y.next")}
               >
                 ›
               </button>

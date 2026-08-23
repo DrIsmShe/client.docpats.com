@@ -360,7 +360,7 @@ export default function NavBlock({ clinic, config = {} }) {
             <button
               type="button"
               className="vt-nav-burger"
-              aria-label="menu"
+              aria-label={t("common:a11y.menu")}
               aria-expanded={mobileOpen}
               onClick={() => setMobileOpen((v) => !v)}
             >

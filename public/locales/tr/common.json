@@ -732,7 +732,18 @@
       "viewAsVisitor": "Ziyaretçi olarak görüntüle"
     },
     "articlesWord_one": "makale",
-    "articlesWord_other": "makale"
+    "articlesWord_other": "makale",
+    "badge": "Doktor profili",
+    "loading": "Yükleniyor…",
+    "notFound": "Doktor profili bulunamadı",
+    "writeToDoctor": "Doktora yaz",
+    "verify": {
+      "approved": "Doğrulandı",
+      "pending": "İnceleniyor",
+      "rejected": "Reddedildi",
+      "none": "Doğrulanmadı"
+    },
+    "phoneHidden": "Gizli · görmek için <a>giriş yapın</a>"
   },
   "headerPatient": {
     "search": "Arama",
@@ -1290,7 +1301,8 @@
     "experience_one": "{{count}} yıl deneyim",
     "experience_other": "{{count}} yıl deneyim",
     "statsDoctors_one": "doktor",
-    "statsDoctors_other": "doktor"
+    "statsDoctors_other": "doktor",
+    "navAllArticles": "Tüm makaleler →"
   },
   "profileMain": {
     "noUserId": "Kullanıcı belirlenemedi.",
@@ -1495,7 +1507,8 @@
     "views": "{{count}} görüntülenme",
     "readTime": "{{count}} dk okuma",
     "articleLinks": "Kaynaklar:",
-    "backToDoctor": "Doktora dön"
+    "backToDoctor": "Doktora dön",
+    "categoryGalleryTitle": "Galeri"
   },
   "title": "Dr.",
   "training": {
@@ -1514,5 +1527,41 @@
     "selectDialogHint": "Sohbete başlamak için soldaki listeden bir hasta veya meslektaş seçin",
     "loadingMessages": "Mesajlar yükleniyor…"
   },
-  "chat": "Sohbet"
+  "chat": "Sohbet",
+  "auth": {
+    "signIn": "Giriş yap",
+    "signUp": "Kayıt ol"
+  },
+  "a11y": {
+    "close": "Kapat",
+    "prev": "Önceki",
+    "next": "Sonraki",
+    "menu": "Menü",
+    "breadcrumb": "Sayfa yolu"
+  },
+  "topDoctors": {
+    "sub": "Gerçek hasta yorumlarına dayalı puana göre sıralandı.",
+    "specialtyPlaceholder": "Uzmanlık (örn. Kardiyolog)",
+    "show": "Göster",
+    "empty": "Doktor bulunamadı. Başka bir uzmanlık deneyin."
+  },
+  "paymentClaim": {
+    "doneTitle": "Teşekkürler, kaydettik",
+    "title": "Ödemeyi gönderdiniz mi?",
+    "note": "Banka gelen ödemeyi bize otomatik bildirmez. Düğmeye basın; ekstrede neyi arayacağımızı bileceğiz. Tarife, mutabakattan sonra bir iş günü içinde tanımlanır.",
+    "hintLabel": "Ödemeyi bulmamıza yardımcı olacak herhangi bir bilgi — isteğe bağlı",
+    "hintPlaceholder": "havale tarihi, kartın son 4 hanesi, ödeme numarası",
+    "sending": "Gönderiliyor…",
+    "submit": "Evet, ödedim"
+  },
+  "previsit": {
+    "loading": "Yükleniyor…",
+    "doneTitle": "Teşekkürler, form gönderildi",
+    "urgentTitle": "Randevunuzu beklemeyin.",
+    "urgentBody": "Şunları belirttiniz: {{signs}}. Bu belirtilerle bugün yardım almalısınız — acil servisi arayın veya en yakın acile başvurun.",
+    "doneLead": "Doktor yanıtlarınızı randevudan önce görecek. Bir şey değişirse görüşmede belirtin.",
+    "title": "Randevudan önce kendinizden bahsedin",
+    "lead": "Üç dakika sürer. Doktor yanıtları önceden okur; böylece randevuda soru sormaya değil, muayene ve sohbete daha fazla zaman kalır.",
+    "note": "Yanıtları yalnızca randevunuzun olduğu doktor görür. Bu bir teşhis değildir ve muayenenin yerini tutmaz."
+  }
 }

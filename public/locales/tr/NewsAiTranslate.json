@@ -59,7 +59,8 @@
     "platform": "Tıbbi Analitik Platformu"
   },
   "body_ai": {
-    "translating": "Çevriliyor..."
+    "translating": "Çevriliyor...",
+    "translation_pending": "Çeviri hazırlanıyor — yayından sonra genellikle 10 dakikaya kadar sürer. Orijinali gösteriyoruz."
   },
   "topbar_title": "DocPats · Tıbbi Zekâ",
   "nav_news": "Haberler",
@@ -107,7 +108,8 @@
     "materials": "içerik",
     "news": "haber",
     "scientific": "bilimsel",
-    "publications": "yayın"
+    "publications": "yayın",
+    "doctors": "Doktor"
   },
   "tags": {
     "search": "Arama",
@@ -219,5 +221,17 @@
   "feed": {
     "mySpecialty": "Uzmanlığım",
     "allTopics": "Tüm konular"
+  },
+  "search_label": "Arama:",
+  "nothing_found": "Hiçbir şey bulunamadı",
+  "profile_link": "Profil →",
+  "publications_one": "{{count}} yayın",
+  "publications_other": "{{count}} yayın",
+  "article_single": {
+    "comments_title": "Yorumlar",
+    "comments_login_title": "Tartışmaya katılın",
+    "comments_login_sub": "Yorum bırakmak ve mesleki tartışmalara katılmak için hesabınıza giriş yapın.",
+    "login_btn": "Giriş yap",
+    "register_btn": "Kayıt ol"
   }
 }

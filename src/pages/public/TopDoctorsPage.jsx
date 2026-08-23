@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
 
 const API_BASE = process.env.REACT_APP_API_URL;
 
@@ -22,6 +23,7 @@ function Stars({ value = 0 }) {
 }
 
 export default function TopDoctorsPage() {
+  const { t } = useTranslation();
   const [params, setParams] = useSearchParams();
   const specialty = params.get("specialty") || "";
   const country = params.get("country") || "";
@@ -71,26 +73,26 @@ export default function TopDoctorsPage() {
 
       <h1 style={h1}>{title}</h1>
       <p style={sub}>
-        Отсортировано по рейтингу на основе реальных отзывов пациентов.
+        {t("topDoctors.sub")}
       </p>
 
       <form onSubmit={applyFilter} style={filterRow}>
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Специальность (напр. Кардиолог)"
+          placeholder={t("topDoctors.specialtyPlaceholder")}
           style={input}
         />
         <button type="submit" style={btn}>
-          Показать
+          {t("topDoctors.show")}
         </button>
       </form>
 
       {loading ? (
-        <div style={{ color: "#64748b", padding: 24 }}>Загрузка…</div>
+        <div style={{ color: "#64748b", padding: 24 }}>{t("loading")}</div>
       ) : doctors.length === 0 ? (
         <div style={{ color: "#64748b", padding: 24 }}>
-          Врачи не найдены. Попробуйте другую специальность.
+          {t("topDoctors.empty")}
         </div>
       ) : (
         <div style={grid}>

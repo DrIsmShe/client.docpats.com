@@ -60,7 +60,8 @@
   },
   "body_ai": {
     "translating": "Переводим...",
-    "translating_hint": "Первый перевод занимает ~30 сек"
+    "translating_hint": "Первый перевод занимает ~30 сек",
+    "translation_pending": "Перевод готовится — обычно занимает до 10 минут после публикации. Показываем оригинал."
   },
   "topbar_title": "DocPats · Медицинский интеллект",
   "nav_news": "Новости",
@@ -118,7 +119,8 @@
     "materials": "материалов",
     "news": "новостей",
     "scientific": "научных",
-    "publications": "публикаций"
+    "publications": "публикаций",
+    "doctors": "Врачей"
   },
   "tags": {
     "search": "Поиск",
@@ -222,5 +224,19 @@
   "feed": {
     "mySpecialty": "Моя специальность",
     "allTopics": "Все темы"
+  },
+  "search_label": "Поиск:",
+  "nothing_found": "Ничего не найдено",
+  "profile_link": "Профиль →",
+  "publications_one": "{{count}} публ.",
+  "publications_few": "{{count}} публ.",
+  "publications_many": "{{count}} публ.",
+  "publications_other": "{{count}} публ.",
+  "article_single": {
+    "comments_title": "Комментарии",
+    "comments_login_title": "Присоединитесь к обсуждению",
+    "comments_login_sub": "Войдите в аккаунт, чтобы оставлять комментарии и участвовать в профессиональных дискуссиях.",
+    "login_btn": "Войти",
+    "register_btn": "Зарегистрироваться"
   }
 }

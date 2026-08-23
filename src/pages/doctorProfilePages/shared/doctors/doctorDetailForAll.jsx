@@ -9,7 +9,7 @@ import { FaCommentDots } from "react-icons/fa6";
 import { AiFillLike } from "react-icons/ai";
 import ShareMenu from "../../../../components/shared/ShareMenu";
 import DoctorEndorseItem from "./DoctorEndorseItem";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useMemo } from "react";
 import { getOrCreateDialogWithUser } from "../../../communication/api/communicationApi";
 import { Helmet } from "react-helmet-async";
@@ -696,6 +696,7 @@ const styles = `
 
 // ── Auth Gate Banner component ────────────────
 function AuthGateBanner({ message, sub }) {
+  const { t } = useTranslation();
   return (
     <div className="dd-auth-gate">
       <div className="dd-auth-gate-icon">🔒</div>
@@ -705,10 +706,10 @@ function AuthGateBanner({ message, sub }) {
       </div>
       <div className="dd-auth-gate-btns">
         <a href="/login" className="dd-auth-gate-link primary">
-          Войти
+          {t("auth.signIn")}
         </a>
         <a href="/register" className="dd-auth-gate-link outline">
-          Регистрация
+          {t("auth.signUp")}
         </a>
       </div>
     </div>
@@ -984,13 +985,29 @@ export default function DoctorDetailsForAll() {
   const [verificationStatus, setVerificationStatus] = useState("not_submitted");
   const verificationBadge = useMemo(() => {
     if (verificationStatus === "approved")
-      return <span className="dd-verify-badge approved">✔ Verified</span>;
+      return (
+        <span className="dd-verify-badge approved">
+          ✔ {t("doctorDetails.verify.approved")}
+        </span>
+      );
     if (verificationStatus === "pending")
-      return <span className="dd-verify-badge pending">⏳ Pending</span>;
+      return (
+        <span className="dd-verify-badge pending">
+          ⏳ {t("doctorDetails.verify.pending")}
+        </span>
+      );
     if (verificationStatus === "rejected")
-      return <span className="dd-verify-badge rejected">✖ Rejected</span>;
-    return <span className="dd-verify-badge unknown">— Not verified</span>;
-  }, [verificationStatus]);
+      return (
+        <span className="dd-verify-badge rejected">
+          ✖ {t("doctorDetails.verify.rejected")}
+        </span>
+      );
+    return (
+      <span className="dd-verify-badge unknown">
+        — {t("doctorDetails.verify.none")}
+      </span>
+    );
+  }, [verificationStatus, t]);
 
   useEffect(() => {
     if (doctorProfile?.verificationStatus)
@@ -1004,7 +1021,7 @@ export default function DoctorDetailsForAll() {
         <style>{styles}</style>
         <div className="dd-state">
           <div className="dd-spinner" />
-          <span>Загрузка...</span>
+          <span>{t("doctorDetails.loading")}</span>
         </div>
       </div>
     );
@@ -1023,7 +1040,7 @@ export default function DoctorDetailsForAll() {
       <div className="dd-wrap">
         <style>{styles}</style>
         <div className="dd-state">
-          <span>Профиль врача не найден</span>
+          <span>{t("doctorDetails.notFound")}</span>
         </div>
       </div>
     );
@@ -1151,7 +1168,9 @@ export default function DoctorDetailsForAll() {
 
           {/* Info */}
           <div className="dd-hero-info">
-            <div className="dd-hero-tag">DocPats · Doctor Profile</div>
+            <div className="dd-hero-tag">
+              DocPats · {t("doctorDetails.badge")}
+            </div>
             <div className="dd-hero-name">
               Dr. {fullName}
               {verificationBadge}
@@ -1250,7 +1269,7 @@ export default function DoctorDetailsForAll() {
                       }
                     }}
                   >
-                    💬 Написать врачу
+                    💬 {t("doctorDetails.writeToDoctor")}
                   </button>
 
                   {!isFriend ? (
@@ -1343,7 +1362,11 @@ export default function DoctorDetailsForAll() {
                       doctorProfile.phoneNumber || "—"
                     ) : (
                       <span className="dd-phone-hidden">
-                        🔒 Скрыто · <a href="/login">войдите</a>, чтобы увидеть
+                        🔒{" "}
+                        <Trans
+                          i18nKey="doctorDetails.phoneHidden"
+                          components={{ a: <a href="/login" /> }}
+                        />
                       </span>
                     )}
                   </div>

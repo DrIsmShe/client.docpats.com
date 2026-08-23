@@ -654,7 +654,7 @@ export default function NewsList() {
   const heroTitle = appliedSearch ? (
     <>
       {" "}
-      Поиск: <em>"{appliedSearch}"</em>{" "}
+      {t("search_label")} <em>"{appliedSearch}"</em>{" "}
     </>
   ) : type ? (
     FILTERS.find((f) => f.value === type)?.label
@@ -1026,7 +1026,7 @@ export default function NewsList() {
             ) : feed.length === 0 ? (
               <div className="nl-empty">
                 <div className="nl-empty-icon">🔍</div>
-                <div className="nl-empty-title">Ничего не найдено</div>
+                <div className="nl-empty-title">{t("nothing_found")}</div>
                 {activeFilterCount > 0 && (
                   <button className="nl-empty-reset" onClick={resetFilters}>
                     {t("buttons.reset")}
@@ -1156,6 +1156,7 @@ function FeedCard({ item, searchTerm, isAuthenticated, userRole }) {
 }
 
 function DoctorCard({ item, searchTerm, isAuthenticated, userRole }) {
+  const { t } = useTranslation("NewsAiTranslate");
   const hl = makeHighlight(searchTerm);
   const href = getItemLink(item, { isAuthenticated, userRole });
   return (
@@ -1222,7 +1223,9 @@ function DoctorCard({ item, searchTerm, isAuthenticated, userRole }) {
         <span className="dc-meta">
           {[
             item.country,
-            item.articlesCount > 0 ? `${item.articlesCount} публ.` : null,
+            item.articlesCount > 0
+              ? t("publications", { count: item.articlesCount })
+              : null,
           ]
             .filter(Boolean)
             .join(" · ")}
@@ -1233,7 +1236,7 @@ function DoctorCard({ item, searchTerm, isAuthenticated, userRole }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Профиль →
+          {t("profile_link")}
         </Link>
       </div>
     </article>

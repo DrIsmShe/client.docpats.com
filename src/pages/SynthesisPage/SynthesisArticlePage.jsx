@@ -726,7 +726,7 @@ export default function SynthesisArticlePage() {
           <span className="sa-nav-tag">{t("nav_ai.analytics")}</span>
         </nav>
         <nav
-          aria-label="breadcrumb"
+          aria-label={t("common:a11y.breadcrumb")}
           style={{
             maxWidth: 780,
             margin: "0 auto",

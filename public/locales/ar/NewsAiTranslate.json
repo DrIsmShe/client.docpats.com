@@ -78,7 +78,8 @@
     "platform": "منصة الذكاء الطبي"
   },
   "body_ai": {
-    "translating": "جارٍ الترجمة..."
+    "translating": "جارٍ الترجمة...",
+    "translation_pending": "جارٍ إعداد الترجمة — يستغرق ذلك عادةً حتى 10 دقائق بعد النشر. نعرض النص الأصلي."
   },
   "topbar_title": "DocPats · الذكاء الطبي",
   "nav_news": "الأخبار",
@@ -132,7 +133,8 @@
     "materials": "مواد",
     "news": "أخبار",
     "scientific": "علمي",
-    "publications": "منشورات"
+    "publications": "منشورات",
+    "doctors": "أطباء"
   },
   "tags": {
     "search": "بحث",
@@ -217,5 +219,21 @@
   "feed": {
     "mySpecialty": "تخصصي",
     "allTopics": "كل المواضيع"
+  },
+  "search_label": "بحث:",
+  "nothing_found": "لم يتم العثور على شيء",
+  "profile_link": "الملف الشخصي →",
+  "publications_zero": "{{count}} منشورات",
+  "publications_one": "منشور واحد",
+  "publications_two": "منشوران",
+  "publications_few": "{{count}} منشورات",
+  "publications_many": "{{count}} منشورًا",
+  "publications_other": "{{count}} منشور",
+  "article_single": {
+    "comments_title": "التعليقات",
+    "comments_login_title": "شارك في النقاش",
+    "comments_login_sub": "سجّل الدخول لكتابة التعليقات والمشاركة في النقاشات المهنية.",
+    "login_btn": "تسجيل الدخول",
+    "register_btn": "إنشاء حساب"
   }
 }

@@ -6,6 +6,7 @@
 // Props: { items: [{image, caption, description}], index, onClose, onPrev, onNext }
 // Рендерится, когда index !== null. resolveUrl применяется снаружи или тут.
 
+import { useTranslation } from "react-i18next";
 import React, { useEffect } from "react";
 import { resolveUrl } from "../lib/utils.js";
 
@@ -31,6 +32,7 @@ const CSS = `
 `;
 
 export default function Lightbox({ items, index, onClose, onPrev, onNext }) {
+  const { t } = useTranslation();
   const open = index !== null && index !== undefined && items?.[index];
 
   useEffect(() => {
@@ -65,7 +67,7 @@ export default function Lightbox({ items, index, onClose, onPrev, onNext }) {
         type="button"
         className="vt-lb-close"
         onClick={onClose}
-        aria-label="close"
+        aria-label={t("a11y.close")}
       >
         ✕
       </button>
@@ -75,7 +77,7 @@ export default function Lightbox({ items, index, onClose, onPrev, onNext }) {
             type="button"
             className="vt-lb-nav vt-lb-prev"
             onClick={onPrev}
-            aria-label="prev"
+            aria-label={t("a11y.prev")}
           >
             ‹
           </button>
@@ -83,7 +85,7 @@ export default function Lightbox({ items, index, onClose, onPrev, onNext }) {
             type="button"
             className="vt-lb-nav vt-lb-next"
             onClick={onNext}
-            aria-label="next"
+            aria-label={t("a11y.next")}
           >
             ›
           </button>

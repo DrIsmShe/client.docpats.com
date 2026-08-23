@@ -15,8 +15,10 @@
 
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function PaymentClaimPage() {
+  const { t } = useTranslation();
   const { token } = useParams();
   const [note, setNote] = useState("");
   const [state, setState] = useState("idle"); // idle | sending | done | error
@@ -65,28 +67,26 @@ export default function PaymentClaimPage() {
         <div className="card-body p-4 p-md-5">
           {state === "done" ? (
             <>
-              <h1 className="h4 fw-bold mb-3">Спасибо, записали</h1>
+              <h1 className="h4 fw-bold mb-3">{t("paymentClaim.doneTitle")}</h1>
               <p className="text-muted mb-0">{message}</p>
             </>
           ) : (
             <>
-              <h1 className="h4 fw-bold mb-2">Вы отправили оплату?</h1>
+              <h1 className="h4 fw-bold mb-2">{t("paymentClaim.title")}</h1>
               <p className="text-muted">
-                Банк не сообщает нам о поступлении автоматически. Нажмите
-                кнопку — и мы будем знать, что искать в выписке. Тариф
-                подключим после сверки, в течение рабочего дня.
+                {t("paymentClaim.note")}
               </p>
 
               <form onSubmit={submit}>
                 <label className="form-label small text-muted">
-                  Что-нибудь, что поможет найти платёж — необязательно
+                  {t("paymentClaim.hintLabel")}
                 </label>
                 <textarea
                   className="form-control mb-3"
                   rows={3}
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
-                  placeholder="дата перевода, последние 4 цифры карты, номер платежа"
+                  placeholder={t("paymentClaim.hintPlaceholder")}
                 />
 
                 <button
@@ -94,7 +94,9 @@ export default function PaymentClaimPage() {
                   className="btn btn-primary w-100 rounded-3 fw-semibold"
                   disabled={state === "sending"}
                 >
-                  {state === "sending" ? "Отправляем…" : "Да, я оплатил"}
+                  {state === "sending"
+                    ? t("paymentClaim.sending")
+                    : t("paymentClaim.submit")}
                 </button>
               </form>
 

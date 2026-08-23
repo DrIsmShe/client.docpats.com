@@ -733,7 +733,18 @@
       "viewAsVisitor": "Ziyarətçi kimi bax"
     },
     "articlesWord_one": "məqalə",
-    "articlesWord_other": "məqalə"
+    "articlesWord_other": "məqalə",
+    "badge": "Həkim profili",
+    "loading": "Yüklənir…",
+    "notFound": "Həkim profili tapılmadı",
+    "writeToDoctor": "Həkimə yaz",
+    "verify": {
+      "approved": "Təsdiqlənib",
+      "pending": "Yoxlanılır",
+      "rejected": "Rədd edilib",
+      "none": "Təsdiqlənməyib"
+    },
+    "phoneHidden": "Gizlidir · görmək üçün <a>daxil olun</a>"
   },
   "headerPatient": {
     "search": "Axtarış",
@@ -1293,7 +1304,8 @@
     "experience_one": "{{count}} il təcrübə",
     "experience_other": "{{count}} il təcrübə",
     "statsDoctors_one": "həkim",
-    "statsDoctors_other": "həkim"
+    "statsDoctors_other": "həkim",
+    "navAllArticles": "Bütün məqalələr →"
   },
   "profileMain": {
     "noUserId": "İstifadəçi müəyyən edilə bilmədi.",
@@ -1498,7 +1510,8 @@
     "views": "{{count}} baxış",
     "readTime": "{{count}} dəq oxu",
     "articleLinks": "Mənbələr:",
-    "backToDoctor": "Həkimə qayıt"
+    "backToDoctor": "Həkimə qayıt",
+    "categoryGalleryTitle": "Qalereya"
   },
   "title": "Dr.",
   "training": {
@@ -1517,5 +1530,41 @@
     "selectDialogHint": "Söhbətə başlamaq üçün soldakı siyahıdan pasiyent və ya həmkar seçin",
     "loadingMessages": "Mesajlar yüklənir…"
   },
-  "chat": "Çat"
+  "chat": "Çat",
+  "auth": {
+    "signIn": "Daxil ol",
+    "signUp": "Qeydiyyat"
+  },
+  "a11y": {
+    "close": "Bağla",
+    "prev": "Əvvəlki",
+    "next": "Növbəti",
+    "menu": "Menyu",
+    "breadcrumb": "Naviqasiya yolu"
+  },
+  "topDoctors": {
+    "sub": "Real pasiyent rəylərinə əsaslanan reytinqə görə sıralanıb.",
+    "specialtyPlaceholder": "İxtisas (məs. Kardioloq)",
+    "show": "Göstər",
+    "empty": "Həkim tapılmadı. Başqa ixtisas yoxlayın."
+  },
+  "paymentClaim": {
+    "doneTitle": "Təşəkkür edirik, qeyd etdik",
+    "title": "Ödənişi göndərmisiniz?",
+    "note": "Bank daxil olan ödəniş barədə bizə avtomatik məlumat vermir. Düyməni basın — və biz çıxarışda nə axtaracağımızı biləcəyik. Tarif yoxlamadan sonra, bir iş günü ərzində qoşulur.",
+    "hintLabel": "Ödənişi tapmağa kömək edəcək hər şey — istəyə görə",
+    "hintPlaceholder": "köçürmə tarixi, kartın son 4 rəqəmi, ödəniş nömrəsi",
+    "sending": "Göndərilir…",
+    "submit": "Bəli, ödəmişəm"
+  },
+  "previsit": {
+    "loading": "Yüklənir…",
+    "doneTitle": "Təşəkkür edirik, anket göndərildi",
+    "urgentTitle": "Qəbulu gözləməyin.",
+    "urgentBody": "Siz qeyd etdiniz: {{signs}}. Bu əlamətlərlə bu gün kömək almaq lazımdır — təcili yardıma və ya ən yaxın qəbul şöbəsinə müraciət edin.",
+    "doneLead": "Həkim cavablarınızı qəbuldan əvvəl görəcək. Nəsə dəyişsə, görüşdə bunu deyin.",
+    "title": "Qəbuldan əvvəl özünüz haqqında danışın",
+    "lead": "Bu üç dəqiqə çəkir. Həkim cavabları əvvəlcədən oxuyur — və qəbulda sorğu-suala deyil, müayinə və söhbətə daha çox vaxt qalır.",
+    "note": "Cavabları yalnız yazıldığınız həkim görür. Bu diaqnoz deyil və qəbulu əvəz etmir."
+  }
 }

@@ -80,7 +80,8 @@
     "platform": "Tibbi Analitika Platforması"
   },
   "body_ai": {
-    "translating": "Tərcümə edilir..."
+    "translating": "Tərcümə edilir...",
+    "translation_pending": "Tərcümə hazırlanır — adətən dərcdən sonra 10 dəqiqəyə qədər çəkir. Orijinalı göstəririk."
   },
   "topbar_title": "DocPats · Tibbi İntellekt",
   "nav_news": "Xəbərlər",
@@ -134,7 +135,8 @@
     "materials": "material",
     "news": "xəbər",
     "scientific": "elmi",
-    "publications": "nəşr"
+    "publications": "nəşr",
+    "doctors": "Həkim"
   },
   "tags": {
     "search": "Axtarış",
@@ -219,5 +221,17 @@
   "feed": {
     "mySpecialty": "İxtisasım",
     "allTopics": "Bütün mövzular"
+  },
+  "search_label": "Axtarış:",
+  "nothing_found": "Heç nə tapılmadı",
+  "profile_link": "Profil →",
+  "publications_one": "{{count}} nəşr",
+  "publications_other": "{{count}} nəşr",
+  "article_single": {
+    "comments_title": "Şərhlər",
+    "comments_login_title": "Müzakirəyə qoşulun",
+    "comments_login_sub": "Şərh yazmaq və peşəkar müzakirələrdə iştirak etmək üçün hesabınıza daxil olun.",
+    "login_btn": "Daxil ol",
+    "register_btn": "Qeydiyyatdan keç"
   }
 }
