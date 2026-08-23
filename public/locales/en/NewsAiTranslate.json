@@ -236,5 +236,11 @@
   },
   "all_loaded": "All items shown",
   "loading_more": "Loading more…",
-  "retry": "Retry"
+  "retry": "Retry",
+  "sourceType": {
+    "ai": "News",
+    "scientific": "Scientific article",
+    "article": "Doctor's publication",
+    "doctor": "Doctor"
+  }
 }

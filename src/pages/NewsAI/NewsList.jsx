@@ -27,18 +27,18 @@ const LOCALES = [
 ];
 const RTL_LOCALES = new Set(["ar"]);
 const SOURCE_META = {
-  ai: { label: "Новость", color: "#0f766e", bg: "rgba(15,118,110,.1)" },
+  ai: { key: "sourceType.ai", color: "#0f766e", bg: "rgba(15,118,110,.1)" },
   scientific: {
-    label: "Научная статья",
+    key: "sourceType.scientific",
     color: "#0e5c6b",
     bg: "rgba(14,92,107,.1)",
   },
   article: {
-    label: "Публикация врача",
+    key: "sourceType.article",
     color: "#1a6b3c",
     bg: "rgba(26,107,60,.1)",
   },
-  doctor: { label: "Врач", color: "#7c3d9f", bg: "rgba(124,61,159,.1)" },
+  doctor: { key: "sourceType.doctor", color: "#7c3d9f", bg: "rgba(124,61,159,.1)" },
 };
 
 function normalizeAiItem(item) {
@@ -1115,6 +1115,7 @@ function evidenceLinkFor(news, userRole) {
 }
 
 function FeedCard({ item, searchTerm, isAuthenticated, userRole }) {
+  const { t } = useTranslation("NewsAiTranslate");
   if (item._sourceType === "ai")
     return (
       <NewsCard
@@ -1148,7 +1149,7 @@ function FeedCard({ item, searchTerm, isAuthenticated, userRole }) {
       }}
       searchTerm={searchTerm}
       href={getItemLink(item, { isAuthenticated, userRole })}
-      typeLabel={meta.label}
+      typeLabel={t(meta.key)}
       typeIcon={TYPE_ICON[item._sourceType]}
       byline={byline}
     />
@@ -1180,7 +1181,7 @@ function DoctorCard({ item, searchTerm, isAuthenticated, userRole }) {
         </div>
         <div className="dc-head-text">
           <div className="dc-eyebrow">
-            <span className="dc-type">{SOURCE_META.doctor.label}</span>
+            <span className="dc-type">{t(SOURCE_META.doctor.key)}</span>
             {item.specialization && (
               <span className="dc-spec">{item.specialization}</span>
             )}

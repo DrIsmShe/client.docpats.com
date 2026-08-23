@@ -236,5 +236,11 @@
   },
   "all_loaded": "Tüm içerikler gösterildi",
   "loading_more": "Daha fazla yükleniyor…",
-  "retry": "Yeniden dene"
+  "retry": "Yeniden dene",
+  "sourceType": {
+    "ai": "Haber",
+    "scientific": "Bilimsel makale",
+    "article": "Doktor yayını",
+    "doctor": "Doktor"
+  }
 }

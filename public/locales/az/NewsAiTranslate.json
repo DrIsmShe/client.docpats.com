@@ -236,5 +236,11 @@
   },
   "all_loaded": "Bütün materiallar göstərilib",
   "loading_more": "Daha çox yüklənir…",
-  "retry": "Təkrar cəhd et"
+  "retry": "Təkrar cəhd et",
+  "sourceType": {
+    "ai": "Xəbər",
+    "scientific": "Elmi məqalə",
+    "article": "Həkim nəşri",
+    "doctor": "Həkim"
+  }
 }
