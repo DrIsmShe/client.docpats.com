@@ -233,3 +233,41 @@
   border-radius: 8px;
   cursor: pointer;
 }
+
+/* Разделы страницы: отзывы о клинике / врачам / комментарии. */
+.rev-sections { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.rev-section {
+  border: 1px solid #e7e5e4;
+  background: #fff;
+  color: #44403c;
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.rev-section:hover { border-color: #0f766e; color: #0f766e; }
+.rev-section.is-active { background: #0f766e; border-color: #0f766e; color: #fff; }
+
+/* Пояснение, почему эти списки только для чтения. */
+.rev-note {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #78716c;
+  background: #faf8f4;
+  border: 1px solid #efece6;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin: 0 0 16px;
+}
+
+.rev-target { font-size: 13px; font-weight: 600; color: #57534e; }
+.rev-reply {
+  margin-top: 8px;
+  padding-inline-start: 12px;
+  border-inline-start: 3px solid #0f766e;
+  font-size: 14px;
+  color: #57534e;
+}

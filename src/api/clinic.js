@@ -2600,6 +2600,12 @@ export const getPublicArticleDetail = (slug, pageSlug, articleSlug) =>
 // Врач и публикация ВНУТРИ витрины. Те же данные, что на страницах платформы,
 // но по адресу клиники: посетитель не уходит с её сайта, а адрес остаётся
 // настоящим — им можно поделиться и он индексируется.
+// Отзывы врачам и комментарии, видные на публичных страницах клиники.
+// Только чтение: сущности принадлежат врачу и общему обсуждению, а не клинике.
+export const getClinicPublicFeedback = (clinicId) =>
+  axios
+    .get(`/api/v1/clinic/clinics/${clinicId}/public-feedback`)
+    .then((r) => r.data); // → { doctorReviews, comments }
 export const getPublicClinicDoctor = (slug, doctorId) =>
   axios
     .get(`/api/v1/public/clinics/${slug}/doctors/${doctorId}`)

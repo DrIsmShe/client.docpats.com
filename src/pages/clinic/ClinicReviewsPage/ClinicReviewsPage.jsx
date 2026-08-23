@@ -15,8 +15,22 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Link, useOutletContext, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useClinicZone } from "../../../lib/useClinicZone";
-import { listClinicReviews, moderateClinicReview } from "../../../api/clinic";
+import {
+  listClinicReviews,
+  moderateClinicReview,
+  getClinicPublicFeedback,
+} from "../../../api/clinic";
 import "./clinicReviewsPage.css";
+
+// Три раздела страницы. Первый — отзывы О КЛИНИКЕ, её собственная сущность с
+// модерацией. Два других — то, что показано на витрине под врачом и под
+// статьёй: отзыв врачу и комментарий. Они принадлежат врачу и общему
+// обсуждению, поэтому здесь только чтение — прятать их клиника не вправе.
+const SECTIONS = [
+  { key: "clinic", label: "О клинике" },
+  { key: "doctors", label: "Врачам" },
+  { key: "comments", label: "Комментарии" },
+];
 
 const STATUS_TABS = [
   { key: "pending", label: "\u041D\u0430 \u043C\u043E\u0434\u0435\u0440\u0430\u0446\u0438\u0438" },
@@ -57,6 +71,10 @@ export default function ClinicReviewsPage() {
   const navigate = useNavigate();
   const { dashboardPath, loginPath } = useClinicZone();
 
+  const [section, setSection] = useState("clinic");
+  const [feedback, setFeedback] = useState(null);
+  const [feedbackLoading, setFeedbackLoading] = useState(false);
+  const [feedbackError, setFeedbackError] = useState(null);
   const [statusTab, setStatusTab] = useState("pending");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -145,6 +163,56 @@ export default function ClinicReviewsPage() {
     }
   }
 
+  const loadFeedback = useCallback(async () => {
+    if (!clinicId) return;
+    setFeedbackLoading(true);
+    setFeedbackError(null);
+    try {
+      setFeedback(await getClinicPublicFeedback(clinicId));
+    } catch (err) {
+      setFeedbackError(
+        err?.response?.data?.error || err.message || "Не удалось загрузить",
+      );
+    } finally {
+      setFeedbackLoading(false);
+    }
+  }, [clinicId]);
+
+  // Запрос уходит при первом открытии раздела, а не при загрузке страницы:
+  // большинство заходит сюда ради модерации отзывов о клинике.
+  useEffect(() => {
+    if (section === "clinic" || feedback || feedbackLoading) return;
+    loadFeedback();
+  }, [section, feedback, feedbackLoading, loadFeedback]);
+
+  const renderFeedbackList = (items, renderCard) => {
+    if (feedbackError) {
+      return (
+        <div className="rev-error">
+          <p>{feedbackError}</p>
+          <button onClick={loadFeedback} type="button">
+            {t("common.retry", { defaultValue: "Повторить" })}
+          </button>
+        </div>
+      );
+    }
+    if (feedbackLoading || !feedback) {
+      return (
+        <div className="rev-loading">
+          <div className="rev-spinner" />
+        </div>
+      );
+    }
+    if (!items.length) {
+      return (
+        <div className="rev-empty">
+          {t("reviews.emptyFeedback", { defaultValue: "Пока пусто" })}
+        </div>
+      );
+    }
+    return <div className="rev-list">{items.map(renderCard)}</div>;
+  };
+
   return (
     <div className="rev-page">
       <div className="rev-page-header">
@@ -157,6 +225,20 @@ export default function ClinicReviewsPage() {
         </p>
       </div>
 
+      <div className="rev-sections">
+        {SECTIONS.map((sec) => (
+          <button
+            key={sec.key}
+            type="button"
+            className={"rev-section " + (section === sec.key ? "is-active" : "")}
+            onClick={() => setSection(sec.key)}
+          >
+            {sec.label}
+          </button>
+        ))}
+      </div>
+
+      {section === "clinic" && (
       <div className="rev-tabs">
         {STATUS_TABS.map((tab) => (
           <button
@@ -170,8 +252,74 @@ export default function ClinicReviewsPage() {
           </button>
         ))}
       </div>
+      )}
 
-      {error ? (
+      {section === "doctors" ? (
+        <>
+          <p className="rev-note">
+            {t("reviews.doctorsNote", {
+              defaultValue:
+                "Отзывы пациентов врачам. Показаны на страницах врачей вашего сайта. Отзыв оставлен врачу и живёт на его профиле — изменить его из кабинета клиники нельзя.",
+            })}
+          </p>
+          {renderFeedbackList(feedback?.doctorReviews || [], (r) => (
+            <div className="rev-card" key={r.id}>
+              <div className="rev-card-top">
+                <Stars rating={r.rating} />
+                <span className="rev-target">{r.doctorName}</span>
+              </div>
+              {r.text ? (
+                <p className="rev-text">{r.text}</p>
+              ) : (
+                <p className="rev-text rev-text-empty">
+                  {t("reviews.noText", { defaultValue: "Без текста" })}
+                </p>
+              )}
+              {r.reply && (
+                <div className="rev-reply">
+                  {t("reviews.doctorReply", { defaultValue: "Ответ врача: " })}
+                  {r.reply}
+                </div>
+              )}
+              <div className="rev-card-meta">
+                {r.authorName ? `${r.authorName} · ` : ""}
+                {formatDate(r.createdAt)}
+              </div>
+            </div>
+          ))}
+        </>
+      ) : section === "comments" ? (
+        <>
+          <p className="rev-note">
+            {t("reviews.commentsNote", {
+              defaultValue:
+                "Комментарии к вашим врачам и их публикациям. Часть общего обсуждения на платформе — из кабинета клиники они не редактируются.",
+            })}
+          </p>
+          {renderFeedbackList(feedback?.comments || [], (c) => (
+            <div className="rev-card" key={c.id}>
+              <div className="rev-card-top">
+                <span className="rev-target">
+                  {c.targetType === "Doctor"
+                    ? t("reviews.onDoctor", { defaultValue: "Врач: " })
+                    : t("reviews.onArticle", { defaultValue: "Статья: " })}
+                  {c.targetTitle}
+                </span>
+                {c.isReply && (
+                  <span className="rev-badge">
+                    {t("reviews.isReply", { defaultValue: "ответ" })}
+                  </span>
+                )}
+              </div>
+              <p className="rev-text">{c.content}</p>
+              <div className="rev-card-meta">
+                {c.authorName ? `${c.authorName} · ` : ""}
+                {formatDate(c.createdAt)}
+              </div>
+            </div>
+          ))}
+        </>
+      ) : error ? (
         <div className="rev-error">
           <p>{error}</p>
           <button onClick={() => load(statusTab)} type="button">
