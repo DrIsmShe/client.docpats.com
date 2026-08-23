@@ -238,6 +238,7 @@ export default function ClinicCustomPagesPage() {
     if (
       !window.confirm(
         t("publicPage.confirmDeletePage", {
+          title: page.title,
           defaultValue: `Удалить страницу «${page.title}»?`,
         }),
       )

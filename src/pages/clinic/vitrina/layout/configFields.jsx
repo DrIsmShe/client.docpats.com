@@ -7,6 +7,7 @@
 
 import React from "react";
 
+import { useTranslation } from "react-i18next";
 export const CONFIG_CSS = `
 .vt-cf { display: flex; flex-direction: column; gap: 12px; padding: 12px 0 4px; }
 .vt-cf-field { display: flex; flex-direction: column; gap: 4px; }
@@ -120,6 +121,7 @@ export const ICON_SET = [
  * Хранит строку-эмодзи. Пусто = нет иконки.
  */
 export function IconPicker({ label, value, onChange }) {
+  const { t } = useTranslation("clinic");
   const inSet = !value || ICON_SET.includes(value);
   return (
     <div className="vt-cf-field">
@@ -141,7 +143,7 @@ export function IconPicker({ label, value, onChange }) {
           type="button"
           className={"vt-cf-ic vt-cf-ic-clear" + (!value ? " vt-cf-ic-on" : "")}
           onClick={() => onChange("")}
-          title="Без иконки"
+          title={t("theme.noIcon")}
         >
           ✕
         </button>
@@ -151,7 +153,7 @@ export function IconPicker({ label, value, onChange }) {
           type="text"
           maxLength={4}
           value={inSet ? "" : value}
-          placeholder="своё"
+          placeholder={t("theme.custom")}
           onChange={(e) => onChange(e.target.value)}
         />
       </div>
@@ -174,6 +176,7 @@ export const BG_PRESETS = [
  * Выбор цвета в палитре ставит bg:"custom".
  */
 export function BgPicker({ label, bg, bgColor, onChange }) {
+  const { t } = useTranslation("clinic");
   const cur = bg || "theme";
   const isCustom = cur === "custom";
   return (
@@ -203,7 +206,7 @@ export function BgPicker({ label, bg, bgColor, onChange }) {
             onChange={(e) =>
               onChange({ bg: "custom", bgColor: e.target.value })
             }
-            title="Выбрать цвет из палитры"
+            title={t("theme.pickColor")}
           />
         </span>
         <input
@@ -218,7 +221,7 @@ export function BgPicker({ label, bg, bgColor, onChange }) {
             type="button"
             className="vt-cf-bgreset"
             onClick={() => onChange({ bg: "theme", bgColor })}
-            title="Сбросить к теме"
+            title={t("theme.resetToTheme")}
           >
             ✕
           </button>
@@ -292,6 +295,7 @@ export function ListEditor({
   renderFields,
   max = 20,
 }) {
+  const { t } = useTranslation("clinic");
   const update = (i, next) =>
     onChange(items.map((it, idx) => (idx === i ? next : it)));
   const remove = (i) => onChange(items.filter((_, idx) => idx !== i));
@@ -320,7 +324,7 @@ export function ListEditor({
               className="vt-cf-iconbtn"
               onClick={() => move(i, -1)}
               disabled={i === 0}
-              title="Вверх"
+              title={t("common.moveUp")}
             >
               ↑
             </button>
@@ -329,7 +333,7 @@ export function ListEditor({
               className="vt-cf-iconbtn"
               onClick={() => move(i, 1)}
               disabled={i === items.length - 1}
-              title="Вниз"
+              title={t("common.moveDown")}
             >
               ↓
             </button>
@@ -337,7 +341,7 @@ export function ListEditor({
               type="button"
               className="vt-cf-iconbtn"
               onClick={() => remove(i)}
-              title="Удалить"
+              title={t("common.delete")}
             >
               ×
             </button>

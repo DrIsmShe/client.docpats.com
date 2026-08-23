@@ -246,7 +246,7 @@ export default function ClinicAnnouncementsPage() {
                   {!a.viewerHasRead && a.status !== "archived" && (
                     <span
                       className="clinic-ann-unread-dot"
-                      title="РќРµ РїСЂРѕС‡РёС‚Р°РЅРѕ"
+                      title={t("announcements.unread")}
                     />
                   )}
                   {a.status !== "archived" ? (

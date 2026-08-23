@@ -13,6 +13,7 @@
 // для каждого врача, — иначе каждый новый сотрудник набивал бы их заново.
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useOutletContext } from "react-router-dom";
 import {
   listExaminationTemplates,
@@ -37,6 +38,7 @@ const SCOPES = [
 ];
 
 export default function ClinicExamTemplatesPage() {
+  const { t } = useTranslation("clinic");
   const layoutContext = useOutletContext();
 
   const [scope, setScope] = useState("examination");
@@ -138,7 +140,7 @@ export default function ClinicExamTemplatesPage() {
     <div className="exam-tpl-page">
       <header className="exam-tpl-head">
         <div>
-          <h1 className="exam-tpl-title">Шаблоны протоколов</h1>
+          <h1 className="exam-tpl-title">{t("examTemplates.title")}</h1>
           <p className="exam-tpl-subtitle">
             Готовые формулировки для заполнения исследований и записей приёма.
             Врач выбирает их кнопкой «Шаблоны» рядом с полем. Набор общий для
@@ -151,7 +153,7 @@ export default function ClinicExamTemplatesPage() {
             className="staff-page-btn-primary"
             onClick={() => setEditing({})}
           >
-            Добавить шаблон
+            {t("examTemplates.add")}
           </button>
         )}
       </header>
@@ -176,7 +178,7 @@ export default function ClinicExamTemplatesPage() {
             не бывает. */}
         {!isEncounter && (
           <label className="exam-tpl-filter">
-            <span>Исследование</span>
+            <span>{t("examTemplates.study")}</span>
             <select
               value={modality}
               onChange={(e) => setModality(e.target.value)}
@@ -202,12 +204,12 @@ export default function ClinicExamTemplatesPage() {
         </label>
 
         <label className="exam-tpl-filter exam-tpl-filter--grow">
-          <span>Поиск</span>
+          <span>{t("common.search")}</span>
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="По заголовку или тексту"
+            placeholder={t("examTemplates.searchPlaceholder")}
           />
         </label>
       </div>
@@ -215,7 +217,7 @@ export default function ClinicExamTemplatesPage() {
       {error && <div className="exam-tpl-error">{error}</div>}
 
       {loading ? (
-        <div className="exam-tpl-state">Загрузка…</div>
+        <div className="exam-tpl-state">{t("common.loading")}</div>
       ) : filtered.length === 0 ? (
         <div className="exam-tpl-state">
           {items.length === 0
@@ -241,7 +243,7 @@ export default function ClinicExamTemplatesPage() {
                     className="staff-page-btn-secondary"
                     onClick={() => setEditing(tpl)}
                   >
-                    Изменить
+                    {t("common.edit")}
                   </button>
                   {canDelete && (
                     <button
@@ -249,7 +251,7 @@ export default function ClinicExamTemplatesPage() {
                       className="exam-tpl-danger"
                       onClick={() => handleDelete(tpl)}
                     >
-                      Удалить
+                      {t("common.delete")}
                     </button>
                   )}
                 </div>

@@ -45,5 +45,7 @@
       "changeScopes": "Изменить доступ",
       "revoke": "Отозвать доступ"
     }
-  }
+  },
+  "kindScientific": "Научная",
+  "kindOpinion": "Мнение"
 }

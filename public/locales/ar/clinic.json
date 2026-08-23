@@ -120,7 +120,8 @@
         "departmentRequired": "اختر قسمًا",
         "generic": "تعذّر نشر الإعلان"
       }
-    }
+    },
+    "unread": "غير مقروء"
   },
   "patientTelemed": {
     "eyebrow": "بوابة المريض",
@@ -653,7 +654,8 @@
       "phone": "الهاتف",
       "email": "البريد الإلكتروني",
       "dateOfBirth": "تاريخ الميلاد",
-      "gender": "الجنس"
+      "gender": "الجنس",
+      "departmentNone": "بدون قسم"
     },
     "gender": {
       "male": "ذكر",
@@ -673,6 +675,60 @@
       "linkAlreadyLinked": "المريض مرتبط بالفعل بمستخدم آخر. ألغِ الربط أولًا.",
       "linkFailed": "تعذّر الربط بالمستخدم",
       "unlinkFailed": "تعذّر إلغاء الربط"
+    },
+    "consentRequest": {
+      "notLinkedHint": "اربط السجل أولًا بحساب DocPats",
+      "openButton": "طلب الوصول",
+      "successToast": "✓ أُرسل الطلب إلى المريض"
+    },
+    "card": {
+      "backTitle": "ما الذي ستحصل عليه بعد التفعيل",
+      "benefits": {
+        "ai": {
+          "text": "تفسير نتائج الفحوصات، وشرح التشخيص، والإجابة عن الأسئلة المتعلقة بالأعراض.",
+          "title": "مساعد الذكاء الاصطناعي"
+        },
+        "history": {
+          "text": "كل المواعيد والوصفات والطلبات وخلاصات الأطباء في سجل مرضي واحد.",
+          "title": "التاريخ في مكان واحد"
+        },
+        "online": {
+          "text": "اطرح أسئلتك على الأطباء في محادثة آمنة — دون الحاجة إلى موعد.",
+          "title": "الاستشارات عبر الإنترنت"
+        },
+        "results": {
+          "text": "تظهر التحاليل والصور وخلاصات الأطباء في الحساب الشخصي تلقائيًا — من هذه العيادة ومن أي عيادة DocPats أخرى.",
+          "title": "نتائج الفحوصات"
+        },
+        "scheduling": {
+          "text": "احجز موعدًا مع الطبيب عبر التطبيق واحصل على تذكير قبل الزيارة بيوم.",
+          "title": "الحجز والتذكيرات"
+        }
+      },
+      "copied": "✓ تم النسخ",
+      "copy": "📋 نسخ البيانات",
+      "copyEmail": "البريد الإلكتروني",
+      "copyError": "تعذّر النسخ",
+      "copyLogin": "تسجيل الدخول",
+      "copyPassword": "كلمة المرور",
+      "done": "تم",
+      "emailSentNotice": "أُرسلت البطاقة إلى {{email}}. سيتلقى المريض نسخة من بيانات الدخول بالبريد.",
+      "frontType": "بطاقة المريض",
+      "fullName": "الاسم الكامل",
+      "howToActivate": "كيفية التفعيل",
+      "print": "🖨️ طباعة",
+      "qrHint": "امسح للدخول",
+      "registered": "مسجَّل",
+      "step1": "افتح docpats.com أو امسح رمز الاستجابة السريعة",
+      "step2": "سجّل الدخول بالبريد الإلكتروني المؤقت وكلمة المرور من هذه البطاقة",
+      "step3": "أدخل بريدك الإلكتروني الدائم واختر كلمة مرور",
+      "step4": "تم — الوصول إلى السجل الكامل مفتوح",
+      "subtitle": "اطبعها وسلّمها للمريض. بعد إغلاق هذه النافذة لن تظهر كلمة المرور في النظام مجددًا — احتفظ بالبطاقة.",
+      "tagline": "صحتك في مكان واحد",
+      "title": "بطاقة المريض — سلّمها للمريض",
+      "tmpEmail": "بريد إلكتروني مؤقت",
+      "tmpPassword": "كلمة مرور مؤقتة",
+      "validUntil": "فعّل قبل"
     }
   },
   "common": {
@@ -696,7 +752,14 @@
     "logout": "تسجيل الخروج",
     "settings": "الإعدادات",
     "error": "حدث خطأ ما",
-    "errorReload": "إعادة التحميل"
+    "errorReload": "إعادة التحميل",
+    "close": "إغلاق",
+    "home": "الرئيسية",
+    "loadError": "خطأ في التحميل.",
+    "moveDown": "لأسفل",
+    "moveUp": "لأعلى",
+    "search": "بحث",
+    "nothingFound": "لم يتم العثور على شيء"
   },
   "publicPage": {
     "title": "الصفحة العامة",
@@ -757,7 +820,158 @@
       "2x1": "2×1 (أعرض)",
       "1x2": "1×2 (أطول)",
       "2x2": "2×2 (كبيرة)"
-    }
+    },
+    "addArticle": "+ مقالة",
+    "artAuthors": "المؤلفون",
+    "artBody": "النص",
+    "artCover": "الغلاف",
+    "artDisabled": "محظور",
+    "artExcerpt": "الملخص",
+    "artGallery": "معرض المقالة",
+    "artLinks": "روابط / مصادر",
+    "artMetaDesc": "الوصف التعريفي",
+    "artMetaKeywords": "الكلمات المفتاحية",
+    "artTags": "الوسوم",
+    "artTitle": "العنوان",
+    "articlesOf": "مقالات الفئة",
+    "csvHint": "افصل بفواصل.",
+    "editArticle": "تحرير المقالة",
+    "loadError": "خطأ في التحميل.",
+    "newArticle": "مقالة جديدة",
+    "noArticles": "لا توجد مقالات بعد. أضف الأولى.",
+    "openPage": "فتح",
+    "photoCaption": "التسمية",
+    "photoDescription": "الوصف (يظهر عند فتح الصورة)",
+    "publish": "نشر",
+    "statusDraft": "مسودة",
+    "statusPublished": "منشورة",
+    "unpublish": "إرجاع إلى مسودة",
+    "articlesBtn": "المقالات",
+    "createError": "تعذّر إنشاء الصفحة.",
+    "createPage": "إنشاء",
+    "editingPage": "تحرير",
+    "galleryBtn": "المعرض",
+    "newPageTitle": "عنوان الصفحة الجديدة",
+    "noPages": "لا توجد صفحات بعد. أنشئ الأولى أعلاه.",
+    "noParent": "— الفئة الجذرية —",
+    "parentCategory": "الفئة الرئيسية",
+    "subOf": "فئة فرعية:",
+    "addPhoto": "إضافة صور",
+    "confirmDeletePhoto": "حذف هذه الصورة؟",
+    "galleryOf": "معرض الفئة",
+    "noPhotos": "لا توجد صور بعد. أضف الأولى.",
+    "blockConfig": "تهيئة",
+    "blockHide": "إخفاء",
+    "blockShow": "عرض",
+    "layoutHint": "اسحب الكتل لتغيير الترتيب. ⚙ للمحتوى، والعين للإظهار أو الإخفاء.",
+    "themeLoadError": "تعذّر تحميل السمات.",
+    "themePreview": "معاينة",
+    "pageEditorHint": "أضف الكتل من اللوحة واسحبها للترتيب. تُؤخذ القائمة والتذييل من الواجهة تلقائيًا.",
+    "pageEmptyBlocks": "لا توجد كتل بعد — أضفها من اللوحة أعلاه.",
+    "alignCenter": "توسيط",
+    "alignLeft": "يسار",
+    "bhHigh": "مرتفع",
+    "bhLow": "منخفض",
+    "bhMid": "متوسط",
+    "btnGhost": "بإطار",
+    "btnHref": "إلى أين يقود",
+    "btnLabel": "النص",
+    "btnPrimary": "الأساسية",
+    "btnStyle": "الأسلوب",
+    "cfgAccent": "تمييز",
+    "cfgAddAdvantage": "+ ميزة",
+    "cfgAddBtn": "+ زر",
+    "cfgAddFaq": "+ سؤال",
+    "cfgAddNavItem": "+ عنصر قائمة",
+    "cfgAddStat": "+ مؤشر",
+    "cfgAnswer": "الإجابة",
+    "cfgArticlesTitle": "عنوان القسم",
+    "cfgBannerH": "ارتفاع اللافتة",
+    "cfgBlockBg": "خلفية الكتلة",
+    "cfgDeptHint": "تُؤخذ الأقسام من لوحة الإدارة. هنا يمكنك إثراء كل بطاقة: نص إضافي، أيقونة، تمييز، حجم.",
+    "cfgDeptNote": "نص إضافي",
+    "cfgFooterNote": "نص التذييل",
+    "cfgGalleryTitle": "عنوان القسم",
+    "cfgHours": "ساعات العمل",
+    "cfgIcon": "أيقونة",
+    "cfgLabel": "التسمية",
+    "cfgLeadFormTitle": "عنوان نموذج الطلب",
+    "cfgLightText": "نص فاتح (لخلفية داكنة)",
+    "cfgNavHint": "تُضاف بعد العناصر التلقائية (أقسام الموقع).",
+    "cfgNavItems": "عناصر قائمة مخصّصة",
+    "cfgNavReorderHint": "غيّر الترتيب بالأسهم، وأظهر أو أخفِ بمربع الاختيار.",
+    "cfgNavVisible": "عناصر القائمة (أقسام الموقع)",
+    "cfgNoDepts": "لا توجد أقسام. أضفها من لوحة الإدارة (الأقسام).",
+    "cfgPageAlign": "المحاذاة",
+    "cfgPageBanner": "لافتة الصفحة",
+    "cfgPageBg": "خلفية الصفحة",
+    "cfgPageButtons": "أزرار الترويسة",
+    "cfgPageCta": "كتلة الدعوة للإجراء (CTA)",
+    "cfgPageDividers": "فواصل بين الكتل",
+    "cfgPageExtras": "كتل إضافية في الأسفل",
+    "cfgPageH1": "عنوان الصفحة",
+    "cfgPageHint": "يظهر عندما يُفتح القسم كصفحة مستقلة (من القائمة).",
+    "cfgPageIntro": "نص تمهيدي (فوق الكتلة)",
+    "cfgPageOutro": "نص أسفل الصفحة",
+    "cfgPagePad": "التباعد",
+    "cfgPageTitle": "تنسيق الصفحة المستقلة",
+    "cfgPageWidth": "عرض المحتوى",
+    "cfgQuestion": "سؤال",
+    "cfgSeo": "تحسين الصفحة للبحث",
+    "cfgShowDoctorsStat": "إظهار عدد الأطباء",
+    "cfgShowLeadForm": "إظهار نموذج الطلب",
+    "cfgSlogan": "الشعار",
+    "cfgSloganPh": "الصحة تبدأ هنا",
+    "cfgSpan": "الحجم",
+    "cfgSubtitle": "عنوان فرعي",
+    "cfgText": "النص",
+    "cfgTitle": "العنوان",
+    "cfgTitleOnBanner": "العنوان فوق اللافتة",
+    "cfgUpload": "رفع صورة",
+    "cfgValue": "القيمة",
+    "ctaBtn": "نص الزر",
+    "ctaHref": "أو رابط (بدل الهاتف)",
+    "ctaPhone": "رقم الهاتف",
+    "ctaTitle": "عنوان الدعوة للإجراء",
+    "linkExternal": "رابط خارجي / هاتف",
+    "linkNone": "— لم يُحدَّد —",
+    "linkUrl": "رابط أو tel:",
+    "padCompact": "مضغوط",
+    "padNormal": "عادي",
+    "padRoomy": "واسع",
+    "seoDesc": "الوصف (meta description)",
+    "seoTitle": "العنوان (التبويب/البحث)",
+    "widthNarrow": "ضيّق",
+    "widthNormal": "عادي",
+    "widthWide": "عريض",
+    "coverError": "تعذّر رفع الغلاف",
+    "coverReplace": "استبدال",
+    "coverUpload": "رفع",
+    "fieldCallHours": "ساعات العمل",
+    "fieldCallPhone": "هاتف الحجز",
+    "fieldCover": "الغلاف (hero)",
+    "fieldCoverHint": "لازم لنمطي «صورة» و«مقسّم». يُحفظ فور الرفع.",
+    "fieldFaq": "الأسئلة والأجوبة",
+    "fieldPageBg": "خلفية الصفحة",
+    "fieldPageBgHint": "خلفية الصفحة كاملة. تعمل عند اختيار «خلفية الصفحة ← صورة» في التنسيق. تُحفظ فور الرفع.",
+    "fieldSlogan": "الشعار",
+    "fieldSloganPh": "الصحة تبدأ هنا",
+    "pageBgError": "تعذّر رفع الخلفية",
+    "heroHeightAuto": "تلقائي",
+    "heroHeightLabel": "ارتفاع الغلاف",
+    "pageBgDimLabel": "سطوع الصورة",
+    "pageBgDimMax": "الصورة كاملة",
+    "pageBgDimMin": "معتَّم",
+    "pageBgNeedPhoto": "ارفع صورة الخلفية في «محتوى العيادة» وإلا بقيت الخلفية عادية.",
+    "themeCard": "البطاقات",
+    "themeContentWidth": "عرض المحتوى",
+    "themeFont": "الخطوط",
+    "themeHero": "الغلاف (hero)",
+    "themePageBg": "خلفية الصفحة",
+    "themePalette": "لوحة الألوان",
+    "themePresets": "سمات جاهزة",
+    "confirmDeleteArticle": "حذف المقالة «{{title}}»؟",
+    "confirmDeletePage": "حذف الصفحة «{{title}}»؟"
   },
   "layout": {
     "brandName": "عيادة DocPats",
@@ -838,8 +1052,66 @@
         "ctScanResults": "نتائج التصوير المقطعي",
         "mriResults": "نتائج الرنين المغناطيسي",
         "ultrasoundResults": "نتائج الموجات فوق الصوتية",
-        "laboratoryTestResults": "النتائج المخبرية"
-      }
+        "laboratoryTestResults": "النتائج المخبرية",
+        "diagnosisText": "التشخيص (نص بلغتك)"
+      },
+      "amendChangesLegend": "التغييرات",
+      "amendTitle": "تصحيح السجل",
+      "applyAmendButton": "تطبيق التصحيح",
+      "errors": {
+        "amendFailed": "تعذّر تطبيق التصحيح",
+        "deleteFailed": "تعذّر حذف السجل",
+        "signFailed": "تعذّر توقيع السجل",
+        "signNeedsDx": "املأ التشخيص الأساسي قبل التوقيع (Edit ← رمز ICD + نص).",
+        "cannotEditNonDraft": "لم يعد بالإمكان تحرير هذا السجل كمسودة — استخدم «تصحيح».",
+        "codeRequired": "أدخل رمز ICD-10",
+        "dxTextRequired": "أدخل نص التشخيص",
+        "reasonTooShort": "اذكر سبب التصحيح ({{min}} حرفًا على الأقل)."
+      },
+      "reasonLabel": "ما الذي يتغيّر ولماذا",
+      "reasonLegend": "سبب التصحيح",
+      "reasonPlaceholder": "مثال: تم تنقيح التوصيات بعد نتائج تحاليل جديدة",
+      "amendButton": "تصحيح",
+      "confirmDelete": "حذف سجل هذه الزيارة؟ لا يمكن التراجع عن ذلك.",
+      "createdAt": "أُنشئت",
+      "deleteButton": "حذف",
+      "detailTitle": "سجل الزيارة",
+      "editButton": "تعديل",
+      "historyTitle": "سجل التغييرات",
+      "mainDiagnosisTitle": "التشخيص الأساسي (ICD-10)",
+      "noContent": "النص السريري غير مملوء.",
+      "noDiagnosis": "لم يتم تحديد التشخيص",
+      "signButton": "توقيع",
+      "signedAt": "موقّعة",
+      "updatedAt": "مُعدّلة",
+      "clinicalContentTitle": "المعلومات السريرية",
+      "createTitle": "سجل زيارة جديد",
+      "editDraftTitle": "تحرير المسودة",
+      "hints": {
+        "diagnosisText": "مُعبأ من ICD-10. ترجمه أو أعد صياغته بلغتك."
+      },
+      "saveDraftButton": "حفظ كمسودة",
+      "saveSignedButton": "توقيع وحفظ",
+      "studyResultsTitle": "نتائج الفحوصات",
+      "templates": {
+        "pick": "القوالب"
+      },
+      "addButton": "+ سجل جديد",
+      "addFirstButton": "أنشئ السجل الأول",
+      "colClinic": "العيادة",
+      "colDate": "التاريخ",
+      "colDiagnosis": "التشخيص",
+      "colStatus": "الحالة",
+      "emptyText": "لا توجد سجلات زيارات بعد.",
+      "listTitle": "كل السجلات",
+      "loadError": "تعذّر تحميل السجلات المرضية",
+      "status": {
+        "amended": "مُصحَّحة",
+        "draft": "مسودة",
+        "preliminary": "مبدئي",
+        "signed": "موقّعة"
+      },
+      "reasonHint": "{{min}} حرفًا على الأقل. سيُحفظ في سجل التغييرات."
     },
     "prescriptions": {
       "listTitle": "الوصفات الطبية",
@@ -1022,6 +1294,67 @@
         "Gastroscopy": "تنظير المعدة",
         "Colonoscopy": "تنظير القولون",
         "CapsuleEndoscopy": "تنظير الكبسولة"
+      },
+      "confirmDelete": "حذف هذه الدراسة؟ سيُحذف سجل الدراسة، وتبقى ملفات الصور في التخزين السحابي (يمكن مسحها لاحقًا).",
+      "createdAt": "تم الرفع",
+      "deleteButton": "حذف",
+      "editButton": "تعديل",
+      "errors": {
+        "deleteFailed": "تعذّر حذف الدراسة",
+        "studyTypeRequired": "اختر نوع الدراسة",
+        "uploadFailed": "تعذّر تحميل الدراسة",
+        "loadFailed": "تعذّر تحميل الدراسات",
+        "fileTooLarge": "الملف «{{name}}» أكبر من {{max}} ميغابايت.",
+        "tooManyFiles": "يمكن إرفاق {{max}} ملفات كحد أقصى."
+      },
+      "fields": {
+        "diagnosis": "الانطباع",
+        "doctorNotes": "ملاحظات الطبيب",
+        "report": "البروتوكول",
+        "contrastUsed": "مع تباين",
+        "validatedByDoctor": "مؤكَّد من الطبيب",
+        "date": "تاريخ الدراسة",
+        "nameOfExam": "اسم الفحص",
+        "radiationDose": "جرعة الإشعاع",
+        "recommendation": "التوصيات",
+        "studyType": "نوع الفحص"
+      },
+      "noImages": "لا توجد صور مرفقة بهذه الدراسة.",
+      "noReport": "لم يُملأ الوصف بعد.",
+      "updatedAt": "تم التغيير",
+      "validatedFull": "مؤكَّد من الطبيب",
+      "withContrast": "مع تباين",
+      "editNote": "لا يمكن تغيير الصور بعد الرفع. لاستبدال الملفات احذف الدراسة وأنشئ أخرى.",
+      "editTitle": "تعديل الدراسة",
+      "flagsTitle": "المعايير",
+      "reportTitle": "بروتوكول الدراسة",
+      "createTitle": "دراسة جديدة",
+      "filesTitle": "الصور والملفات",
+      "pickFilesButton": "اختر الملفات…",
+      "placeholders": {
+        "report": "وصف الصور والتغيّرات المكتشفة…"
+      },
+      "studyInfoTitle": "بحث",
+      "templates": {
+        "pick": "القوالب"
+      },
+      "uploadButton": "رفع",
+      "uploading": "جارٍ التحميل…",
+      "addButton": "+ دراسة جديدة",
+      "addFirstButton": "ارفع الدراسة الأولى",
+      "emptyText": "لا توجد دراسات مرفوعة بعد.",
+      "listTitle": "الطبية",
+      "validatedShort": "تم التأكيد",
+      "viewImage": "فتح الصورة {{n}}"
+    },
+    "sectionTitle": "السجل الطبي",
+    "subRecord": {
+      "confirmDelete": "حذف هذا السجل؟",
+      "editTitle": "تحرير",
+      "errors": {
+        "deleteFailed": "تعذر الحذف",
+        "loadFailed": "تعذّر تحميل السجلات",
+        "required": "املأ هذا الحقل"
       }
     }
   },
@@ -1332,7 +1665,8 @@
       "tooManyRequests": "طلبات كثيرة جدًا. يرجى الانتظار دقيقة.",
       "tooManyAttempts": "محاولات فاشلة كثيرة جدًا. يرجى طلب رمز جديد.",
       "fixErrors": "يرجى تصحيح الأخطاء أدناه",
-      "generic": "تعذّر إكمال التسجيل. يرجى المحاولة مرة أخرى."
+      "generic": "تعذّر إكمال التسجيل. يرجى المحاولة مرة أخرى.",
+      "alreadyMember": "أنت بالفعل عضو في هذه العيادة."
     },
     "errorStates": {
       "expired": {
@@ -1471,7 +1805,8 @@
       "reviews": "المراجعات",
       "analytics": "التحليلات",
       "leads": "الطلبات"
-    }
+    },
+    "noActions": "ستظهر إجراءات دورك في التحديثات القادمة."
   },
   "schedule": {
     "title": "جدول الطبيب",
@@ -1835,7 +2170,8 @@
         "fix": "يرجى تصحيح الأخطاء في النموذج",
         "generic": "تعذّر إنشاء الاستشارة"
       }
-    }
+    },
+    "videoCall": "مؤتمر مرئي"
   },
   "telemed": {
     "back": "← لوحة التحكم",
@@ -1940,7 +2276,15 @@
       "in_progress": "قيد العمل",
       "closed": "مغلقة",
       "all": "الكل"
-    }
+    },
+    "back": "← لوحة التحكم",
+    "empty": "لا توجد طلبات",
+    "subtitle": "طلبات من موقع العيادة",
+    "title": "الطلبات",
+    "toClosed": "إغلاق",
+    "toInProgress": "بدء العمل",
+    "toNew": "إعادة إلى الجديدة",
+    "updateFailed": "تعذّر تحديث الحالة"
   },
   "analytics": {
     "range": {
@@ -1959,7 +2303,19 @@
       "completed": "مكتمل",
       "cancelled": "مُلغى",
       "no_show": "لم يحضر"
-    }
+    },
+    "back": "← لوحة التحكم",
+    "byStatus": "المواعيد حسب الحالة",
+    "dailyTrend": "التغيّر اليومي",
+    "doctorLoad": "عبء عمل الأطباء",
+    "newPatients": "مرضى جدد",
+    "noAccessBody": "لا تملك صلاحية عرض التحليلات",
+    "noAccessTitle": "غير مصرّح",
+    "noData": "لا توجد بيانات لهذه الفترة",
+    "noShowRate": "نسبة عدم الحضور",
+    "subtitle": "نظرة عامة على أداء العيادة",
+    "title": "التحليلات",
+    "totalAppointments": "إجمالي المواعيد"
   },
   "publicClinic": {
     "nav_whyUs": "من نحن",
@@ -1971,5 +2327,123 @@
     "nav_reviews": "المراجعات",
     "nav_faq": "الأسئلة",
     "nav_contacts": "جهات الاتصال"
+  },
+  "departments": {
+    "archive": "أرشفة",
+    "archiveFailed": "تعذّرت أرشفة القسم",
+    "archivedBadge": "مؤرشف",
+    "back": "← لوحة التحكم",
+    "cannotArchiveSystem": "لا يمكن أرشفة قسم النظام",
+    "create": "إنشاء قسم",
+    "createFirst": "أنشئ القسم الأول",
+    "empty": "لا توجد أقسام بعد",
+    "errorTitle": "خطأ",
+    "listTitle": "قائمة الأقسام",
+    "restore": "استعادة",
+    "restoreFailed": "تعذّرت استعادة القسم",
+    "searchPlaceholder": "ابحث بالاسم أو الرمز…",
+    "showArchived": "عرض الأرشيف",
+    "subtitle": "هيكل العيادة حسب الأقسام",
+    "systemBadge": "نظامي",
+    "title": "الأقسام",
+    "form": {
+      "code": "الرمز",
+      "codeHint": "رمز قصير فريد داخل العيادة",
+      "createTitle": "قسم جديد",
+      "description": "المحتوى",
+      "editTitle": "تعديل القسم",
+      "errors": {
+        "codeTaken": "هذا الرمز مستخدم بالفعل في العيادة",
+        "fix": "يرجى تصحيح الأخطاء في النموذج",
+        "generic": "تعذّر حفظ القسم",
+        "nameRequired": "أدخل اسمًا"
+      },
+      "head": "رئيس القسم",
+      "headNone": "— غير معيَّن —",
+      "name": "الاسم",
+      "specialty": "التخصص"
+    },
+    "confirmArchive": "أرشفة «{{name}}»؟"
+  },
+  "services": {
+    "addService": "إضافة خدمة",
+    "archive": "أرشفة",
+    "archiveError": "تعذّرت الأرشفة.",
+    "backToDashboard": "إلى لوحة التحكم",
+    "currency": "العملة",
+    "department": "القسم",
+    "description": "المحتوى",
+    "duration": "المدة، دقيقة",
+    "editService": "تحرير الخدمة",
+    "loadError": "خطأ في التحميل.",
+    "minShort": "دقيقة",
+    "name": "الاسم",
+    "newService": "خدمة جديدة",
+    "noDepartment": "— بدون قسم —",
+    "noDepartmentGroup": "بدون قسم",
+    "noServices": "لا توجد خدمات بعد. أضف الأولى أعلاه.",
+    "order": "الترتيب",
+    "price": "السعر",
+    "priceFrom": "السعر من",
+    "priceFromShort": "من",
+    "priceTo": "السعر حتى",
+    "priceType": {
+      "free": "مجانًا",
+      "on_request": "لـ"
+    },
+    "priceTypeLabel": "نوع السعر",
+    "saveError": "تعذّر الحفظ.",
+    "statusArchived": "مؤرشف",
+    "title": "الخدمات والأسعار",
+    "unknownDept": "القسم",
+    "confirmArchive": "أرشفة الخدمة «{{name}}»؟"
+  },
+  "subscription": {
+    "trialEnded": "انتهت الفترة التجريبية.",
+    "trialEndsIn": "تنتهي الفترة التجريبية للعيادة خلال",
+    "newRecordsPaused": "لا تُنشأ سجلات جديدة مؤقتًا.",
+    "choosePlan": "اختر باقة",
+    "pay": "ادفع"
+  },
+  "examTemplates": {
+    "title": "قوالب البروتوكولات",
+    "add": "إضافة قالب",
+    "searchPlaceholder": "حسب العنوان أو النص",
+    "study": "الدراسة",
+    "heading": "العنوان",
+    "text": "النص",
+    "headingHint": "مختصر — كيف تُسمّى الصياغة في القائمة",
+    "textHint": "النص الذي سيُدرج في حقل البروتوكول",
+    "emptyTextHint": "إذا كان النص فارغًا، يُدرج العنوان بدلًا منه.",
+    "pickerSearch": "ابحث في الصياغات",
+    "pickerEmpty": "لا توجد قوالب لهذه الكتلة بعد. يمكنك إنشاؤها في «قوالب البروتوكولات»."
+  },
+  "summary": {
+    "loading": "جارٍ تجميع السجل…",
+    "note": "جُمِّع الملخّص من قيود السجل دون إعادة صياغة. الأقسام الكاملة في التبويبات أعلاه.",
+    "critical": "القيم الحرجة",
+    "labDeviations": "انحرافات التحاليل",
+    "deviations": "الانحرافات",
+    "allergies": "الحساسية",
+    "chronic": "الأمراض المزمنة",
+    "family": "التاريخ العائلي",
+    "operations": "العمليات",
+    "currentMeds": "يتناول حاليًا",
+    "previsit": "ما ذكره المريض قبل الزيارة",
+    "previsitVerbatim": "إجابات المريض حرفيًا",
+    "marked": "أُشير إلى:",
+    "was": "كان",
+    "norm": "المرجع"
+  },
+  "theme": {
+    "resetToTheme": "إعادة إلى السمة",
+    "pickColor": "اختر لونًا من اللوحة",
+    "noIcon": "بدون أيقونة",
+    "custom": "مخصّص"
+  },
+  "icd": {
+    "noMatches": "لا توجد نتائج",
+    "searching": "جارٍ البحث…",
+    "category": "فئة"
   }
 }

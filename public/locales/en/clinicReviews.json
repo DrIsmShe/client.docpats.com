@@ -43,5 +43,7 @@
       "changeScopes": "Change access",
       "revoke": "Revoke access"
     }
-  }
+  },
+  "kindScientific": "Scientific",
+  "kindOpinion": "Opinion"
 }

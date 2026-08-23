@@ -12,6 +12,7 @@
 // начальный текст, который врач потом правит, а не вставка к написанному.
 
 import React, { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { modalityLabel } from "../examinationModalities";
 
 export default function ExaminationTemplatePicker({
@@ -22,6 +23,7 @@ export default function ExaminationTemplatePicker({
   onPick,
   onClose,
 }) {
+  const { t } = useTranslation("clinic");
   const [query, setQuery] = useState("");
 
   // Поиск по заголовку и тексту: у клиники формулировок бывает много, и
@@ -63,7 +65,7 @@ export default function ExaminationTemplatePicker({
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Поиск по формулировкам"
+                placeholder={t("examTemplates.pickerSearch")}
                 autoFocus
               />
             </div>
@@ -71,11 +73,10 @@ export default function ExaminationTemplatePicker({
 
           {items.length === 0 ? (
             <div className="med-empty">
-              Заготовок для этого блока пока нет. Их можно завести в разделе
-              «Шаблоны протоколов».
+              {t("examTemplates.pickerEmpty")}
             </div>
           ) : filtered.length === 0 ? (
-            <div className="med-empty">Ничего не найдено</div>
+            <div className="med-empty">{t("common.nothingFound")}</div>
           ) : (
             <ul className="exam-template-list">
               {filtered.map((tpl) => (
@@ -102,7 +103,7 @@ export default function ExaminationTemplatePicker({
             className="staff-page-btn-secondary"
             onClick={onClose}
           >
-            Закрыть
+            {t("common.close")}
           </button>
         </div>
       </div>

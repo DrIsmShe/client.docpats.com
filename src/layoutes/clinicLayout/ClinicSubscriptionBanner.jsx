@@ -33,6 +33,7 @@
 
 import { Link } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 // Только владелец. Оплата тарифа — его решение и его деньги; админ
 // ведёт клинику, но не платит за неё.
 const BILLING_ROLES = ["owner"];
@@ -57,6 +58,7 @@ function pluralDays(n) {
 const WARN_FROM_DAYS = 7;
 
 export default function ClinicSubscriptionBanner({ subscription, role }) {
+  const { t } = useTranslation("clinic");
   if (!subscription) return null;
 
   const { state, until } = subscription;
@@ -75,7 +77,7 @@ export default function ClinicSubscriptionBanner({ subscription, role }) {
     return (
       <div className="clinic-subscription-banner clinic-subscription-banner--warn">
         <span>
-          Пробный период клиники заканчивается через{" "}
+          {t("subscription.trialEndsIn")}{" "}
           <strong>
             {left} {pluralDays(left)}
           </strong>
@@ -83,7 +85,7 @@ export default function ClinicSubscriptionBanner({ subscription, role }) {
           создавать будет нельзя.
         </span>
         <Link className="clinic-subscription-banner__cta" to="/pricing?tab=clinics">
-          Выбрать тариф
+          {t("subscription.choosePlan")}
         </Link>
       </div>
     );
@@ -98,7 +100,7 @@ export default function ClinicSubscriptionBanner({ subscription, role }) {
     return (
       <div className="clinic-subscription-banner clinic-subscription-banner--frozen">
         <span>
-          <strong>Новые записи временно не создаются.</strong> Карты
+          <strong>{t("subscription.newRecordsPaused")}</strong> Карты
           пациентов, история и выгрузка доступны как обычно. Обратитесь к
           руководителю клиники.
         </span>
@@ -109,12 +111,12 @@ export default function ClinicSubscriptionBanner({ subscription, role }) {
   return (
     <div className="clinic-subscription-banner clinic-subscription-banner--frozen">
       <span>
-        <strong>Пробный период закончился.</strong> Карты пациентов, история и
+        <strong>{t("subscription.trialEnded")}</strong> Карты пациентов, история и
         выгрузка доступны по-прежнему — новые записи, приёмы и сотрудники
         создаются после оплаты тарифа.
       </span>
       <Link className="clinic-subscription-banner__cta" to="/pricing?tab=clinics">
-        Оплатить
+        {t("subscription.pay")}
       </Link>
     </div>
   );

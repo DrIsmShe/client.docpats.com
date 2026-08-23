@@ -43,5 +43,7 @@
       "changeScopes": "Erişimi değiştir",
       "revoke": "Erişimi geri al"
     }
-  }
+  },
+  "kindScientific": "Bilimsel",
+  "kindOpinion": "Görüş"
 }

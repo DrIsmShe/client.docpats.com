@@ -120,7 +120,8 @@
         "departmentRequired": "Bir bölüm seçin",
         "generic": "Duyuru yayınlanamadı"
       }
-    }
+    },
+    "unread": "Okunmadı"
   },
   "patientTelemed": {
     "eyebrow": "Hasta portalı",
@@ -653,7 +654,8 @@
       "phone": "Telefon",
       "email": "E-posta",
       "dateOfBirth": "Doğum tarihi",
-      "gender": "Cinsiyet"
+      "gender": "Cinsiyet",
+      "departmentNone": "Bölümsüz"
     },
     "gender": {
       "male": "Erkek",
@@ -673,6 +675,60 @@
       "linkAlreadyLinked": "Hasta zaten başka bir kullanıcıya bağlı. Önce bağlantıyı kaldırın.",
       "linkFailed": "Kullanıcıya bağlanamadı",
       "unlinkFailed": "Bağlantı kaldırılamadı"
+    },
+    "consentRequest": {
+      "notLinkedHint": "Önce kaydı bir DocPats hesabına bağlayın",
+      "openButton": "Erişim iste",
+      "successToast": "✓ İstek hastaya gönderildi"
+    },
+    "card": {
+      "backTitle": "Etkinleştirdikten sonra neler elde edersiniz",
+      "benefits": {
+        "ai": {
+          "text": "Tahlil yorumu, tanının açıklanması, belirtilerle ilgili soruların yanıtlanması.",
+          "title": "Yapay zeka asistanı"
+        },
+        "history": {
+          "text": "Tüm randevular, reçeteler, istemler ve doktor sonuçları tek bir hastalık geçmişinde.",
+          "title": "Geçmiş tek yerde"
+        },
+        "online": {
+          "text": "Güvenli sohbette doktorlara soru sorun — randevu gerekmeden.",
+          "title": "Çevrimiçi konsültasyonlar"
+        },
+        "results": {
+          "text": "Tahliller, görüntüler ve doktor sonuçları kişisel hesapta otomatik görünür — bu klinikten ve diğer tüm DocPats kliniklerinden.",
+          "title": "Tetkik sonuçları"
+        },
+        "scheduling": {
+          "text": "Doktora uygulamadan randevu alın, muayeneden bir gün önce hatırlatma alın.",
+          "title": "Randevu ve hatırlatmalar"
+        }
+      },
+      "copied": "✓ Kopyalandı",
+      "copy": "📋 Bilgileri kopyala",
+      "copyEmail": "Email",
+      "copyError": "Kopyalanamadı",
+      "copyLogin": "Giriş",
+      "copyPassword": "Şifre",
+      "done": "Tamam",
+      "emailSentNotice": "Kart {{email}} adresine gönderildi. Hasta giriş bilgilerinin bir kopyasını e-postayla alacak.",
+      "frontType": "Hasta kartı",
+      "fullName": "Tam ad",
+      "howToActivate": "Nasıl etkinleştirilir",
+      "print": "🖨️ Yazdır",
+      "qrHint": "Giriş için tarayın",
+      "registered": "Kayıt edildi",
+      "step1": "docpats.com adresini açın veya QR kodunu tarayın",
+      "step2": "Bu karttaki geçici e-posta ve şifre ile giriş yapın",
+      "step3": "Kalıcı e-postanızı girin ve bir şifre belirleyin",
+      "step4": "Tamam — tüm geçmişe erişim açık",
+      "subtitle": "Yazdırıp hastaya verin. Bu pencere kapandıktan sonra parola sistemde bir daha görünmeyecek — kartı mutlaka saklayın.",
+      "tagline": "Sağlığınız tek yerde",
+      "title": "Hasta kartı — hastaya verin",
+      "tmpEmail": "Geçici e-posta",
+      "tmpPassword": "Geçici şifre",
+      "validUntil": "Şu tarihe kadar etkinleştirin"
     }
   },
   "common": {
@@ -696,7 +752,14 @@
     "logout": "Çıkış",
     "settings": "Ayarlar",
     "error": "Bir şeyler ters gitti",
-    "errorReload": "Yeniden yükle"
+    "errorReload": "Yeniden yükle",
+    "close": "Kapat",
+    "home": "Ana sayfa",
+    "loadError": "Yükleme hatası.",
+    "moveDown": "Aşağı",
+    "moveUp": "Yukarı",
+    "search": "Ara",
+    "nothingFound": "Bir şey bulunamadı"
   },
   "publicPage": {
     "title": "Herkese açık sayfa",
@@ -757,7 +820,158 @@
       "2x1": "2×1 (daha geniş)",
       "1x2": "1×2 (daha uzun)",
       "2x2": "2×2 (büyük)"
-    }
+    },
+    "addArticle": "+ Makale",
+    "artAuthors": "Yazarlar",
+    "artBody": "Metin",
+    "artCover": "Kapak",
+    "artDisabled": "engelli",
+    "artExcerpt": "Özet",
+    "artGallery": "Makale galerisi",
+    "artLinks": "Bağlantılar / kaynaklar",
+    "artMetaDesc": "Meta açıklaması",
+    "artMetaKeywords": "Meta anahtar kelimeler",
+    "artTags": "Etiketler",
+    "artTitle": "Başlık",
+    "articlesOf": "Kategorideki makaleler",
+    "csvHint": "Virgülle ayırın.",
+    "editArticle": "Makale düzenleme",
+    "loadError": "Yükleme hatası.",
+    "newArticle": "Yeni makale",
+    "noArticles": "Henüz makale yok. İlkini ekleyin.",
+    "openPage": "aç",
+    "photoCaption": "Açıklama",
+    "photoDescription": "Açıklama (fotoğraf açıldığında görünür)",
+    "publish": "Yayınla",
+    "statusDraft": "taslak",
+    "statusPublished": "yayımlandı",
+    "unpublish": "Taslağa al",
+    "articlesBtn": "Makaleler",
+    "createError": "Sayfa oluşturulamadı.",
+    "createPage": "Oluştur",
+    "editingPage": "Düzenleme",
+    "galleryBtn": "Galeri",
+    "newPageTitle": "Yeni sayfa adı",
+    "noPages": "Henüz sayfa yok. Yukarıdan ilkini oluşturun.",
+    "noParent": "— Kök kategori —",
+    "parentCategory": "Üst Kategori",
+    "subOf": "Alt kategori:",
+    "addPhoto": "Fotoğraf ekle",
+    "confirmDeletePhoto": "Bu fotoğraf silinsin mi?",
+    "galleryOf": "Kategori galerisi",
+    "noPhotos": "Henüz fotoğraf yok. İlkini ekleyin.",
+    "blockConfig": "Yapılandır",
+    "blockHide": "Gizle",
+    "blockShow": "Göster",
+    "layoutHint": "Sırayı değiştirmek için blokları sürükleyin. ⚙ içerik, göz göster/gizle.",
+    "themeLoadError": "Temalar yüklenemedi.",
+    "themePreview": "Önizleme",
+    "pageEditorHint": "Blokları paletten ekleyin, sıralamak için sürükleyin. Menü ve alt bilgi vitrinden otomatik alınır.",
+    "pageEmptyBlocks": "Henüz blok yok — yukarıdaki paletten ekleyin.",
+    "alignCenter": "Ortalanmış",
+    "alignLeft": "Sol",
+    "bhHigh": "Yüksek",
+    "bhLow": "Düşük",
+    "bhMid": "Orta",
+    "btnGhost": "Çerçeveli",
+    "btnHref": "Nereye gidiyor",
+    "btnLabel": "Metin",
+    "btnPrimary": "Birincil",
+    "btnStyle": "Stil",
+    "cfgAccent": "Vurgu",
+    "cfgAddAdvantage": "+ Avantaj",
+    "cfgAddBtn": "+ Düğme",
+    "cfgAddFaq": "+ Soru",
+    "cfgAddNavItem": "+ Menü öğesi",
+    "cfgAddStat": "+ Gösterge",
+    "cfgAnswer": "Yanıt",
+    "cfgArticlesTitle": "Bölüm başlığı",
+    "cfgBannerH": "Afiş yüksekliği",
+    "cfgBlockBg": "Blok arka planı",
+    "cfgDeptHint": "Bölümler yönetim panelinden gelir. Burada her kartı tamamlayabilirsiniz: ek metin, simge, vurgu, boyut.",
+    "cfgDeptNote": "Ek metin",
+    "cfgFooterNote": "Alt bilgi notu",
+    "cfgGalleryTitle": "Bölüm başlığı",
+    "cfgHours": "Çalışma saatleri",
+    "cfgIcon": "Simge",
+    "cfgLabel": "Açıklama",
+    "cfgLeadFormTitle": "Talep formu başlığı",
+    "cfgLightText": "Açık metin (koyu arka plan için)",
+    "cfgNavHint": "Otomatik öğelerden (site bölümleri) sonra eklenir.",
+    "cfgNavItems": "Özel menü öğeleri",
+    "cfgNavReorderHint": "Sırayı oklarla değiştirin, onay kutusuyla göster/gizle.",
+    "cfgNavVisible": "Menü öğeleri (site bölümleri)",
+    "cfgNoDepts": "Bölüm yok. Yönetim panelinden (Bölümler) ekleyin.",
+    "cfgPageAlign": "Hizalama",
+    "cfgPageBanner": "Sayfa afişi",
+    "cfgPageBg": "Sayfa arka planı",
+    "cfgPageButtons": "Başlıktaki düğmeler",
+    "cfgPageCta": "Eylem çağrısı bloğu (CTA)",
+    "cfgPageDividers": "Bloklar arası ayırıcılar",
+    "cfgPageExtras": "Altta ek bloklar",
+    "cfgPageH1": "Sayfa başlığı",
+    "cfgPageHint": "Bölüm ayrı bir sayfa olarak açıldığında görünür (menüden tıklayınca).",
+    "cfgPageIntro": "Giriş metni (bloğun üstünde)",
+    "cfgPageOutro": "Sayfanın altındaki metin",
+    "cfgPagePad": "Boşluklar",
+    "cfgPageTitle": "Ayrı sayfanın görünümü",
+    "cfgPageWidth": "İçerik genişliği",
+    "cfgQuestion": "Soru",
+    "cfgSeo": "Sayfa SEO",
+    "cfgShowDoctorsStat": "Doktor sayısını göster",
+    "cfgShowLeadForm": "Talep formunu göster",
+    "cfgSlogan": "Slogan",
+    "cfgSloganPh": "Sağlık burada başlar",
+    "cfgSpan": "Boyut",
+    "cfgSubtitle": "Alt başlık",
+    "cfgText": "Metin",
+    "cfgTitle": "Başlık",
+    "cfgTitleOnBanner": "Afişin üzerindeki başlık",
+    "cfgUpload": "Görsel yükle",
+    "cfgValue": "Değer",
+    "ctaBtn": "Düğme metni",
+    "ctaHref": "Veya bağlantı (telefon yerine)",
+    "ctaPhone": "Telefon",
+    "ctaTitle": "CTA başlığı",
+    "linkExternal": "Dış bağlantı / telefon",
+    "linkNone": "— seçilmedi —",
+    "linkUrl": "URL veya tel:",
+    "padCompact": "Kompakt",
+    "padNormal": "Normal",
+    "padRoomy": "Ferah",
+    "seoDesc": "Açıklama (meta description)",
+    "seoTitle": "Title (sekme/arama)",
+    "widthNarrow": "Dar",
+    "widthNormal": "Normal",
+    "widthWide": "Geniş",
+    "coverError": "Kapak yüklenemedi",
+    "coverReplace": "Değiştir",
+    "coverUpload": "Yükle",
+    "fieldCallHours": "Çalışma saatleri",
+    "fieldCallPhone": "Randevu telefonu",
+    "fieldCover": "Kapak (hero)",
+    "fieldCoverHint": "“Fotoğraf” ve “Split” hero stilleri için gerekli. Yüklenir yüklenmez kaydedilir.",
+    "fieldFaq": "Sorular ve cevaplar",
+    "fieldPageBg": "Sayfa arka planı",
+    "fieldPageBgHint": "Tüm sayfanın arka planı. Görünümde “Sayfa arka planı → Fotoğraf” seçiliyken etkindir. Yüklenir yüklenmez kaydedilir.",
+    "fieldSlogan": "Slogan",
+    "fieldSloganPh": "Sağlık burada başlar",
+    "pageBgError": "Arka plan yüklenemedi",
+    "heroHeightAuto": "Otomatik",
+    "heroHeightLabel": "Kapak yüksekliği",
+    "pageBgDimLabel": "Fotoğraf parlaklığı",
+    "pageBgDimMax": "Fotoğrafın tamamı",
+    "pageBgDimMin": "Karartılmış",
+    "pageBgNeedPhoto": "Arka plan fotoğrafını “Klinik içeriği” bölümüne yükleyin, aksi hâlde arka plan sade kalır.",
+    "themeCard": "Kartlar",
+    "themeContentWidth": "İçerik genişliği",
+    "themeFont": "Yazı tipleri",
+    "themeHero": "Kapak (hero)",
+    "themePageBg": "Sayfa arka planı",
+    "themePalette": "Palet",
+    "themePresets": "Hazır temalar",
+    "confirmDeleteArticle": "“{{title}}” makalesi silinsin mi?",
+    "confirmDeletePage": "“{{title}}” sayfası silinsin mi?"
   },
   "layout": {
     "brandName": "DocPats Klinik",
@@ -838,8 +1052,66 @@
         "ctScanResults": "BT sonuçları",
         "mriResults": "MR sonuçları",
         "ultrasoundResults": "Ultrason sonuçları",
-        "laboratoryTestResults": "Laboratuvar sonuçları"
-      }
+        "laboratoryTestResults": "Laboratuvar sonuçları",
+        "diagnosisText": "Tanı (kendi dilinizde metin)"
+      },
+      "amendChangesLegend": "Değişiklikler",
+      "amendTitle": "Kaydın düzeltilmesi",
+      "applyAmendButton": "Düzeltmeyi uygula",
+      "errors": {
+        "amendFailed": "Düzeltme uygulanamadı",
+        "deleteFailed": "Kayıt silinemedi",
+        "signFailed": "Kayıt imzalanamadı",
+        "signNeedsDx": "İmzalamadan önce ana tanıyı doldurun (Edit → ICD kodu + metin).",
+        "cannotEditNonDraft": "Bu kayıt artık taslak olarak düzenlenemez — “Düzelt”i kullanın.",
+        "codeRequired": "ICD-10 kodunu girin",
+        "dxTextRequired": "Tanı metnini girin",
+        "reasonTooShort": "Düzeltme nedenini yazın (en az {{min}} karakter)."
+      },
+      "reasonLabel": "Ne ve neden değişiyor",
+      "reasonLegend": "Düzeltme nedeni",
+      "reasonPlaceholder": "Örneğin: yeni tahliller sonrası öneriler güncellendi",
+      "amendButton": "Düzelt",
+      "confirmDelete": "Bu muayene kaydı silinsin mi? Bu işlem geri alınamaz.",
+      "createdAt": "Oluşturuldu",
+      "deleteButton": "Sil",
+      "detailTitle": "Muayene kaydı",
+      "editButton": "Düzenle",
+      "historyTitle": "Değişiklik geçmişi",
+      "mainDiagnosisTitle": "Ana tanı (ICD-10)",
+      "noContent": "Klinik metin doldurulmamış.",
+      "noDiagnosis": "Tanı belirtilmemiş",
+      "signButton": "İmzala",
+      "signedAt": "İmzalandı",
+      "updatedAt": "Değiştirildi",
+      "clinicalContentTitle": "Klinik bilgiler",
+      "createTitle": "Yeni muayene kaydı",
+      "editDraftTitle": "Taslağı düzenle",
+      "hints": {
+        "diagnosisText": "ICD-10'dan otomatik dolduruldu. Kendi dilinizde çevirin veya yeniden ifade edin."
+      },
+      "saveDraftButton": "Taslak olarak kaydet",
+      "saveSignedButton": "İmzala ve kaydet",
+      "studyResultsTitle": "Tetkik sonuçları",
+      "templates": {
+        "pick": "Şablonlar"
+      },
+      "addButton": "+ Yeni kayıt",
+      "addFirstButton": "İlk kaydı oluşturun",
+      "colClinic": "Klinik",
+      "colDate": "Tarih",
+      "colDiagnosis": "Tanı",
+      "colStatus": "Durum",
+      "emptyText": "Henüz muayene kaydı yok.",
+      "listTitle": "Tüm kayıtlar",
+      "loadError": "Hastalık geçmişleri yüklenemedi",
+      "status": {
+        "amended": "Düzeltildi",
+        "draft": "Taslak",
+        "preliminary": "Ön",
+        "signed": "İmzalandı"
+      },
+      "reasonHint": "En az {{min}} karakter. Değişiklik günlüğüne kaydedilecek."
     },
     "prescriptions": {
       "listTitle": "Reçeteler",
@@ -1022,6 +1294,67 @@
         "Gastroscopy": "Gastroskopi",
         "Colonoscopy": "Kolonoskopi",
         "CapsuleEndoscopy": "Kapsül endoskopi"
+      },
+      "confirmDelete": "Bu çalışma silinsin mi? Çalışma kaydı silinecek, görüntü dosyaları bulutta kalacak (ayrıca temizlenebilir).",
+      "createdAt": "Yüklendi",
+      "deleteButton": "Sil",
+      "editButton": "Düzenle",
+      "errors": {
+        "deleteFailed": "Çalışma silinemedi",
+        "studyTypeRequired": "Çalışma türünü seçin",
+        "uploadFailed": "Çalışma yüklenemedi",
+        "loadFailed": "Çalışmalar yüklenemedi",
+        "fileTooLarge": "“{{name}}” dosyası {{max}} MB'den büyük.",
+        "tooManyFiles": "En fazla {{max}} dosya ekleyebilirsiniz."
+      },
+      "fields": {
+        "diagnosis": "Sonuç",
+        "doctorNotes": "Doktor notları",
+        "report": "Protokol",
+        "contrastUsed": "Kontrastlı",
+        "validatedByDoctor": "Doktor tarafından onaylandı",
+        "date": "Çalışma tarihi",
+        "nameOfExam": "Tetkik adı",
+        "radiationDose": "Radyasyon dozu",
+        "recommendation": "Öneriler",
+        "studyType": "İnceleme türü"
+      },
+      "noImages": "Bu çalışmaya görüntü eklenmemiş.",
+      "noReport": "Açıklama henüz doldurulmamış.",
+      "updatedAt": "Değiştirildi",
+      "validatedFull": "Doktor tarafından onaylandı",
+      "withContrast": "Kontrastlı",
+      "editNote": "Görüntüler yüklendikten sonra değiştirilemez. Dosyaları değiştirmek için çalışmayı silin ve yenisini oluşturun.",
+      "editTitle": "Çalışmayı düzenle",
+      "flagsTitle": "Parametreler",
+      "reportTitle": "Çalışma protokolü",
+      "createTitle": "Yeni çalışma",
+      "filesTitle": "Görüntüler ve dosyalar",
+      "pickFilesButton": "Dosyaları seçin…",
+      "placeholders": {
+        "report": "Görüntülerin ve bulguların açıklaması…"
+      },
+      "studyInfoTitle": "Araştırma",
+      "templates": {
+        "pick": "Şablonlar"
+      },
+      "uploadButton": "Yükle",
+      "uploading": "Yükleniyor…",
+      "addButton": "+ Yeni çalışma",
+      "addFirstButton": "İlk çalışmayı yükleyin",
+      "emptyText": "Henüz yüklenmiş çalışma yok.",
+      "listTitle": "Dosyalarım",
+      "validatedShort": "Onaylandı",
+      "viewImage": "{{n}}. görüntüyü aç"
+    },
+    "sectionTitle": "Tıbbi kayıt",
+    "subRecord": {
+      "confirmDelete": "Bu kayıt silinsin mi?",
+      "editTitle": "Düzenleme",
+      "errors": {
+        "deleteFailed": "Silinemedi",
+        "loadFailed": "Kayıtlar yüklenemedi",
+        "required": "Bu alanı doldurun"
       }
     }
   },
@@ -1332,7 +1665,8 @@
       "tooManyRequests": "Çok fazla istek. Lütfen bir dakika bekleyin.",
       "tooManyAttempts": "Çok fazla başarısız deneme. Lütfen yeni bir kod isteyin.",
       "fixErrors": "Lütfen aşağıdaki hataları düzeltin",
-      "generic": "Kayıt tamamlanamadı. Lütfen tekrar deneyin."
+      "generic": "Kayıt tamamlanamadı. Lütfen tekrar deneyin.",
+      "alreadyMember": "Zaten bu kliniğin üyesisiniz."
     },
     "errorStates": {
       "expired": {
@@ -1471,7 +1805,8 @@
       "reviews": "Yorumlar",
       "analytics": "Analitik",
       "leads": "Talepler"
-    }
+    },
+    "noActions": "Rolünüz için işlemler sonraki güncellemelerde görünecek."
   },
   "schedule": {
     "title": "Doktor takvimi",
@@ -1823,7 +2158,8 @@
         "fix": "Lütfen formdaki hataları düzeltin",
         "generic": "Konsültasyon oluşturulamadı"
       }
-    }
+    },
+    "videoCall": "Video konferans"
   },
   "telemed": {
     "back": "← Panel",
@@ -1928,7 +2264,15 @@
       "in_progress": "İşlemde",
       "closed": "Kapatılmış",
       "all": "Tümü"
-    }
+    },
+    "back": "← Panel",
+    "empty": "Talep yok",
+    "subtitle": "Klinik web sitesinden talepler",
+    "title": "Talepler",
+    "toClosed": "Kapat",
+    "toInProgress": "İşleme al",
+    "toNew": "Yenilere geri al",
+    "updateFailed": "Durum güncellenemedi"
   },
   "analytics": {
     "range": {
@@ -1947,7 +2291,19 @@
       "completed": "Tamamlandı",
       "cancelled": "İptal edildi",
       "no_show": "Gelmedi"
-    }
+    },
+    "back": "← Panel",
+    "byStatus": "Duruma göre randevular",
+    "dailyTrend": "Günlük değişim",
+    "doctorLoad": "Doktor iş yükü",
+    "newPatients": "Yeni hastalar",
+    "noAccessBody": "Analitiği görüntüleme yetkiniz yok",
+    "noAccessTitle": "Yetkiniz yok",
+    "noData": "Bu dönem için veri yok",
+    "noShowRate": "Gelmeme oranı",
+    "subtitle": "Klinik performans özeti",
+    "title": "Analitik",
+    "totalAppointments": "Toplam randevu"
   },
   "publicClinic": {
     "nav_whyUs": "Hakkımızda",
@@ -1959,5 +2315,123 @@
     "nav_reviews": "Yorumlar",
     "nav_faq": "Sorular",
     "nav_contacts": "İletişim"
+  },
+  "departments": {
+    "archive": "Arşivle",
+    "archiveFailed": "Bölüm arşivlenemedi",
+    "archivedBadge": "arşiv",
+    "back": "← Panel",
+    "cannotArchiveSystem": "Sistem bölümü arşivlenemez",
+    "create": "Bölüm oluştur",
+    "createFirst": "İlk bölümü oluştur",
+    "empty": "Henüz bölüm yok",
+    "errorTitle": "Hata",
+    "listTitle": "Bölüm listesi",
+    "restore": "Geri yükle",
+    "restoreFailed": "Bölüm geri yüklenemedi",
+    "searchPlaceholder": "Ada veya koda göre ara…",
+    "showArchived": "Arşivi göster",
+    "subtitle": "Bölümlere göre klinik yapısı",
+    "systemBadge": "sistem",
+    "title": "Bölümler",
+    "form": {
+      "code": "Kod",
+      "codeHint": "Klinik içinde benzersiz kısa kod",
+      "createTitle": "Yeni bölüm",
+      "description": "İçerik",
+      "editTitle": "Bölümü düzenle",
+      "errors": {
+        "codeTaken": "Bu kod klinikte zaten kullanılıyor",
+        "fix": "Lütfen formdaki hataları düzeltin",
+        "generic": "Bölüm kaydedilemedi",
+        "nameRequired": "Bir ad girin"
+      },
+      "head": "Bölüm başkanı",
+      "headNone": "— atanmadı —",
+      "name": "Ad",
+      "specialty": "Uzmanlık"
+    },
+    "confirmArchive": "“{{name}}” arşivlensin mi?"
+  },
+  "services": {
+    "addService": "Hizmet ekle",
+    "archive": "Arşivle",
+    "archiveError": "Arşivlenemedi.",
+    "backToDashboard": "Panoya",
+    "currency": "Para birimi",
+    "department": "Bölüm",
+    "description": "İçerik",
+    "duration": "Süre, dk",
+    "editService": "Hizmet düzenleme",
+    "loadError": "Yükleme hatası.",
+    "minShort": "dk",
+    "name": "Ad",
+    "newService": "Yeni hizmet",
+    "noDepartment": "— Bölümsüz —",
+    "noDepartmentGroup": "Bölümsüz",
+    "noServices": "Henüz hizmet yok. Yukarıdan ilkini ekleyin.",
+    "order": "Sıra",
+    "price": "Fiyat",
+    "priceFrom": "Fiyat (başlangıç)",
+    "priceFromShort": "başlangıç",
+    "priceTo": "Fiyat (bitiş)",
+    "priceType": {
+      "free": "ücretsiz",
+      "on_request": "için"
+    },
+    "priceTypeLabel": "Fiyat türü",
+    "saveError": "Kaydedilemedi.",
+    "statusArchived": "arşiv",
+    "title": "Hizmetler ve fiyatlar",
+    "unknownDept": "Bölüm",
+    "confirmArchive": "“{{name}}” hizmeti arşivlensin mi?"
+  },
+  "subscription": {
+    "trialEnded": "Deneme süresi sona erdi.",
+    "trialEndsIn": "Kliniğin deneme süresi bitiyor:",
+    "newRecordsPaused": "Yeni kayıtlar şimdilik oluşturulmuyor.",
+    "choosePlan": "Plan seç",
+    "pay": "Öde"
+  },
+  "examTemplates": {
+    "title": "Protokol şablonları",
+    "add": "Şablon ekle",
+    "searchPlaceholder": "Başlık veya metne göre",
+    "study": "Çalışma",
+    "heading": "Başlık",
+    "text": "Metin",
+    "headingHint": "Kısa — ifadenin listedeki adı",
+    "textHint": "Protokol alanına eklenecek metin",
+    "emptyTextHint": "Metin boşsa alana başlık eklenir.",
+    "pickerSearch": "İfadelerde ara",
+    "pickerEmpty": "Bu blok için henüz şablon yok. “Protokol şablonları” bölümünden oluşturabilirsiniz."
+  },
+  "summary": {
+    "loading": "Kayıt derleniyor…",
+    "note": "Özet, kayıt girdilerinden yeniden anlatılmadan derlenmiştir. Tam bölümler yukarıdaki sekmelerde.",
+    "critical": "Kritik değerler",
+    "labDeviations": "Tahlil sapmaları",
+    "deviations": "Sapmalar",
+    "allergies": "Alerjiler",
+    "chronic": "Kronik hastalıklar",
+    "family": "Kalıtım",
+    "operations": "Ameliyatlar",
+    "currentMeds": "Şu anda kullanıyor",
+    "previsit": "Hastanın randevu öncesi anlattıkları",
+    "previsitVerbatim": "Hastanın yanıtları birebir",
+    "marked": "Belirtildi:",
+    "was": "önceki",
+    "norm": "referans"
+  },
+  "theme": {
+    "resetToTheme": "Temaya sıfırla",
+    "pickColor": "Paletten renk seç",
+    "noIcon": "Simgesiz",
+    "custom": "özel"
+  },
+  "icd": {
+    "noMatches": "Eşleşme yok",
+    "searching": "Aranıyor…",
+    "category": "kategori"
   }
 }

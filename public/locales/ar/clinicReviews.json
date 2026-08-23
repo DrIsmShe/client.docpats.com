@@ -51,5 +51,7 @@
       "changeScopes": "تغيير الوصول",
       "revoke": "سحب الوصول"
     }
-  }
+  },
+  "kindScientific": "علمية",
+  "kindOpinion": "رأي"
 }

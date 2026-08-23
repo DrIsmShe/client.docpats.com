@@ -308,7 +308,7 @@ function LabCard({
         </div>
         <div className="rx-card-meta">
           {!isCross && abnormalCount > 0 && (
-            <span className="lab-abnormal-badge" title="Отклонения">
+            <span className="lab-abnormal-badge" title={t("summary.deviations")}>
               {abnormalCount} ⚠
             </span>
           )}

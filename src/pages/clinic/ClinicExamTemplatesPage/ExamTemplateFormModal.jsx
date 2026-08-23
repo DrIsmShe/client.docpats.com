@@ -9,6 +9,7 @@
 
 import React, { useState } from "react";
 
+import { useTranslation } from "react-i18next";
 export default function ExamTemplateFormModal({
   template,
   modalityLabel,
@@ -16,6 +17,7 @@ export default function ExamTemplateFormModal({
   onSave,
   onClose,
 }) {
+  const { t } = useTranslation("clinic");
   const [title, setTitle] = useState(template?.title || "");
   const [body, setBody] = useState(template?.body || "");
   const [saving, setSaving] = useState(false);
@@ -60,7 +62,7 @@ export default function ExamTemplateFormModal({
 
           <div className="med-modal-body">
             <div className="patients-form-field">
-              <label>Заголовок</label>
+              <label>{t("examTemplates.heading")}</label>
               <input
                 type="text"
                 value={title}
@@ -68,14 +70,14 @@ export default function ExamTemplateFormModal({
                 disabled={saving}
                 autoFocus
                 maxLength={300}
-                placeholder="Коротко — как формулировка называется в списке"
+                placeholder={t("examTemplates.headingHint")}
               />
             </div>
 
             <div className="patients-form-field">
               <label>
-                Текст
-                <span className="patients-form-optional">необязательно</span>
+                {t("examTemplates.text")}
+                <span className="patients-form-optional">{t("common.optional")}</span>
               </label>
               <textarea
                 rows={10}
@@ -83,7 +85,7 @@ export default function ExamTemplateFormModal({
                 onChange={(e) => setBody(e.target.value)}
                 disabled={saving}
                 maxLength={20000}
-                placeholder="Текст, который подставится в поле протокола"
+                placeholder={t("examTemplates.textHint")}
               />
             </div>
 
@@ -91,7 +93,7 @@ export default function ExamTemplateFormModal({
                 не нужно — в поле подставится сам заголовок. */}
             {!body.trim() && (
               <div className="exam-tpl-hint">
-                Если текст не заполнен, в поле подставится заголовок.
+                {t("examTemplates.emptyTextHint")}
               </div>
             )}
 
@@ -109,7 +111,7 @@ export default function ExamTemplateFormModal({
               onClick={onClose}
               disabled={saving}
             >
-              Отмена
+              {t("common.cancel")}
             </button>
             <button
               type="submit"

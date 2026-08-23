@@ -204,6 +204,7 @@ export default function ServicesPage() {
     if (
       !window.confirm(
         t("services.confirmArchive", {
+          name: s.name,
           defaultValue: `Архивировать услугу «${s.name}»?`,
         }),
       )

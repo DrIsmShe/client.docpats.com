@@ -248,6 +248,7 @@ export default function ClinicArticlesPanel({ clinic, page, canWrite }) {
     if (
       !window.confirm(
         t("publicPage.confirmDeleteArticle", {
+          title: a.title,
           defaultValue: `Удалить статью «${a.title}»?`,
         }),
       )

@@ -1290,7 +1290,18 @@
     "statsDoctors_one": "doctor",
     "statsDoctors_other": "doctors",
     "navAllArticles": "All articles →",
-    "navServices": "Services and prices"
+    "navServices": "Services and prices",
+    "otherServicesTitle": "Other services",
+    "priceFree": "Free",
+    "priceFrom": "from",
+    "priceOnRequest": "On request",
+    "doctorsAll": "All",
+    "experienceShort": "{{count}} years of experience",
+    "specialistsTitle": "Specialists",
+    "minShort": "min",
+    "priceEmpty": "The price list is still being filled in.",
+    "priceListTitle": "Services and prices",
+    "servicesMore": "{{count}} more"
   },
   "profileMain": {
     "noUserId": "Could not determine the user.",
@@ -1482,7 +1493,29 @@
     "doneText": "The clinic will contact you to confirm. The time is reserved only after confirmation.",
     "slotTaken": "That time was just taken. Please pick another.",
     "tooMany": "Too many requests in a row. Try again later.",
-    "failed": "Could not send the request. Try again later."
+    "failed": "Could not send the request. Try again later.",
+    "booking": "Booking…",
+    "confirm": "Book appointment",
+    "conflict": "That slot was just taken. Pick another.",
+    "date": "Date",
+    "doctor": "Doctor",
+    "errCreate": "Could not create the appointment",
+    "errDoctors": "Could not load the doctor list",
+    "errSearch": "Patient search failed",
+    "errSlots": "Could not load free slots for this day",
+    "freeSlots": "Free slots",
+    "loading": "Loading…",
+    "noPatients": "No matching patients found",
+    "noPermission": "You do not have permission to book appointments",
+    "patient": "Patient",
+    "reason": "Reason / note (optional)",
+    "reasonPlaceholder": "e.g. follow-up, consultation",
+    "searchBtn": "Search",
+    "searchPlaceholder": "Last name, phone, or email",
+    "searching": "Searching…",
+    "selectDoctor": "Select a doctor",
+    "subtitle": "Pick a doctor and a free slot, then find the patient.",
+    "success": "Patient booked"
   },
   "publicPage": {
     "doctorsTitle": "Specialists",
@@ -1503,7 +1536,10 @@
     "readTime": "{{count}} min read",
     "articleLinks": "Sources:",
     "backToDoctor": "Back to the doctor",
-    "categoryGalleryTitle": "Gallery"
+    "categoryGalleryTitle": "Gallery",
+    "categoryArticlesTitle": "Articles",
+    "parentArticlesTitle": "All Articles",
+    "parentNoArticles": "There are no articles in the subcategories yet."
   },
   "title": "Dr.",
   "training": {
@@ -1574,7 +1610,12 @@
     "avatarAlt": "Avatar",
     "loadingDots": "Loading…",
     "loading": "Loading…",
-    "retry": "Retry"
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "save": "Save",
+    "back": "Back",
+    "remove": "Delete"
   },
   "consultation": {
     "title": "DocPats AI consultation"
@@ -1601,6 +1642,164 @@
       "imaging": {
         "title": "Imaging and studies"
       }
+    },
+    "cancel": "Cancel",
+    "close": "Close",
+    "hint": "The patient will receive a notification with your clinic's name and the requested groups of data. They can approve the request in full, in part, or reject it.",
+    "messageLabel": "Message to the patient (optional)",
+    "messagePlaceholder": "For example: I need your CT results to prepare for the consultation",
+    "requestedAccess": "Request access to:",
+    "submit": "Send the request",
+    "submitting": "Sending…",
+    "subtitle": "The request will be sent to the patient's account.",
+    "subtitleFor": "Patient: {{name}}",
+    "title": "Request for access to medical data"
+  },
+  "pharmacy": {
+    "action": {
+      "archive": "Archive",
+      "restore": "Restore"
+    },
+    "badge": {
+      "controlled": "Controlled substance",
+      "min": "min"
+    },
+    "catalog": {
+      "add": "Add a medicine",
+      "confirmArchive": "Remove the medicine from the active catalogue?",
+      "count": "Items in total: {{count}}",
+      "empty": "The catalogue is empty. Add the first medicine.",
+      "loadError": "Could not load the catalogue",
+      "noAccess": "No access to the pharmacy catalogue",
+      "searchPlaceholder": "Search by name, INN or code…",
+      "showArchived": "Show archive",
+      "title": "Medicine catalogue"
+    },
+    "col": {
+      "category": "Category",
+      "form": "Form",
+      "name": "Name",
+      "pack": "Package",
+      "strength": "Strength"
+    },
+    "form": {
+      "baseUnit": "Dispensing unit",
+      "createTitle": "New medicine",
+      "editTitle": "Edit the medicine",
+      "inn": "INN / substance",
+      "isControlled": "Controlled substance accounting",
+      "manufacturer": "Manufacturer",
+      "minStock": "Minimum stock (units)",
+      "nameRequired": "Enter the medicine name",
+      "note": "Note",
+      "packUnit": "Purchase unit",
+      "saveError": "Could not save. Check the fields.",
+      "sku": "Code / barcode",
+      "unitsPerPack": "Units per package"
+    },
+    "dispense": {
+      "change": "Change",
+      "department": "Department",
+      "deptOk": "Dispensed to the department",
+      "drug": "Product",
+      "fulfilled": "Dispensed",
+      "genericError": "Could not complete the dispensing.",
+      "give": "Dispense",
+      "lineOk": "The item has been dispensed",
+      "noAccess": "No permission to dispense from the store",
+      "noReq": "Open a requisition from the pharmacy queue to dispense against it.",
+      "packs": "pkg",
+      "patientNoAccess": "Dispensing to a patient is available to a pharmacist (the prescriptions permission is required).",
+      "patientSoon": "Dispensing to a patient will appear in the next update.",
+      "remaining": "Remaining to dispense",
+      "reqLoadError": "Could not load the requisition",
+      "reqStatus": "Status",
+      "searchDrug": "Find a medicine…",
+      "selectDept": "— select a department —",
+      "tabDept": "To a department",
+      "tabPatient": "To a patient",
+      "tabReq": "Against a requisition",
+      "title": "Dispensing from the store"
+    },
+    "reports": {
+      "byDepartment": "By department",
+      "byTarget": "By dispensing channel",
+      "controlled": "Controlled substance accounting",
+      "controlledTotals": "Controlled substances: {{count}} dispensings, {{qty}} units",
+      "count": "Dispensings",
+      "drug": "Product",
+      "dynamics": "Dispensing trend",
+      "kpiControlled": "Of which controlled",
+      "kpiDispenses": "Total dispensings",
+      "kpiQty": "Units dispensed",
+      "loadError": "Could not load the report",
+      "noAccess": "No access to pharmacy reports",
+      "noControlled": "No controlled-substance dispensings in this period",
+      "noData": "No data for this period",
+      "pdf": "Download PDF",
+      "pdfError": "Could not generate the PDF",
+      "qty": "Units",
+      "title": "Dispensing reports",
+      "topDrugs": "Top medicines"
+    },
+    "req": {
+      "addLine": "Add an item",
+      "cancel": "Cancel",
+      "changeDrug": "Change the medicine",
+      "confirmCancel": "Cancel the requisition?",
+      "count": "Total: {{count}}",
+      "create": "New requisition",
+      "createTitle": "New requisition",
+      "depRequired": "Select a department",
+      "department": "Department",
+      "dispense": "Dispense",
+      "editTitle": "Edit the requisition",
+      "emptyDept": "No requisitions. Create the first one.",
+      "emptyQueue": "No open requisitions.",
+      "items": "Items",
+      "itemsRequired": "Add at least one item",
+      "lineNote": "Note for the item",
+      "loadError": "Could not load the requisitions",
+      "mineOnly": "Mine only",
+      "noAccess": "No access to requisitions",
+      "note": "Note",
+      "packs": "Packages",
+      "priority": "Priority",
+      "saveDraft": "Save the draft",
+      "saveError": "Could not save. Check the fields.",
+      "saveSubmit": "Save and submit",
+      "searchDrug": "Find a medicine…",
+      "selectDept": "— select a department —",
+      "submit": "Submit",
+      "tabDept": "Department requisitions",
+      "tabQueue": "Pharmacy queue",
+      "title": "Requisitions to the pharmacy"
+    },
+    "suppliers": {
+      "add": "Add a supplier",
+      "col": {
+        "contact": "Contact",
+        "name": "Name",
+        "phone": "Phone",
+        "taxId": "Tax ID"
+      },
+      "confirmArchive": "Remove the supplier from the active list?",
+      "count": "Suppliers in total: {{count}}",
+      "createTitle": "New supplier",
+      "editTitle": "Edit the supplier",
+      "empty": "The list is empty. Add the first supplier.",
+      "field": {
+        "address": "Address",
+        "email": "Email",
+        "note": "Note"
+      },
+      "loadError": "Could not load the suppliers",
+      "nameRequired": "Enter the supplier name",
+      "noAccess": "No access to suppliers",
+      "saveError": "Could not save. Check the fields.",
+      "searchPlaceholder": "Search by name, contact or tax ID…",
+      "showArchived": "Show archive",
+      "title": "Suppliers"
     }
   }
 }

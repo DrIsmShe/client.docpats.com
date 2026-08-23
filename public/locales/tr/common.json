@@ -1314,7 +1314,18 @@
     "statsDoctors_one": "doktor",
     "statsDoctors_other": "doktor",
     "navAllArticles": "Tüm makaleler →",
-    "navServices": "Hizmetler ve fiyatlar"
+    "navServices": "Hizmetler ve fiyatlar",
+    "otherServicesTitle": "Diğer hizmetler",
+    "priceFree": "Ücretsiz",
+    "priceFrom": "başlangıç",
+    "priceOnRequest": "Talep üzerine",
+    "doctorsAll": "Tümü",
+    "experienceShort": "{{count}} yıl deneyim",
+    "specialistsTitle": "Uzmanlar",
+    "minShort": "dk",
+    "priceEmpty": "Fiyat listesi henüz dolduruluyor.",
+    "priceListTitle": "Hizmetler ve fiyatlar",
+    "servicesMore": "{{count}} tane daha"
   },
   "profileMain": {
     "noUserId": "Kullanıcı belirlenemedi.",
@@ -1506,7 +1517,29 @@
     "doneText": "Klinik onay için sizinle iletişime geçecek. Saat yalnızca onaydan sonra kesinleşir.",
     "slotTaken": "Bu saat az önce doldu. Lütfen başka bir saat seçin.",
     "tooMany": "Arka arkaya çok fazla talep. Daha sonra deneyin.",
-    "failed": "Talep gönderilemedi. Daha sonra deneyin."
+    "failed": "Talep gönderilemedi. Daha sonra deneyin.",
+    "booking": "Randevu alınıyor…",
+    "confirm": "Randevu al",
+    "conflict": "Bu saat az önce doldu. Başka birini seçin.",
+    "date": "Tarih",
+    "doctor": "Doktor",
+    "errCreate": "Randevu oluşturulamadı",
+    "errDoctors": "Doktor listesi yüklenemedi",
+    "errSearch": "Hasta araması başarısız",
+    "errSlots": "Bu gün için boş saatler yüklenemedi",
+    "freeSlots": "Boş saatler",
+    "loading": "Yükleniyor…",
+    "noPatients": "Eşleşen hasta bulunamadı",
+    "noPermission": "Randevu alma yetkiniz yok",
+    "patient": "Hasta",
+    "reason": "Neden / not (isteğe bağlı)",
+    "reasonPlaceholder": "örn. kontrol, konsültasyon",
+    "searchBtn": "Ara",
+    "searchPlaceholder": "Soyad, telefon veya e-posta",
+    "searching": "Aranıyor…",
+    "selectDoctor": "Bir doktor seçin",
+    "subtitle": "Bir doktor ve boş saat seçin, ardından hastayı bulun.",
+    "success": "Hasta kaydedildi"
   },
   "publicPage": {
     "doctorsTitle": "Uzmanlar",
@@ -1527,7 +1560,10 @@
     "readTime": "{{count}} dk okuma",
     "articleLinks": "Kaynaklar:",
     "backToDoctor": "Doktora dön",
-    "categoryGalleryTitle": "Galeri"
+    "categoryGalleryTitle": "Galeri",
+    "categoryArticlesTitle": "Makaleler",
+    "parentArticlesTitle": "Tüm Makaleler",
+    "parentNoArticles": "Alt kategorilerde henüz makale yok."
   },
   "title": "Dr.",
   "training": {
@@ -1598,7 +1634,12 @@
     "avatarAlt": "Avatar",
     "loadingDots": "Yükleniyor…",
     "loading": "Yükleniyor…",
-    "retry": "Yeniden dene"
+    "retry": "Yeniden dene",
+    "cancel": "İptal",
+    "edit": "Düzenle",
+    "save": "Kaydet",
+    "back": "Geri",
+    "remove": "Sil"
   },
   "consultation": {
     "title": "DocPats AI danışmanlığı"
@@ -1625,6 +1666,164 @@
       "imaging": {
         "title": "Görüntüleme ve tetkikler"
       }
+    },
+    "cancel": "İptal",
+    "close": "Kapat",
+    "hint": "Hasta, kliniğinizin adını ve istenen veri gruplarını içeren bir bildirim alacak. İsteği tamamen, kısmen onaylayabilir veya reddedebilir.",
+    "messageLabel": "Hastaya mesaj (isteğe bağlı)",
+    "messagePlaceholder": "Örneğin: konsültasyona hazırlanmak için BT sonuçlarınıza ihtiyacım var",
+    "requestedAccess": "Şuna erişim iste:",
+    "submit": "İsteği gönder",
+    "submitting": "Gönderiliyor…",
+    "subtitle": "İstek hastanın hesabına gönderilecek.",
+    "subtitleFor": "Hasta: {{name}}",
+    "title": "Tıbbi verilere erişim isteği"
+  },
+  "pharmacy": {
+    "action": {
+      "archive": "Arşivle",
+      "restore": "Geri yükle"
+    },
+    "badge": {
+      "controlled": "Kontrole tabi",
+      "min": "dk"
+    },
+    "catalog": {
+      "add": "İlaç ekle",
+      "confirmArchive": "İlaç etkin katalogdan çıkarılsın mı?",
+      "count": "Toplam kalem: {{count}}",
+      "empty": "Katalog boş. İlk ilacı ekleyin.",
+      "loadError": "Katalog yüklenemedi",
+      "noAccess": "Eczane kataloğuna erişim yok",
+      "searchPlaceholder": "Ad, etkin madde veya kodla ara…",
+      "showArchived": "Arşivi göster",
+      "title": "İlaç kataloğu"
+    },
+    "col": {
+      "category": "Kategori",
+      "form": "Form",
+      "name": "Ad",
+      "pack": "Ambalaj",
+      "strength": "Doz gücü"
+    },
+    "form": {
+      "baseUnit": "Sayım birimi (çıkış)",
+      "createTitle": "Yeni ilaç",
+      "editTitle": "İlacı düzenle",
+      "inn": "Etkin madde",
+      "isControlled": "Kontrole tabi ilaç takibi",
+      "manufacturer": "Üretici",
+      "minStock": "Asgari stok (adet)",
+      "nameRequired": "İlaç adını girin",
+      "note": "Not",
+      "packUnit": "Satın alma birimi",
+      "saveError": "Kaydedilemedi. Alanları kontrol edin.",
+      "sku": "Kod / barkod",
+      "unitsPerPack": "Ambalajdaki adet"
+    },
+    "dispense": {
+      "change": "Değiştir",
+      "department": "Bölüm",
+      "deptOk": "Bölüme verildi",
+      "drug": "Ürün",
+      "fulfilled": "Verildi",
+      "genericError": "Çıkış işlemi tamamlanamadı.",
+      "give": "Ver",
+      "lineOk": "Kalem verildi",
+      "noAccess": "Depodan çıkış yetkiniz yok",
+      "noReq": "Çıkış yapmak için eczane kuyruğundan talebi açın.",
+      "packs": "amb.",
+      "patientNoAccess": "Hastaya çıkış eczacı tarafından yapılabilir (reçete yetkisi gerekir).",
+      "patientSoon": "Hastaya çıkış bir sonraki güncellemede gelecek.",
+      "remaining": "Çıkışa kalan",
+      "reqLoadError": "Talep yüklenemedi",
+      "reqStatus": "Durum",
+      "searchDrug": "İlaç bul…",
+      "selectDept": "— bir bölüm seçin —",
+      "tabDept": "Bölüme",
+      "tabPatient": "Hastaya",
+      "tabReq": "Talep üzerine",
+      "title": "Depodan çıkış"
+    },
+    "reports": {
+      "byDepartment": "Bölümlere göre",
+      "byTarget": "Çıkış kanallarına göre",
+      "controlled": "Kontrole tabi ilaç takibi",
+      "controlledTotals": "Kontrole tabi: {{count}} çıkış, {{qty}} adet",
+      "count": "Çıkış",
+      "drug": "Ürün",
+      "dynamics": "Çıkış eğilimi",
+      "kpiControlled": "Bunlardan kontrole tabi",
+      "kpiDispenses": "Toplam çıkış",
+      "kpiQty": "Verilen adet",
+      "loadError": "Rapor yüklenemedi",
+      "noAccess": "Eczane raporlarına erişim yok",
+      "noControlled": "Bu dönemde kontrole tabi çıkış olmadı",
+      "noData": "Bu dönem için veri yok",
+      "pdf": "PDF İndir",
+      "pdfError": "PDF oluşturulamadı",
+      "qty": "Adet",
+      "title": "Çıkış raporları",
+      "topDrugs": "En çok kullanılan ilaçlar"
+    },
+    "req": {
+      "addLine": "Kalem ekle",
+      "cancel": "İptal et",
+      "changeDrug": "İlacı değiştir",
+      "confirmCancel": "Talep iptal edilsin mi?",
+      "count": "Toplam: {{count}}",
+      "create": "Yeni talep",
+      "createTitle": "Yeni talep",
+      "depRequired": "Bir bölüm seçin",
+      "department": "Bölüm",
+      "dispense": "Ver",
+      "editTitle": "Talebi düzenle",
+      "emptyDept": "Talep yok. İlkini oluşturun.",
+      "emptyQueue": "Açık talep yok.",
+      "items": "Kalemler",
+      "itemsRequired": "En az bir kalem ekleyin",
+      "lineNote": "Kalem notu",
+      "loadError": "Talepler yüklenemedi",
+      "mineOnly": "Yalnızca benimkiler",
+      "noAccess": "Taleplere erişim yok",
+      "note": "Not",
+      "packs": "Ambalaj",
+      "priority": "Öncelik",
+      "saveDraft": "Taslağı kaydet",
+      "saveError": "Kaydedilemedi. Alanları kontrol edin.",
+      "saveSubmit": "Kaydet ve gönder",
+      "searchDrug": "İlaç bul…",
+      "selectDept": "— bir bölüm seçin —",
+      "submit": "Gönder",
+      "tabDept": "Bölüm talepleri",
+      "tabQueue": "Eczane kuyruğu",
+      "title": "Eczaneye talepler"
+    },
+    "suppliers": {
+      "add": "Tedarikçi ekle",
+      "col": {
+        "contact": "İletişim",
+        "name": "Ad",
+        "phone": "Telefon",
+        "taxId": "Vergi no"
+      },
+      "confirmArchive": "Tedarikçi etkin listeden çıkarılsın mı?",
+      "count": "Toplam tedarikçi: {{count}}",
+      "createTitle": "Yeni tedarikçi",
+      "editTitle": "Tedarikçiyi düzenle",
+      "empty": "Liste boş. İlk tedarikçiyi ekleyin.",
+      "field": {
+        "address": "Adres",
+        "email": "E-posta",
+        "note": "Not"
+      },
+      "loadError": "Tedarikçiler yüklenemedi",
+      "nameRequired": "Tedarikçi adını girin",
+      "noAccess": "Tedarikçilere erişim yok",
+      "saveError": "Kaydedilemedi. Alanları kontrol edin.",
+      "searchPlaceholder": "Ad, iletişim veya vergi no ile ara…",
+      "showArchived": "Arşivi göster",
+      "title": "Tedarikçiler"
     }
   }
 }

@@ -1311,7 +1311,18 @@
     "statsDoctors_many": "طبيبًا",
     "statsDoctors_other": "طبيب",
     "navAllArticles": "كل المقالات →",
-    "navServices": "الخدمات والأسعار"
+    "navServices": "الخدمات والأسعار",
+    "otherServicesTitle": "خدمات أخرى",
+    "priceFree": "مجاناً",
+    "priceFrom": "من",
+    "priceOnRequest": "عند الطلب",
+    "doctorsAll": "الكل",
+    "experienceShort": "{{count}} سنوات خبرة",
+    "specialistsTitle": "الاختصاصيون",
+    "minShort": "دقيقة",
+    "priceEmpty": "لا تزال قائمة الأسعار قيد الإعداد.",
+    "priceListTitle": "الخدمات والأسعار",
+    "servicesMore": "و{{count}} أخرى"
   },
   "profileMain": {
     "noUserId": "تعذّر تحديد المستخدم.",
@@ -1503,7 +1514,29 @@
     "doneText": "ستتواصل معك العيادة للتأكيد. لا يُحجز الوقت إلا بعد التأكيد.",
     "slotTaken": "تم حجز هذا الوقت للتو. اختر وقتًا آخر.",
     "tooMany": "طلبات كثيرة متتالية. حاول لاحقًا.",
-    "failed": "تعذّر إرسال الطلب. حاول لاحقًا."
+    "failed": "تعذّر إرسال الطلب. حاول لاحقًا.",
+    "booking": "جارٍ الحجز…",
+    "confirm": "حجز موعد",
+    "conflict": "حُجز هذا الوقت للتو. اختر وقتًا آخر.",
+    "date": "التاريخ",
+    "doctor": "الطبيب",
+    "errCreate": "تعذّر إنشاء الموعد",
+    "errDoctors": "تعذّر تحميل قائمة الأطباء",
+    "errSearch": "فشل البحث عن المريض",
+    "errSlots": "تعذّر تحميل الأوقات المتاحة لهذا اليوم",
+    "freeSlots": "الأوقات المتاحة",
+    "loading": "جارٍ التحميل…",
+    "noPatients": "لم يتم العثور على مرضى مطابقين",
+    "noPermission": "لا تملك صلاحية حجز المواعيد",
+    "patient": "المريض",
+    "reason": "السبب / ملاحظة (اختياري)",
+    "reasonPlaceholder": "مثال: مراجعة، استشارة",
+    "searchBtn": "بحث",
+    "searchPlaceholder": "اللقب أو الهاتف أو البريد",
+    "searching": "جارٍ البحث…",
+    "selectDoctor": "اختر طبيبًا",
+    "subtitle": "اختر طبيبًا ووقتًا متاحًا، ثم ابحث عن المريض.",
+    "success": "تم حجز المريض"
   },
   "publicPage": {
     "doctorsTitle": "الأخصائيون",
@@ -1524,7 +1557,10 @@
     "readTime": "{{count}} دقيقة قراءة",
     "articleLinks": "المصادر:",
     "backToDoctor": "العودة إلى الطبيب",
-    "categoryGalleryTitle": "المعرض"
+    "categoryGalleryTitle": "المعرض",
+    "categoryArticlesTitle": "المقالات",
+    "parentArticlesTitle": "جميع المقالات",
+    "parentNoArticles": "لا توجد مقالات في الفئات الفرعية بعد."
   },
   "title": "د.",
   "training": {
@@ -1595,7 +1631,12 @@
     "avatarAlt": "الصورة الرمزية",
     "loadingDots": "جارٍ التحميل…",
     "loading": "جارٍ التحميل…",
-    "retry": "إعادة المحاولة"
+    "retry": "إعادة المحاولة",
+    "cancel": "إلغاء",
+    "edit": "تعديل",
+    "save": "حفظ",
+    "back": "رجوع",
+    "remove": "حذف"
   },
   "consultation": {
     "title": "استشارة DocPats AI"
@@ -1625,6 +1666,164 @@
       "imaging": {
         "title": "الصور والفحوصات"
       }
+    },
+    "cancel": "إلغاء",
+    "close": "إغلاق",
+    "hint": "سيتلقى المريض إشعارًا باسم عيادتك ومجموعات البيانات المطلوبة. ويمكنه الموافقة كليًا أو جزئيًا أو الرفض.",
+    "messageLabel": "رسالة إلى المريض (اختياري)",
+    "messagePlaceholder": "مثال: أحتاج نتائج التصوير المقطعي للتحضير للاستشارة",
+    "requestedAccess": "طلب الوصول إلى:",
+    "submit": "إرسال الطلب",
+    "submitting": "جارٍ الإرسال…",
+    "subtitle": "سيُرسل الطلب إلى حساب المريض.",
+    "subtitleFor": "المريض: {{name}}",
+    "title": "طلب الوصول إلى البيانات الطبية"
+  },
+  "pharmacy": {
+    "action": {
+      "archive": "أرشفة",
+      "restore": "استعادة"
+    },
+    "badge": {
+      "controlled": "مادة خاضعة للرقابة",
+      "min": "دقيقة"
+    },
+    "catalog": {
+      "add": "إضافة دواء",
+      "confirmArchive": "إزالة الدواء من الكتالوج النشط؟",
+      "count": "إجمالي البنود: {{count}}",
+      "empty": "الكتالوج فارغ. أضف الدواء الأول.",
+      "loadError": "تعذّر تحميل الفهرس",
+      "noAccess": "لا يوجد وصول إلى كتالوج الصيدلية",
+      "searchPlaceholder": "ابحث بالاسم أو الاسم العلمي أو الرمز…",
+      "showArchived": "عرض الأرشيف",
+      "title": "كتالوج الأدوية"
+    },
+    "col": {
+      "category": "الفئة",
+      "form": "الشكل",
+      "name": "الاسم",
+      "pack": "العبوة",
+      "strength": "التركيز"
+    },
+    "form": {
+      "baseUnit": "وحدة الصرف",
+      "createTitle": "دواء جديد",
+      "editTitle": "تعديل الدواء",
+      "inn": "الاسم العلمي / المادة",
+      "isControlled": "حصر المواد الخاضعة للرقابة",
+      "manufacturer": "الشركة المصنعة",
+      "minStock": "الحد الأدنى للمخزون (وحدة)",
+      "nameRequired": "أدخل اسم الدواء",
+      "note": "ملاحظة",
+      "packUnit": "وحدة الشراء",
+      "saveError": "تعذّر الحفظ. تحقّق من الحقول.",
+      "sku": "الرمز / الباركود",
+      "unitsPerPack": "وحدات في العبوة"
+    },
+    "dispense": {
+      "change": "تغيير",
+      "department": "القسم",
+      "deptOk": "صُرف إلى القسم",
+      "drug": "المنتج",
+      "fulfilled": "صُرف",
+      "genericError": "تعذّر إتمام الصرف.",
+      "give": "صرف",
+      "lineOk": "تم صرف البند",
+      "noAccess": "لا صلاحية للصرف من المخزن",
+      "noReq": "افتح طلبًا من طابور الصيدلية لتصرف بموجبه.",
+      "packs": "عبوة",
+      "patientNoAccess": "الصرف للمريض متاح للصيدلي (يلزم صلاحية الوصفات).",
+      "patientSoon": "سيتوفّر الصرف للمريض في التحديث القادم.",
+      "remaining": "المتبقّي للصرف",
+      "reqLoadError": "تعذّر تحميل الطلب",
+      "reqStatus": "الحالة",
+      "searchDrug": "ابحث عن دواء…",
+      "selectDept": "— اختر قسمًا —",
+      "tabDept": "إلى قسم",
+      "tabPatient": "إلى مريض",
+      "tabReq": "بموجب طلب",
+      "title": "الصرف من المخزن"
+    },
+    "reports": {
+      "byDepartment": "حسب الأقسام",
+      "byTarget": "حسب قنوات الصرف",
+      "controlled": "حصر المواد الخاضعة للرقابة",
+      "controlledTotals": "المواد الخاضعة للرقابة: {{count}} عملية صرف، {{qty}} وحدة",
+      "count": "عمليات صرف",
+      "drug": "المنتج",
+      "dynamics": "تغيّر عمليات الصرف",
+      "kpiControlled": "منها خاضعة للرقابة",
+      "kpiDispenses": "إجمالي عمليات الصرف",
+      "kpiQty": "الوحدات المصروفة",
+      "loadError": "تعذّر تحميل التقرير",
+      "noAccess": "لا يوجد وصول إلى تقارير الصيدلية",
+      "noControlled": "لا توجد عمليات صرف لمواد خاضعة للرقابة في هذه الفترة",
+      "noData": "لا توجد بيانات لهذه الفترة",
+      "pdf": "تحميل PDF",
+      "pdfError": "تعذّر إنشاء ملف PDF",
+      "qty": "وحدات",
+      "title": "تقارير الصرف",
+      "topDrugs": "أكثر الأدوية صرفًا"
+    },
+    "req": {
+      "addLine": "إضافة بند",
+      "cancel": "إلغاء",
+      "changeDrug": "تغيير الدواء",
+      "confirmCancel": "إلغاء الطلب؟",
+      "count": "الإجمالي: {{count}}",
+      "create": "طلب جديد",
+      "createTitle": "طلب جديد",
+      "depRequired": "اختر قسمًا",
+      "department": "القسم",
+      "dispense": "صرف",
+      "editTitle": "تعديل الطلب",
+      "emptyDept": "لا توجد طلبات. أنشئ الأول.",
+      "emptyQueue": "لا توجد طلبات مفتوحة.",
+      "items": "البنود",
+      "itemsRequired": "أضف بندًا واحدًا على الأقل",
+      "lineNote": "ملاحظة على البند",
+      "loadError": "تعذّر تحميل الطلبات",
+      "mineOnly": "طلباتي فقط",
+      "noAccess": "لا يوجد وصول إلى الطلبات",
+      "note": "ملاحظة",
+      "packs": "عبوات",
+      "priority": "الأولوية",
+      "saveDraft": "حفظ المسودة",
+      "saveError": "تعذّر الحفظ. تحقّق من الحقول.",
+      "saveSubmit": "حفظ وإرسال",
+      "searchDrug": "ابحث عن دواء…",
+      "selectDept": "— اختر قسمًا —",
+      "submit": "إرسال",
+      "tabDept": "طلبات الأقسام",
+      "tabQueue": "طابور الصيدلية",
+      "title": "طلبات إلى الصيدلية"
+    },
+    "suppliers": {
+      "add": "إضافة مورّد",
+      "col": {
+        "contact": "جهة الاتصال",
+        "name": "الاسم",
+        "phone": "رقم الهاتف",
+        "taxId": "الرقم الضريبي"
+      },
+      "confirmArchive": "إزالة المورّد من القائمة النشطة؟",
+      "count": "إجمالي المورّدين: {{count}}",
+      "createTitle": "مورّد جديد",
+      "editTitle": "تعديل المورّد",
+      "empty": "القائمة فارغة. أضف المورّد الأول.",
+      "field": {
+        "address": "العنوان",
+        "email": "البريد الإلكتروني",
+        "note": "ملاحظة"
+      },
+      "loadError": "تعذّر تحميل المورّدين",
+      "nameRequired": "أدخل اسم المورّد",
+      "noAccess": "لا يوجد وصول إلى المورّدين",
+      "saveError": "تعذّر الحفظ. تحقّق من الحقول.",
+      "searchPlaceholder": "ابحث بالاسم أو جهة الاتصال أو الرقم الضريبي…",
+      "showArchived": "عرض الأرشيف",
+      "title": "المورّدون"
     }
   }
 }

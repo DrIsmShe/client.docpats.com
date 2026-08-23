@@ -120,7 +120,8 @@
         "departmentRequired": "Select a department",
         "generic": "Failed to publish the announcement"
       }
-    }
+    },
+    "unread": "Unread"
   },
   "patientTelemed": {
     "eyebrow": "Patient portal",
@@ -653,7 +654,8 @@
       "phone": "Phone",
       "email": "Email",
       "dateOfBirth": "Date of birth",
-      "gender": "Gender"
+      "gender": "Gender",
+      "departmentNone": "No department"
     },
     "gender": {
       "male": "Male",
@@ -673,6 +675,60 @@
       "linkAlreadyLinked": "The patient is already linked to another user. Unlink first.",
       "linkFailed": "Failed to link to user",
       "unlinkFailed": "Failed to unlink"
+    },
+    "consentRequest": {
+      "notLinkedHint": "First link the record to a DocPats account",
+      "openButton": "Request access",
+      "successToast": "✓ Request sent to the patient"
+    },
+    "card": {
+      "backTitle": "What you'll get after activation",
+      "benefits": {
+        "ai": {
+          "text": "Interpreting test results, explaining the diagnosis, answering questions about symptoms.",
+          "title": "AI assistant"
+        },
+        "history": {
+          "text": "All appointments, prescriptions, orders and doctors' conclusions in a single medical history.",
+          "title": "History in one place"
+        },
+        "online": {
+          "text": "Ask doctors questions in a secure chat — no appointment needed.",
+          "title": "Online consultations"
+        },
+        "results": {
+          "text": "Tests, images and doctors' conclusions appear in the personal account automatically — from this clinic and any other DocPats clinic.",
+          "title": "Test results"
+        },
+        "scheduling": {
+          "text": "Book a doctor through the app and get a reminder the day before the visit.",
+          "title": "Booking and reminders"
+        }
+      },
+      "copied": "✓ Copied",
+      "copy": "📋 Copy details",
+      "copyEmail": "Email",
+      "copyError": "Couldn't copy",
+      "copyLogin": "Login",
+      "copyPassword": "Password",
+      "done": "Done",
+      "emailSentNotice": "The card has been sent to {{email}}. The patient will receive a copy of the sign-in details by email.",
+      "frontType": "Patient card",
+      "fullName": "Full name",
+      "howToActivate": "How to activate",
+      "print": "🖨️ Print",
+      "qrHint": "Scan to log in",
+      "registered": "Registered",
+      "step1": "Open docpats.com or scan the QR code",
+      "step2": "Log in with the temporary email and password from this card",
+      "step3": "Enter your permanent email and choose a password",
+      "step4": "Done — access to the full history is open",
+      "subtitle": "Print it and hand it to the patient. Once this window is closed the password will not appear anywhere in the system again — be sure to keep the card.",
+      "tagline": "Your health in one place",
+      "title": "Patient card — hand it to the patient",
+      "tmpEmail": "Temporary email",
+      "tmpPassword": "Temporary password",
+      "validUntil": "Activate before"
     }
   },
   "common": {
@@ -696,7 +752,14 @@
     "logout": "Logout",
     "settings": "Settings",
     "error": "Something went wrong",
-    "errorReload": "Reload"
+    "errorReload": "Reload",
+    "close": "Close",
+    "home": "Home",
+    "loadError": "Loading error.",
+    "moveDown": "Down",
+    "moveUp": "Up",
+    "search": "Search",
+    "nothingFound": "Nothing found"
   },
   "publicPage": {
     "title": "Public page",
@@ -757,7 +820,158 @@
       "2x1": "2×1 (wider)",
       "1x2": "1×2 (taller)",
       "2x2": "2×2 (large)"
-    }
+    },
+    "addArticle": "+ Article",
+    "artAuthors": "Authors",
+    "artBody": "Text",
+    "artCover": "Cover",
+    "artDisabled": "blocked",
+    "artExcerpt": "Abstract",
+    "artGallery": "Article gallery",
+    "artLinks": "Links / sources",
+    "artMetaDesc": "Meta description",
+    "artMetaKeywords": "Meta keywords",
+    "artTags": "Tags",
+    "artTitle": "Title",
+    "articlesOf": "Articles in the category",
+    "csvHint": "Comma-separated.",
+    "editArticle": "Editing the article",
+    "loadError": "Loading error.",
+    "newArticle": "New article",
+    "noArticles": "No articles yet. Add the first one.",
+    "openPage": "open",
+    "photoCaption": "Caption",
+    "photoDescription": "Description (shown when the photo is opened)",
+    "publish": "Publish",
+    "statusDraft": "draft",
+    "statusPublished": "published",
+    "unpublish": "Unpublish",
+    "articlesBtn": "Articles",
+    "createError": "Could not create the page.",
+    "createPage": "Create",
+    "editingPage": "Editing",
+    "galleryBtn": "Gallery",
+    "newPageTitle": "New page title",
+    "noPages": "No pages yet. Create the first one above.",
+    "noParent": "— Root category —",
+    "parentCategory": "Parent Category",
+    "subOf": "Subcategory:",
+    "addPhoto": "Add photos",
+    "confirmDeletePhoto": "Delete this photo?",
+    "galleryOf": "Category gallery",
+    "noPhotos": "No photos yet. Add the first one.",
+    "blockConfig": "Configure",
+    "blockHide": "Hide",
+    "blockShow": "Show",
+    "layoutHint": "Drag the blocks to reorder them. ⚙ is content, the eye shows or hides.",
+    "themeLoadError": "Could not load the themes.",
+    "themePreview": "Preview",
+    "pageEditorHint": "Add blocks from the palette and drag them to reorder. The menu and footer are taken from the storefront automatically.",
+    "pageEmptyBlocks": "No blocks yet — add them from the palette above.",
+    "alignCenter": "Centred",
+    "alignLeft": "Left",
+    "bhHigh": "High",
+    "bhLow": "Low",
+    "bhMid": "Medium",
+    "btnGhost": "Outlined",
+    "btnHref": "Where it leads",
+    "btnLabel": "Text",
+    "btnPrimary": "Primary",
+    "btnStyle": "Style",
+    "cfgAccent": "Accent",
+    "cfgAddAdvantage": "+ Advantage",
+    "cfgAddBtn": "+ Button",
+    "cfgAddFaq": "+ Question",
+    "cfgAddNavItem": "+ Menu item",
+    "cfgAddStat": "+ Metric",
+    "cfgAnswer": "Answer",
+    "cfgArticlesTitle": "Section heading",
+    "cfgBannerH": "Banner height",
+    "cfgBlockBg": "Block background",
+    "cfgDeptHint": "Departments come from the admin panel. Here you can extend each card: extra text, icon, accent, size.",
+    "cfgDeptNote": "Extra text",
+    "cfgFooterNote": "Footer note",
+    "cfgGalleryTitle": "Section heading",
+    "cfgHours": "Opening hours",
+    "cfgIcon": "Icon",
+    "cfgLabel": "Caption",
+    "cfgLeadFormTitle": "Request form heading",
+    "cfgLightText": "Light text (for a dark background)",
+    "cfgNavHint": "They are added after the automatic items (site sections).",
+    "cfgNavItems": "Custom menu items",
+    "cfgNavReorderHint": "Use the arrows to reorder and the checkbox to show or hide.",
+    "cfgNavVisible": "Menu items (site sections)",
+    "cfgNoDepts": "No departments. Add them in the admin panel (Departments).",
+    "cfgPageAlign": "Alignment",
+    "cfgPageBanner": "Page banner",
+    "cfgPageBg": "Page background",
+    "cfgPageButtons": "Header buttons",
+    "cfgPageCta": "Call-to-action block (CTA)",
+    "cfgPageDividers": "Dividers between blocks",
+    "cfgPageExtras": "Extra blocks at the bottom",
+    "cfgPageH1": "Page heading",
+    "cfgPageHint": "Shown when the section is opened as a separate page (from the menu).",
+    "cfgPageIntro": "Intro text (above the block)",
+    "cfgPageOutro": "Text at the bottom of the page",
+    "cfgPagePad": "Spacing",
+    "cfgPageTitle": "Styling of the separate page",
+    "cfgPageWidth": "Content width",
+    "cfgQuestion": "Question",
+    "cfgSeo": "Page SEO",
+    "cfgShowDoctorsStat": "Show the number of doctors",
+    "cfgShowLeadForm": "Show the request form",
+    "cfgSlogan": "Slogan",
+    "cfgSloganPh": "Health starts here",
+    "cfgSpan": "Size",
+    "cfgSubtitle": "Subheading",
+    "cfgText": "Text",
+    "cfgTitle": "Title",
+    "cfgTitleOnBanner": "Heading over the banner",
+    "cfgUpload": "Upload an image",
+    "cfgValue": "Value",
+    "ctaBtn": "Button text",
+    "ctaHref": "Or a link (instead of the phone)",
+    "ctaPhone": "Phone",
+    "ctaTitle": "CTA heading",
+    "linkExternal": "External link / phone",
+    "linkNone": "— not selected —",
+    "linkUrl": "URL or tel:",
+    "padCompact": "Compact",
+    "padNormal": "Normal",
+    "padRoomy": "Spacious",
+    "seoDesc": "Description (meta description)",
+    "seoTitle": "Title (tab/search)",
+    "widthNarrow": "Narrow",
+    "widthNormal": "Normal",
+    "widthWide": "Wide",
+    "coverError": "Could not upload the cover",
+    "coverReplace": "Replace",
+    "coverUpload": "Upload",
+    "fieldCallHours": "Opening hours",
+    "fieldCallPhone": "Booking phone",
+    "fieldCover": "Cover (hero)",
+    "fieldCoverHint": "Needed for the “Photo” and “Split” hero styles. Saved as soon as it is uploaded.",
+    "fieldFaq": "Questions & answers",
+    "fieldPageBg": "Page background",
+    "fieldPageBgHint": "The background of the whole page. Active when “Page background → Photo” is selected in styling. Saved as soon as it is uploaded.",
+    "fieldSlogan": "Slogan",
+    "fieldSloganPh": "Health starts here",
+    "pageBgError": "Could not upload the background",
+    "heroHeightAuto": "Auto",
+    "heroHeightLabel": "Cover height",
+    "pageBgDimLabel": "Photo brightness",
+    "pageBgDimMax": "Full photo",
+    "pageBgDimMin": "Dimmed",
+    "pageBgNeedPhoto": "Upload a background photo in “Clinic content”, otherwise the background stays plain.",
+    "themeCard": "Cards",
+    "themeContentWidth": "Content width",
+    "themeFont": "Fonts",
+    "themeHero": "Cover (hero)",
+    "themePageBg": "Page background",
+    "themePalette": "Palette",
+    "themePresets": "Ready-made themes",
+    "confirmDeleteArticle": "Delete the article “{{title}}”?",
+    "confirmDeletePage": "Delete the page “{{title}}”?"
   },
   "layout": {
     "brandName": "DocPats Clinic",
@@ -838,8 +1052,66 @@
         "ctScanResults": "CT results",
         "mriResults": "MRI results",
         "ultrasoundResults": "Ultrasound results",
-        "laboratoryTestResults": "Laboratory results"
-      }
+        "laboratoryTestResults": "Laboratory results",
+        "diagnosisText": "Diagnosis (text in your own language)"
+      },
+      "amendChangesLegend": "Changes",
+      "amendTitle": "Amending the record",
+      "applyAmendButton": "Apply the amendment",
+      "errors": {
+        "amendFailed": "Could not apply the amendment",
+        "deleteFailed": "Could not delete the record",
+        "signFailed": "Could not sign the record",
+        "signNeedsDx": "Fill in the primary diagnosis before signing (Edit → ICD code + text).",
+        "cannotEditNonDraft": "This record can no longer be edited as a draft — use “Amend”.",
+        "codeRequired": "Enter an ICD-10 code",
+        "dxTextRequired": "Enter the diagnosis text",
+        "reasonTooShort": "Describe the reason for the amendment (at least {{min}} characters)."
+      },
+      "reasonLabel": "What is changing and why",
+      "reasonLegend": "Reason for the amendment",
+      "reasonPlaceholder": "For example: recommendations refined after new test results",
+      "amendButton": "Amend",
+      "confirmDelete": "Delete this encounter record? This cannot be undone.",
+      "createdAt": "Created",
+      "deleteButton": "Delete",
+      "detailTitle": "Encounter record",
+      "editButton": "Edit",
+      "historyTitle": "Change history",
+      "mainDiagnosisTitle": "Primary diagnosis (ICD-10)",
+      "noContent": "The clinical text is empty.",
+      "noDiagnosis": "No diagnosis specified",
+      "signButton": "Sign",
+      "signedAt": "Signed",
+      "updatedAt": "Amended",
+      "clinicalContentTitle": "Clinical information",
+      "createTitle": "New encounter record",
+      "editDraftTitle": "Edit the draft",
+      "hints": {
+        "diagnosisText": "Filled in from ICD-10. Translate or rephrase it in your own language."
+      },
+      "saveDraftButton": "Save as draft",
+      "saveSignedButton": "Sign and save",
+      "studyResultsTitle": "Test results",
+      "templates": {
+        "pick": "Templates"
+      },
+      "addButton": "+ New record",
+      "addFirstButton": "Create the first record",
+      "colClinic": "Clinic",
+      "colDate": "Date",
+      "colDiagnosis": "Diagnosis",
+      "colStatus": "Status",
+      "emptyText": "There are no encounter records yet.",
+      "listTitle": "All records",
+      "loadError": "Could not load the medical histories",
+      "status": {
+        "amended": "Amended",
+        "draft": "Draft",
+        "preliminary": "Preliminary",
+        "signed": "Signed"
+      },
+      "reasonHint": "At least {{min}} characters. It will be kept in the change log."
     },
     "prescriptions": {
       "listTitle": "Prescriptions",
@@ -1022,6 +1294,67 @@
         "Gastroscopy": "Gastroscopy",
         "Colonoscopy": "Colonoscopy",
         "CapsuleEndoscopy": "Capsule endoscopy"
+      },
+      "confirmDelete": "Delete this study? The study record will be removed; the image files stay in cloud storage (they can be purged separately).",
+      "createdAt": "Uploaded",
+      "deleteButton": "Delete",
+      "editButton": "Edit",
+      "errors": {
+        "deleteFailed": "Could not delete the study",
+        "studyTypeRequired": "Choose the study type",
+        "uploadFailed": "Could not load the study",
+        "loadFailed": "Could not load the studies",
+        "fileTooLarge": "The file “{{name}}” is larger than {{max}} MB.",
+        "tooManyFiles": "You can attach at most {{max}} files."
+      },
+      "fields": {
+        "diagnosis": "Impression",
+        "doctorNotes": "Doctor's notes",
+        "report": "Protocol",
+        "contrastUsed": "With contrast",
+        "validatedByDoctor": "Confirmed by a doctor",
+        "date": "Study date",
+        "nameOfExam": "Examination name",
+        "radiationDose": "Radiation dose",
+        "recommendation": "Recommendations",
+        "studyType": "Study type"
+      },
+      "noImages": "No images are attached to this study.",
+      "noReport": "The description is not filled in yet.",
+      "updatedAt": "Changed",
+      "validatedFull": "Confirmed by a doctor",
+      "withContrast": "With contrast",
+      "editNote": "Images cannot be changed after upload. To replace the files, delete the study and create a new one.",
+      "editTitle": "Edit the study",
+      "flagsTitle": "Parameters",
+      "reportTitle": "Study protocol",
+      "createTitle": "New study",
+      "filesTitle": "Images and files",
+      "pickFilesButton": "Choose files…",
+      "placeholders": {
+        "report": "Description of the images and findings…"
+      },
+      "studyInfoTitle": "Research",
+      "templates": {
+        "pick": "Templates"
+      },
+      "uploadButton": "Upload",
+      "uploading": "Loading…",
+      "addButton": "+ New study",
+      "addFirstButton": "Upload the first study",
+      "emptyText": "No studies uploaded yet.",
+      "listTitle": "Files",
+      "validatedShort": "Confirmed",
+      "viewImage": "Open image {{n}}"
+    },
+    "sectionTitle": "Medical record",
+    "subRecord": {
+      "confirmDelete": "Delete this record?",
+      "editTitle": "Editing",
+      "errors": {
+        "deleteFailed": "Failed to delete",
+        "loadFailed": "Could not load the records",
+        "required": "Fill in this field"
       }
     }
   },
@@ -1332,7 +1665,8 @@
       "tooManyRequests": "Too many requests. Please wait a minute.",
       "tooManyAttempts": "Too many failed attempts. Please request a new code.",
       "fixErrors": "Please fix the errors below",
-      "generic": "Couldn't complete registration. Please try again."
+      "generic": "Couldn't complete registration. Please try again.",
+      "alreadyMember": "You are already a member of this clinic."
     },
     "errorStates": {
       "expired": {
@@ -1471,7 +1805,8 @@
       "reviews": "Reviews",
       "analytics": "Analytics",
       "leads": "Leads"
-    }
+    },
+    "noActions": "Actions for your role will appear in future updates."
   },
   "schedule": {
     "title": "Doctor schedule",
@@ -1823,7 +2158,8 @@
         "fix": "Please fix the errors in the form",
         "generic": "Failed to create the consilium"
       }
-    }
+    },
+    "videoCall": "Video conference"
   },
   "telemed": {
     "back": "← Dashboard",
@@ -1928,7 +2264,15 @@
       "in_progress": "In progress",
       "closed": "Closed",
       "all": "All"
-    }
+    },
+    "back": "← Dashboard",
+    "empty": "No leads",
+    "subtitle": "Requests from the clinic website",
+    "title": "Leads",
+    "toClosed": "Close",
+    "toInProgress": "Take in progress",
+    "toNew": "Move back to new",
+    "updateFailed": "Could not update the status"
   },
   "analytics": {
     "range": {
@@ -1947,7 +2291,19 @@
       "completed": "Completed",
       "cancelled": "Cancelled",
       "no_show": "No-show"
-    }
+    },
+    "back": "← Dashboard",
+    "byStatus": "Appointments by status",
+    "dailyTrend": "Daily trend",
+    "doctorLoad": "Doctor workload",
+    "newPatients": "New patients",
+    "noAccessBody": "You do not have permission to view analytics",
+    "noAccessTitle": "Not authorized",
+    "noData": "No data for this period",
+    "noShowRate": "No-show rate",
+    "subtitle": "Clinic performance overview",
+    "title": "Analytics",
+    "totalAppointments": "Total appointments"
   },
   "publicClinic": {
     "nav_whyUs": "About us",
@@ -1959,5 +2315,123 @@
     "nav_reviews": "Reviews",
     "nav_faq": "Questions",
     "nav_contacts": "Contacts"
+  },
+  "departments": {
+    "archive": "Archive",
+    "archiveFailed": "Could not archive the department",
+    "archivedBadge": "archived",
+    "back": "← Dashboard",
+    "cannotArchiveSystem": "A system department cannot be archived",
+    "create": "Create a department",
+    "createFirst": "Create the first department",
+    "empty": "No departments yet",
+    "errorTitle": "Error",
+    "listTitle": "Department list",
+    "restore": "Restore",
+    "restoreFailed": "Could not restore the department",
+    "searchPlaceholder": "Search by name or code…",
+    "showArchived": "Show archive",
+    "subtitle": "Clinic structure by department",
+    "systemBadge": "system",
+    "title": "Departments",
+    "form": {
+      "code": "Code",
+      "codeHint": "A short code, unique within the clinic",
+      "createTitle": "New department",
+      "description": "Content",
+      "editTitle": "Edit the department",
+      "errors": {
+        "codeTaken": "This code is already used in the clinic",
+        "fix": "Please fix the errors in the form",
+        "generic": "Could not save the department",
+        "nameRequired": "Enter a name"
+      },
+      "head": "Head of department",
+      "headNone": "— not assigned —",
+      "name": "Name",
+      "specialty": "Speciality"
+    },
+    "confirmArchive": "Archive “{{name}}”?"
+  },
+  "services": {
+    "addService": "Add a service",
+    "archive": "Archive",
+    "archiveError": "Could not archive.",
+    "backToDashboard": "To the dashboard",
+    "currency": "Currency",
+    "department": "Department",
+    "description": "Content",
+    "duration": "Duration, min",
+    "editService": "Editing the service",
+    "loadError": "Loading error.",
+    "minShort": "min",
+    "name": "Name",
+    "newService": "New service",
+    "noDepartment": "— No department —",
+    "noDepartmentGroup": "No department",
+    "noServices": "No services yet. Add the first one above.",
+    "order": "Order",
+    "price": "Price",
+    "priceFrom": "Price from",
+    "priceFromShort": "from",
+    "priceTo": "Price up to",
+    "priceType": {
+      "free": "free",
+      "on_request": "for"
+    },
+    "priceTypeLabel": "Price type",
+    "saveError": "Could not save.",
+    "statusArchived": "archived",
+    "title": "Services and prices",
+    "unknownDept": "Department",
+    "confirmArchive": "Archive the service “{{name}}”?"
+  },
+  "subscription": {
+    "trialEnded": "The trial period has ended.",
+    "trialEndsIn": "The clinic's trial period ends in",
+    "newRecordsPaused": "New records are not being created for now.",
+    "choosePlan": "Choose a plan",
+    "pay": "Pay"
+  },
+  "examTemplates": {
+    "title": "Protocol templates",
+    "add": "Add a template",
+    "searchPlaceholder": "By heading or text",
+    "study": "Study",
+    "heading": "Heading",
+    "text": "Text",
+    "headingHint": "Short — how the wording is named in the list",
+    "textHint": "The text that will be inserted into the protocol field",
+    "emptyTextHint": "If the text is empty, the heading is inserted instead.",
+    "pickerSearch": "Search the wordings",
+    "pickerEmpty": "There are no templates for this block yet. You can create them in “Protocol templates”."
+  },
+  "summary": {
+    "loading": "Building the record…",
+    "note": "The summary is assembled from the record entries without paraphrasing. Full sections are on the tabs above.",
+    "critical": "Critical values",
+    "labDeviations": "Lab deviations",
+    "deviations": "Deviations",
+    "allergies": "Allergies",
+    "chronic": "Chronic conditions",
+    "family": "Family history",
+    "operations": "Operations",
+    "currentMeds": "Currently taking",
+    "previsit": "What the patient reported before the visit",
+    "previsitVerbatim": "The patient's answers verbatim",
+    "marked": "Reported:",
+    "was": "was",
+    "norm": "reference"
+  },
+  "theme": {
+    "resetToTheme": "Reset to the theme",
+    "pickColor": "Pick a colour from the palette",
+    "noIcon": "No icon",
+    "custom": "custom"
+  },
+  "icd": {
+    "noMatches": "No matches",
+    "searching": "Searching…",
+    "category": "category"
   }
 }

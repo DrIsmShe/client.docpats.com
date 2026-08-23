@@ -43,5 +43,7 @@
       "changeScopes": "Girişi dəyiş",
       "revoke": "Girişi ləğv et"
     }
-  }
+  },
+  "kindScientific": "Elmi",
+  "kindOpinion": "Rəy"
 }

@@ -213,6 +213,9 @@ function literalKeys(src, names) {
     while ((m = re.exec(src))) keys.add(m[1]);
   }
   for (const k of keysFromConfig(src)) keys.add(k);
+  // Ключ со звёздочкой — не ключ, а запись в комментарии вида
+  // t("booking.*", …), объясняющая соглашение файла.
+  for (const k of [...keys]) if (k.includes("*")) keys.delete(k);
   return keys;
 }
 

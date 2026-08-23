@@ -23,6 +23,7 @@
 // patientSummary.service.js).
 
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "../../../axios";
 import "./summaryTab.css";
 
@@ -35,6 +36,7 @@ function fmtDate(d) {
 
 /** Стрелка динамики. Знак важнее числа: врач смотрит «куда идёт». */
 function Trend({ trend }) {
+  const { t } = useTranslation("clinic");
   if (!trend || trend.direction === "same") return null;
   const up = trend.direction === "up";
   return (
@@ -43,12 +45,13 @@ function Trend({ trend }) {
       {trend.percent !== null && trend.percent !== undefined
         ? ` ${Math.abs(trend.percent)}%`
         : ""}
-      <span className="sum-trend__prev">было {trend.previous}</span>
+      <span className="sum-trend__prev">{t("summary.was")} {trend.previous}</span>
     </span>
   );
 }
 
 function LabRow({ item }) {
+  const { t } = useTranslation("clinic");
   const range = item.referenceRange;
   const rangeText =
     range && (range.min !== null || range.max !== null)
@@ -64,7 +67,7 @@ function LabRow({ item }) {
         {String(item.value)}
         {item.unit ? ` ${item.unit}` : ""}
       </span>
-      {rangeText && <span className="sum-lab__range">норма {rangeText}</span>}
+      {rangeText && <span className="sum-lab__range">{t("summary.norm")} {rangeText}</span>}
       <Trend trend={item.trend} />
       <span className="sum-lab__date">{fmtDate(item.measuredAt)}</span>
     </li>
@@ -97,6 +100,7 @@ function Block({ title, items, empty, tone, render }) {
 }
 
 export default function SummaryTab({ patient }) {
+  const { t } = useTranslation("clinic");
   const [summary, setSummary] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -125,7 +129,7 @@ export default function SummaryTab({ patient }) {
     load();
   }, [load]);
 
-  if (loading) return <p className="sum-hint">Собираем карту…</p>;
+  if (loading) return <p className="sum-hint">{t("summary.loading")}</p>;
   if (error) return <p className="sum-error">{error}</p>;
   if (!summary) return null;
 
@@ -141,7 +145,7 @@ export default function SummaryTab({ patient }) {
       {summary.previsit && (
         <section className="sum-block sum-block--previsit">
           <h3 className="sum-block__title">
-            Пациент рассказал перед приёмом
+            {t("summary.previsit")}
             <span className="sum-block__count">
               {fmtDate(summary.previsit.submittedAt)}
             </span>
@@ -149,7 +153,7 @@ export default function SummaryTab({ patient }) {
 
           {summary.previsit.redFlags.some((f) => f.urgent) && (
             <p className="sum-previsit__urgent">
-              Отмечено:{" "}
+              {t("summary.marked")}{" "}
               {summary.previsit.redFlags
                 .filter((f) => f.urgent)
                 .map((f) => f.label)
@@ -175,7 +179,7 @@ export default function SummaryTab({ patient }) {
               слова пациента точнее, и врач должен иметь к ним доступ
               в один клик, а не через другую вкладку. */}
           <details className="sum-previsit__raw">
-            <summary>Ответы пациента дословно</summary>
+            <summary>{t("summary.previsitVerbatim")}</summary>
             <ul>
               {summary.previsit.answers.map((a, i) => (
                 <li key={i}>
@@ -190,7 +194,7 @@ export default function SummaryTab({ patient }) {
       {/* Аллергии первыми и всегда — единственный раздел карты,
           незнание которого убивает в течение минут. */}
       <Block
-        title="Аллергии"
+        title={t("summary.allergies")}
         tone="danger"
         items={summary.allergies}
         empty="Аллергии не зафиксированы"
@@ -204,7 +208,7 @@ export default function SummaryTab({ patient }) {
 
       {critical.length > 0 && (
         <Block
-          title="Критические показатели"
+          title={t("summary.critical")}
           tone="danger"
           items={critical}
           empty=""
@@ -213,7 +217,7 @@ export default function SummaryTab({ patient }) {
       )}
 
       <Block
-        title="Принимает сейчас"
+        title={t("summary.currentMeds")}
         items={summary.prescriptions}
         empty="Действующих назначений нет"
         render={(p) => (
@@ -228,7 +232,7 @@ export default function SummaryTab({ patient }) {
       />
 
       <Block
-        title="Хронические заболевания"
+        title={t("summary.chronic")}
         items={summary.chronic}
         empty="Не зафиксированы"
         render={(c) => (
@@ -240,7 +244,7 @@ export default function SummaryTab({ patient }) {
       />
 
       <Block
-        title="Отклонения в анализах"
+        title={t("summary.labDeviations")}
         tone="warn"
         items={abnormal}
         empty={
@@ -267,7 +271,7 @@ export default function SummaryTab({ patient }) {
       />
 
       <Block
-        title="Операции"
+        title={t("summary.operations")}
         items={summary.operations}
         empty="Не зафиксированы"
         render={(o) => (
@@ -279,7 +283,7 @@ export default function SummaryTab({ patient }) {
       />
 
       <Block
-        title="Наследственность"
+        title={t("summary.family")}
         items={summary.familyHistory}
         empty="Не зафиксирована"
         render={(f) => (

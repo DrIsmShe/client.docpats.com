@@ -120,7 +120,8 @@
         "departmentRequired": "Şöbə seçin",
         "generic": "Elanı dərc etmək alınmadı"
       }
-    }
+    },
+    "unread": "Oxunmayıb"
   },
   "patientTelemed": {
     "eyebrow": "Xəstə portalı",
@@ -653,7 +654,8 @@
       "phone": "Telefon",
       "email": "E-poçt",
       "dateOfBirth": "Doğum tarixi",
-      "gender": "Cins"
+      "gender": "Cins",
+      "departmentNone": "Şöbəsiz"
     },
     "gender": {
       "male": "Kişi",
@@ -673,6 +675,60 @@
       "linkAlreadyLinked": "Pasiyent artıq başqa istifadəçiyə bağlıdır. Əvvəlcə əlaqəni silin.",
       "linkFailed": "İstifadəçiyə bağlanmadı",
       "unlinkFailed": "Əlaqə silinmədi"
+    },
+    "consentRequest": {
+      "notLinkedHint": "Əvvəlcə kartı DocPats hesabı ilə əlaqələndirin",
+      "openButton": "Giriş istə",
+      "successToast": "✓ Sorğu pasiyentə göndərildi"
+    },
+    "card": {
+      "backTitle": "Aktivləşdirdikdən sonra nə əldə edəcəksiniz",
+      "benefits": {
+        "ai": {
+          "text": "Analizlərin izahı, diaqnozun açıqlanması, simptomlarla bağlı suallara cavablar.",
+          "title": "AI köməkçisi"
+        },
+        "history": {
+          "text": "Bütün qəbullar, reseptlər, təyinatlar və həkim rəyləri — bir xəstəlik tarixçəsində.",
+          "title": "Tarixçə bir yerdə"
+        },
+        "online": {
+          "text": "Qorunan çatda həkimlərə sual verin — qəbula yazılmadan.",
+          "title": "Onlayn konsultasiyalar"
+        },
+        "results": {
+          "text": "Analizlər, təsvirlər və həkim rəyləri şəxsi kabinetdə avtomatik görünəcək — bu və istənilən digər DocPats klinikasından.",
+          "title": "Müayinə nəticələri"
+        },
+        "scheduling": {
+          "text": "Həkimə tətbiq vasitəsilə yazılın, qəbuldan bir gün əvvəl xatırlatma alın.",
+          "title": "Qeydiyyat və xatırlatmalar"
+        }
+      },
+      "copied": "✓ Kopyalandı",
+      "copy": "📋 Məlumatları kopyala",
+      "copyEmail": "Email",
+      "copyError": "Kopyalanmadı",
+      "copyLogin": "Giriş",
+      "copyPassword": "Şifrə",
+      "done": "Hazırdır",
+      "emailSentNotice": "Kart {{email}} ünvanına göndərildi. Pasiyent giriş məlumatlarının surətini e-poçtla alacaq.",
+      "frontType": "Pasiyent kartı",
+      "fullName": "Tam ad",
+      "howToActivate": "Necə aktivləşdirilir",
+      "print": "🖨️ Çap et",
+      "qrHint": "Giriş üçün skan edin",
+      "registered": "Qeydiyyatdan keçib",
+      "step1": "docpats.com saytını açın və ya QR kodu skan edin",
+      "step2": "Bu kartdakı müvəqqəti e-poçt və parolla daxil olun",
+      "step3": "Daimi e-poçtunuzu daxil edin və parol təyin edin",
+      "step4": "Hazırdır — tam tarixçəyə giriş açıqdır",
+      "subtitle": "Çap edin və pasiyentə verin. Bu pəncərə bağlandıqdan sonra parol sistemdə bir daha görünməyəcək — kartı mütləq saxlayın.",
+      "tagline": "Sağlamlıq bir yerdə",
+      "title": "Pasiyent kartı — pasiyentə verin",
+      "tmpEmail": "Müvəqqəti e-poçt",
+      "tmpPassword": "Müvəqqəti parol",
+      "validUntil": "Bu tarixədək aktivləşdirin"
     }
   },
   "common": {
@@ -696,7 +752,14 @@
     "logout": "Çıxış",
     "settings": "Tənzimləmələr",
     "error": "Nəsə səhv oldu",
-    "errorReload": "Yenidən yüklə"
+    "errorReload": "Yenidən yüklə",
+    "close": "Bağla",
+    "home": "Ana səhifə",
+    "loadError": "Yükləmə xətası.",
+    "moveDown": "Aşağı",
+    "moveUp": "Yuxarı",
+    "search": "Axtarış",
+    "nothingFound": "Heç nə tapılmadı"
   },
   "publicPage": {
     "title": "İctimai səhifə",
@@ -757,7 +820,158 @@
       "2x1": "2×1 (daha geniş)",
       "1x2": "1×2 (daha hündür)",
       "2x2": "2×2 (böyük)"
-    }
+    },
+    "addArticle": "+ Məqalə",
+    "artAuthors": "Müəlliflər",
+    "artBody": "Mətn",
+    "artCover": "Üz qabığı",
+    "artDisabled": "bloklanıb",
+    "artExcerpt": "Xülasə",
+    "artGallery": "Məqalə qalereyası",
+    "artLinks": "Keçidlər / mənbələr",
+    "artMetaDesc": "Meta təsviri",
+    "artMetaKeywords": "Meta açar sözlər",
+    "artTags": "Teqlər",
+    "artTitle": "Başlıq",
+    "articlesOf": "Kateqoriyanın məqalələri",
+    "csvHint": "Vergüllə ayırın.",
+    "editArticle": "Məqalənin redaktəsi",
+    "loadError": "Yükləmə xətası.",
+    "newArticle": "Yeni məqalə",
+    "noArticles": "Hələ məqalə yoxdur. İlkini əlavə edin.",
+    "openPage": "aç",
+    "photoCaption": "Yazı",
+    "photoDescription": "Təsvir (şəkil açılanda göstərilir)",
+    "publish": "Dərc et",
+    "statusDraft": "qaralama",
+    "statusPublished": "dərc olunub",
+    "unpublish": "Qaralamaya keçir",
+    "articlesBtn": "Məqalələr",
+    "createError": "Səhifə yaradıla bilmədi.",
+    "createPage": "Yarat",
+    "editingPage": "Redaktə",
+    "galleryBtn": "Qalereya",
+    "newPageTitle": "Yeni səhifənin adı",
+    "noPages": "Hələ səhifə yoxdur. Yuxarıda ilkini yaradın.",
+    "noParent": "— Kök kateqoriya —",
+    "parentCategory": "Əsas kateqoriya",
+    "subOf": "Alt kateqoriya:",
+    "addPhoto": "Foto əlavə et",
+    "confirmDeletePhoto": "Bu şəkil silinsin?",
+    "galleryOf": "Kateqoriya qalereyası",
+    "noPhotos": "Hələ şəkil yoxdur. İlkini əlavə edin.",
+    "blockConfig": "Tənzimlə",
+    "blockHide": "Gizlət",
+    "blockShow": "Göstər",
+    "layoutHint": "Sırayı dəyişmək üçün blokları sürükləyin. ⚙ — məzmun, göz — göstər/gizlət.",
+    "themeLoadError": "Temaları yükləmək alınmadı.",
+    "themePreview": "Baxış",
+    "pageEditorHint": "Blokları palitradan əlavə edin, sıra üçün sürükləyin. Menyu və altlıq vitrindən avtomatik götürülür.",
+    "pageEmptyBlocks": "Hələ blok yoxdur — yuxarıdakı palitradan əlavə edin.",
+    "alignCenter": "Mərkəzə görə",
+    "alignLeft": "Soldan",
+    "bhHigh": "Yüksək",
+    "bhLow": "Aşağı",
+    "bhMid": "Orta",
+    "btnGhost": "Konturlu",
+    "btnHref": "Hara aparır",
+    "btnLabel": "Mətn",
+    "btnPrimary": "Əsas",
+    "btnStyle": "Stil",
+    "cfgAccent": "Vurğu",
+    "cfgAddAdvantage": "+ Üstünlük",
+    "cfgAddBtn": "+ Düymə",
+    "cfgAddFaq": "+ Sual",
+    "cfgAddNavItem": "+ Menyu bəndi",
+    "cfgAddStat": "+ Göstərici",
+    "cfgAnswer": "Cavab",
+    "cfgArticlesTitle": "Bölmənin başlığı",
+    "cfgBannerH": "Bannerin hündürlüyü",
+    "cfgBlockBg": "Blokun fonu",
+    "cfgDeptHint": "Şöbələr admin paneldən götürülür. Burada hər kartı tamamlaya bilərsiniz: əlavə mətn, ikona, vurğu, ölçü.",
+    "cfgDeptNote": "Əlavə mətn",
+    "cfgFooterNote": "Altlıqda yazı",
+    "cfgGalleryTitle": "Bölmənin başlığı",
+    "cfgHours": "İş saatları",
+    "cfgIcon": "İkona",
+    "cfgLabel": "Yazı",
+    "cfgLeadFormTitle": "Müraciət formunun başlığı",
+    "cfgLightText": "Açıq mətn (tünd fon üçün)",
+    "cfgNavHint": "Avtomatik bəndlərdən (sayt bölmələrindən) sonra əlavə olunur.",
+    "cfgNavItems": "Öz menyu bəndləri",
+    "cfgNavReorderHint": "Sıranı oxlarla dəyişin, qeyd işarəsi ilə göstər/gizlət.",
+    "cfgNavVisible": "Menyu bəndləri (sayt bölmələri)",
+    "cfgNoDepts": "Şöbə yoxdur. Onları admin paneldə (Şöbələr) əlavə edin.",
+    "cfgPageAlign": "Düzləndirmə",
+    "cfgPageBanner": "Səhifə banneri",
+    "cfgPageBg": "Səhifənin fonu",
+    "cfgPageButtons": "Başlıqdakı düymələr",
+    "cfgPageCta": "Çağırış bloku (CTA)",
+    "cfgPageDividers": "Bloklar arasında ayırıcılar",
+    "cfgPageExtras": "Aşağıda əlavə bloklar",
+    "cfgPageH1": "Səhifənin başlığı",
+    "cfgPageHint": "Bölmə ayrıca səhifə kimi açılanda göstərilir (menyudan kliklə).",
+    "cfgPageIntro": "Giriş mətni (blokun üstündə)",
+    "cfgPageOutro": "Səhifənin aşağısındakı mətn",
+    "cfgPagePad": "Boşluqlar",
+    "cfgPageTitle": "Ayrıca səhifənin tərtibatı",
+    "cfgPageWidth": "Məzmunun eni",
+    "cfgQuestion": "Sual",
+    "cfgSeo": "Səhifənin SEO-su",
+    "cfgShowDoctorsStat": "Həkimlərin sayını göstər",
+    "cfgShowLeadForm": "Müraciət formunu göstər",
+    "cfgSlogan": "Şüar",
+    "cfgSloganPh": "Sağlamlıq buradan başlayır",
+    "cfgSpan": "Ölçü",
+    "cfgSubtitle": "Alt başlıq",
+    "cfgText": "Mətn",
+    "cfgTitle": "Başlıq",
+    "cfgTitleOnBanner": "Bannerin üzərindəki başlıq",
+    "cfgUpload": "Şəkil yüklə",
+    "cfgValue": "Dəyər",
+    "ctaBtn": "Düymənin mətni",
+    "ctaHref": "Və ya keçid (telefon əvəzinə)",
+    "ctaPhone": "Telefon",
+    "ctaTitle": "CTA başlığı",
+    "linkExternal": "Xarici keçid / telefon",
+    "linkNone": "— seçilməyib —",
+    "linkUrl": "URL və ya tel:",
+    "padCompact": "Yığcam",
+    "padNormal": "Adi",
+    "padRoomy": "Geniş",
+    "seoDesc": "Təsvir (meta description)",
+    "seoTitle": "Title (vərəq/axtarış)",
+    "widthNarrow": "Dar",
+    "widthNormal": "Adi",
+    "widthWide": "Geniş",
+    "coverError": "Üz qabığını yükləmək alınmadı",
+    "coverReplace": "Dəyiş",
+    "coverUpload": "Yüklə",
+    "fieldCallHours": "İş saatları",
+    "fieldCallPhone": "Qeydiyyat telefonu",
+    "fieldCover": "Üz qabığı (hero)",
+    "fieldCoverHint": "«Foto» və «Split» hero üslubları üçün lazımdır. Yükləndiyi anda yadda saxlanılır.",
+    "fieldFaq": "Suallar və cavablar",
+    "fieldPageBg": "Səhifənin fonu",
+    "fieldPageBgHint": "Bütün səhifənin fonu. Tərtibatda «Səhifənin fonu → Foto» seçiləndə aktivdir. Yükləndiyi anda yadda saxlanılır.",
+    "fieldSlogan": "Şüar",
+    "fieldSloganPh": "Sağlamlıq buradan başlayır",
+    "pageBgError": "Fonu yükləmək alınmadı",
+    "heroHeightAuto": "Avto",
+    "heroHeightLabel": "Üz qabığının hündürlüyü",
+    "pageBgDimLabel": "Şəklin parlaqlığı",
+    "pageBgDimMax": "Şəkil bütöv",
+    "pageBgDimMin": "Tündləşdirilib",
+    "pageBgNeedPhoto": "Fon şəklini «Klinikanın məzmunu» bölməsinə yükləyin — əks halda fon adi qalacaq.",
+    "themeCard": "Kartlar",
+    "themeContentWidth": "Məzmunun eni",
+    "themeFont": "Şriftlər",
+    "themeHero": "Üz qabığı (hero)",
+    "themePageBg": "Səhifənin fonu",
+    "themePalette": "Palitra",
+    "themePresets": "Hazır temalar",
+    "confirmDeleteArticle": "«{{title}}» məqaləsi silinsin?",
+    "confirmDeletePage": "«{{title}}» səhifəsi silinsin?"
   },
   "layout": {
     "brandName": "DocPats Klinika",
@@ -838,8 +1052,66 @@
         "ctScanResults": "KT nəticələri",
         "mriResults": "MRT nəticələri",
         "ultrasoundResults": "USM nəticələri",
-        "laboratoryTestResults": "Laborator nəticələr"
-      }
+        "laboratoryTestResults": "Laborator nəticələr",
+        "diagnosisText": "Diaqnoz (ana dildə mətn)"
+      },
+      "amendChangesLegend": "Dəyişikliklər",
+      "amendTitle": "Qeydin düzəlişi",
+      "applyAmendButton": "Düzəlişi tətbiq et",
+      "errors": {
+        "amendFailed": "Düzəlişi tətbiq etmək alınmadı",
+        "deleteFailed": "Qeydi silmək alınmadı",
+        "signFailed": "Qeydi imzalamaq alınmadı",
+        "signNeedsDx": "İmzalamadan əvvəl əsas diaqnozu doldurun (Edit → MKB kodu + mətn).",
+        "cannotEditNonDraft": "Bu qeydi artıq qaralama kimi redaktə etmək olmaz — «Düzəlt»dən istifadə edin.",
+        "codeRequired": "MKB-10 kodunu göstərin",
+        "dxTextRequired": "Diaqnozun mətnini yazın",
+        "reasonTooShort": "Düzəlişin səbəbini yazın (ən azı {{min}} simvol)."
+      },
+      "reasonLabel": "Nə və nə üçün dəyişir",
+      "reasonLegend": "Düzəlişin səbəbi",
+      "reasonPlaceholder": "Məsələn: yeni analizlərdən sonra tövsiyələr dəqiqləşdirilib",
+      "amendButton": "Düzəlt",
+      "confirmDelete": "Bu qəbul qeydi silinsin? Bu addımı geri qaytarmaq olmaz.",
+      "createdAt": "Yaradılıb",
+      "deleteButton": "Sil",
+      "detailTitle": "Qəbul qeydi",
+      "editButton": "Redaktə et",
+      "historyTitle": "Dəyişikliklər tarixçəsi",
+      "mainDiagnosisTitle": "Əsas diaqnoz (MKB-10)",
+      "noContent": "Klinik mətn doldurulmayıb.",
+      "noDiagnosis": "Diaqnoz göstərilməyib",
+      "signButton": "İmzala",
+      "signedAt": "İmzalanıb",
+      "updatedAt": "Dəyişdirilib",
+      "clinicalContentTitle": "Klinik məlumat",
+      "createTitle": "Yeni qəbul qeydi",
+      "editDraftTitle": "Qaralamanı redaktə et",
+      "hints": {
+        "diagnosisText": "MKB-10-dan avtomatik dolduruldu. Öz dilinizdə tərcümə edin və ya yenidən ifadə edin."
+      },
+      "saveDraftButton": "Qaralama kimi saxla",
+      "saveSignedButton": "İmzala və saxla",
+      "studyResultsTitle": "Müayinə nəticələri",
+      "templates": {
+        "pick": "Şablonlar"
+      },
+      "addButton": "+ Yeni qeyd",
+      "addFirstButton": "İlk qeydi yaradın",
+      "colClinic": "Klinika",
+      "colDate": "Tarix",
+      "colDiagnosis": "Diaqnoz",
+      "colStatus": "Status",
+      "emptyText": "Hələ bir qəbul qeydi yoxdur.",
+      "listTitle": "Bütün qeydlər",
+      "loadError": "Xəstəlik tarixçələrini yükləmək alınmadı",
+      "status": {
+        "amended": "Düzəldilib",
+        "draft": "Qaralama",
+        "preliminary": "İlkin",
+        "signed": "İmzalanıb"
+      },
+      "reasonHint": "Ən azı {{min}} simvol. Dəyişikliklər jurnalında saxlanılacaq."
     },
     "prescriptions": {
       "listTitle": "Reseptlər",
@@ -1022,6 +1294,67 @@
         "Gastroscopy": "Qastroskopiya",
         "Colonoscopy": "Kolonoskopiya",
         "CapsuleEndoscopy": "Kapsul endoskopiyası"
+      },
+      "confirmDelete": "Bu tədqiqat silinsin? Tədqiqat qeydi silinəcək, təsvir faylları bulud saxlancında qalacaq (ayrıca təmizlənə bilər).",
+      "createdAt": "Yüklənib",
+      "deleteButton": "Sil",
+      "editButton": "Redaktə et",
+      "errors": {
+        "deleteFailed": "Tədqiqatı silmək alınmadı",
+        "studyTypeRequired": "Tədqiqatın növünü seçin",
+        "uploadFailed": "Tədqiqatı yükləmək alınmadı",
+        "loadFailed": "Tədqiqatları yükləmək alınmadı",
+        "fileTooLarge": "«{{name}}» faylı {{max}} MB-dan böyükdür.",
+        "tooManyFiles": "Ən çox {{max}} fayl əlavə etmək olar."
+      },
+      "fields": {
+        "diagnosis": "Rəy",
+        "doctorNotes": "Həkimin qeydləri",
+        "report": "Protokol",
+        "contrastUsed": "Kontrastla",
+        "validatedByDoctor": "Həkim tərəfindən təsdiqlənib",
+        "date": "Tədqiqatın tarixi",
+        "nameOfExam": "Müayinənin adı",
+        "radiationDose": "Şüalanma dozası",
+        "recommendation": "Tövsiyələr",
+        "studyType": "Müayinə növü"
+      },
+      "noImages": "Bu tədqiqata təsvir əlavə edilməyib.",
+      "noReport": "Təsvir hələ doldurulmayıb.",
+      "updatedAt": "Dəyişdirilib",
+      "validatedFull": "Həkim tərəfindən təsdiqlənib",
+      "withContrast": "Kontrastla",
+      "editNote": "Təsvirləri yükləndikdən sonra dəyişmək olmaz. Faylları əvəz etmək üçün tədqiqatı silin və yenisini yaradın.",
+      "editTitle": "Tədqiqatı redaktə et",
+      "flagsTitle": "Göstəricilər",
+      "reportTitle": "Tədqiqat protokolu",
+      "createTitle": "Yeni tədqiqat",
+      "filesTitle": "Təsvirlər və fayllar",
+      "pickFilesButton": "Faylları seçin…",
+      "placeholders": {
+        "report": "Təsvirlərin və aşkarlanan dəyişikliklərin izahı…"
+      },
+      "studyInfoTitle": "Tədqiqat",
+      "templates": {
+        "pick": "Şablonlar"
+      },
+      "uploadButton": "Yüklə",
+      "uploading": "Yüklənir…",
+      "addButton": "+ Yeni tədqiqat",
+      "addFirstButton": "İlk tədqiqatı yükləyin",
+      "emptyText": "Hələ yüklənmiş tədqiqat yoxdur.",
+      "listTitle": "Fayllarım",
+      "validatedShort": "Təsdiqləndi",
+      "viewImage": "{{n}} nömrəli təsviri aç"
+    },
+    "sectionTitle": "Tibbi kart",
+    "subRecord": {
+      "confirmDelete": "Bu qeyd silinsin?",
+      "editTitle": "Redaktə",
+      "errors": {
+        "deleteFailed": "Silmək mümkün olmadı",
+        "loadFailed": "Qeydləri yükləmək alınmadı",
+        "required": "Bu sahəni doldurun"
       }
     }
   },
@@ -1332,7 +1665,8 @@
       "tooManyRequests": "Çox sayda sorğu. Bir dəqiqə gözləyin.",
       "tooManyAttempts": "Çox sayda uğursuz cəhd. Yeni kod istəyin.",
       "fixErrors": "Aşağıdakı səhvləri düzəldin",
-      "generic": "Qeydiyyat tamamlanmadı. Yenidən cəhd edin."
+      "generic": "Qeydiyyat tamamlanmadı. Yenidən cəhd edin.",
+      "alreadyMember": "Siz artıq bu klinikanın üzvüsünüz."
     },
     "errorStates": {
       "expired": {
@@ -1471,7 +1805,8 @@
       "reviews": "Rəylər",
       "analytics": "Analitika",
       "leads": "Müraciətlər"
-    }
+    },
+    "noActions": "Rolunuz üçün əməliyyatlar növbəti yeniləmələrdə görünəcək."
   },
   "schedule": {
     "title": "Həkim cədvəli",
@@ -1823,7 +2158,8 @@
         "fix": "Formadakı səhvləri düzəldin",
         "generic": "Konsilium yaradılmadı"
       }
-    }
+    },
+    "videoCall": "Videokonfrans"
   },
   "telemed": {
     "back": "← Panel",
@@ -1928,7 +2264,15 @@
       "in_progress": "İşdə",
       "closed": "Bağlanmış",
       "all": "Hamısı"
-    }
+    },
+    "back": "← Panel",
+    "empty": "Müraciət yoxdur",
+    "subtitle": "Klinikanın saytından müraciətlər",
+    "title": "Müraciətlər",
+    "toClosed": "Bağla",
+    "toInProgress": "İşə götür",
+    "toNew": "Yenilərə qaytar",
+    "updateFailed": "Statusu yeniləmək alınmadı"
   },
   "analytics": {
     "range": {
@@ -1947,7 +2291,19 @@
       "completed": "Tamamlanıb",
       "cancelled": "Ləğv edilib",
       "no_show": "Gəlməyib"
-    }
+    },
+    "back": "← Panel",
+    "byStatus": "Qəbullar statuslara görə",
+    "dailyTrend": "Günlər üzrə dinamika",
+    "doctorLoad": "Həkimlərin yükü",
+    "newPatients": "Yeni pasiyentlər",
+    "noAccessBody": "Analitikaya baxmaq üçün icazəniz yoxdur",
+    "noAccessTitle": "Giriş yoxdur",
+    "noData": "Bu dövr üçün məlumat yoxdur",
+    "noShowRate": "Gəlməmə payı",
+    "subtitle": "Klinikanın işinə baxış",
+    "title": "Analitika",
+    "totalAppointments": "Ümumi qəbullar"
   },
   "publicClinic": {
     "nav_whyUs": "Haqqımızda",
@@ -1959,5 +2315,123 @@
     "nav_reviews": "Rəylər",
     "nav_faq": "Suallar",
     "nav_contacts": "Əlaqə"
+  },
+  "departments": {
+    "archive": "Arxivə",
+    "archiveFailed": "Şöbəni arxivləşdirmək alınmadı",
+    "archivedBadge": "arxiv",
+    "back": "← Panel",
+    "cannotArchiveSystem": "Sistem şöbəsini arxivləşdirmək olmaz",
+    "create": "Şöbə yarat",
+    "createFirst": "İlk şöbəni yarat",
+    "empty": "Hələ şöbə yoxdur",
+    "errorTitle": "Xəta",
+    "listTitle": "Şöbələrin siyahısı",
+    "restore": "Bərpa et",
+    "restoreFailed": "Şöbəni bərpa etmək alınmadı",
+    "searchPlaceholder": "Ad və ya koda görə axtarış…",
+    "showArchived": "Arxivi göstər",
+    "subtitle": "Klinikanın şöbələr üzrə strukturu",
+    "systemBadge": "sistem",
+    "title": "Şöbələr",
+    "form": {
+      "code": "Kod",
+      "codeHint": "Klinika daxilində unikal qısa kod",
+      "createTitle": "Yeni şöbə",
+      "description": "Məzmun",
+      "editTitle": "Şöbəni redaktə et",
+      "errors": {
+        "codeTaken": "Bu kod klinikada artıq istifadə olunur",
+        "fix": "Formadakı səhvləri düzəldin",
+        "generic": "Şöbəni yadda saxlamaq alınmadı",
+        "nameRequired": "Ad daxil edin"
+      },
+      "head": "Şöbə müdiri",
+      "headNone": "— təyin edilməyib —",
+      "name": "Ad",
+      "specialty": "İxtisas"
+    },
+    "confirmArchive": "«{{name}}» arxivləşdirilsin?"
+  },
+  "services": {
+    "addService": "Xidmət əlavə et",
+    "archive": "Arxivləşdir",
+    "archiveError": "Arxivləşdirmək alınmadı.",
+    "backToDashboard": "Dashboard-a",
+    "currency": "Valyuta",
+    "department": "Şöbə",
+    "description": "Məzmun",
+    "duration": "Müddət, dəq",
+    "editService": "Xidmətin redaktəsi",
+    "loadError": "Yükləmə xətası.",
+    "minShort": "dəq",
+    "name": "Ad",
+    "newService": "Yeni xidmət",
+    "noDepartment": "— Şöbəsiz —",
+    "noDepartmentGroup": "Şöbəsiz",
+    "noServices": "Hələ xidmət yoxdur. Yuxarıda ilkini əlavə edin.",
+    "order": "Sıra",
+    "price": "Qiymət",
+    "priceFrom": "Qiymət (başlanğıc)",
+    "priceFromShort": "-dan",
+    "priceTo": "Qiymət (son)",
+    "priceType": {
+      "free": "pulsuz",
+      "on_request": "üçün"
+    },
+    "priceTypeLabel": "Qiymət növü",
+    "saveError": "Yadda saxlamaq alınmadı.",
+    "statusArchived": "arxiv",
+    "title": "Xidmətlər və qiymətlər",
+    "unknownDept": "Şöbə",
+    "confirmArchive": "«{{name}}» xidməti arxivləşdirilsin?"
+  },
+  "subscription": {
+    "trialEnded": "Sınaq müddəti bitdi.",
+    "trialEndsIn": "Klinikanın sınaq müddəti bitir:",
+    "newRecordsPaused": "Yeni qeydlər müvəqqəti yaradılmır.",
+    "choosePlan": "Tarif seç",
+    "pay": "Ödə"
+  },
+  "examTemplates": {
+    "title": "Protokol şablonları",
+    "add": "Şablon əlavə et",
+    "searchPlaceholder": "Başlıq və ya mətn üzrə",
+    "study": "Tədqiqat",
+    "heading": "Başlıq",
+    "text": "Mətn",
+    "headingHint": "Qısa — ifadənin siyahıda adı",
+    "textHint": "Protokol sahəsinə əlavə olunacaq mətn",
+    "emptyTextHint": "Mətn boşdursa, sahəyə başlıq əlavə olunacaq.",
+    "pickerSearch": "İfadələr üzrə axtarış",
+    "pickerEmpty": "Bu blok üçün hələ şablon yoxdur. Onları «Protokol şablonları» bölməsində yarada bilərsiniz."
+  },
+  "summary": {
+    "loading": "Kart yığılır…",
+    "note": "Xülasə kart qeydlərindən təkrar izah olmadan yığılıb. Tam bölmələr yuxarıdakı vərəqlərdədir.",
+    "critical": "Kritik göstəricilər",
+    "labDeviations": "Analizlərdə kənarlaşmalar",
+    "deviations": "Kənarlaşmalar",
+    "allergies": "Allergiyalar",
+    "chronic": "Xroniki xəstəliklər",
+    "family": "İrsiyyət",
+    "operations": "Əməliyyatlar",
+    "currentMeds": "Hazırda qəbul edir",
+    "previsit": "Pasiyent qəbuldan əvvəl danışıb",
+    "previsitVerbatim": "Pasiyentin cavabları hərfi",
+    "marked": "Qeyd olunub:",
+    "was": "idi",
+    "norm": "norma"
+  },
+  "theme": {
+    "resetToTheme": "Temaya sıfırla",
+    "pickColor": "Palitradan rəng seç",
+    "noIcon": "İkonasız",
+    "custom": "öz"
+  },
+  "icd": {
+    "noMatches": "Uyğunluq yoxdur",
+    "searching": "Axtarılır…",
+    "category": "rubrika"
   }
 }

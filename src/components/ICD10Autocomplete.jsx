@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { createPortal } from "react-dom";
 import axios from "axios";
 
@@ -70,6 +71,7 @@ export default function ICD10Autocomplete({
   onChange,
   placeholder = "Search ICD-10 by code or English name...",
 }) {
+  const { t } = useTranslation("clinic");
   const [query, setQuery] = useState(
     value ? `${value.code} — ${value.title}` : "",
   );
@@ -244,7 +246,7 @@ export default function ICD10Autocomplete({
               fontSize: 12,
             }}
           >
-            Searching...
+            {t("icd.searching")}
           </div>
         )}
         {!loading && results.length === 0 && query.trim().length >= 2 && (
@@ -256,7 +258,7 @@ export default function ICD10Autocomplete({
               fontSize: 12,
             }}
           >
-            No matches
+            {t("icd.noMatches")}
           </div>
         )}
         {!loading &&
@@ -324,7 +326,7 @@ export default function ICD10Autocomplete({
                     whiteSpace: "nowrap",
                   }}
                 >
-                  рубрика
+                  {t("icd.category")}
                 </span>
               )}
             </div>

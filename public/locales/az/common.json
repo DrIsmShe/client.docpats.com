@@ -1317,7 +1317,18 @@
     "statsDoctors_one": "həkim",
     "statsDoctors_other": "həkim",
     "navAllArticles": "Bütün məqalələr →",
-    "navServices": "Xidmətlər və qiymətlər"
+    "navServices": "Xidmətlər və qiymətlər",
+    "otherServicesTitle": "Digər xidmətlər",
+    "priceFree": "Pulsuz",
+    "priceFrom": "-dan",
+    "priceOnRequest": "Sorğu ilə",
+    "doctorsAll": "Hamısı",
+    "experienceShort": "{{count}} il təcrübə",
+    "specialistsTitle": "Mütəxəssislər",
+    "minShort": "dəq",
+    "priceEmpty": "Qiymət siyahısı hələ doldurulur.",
+    "priceListTitle": "Xidmətlər və qiymətlər",
+    "servicesMore": "daha {{count}}"
   },
   "profileMain": {
     "noUserId": "İstifadəçi müəyyən edilə bilmədi.",
@@ -1509,7 +1520,29 @@
     "doneText": "Klinika təsdiq üçün sizinlə əlaqə saxlayacaq. Vaxt yalnız təsdiqdən sonra saxlanılır.",
     "slotTaken": "Bu vaxt indicə tutuldu. Başqasını seçin.",
     "tooMany": "Ardıcıl çox müraciət. Sonra yenidən cəhd edin.",
-    "failed": "Müraciəti göndərmək alınmadı. Sonra cəhd edin."
+    "failed": "Müraciəti göndərmək alınmadı. Sonra cəhd edin.",
+    "booking": "Yazılır…",
+    "confirm": "Qəbula yaz",
+    "conflict": "Bu vaxt indicə tutuldu. Başqasını seçin.",
+    "date": "Tarix",
+    "doctor": "Həkim",
+    "errCreate": "Qəbulu yaratmaq alınmadı",
+    "errDoctors": "Həkimlərin siyahısını yükləmək alınmadı",
+    "errSearch": "Pasiyent axtarışı alınmadı",
+    "errSlots": "Bu gün üçün boş vaxtları yükləmək alınmadı",
+    "freeSlots": "Boş vaxtlar",
+    "loading": "Yüklənir…",
+    "noPatients": "Uyğun pasiyent tapılmadı",
+    "noPermission": "Qəbula yazmaq üçün icazəniz yoxdur",
+    "patient": "Pasiyent",
+    "reason": "Səbəb / qeyd (istəyə görə)",
+    "reasonPlaceholder": "məsələn: təkrar baxış, konsultasiya",
+    "searchBtn": "Axtarış",
+    "searchPlaceholder": "Soyad, telefon və ya e-poçt",
+    "searching": "Axtarılır…",
+    "selectDoctor": "Həkim seçin",
+    "subtitle": "Həkim və boş vaxt seçin, sonra pasiyenti tapın.",
+    "success": "Pasiyent yazıldı"
   },
   "publicPage": {
     "doctorsTitle": "Mütəxəssislər",
@@ -1530,7 +1563,10 @@
     "readTime": "{{count}} dəq oxu",
     "articleLinks": "Mənbələr:",
     "backToDoctor": "Həkimə qayıt",
-    "categoryGalleryTitle": "Qalereya"
+    "categoryGalleryTitle": "Qalereya",
+    "categoryArticlesTitle": "Məqalələr",
+    "parentArticlesTitle": "Bütün Məqalələr",
+    "parentNoArticles": "Alt kateqoriyalarda hələ məqalə yoxdur."
   },
   "title": "Dr.",
   "training": {
@@ -1601,7 +1637,12 @@
     "avatarAlt": "Avatar",
     "loadingDots": "Yüklənir…",
     "loading": "Yüklənir…",
-    "retry": "Təkrar cəhd et"
+    "retry": "Təkrar cəhd et",
+    "cancel": "Ləğv et",
+    "edit": "Düzəlt",
+    "save": "Yadda saxla",
+    "back": "Geri",
+    "remove": "Sil"
   },
   "consultation": {
     "title": "DocPats AI konsultasiyası"
@@ -1628,6 +1669,164 @@
       "imaging": {
         "title": "Təsvirlər və tədqiqatlar"
       }
+    },
+    "cancel": "Ləğv et",
+    "close": "Bağla",
+    "hint": "Pasiyent klinikanızın adı və istənilən məlumat qrupları ilə bildiriş alacaq. O, sorğunu tam, qismən təsdiqləyə və ya rədd edə bilər.",
+    "messageLabel": "Pasiyentə mesaj (istəyə görə)",
+    "messagePlaceholder": "Məsələn: konsultasiyaya hazırlaşmaq üçün KT nəticələriniz lazımdır",
+    "requestedAccess": "Giriş istə:",
+    "submit": "Sorğunu göndər",
+    "submitting": "Göndərilir…",
+    "subtitle": "Sorğu pasiyentin kabinetinə göndəriləcək.",
+    "subtitleFor": "Pasiyent: {{name}}",
+    "title": "Tibbi məlumatlara giriş sorğusu"
+  },
+  "pharmacy": {
+    "action": {
+      "archive": "Arxivə",
+      "restore": "Bərpa et"
+    },
+    "badge": {
+      "controlled": "Ciddi uçot",
+      "min": "dəq"
+    },
+    "catalog": {
+      "add": "Dərman əlavə et",
+      "confirmArchive": "Dərman aktiv kataloqdan çıxarılsın?",
+      "count": "Ümumi mövqe: {{count}}",
+      "empty": "Kataloq boşdur. İlk dərmanı əlavə edin.",
+      "loadError": "Kataloqu yükləmək mümkün olmadı",
+      "noAccess": "Aptek kataloquna giriş yoxdur",
+      "searchPlaceholder": "Ad, BQA və ya kod üzrə axtarış…",
+      "showArchived": "Arxivi göstər",
+      "title": "Dərman kataloqu"
+    },
+    "col": {
+      "category": "Kateqoriya",
+      "form": "Forma",
+      "name": "Ad",
+      "pack": "Qablaşdırma",
+      "strength": "Doza"
+    },
+    "form": {
+      "baseUnit": "Uçot vahidi (buraxılış)",
+      "createTitle": "Yeni dərman",
+      "editTitle": "Dərmanı redaktə et",
+      "inn": "BQA / maddə",
+      "isControlled": "Ciddi uçot (nəzarətli dərmanlar)",
+      "manufacturer": "İstehsalçı",
+      "minStock": "Min. qalıq (vahid)",
+      "nameRequired": "Dərmanın adını yazın",
+      "note": "Qeyd",
+      "packUnit": "Alış vahidi",
+      "saveError": "Yadda saxlamaq alınmadı. Sahələri yoxlayın.",
+      "sku": "Kod / ştrix-kod",
+      "unitsPerPack": "Qablaşdırmada vahid"
+    },
+    "dispense": {
+      "change": "Dəyiş",
+      "department": "Şöbə",
+      "deptOk": "Şöbəyə verilib",
+      "drug": "Preparat",
+      "fulfilled": "Verilib",
+      "genericError": "Buraxılışı yerinə yetirmək alınmadı.",
+      "give": "Ver",
+      "lineOk": "Mövqe verildi",
+      "noAccess": "Anbardan buraxılış üçün icazə yoxdur",
+      "noReq": "Buraxılış üçün aptek növbəsindən müraciəti açın.",
+      "packs": "qab.",
+      "patientNoAccess": "Pasiyentə buraxılış farmasevt üçün mümkündür (reseptlərə icazə lazımdır).",
+      "patientSoon": "Pasiyentə buraxılış növbəti yeniləmədə görünəcək.",
+      "remaining": "Buraxılışa qalıq",
+      "reqLoadError": "Müraciəti yükləmək alınmadı",
+      "reqStatus": "Status",
+      "searchDrug": "Dərman tap…",
+      "selectDept": "— şöbə seçin —",
+      "tabDept": "Şöbəyə",
+      "tabPatient": "Pasiyentə",
+      "tabReq": "Müraciət üzrə",
+      "title": "Anbardan buraxılış"
+    },
+    "reports": {
+      "byDepartment": "Şöbələr üzrə",
+      "byTarget": "Buraxılış kanalları üzrə",
+      "controlled": "Ciddi uçot (nəzarətli dərmanlar)",
+      "controlledTotals": "Ciddi uçot: {{count}} buraxılış, {{qty}} vahid",
+      "count": "Buraxılış",
+      "drug": "Preparat",
+      "dynamics": "Buraxılışların dinamikası",
+      "kpiControlled": "Bunlardan ciddi uçot",
+      "kpiDispenses": "Ümumi buraxılış",
+      "kpiQty": "Verilən vahid",
+      "loadError": "Hesabatı yükləmək alınmadı",
+      "noAccess": "Aptek hesabatlarına giriş yoxdur",
+      "noControlled": "Bu dövrdə ciddi uçot buraxılışı olmayıb",
+      "noData": "Bu dövr üçün məlumat yoxdur",
+      "pdf": "PDF Yüklə",
+      "pdfError": "PDF yaratmaq alınmadı",
+      "qty": "Vahid",
+      "title": "Buraxılış hesabatları",
+      "topDrugs": "Ən çox işlənən dərmanlar"
+    },
+    "req": {
+      "addLine": "Mövqe əlavə et",
+      "cancel": "Ləğv et",
+      "changeDrug": "Dərmanı dəyiş",
+      "confirmCancel": "Müraciət ləğv edilsin?",
+      "count": "Ümumi: {{count}}",
+      "create": "Yeni müraciət",
+      "createTitle": "Yeni müraciət",
+      "depRequired": "Şöbə seçin",
+      "department": "Şöbə",
+      "dispense": "Ver",
+      "editTitle": "Müraciəti redaktə et",
+      "emptyDept": "Müraciət yoxdur. İlkini yaradın.",
+      "emptyQueue": "Açıq müraciət yoxdur.",
+      "items": "Mövqelər",
+      "itemsRequired": "Ən azı bir mövqe əlavə edin",
+      "lineNote": "Mövqeyə qeyd",
+      "loadError": "Müraciətləri yükləmək alınmadı",
+      "mineOnly": "Yalnız mənimkilər",
+      "noAccess": "Müraciətlərə giriş yoxdur",
+      "note": "Qeyd",
+      "packs": "Qablaşdırma",
+      "priority": "Prioritet",
+      "saveDraft": "Qaralamanı saxla",
+      "saveError": "Yadda saxlamaq alınmadı. Sahələri yoxlayın.",
+      "saveSubmit": "Saxla və göndər",
+      "searchDrug": "Dərman tap…",
+      "selectDept": "— şöbə seçin —",
+      "submit": "Göndər",
+      "tabDept": "Şöbələrin müraciətləri",
+      "tabQueue": "Aptek növbəsi",
+      "title": "Aptekə müraciətlər"
+    },
+    "suppliers": {
+      "add": "Təchizatçı əlavə et",
+      "col": {
+        "contact": "Əlaqə",
+        "name": "Ad",
+        "phone": "Telefon",
+        "taxId": "VÖEN"
+      },
+      "confirmArchive": "Təchizatçı aktiv siyahıdan çıxarılsın?",
+      "count": "Ümumi təchizatçı: {{count}}",
+      "createTitle": "Yeni təchizatçı",
+      "editTitle": "Təchizatçını redaktə et",
+      "empty": "Siyahı boşdur. İlk təchizatçını əlavə edin.",
+      "field": {
+        "address": "Ünvan",
+        "email": "E-poçt",
+        "note": "Qeyd"
+      },
+      "loadError": "Təchizatçıları yükləmək alınmadı",
+      "nameRequired": "Təchizatçının adını yazın",
+      "noAccess": "Təchizatçılara giriş yoxdur",
+      "saveError": "Yadda saxlamaq alınmadı. Sahələri yoxlayın.",
+      "searchPlaceholder": "Ad, əlaqə və ya VÖEN üzrə axtarış…",
+      "showArchived": "Arxivi göstər",
+      "title": "Təchizatçılar"
     }
   }
 }
