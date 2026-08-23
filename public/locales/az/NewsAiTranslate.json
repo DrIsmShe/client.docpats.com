@@ -233,5 +233,8 @@
     "comments_login_sub": "Şərh yazmaq və peşəkar müzakirələrdə iştirak etmək üçün hesabınıza daxil olun.",
     "login_btn": "Daxil ol",
     "register_btn": "Qeydiyyatdan keç"
-  }
+  },
+  "all_loaded": "Bütün materiallar göstərilib",
+  "loading_more": "Daha çox yüklənir…",
+  "retry": "Təkrar cəhd et"
 }

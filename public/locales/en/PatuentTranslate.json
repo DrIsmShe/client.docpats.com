@@ -37,45 +37,6 @@
       "doctorEmpty": "No doctor specified"
     }
   },
-  "myMedicalHistories": {
-    "states": {
-      "loading": "Loading medical histories…",
-      "error": "Failed to load data. Please try again later."
-    },
-    "header": {
-      "eyebrow": "Medical Archive",
-      "title": "My Medical Histories",
-      "subtitle": "Complete chronology of your medical records and visits",
-      "totalLabel": "total records"
-    },
-    "filters": {
-      "sectionTitle": "Filters & Search",
-      "foundLabel": "Found",
-      "dateFrom": "Date from",
-      "dateTo": "Date to",
-      "doctor": "Doctor (first / last name)",
-      "doctorPlaceholder": "E.g.: Smith",
-      "diagnosis": "Diagnosis",
-      "diagnosisPlaceholder": "Search by diagnosis",
-      "sort": "Sort by",
-      "reset": "Reset filters",
-      "sortOptions": {
-        "newest": "Newest first",
-        "oldest": "Oldest first",
-        "doctorAsc": "Doctor A→Z",
-        "doctorDesc": "Doctor Z→A"
-      }
-    },
-    "empty": {
-      "title": "Nothing found",
-      "description": "No records match the selected filters. Try adjusting your search criteria."
-    },
-    "card": {
-      "diagnosisEmpty": "No diagnosis specified",
-      "doctorEmpty": "No doctor specified"
-    }
-  },
-
   "myMedicalHistoryDetail": {
     "states": {
       "loading": "Loading medical history…",
@@ -202,7 +163,8 @@
         "dateTitle": "Registration date",
         "reviewsTitle": "Reviews",
         "likesTitle": "Likes",
-        "articles": "Articles"
+        "articles": "Articles",
+        "ratingTitle": "Rating"
       }
     },
     "empty": {
@@ -498,6 +460,34 @@
   "AsidePatient": {
     "menu": {
       "myClinics": "My Clinics"
+    }
+  },
+  "consentRequests": {
+    "title": "Access requests",
+    "subtitle": "Clinics ask for permission to view your medical records. You decide whether to grant access.",
+    "loading": "Loading…",
+    "empty": {
+      "title": "No requests",
+      "text": "When a clinic requests access to your medical data, the request will appear here."
+    },
+    "unknownClinic": "Clinic",
+    "requestedAccess": "Requests access to:",
+    "expiresIn": "Expires in",
+    "expiresToday": "Expires today",
+    "days": "d.",
+    "approveAll": "Allow everything",
+    "approveGranular": "Choose what to allow…",
+    "reject": "Reject",
+    "rejectConfirm": "Reject the request? The clinic will not get access to your data.",
+    "modal": {
+      "title": "Choose data",
+      "subtitle": "Choose which groups of data to allow. Clear a checkbox and the clinic will not see that group.",
+      "notRequested": "Not requested by this clinic",
+      "zeroScopesAlert": "Choose at least one group, or reject the request.",
+      "apply": "Apply",
+      "applying": "Applying…",
+      "cancel": "Cancel",
+      "close": "Close"
     }
   }
 }

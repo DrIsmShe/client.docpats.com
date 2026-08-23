@@ -19,6 +19,7 @@
     "reply": "Yanıt verirken hata oluştu",
     "delete": "Silinirken hata oluştu",
     "edit": "Düzenleme sırasında hata oluştu",
-    "like": "Beğenirken hata oluştu"
+    "like": "Beğenirken hata oluştu",
+    "loadCommentCount": "Yorum sayısı yüklenemedi"
   }
 }

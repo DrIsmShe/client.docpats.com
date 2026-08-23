@@ -25,5 +25,23 @@
   "loading": "Loading…",
   "publicationsTitle": "Publications",
   "readTime_one": "{{count}} min read",
-  "readTime_other": "{{count}} min read"
+  "readTime_other": "{{count}} min read",
+  "myClinics": {
+    "unnamedClinic": "Clinic",
+    "status": {
+      "granted": "Access granted",
+      "partial": "Partial access",
+      "none": "No access"
+    },
+    "card": {
+      "grantedAt": "Granted:",
+      "cardCreatedAt": "Record created:"
+    },
+    "actions": {
+      "grantFull": "Grant full access",
+      "granular": "Choose what to share",
+      "changeScopes": "Change access",
+      "revoke": "Revoke access"
+    }
+  }
 }

@@ -233,5 +233,8 @@
     "comments_login_sub": "Yorum bırakmak ve mesleki tartışmalara katılmak için hesabınıza giriş yapın.",
     "login_btn": "Giriş yap",
     "register_btn": "Kayıt ol"
-  }
+  },
+  "all_loaded": "Tüm içerikler gösterildi",
+  "loading_more": "Daha fazla yükleniyor…",
+  "retry": "Yeniden dene"
 }

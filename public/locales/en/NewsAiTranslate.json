@@ -233,5 +233,8 @@
     "comments_login_sub": "Sign in to leave comments and take part in professional discussions.",
     "login_btn": "Sign in",
     "register_btn": "Sign up"
-  }
+  },
+  "all_loaded": "All items shown",
+  "loading_more": "Loading more…",
+  "retry": "Retry"
 }

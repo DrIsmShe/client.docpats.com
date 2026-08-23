@@ -25,5 +25,23 @@
   "loading": "Yüklənir…",
   "publicationsTitle": "Nəşrlər",
   "readTime_one": "{{count}} dəq oxu",
-  "readTime_other": "{{count}} dəq oxu"
+  "readTime_other": "{{count}} dəq oxu",
+  "myClinics": {
+    "unnamedClinic": "Klinika",
+    "status": {
+      "granted": "Giriş açıqdır",
+      "partial": "Qismən giriş",
+      "none": "Giriş yoxdur"
+    },
+    "card": {
+      "grantedAt": "Giriş verilib:",
+      "cardCreatedAt": "Kart yaradılıb:"
+    },
+    "actions": {
+      "grantFull": "Tam giriş ver",
+      "granular": "Nəyi açacağınızı seçin",
+      "changeScopes": "Girişi dəyiş",
+      "revoke": "Girişi ləğv et"
+    }
+  }
 }

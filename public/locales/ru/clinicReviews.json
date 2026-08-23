@@ -27,5 +27,23 @@
   "publicationsTitle": "Публикации",
   "readTime_one": "{{count}} мин чтения",
   "readTime_few": "{{count}} мин чтения",
-  "readTime_many": "{{count}} мин чтения"
+  "readTime_many": "{{count}} мин чтения",
+  "myClinics": {
+    "unnamedClinic": "Клиника",
+    "status": {
+      "granted": "Доступ открыт",
+      "partial": "Доступ частичный",
+      "none": "Доступа нет"
+    },
+    "card": {
+      "grantedAt": "Доступ открыт:",
+      "cardCreatedAt": "Карта заведена:"
+    },
+    "actions": {
+      "grantFull": "Открыть полный доступ",
+      "granular": "Выбрать, что открыть",
+      "changeScopes": "Изменить доступ",
+      "revoke": "Отозвать доступ"
+    }
+  }
 }

@@ -43,7 +43,8 @@
     "openAngiography": "فتح تفاصيل تصوير الأوعية",
     "openEKG": "فتح تفاصيل تخطيط القلب",
     "openEchoEKG": "فتح تفاصيل صدى القلب",
-    "openCoronography": "فتح تفاصيل تصوير الشرايين"
+    "openCoronography": "فتح تفاصيل تصوير الشرايين",
+    "openDetail": "فتح"
   },
   "ProfileHomePage": {
     "eyebrow": "بوابة المريض",
@@ -524,7 +525,12 @@
     "register_btn": "إنشاء حساب",
     "share_copy": "نسخ الرابط",
     "share_copied": "تم نسخ الرابط",
-    "share_email": "البريد الإلكتروني"
+    "share_email": "البريد الإلكتروني",
+    "medical_article": "مقالة طبية",
+    "show_original": "عرض الأصل",
+    "show_translation": "عرض الترجمة",
+    "login_to_like": "سجّل الدخول للإعجاب",
+    "translation_pending": "جارٍ إعداد الترجمة — يستغرق ذلك عادةً حتى 10 دقائق بعد النشر. نعرض النص الأصلي."
   },
   "doctor_home": {
     "ui": {
@@ -787,7 +793,10 @@
       "loadError": "حدث خطأ أثناء تحميل تاريخ المواعيد",
       "noId": "خطأ: لم يتم العثور على معرف الموعد",
       "cannotCancel": "تعذر إلغاء الموعد"
-    }
+    },
+    "eyebrow": "السجل",
+    "loading": "جارٍ التحميل…",
+    "countLabel": "إجمالي المواعيد"
   },
   "myRx": {
     "eyebrow": "السجل الطبي",
@@ -1321,7 +1330,8 @@
     "shareTitle": "انضم إليّ على DocPats",
     "scan": "امسح بالكاميرا",
     "invited": "مدعوّ",
-    "bonusDays": "أيام مكافأة مكتسبة"
+    "bonusDays": "أيام مكافأة مكتسبة",
+    "bonusConsultations": "استشارات ذكاء اصطناعي مُستلمة"
   },
   "doctorReview": {
     "title": "آراء المرضى",
@@ -1333,7 +1343,13 @@
     "placeholder": "أخبِرنا عن زيارتك (اختياري)…",
     "sending": "جارٍ الإرسال…",
     "submit": "إرسال التقييم",
-    "empty": "لا توجد تقييمات بعد — كن الأول."
+    "empty": "لا توجد تقييمات بعد — كن الأول.",
+    "reply": "رد",
+    "editReply": "تعديل الرد",
+    "sendReply": "إرسال الرد",
+    "cancel": "إلغاء",
+    "doctorReply": "رد الطبيب",
+    "replyPlaceholder": "ردّك على المريض…"
   },
   "mark_all_read": "تحديد الكل كمقروء",
   "onboarding": {
@@ -1576,9 +1592,25 @@
   },
   "common": {
     "avatarAlt": "الصورة الرمزية",
-    "loadingDots": "جارٍ التحميل…"
+    "loadingDots": "جارٍ التحميل…",
+    "loading": "جارٍ التحميل…",
+    "retry": "إعادة المحاولة"
   },
   "consultation": {
     "title": "استشارة DocPats AI"
+  },
+  "no_notifications": "لا توجد إشعارات",
+  "myLab": {
+    "openDetail": "فتح التفاصيل"
+  },
+  "notifSettings": {
+    "title": "إعدادات الإشعارات",
+    "emailDigest": "ملخّص بريدي لغير المقروء"
+  },
+  "push": {
+    "enable": "تفعيل الإشعارات الفورية",
+    "disable": "إيقاف الإشعارات الفورية",
+    "blocked": "الإشعارات محظورة في إعدادات المتصفح",
+    "blockedHint": "اسمح بالإشعارات من إعدادات المتصفح"
   }
 }

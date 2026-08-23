@@ -25,5 +25,23 @@
   "loading": "Yükleniyor…",
   "publicationsTitle": "Yayınlar",
   "readTime_one": "{{count}} dk okuma",
-  "readTime_other": "{{count}} dk okuma"
+  "readTime_other": "{{count}} dk okuma",
+  "myClinics": {
+    "unnamedClinic": "Klinik",
+    "status": {
+      "granted": "Erişim verildi",
+      "partial": "Kısmi erişim",
+      "none": "Erişim yok"
+    },
+    "card": {
+      "grantedAt": "Verildi:",
+      "cardCreatedAt": "Kayıt oluşturuldu:"
+    },
+    "actions": {
+      "grantFull": "Tam erişim ver",
+      "granular": "Neyi paylaşacağınızı seçin",
+      "changeScopes": "Erişimi değiştir",
+      "revoke": "Erişimi geri al"
+    }
+  }
 }

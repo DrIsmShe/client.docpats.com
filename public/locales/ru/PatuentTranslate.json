@@ -37,145 +37,6 @@
       "doctorEmpty": "Врач не указан"
     }
   },
-  "myMedicalHistories": {
-    "states": {
-      "loading": "Загрузка историй болезни…",
-      "error": "Ошибка загрузки данных. Попробуйте позже."
-    },
-    "header": {
-      "eyebrow": "Медицинский архив",
-      "title": "Мои истории болезни",
-      "subtitle": "Полная хронология ваших медицинских записей и приёмов",
-      "totalLabel": "всего записей"
-    },
-    "filters": {
-      "sectionTitle": "Фильтры и поиск",
-      "foundLabel": "Найдено",
-      "dateFrom": "Дата с",
-      "dateTo": "Дата по",
-      "doctor": "Врач (имя/фамилия)",
-      "doctorPlaceholder": "Например: Иванов",
-      "diagnosis": "Диагноз",
-      "diagnosisPlaceholder": "Поиск по диагнозу",
-      "sort": "Сортировка",
-      "reset": "Сбросить фильтры",
-      "sortOptions": {
-        "newest": "Сначала новые",
-        "oldest": "Сначала старые",
-        "doctorAsc": "Врач А→Я",
-        "doctorDesc": "Врач Я→А"
-      }
-    },
-    "empty": {
-      "title": "Ничего не найдено",
-      "description": "Под подходящие фильтры ничего не найдено. Попробуйте изменить критерии поиска."
-    },
-    "card": {
-      "diagnosisEmpty": "Диагноз не указан",
-      "doctorEmpty": "Врач не указан"
-    }
-  },
-
-  "myMedicalHistoryDetail": {
-    "states": {
-      "loading": "Загрузка истории болезни…",
-      "notFound": "История не найдена."
-    },
-    "errors": {
-      "noId": "ID не передан",
-      "loadFailed": "Не удалось загрузить данные."
-    },
-    "brand": "DocPats · Medical Record",
-    "header": {
-      "title": "История болезни пациента",
-      "subtitle": "Полная клиническая запись, сформированная наблюдающим врачом"
-    },
-    "patient": {
-      "photoAlt": "Фото пациента"
-    },
-    "sections": {
-      "patientData": "Данные пациента",
-      "diagnosis": "Диагноз",
-      "clinicalPicture": "Клиническая картина",
-      "tests": "Результаты исследований",
-      "recommendations": "Рекомендации",
-      "attendingDoctor": "Лечащий врач"
-    },
-    "fields": {
-      "fullName": "ФИО",
-      "gender": "Пол",
-      "birthDate": "Дата рождения",
-      "citizenship": "Гражданство",
-      "badHabits": "Вредные привычки",
-      "immunization": "Иммунизация",
-      "familyHistory": "Наследственные заболевания",
-      "chronicDiseases": "Хронические заболевания",
-      "allergies": "Аллергии",
-      "mainDiagnosis": "Основной диагноз",
-      "additionalDiagnosis": "Дополнительный диагноз",
-      "complaints": "Жалобы",
-      "anamnesisMorbi": "Анамнез болезни",
-      "anamnesisVitae": "Анамнез жизни",
-      "statusPraesens": "Общий статус (Status praesens)",
-      "statusLocalis": "Локальный статус (Status localis)",
-      "ctScan": "Компьютерная томография (КТ)",
-      "mri": "Магнитно-резонансная томография (МРТ)",
-      "ultrasound": "Ультразвуковое исследование (УЗИ)",
-      "laboratoryTests": "Лабораторные исследования",
-      "doctorRecommendations": "Назначения и рекомендации врача"
-    },
-    "doctor": {
-      "label": "Наблюдающий специалист"
-    },
-    "empty": {
-      "notSpecified": "не указано"
-    },
-    "units": {
-      "years": "лет"
-    },
-    "actions": {
-      "downloadPdf": "Скачать PDF"
-    }
-  },
-  "myMedicalHistories": {
-    "states": {
-      "loading": "Загрузка историй болезни…",
-      "error": "Ошибка загрузки данных. Попробуйте позже."
-    },
-    "header": {
-      "eyebrow": "Медицинский архив",
-      "title": "Мои истории болезни",
-      "subtitle": "Полная хронология ваших медицинских записей и приёмов",
-      "totalLabel": "всего записей"
-    },
-    "filters": {
-      "sectionTitle": "Фильтры и поиск",
-      "foundLabel": "Найдено",
-      "dateFrom": "Дата с",
-      "dateTo": "Дата по",
-      "doctor": "Врач (имя/фамилия)",
-      "doctorPlaceholder": "Например: Иванов",
-      "diagnosis": "Диагноз",
-      "diagnosisPlaceholder": "Поиск по диагнозу",
-      "sort": "Сортировка",
-      "reset": "Сбросить фильтры",
-      "sortOptions": {
-        "newest": "Сначала новые",
-        "oldest": "Сначала старые",
-        "doctorAsc": "Врач А→Я",
-        "doctorDesc": "Врач Я→А"
-      }
-    },
-    "empty": {
-      "title": "Ничего не найдено",
-      "description": "Под подходящие фильтры ничего не найдено. Попробуйте изменить критерии поиска."
-    },
-    "card": {
-      "diagnosisEmpty": "Диагноз не указан",
-      "doctorEmpty": "Врач не указан"
-    }
-  },
-
   "myMedicalHistoryDetail": {
     "states": {
       "loading": "Загрузка истории болезни…",
@@ -302,7 +163,8 @@
         "dateTitle": "Дата регистрации",
         "reviewsTitle": "Отзывы",
         "likesTitle": "Лайки",
-        "articles": "Статей"
+        "articles": "Статей",
+        "ratingTitle": "Рейтинг"
       }
     },
     "empty": {
@@ -376,7 +238,11 @@
         "comments": "Комментарии",
         "likes": "Лайки"
       },
-      "tabs": { "all": "Все", "regular": "Мнения", "scientific": "Научные" },
+      "tabs": {
+        "all": "Все",
+        "regular": "Мнения",
+        "scientific": "Научные"
+      },
       "scientificBadge": "Научная",
       "scientificBadgeTitle": "Научная статья"
     }
@@ -594,6 +460,34 @@
   "AsidePatient": {
     "menu": {
       "myClinics": "Мои клиники"
+    }
+  },
+  "consentRequests": {
+    "title": "Запросы доступа",
+    "subtitle": "Клиники запрашивают разрешение на просмотр ваших медицинских записей. Вы решаете — давать ли доступ.",
+    "loading": "Загрузка…",
+    "empty": {
+      "title": "Нет запросов",
+      "text": "Когда клиника запросит доступ к вашим медицинским данным, запрос появится здесь."
+    },
+    "unknownClinic": "Клиника",
+    "requestedAccess": "Запрашивает доступ к:",
+    "expiresIn": "Истекает через",
+    "expiresToday": "Истекает сегодня",
+    "days": "дн.",
+    "approveAll": "Разрешить всё",
+    "approveGranular": "Выбрать, что разрешить…",
+    "reject": "Отклонить",
+    "rejectConfirm": "Отклонить запрос? Клиника не получит доступ к вашим данным.",
+    "modal": {
+      "title": "Выбор данных",
+      "subtitle": "Выберите, какие группы данных разрешить. Снимите галку — и клиника не увидит эту группу.",
+      "notRequested": "Не запрашивается этой клиникой",
+      "zeroScopesAlert": "Выберите хотя бы одну группу или отклоните запрос.",
+      "apply": "Применить",
+      "applying": "Применяем…",
+      "cancel": "Отмена",
+      "close": "Закрыть"
     }
   }
 }

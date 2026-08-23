@@ -43,7 +43,8 @@
     "openAngiography": "Angioqrafiya detallarını aç",
     "openEKG": "EKQ detallarını aç",
     "openEchoEKG": "Exo-EKQ detallarını aç",
-    "openCoronography": "Koronarqrafiya detallarını aç"
+    "openCoronography": "Koronarqrafiya detallarını aç",
+    "openDetail": "Aç"
   },
   "ProfileHomePage": {
     "eyebrow": "Şəxsi Kabinet",
@@ -494,7 +495,12 @@
     "register_btn": "Qeydiyyat",
     "share_copy": "Linki kopyala",
     "share_copied": "Link kopyalandı",
-    "share_email": "E-poçt"
+    "share_email": "E-poçt",
+    "medical_article": "Tibbi məqalə",
+    "show_original": "Orijinalı göstər",
+    "show_translation": "Tərcüməni göstər",
+    "login_to_like": "Bəyənmək üçün daxil olun",
+    "translation_pending": "Tərcümə hazırlanır — adətən dərcdən sonra 10 dəqiqəyə qədər çəkir. Orijinalı göstəririk."
   },
   "verification": {
     "tab": "Təsdiqləmə",
@@ -784,7 +790,10 @@
       "loadError": "Qəbul tarixçəsinin yüklənməsi zamanı xəta",
       "noId": "Xəta: qəbul ID tapılmadı",
       "cannotCancel": "Qəbulu ləğv etmək mümkün olmadı"
-    }
+    },
+    "eyebrow": "Tarixçə",
+    "loading": "Yüklənir…",
+    "countLabel": "ümumi qəbul"
   },
   "myRx": {
     "eyebrow": "Tibbi kart",
@@ -874,7 +883,8 @@
     "colValue": "Dəyər",
     "colRef": "Norma",
     "attached": "Nəticə faylı",
-    "scan": "Skan"
+    "scan": "Skan",
+    "openDetail": "Detalları aç"
   },
   "articles-from-doctor": {
     "header": {
@@ -1326,7 +1336,8 @@
     "shareTitle": "DocPats-da mənə qoşulun",
     "scan": "Kamera ilə skan edin",
     "invited": "dəvət edilib",
-    "bonusDays": "bonus gün qazanılıb"
+    "bonusDays": "bonus gün qazanılıb",
+    "bonusConsultations": "Alınmış SI konsultasiyaları"
   },
   "doctorReview": {
     "title": "Pasiyent rəyləri",
@@ -1338,7 +1349,13 @@
     "placeholder": "Qəbul haqqında yazın (istəyə görə)…",
     "sending": "Göndərilir…",
     "submit": "Rəyi göndər",
-    "empty": "Hələ rəy yoxdur — ilk siz olun."
+    "empty": "Hələ rəy yoxdur — ilk siz olun.",
+    "reply": "Cavab ver",
+    "editReply": "Cavabı dəyiş",
+    "sendReply": "Cavabı göndər",
+    "cancel": "Ləğv et",
+    "doctorReply": "Həkimin cavabı",
+    "replyPlaceholder": "Pasiyentə cavabınız…"
   },
   "mark_all_read": "Hamısını oxunmuş et",
   "onboarding": {
@@ -1581,9 +1598,22 @@
   },
   "common": {
     "avatarAlt": "Avatar",
-    "loadingDots": "Yüklənir…"
+    "loadingDots": "Yüklənir…",
+    "loading": "Yüklənir…",
+    "retry": "Təkrar cəhd et"
   },
   "consultation": {
     "title": "DocPats AI konsultasiyası"
+  },
+  "no_notifications": "Bildiriş yoxdur",
+  "notifSettings": {
+    "title": "Bildiriş parametrləri",
+    "emailDigest": "Oxunmamışların e-poçt icmalı"
+  },
+  "push": {
+    "enable": "Push bildirişləri aç",
+    "disable": "Push-u söndür",
+    "blocked": "Bildirişlər brauzer parametrlərində bloklanıb",
+    "blockedHint": "Brauzer parametrlərində bildirişlərə icazə verin"
   }
 }

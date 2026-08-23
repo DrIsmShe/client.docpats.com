@@ -37,45 +37,6 @@
       "doctorEmpty": "Doktor belirtilmemiş"
     }
   },
-  "myMedicalHistories": {
-    "states": {
-      "loading": "Tıbbi geçmiş yükleniyor…",
-      "error": "Veriler yüklenemedi. Lütfen daha sonra tekrar deneyin."
-    },
-    "header": {
-      "eyebrow": "Tıbbi Arşiv",
-      "title": "Tıbbi Geçmişim",
-      "subtitle": "Tıbbi kayıtlarınızın ve randevularınızın tam kronolojisi",
-      "totalLabel": "toplam kayıt"
-    },
-    "filters": {
-      "sectionTitle": "Filtreler ve Arama",
-      "foundLabel": "Bulundu",
-      "dateFrom": "Başlangıç tarihi",
-      "dateTo": "Bitiş tarihi",
-      "doctor": "Doktor (ad / soyad)",
-      "doctorPlaceholder": "Örn: Yılmaz",
-      "diagnosis": "Tanı",
-      "diagnosisPlaceholder": "Tanıya göre ara",
-      "sort": "Sıralama",
-      "reset": "Filtreleri sıfırla",
-      "sortOptions": {
-        "newest": "Önce en yeni",
-        "oldest": "Önce en eski",
-        "doctorAsc": "Doktor A→Z",
-        "doctorDesc": "Doktor Z→A"
-      }
-    },
-    "empty": {
-      "title": "Hiçbir şey bulunamadı",
-      "description": "Seçilen filtrelere uygun kayıt yok. Arama kriterlerinizi değiştirmeyi deneyin."
-    },
-    "card": {
-      "diagnosisEmpty": "Tanı belirtilmemiş",
-      "doctorEmpty": "Doktor belirtilmemiş"
-    }
-  },
-
   "myMedicalHistoryDetail": {
     "states": {
       "loading": "Tıbbi geçmiş yükleniyor…",
@@ -202,7 +163,8 @@
         "dateTitle": "Kayıt tarihi",
         "reviewsTitle": "İncelemeler",
         "likesTitle": "Beğeniler",
-        "articles": "Makale"
+        "articles": "Makale",
+        "ratingTitle": "Puan"
       }
     },
     "empty": {
@@ -327,7 +289,6 @@
       }
     }
   },
-
   "page_title": "Randevu al",
   "filters_title": "Filtreler",
   "clear_filters": "Temizle",
@@ -499,6 +460,34 @@
   "AsidePatient": {
     "menu": {
       "myClinics": "Kliniklerim"
+    }
+  },
+  "consentRequests": {
+    "title": "Erişim istekleri",
+    "subtitle": "Klinikler tıbbi kayıtlarınızı görüntülemek için izin ister. Erişim verip vermemeye siz karar verirsiniz.",
+    "loading": "Yükleniyor…",
+    "empty": {
+      "title": "İstek yok",
+      "text": "Bir klinik tıbbi verilerinize erişim istediğinde, istek burada görünecek."
+    },
+    "unknownClinic": "Klinik",
+    "requestedAccess": "Şuna erişim istiyor:",
+    "expiresIn": "Şu süre sonra dolar:",
+    "expiresToday": "Bugün doluyor",
+    "days": "gün",
+    "approveAll": "Tümüne izin ver",
+    "approveGranular": "Neye izin vereceğinizi seçin…",
+    "reject": "Reddet",
+    "rejectConfirm": "İstek reddedilsin mi? Klinik verilerinize erişemeyecek.",
+    "modal": {
+      "title": "Veri seçimi",
+      "subtitle": "Hangi veri gruplarına izin vereceğinizi seçin. İşareti kaldırdığınız grubu klinik göremez.",
+      "notRequested": "Bu klinik tarafından istenmiyor",
+      "zeroScopesAlert": "En az bir grup seçin ya da isteği reddedin.",
+      "apply": "Uygula",
+      "applying": "Uygulanıyor…",
+      "cancel": "İptal",
+      "close": "Kapat"
     }
   }
 }

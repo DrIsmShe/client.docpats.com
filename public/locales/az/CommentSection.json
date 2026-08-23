@@ -19,6 +19,7 @@
     "reply": "Cavab verilərkən xəta baş verdi",
     "delete": "Silinərkən xəta baş verdi",
     "edit": "Redaktə edilərkən xəta baş verdi",
-    "like": "Bəyənmə zamanı xəta baş verdi"
+    "like": "Bəyənmə zamanı xəta baş verdi",
+    "loadCommentCount": "Şərhlərin sayını yükləmək alınmadı"
   }
 }

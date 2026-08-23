@@ -37,45 +37,6 @@
       "doctorEmpty": "لم يتم تحديد الطبيب"
     }
   },
-  "myMedicalHistories": {
-    "states": {
-      "loading": "جارٍ تحميل السجلات الطبية…",
-      "error": "تعذر تحميل البيانات. يرجى المحاولة لاحقًا."
-    },
-    "header": {
-      "eyebrow": "الأرشيف الطبي",
-      "title": "سجلاتي الطبية",
-      "subtitle": "التسلسل الزمني الكامل لسجلاتك الطبية ومواعيدك",
-      "totalLabel": "إجمالي السجلات"
-    },
-    "filters": {
-      "sectionTitle": "الفلاتر والبحث",
-      "foundLabel": "تم العثور على",
-      "dateFrom": "من تاريخ",
-      "dateTo": "إلى تاريخ",
-      "doctor": "الطبيب (الاسم / اللقب)",
-      "doctorPlaceholder": "مثال: أحمد",
-      "diagnosis": "التشخيص",
-      "diagnosisPlaceholder": "البحث حسب التشخيص",
-      "sort": "الترتيب",
-      "reset": "إعادة ضبط الفلاتر",
-      "sortOptions": {
-        "newest": "الأحدث أولاً",
-        "oldest": "الأقدم أولاً",
-        "doctorAsc": "الطبيب أ→ي",
-        "doctorDesc": "الطبيب ي→أ"
-      }
-    },
-    "empty": {
-      "title": "لم يتم العثور على نتائج",
-      "description": "لا توجد سجلات تطابق الفلاتر المحددة. حاول تغيير معايير البحث."
-    },
-    "card": {
-      "diagnosisEmpty": "لم يتم تحديد التشخيص",
-      "doctorEmpty": "لم يتم تحديد الطبيب"
-    }
-  },
-
   "myMedicalHistoryDetail": {
     "states": {
       "loading": "جارٍ تحميل السجل الطبي…",
@@ -202,7 +163,8 @@
         "dateTitle": "تاريخ التسجيل",
         "reviewsTitle": "المراجعات",
         "likesTitle": "الإعجابات",
-        "articles": "المقالات"
+        "articles": "المقالات",
+        "ratingTitle": "التقييم"
       }
     },
     "empty": {
@@ -216,7 +178,6 @@
     "speciality": {
       "unknown": "غير معروف"
     },
-
     "errors": {
       "noProfileId": "خطأ: لم يتم العثور على معرّف الطبيب.",
       "loadFailed": "فشل في تحميل بيانات الطبيب.",
@@ -277,7 +238,11 @@
         "comments": "التعليقات",
         "likes": "الإعجابات"
       },
-      "tabs": { "all": "الكل", "regular": "آراء", "scientific": "علمية" },
+      "tabs": {
+        "all": "الكل",
+        "regular": "آراء",
+        "scientific": "علمية"
+      },
       "scientificBadge": "علمية",
       "scientificBadgeTitle": "مقالة علمية"
     }
@@ -495,6 +460,34 @@
   "AsidePatient": {
     "menu": {
       "myClinics": "عياداتي"
+    }
+  },
+  "consentRequests": {
+    "title": "طلبات الوصول",
+    "subtitle": "تطلب العيادات الإذن للاطّلاع على سجلاتك الطبية. أنت من يقرر منح الوصول.",
+    "loading": "جارٍ التحميل…",
+    "empty": {
+      "title": "لا توجد طلبات",
+      "text": "عندما تطلب عيادة الوصول إلى بياناتك الطبية، سيظهر الطلب هنا."
+    },
+    "unknownClinic": "عيادة",
+    "requestedAccess": "يطلب الوصول إلى:",
+    "expiresIn": "ينتهي خلال",
+    "expiresToday": "ينتهي اليوم",
+    "days": "يوم",
+    "approveAll": "السماح بالكل",
+    "approveGranular": "اختر ما تسمح به…",
+    "reject": "رفض",
+    "rejectConfirm": "هل تريد رفض الطلب؟ لن تحصل العيادة على بياناتك.",
+    "modal": {
+      "title": "اختيار البيانات",
+      "subtitle": "اختر مجموعات البيانات التي تسمح بها. أزل العلامة ولن ترى العيادة تلك المجموعة.",
+      "notRequested": "لم تطلبه هذه العيادة",
+      "zeroScopesAlert": "اختر مجموعة واحدة على الأقل أو ارفض الطلب.",
+      "apply": "تطبيق",
+      "applying": "جارٍ التطبيق…",
+      "cancel": "إلغاء",
+      "close": "إغلاق"
     }
   }
 }

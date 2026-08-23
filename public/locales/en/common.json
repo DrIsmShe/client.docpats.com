@@ -43,7 +43,8 @@
     "openAngiography": "Open angiography details",
     "openEKG": "Open EKG details",
     "openEchoEKG": "Open Echo-EKG details",
-    "openCoronography": "Open coronography details"
+    "openCoronography": "Open coronography details",
+    "openDetail": "Open"
   },
   "ProfileHomePage": {
     "eyebrow": "Patient Portal",
@@ -455,7 +456,12 @@
     "register_btn": "Register",
     "share_copy": "Copy link",
     "share_copied": "Link copied",
-    "share_email": "Email"
+    "share_email": "Email",
+    "medical_article": "Medical article",
+    "show_original": "Show original",
+    "show_translation": "Show translation",
+    "login_to_like": "Sign in to like",
+    "translation_pending": "The translation is being prepared — it usually takes up to 10 minutes after publication. Showing the original."
   },
   "verification": {
     "tab": "Verification",
@@ -747,7 +753,10 @@
       "loadError": "Error loading appointments",
       "noId": "Error: appointment ID not found",
       "cannotCancel": "Failed to cancel appointment"
-    }
+    },
+    "eyebrow": "History",
+    "loading": "Loading…",
+    "countLabel": "appointments in total"
   },
   "myRx": {
     "eyebrow": "Medical record",
@@ -790,7 +799,8 @@
     "colValue": "Value",
     "colRef": "Reference",
     "attached": "Result file",
-    "scan": "Scan"
+    "scan": "Scan",
+    "openDetail": "Open details"
   },
   "AsidePatient": {
     "brand": {
@@ -1299,7 +1309,8 @@
     "shareTitle": "Join me on DocPats",
     "scan": "Scan with your camera",
     "invited": "invited",
-    "bonusDays": "bonus days earned"
+    "bonusDays": "bonus days earned",
+    "bonusConsultations": "AI consultations received"
   },
   "doctorReview": {
     "title": "Patient reviews",
@@ -1311,7 +1322,13 @@
     "placeholder": "Tell us about your visit (optional)…",
     "sending": "Sending…",
     "submit": "Submit review",
-    "empty": "No reviews yet — be the first."
+    "empty": "No reviews yet — be the first.",
+    "reply": "Reply",
+    "editReply": "Edit reply",
+    "sendReply": "Send reply",
+    "cancel": "Cancel",
+    "doctorReply": "Doctor's reply",
+    "replyPlaceholder": "Your reply to the patient…"
   },
   "mark_all_read": "Mark all read",
   "onboarding": {
@@ -1554,9 +1571,22 @@
   },
   "common": {
     "avatarAlt": "Avatar",
-    "loadingDots": "Loading…"
+    "loadingDots": "Loading…",
+    "loading": "Loading…",
+    "retry": "Retry"
   },
   "consultation": {
     "title": "DocPats AI consultation"
+  },
+  "no_notifications": "No notifications",
+  "notifSettings": {
+    "title": "Notification settings",
+    "emailDigest": "Email digest of unread items"
+  },
+  "push": {
+    "enable": "Enable push notifications",
+    "disable": "Disable push",
+    "blocked": "Notifications are blocked in your browser settings",
+    "blockedHint": "Allow notifications in your browser settings"
   }
 }

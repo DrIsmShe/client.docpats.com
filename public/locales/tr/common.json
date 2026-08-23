@@ -43,7 +43,8 @@
     "openAngiography": "Anjiyografi detaylarını aç",
     "openEKG": "EKG detaylarını aç",
     "openEchoEKG": "Eko-EKG detaylarını aç",
-    "openCoronography": "Koroner anjiyografi detaylarını aç"
+    "openCoronography": "Koroner anjiyografi detaylarını aç",
+    "openDetail": "Aç"
   },
   "ProfileHomePage": {
     "eyebrow": "Hasta Portalı",
@@ -493,7 +494,12 @@
     "register_btn": "Kayıt ol",
     "share_copy": "Bağlantıyı kopyala",
     "share_copied": "Bağlantı kopyalandı",
-    "share_email": "E-posta"
+    "share_email": "E-posta",
+    "medical_article": "Tıbbi makale",
+    "show_original": "Orijinali göster",
+    "show_translation": "Çeviriyi göster",
+    "login_to_like": "Beğenmek için giriş yapın",
+    "translation_pending": "Çeviri hazırlanıyor — yayından sonra genellikle 10 dakikaya kadar sürer. Orijinali gösteriyoruz."
   },
   "verification": {
     "tab": "Doğrulama",
@@ -783,7 +789,10 @@
       "loadError": "Randevu geçmişi yüklenirken hata oluştu",
       "noId": "Hata: randevu ID bulunamadı",
       "cannotCancel": "Randevu iptal edilemedi"
-    }
+    },
+    "eyebrow": "Geçmiş",
+    "loading": "Yükleniyor…",
+    "countLabel": "toplam randevu"
   },
   "myRx": {
     "eyebrow": "Sağlık kaydı",
@@ -873,7 +882,8 @@
     "colValue": "Değer",
     "colRef": "Referans",
     "attached": "Sonuç dosyası",
-    "scan": "Tarama"
+    "scan": "Tarama",
+    "openDetail": "Ayrıntıları aç"
   },
   "articles-from-doctor": {
     "header": {
@@ -1323,7 +1333,8 @@
     "shareTitle": "DocPats’te bana katılın",
     "scan": "Kamera ile tarayın",
     "invited": "davet edildi",
-    "bonusDays": "bonus gün kazanıldı"
+    "bonusDays": "bonus gün kazanıldı",
+    "bonusConsultations": "Alınan YZ danışmanlıkları"
   },
   "doctorReview": {
     "title": "Hasta yorumları",
@@ -1335,7 +1346,13 @@
     "placeholder": "Ziyaretinizi anlatın (isteğe bağlı)…",
     "sending": "Gönderiliyor…",
     "submit": "Yorumu gönder",
-    "empty": "Henüz yorum yok — ilk siz olun."
+    "empty": "Henüz yorum yok — ilk siz olun.",
+    "reply": "Yanıtla",
+    "editReply": "Yanıtı düzenle",
+    "sendReply": "Yanıtı gönder",
+    "cancel": "İptal",
+    "doctorReply": "Doktorun yanıtı",
+    "replyPlaceholder": "Hastaya yanıtınız…"
   },
   "mark_all_read": "Tümünü okundu işaretle",
   "onboarding": {
@@ -1578,9 +1595,22 @@
   },
   "common": {
     "avatarAlt": "Avatar",
-    "loadingDots": "Yükleniyor…"
+    "loadingDots": "Yükleniyor…",
+    "loading": "Yükleniyor…",
+    "retry": "Yeniden dene"
   },
   "consultation": {
     "title": "DocPats AI danışmanlığı"
+  },
+  "no_notifications": "Bildirim yok",
+  "notifSettings": {
+    "title": "Bildirim ayarları",
+    "emailDigest": "Okunmayanların e-posta özeti"
+  },
+  "push": {
+    "enable": "Anlık bildirimleri aç",
+    "disable": "Anlık bildirimi kapat",
+    "blocked": "Bildirimler tarayıcı ayarlarında engellenmiş",
+    "blockedHint": "Tarayıcı ayarlarından bildirimlere izin verin"
   }
 }

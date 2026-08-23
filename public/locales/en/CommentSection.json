@@ -19,6 +19,7 @@
     "reply": "Error replying",
     "delete": "Error deleting",
     "edit": "Error editing",
-    "like": "Error liking"
+    "like": "Error liking",
+    "loadCommentCount": "Could not load the comment count"
   }
 }

@@ -37,45 +37,6 @@
       "doctorEmpty": "Həkim göstərilməyib"
     }
   },
-  "myMedicalHistories": {
-    "states": {
-      "loading": "Xəstəlik tarixçələri yüklənir…",
-      "error": "Məlumatları yükləmək mümkün olmadı. Zəhmət olmasa, daha sonra yenidən cəhd edin."
-    },
-    "header": {
-      "eyebrow": "Tibbi arxiv",
-      "title": "Mənim xəstəlik tarixçələrim",
-      "subtitle": "Tibbi qeydlərinizin və qəbullarınızın tam xronologiyası",
-      "totalLabel": "ümumi qeyd"
-    },
-    "filters": {
-      "sectionTitle": "Filtrlər və axtarış",
-      "foundLabel": "Tapıldı",
-      "dateFrom": "Tarix (başlanğıc)",
-      "dateTo": "Tarix (son)",
-      "doctor": "Həkim (ad / soyad)",
-      "doctorPlaceholder": "Məsələn: Əliyev",
-      "diagnosis": "Diaqnoz",
-      "diagnosisPlaceholder": "Diaqnoz üzrə axtarış",
-      "sort": "Sıralama",
-      "reset": "Filtrləri sıfırla",
-      "sortOptions": {
-        "newest": "Əvvəlcə yenilər",
-        "oldest": "Əvvəlcə köhnələr",
-        "doctorAsc": "Həkim A→Z",
-        "doctorDesc": "Həkim Z→A"
-      }
-    },
-    "empty": {
-      "title": "Heç nə tapılmadı",
-      "description": "Seçilmiş filtrlərə uyğun qeyd yoxdur. Axtarış meyarlarını dəyişdirməyi sınayın."
-    },
-    "card": {
-      "diagnosisEmpty": "Diaqnoz göstərilməyib",
-      "doctorEmpty": "Həkim göstərilməyib"
-    }
-  },
-
   "myMedicalHistoryDetail": {
     "states": {
       "loading": "Xəstəlik tarixçəsi yüklənir…",
@@ -202,7 +163,8 @@
         "dateTitle": "Qeydiyyat tarixi",
         "reviewsTitle": "Rəylər",
         "likesTitle": "Bəyənmələr",
-        "articles": "Məqalələr"
+        "articles": "Məqalələr",
+        "ratingTitle": "Reytinq"
       }
     },
     "empty": {
@@ -276,7 +238,11 @@
         "comments": "Şərhlər",
         "likes": "Bəyənmələr"
       },
-      "tabs": { "all": "Hamısı", "regular": "Rəylər", "scientific": "Elmi" },
+      "tabs": {
+        "all": "Hamısı",
+        "regular": "Rəylər",
+        "scientific": "Elmi"
+      },
       "scientificBadge": "Elmi",
       "scientificBadgeTitle": "Elmi məqalə"
     }
@@ -300,27 +266,6 @@
       "addedBadge": "Siyahımda",
       "specialtyFallback": "İxtisas göstərilməyib",
       "button": "Profilə keç"
-    }
-  },
-  "patientAppointments": {
-    "header": {
-      "eyebrow": "Randevu yönetimi",
-      "title": "🩺 Tıbbi randevularınız",
-      "subtitle": "Randevuları yönetin, doktora randevu alın ve geçmişi görüntüleyin"
-    },
-    "tabs": {
-      "book": {
-        "label": "Randevu al",
-        "desc": "Bir doktor seçin ve online randevu alın."
-      },
-      "my": {
-        "label": "Randevularım",
-        "desc": "Yaklaşan randevularınızı görüntüleyin."
-      },
-      "history": {
-        "label": "Geçmiş",
-        "desc": "Tamamlanan ve iptal edilen randevuları görüntüleyin."
-      }
     }
   },
   "patientAppointments": {
@@ -515,6 +460,34 @@
   "AsidePatient": {
     "menu": {
       "myClinics": "Klinikalarım"
+    }
+  },
+  "consentRequests": {
+    "title": "Giriş sorğuları",
+    "subtitle": "Klinikalar tibbi qeydlərinizə baxmaq üçün icazə istəyir. Giriş verib-verməməyi siz həll edirsiniz.",
+    "loading": "Yüklənir…",
+    "empty": {
+      "title": "Sorğu yoxdur",
+      "text": "Klinika tibbi məlumatlarınıza giriş istədikdə, sorğu burada görünəcək."
+    },
+    "unknownClinic": "Klinika",
+    "requestedAccess": "Giriş istəyir:",
+    "expiresIn": "Bitir:",
+    "expiresToday": "Bu gün bitir",
+    "days": "gün",
+    "approveAll": "Hamısına icazə ver",
+    "approveGranular": "Nəyə icazə verəcəyinizi seçin…",
+    "reject": "Rədd et",
+    "rejectConfirm": "Sorğu rədd edilsin? Klinika məlumatlarınıza giriş əldə etməyəcək.",
+    "modal": {
+      "title": "Məlumat seçimi",
+      "subtitle": "Hansı məlumat qruplarına icazə verəcəyinizi seçin. Qeyri-işarələdiyiniz qrupu klinika görməyəcək.",
+      "notRequested": "Bu klinika tərəfindən istənilmir",
+      "zeroScopesAlert": "Ən azı bir qrup seçin və ya sorğunu rədd edin.",
+      "apply": "Tətbiq et",
+      "applying": "Tətbiq olunur…",
+      "cancel": "Ləğv et",
+      "close": "Bağla"
     }
   }
 }

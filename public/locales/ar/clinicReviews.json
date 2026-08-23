@@ -33,5 +33,23 @@
   "readTime_two": "دقيقتان قراءة",
   "readTime_few": "{{count}} دقائق قراءة",
   "readTime_many": "{{count}} دقيقة قراءة",
-  "readTime_other": "{{count}} دقيقة قراءة"
+  "readTime_other": "{{count}} دقيقة قراءة",
+  "myClinics": {
+    "unnamedClinic": "عيادة",
+    "status": {
+      "granted": "الوصول ممنوح",
+      "partial": "وصول جزئي",
+      "none": "لا يوجد وصول"
+    },
+    "card": {
+      "grantedAt": "مُنح في:",
+      "cardCreatedAt": "أُنشئ السجل في:"
+    },
+    "actions": {
+      "grantFull": "منح وصول كامل",
+      "granular": "اختر ما تشاركه",
+      "changeScopes": "تغيير الوصول",
+      "revoke": "سحب الوصول"
+    }
+  }
 }

@@ -11,6 +11,7 @@ import ShareMenu from "../../../../components/shared/ShareMenu";
 import CommentSection from "../../../../components/shared/CommentSection";
 import useCommentCount from "../../../../components/shared/useCommentCountDetail";
 import { useTranslation } from "react-i18next";
+import { categoryName } from "../../../../utils/categoryName";
 import { sh } from "../../../../lib/sanitizeHtml";
 
 const styles = `
@@ -725,7 +726,7 @@ export default function SingleArticle() {
       <div className="sa-hero">
         <div className="sa-hero-inner">
           <div className="sa-category-pill">
-            {article.category || t("article_single.medical_article")}
+            {categoryName(article.category) || t("article_single.medical_article")}
           </div>
           <h1 className="sa-title">{article.title}</h1>
           {article.isOriginal &&
@@ -920,7 +921,7 @@ export default function SingleArticle() {
                       title: article.title,
                       content: article.content,
                       abstract: article.abstract,
-                      category: article.category,
+                      category: categoryName(article.category),
                       tags: article.tags,
                       metaDescription: article.metaDescription,
                       metaKeywords: article.metaKeywords,
