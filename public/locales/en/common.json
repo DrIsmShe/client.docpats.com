@@ -914,7 +914,8 @@
   "footer": {
     "copyright": "Copyright",
     "allRights": ". All Rights Reserved",
-    "designedBy": "Designed by"
+    "designedBy": "Designed by",
+    "rights": ". All Rights Reserved"
   },
   "polyclinic": {
     "title": "My patients",
@@ -1494,7 +1495,12 @@
     "questionsAnswered": "questions answered:",
     "correct": ", correct {{value}}%",
     "accuracyHint": "The percentage appears once there are more cases: with only a few, a single mistake swings it too much.",
-    "saved": "Saved"
+    "saved": "Saved",
+    "regular": "Trains regularly on the platform",
+    "imagesReviewed": "training images reviewed",
+    "examQuestions": "exam questions answered",
+    "avgScoreWord": "average score",
+    "correctWord": "correct"
   },
   "chatUi": {
     "messages": "Messages",
@@ -1539,5 +1545,18 @@
     "title": "Tell us about yourself before the visit",
     "lead": "It takes three minutes. The doctor reads your answers in advance, so the visit leaves more time for examination and conversation instead of questioning.",
     "note": "Only the doctor you are booked with sees these answers. This is not a diagnosis and does not replace a visit."
+  },
+  "header": {
+    "profile": "Profile",
+    "search": "Search",
+    "logoAlt": "DocPats logo",
+    "selectLanguage": "Select language"
+  },
+  "common": {
+    "avatarAlt": "Avatar",
+    "loadingDots": "Loading…"
+  },
+  "consultation": {
+    "title": "DocPats AI consultation"
   }
 }

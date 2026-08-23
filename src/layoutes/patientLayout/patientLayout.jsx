@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate, Outlet } from "react-router-dom";
 import HeaderPatient from "../../components/patientComponents/header/header";
 import FooterPatient from "../../components/patientComponents/footer/footer";
@@ -7,6 +8,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 export default function PatientLayout() {
+  const { t } = useTranslation("common");
   const isOpen = useSelector((state) => state.menu.isOpen);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -50,7 +52,7 @@ export default function PatientLayout() {
   }, [navigate]);
 
   if (isLoading) {
-    return <div>Загрузка...</div>;
+    return <div>{t("common.loadingDots")}</div>;
   }
 
   if (!isAuthenticated) {

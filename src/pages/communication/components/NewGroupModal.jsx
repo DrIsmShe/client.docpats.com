@@ -16,11 +16,13 @@
 // отдельная задача с поиском и правами.
 
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import { createGroupDialog } from "../api/communicationApi";
 
 export default function NewGroupModal({ dialogs, basePath, onClose }) {
+  const { t } = useTranslation("Communication");
   const navigate = useNavigate();
 
   const [selected, setSelected] = useState(() => new Set());
@@ -93,42 +95,40 @@ export default function NewGroupModal({ dialogs, basePath, onClose }) {
         className="ngm-modal"
         role="dialog"
         aria-modal="true"
-        aria-label="Новая группа"
+        aria-label={t("group.title")}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="ngm-head">
-          <h2 className="ngm-title">Новая группа</h2>
+          <h2 className="ngm-title">{t("group.title")}</h2>
           <button type="button" className="ngm-close" onClick={onClose}>
             ✕
           </button>
         </div>
 
         <p className="ngm-lead">
-          Групповой чат — это и комната конференции: в нём видеозвонок
-          открывается сразу для всех участников, без дозвона.
+          {t("group.note")}
         </p>
 
         <label className="ngm-field">
-          <span className="ngm-label">Название</span>
+          <span className="ngm-label">{t("group.name")}</span>
           <input
             className="ngm-input"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Консилиум по пациенту"
+            placeholder={t("group.namePlaceholder")}
             maxLength={120}
           />
         </label>
 
         <div className="ngm-field">
           <span className="ngm-label">
-            Участники
+            {t("group.members")}
             {selected.size > 0 ? ` — выбрано ${selected.size}` : ""}
           </span>
 
           {candidates.length === 0 ? (
             <p className="ngm-empty">
-              Пока некого добавить: группа собирается из тех, с кем уже есть
-              личная переписка.
+              {t("group.nobody")}
             </p>
           ) : (
             <div className="ngm-list">
@@ -167,7 +167,7 @@ export default function NewGroupModal({ dialogs, basePath, onClose }) {
 
         <div className="ngm-actions">
           <button type="button" className="ngm-btn" onClick={onClose}>
-            Отмена
+            {t("group.cancel")}
           </button>
           <button
             type="button"

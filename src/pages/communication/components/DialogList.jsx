@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
 // ─── Format timestamp like a messenger ────────────────────────────────────────
 // Сегодня        → "09:26"
 // Вчера          → "вчера"
@@ -208,13 +209,14 @@ function DialogList({
   onlineUsers = new Set(), // Set of online userId strings
   basePath = "/communication", // ← добавили
 }) {
+  const { t } = useTranslation("Communication");
   const validDialogs = Array.isArray(dialogs) ? dialogs.filter(Boolean) : [];
 
   if (validDialogs.length === 0) {
     return (
       <>
         <style>{styles}</style>
-        <div className="dialog-empty">Нет диалогов</div>
+        <div className="dialog-empty">{t("ui.noDialogs")}</div>
       </>
     );
   }

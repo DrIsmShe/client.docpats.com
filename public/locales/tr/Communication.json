@@ -212,5 +212,69 @@
     "lobbyNote": "Giriş bekleme odası üzerinden — sunucu sizi içeri alacak.",
     "endedClosed": "Toplantı sona erdi, artık katılamazsınız.",
     "notInvited": "Bu toplantıya davet edilmediniz. Sunucudan sizi eklemesini isteyin."
+  },
+  "ui": {
+    "messages": "Mesajlar",
+    "messagesIcon": "💬 Mesajlar",
+    "newGroup": "+ Grup",
+    "newGroupTitle": "Grup oluştur — ortak sohbet ve konferans odası",
+    "loading": "Yükleniyor…",
+    "notAuthorized": "Yetkiniz yok",
+    "noDialogs": "Sohbet yok"
+  },
+  "empty": {
+    "title": "Bir sohbet seçin",
+    "line1": "Sohbete başlamak için bir hasta",
+    "line2": "veya soldaki listeden bir meslektaş seçin"
+  },
+  "search": {
+    "dialogs": "Sohbetler",
+    "placeholder": "Sohbet ve mesajlarda ara…",
+    "searching": "Aranıyor…",
+    "nothingFoundPrefix": "Şunun için sonuç yok: \""
+  },
+  "window": {
+    "attach": "Ekle",
+    "emoji": "Emoji",
+    "voice": "Sesli mesaj",
+    "send": "Gönder",
+    "writeMessage": "Bir mesaj yazın…",
+    "reply": "Yanıtla",
+    "forward": "İlet",
+    "forwardMessage": "Mesajı ilet",
+    "replyingTo": "Mesaja yanıt",
+    "copy": "Kopyala",
+    "delete": "Sil",
+    "close": "Kapat",
+    "download": "⬇ İndir",
+    "preview": "önizleme",
+    "messageDeleted": "Mesaj silindi",
+    "notFound": "Bulunamadı",
+    "noOtherDialogs": "Başka sohbet yok",
+    "saving": "Kaydediliyor…",
+    "unblock": "Engeli kaldır",
+    "startOfConversation": "— Yazışmanın başlangıcı —",
+    "youBlocked": "🚫 Bu kullanıcıyı engellediniz",
+    "userRestricted": "🔒 Bu kullanıcı gelen mesajları kısıtladı",
+    "translateTo": "Mesajları şu dile çevir",
+    "translationLanguage": "Çeviri dili",
+    "searchLanguage": "Dil ara…",
+    "typing": "Yazıyor…",
+    "langsSuffix": "dil · GPT-4o-mini"
+  },
+  "lang": {
+    "title": "Gelen mesajların çeviri dili",
+    "notFound": "Dil bulunamadı",
+    "saved": "✓ Kaydedildi",
+    "error": "Hata"
+  },
+  "group": {
+    "title": "Yeni grup",
+    "name": "Ad",
+    "namePlaceholder": "Hasta konseyi",
+    "members": "Katılımcılar",
+    "cancel": "İptal",
+    "note": "Grup sohbeti aynı zamanda bir konferans odasıdır: görüntülü arama orada herkese aynı anda açılır, arama yapmadan.",
+    "nobody": "Henüz eklenecek kimse yok: grup, hâlihazırda özel yazışmanız olan kişilerden oluşur."
   }
 }

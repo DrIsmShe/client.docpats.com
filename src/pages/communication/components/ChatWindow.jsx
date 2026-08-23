@@ -89,6 +89,7 @@ const FLAGS = {
 
 // ─── Инлайн компонент выбора языка (дропдаун прямо в шапке) ──────────────────
 function LangDropdown({ value, onChange }) {
+  const { t } = useTranslation("Communication");
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [langs, setLangs] = useState([]);
@@ -144,7 +145,7 @@ function LangDropdown({ value, onChange }) {
     <div ref={dropRef} style={{ position: "relative" }}>
       <button
         type="button"
-        title="Translation language"
+        title={t("window.translationLanguage")}
         onClick={() => setOpen((v) => !v)}
         style={{
           background: open ? "#eff6ff" : "none",
@@ -195,7 +196,7 @@ function LangDropdown({ value, onChange }) {
                 marginBottom: 6,
               }}
             >
-              Translate messages to
+              {t("window.translateTo")}
             </div>
             <div
               style={{
@@ -213,7 +214,7 @@ function LangDropdown({ value, onChange }) {
                 <span
                   style={{ fontSize: 11, color: "#9ca3af", marginLeft: "auto" }}
                 >
-                  Saving…
+                  {t("window.saving")}
                 </span>
               )}
             </div>
@@ -222,7 +223,7 @@ function LangDropdown({ value, onChange }) {
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search language…"
+              placeholder={t("window.searchLanguage")}
               style={{
                 width: "100%",
                 boxSizing: "border-box",
@@ -247,7 +248,7 @@ function LangDropdown({ value, onChange }) {
                   fontSize: 12,
                 }}
               >
-                Not found
+                {t("window.notFound")}
               </div>
             )}
             {filtered.map(({ code, name }) => {
@@ -307,7 +308,7 @@ function LangDropdown({ value, onChange }) {
               textAlign: "right",
             }}
           >
-            {langs.length} languages · GPT-4o-mini
+            {langs.length} {t("window.langsSuffix")}
           </div>
         </div>
       )}
@@ -1727,7 +1728,7 @@ function ChatWindow({
                 fontSize: 11,
               }}
             >
-              — Start of conversation —
+              {t("window.startOfConversation")}
             </div>
           )}
 
@@ -1788,7 +1789,7 @@ function ChatWindow({
                     className="video-modal-dl"
                     onClick={() => downloadFile(zoomVideo.url, zoomVideo.name)}
                   >
-                    ⬇ Download
+                    {t("window.download")}
                   </button>
                 </div>
               </div>
@@ -1944,7 +1945,7 @@ function ChatWindow({
 
                             {/* Тело сообщения */}
                             {m.isDeleted ? (
-                              <i className="deleted-message">Message deleted</i>
+                              <i className="deleted-message">{t("window.messageDeleted")}</i>
                             ) : (
                               <>
                                 {m.text && (
@@ -2130,7 +2131,7 @@ function ChatWindow({
                               >
                                 <button
                                   type="button"
-                                  title="Reply"
+                                  title={t("window.reply")}
                                   onClick={() => {
                                     setReplyMessage(m);
                                     setSelectedMessage(null);
@@ -2140,7 +2141,7 @@ function ChatWindow({
                                 </button>
                                 <button
                                   type="button"
-                                  title="Copy"
+                                  title={t("window.copy")}
                                   onClick={() => {
                                     navigator.clipboard.writeText(m.text || "");
                                     setSelectedMessage(null);
@@ -2150,7 +2151,7 @@ function ChatWindow({
                                 </button>
                                 <button
                                   type="button"
-                                  title="Forward"
+                                  title={t("window.forward")}
                                   onClick={() => {
                                     setMessageToShare(m);
                                     setShowShareModal(true);
@@ -2162,7 +2163,7 @@ function ChatWindow({
                                 {canDeleteMessage(m) && (
                                   <button
                                     type="button"
-                                    title="Delete"
+                                    title={t("window.delete")}
                                     onClick={() => {
                                       handleDeleteMessage(m.id);
                                       setSelectedMessage(null);
@@ -2242,7 +2243,7 @@ function ChatWindow({
                   <span />
                   <span />
                 </div>
-                Typing…
+                {t("window.typing")}
               </div>
             )}
             <div ref={bottomRef} />
@@ -2252,16 +2253,16 @@ function ChatWindow({
           {isBlocked && (
             <div className="blocked-banner">
               <div className="blocked-banner-text">
-                🚫 You have blocked this user
+                {t("window.youBlocked")}
               </div>
               <button onClick={unblock} disabled={blockLoading}>
-                Unblock
+                {t("window.unblock")}
               </button>
             </div>
           )}
           {!isBlocked && blockedByPeer && (
             <div className="blocked-by-peer-banner">
-              🔒 This user has restricted incoming messages
+              {t("window.userRestricted")}
             </div>
           )}
 
@@ -2269,7 +2270,7 @@ function ChatWindow({
           {replyMessage && (
             <div className="reply-preview">
               <div className="reply-header">
-                Replying to message
+                {t("window.replyingTo")}
                 <button type="button" onClick={() => setReplyMessage(null)}>
                   ✕
                 </button>
@@ -2316,7 +2317,7 @@ function ChatWindow({
               {pendingFile.previewUrl ? (
                 <img
                   src={pendingFile.previewUrl}
-                  alt="preview"
+                  alt={t("window.preview")}
                   className="file-preview-thumb"
                 />
               ) : (
@@ -2371,7 +2372,7 @@ function ChatWindow({
               type="button"
               className="icon-button"
               onClick={() => fileInputRef.current?.click()}
-              title="Attach"
+              title={t("window.attach")}
             >
               📎
             </button>
@@ -2385,7 +2386,7 @@ function ChatWindow({
               type="button"
               className="icon-button"
               onClick={() => setShowEmojiPicker((v) => !v)}
-              title="Emoji"
+              title={t("window.emoji")}
             >
               😄
             </button>
@@ -2408,7 +2409,7 @@ function ChatWindow({
                 type="text"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                placeholder="Write a message…"
+                placeholder={t("window.writeMessage")}
               />
               {showEmojiPicker && (
                 <div
@@ -2446,11 +2447,11 @@ function ChatWindow({
               type="button"
               className={`icon-button mic ${isRecording ? "recording" : ""}`}
               onClick={toggleVoice}
-              title="Voice"
+              title={t("window.voice")}
             >
               🎙
             </button>
-            <button type="submit" className="send-button" title="Send">
+            <button type="submit" className="send-button" title={t("window.send")}>
               ➤
             </button>
           </form>
@@ -2506,9 +2507,9 @@ function ChatWindow({
             }}
           >
             <div className="share-modal" onClick={(e) => e.stopPropagation()}>
-              <h3>Forward message</h3>
+              <h3>{t("window.forwardMessage")}</h3>
               {otherDialogs.length === 0 ? (
-                <div className="share-empty">No other dialogs</div>
+                <div className="share-empty">{t("window.noOtherDialogs")}</div>
               ) : (
                 <>
                   <DialogList
@@ -2524,7 +2525,7 @@ function ChatWindow({
                       onClick={() => handleShareToDialog(selectedDialogToShare)}
                       style={{ width: "100%", padding: 9 }}
                     >
-                      Forward
+                      {t("window.forward")}
                     </button>
                   </div>
                 </>
@@ -2542,7 +2543,7 @@ function ChatWindow({
                   color: "#4a5568",
                 }}
               >
-                Close
+                {t("window.close")}
               </button>
             </div>
           </div>

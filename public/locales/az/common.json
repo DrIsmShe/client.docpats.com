@@ -944,7 +944,8 @@
   "footer": {
     "copyright": "Müəllif hüquqları",
     "allRights": ". Bütün hüquqlar qorunur",
-    "designedBy": "Dizayn müəllifi"
+    "designedBy": "Dizayn müəllifi",
+    "rights": ". Bütün hüquqlar qorunur"
   },
   "polyclinic": {
     "title": "Mənim pasiyentlərim",
@@ -1521,7 +1522,12 @@
     "questionsAnswered": "sual cavablandırılıb:",
     "correct": ", düzgün {{value}} %",
     "accuracyHint": "Faiz hallar çoxaldıqda görünəcək: az sayda halda bir səhv onu həddindən artıq dəyişir.",
-    "saved": "Yadda saxlanıldı"
+    "saved": "Yadda saxlanıldı",
+    "regular": "Platformada müntəzəm məşq edir",
+    "imagesReviewed": "təlim şəkli təhlil edilib",
+    "examQuestions": "imtahan sualı cavablandırılıb",
+    "avgScoreWord": "orta bal",
+    "correctWord": "düzgün"
   },
   "chatUi": {
     "messages": "Mesajlar",
@@ -1566,5 +1572,18 @@
     "title": "Qəbuldan əvvəl özünüz haqqında danışın",
     "lead": "Bu üç dəqiqə çəkir. Həkim cavabları əvvəlcədən oxuyur — və qəbulda sorğu-suala deyil, müayinə və söhbətə daha çox vaxt qalır.",
     "note": "Cavabları yalnız yazıldığınız həkim görür. Bu diaqnoz deyil və qəbulu əvəz etmir."
+  },
+  "header": {
+    "profile": "Profil",
+    "search": "Axtarış",
+    "logoAlt": "DocPats loqosu",
+    "selectLanguage": "Dili seçin"
+  },
+  "common": {
+    "avatarAlt": "Avatar",
+    "loadingDots": "Yüklənir…"
+  },
+  "consultation": {
+    "title": "DocPats AI konsultasiyası"
   }
 }

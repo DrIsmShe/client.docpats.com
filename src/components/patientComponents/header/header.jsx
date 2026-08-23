@@ -92,7 +92,7 @@ export default function HeaderPatient() {
           >
             <img
               src={`${process.env.PUBLIC_URL}/logo_docpats_192.png`}
-              alt="Docpats Logo"
+              alt={t("common:header.logoAlt")}
             />
             <span className="d-none d-lg-block">DOCPATS</span>
           </Link>
@@ -116,7 +116,7 @@ export default function HeaderPatient() {
               placeholder={t("search")}
               title={t("search")}
             />
-            <button type="submit" title="Search">
+            <button type="submit" title={t("common:header.search")}>
               <i className="bi bi-search"></i>
             </button>
           </form>
@@ -190,7 +190,7 @@ export default function HeaderPatient() {
               >
                 <img
                   src="../assets/img/profile-img.jpg"
-                  alt="Profile"
+                  alt={t("common:header.profile")}
                   className="rounded-circle"
                   style={{ width: 40 }}
                 />

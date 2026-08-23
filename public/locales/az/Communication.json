@@ -212,5 +212,69 @@
     "lobbyNote": "Giriş gözləmə otağı vasitəsilədir — aparıcı sizi buraxacaq.",
     "endedClosed": "Görüş bitib, artıq daxil olmaq mümkün deyil.",
     "notInvited": "Siz bu görüşə dəvət olunmamısınız. Aparıcıdan sizi əlavə etməsini xahiş edin."
+  },
+  "ui": {
+    "messages": "Mesajlar",
+    "messagesIcon": "💬 Mesajlar",
+    "newGroup": "+ Qrup",
+    "newGroupTitle": "Qrup yarat — ümumi çat və konfrans otağı",
+    "loading": "Yüklənir…",
+    "notAuthorized": "Giriş yoxdur",
+    "noDialogs": "Dialoq yoxdur"
+  },
+  "empty": {
+    "title": "Dialoq seçin",
+    "line1": "Söhbətə başlamaq üçün pasiyent",
+    "line2": "və ya soldakı siyahıdan həmkar seçin"
+  },
+  "search": {
+    "dialogs": "Dialoqlar",
+    "placeholder": "Dialoq və mesajlarda axtarış…",
+    "searching": "Axtarılır…",
+    "nothingFoundPrefix": "Heç nə tapılmadı: «"
+  },
+  "window": {
+    "attach": "Əlavə et",
+    "emoji": "Emoji",
+    "voice": "Səsli mesaj",
+    "send": "Göndər",
+    "writeMessage": "Mesaj yazın…",
+    "reply": "Cavab ver",
+    "forward": "Yönləndir",
+    "forwardMessage": "Mesajı yönləndir",
+    "replyingTo": "Mesaja cavab",
+    "copy": "Kopyala",
+    "delete": "Sil",
+    "close": "Bağla",
+    "download": "⬇ Yüklə",
+    "preview": "önizləmə",
+    "messageDeleted": "Mesaj silindi",
+    "notFound": "Tapılmadı",
+    "noOtherDialogs": "Başqa dialoq yoxdur",
+    "saving": "Yadda saxlanılır…",
+    "unblock": "Blokdan çıxar",
+    "startOfConversation": "— Yazışmanın başlanğıcı —",
+    "youBlocked": "🚫 Bu istifadəçini bloklamısınız",
+    "userRestricted": "🔒 İstifadəçi gələn mesajları məhdudlaşdırıb",
+    "translateTo": "Mesajları tərcümə et",
+    "translationLanguage": "Tərcümə dili",
+    "searchLanguage": "Dil axtar…",
+    "typing": "Yazır…",
+    "langsSuffix": "dil · GPT-4o-mini"
+  },
+  "lang": {
+    "title": "Gələn mesajların tərcümə dili",
+    "notFound": "Dil tapılmadı",
+    "saved": "✓ Yadda saxlanıldı",
+    "error": "Xəta"
+  },
+  "group": {
+    "title": "Yeni qrup",
+    "name": "Ad",
+    "namePlaceholder": "Pasiyent üzrə konsilium",
+    "members": "İştirakçılar",
+    "cancel": "Ləğv et",
+    "note": "Qrup çatı həm də konfrans otağıdır: videozəng orada dərhal bütün iştirakçılar üçün açılır, zəng etmədən.",
+    "nobody": "Hələ əlavə edəcək kimsə yoxdur: qrup şəxsi yazışma olan adamlardan yığılır."
   }
 }

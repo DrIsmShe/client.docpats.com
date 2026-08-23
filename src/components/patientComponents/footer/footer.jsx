@@ -1,18 +1,20 @@
 import React from "react";
 
+import { useTranslation } from "react-i18next";
 export default function Footer() {
+  const { t } = useTranslation("common");
   return (
     <div>
       <footer id="footer" className="footer">
         <div className="copyright">
-          &copy; Copyright
+          {t("footer.copyright")}
           <strong>
             <span> - www.docpats.com</span>
           </strong>
-          . All Rights Reserved
+          {t("footer.rights")}
         </div>
         <div className="credits">
-          Designed by <a href="https://dr-ismail.com/">DR-DESIGN</a>
+          {t("footer.designedBy")} <a href="https://dr-ismail.com/">DR-DESIGN</a>
         </div>
       </footer>
     </div>

@@ -218,7 +218,7 @@ function ChatPage() {
           </div>
           <div className="mobile-list-body">
             {loading ? (
-              <div className="chatpage-loading">Loading</div>
+              <div className="chatpage-loading">{t("Communication:ui.loading")}</div>
             ) : (
               <DialogList dialogs={dialogs} activeDialogId={null} />
             )}
@@ -232,10 +232,10 @@ function ChatPage() {
       <div className="mobile-page">
         <style>{styles}</style>
         {userLoading ? (
-          <div className="chatpage-loading">Loading…</div>
+          <div className="chatpage-loading">{t("Communication:ui.loading")}</div>
         ) : !user ? (
           <div className="chatpage-loading" style={{ color: "#ef4444" }}>
-            Not authorized
+            {t("Communication:ui.notAuthorized")}
           </div>
         ) : (
           <ChatWindow {...chatWindowProps} />
@@ -249,10 +249,10 @@ function ChatPage() {
     <>
       <style>{styles}</style>;
       {userLoading ? (
-        <div className="chatpage-loading">Loading…</div>
+        <div className="chatpage-loading">{t("Communication:ui.loading")}</div>
       ) : !user ? (
         <div className="chatpage-loading" style={{ color: "#ef4444" }}>
-          Not authorized
+          {t("Communication:ui.notAuthorized")}
         </div>
       ) : activeDialog ? (
         <ChatWindow {...chatWindowProps} />

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
 
 const LANGS = [
@@ -75,6 +76,7 @@ const STYLES = `
 `;
 
 export default function LanguageSwitcher() {
+  const { t } = useTranslation("common");
   const current = localStorage.getItem("lang") || i18n.language || "en";
 
   const handleChange = async (e) => {
@@ -92,7 +94,7 @@ export default function LanguageSwitcher() {
           className="dp-lang-select"
           value={current}
           onChange={handleChange}
-          aria-label="Select language"
+          aria-label={t("header.selectLanguage")}
         >
           {LANGS.map((l) => (
             <option key={l.code} value={l.code}>

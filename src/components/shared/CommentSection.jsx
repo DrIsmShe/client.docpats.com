@@ -201,7 +201,7 @@ export default function CommentSection({
       <div key={comment._id} className="border rounded p-2 mb-3 bg-light">
         <img
           src={getAvatar(comment.author)}
-          alt="Avatar"
+          alt={t("common:common.avatarAlt")}
           className="rounded-circle"
           style={{ width: 40, height: 40, objectFit: "cover" }}
         />

@@ -212,5 +212,69 @@
     "lobbyNote": "Entry is through the waiting room — the host will let you in.",
     "endedClosed": "The meeting has ended; you can no longer join.",
     "notInvited": "You were not invited to this meeting. Ask the host to add you."
+  },
+  "ui": {
+    "messages": "Messages",
+    "messagesIcon": "💬 Messages",
+    "newGroup": "+ Group",
+    "newGroupTitle": "Create a group — a shared chat and a conference room",
+    "loading": "Loading…",
+    "notAuthorized": "Not authorized",
+    "noDialogs": "No dialogs"
+  },
+  "empty": {
+    "title": "Select a dialog",
+    "line1": "To start a conversation, select a patient",
+    "line2": "or colleague from the list on the left"
+  },
+  "search": {
+    "dialogs": "Dialogs",
+    "placeholder": "Search dialogs and messages…",
+    "searching": "Searching…",
+    "nothingFoundPrefix": "Nothing found for \""
+  },
+  "window": {
+    "attach": "Attach",
+    "emoji": "Emoji",
+    "voice": "Voice message",
+    "send": "Send",
+    "writeMessage": "Write a message…",
+    "reply": "Reply",
+    "forward": "Forward",
+    "forwardMessage": "Forward message",
+    "replyingTo": "Replying to message",
+    "copy": "Copy",
+    "delete": "Delete",
+    "close": "Close",
+    "download": "⬇ Download",
+    "preview": "preview",
+    "messageDeleted": "Message deleted",
+    "notFound": "Not found",
+    "noOtherDialogs": "No other dialogs",
+    "saving": "Saving…",
+    "unblock": "Unblock",
+    "startOfConversation": "— Start of conversation —",
+    "youBlocked": "🚫 You have blocked this user",
+    "userRestricted": "🔒 This user has restricted incoming messages",
+    "translateTo": "Translate messages to",
+    "translationLanguage": "Translation language",
+    "searchLanguage": "Search language…",
+    "typing": "Typing…",
+    "langsSuffix": "languages · GPT-4o-mini"
+  },
+  "lang": {
+    "title": "Incoming message translation language",
+    "notFound": "Language not found",
+    "saved": "✓ Saved",
+    "error": "Error"
+  },
+  "group": {
+    "title": "New group",
+    "name": "Name",
+    "namePlaceholder": "Case conference for a patient",
+    "members": "Members",
+    "cancel": "Cancel",
+    "note": "A group chat is also a conference room: a video call there opens for everyone at once, with no dialling.",
+    "nobody": "There is nobody to add yet: a group is built from people you already have a private conversation with."
   }
 }

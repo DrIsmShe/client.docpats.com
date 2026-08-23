@@ -1,5 +1,6 @@
 // Замени этот файл на свой CommunicationLayout.jsx
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Outlet, useParams, useLocation } from "react-router-dom";
 import DialogList from "../../pages/communication/components/DialogList";
 import NewGroupModal from "../../pages/communication/components/NewGroupModal";
@@ -105,6 +106,7 @@ const mobileStyles = `
 `;
 
 export default function CommunicationLayout() {
+  const { t } = useTranslation("Communication");
   const { dialogId } = useParams();
   const { dialogs, loading, setActiveDialog, setCurrentUser } = useDialogs();
   const { user } = useCurrentUser();
@@ -146,14 +148,14 @@ export default function CommunicationLayout() {
         <div className="mobile-comm-page">
           <div className="mobile-comm-topbar">
             <span className="mobile-comm-icon">💬</span>
-            <span className="mobile-comm-title">Messages</span>
+            <span className="mobile-comm-title">{t("ui.messages")}</span>
             {!loading && dialogs.length > 0 && (
               <span className="mobile-comm-count">{dialogs.length}</span>
             )}
           </div>
           <div className="mobile-comm-list">
             {loading ? (
-              <div className="comm-loading">Loading...</div>
+              <div className="comm-loading">{t("ui.loading")}</div>
             ) : (
               <DialogList
                 dialogs={dialogs}
@@ -187,19 +189,19 @@ export default function CommunicationLayout() {
       <style>{desktopStyles}</style>
       <div className="communication-sidebar">
         <div className="communication-sidebar-header">
-          <span style={{ marginInlineEnd: "auto" }}>💬 Messages</span>
+          <span style={{ marginInlineEnd: "auto" }}>{t("ui.messagesIcon")}</span>
           <button
             type="button"
             className="comm-new-group"
             onClick={() => setGroupOpen(true)}
-            title="Создать группу — общий чат и комната конференции"
+            title={t("ui.newGroupTitle")}
           >
-            + Группа
+            {t("ui.newGroup")}
           </button>
         </div>
         <div className="communication-dialogs">
           {loading ? (
-            <div style={{ padding: 20 }}>Loading...</div>
+            <div style={{ padding: 20 }}>{t("ui.loading")}</div>
           ) : (
             <DialogList
               dialogs={dialogs}

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 // Прокси через фронтенд (same-origin) — кука работает корректно.
@@ -14,6 +15,7 @@ const PROXY_BASE =
   process.env.NODE_ENV === "development" ? "http://localhost:11000" : "";
 
 export default function ConsultationPage() {
+  const { t } = useTranslation("common");
   const iframeRef = useRef(null);
   const isAuthenticated = useSelector(
     (state) => state.auth?.isAuthenticated ?? false,
@@ -87,7 +89,7 @@ export default function ConsultationPage() {
           border: "none",
           display: "block",
         }}
-        title="DocPats AI Консультация"
+        title={t("consultation.title")}
       />
     </div>
   );

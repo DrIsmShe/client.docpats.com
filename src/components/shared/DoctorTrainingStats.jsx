@@ -20,12 +20,14 @@
 //     заблуждение пациента, который выбирает по этой цифре.
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import "./doctorTrainingStats.css";
 
 const API_BASE = process.env.REACT_APP_API_URL;
 
 export default function DoctorTrainingStats({ userId }) {
+  const { t } = useTranslation("common");
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -47,16 +49,16 @@ export default function DoctorTrainingStats({ userId }) {
 
   return (
     <section className="dts-card">
-      <h4 className="dts-title">Регулярно тренируется на платформе</h4>
+      <h4 className="dts-title">{t("training.regular")}</h4>
 
       <div className="dts-grid">
         {radiology.cases > 0 && (
           <div className="dts-item">
             <span className="dts-value">{radiology.cases}</span>
-            <span className="dts-label">учебных снимков разобрано</span>
+            <span className="dts-label">{t("training.imagesReviewed")}</span>
             {radiology.accuracy !== null && (
               <span className="dts-extra">
-                средний балл {radiology.accuracy} %
+                {t("training.avgScoreWord")} {radiology.accuracy} %
               </span>
             )}
           </div>
@@ -65,9 +67,9 @@ export default function DoctorTrainingStats({ userId }) {
         {exam.answered > 0 && (
           <div className="dts-item">
             <span className="dts-value">{exam.answered}</span>
-            <span className="dts-label">вопросов экзамена пройдено</span>
+            <span className="dts-label">{t("training.examQuestions")}</span>
             {exam.accuracy !== null && (
-              <span className="dts-extra">верно {exam.accuracy} %</span>
+              <span className="dts-extra">{t("training.correctWord")} {exam.accuracy} %</span>
             )}
           </div>
         )}

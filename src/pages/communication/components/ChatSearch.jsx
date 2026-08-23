@@ -7,6 +7,7 @@
 //               }} />
 
 import { useRef, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSearch } from "../hooks/useSearch";
 
 const styles = `
@@ -192,6 +193,7 @@ function highlight(text, query) {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 function ChatSearch({ onSelectDialog, onSelectMessage }) {
+  const { t } = useTranslation("Communication");
   const { query, setQuery, results, loading, clear } = useSearch(280);
   const [open, setOpen] = useState(false);
   const wrapRef = useRef(null);
@@ -232,7 +234,7 @@ function ChatSearch({ onSelectDialog, onSelectMessage }) {
             className="cs-input"
             type="text"
             value={query}
-            placeholder="Search dialogs and messages…"
+            placeholder={t("search.placeholder")}
             onChange={(e) => {
               setQuery(e.target.value);
               setOpen(true);
@@ -259,18 +261,18 @@ function ChatSearch({ onSelectDialog, onSelectMessage }) {
             {loading && (
               <div className="cs-loading">
                 <div className="cs-spinner" />
-                Searching…
+                {t("search.searching")}
               </div>
             )}
 
             {!loading && !hasResults && (
-              <div className="cs-empty">Nothing found for "{query}"</div>
+              <div className="cs-empty">{t("search.nothingFoundPrefix")}{query}"</div>
             )}
 
             {/* DIALOGS */}
             {!loading && results.dialogs.length > 0 && (
               <>
-                <div className="cs-section-head">Dialogs</div>
+                <div className="cs-section-head">{t("search.dialogs")}</div>
                 {results.dialogs.map((d) => (
                   <div
                     key={String(d._id)}
@@ -302,7 +304,7 @@ function ChatSearch({ onSelectDialog, onSelectMessage }) {
             {/* MESSAGES */}
             {!loading && results.messages.length > 0 && (
               <>
-                <div className="cs-section-head">Messages</div>
+                <div className="cs-section-head">{t("ui.messages")}</div>
                 {results.messages.map((m) => (
                   <div
                     key={String(m._id)}

@@ -4,6 +4,7 @@
 // Есть поиск — без него листать неудобно.
 
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import {
   getSupportedLanguages,
   savePreferredLanguage,
@@ -100,6 +101,7 @@ const FLAGS = {
 };
 
 export default function LanguageSelector({ value = "ru", onChange }) {
+  const { t } = useTranslation("Communication");
   const [languages, setLanguages] = useState([]);
   const [search, setSearch] = useState("");
   const [current, setCurrent] = useState(value);
@@ -161,28 +163,28 @@ export default function LanguageSelector({ value = "ru", onChange }) {
               {currentLang.name}
             </div>
             <div style={{ fontSize: 11, color: "#94a3b8" }}>
-              Язык перевода входящих сообщений
+              {t("lang.title")}
             </div>
           </div>
           {status === "saving" && (
             <span
               style={{ marginLeft: "auto", fontSize: 11, color: "#94a3b8" }}
             >
-              Сохраняем...
+              {t("window.saving")}
             </span>
           )}
           {status === "saved" && (
             <span
               style={{ marginLeft: "auto", fontSize: 11, color: "#22c55e" }}
             >
-              ✓ Сохранено
+              {t("lang.saved")}
             </span>
           )}
           {status === "error" && (
             <span
               style={{ marginLeft: "auto", fontSize: 11, color: "#ef4444" }}
             >
-              Ошибка
+              {t("lang.error")}
             </span>
           )}
         </div>
@@ -195,7 +197,7 @@ export default function LanguageSelector({ value = "ru", onChange }) {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Поиск языка..."
+          placeholder={t("window.searchLanguage")}
           style={{
             width: "100%",
             boxSizing: "border-box",
@@ -248,7 +250,7 @@ export default function LanguageSelector({ value = "ru", onChange }) {
               fontSize: 13,
             }}
           >
-            Язык не найден
+            {t("lang.notFound")}
           </div>
         )}
         {filtered.map(({ code, name }) => {
@@ -300,7 +302,7 @@ export default function LanguageSelector({ value = "ru", onChange }) {
       </div>
 
       <div style={{ marginTop: 6, fontSize: 11, color: "#64748b" }}>
-        {languages.length} языков · GPT-4o-mini
+        {languages.length} {t("window.langsSuffix")}
       </div>
     </div>
   );

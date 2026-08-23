@@ -943,7 +943,8 @@
   "footer": {
     "copyright": "Telif Hakkı",
     "allRights": ". Tüm Hakları Saklıdır",
-    "designedBy": "Tasarım"
+    "designedBy": "Tasarım",
+    "rights": ". Tüm hakları saklıdır"
   },
   "polyclinic": {
     "title": "Hastalarım",
@@ -1518,7 +1519,12 @@
     "questionsAnswered": "soru yanıtlandı:",
     "correct": ", doğru {{value}} %",
     "accuracyHint": "Yüzde, vaka sayısı arttığında görünür: az sayıda vakada tek bir hata oranı çok değiştirir.",
-    "saved": "Kaydedildi"
+    "saved": "Kaydedildi",
+    "regular": "Platformda düzenli olarak çalışıyor",
+    "imagesReviewed": "eğitim görüntüsü incelendi",
+    "examQuestions": "sınav sorusu yanıtlandı",
+    "avgScoreWord": "ortalama puan",
+    "correctWord": "doğru"
   },
   "chatUi": {
     "messages": "Mesajlar",
@@ -1563,5 +1569,18 @@
     "title": "Randevudan önce kendinizden bahsedin",
     "lead": "Üç dakika sürer. Doktor yanıtları önceden okur; böylece randevuda soru sormaya değil, muayene ve sohbete daha fazla zaman kalır.",
     "note": "Yanıtları yalnızca randevunuzun olduğu doktor görür. Bu bir teşhis değildir ve muayenenin yerini tutmaz."
+  },
+  "header": {
+    "profile": "Profil",
+    "search": "Ara",
+    "logoAlt": "DocPats logosu",
+    "selectLanguage": "Dil seçin"
+  },
+  "common": {
+    "avatarAlt": "Avatar",
+    "loadingDots": "Yükleniyor…"
+  },
+  "consultation": {
+    "title": "DocPats AI danışmanlığı"
   }
 }
