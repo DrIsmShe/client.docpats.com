@@ -38,6 +38,17 @@
           "Hasta geçmişi",
           "Öncesi / sonrası"
         ]
+      },
+      "variant3": {
+        "kicker": "Seçenek 3",
+        "title": "Fotoğrafla YZ",
+        "lead": "Fırçayla fotoğrafın bir bölümünü seçin ve istediğiniz sonucu anlatın — model yalnızca seçili alanı yeniden çizer. Hastayla konuşmak için hızlı bir önizleme, ölçülebilir bir plan değil.",
+        "chips": [
+          "Fotoğraf ve fırça",
+          "Sözle açıklama",
+          "Birkaç seçenek",
+          "Tahmin değil, görselleştirme"
+        ]
       }
     }
   },

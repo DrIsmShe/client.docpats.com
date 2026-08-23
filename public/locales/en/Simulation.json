@@ -38,6 +38,17 @@
           "Patient history",
           "Before / after"
         ]
+      },
+      "variant3": {
+        "kicker": "Option 3",
+        "title": "AI from a photo",
+        "lead": "Brush over an area of the photo and describe the result you want — the model repaints only the selection. A quick preview for talking with the patient, not a measurable plan.",
+        "chips": [
+          "Photo and brush",
+          "Description in words",
+          "Several options",
+          "Illustration, not a forecast"
+        ]
       }
     }
   },

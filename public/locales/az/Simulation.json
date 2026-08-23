@@ -38,6 +38,17 @@
           "Xəstə tarixçəsi",
           "Əvvəl / sonra"
         ]
+      },
+      "variant3": {
+        "kicker": "Variant 3",
+        "title": "Şəkil üzrə Sİ",
+        "lead": "Fırça ilə şəklin bir hissəsini seçin və istədiyiniz nəticəni təsvir edin — model yalnız seçiləni yenidən çəkir. Pasiyentlə söhbət üçün sürətli baxış, ölçüləbilən plan deyil.",
+        "chips": [
+          "Şəkil və fırça",
+          "Sözlə təsvir",
+          "Bir neçə variant",
+          "İllüstrasiya, proqnoz deyil"
+        ]
       }
     }
   },
