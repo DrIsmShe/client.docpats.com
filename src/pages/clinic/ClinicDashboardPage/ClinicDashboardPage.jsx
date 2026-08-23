@@ -342,6 +342,21 @@ export default function ClinicDashboardPage() {
               <span className="clinic-dashboard-action-arrow">→</span>
             </Link>
           )}
+          {/* Заявки с витрины. В зоне владельца входа на эту страницу не было
+              вовсе — она жила только плиткой на дашборде сотрудника. Владелец
+              и управляющий получают уведомление о новой заявке, но дойти до
+              списка сами не могли. Ресурс тот же, что у плитки сотрудника. */}
+          {canRead("lead") && (
+            <Link to="/clinic/leads" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">📥</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.leads", {
+                  defaultValue: "Заявки с сайта",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
           {canRead("staff") && (
             <Link to="/clinic/staff" className="clinic-dashboard-action">
               <span className="clinic-dashboard-action-icon">👥</span>

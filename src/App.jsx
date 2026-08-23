@@ -862,6 +862,14 @@ function App() {
               />
 
               <Route path="services" element={<ServicesPage />} />
+              {/* Заявки с витрины. Страница существовала только в зоне
+                  сотрудников (/clinic/employee/leads), а уведомление о новой
+                  заявке уходит владельцу и управляющему — это пользователи
+                  DocPats, а не сотрудники. Переход по уведомлению приводил их
+                  в employee-зону, где getEmployeeMe отвечает 401, и layout
+                  выбрасывал на /clinic/staff-login: авторизованному человеку
+                  показывали форму входа. */}
+              <Route path="leads" element={<ClinicLeadsPage />} />
               <Route path="pages" element={<ClinicCustomPagesPage />} />
               <Route path="create" element={<CreateClinicPage />} />
               <Route path="dashboard" element={<ClinicDashboardPage />} />
