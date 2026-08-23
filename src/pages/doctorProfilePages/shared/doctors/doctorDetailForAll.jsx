@@ -10,6 +10,7 @@ import { AiFillLike } from "react-icons/ai";
 import ShareMenu from "../../../../components/shared/ShareMenu";
 import DoctorEndorseItem from "./DoctorEndorseItem";
 import { Trans, useTranslation } from "react-i18next";
+import { specialityName } from "../../../../utils/specialityName";
 import { useMemo } from "react";
 import { getOrCreateDialogWithUser } from "../../../communication/api/communicationApi";
 import { Helmet } from "react-helmet-async";
@@ -1057,10 +1058,14 @@ export default function DoctorDetailsForAll() {
     .join("")
     .slice(0, 2)
     .toUpperCase();
+  // Имя специальности приходит из справочника по-английски — это ключ.
+  // Пациенту показываем подпись на его языке.
   const specName =
-    doctorProfile.user?.specializationName ||
-    doctorProfile.user?.specialization?.name ||
-    t("doctorDetails.common.unknown");
+    specialityName(
+      doctorProfile.user?.specializationName ||
+        doctorProfile.user?.specialization?.name,
+      t,
+    ) || t("doctorDetails.common.unknown");
 
   return (
     <div className="dd-wrap">

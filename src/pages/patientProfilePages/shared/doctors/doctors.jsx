@@ -5,6 +5,7 @@ import { FaCommentDots } from "react-icons/fa6";
 import { BsCalendar2DateFill } from "react-icons/bs";
 import { AiFillLike } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
+import { specialityName } from "../../../../utils/specialityName";
 import { sh } from "../../../../lib/sanitizeHtml";
 import { COUNTRIES, COUNTRY_ALIASES, COUNTRY_RAW_FALLBACK } from "../../../../constants/countries";
 
@@ -992,7 +993,7 @@ export default function DoctorsAll() {
                 <option key={s} value={s}>
                   {s === "all"
                     ? t("doctorsAll.filters.fields.specialty.all")
-                    : s}
+                    : specialityName(s, t)}
                 </option>
               ))}
             </select>

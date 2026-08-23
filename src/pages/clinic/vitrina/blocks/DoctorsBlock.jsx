@@ -13,6 +13,7 @@
 import React, { useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { specialityName } from "../../../../utils/specialityName";
 import {
   resolveUrl,
   initials,
@@ -58,7 +59,7 @@ const CSS = `
 function DoctorCard({ d, t, base }) {
   const img = resolveUrl(d.profileImage);
   const years = Number(d.experienceYears) || 0;
-  const role = d.specialization || d.about || "";
+  const role = specialityName(d.specialization, t) || d.about || "";
 
   const inner = (
     <>
@@ -171,7 +172,7 @@ export default function DoctorsBlock({ clinic, config = {} }) {
                 className={"vt-spec-fbtn" + (active === s ? " vt-on" : "")}
                 onClick={() => setActive(s)}
               >
-                {s}
+                {specialityName(s, t)}
               </button>
             ))}
           </div>
