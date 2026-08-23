@@ -30,7 +30,18 @@ const STATUS_LABEL = {
 const TYPE_LABEL = {
   callback: "\u041E\u0431\u0440\u0430\u0442\u043D\u044B\u0439 \u0437\u0432\u043E\u043D\u043E\u043A",
   message: "\u0421\u043E\u043E\u0431\u0449\u0435\u043D\u0438\u0435",
+  booking: "Запись на приём",
 };
+
+/** Желаемое время заявки на запись — в часовом поясе смотрящего. */
+function formatDesired(value) {
+  if (!value) return "";
+  try {
+    return new Date(value).toLocaleString();
+  } catch {
+    return "";
+  }
+}
 
 function extractLeads(data) {
   if (Array.isArray(data)) return data;
@@ -172,6 +183,28 @@ export default function ClinicLeadsPage() {
                     {TYPE_LABEL[lead.type] || lead.type}
                   </span>
                 </div>
+
+                {/* Пожелание по записи. Показываем врача и время прямо в
+                    карточке: без них «заявка на запись» ничем не отличается от
+                    обычного обращения, и менеджеру пришлось бы перезванивать
+                    только чтобы выяснить, к кому просились. */}
+                {lead.type === "booking" && (
+                  <div className="lead-booking">
+                    {lead.desiredDoctorName ? (
+                      <span className="lead-booking-doctor">
+                        {lead.desiredDoctorName}
+                      </span>
+                    ) : null}
+                    {lead.desiredStartUTC ? (
+                      <span className="lead-booking-time">
+                        {formatDesired(lead.desiredStartUTC)}
+                      </span>
+                    ) : null}
+                    <span className="lead-booking-hint">
+                      время не забронировано — подтвердите
+                    </span>
+                  </div>
+                )}
 
                 {lead.message ? (
                   <p className="lead-message">{lead.message}</p>

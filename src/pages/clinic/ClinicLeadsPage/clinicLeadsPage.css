@@ -244,3 +244,21 @@
   border-radius: 8px;
   cursor: pointer;
 }
+
+/* Заявка на запись: к кому и когда. */
+.lead-booking {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #f6fbfa;
+  border: 1px solid #d9ede9;
+  border-radius: 10px;
+  font-size: 13px;
+}
+.lead-booking-doctor { font-weight: 700; color: #0f766e; }
+.lead-booking-time { font-weight: 600; color: #44403c; }
+/* Напоминание, что это пожелание, а не бронь: слот мог уйти другому. */
+.lead-booking-hint { color: #a8a29e; }

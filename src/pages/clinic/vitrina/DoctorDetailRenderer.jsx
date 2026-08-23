@@ -27,6 +27,7 @@ import {
 import DoctorReviews from "../../../components/shared/DoctorReviews";
 import CommentSection from "../../../components/shared/CommentSection";
 import { useViewer } from "./lib/useViewer.js";
+import BookingWidget from "./components/BookingWidget.jsx";
 
 const CHROME_TOP = new Set(["topbar", "nav"]);
 
@@ -198,6 +199,14 @@ export default function DoctorDetailRenderer({ clinic, doctor }) {
             {about && <div className="vt-doc-about">{about}</div>}
           </div>
         </header>
+
+        {/* Запись к врачу. Стоит сразу под карточкой, до публикаций: ради
+            этого действия страницу врача чаще всего и открывают. */}
+        <BookingWidget
+          slug={slug}
+          doctorId={doctor.id}
+          doctorName={doctor.name}
+        />
 
         {publications.length > 0 && (
           <section className="vt-doc-pubs">

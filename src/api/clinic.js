@@ -2606,6 +2606,26 @@ export const getPublicArticleDetail = (slug, pageSlug, articleSlug) =>
 // Врач и публикация ВНУТРИ витрины. Те же данные, что на страницах платформы,
 // но по адресу клиники: посетитель не уходит с её сайта, а адрес остаётся
 // настоящим — им можно поделиться и он индексируется.
+// Запись с витрины: свободное время врача и заявка на приём.
+//
+// Заявка НЕ создаёт приём — анонимный посетитель не занимает календарь врача.
+// Клиника видит пожелание во входящих и оформляет запись сама.
+export const getPublicDoctorSlots = (slug, doctorId, from, to) =>
+  axios
+    .get(
+      `/api/v1/public/clinics/${encodeURIComponent(slug)}/doctors/${doctorId}/slots`,
+      { params: { from, to } },
+    )
+    .then((r) => r.data);
+
+export const createPublicBooking = (slug, doctorId, payload) =>
+  axios
+    .post(
+      `/api/v1/public/clinics/${encodeURIComponent(slug)}/doctors/${doctorId}/booking`,
+      payload,
+    )
+    .then((r) => r.data);
+
 // Отзывы врачам и комментарии, видные на публичных страницах клиники.
 // Только чтение: сущности принадлежат врачу и общему обсуждению, а не клинике.
 export const getClinicPublicFeedback = (clinicId) =>
