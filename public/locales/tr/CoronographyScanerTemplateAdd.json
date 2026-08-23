@@ -228,5 +228,11 @@
       "loadError": "Rapor şablonları yüklenemedi",
       "deleteError": "❌ Şablon silinemedi"
     }
+  },
+  "confirm": {
+    "delete": "Sil"
+  },
+  "common": {
+    "loading": "Yükleniyor…"
   }
 }

@@ -388,6 +388,9 @@
       "next": "Növbəti",
       "page": "Səhifə",
       "of": "/"
+    },
+    "fields": {
+      "status": "Status"
     }
   },
   "additionalDiagnosis": {
@@ -555,24 +558,24 @@
       "confirmDelete": "Bu şablonu silmək istədiyinizə əminsiniz?"
     }
   },
-
   "common": {
     "loading": "Yüklənir...",
     "noResults": "Şablon tapılmadı",
-    "loadError": "Məlumat yüklənərkən xəta baş verdi"
+    "loadError": "Məlumat yüklənərkən xəta baş verdi",
+    "deleteError": "Silinmə zamanı xəta baş verdi",
+    "deleted": "Silinib",
+    "noData": "Məlumat yoxdur",
+    "noTags": "Teq yoxdur"
   },
-
   "list": {
     "search": "Axtar..."
   },
-
   "pagination": {
     "prev": "Əvvəlki",
     "next": "Növbəti",
     "page": "Səhifə",
     "of": "-"
   },
-
   "fields": {
     "createdAt": "Yaradılma tarixi",
     "tags": "Teqlər",
@@ -981,7 +984,8 @@
       "files": {
         "label": "Fayllar (şəkil, PDF, video, audio)",
         "choose": "Faylları seçin",
-        "noneSelected": "Fayl seçilməyib"
+        "noneSelected": "Fayl seçilməyib",
+        "selected": "{{count}} fayl seçildi"
       }
     },
     "templates": {
@@ -990,7 +994,12 @@
       "list": "📂 Şablon siyahısı",
       "selectTitle": "Şablonu seçin",
       "insert": "Əlavə et",
-      "close": "Bağla"
+      "close": "Bağla",
+      "modal": {
+        "close": "Bağla",
+        "insert": "Əlavə et",
+        "title": "\"{{field}}\" üçün şablon seçin"
+      }
     },
     "buttons": {
       "submit": "Nəticələri əlavə et",
@@ -998,7 +1007,9 @@
     },
     "messages": {
       "success": "✅ Nəticələr uğurla əlavə edildi!",
-      "error": "❌ Xəta: "
+      "error": "❌ Xəta: ",
+      "errorPrefix": "❌ Yükləmə xətası:",
+      "patientMissing": "Pasiyent ID tapılmadı!"
     }
   },
   "AddEEGScanUpload": {
@@ -1130,7 +1141,8 @@
       "submit": "Nəticələri əlavə et"
     },
     "modal": {
-      "selectTemplateFor": "Bu sahə üçün şablon seçin:"
+      "selectTemplateFor": "Bu sahə üçün şablon seçin:",
+      "title": "Şablon seçimi"
     },
     "fields": {
       "nameofexam": {
@@ -1164,6 +1176,9 @@
         "type": "Növü",
         "size": "Ölçü"
       }
+    },
+    "errors": {
+      "noPatientId": "Pasiyent seçilməyib"
     }
   },
   "AddGinecologyUpload": {
@@ -1185,7 +1200,8 @@
       "submit": "Sonuçları ekle"
     },
     "modal": {
-      "selectTemplateFor": "Şablon seç:"
+      "selectTemplateFor": "Şablon seç:",
+      "title": "Şablon seçimi"
     },
     "fields": {
       "nameofexam": {
@@ -1219,6 +1235,9 @@
         "type": "Tür",
         "size": "Boyut"
       }
+    },
+    "errors": {
+      "noPatientId": "Pasiyent seçilməyib"
     }
   },
   "AddHOLTERScanUpload": {
@@ -1228,7 +1247,9 @@
     "messages": {
       "success": "✅ Nəticələr uğurla əlavə edildi!",
       "error": "❌ Xəta: ",
-      "noPatientId": "❌ Xəta: Pasiyent ID-si yoxdur!"
+      "noPatientId": "❌ Xəta: Pasiyent ID-si yoxdur!",
+      "errorPrefix": "❌ Yükləmə xətası:",
+      "patientMissing": "Pasiyent ID tapılmadı!"
     },
     "buttons": {
       "useTemplate": "📋 Şablondan istifadə et",
@@ -1240,7 +1261,8 @@
       "submit": "Nəticələri əlavə et"
     },
     "modal": {
-      "selectTemplateFor": "Bu sahə üçün şablon seç:"
+      "selectTemplateFor": "Bu sahə üçün şablon seç:",
+      "title": "Şablon seçimi"
     },
     "fields": {
       "nameofexam": {
@@ -1296,28 +1318,53 @@
             "cloudy": "bulanıq"
           }
         },
-        "specificGravity": { "name": "Xüsusi çəki" },
-        "pH": { "name": "pH" },
-        "protein": { "name": "Zülal" },
-        "glucose": { "name": "Qlukoza" },
-        "leukocytes": { "name": "Leykositlər" }
+        "specificGravity": {
+          "name": "Xüsusi çəki"
+        },
+        "pH": {
+          "name": "pH"
+        },
+        "protein": {
+          "name": "Zülal"
+        },
+        "glucose": {
+          "name": "Qlukoza"
+        },
+        "leukocytes": {
+          "name": "Leykositlər"
+        }
       },
-
       "BloodTestGeneral": {
-        "hemoglobin": { "name": "Hemoglobin" },
-        "erythrocytes": { "name": "Eritrositlər" },
-        "leukocytes": { "name": "Leykositlər" },
-        "platelets": { "name": "Trombositlər" }
+        "hemoglobin": {
+          "name": "Hemoglobin"
+        },
+        "erythrocytes": {
+          "name": "Eritrositlər"
+        },
+        "leukocytes": {
+          "name": "Leykositlər"
+        },
+        "platelets": {
+          "name": "Trombositlər"
+        }
       },
-
       "BloodTestBiochemistry": {
-        "glucose": { "name": "Qlukoza" },
-        "creatinine": { "name": "Kreatinin" },
-        "urea": { "name": "Karbamid (urea)" },
-        "alt": { "name": "ALT" },
-        "ast": { "name": "AST" }
+        "glucose": {
+          "name": "Qlukoza"
+        },
+        "creatinine": {
+          "name": "Kreatinin"
+        },
+        "urea": {
+          "name": "Karbamid (urea)"
+        },
+        "alt": {
+          "name": "ALT"
+        },
+        "ast": {
+          "name": "AST"
+        }
       },
-
       "StoolTest": {
         "consistency": {
           "name": "Konsistensiya",
@@ -1328,8 +1375,12 @@
             "watery": "sulu"
           }
         },
-        "color": { "name": "Rəng" },
-        "reaction": { "name": "Reaksiya" },
+        "color": {
+          "name": "Rəng"
+        },
+        "reaction": {
+          "name": "Reaksiya"
+        },
         "mucus": {
           "name": "Selik",
           "options": {
@@ -1338,21 +1389,32 @@
             "present": "var"
           }
         },
-        "leukocytes": { "name": "Leykositlər" }
+        "leukocytes": {
+          "name": "Leykositlər"
+        }
       },
-
       "HormonePanel": {
-        "tsh": { "name": "TSH" },
-        "freeT4": { "name": "Sərbəst T4" },
-        "freeT3": { "name": "Sərbəst T3" }
+        "tsh": {
+          "name": "TSH"
+        },
+        "freeT4": {
+          "name": "Sərbəst T4"
+        },
+        "freeT3": {
+          "name": "Sərbəst T3"
+        }
       },
-
       "TumorMarkers": {
-        "cea": { "name": "CEA" },
-        "ca125": { "name": "CA 125" },
-        "ca199": { "name": "CA 19-9" }
+        "cea": {
+          "name": "CEA"
+        },
+        "ca125": {
+          "name": "CA 125"
+        },
+        "ca199": {
+          "name": "CA 19-9"
+        }
       },
-
       "PCR": {
         "covid19": {
           "name": "COVID-19 (SARS-CoV-2)",
@@ -1369,13 +1431,17 @@
           }
         }
       },
-
       "Immunology": {
-        "igg": { "name": "IgG" },
-        "iga": { "name": "IgA" },
-        "igm": { "name": "IgM" }
+        "igg": {
+          "name": "IgG"
+        },
+        "iga": {
+          "name": "IgA"
+        },
+        "igm": {
+          "name": "IgM"
+        }
       },
-
       "GeneticScreening": {
         "brca1": {
           "name": "BRCA1",
@@ -1392,79 +1458,159 @@
           }
         }
       },
-
       "CoagulationPanel": {
-        "pt": { "name": "PT" },
-        "inr": { "name": "INR" },
-        "aptt": { "name": "aPTT" },
-        "fibrinogen": { "name": "Fibrinogen" },
-        "ddimer": { "name": "D-dimer" }
+        "pt": {
+          "name": "PT"
+        },
+        "inr": {
+          "name": "INR"
+        },
+        "aptt": {
+          "name": "aPTT"
+        },
+        "fibrinogen": {
+          "name": "Fibrinogen"
+        },
+        "ddimer": {
+          "name": "D-dimer"
+        }
       },
-
       "LipidProfile": {
-        "totalCholesterol": { "name": "Ümumi xolesterin" },
-        "ldl": { "name": "LDL-xolesterin" },
-        "hdl": { "name": "HDL-xolesterin" },
-        "triglycerides": { "name": "Triqliseridlər" },
-        "apoB": { "name": "ApoB" },
-        "lpa": { "name": "Lp(a)" }
+        "totalCholesterol": {
+          "name": "Ümumi xolesterin"
+        },
+        "ldl": {
+          "name": "LDL-xolesterin"
+        },
+        "hdl": {
+          "name": "HDL-xolesterin"
+        },
+        "triglycerides": {
+          "name": "Triqliseridlər"
+        },
+        "apoB": {
+          "name": "ApoB"
+        },
+        "lpa": {
+          "name": "Lp(a)"
+        }
       },
-
       "LiverFunction": {
-        "ast": { "name": "AST" },
-        "alt": { "name": "ALT" },
-        "alp": { "name": "ALP" },
-        "ggt": { "name": "GGT" },
-        "totalBilirubin": { "name": "Ümumi bilirubin" },
-        "directBilirubin": { "name": "Birbaşa bilirubin" },
-        "albumin": { "name": "Albümin" }
+        "ast": {
+          "name": "AST"
+        },
+        "alt": {
+          "name": "ALT"
+        },
+        "alp": {
+          "name": "ALP"
+        },
+        "ggt": {
+          "name": "GGT"
+        },
+        "totalBilirubin": {
+          "name": "Ümumi bilirubin"
+        },
+        "directBilirubin": {
+          "name": "Birbaşa bilirubin"
+        },
+        "albumin": {
+          "name": "Albümin"
+        }
       },
-
       "RenalElectrolytes": {
-        "creatinine": { "name": "Kreatinin" },
-        "egfr": { "name": "eGFR" },
-        "urea": { "name": "Karbamid" },
-        "sodium": { "name": "Natrium" },
-        "potassium": { "name": "Kalium" },
-        "chloride": { "name": "Xlorid" },
-        "magnesium": { "name": "Maqnezium" }
+        "creatinine": {
+          "name": "Kreatinin"
+        },
+        "egfr": {
+          "name": "eGFR"
+        },
+        "urea": {
+          "name": "Karbamid"
+        },
+        "sodium": {
+          "name": "Natrium"
+        },
+        "potassium": {
+          "name": "Kalium"
+        },
+        "chloride": {
+          "name": "Xlorid"
+        },
+        "magnesium": {
+          "name": "Maqnezium"
+        }
       },
-
       "IronStudies": {
-        "iron": { "name": "Dəmir" },
-        "ferritin": { "name": "Ferritin" },
-        "tibc": { "name": "TIBC (ÜDJQ)" },
-        "transferrinSaturation": { "name": "Transferrinin doyması" }
+        "iron": {
+          "name": "Dəmir"
+        },
+        "ferritin": {
+          "name": "Ferritin"
+        },
+        "tibc": {
+          "name": "TIBC (ÜDJQ)"
+        },
+        "transferrinSaturation": {
+          "name": "Transferrinin doyması"
+        }
       },
-
       "DiabetesPanel": {
-        "fastingGlucose": { "name": "Aclıq qlükozası" },
-        "hba1c": { "name": "HbA1c" },
-        "insulin": { "name": "İnsulin" },
-        "cPeptide": { "name": "C-peptid" }
+        "fastingGlucose": {
+          "name": "Aclıq qlükozası"
+        },
+        "hba1c": {
+          "name": "HbA1c"
+        },
+        "insulin": {
+          "name": "İnsulin"
+        },
+        "cPeptide": {
+          "name": "C-peptid"
+        }
       },
-
       "ThyroidPanel": {
-        "tsh": { "name": "TSH" },
-        "freeT4": { "name": "Sərbəst T4" },
-        "freeT3": { "name": "Sərbəst T3" },
-        "antiTPO": { "name": "anti-TPO" },
-        "antiTG": { "name": "anti-TG" }
+        "tsh": {
+          "name": "TSH"
+        },
+        "freeT4": {
+          "name": "Sərbəst T4"
+        },
+        "freeT3": {
+          "name": "Sərbəst T3"
+        },
+        "antiTPO": {
+          "name": "anti-TPO"
+        },
+        "antiTG": {
+          "name": "anti-TG"
+        }
       },
-
       "CardiacMarkers": {
-        "troponin": { "name": "Troponin I/T" },
-        "ckmb": { "name": "CK-MB" },
-        "ntproBNP": { "name": "NT-proBNP" }
+        "troponin": {
+          "name": "Troponin I/T"
+        },
+        "ckmb": {
+          "name": "CK-MB"
+        },
+        "ntproBNP": {
+          "name": "NT-proBNP"
+        }
       },
-
       "VitaminsTrace": {
-        "vitaminD": { "name": "Vitamin D (25-OH)" },
-        "vitaminB12": { "name": "Vitamin B12" },
-        "folate": { "name": "Fol turşusu (folat)" },
-        "zinc": { "name": "Sink" }
+        "vitaminD": {
+          "name": "Vitamin D (25-OH)"
+        },
+        "vitaminB12": {
+          "name": "Vitamin B12"
+        },
+        "folate": {
+          "name": "Fol turşusu (folat)"
+        },
+        "zinc": {
+          "name": "Sink"
+        }
       },
-
       "InfectiousSerology": {
         "hbsAg": {
           "name": "HBsAg",
@@ -1473,7 +1619,9 @@
             "positive": "müsbət"
           }
         },
-        "antiHbs": { "name": "anti-HBs" },
+        "antiHbs": {
+          "name": "anti-HBs"
+        },
         "antiHcv": {
           "name": "anti-HCV",
           "options": {
@@ -1496,15 +1644,21 @@
           }
         }
       },
-
       "UrineAlbuminACR": {
-        "urineAlbumin": { "name": "Sidik albümini" },
-        "urineCreatinine": { "name": "Sidik kreatinini" },
-        "acr": { "name": "ACR" }
+        "urineAlbumin": {
+          "name": "Sidik albümini"
+        },
+        "urineCreatinine": {
+          "name": "Sidik kreatinini"
+        },
+        "acr": {
+          "name": "ACR"
+        }
       },
-
       "StoolInflammation": {
-        "calprotectin": { "name": "Kalprotektin" },
+        "calprotectin": {
+          "name": "Kalprotektin"
+        },
         "occultBloodFit": {
           "name": "Gizli qan (FIT)",
           "options": {
@@ -1524,57 +1678,47 @@
     "page": {
       "title": "Laboratoriya Analizi Əlavə Et"
     },
-
     "fields": {
       "testType": {
         "label": "Analizin növü",
         "placeholder": "-- analizin növünü seçin --"
       },
-
       "labName": {
         "label": "Laboratoriya",
         "placeholder": "Laboratoriyanın adını daxil edin..."
       },
-
       "report": {
         "label": "Həkim rəyi (nəticə)",
         "placeholder": "Həkim rəyini daxil edin..."
       },
-
       "parameter": {
         "label": "Parametr",
         "placeholder": "Parametrin adı...",
         "valueTextPlaceholder": "Mətn dəyəri daxil edin...",
         "valueNumberPlaceholder": "Rəqəm daxil edin..."
       },
-
       "unit": {
         "label": "Ölçü vahidi",
         "placeholder": "Ölçü vahidi..."
       },
-
       "referenceRange": {
         "label": "Referens aralığı",
         "min": "Aşağı norma",
         "max": "Yuxarı norma"
       },
-
       "files": {
         "label": "Fayllar əlavə edin (PDF, şəkillər)",
         "choose": "Fayl əlavə et",
         "noFile": "Fayl seçilməyib"
       }
     },
-
     "section": {
       "parameters": "Analizin göstəriciləri"
     },
-
     "valueType": {
       "text": "Mətn",
       "number": "Rəqəm"
     },
-
     "testTypes": {
       "UrineTest": "Sidik analizi",
       "BloodTestGeneral": "Ümumi qan analizi",
@@ -1609,19 +1753,15 @@
       "UrineAlbuminACR": "Mikroalbuminuriya (ACR)",
       "StoolInflammation": "Nəcis — iltihab / qan"
     },
-
     "units": {
       "none": "",
       "unit.defaultText": "—",
       "unit.defaultNumber": "vahid",
-
       "g/L": "q/L",
       "mmol/L": "mmol/L",
       "cells/hpf": "görmə sahəsində",
-
       "10^12/L": "10^12/L",
       "10^9/L": "10^9/L",
-
       "µmol/L": "mkmol/L",
       "U/L": "BV/L",
       "pmol/L": "pmol/L",
@@ -1630,22 +1770,18 @@
       "IU/mL": "BV/mL",
       "pg/mL": "pg/mL",
       "ng/L": "ng/L",
-
       "mg/dL": "mg/dL",
       "mg/L": "mg/L",
       "mg/g": "mg/q",
-
       "µg/dL": "mkq/dL",
       "µg/g": "mkq/q",
       "µU/mL": "µU/mL",
       "mIU/mL": "mBV/mL",
-
       "mL/min/1.73m²": "mL/dəq/1.73m²",
       "nmol/L": "nmol/L",
       "%": "%",
       "sec": "san",
       "mg/L_FEU": "mg/L FEU",
-
       "gPerL": "q/L",
       "mmolPerL": "mmol/L",
       "mcmolPerL": "mkmol/L",
@@ -1673,14 +1809,12 @@
       "loading": "Yüklənir...",
       "submit": "Analizi yadda saxla"
     },
-
     "messages": {
       "success": "✅ Analiz uğurla əlavə olundu.",
       "error": "❌ Xəta baş verdi: ",
       "noPrevious": "Köçürmək üçün əvvəlki analiz yoxdur.",
       "copyError": "❌ Əvvəlki analiz yüklənmədi."
     },
-
     "errors": {
       "noTestType": "❗ Analizin növünü seçin və ən azı bir parametr əlavə edin.",
       "missingValues": "Dəyərləri doldurun: {{list}}"
@@ -1693,7 +1827,6 @@
     "page": {
       "title": "MRT nəticələrini əlavə et"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Tədqiqatın adı",
@@ -1725,7 +1858,6 @@
         "selected": "{{count}} fayl seçildi"
       }
     },
-
     "buttons": {
       "useTemplate": "Şablondan istifadə et",
       "newTemplate": "Yeni şablon",
@@ -1735,17 +1867,26 @@
       "submit": "Nəticələri əlavə et",
       "loading": "Yüklənir..."
     },
-
     "messages": {
       "success": "MRT nəticəsi uğurla əlavə edildi!",
       "error": "Yükləmə xətası"
+    },
+    "files": {
+      "audio": "Audio fayl",
+      "file": "Fayl",
+      "image": "Şəkil",
+      "pdf": "PDF sənədi",
+      "video": "Video fayl"
+    },
+    "modal": {
+      "select": "Şablonu seçin",
+      "title": "Şablon seçimi"
     }
   },
   "AddPETScanUpload": {
     "page": {
       "title": "PET nəticələrini əlavə et"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Tədqiqatın adı",
@@ -1777,7 +1918,6 @@
         "selected": "{{count}} fayl seçildi"
       }
     },
-
     "buttons": {
       "useTemplate": "Şablondan istifadə et",
       "newTemplate": "Yeni şablon",
@@ -1787,12 +1927,10 @@
       "submit": "Nəticələri əlavə et",
       "loading": "Yüklənir..."
     },
-
     "modal": {
       "title": "Şablon seçimi",
       "select": "Şablonu seçin"
     },
-
     "files": {
       "image": "Şəkil",
       "pdf": "PDF sənədi",
@@ -1800,7 +1938,6 @@
       "audio": "Audio fayl",
       "file": "Fayl"
     },
-
     "messages": {
       "success": "PET nəticəsi uğurla əlavə edildi!",
       "error": "Yükləmə xətası"
@@ -1810,7 +1947,6 @@
     "page": {
       "title": "SPECT nəticələrini əlavə et"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Tədqiqatın adı",
@@ -1842,7 +1978,6 @@
         "selected": "{{count}} fayl seçildi"
       }
     },
-
     "buttons": {
       "useTemplate": "Şablondan istifadə et",
       "newTemplate": "Yeni şablon",
@@ -1852,12 +1987,10 @@
       "submit": "Nəticələri əlavə et",
       "loading": "Yüklənir..."
     },
-
     "modal": {
       "title": "Şablon seçimi",
       "select": "Şablon seçin"
     },
-
     "files": {
       "image": "Şəkil",
       "pdf": "PDF sənədi",
@@ -1865,17 +1998,17 @@
       "audio": "Audio faylı",
       "file": "Fayl"
     },
-
     "messages": {
       "success": "SPECT nəticəsi uğurla əlavə edildi!",
-      "error": "Yükləmə xətası"
+      "error": "Yükləmə xətası",
+      "errorPrefix": "❌ Yükləmə xətası:",
+      "patientMissing": "Pasiyent ID tapılmadı!"
     }
   },
   "AddSpirometryScanUpload": {
     "page": {
       "title": "Spirometriya nəticələrini əlavə et"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Tədqiqatın adı",
@@ -1907,7 +2040,6 @@
         "selected": "{{count}} fayl seçildi"
       }
     },
-
     "buttons": {
       "useTemplate": "Şablondan istifadə et",
       "newTemplate": "Yeni şablon",
@@ -1917,12 +2049,10 @@
       "submit": "Nəticələri əlavə et",
       "loading": "Yüklənir..."
     },
-
     "modal": {
       "title": "Şablon seçimi",
       "select": "Şablon seçin"
     },
-
     "files": {
       "image": "Şəkil",
       "pdf": "PDF sənədi",
@@ -1930,7 +2060,6 @@
       "audio": "Audio faylı",
       "file": "Fayl"
     },
-
     "messages": {
       "success": "Spirometriya nəticəsi uğurla əlavə edildi!",
       "error": "Yükləmə xətası"
@@ -1940,7 +2069,6 @@
     "page": {
       "title": "USM (Ultrasəs) nəticələrini əlavə et"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Tədqiqatın adı",
@@ -1972,7 +2100,6 @@
         "selected": "{{count}} fayl seçildi"
       }
     },
-
     "buttons": {
       "useTemplate": "Şablondan istifadə et",
       "newTemplate": "Yeni şablon",
@@ -1982,23 +2109,23 @@
       "submit": "Nəticələri əlavə et",
       "loading": "Yüklənir..."
     },
-
     "modal": {
       "title": "Şablon seçimi",
       "select": "Şablon seçin"
     },
-
     "files": {
       "image": "Şəkil",
       "pdf": "PDF sənədi",
       "video": "Video faylı",
       "audio": "Audio faylı",
-      "file": "Fayl"
+      "file": "Fayl",
+      "size": "Ölçü",
+      "type": "Növ"
     },
-
     "messages": {
       "success": "USM nəticəsi uğurla əlavə edildi!",
-      "error": "Yükləmə xətası"
+      "error": "Yükləmə xətası",
+      "noPatientId": "❌ Xəta: Pasiyent ID-si tapılmadı!"
     }
   },
   "AddXRAYScanUpload": {
@@ -2085,5 +2212,12 @@
       "deleteSuccess": "Şablon uğurla silindi",
       "deleteError": "Şablon silinərkən xəta baş verdi"
     }
+  },
+  "files": {
+    "audio": "Audio",
+    "file": "Fayl",
+    "image": "Şəkil",
+    "pdf": "PDF",
+    "video": "Video"
   }
 }

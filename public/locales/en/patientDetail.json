@@ -99,7 +99,8 @@
     "loadingExaminations": "Loading examinations",
     "addGenerateClinicalSummary": "Generate Clinical Summary",
     "generating": "Generating",
-    "aiGeneratedSummaryDisclaimer": "AI-generated summary. For professional reference only."
+    "aiGeneratedSummaryDisclaimer": "AI-generated summary. For professional reference only.",
+    "PatientNotFound": "Patient not found"
   },
   "values": {
     "notSpecified": "Not specified",

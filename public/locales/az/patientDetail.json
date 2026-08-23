@@ -120,7 +120,8 @@
     "loadingExaminations": "Müayinələr yüklənir",
     "addGenerateClinicalSummary": "Klinik xülasə yarat",
     "generating": "Yaradılır",
-    "aiGeneratedSummaryDisclaimer": "Xülasə süni intellekt tərəfindən yaradılmışdır. Yalnız peşəkar istifadə üçün."
+    "aiGeneratedSummaryDisclaimer": "Xülasə süni intellekt tərəfindən yaradılmışdır. Yalnız peşəkar istifadə üçün.",
+    "PatientNotFound": "Pasiyent tapılmadı"
   },
   "values": {
     "notSpecified": "Göstərilməyib",

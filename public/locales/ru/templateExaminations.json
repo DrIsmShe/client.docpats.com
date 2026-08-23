@@ -24,6 +24,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "AngiographyScanerTemplateDiagnosis": {
@@ -64,14 +68,12 @@
       "success": "✅ Шаблон диагноза успешно обновлён!",
       "error": "❌ Ошибка при обновлении шаблона"
     },
-
     "labels": {
       "title": "Название",
       "titlePlaceholder": "Введите название...",
       "content": "Содержимое",
       "contentPlaceholder": "Введите содержимое..."
     },
-
     "buttons": {
       "update": "Обновить шаблон"
     }
@@ -352,6 +354,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "DopleryScanerDetails": {
@@ -385,6 +391,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "EchoEKGScanerDetails": {
@@ -418,6 +428,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "EEGScanerDetails": {
@@ -451,6 +465,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "EKGScanerDetails": {
@@ -484,6 +502,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "GastroscopyScanerDetails": {
@@ -517,6 +539,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "GinecologyDetails": {
@@ -550,6 +576,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "HOLTERScanerDetails": {
@@ -583,6 +613,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "LabtestScanerDetails": {
@@ -592,6 +626,10 @@
       "noData": "Нет данных",
       "errors": {
         "fetchError": "Не удалось загрузить данные лабораторного анализа."
+      },
+      "messages": {
+        "uploadError": "Ошибка загрузки PDF",
+        "uploadSuccess": "PDF успешно загружен! Ссылка:"
       }
     },
     "files": {
@@ -617,6 +655,10 @@
       "download": "Скачать PDF",
       "print": "Печать",
       "upload": "Загрузить PDF"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "MRIScanerDetails": {
@@ -626,6 +668,10 @@
       "noData": "Нет данных",
       "errors": {
         "fetchError": "Ошибка загрузки данных МРТ."
+      },
+      "messages": {
+        "uploadError": "Ошибка загрузки PDF",
+        "uploadSuccess": "PDF успешно загружен! Ссылка:"
       }
     },
     "fields": {
@@ -646,6 +692,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "PETScanerDetails": {
@@ -710,6 +760,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "SpirometryScanerDetails": {
@@ -739,6 +793,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "USMScanerDetails": {
@@ -768,6 +826,10 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
   },
   "XRAYScanerDetails": {
@@ -797,6 +859,71 @@
       "download": "Скачать PDF",
       "upload": "Загрузить PDF",
       "print": "Печать"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
     }
+  },
+  "CoronographyScanerDetails": {
+    "buttons": {
+      "download": "Скачать PDF",
+      "print": "Печать",
+      "upload": "Загрузить PDF"
+    },
+    "fields": {
+      "contrastUsed": "Использован контраст",
+      "date": "Дата",
+      "diagnosis": "Заключение",
+      "doctor": "Врач",
+      "doctorComments": "Комментарии врача",
+      "images": "Изображения",
+      "nameofexam": "Название исследования",
+      "no": "Нет",
+      "patient": "Пациент",
+      "recomandation": "Рекомендации",
+      "report": "Описание",
+      "yes": "Да"
+    },
+    "page": {
+      "errors": {
+        "fetchError": "Не удалось загрузить данные исследования"
+      },
+      "loading": "Загрузка...",
+      "messages": {
+        "uploadError": "Ошибка загрузки PDF",
+        "uploadSuccess": "PDF успешно загружен! Ссылка:"
+      },
+      "noData": "Нет данных",
+      "title": "Детали ангиографии"
+    },
+    "sections": {
+      "findings": "Находки",
+      "general": "Общие сведения"
+    }
+  },
+  "page": {
+    "error": "Ошибка",
+    "errors": {
+      "fetchError": "Не удалось загрузить данные",
+      "uploadError": "Не удалось загрузить файл"
+    },
+    "loading": "Загрузка…"
+  },
+  "buttons": {
+    "delete": "Удалить",
+    "upload": "Загрузить"
+  },
+  "confirm": {
+    "delete": "Удалить"
+  },
+  "fields": {
+    "images": "Изображения",
+    "no": "Нет",
+    "yes": "Да"
+  },
+  "sections": {
+    "findings": "Находки",
+    "general": "Общие сведения"
   }
 }

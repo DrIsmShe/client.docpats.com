@@ -10,7 +10,6 @@
       "createError": "❌ فشل في إضافة القالب",
       "networkError": "خطأ في الشبكة"
     },
-
     "buttons": {
       "save": "حفظ",
       "update": "تحديث",
@@ -227,5 +226,11 @@
       "loadError": "فشل في تحميل قوالب التقارير",
       "deleteError": "❌ فشل في حذف القالب"
     }
+  },
+  "confirm": {
+    "delete": "حذف"
+  },
+  "common": {
+    "loading": "جارٍ التحميل…"
   }
 }

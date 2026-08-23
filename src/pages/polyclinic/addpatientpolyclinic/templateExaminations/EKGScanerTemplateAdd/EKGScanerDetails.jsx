@@ -214,7 +214,7 @@ export default function EKGScanerDetails() {
 
       <div className="ekg-hero">
         <div className="ekg-hero-inner">
-          <div className="ekg-hero-tag">DocPats · EKG</div>
+          <div className="ekg-hero-tag">{t("common:dp.pageTitle.ekg")}</div>
           <h1 className="ekg-hero-h1">{t("EKGScanerDetails.page.title")}</h1>
           <p className="ekg-hero-sub">
             {patientName} · {dateFormatted}
@@ -389,7 +389,7 @@ export default function EKGScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

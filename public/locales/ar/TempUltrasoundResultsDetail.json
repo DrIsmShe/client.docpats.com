@@ -1,0 +1,24 @@
+{
+  "actions": {
+    "confirmDelete": "حذف هذا العنصر؟",
+    "createNew": "إنشاء",
+    "delete": "حذف"
+  },
+  "fields": {
+    "createdAt": "أُنشئ",
+    "status": "الحالة",
+    "tags": "الوسوم"
+  },
+  "messages": {
+    "deleteError": "تعذّر الحذف",
+    "deleted": "حُذف",
+    "loadError": "تعذّر التحميل",
+    "loading": "جارٍ التحميل…",
+    "noData": "لا توجد بيانات",
+    "noTags": "بدون وسوم"
+  },
+  "status": {
+    "active": "النشطة",
+    "inactive": "غير النشطة"
+  }
+}

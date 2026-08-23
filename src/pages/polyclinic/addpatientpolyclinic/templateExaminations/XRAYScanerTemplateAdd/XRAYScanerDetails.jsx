@@ -217,7 +217,7 @@ export default function XRAYScanerDetails() {
 
       <div className="xry-hero">
         <div className="xry-hero-inner">
-          <div className="xry-hero-tag">DocPats · X-Ray</div>
+          <div className="xry-hero-tag">{t("common:dp.pageTitle.xray")}</div>
           <h1 className="xry-hero-h1">{t("XRAYScanerDetails.page.title")}</h1>
           <p className="xry-hero-sub">
             {patientName} · {dateFormatted}
@@ -392,7 +392,7 @@ export default function XRAYScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

@@ -18,7 +18,8 @@
     "loadingExaminations": "Загрузка обследований",
     "addGenerateClinicalSummary": "Сформировать клиническое резюме",
     "generating": "Генерация",
-    "aiGeneratedSummaryDisclaimer": "Сводка создана ИИ. Только для профессионального использования."
+    "aiGeneratedSummaryDisclaimer": "Сводка создана ИИ. Только для профессионального использования.",
+    "PatientNotFound": "Пациент не найден"
   },
   "examAddedSuccess": "✅ Исследование успешно добавлено",
   "tabs": {

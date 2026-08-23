@@ -274,7 +274,7 @@ export default function CapsuleEndoscopyScanerDetails() {
       {/* ── HERO ── */}
       <div className="cap-hero">
         <div className="cap-hero-inner">
-          <div className="cap-hero-tag">DocPats · Capsule Endoscopy</div>
+          <div className="cap-hero-tag">{t("common:dp.pageTitle.capsule")}</div>
           <h1 className="cap-hero-h1">
             {t("CapsuleEndoscopyScanerDetails.page.title")}
           </h1>
@@ -479,7 +479,7 @@ export default function CapsuleEndoscopyScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

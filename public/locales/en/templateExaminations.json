@@ -24,6 +24,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "AngiographyScanerTemplateDiagnosis": {
@@ -64,14 +68,12 @@
       "success": "✅ Diagnosis template successfully updated!",
       "error": "❌ Error updating template"
     },
-
     "labels": {
       "title": "Title",
       "titlePlaceholder": "Enter title...",
       "content": "Content",
       "contentPlaceholder": "Enter content..."
     },
-
     "buttons": {
       "update": "Update Template"
     }
@@ -352,6 +354,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "CTScanerDetails": {
@@ -385,6 +391,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "DopleryScanerDetails": {
@@ -418,6 +428,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "EchoEKGScanerDetails": {
@@ -451,6 +465,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "EEGScanerDetails": {
@@ -484,6 +502,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "EKGScanerDetails": {
@@ -517,6 +539,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "GastroscopyScanerDetails": {
@@ -550,6 +576,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "GinecologyDetails": {
@@ -583,6 +613,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "HOLTERScanerDetails": {
@@ -616,6 +650,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "LabtestScanerDetails": {
@@ -625,6 +663,10 @@
       "noData": "No data available",
       "errors": {
         "fetchError": "Failed to load laboratory test data."
+      },
+      "messages": {
+        "uploadError": "PDF upload error",
+        "uploadSuccess": "PDF uploaded! Link:"
       }
     },
     "files": {
@@ -650,6 +692,10 @@
       "download": "Download PDF",
       "print": "Print",
       "upload": "Upload PDF"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "MRIScanerDetails": {
@@ -748,6 +794,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "SpirometryScanerDetails": {
@@ -777,6 +827,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "USMScanerDetails": {
@@ -806,6 +860,10 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
   },
   "XRAYScanerDetails": {
@@ -835,6 +893,34 @@
       "download": "Download PDF",
       "upload": "Upload PDF",
       "print": "Print"
+    },
+    "sections": {
+      "findings": "Findings",
+      "general": "General info"
     }
+  },
+  "page": {
+    "error": "Error",
+    "errors": {
+      "fetchError": "Could not load the data",
+      "uploadError": "Could not upload the file"
+    },
+    "loading": "Loading…"
+  },
+  "buttons": {
+    "delete": "Delete",
+    "upload": "Upload"
+  },
+  "confirm": {
+    "delete": "Delete"
+  },
+  "fields": {
+    "images": "Images",
+    "no": "No",
+    "yes": "Yes"
+  },
+  "sections": {
+    "findings": "Findings",
+    "general": "General info"
   }
 }

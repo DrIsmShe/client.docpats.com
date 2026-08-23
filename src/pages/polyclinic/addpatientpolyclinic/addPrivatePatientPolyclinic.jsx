@@ -415,7 +415,7 @@ const Addpatient = () => {
 
       <div className="ap-hero">
         <div className="ap-hero-inner">
-          <div className="ap-hero-tag">DocPats · Polyclinic</div>
+          <div className="ap-hero-tag">{t("common:dp.pageTitle.polyclinic")}</div>
           <h1 className="ap-hero-h1">➕ {t("title")}</h1>
           <p className="ap-hero-sub"> {t("heroSub")}</p>
         </div>
@@ -438,7 +438,7 @@ const Addpatient = () => {
               )}
 
               <div className="ap-section">
-                <span className="ap-section-label">Основная информация</span>
+                <span className="ap-section-label">{t("common:dp.patient.mainInfo")}</span>
                 <span className="ap-section-line" />
               </div>
 
@@ -461,7 +461,7 @@ const Addpatient = () => {
                           ? URL.createObjectURL(profileImage)
                           : "/images/avatar/1.jpg"
                       }
-                      alt="Profile"
+                      alt={t("patientArea:addPatient.profile")}
                       className="ap-photo-img"
                     />
                     <div className="ap-photo-side">
@@ -514,7 +514,7 @@ const Addpatient = () => {
               />
 
               <div className="ap-section">
-                <span className="ap-section-label">Контакты</span>
+                <span className="ap-section-label">{t("common:dp.patient.contacts")}</span>
                 <span className="ap-section-line" />
               </div>
 
@@ -548,7 +548,7 @@ const Addpatient = () => {
               </div>
 
               <div className="ap-section">
-                <span className="ap-section-label">Демография</span>
+                <span className="ap-section-label">{t("common:dp.patient.demography")}</span>
                 <span className="ap-section-line" />
               </div>
 
@@ -573,7 +573,7 @@ const Addpatient = () => {
               />
 
               <div className="ap-section">
-                <span className="ap-section-label">Медицинская история</span>
+                <span className="ap-section-label">{t("common:dp.patient.medicalHistory")}</span>
                 <span className="ap-section-line" />
               </div>
 
@@ -635,7 +635,7 @@ const Addpatient = () => {
               />
 
               <div className="ap-section">
-                <span className="ap-section-label">Дополнительно</span>
+                <span className="ap-section-label">{t("common:dp.patient.extra")}</span>
                 <span className="ap-section-line" />
               </div>
 

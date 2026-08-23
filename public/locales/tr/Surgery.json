@@ -297,7 +297,12 @@
     "filterPlanned": "Planlananlar",
     "filterCompleted": "Tamamlananlar",
     "filterFollowUp": "Takipte",
-    "filterClosed": "Kapatılanlar"
+    "filterClosed": "Kapatılanlar",
+    "pagePosition": "{{current}} / {{total}}",
+    "perPageOption": "sayfada {{count}}",
+    "nextPage": "Sonraki",
+    "perPage": "Sayfada",
+    "prevPage": "Önceki"
   },
   "simulator": {
     "sourcePhoto": "Kaynak fotoğraf",
@@ -333,7 +338,11 @@
     "simStatusPending": "Bekliyor",
     "simStatusProcessing": "Oluşturuluyor...",
     "simStatusDone": "Hazır",
-    "simStatusFailed": "Başarısız"
+    "simStatusFailed": "Başarısız",
+    "promptModel": "Model için",
+    "promptSent": "Modele ne gönderildi",
+    "promptYours": "İsteğiniz",
+    "wishesCompilerHint": "Herhangi bir dilde ve kendi sözlerinizle yazın — istek model için çevrilecek. Derece ve milimetre cinsinden değerleri işlemez: bunlar “hafifçe”, “belirgin şekilde” olur."
   },
   "procedureGroups": {
     "facial_plastic": "Yüz plastik cerrahisi",
@@ -443,7 +452,12 @@
           },
           "alcohol": {
             "label": "Alkol",
-            "options": ["Yok", "Nadiren", "Orta", "Sık"]
+            "options": [
+              "Yok",
+              "Nadiren",
+              "Orta",
+              "Sık"
+            ]
           },
           "previousSurgeries": {
             "label": "Geçmiş ameliyatlar",
@@ -478,7 +492,12 @@
           },
           "anesthesia": {
             "label": "Anestezi tipi",
-            "options": ["Lokal", "Sedasyon", "Genel (endotrakeal)", "Spinal"]
+            "options": [
+              "Lokal",
+              "Sedasyon",
+              "Genel (endotrakeal)",
+              "Spinal"
+            ]
           }
         }
       },
@@ -539,7 +558,12 @@
           },
           "drain": {
             "label": "Dren",
-            "options": ["Yerleştirilmedi", "Aktif (1)", "Aktif (2)", "Pasif"]
+            "options": [
+              "Yerleştirilmedi",
+              "Aktif (1)",
+              "Aktif (2)",
+              "Pasif"
+            ]
           },
           "special_instructions": {
             "label": "Özel talimatlar",
@@ -564,15 +588,31 @@
         "fields": {
           "skin_type": {
             "label": "Cilt tipi",
-            "options": ["İnce", "Orta", "Kalın / yağlı"]
+            "options": [
+              "İnce",
+              "Orta",
+              "Kalın / yağlı"
+            ]
           },
           "nasal_tip": {
             "label": "Burun ucu",
-            "options": ["Normal", "Geniş", "Dar", "Düşük", "Kalkık", "Çatallı"]
+            "options": [
+              "Normal",
+              "Geniş",
+              "Dar",
+              "Düşük",
+              "Kalkık",
+              "Çatallı"
+            ]
           },
           "nasal_bridge": {
             "label": "Burun sırtı",
-            "options": ["Düz", "Kemerli", "Eyer", "Asimetrik"]
+            "options": [
+              "Düz",
+              "Kemerli",
+              "Eyer",
+              "Asimetrik"
+            ]
           },
           "septum": {
             "label": "Burun septumu",
@@ -589,7 +629,11 @@
           },
           "tip_projection": {
             "label": "Burun ucu projeksiyonu",
-            "options": ["Normal", "Yetersiz", "Fazla"]
+            "options": [
+              "Normal",
+              "Yetersiz",
+              "Fazla"
+            ]
           },
           "nasofrontal_angle": {
             "label": "Nazofrontal açı (°)",
@@ -619,11 +663,19 @@
         "fields": {
           "approach": {
             "label": "Yaklaşım",
-            "options": ["Açık", "Kapalı"]
+            "options": [
+              "Açık",
+              "Kapalı"
+            ]
           },
           "osteotomy": {
             "label": "Osteotomi",
-            "options": ["Medial", "Lateral", "Transvers", "Planlanmıyor"]
+            "options": [
+              "Medial",
+              "Lateral",
+              "Transvers",
+              "Planlanmıyor"
+            ]
           },
           "tip_technique": {
             "label": "Uç düzeltme tekniği",
@@ -686,7 +738,11 @@
           },
           "nipple_position": {
             "label": "Meme ucu konumu",
-            "options": ["Normal", "IMF altında", "IMF üstünde"]
+            "options": [
+              "Normal",
+              "IMF altında",
+              "IMF üstünde"
+            ]
           },
           "asymmetry": {
             "label": "Asimetri",
@@ -703,7 +759,12 @@
           },
           "lactation_history": {
             "label": "Laktasyon öyküsü",
-            "options": ["Yok", "Bitmiş >6 ay", "Bitmiş <6 ay", "Devam ediyor"]
+            "options": [
+              "Yok",
+              "Bitmiş >6 ay",
+              "Bitmiş <6 ay",
+              "Devam ediyor"
+            ]
           }
         }
       },
@@ -712,11 +773,19 @@
         "fields": {
           "implant_shape": {
             "label": "İmplant şekli",
-            "options": ["Yuvarlak", "Anatomik (damla)"]
+            "options": [
+              "Yuvarlak",
+              "Anatomik (damla)"
+            ]
           },
           "implant_profile": {
             "label": "Profil",
-            "options": ["Low", "Moderate", "High", "Extra High"]
+            "options": [
+              "Low",
+              "Moderate",
+              "High",
+              "Extra High"
+            ]
           },
           "implant_volume_l": {
             "label": "Sol hacim (cc)",
@@ -728,11 +797,19 @@
           },
           "implant_fill": {
             "label": "Dolgu",
-            "options": ["Silikon (kohezif jel)", "Silikon (sıvı)", "Salin"]
+            "options": [
+              "Silikon (kohezif jel)",
+              "Silikon (sıvı)",
+              "Salin"
+            ]
           },
           "implant_surface": {
             "label": "Yüzey",
-            "options": ["Düz", "Tekstürlü", "Poliüretan"]
+            "options": [
+              "Düz",
+              "Tekstürlü",
+              "Poliüretan"
+            ]
           },
           "implant_brand": {
             "label": "Marka / kod",
@@ -877,7 +954,11 @@
         "fields": {
           "type": {
             "label": "Blefaroplasti tipi",
-            "options": ["Üst", "Alt", "Kombine (4 kapak)"]
+            "options": [
+              "Üst",
+              "Alt",
+              "Kombine (4 kapak)"
+            ]
           },
           "upper_excess_skin": {
             "label": "Üst fazla cilt (mm)",
@@ -885,19 +966,37 @@
           },
           "ptosis_upper": {
             "label": "Üst göz kapağı pitozu",
-            "options": ["Yok", "Hafif", "Orta", "Belirgin"]
+            "options": [
+              "Yok",
+              "Hafif",
+              "Orta",
+              "Belirgin"
+            ]
           },
           "fat_herniation_upper": {
             "label": "Üst yağ fıtığı",
-            "options": ["Medial cep", "Merkezi cep", "Lateral cep"]
+            "options": [
+              "Medial cep",
+              "Merkezi cep",
+              "Lateral cep"
+            ]
           },
           "fat_herniation_lower": {
             "label": "Alt yağ fıtığı",
-            "options": ["Medial cep", "Merkezi cep", "Lateral cep"]
+            "options": [
+              "Medial cep",
+              "Merkezi cep",
+              "Lateral cep"
+            ]
           },
           "tear_trough": {
             "label": "Gözyaşı oluğu",
-            "options": ["Yok", "Hafif", "Orta", "Belirgin"]
+            "options": [
+              "Yok",
+              "Hafif",
+              "Orta",
+              "Belirgin"
+            ]
           },
           "lower_skin_excess": {
             "label": "Alt fazla cilt (mm)",
@@ -905,7 +1004,12 @@
           },
           "canthal_laxity": {
             "label": "Kantal laksite",
-            "options": ["Yok", "Hafif", "Orta", "Belirgin"]
+            "options": [
+              "Yok",
+              "Hafif",
+              "Orta",
+              "Belirgin"
+            ]
           },
           "dry_eye": {
             "label": "Kuru göz sendromu",
@@ -930,15 +1034,26 @@
           },
           "upper_fat_removal": {
             "label": "Üst yağ çıkarma",
-            "options": ["Medial cep", "Merkezi cep", "Çıkarma"]
+            "options": [
+              "Medial cep",
+              "Merkezi cep",
+              "Çıkarma"
+            ]
           },
           "lower_approach": {
             "label": "Alt kapak yaklaşımı",
-            "options": ["Transkutan", "Transkonjonktival"]
+            "options": [
+              "Transkutan",
+              "Transkonjonktival"
+            ]
           },
           "lower_fat_management": {
             "label": "Alt kapak yağı",
-            "options": ["Çıkarma", "Transpozisyon", "Dokunma"]
+            "options": [
+              "Çıkarma",
+              "Transpozisyon",
+              "Dokunma"
+            ]
           },
           "canthopexy": {
             "label": "Kantopeksi"
@@ -991,11 +1106,21 @@
           },
           "cellulite": {
             "label": "Selülit",
-            "options": ["Yok", "I derece", "II derece", "III derece"]
+            "options": [
+              "Yok",
+              "I derece",
+              "II derece",
+              "III derece"
+            ]
           },
           "stretch_marks": {
             "label": "Stria",
-            "options": ["Yok", "Minimal", "Orta", "Belirgin"]
+            "options": [
+              "Yok",
+              "Minimal",
+              "Orta",
+              "Belirgin"
+            ]
           }
         }
       },
@@ -1051,15 +1176,29 @@
           },
           "diastasis_length": {
             "label": "Diastaz yayılımı",
-            "options": ["Yok", "Umbilikal", "Supraumbilikal", "Tam"]
+            "options": [
+              "Yok",
+              "Umbilikal",
+              "Supraumbilikal",
+              "Tam"
+            ]
           },
           "skin_excess": {
             "label": "Fazla cilt",
-            "options": ["Minimal", "Orta", "Belirgin (önlük)"]
+            "options": [
+              "Minimal",
+              "Orta",
+              "Belirgin (önlük)"
+            ]
           },
           "hernia": {
             "label": "Karın duvarı fıtığı",
-            "options": ["Yok", "Göbek fıtığı", "İnsizyonel", "Diğer"]
+            "options": [
+              "Yok",
+              "Göbek fıtığı",
+              "İnsizyonel",
+              "Diğer"
+            ]
           },
           "previous_scars": {
             "label": "Mevcut skarlar",
@@ -1086,11 +1225,20 @@
           },
           "liposuction_zones": {
             "label": "Eş zamanlı liposuction",
-            "options": ["Böğürler", "Sırt", "Sütyen kıvrımları", "Planlanmıyor"]
+            "options": [
+              "Böğürler",
+              "Sırt",
+              "Sütyen kıvrımları",
+              "Planlanmıyor"
+            ]
           },
           "drain_count": {
             "label": "Dren sayısı",
-            "options": ["0", "1", "2"]
+            "options": [
+              "0",
+              "1",
+              "2"
+            ]
           }
         }
       },
@@ -1121,23 +1269,47 @@
           },
           "skin_quality": {
             "label": "Cilt kalitesi",
-            "options": ["Mükemmel", "İyi", "Orta", "Sarkık / fotohasarlı"]
+            "options": [
+              "Mükemmel",
+              "İyi",
+              "Orta",
+              "Sarkık / fotohasarlı"
+            ]
           },
           "jowls": {
             "label": "Çene sarkması (jowl)",
-            "options": ["Yok", "Hafif", "Orta", "Belirgin"]
+            "options": [
+              "Yok",
+              "Hafif",
+              "Orta",
+              "Belirgin"
+            ]
           },
           "nasolabial_folds": {
             "label": "Nazolabial oluklar",
-            "options": ["Yok", "Hafif", "Orta", "Derin"]
+            "options": [
+              "Yok",
+              "Hafif",
+              "Orta",
+              "Derin"
+            ]
           },
           "neck_laxity": {
             "label": "Boyun gevşekliği",
-            "options": ["Yok", "Hafif", "Orta", "Belirgin"]
+            "options": [
+              "Yok",
+              "Hafif",
+              "Orta",
+              "Belirgin"
+            ]
           },
           "platysmal_bands": {
             "label": "Platisma bantları",
-            "options": ["Yok", "Orta", "Belirgin"]
+            "options": [
+              "Yok",
+              "Orta",
+              "Belirgin"
+            ]
           },
           "fat_distribution": {
             "label": "Yağ dağılımı",
@@ -1149,7 +1321,11 @@
           },
           "hair_line": {
             "label": "Saç çizgisi",
-            "options": ["Normal", "Yüksek", "Seyrek saç"]
+            "options": [
+              "Normal",
+              "Yüksek",
+              "Seyrek saç"
+            ]
           }
         }
       },
@@ -1220,15 +1396,28 @@
           },
           "antihelix": {
             "label": "Antiheliks",
-            "options": ["Normal", "Düzleşmiş", "Yok"]
+            "options": [
+              "Normal",
+              "Düzleşmiş",
+              "Yok"
+            ]
           },
           "conchal_excess": {
             "label": "Konka fazlalığı",
-            "options": ["Yok", "Orta", "Belirgin"]
+            "options": [
+              "Yok",
+              "Orta",
+              "Belirgin"
+            ]
           },
           "earlobe": {
             "label": "Kulak memesi",
-            "options": ["Normal", "Çıkık", "Yarık", "Hipertrofik"]
+            "options": [
+              "Normal",
+              "Çıkık",
+              "Yarık",
+              "Hipertrofik"
+            ]
           },
           "asymmetry": {
             "label": "Asimetri",
@@ -1270,7 +1459,11 @@
         "fields": {
           "chin_projection": {
             "label": "Çene projeksiyonu",
-            "options": ["Normal", "Retrojeni (zayıf çene)", "Projeni (çıkık)"]
+            "options": [
+              "Normal",
+              "Retrojeni (zayıf çene)",
+              "Projeni (çıkık)"
+            ]
           },
           "chin_projection_mm": {
             "label": "Projeksiyon açığı (mm)",
@@ -1282,15 +1475,29 @@
           },
           "occlusion": {
             "label": "Kapanış",
-            "options": ["Normal", "Distal", "Mezial", "Açık", "Çapraz"]
+            "options": [
+              "Normal",
+              "Distal",
+              "Mezial",
+              "Açık",
+              "Çapraz"
+            ]
           },
           "orthodontics": {
             "label": "Ortodontik tedavi",
-            "options": ["Yapılmadı", "Tamamlandı", "Devam ediyor"]
+            "options": [
+              "Yapılmadı",
+              "Tamamlandı",
+              "Devam ediyor"
+            ]
           },
           "neck_jaw_angle": {
             "label": "Servikomental açı",
-            "options": ["İyi", "Azalmış", "Artmış"]
+            "options": [
+              "İyi",
+              "Azalmış",
+              "Artmış"
+            ]
           }
         }
       },
@@ -1313,7 +1520,10 @@
           },
           "access": {
             "label": "Giriş",
-            "options": ["Submental", "İntraoral"]
+            "options": [
+              "Submental",
+              "İntraoral"
+            ]
           },
           "liposuction": {
             "label": "Çene / boyun liposuction"
@@ -1334,7 +1544,11 @@
           },
           "lower_lip_volume": {
             "label": "Alt dudak hacmi",
-            "options": ["Normal", "Azalmış", "Artmış"]
+            "options": [
+              "Normal",
+              "Azalmış",
+              "Artmış"
+            ]
           },
           "lip_ratio": {
             "label": "Üst/alt oranı",
@@ -1342,11 +1556,19 @@
           },
           "cupid_bow": {
             "label": "Kupidon yayı",
-            "options": ["Belirgin", "Düzleşmiş", "Asimetrik"]
+            "options": [
+              "Belirgin",
+              "Düzleşmiş",
+              "Asimetrik"
+            ]
           },
           "philtrum": {
             "label": "Filtrum",
-            "options": ["Belirgin", "Düzleşmiş", "Normal"]
+            "options": [
+              "Belirgin",
+              "Düzleşmiş",
+              "Normal"
+            ]
           },
           "previous_fillers": {
             "label": "Önceki dolgular",
@@ -1389,7 +1611,11 @@
           },
           "cannula_needle": {
             "label": "Enstrüman",
-            "options": ["İğne", "Kanül", "Kombinasyon"]
+            "options": [
+              "İğne",
+              "Kanül",
+              "Kombinasyon"
+            ]
           },
           "zones": {
             "label": "Düzeltme bölgeleri",

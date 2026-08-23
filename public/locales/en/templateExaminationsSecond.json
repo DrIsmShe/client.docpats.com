@@ -1,0 +1,199 @@
+{
+  "AngiographyScanerTemplateNameofexam": {
+    "buttons": {
+      "save": "Save"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "The wording text"
+      },
+      "title": {
+        "placeholder": "A short name"
+      }
+    },
+    "messages": {
+      "createError": "Could not add",
+      "createSuccess": "Added",
+      "networkError": "Network error. Please try again."
+    },
+    "title": "Title"
+  },
+  "AngiographyScanerTemplateNameofexamDetail": {
+    "buttons": {
+      "edit": "Edit"
+    },
+    "fields": {
+      "content": "Text",
+      "title": "Title"
+    },
+    "messages": {
+      "loadError": "Could not load"
+    },
+    "page": {
+      "loading": "Loading…"
+    },
+    "title": "Title"
+  },
+  "AngiographyScanerTemplateNameofexamEdit": {
+    "buttons": {
+      "update": "Update"
+    },
+    "fields": {
+      "content": "Text",
+      "title": "Title"
+    },
+    "messages": {
+      "loadError": "Could not load",
+      "updateError": "Could not save",
+      "updateSuccess": "Saved"
+    },
+    "title": "Title"
+  },
+  "AngiographyScanerTemplateNameofexamList": {
+    "buttons": {
+      "delete": "Delete",
+      "edit": "Edit"
+    },
+    "confirm": {
+      "delete": "Delete this wording?"
+    },
+    "messages": {
+      "deleteError": "Could not delete",
+      "deleteSuccess": "Deleted",
+      "loadError": "Could not load"
+    },
+    "title": "Title"
+  },
+  "AngiographyScanerTemplateRecomendation": {
+    "buttons": {
+      "save": "Save"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "The wording text"
+      },
+      "title": {
+        "placeholder": "A short name"
+      }
+    },
+    "messages": {
+      "createError": "Could not add",
+      "createSuccess": "Added",
+      "networkError": "Network error. Please try again."
+    },
+    "title": "Title"
+  },
+  "AngiographyScanerTemplateRecomendationDetails": {
+    "buttons": {
+      "edit": "Edit"
+    },
+    "fields": {
+      "content": "Text",
+      "doctor": "Doctor",
+      "title": "Title"
+    },
+    "messages": {
+      "loadError": "Could not load"
+    },
+    "page": {
+      "loading": "Loading…"
+    },
+    "title": "Title"
+  },
+  "AngiographyScanerTemplateRecomendationEdit": {
+    "buttons": {
+      "update": "Update"
+    },
+    "fields": {
+      "content": "Text",
+      "title": "Title"
+    },
+    "messages": {
+      "loadError": "Could not load",
+      "updateError": "Could not save",
+      "updateSuccess": "Saved"
+    },
+    "title": "Title"
+  },
+  "AngiographyScanerTemplateRecomendationList": {
+    "buttons": {
+      "delete": "Delete",
+      "edit": "Edit"
+    },
+    "confirm": {
+      "delete": "Delete this wording?"
+    },
+    "messages": {
+      "deleteError": "Could not delete",
+      "deleteSuccess": "Deleted",
+      "loadError": "Could not load"
+    },
+    "title": "Title"
+  },
+  "AngiographyScanerTemplateReport": {
+    "buttons": {
+      "save": "Save"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "The wording text"
+      },
+      "title": {
+        "placeholder": "A short name"
+      }
+    },
+    "messages": {
+      "createError": "Could not add",
+      "createSuccess": "Added",
+      "networkError": "Network error. Please try again."
+    },
+    "title": "Title"
+  },
+  "AngiographyScanerTemplateReportDetails": {
+    "buttons": {
+      "edit": "Edit"
+    },
+    "fields": {
+      "content": "Text",
+      "doctor": "Doctor",
+      "title": "Title"
+    },
+    "messages": {
+      "loadError": "Could not load"
+    },
+    "page": {
+      "loading": "Loading…"
+    },
+    "title": "Title"
+  },
+  "AngiographyScanerTemplateReportEdit": {
+    "buttons": {
+      "update": "Update"
+    },
+    "fields": {
+      "content": "Text",
+      "title": "Title"
+    },
+    "messages": {
+      "loadError": "Could not load",
+      "updateError": "Could not save",
+      "updateSuccess": "Saved"
+    },
+    "title": "Title"
+  },
+  "AngiographyScanerTemplateReportList": {
+    "buttons": {
+      "delete": "Delete",
+      "edit": "Edit"
+    },
+    "confirm": {
+      "delete": "Delete this wording?"
+    },
+    "messages": {
+      "deleteError": "Could not delete",
+      "deleteSuccess": "Deleted",
+      "loadError": "Could not load"
+    },
+    "title": "Title"
+  }
+}

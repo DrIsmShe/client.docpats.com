@@ -270,7 +270,7 @@ export default function CTScanerDetails() {
       {/* ── HERO ── */}
       <div className="ct-hero">
         <div className="ct-hero-inner">
-          <div className="ct-hero-tag">DocPats · CT Scan</div>
+          <div className="ct-hero-tag">{t("common:dp.pageTitle.ct")}</div>
           <h1 className="ct-hero-h1">{t("CTScanerDetails.page.title")}</h1>
           <p className="ct-hero-sub">
             {patientName} · {dateFormatted}
@@ -464,7 +464,7 @@ export default function CTScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

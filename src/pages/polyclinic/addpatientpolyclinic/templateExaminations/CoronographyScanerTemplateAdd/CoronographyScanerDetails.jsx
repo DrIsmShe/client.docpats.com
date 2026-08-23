@@ -272,7 +272,7 @@ export default function CoronographyScanerDetails() {
       {/* ── HERO ── */}
       <div className="cor-hero">
         <div className="cor-hero-inner">
-          <div className="cor-hero-tag">DocPats · Coronography</div>
+          <div className="cor-hero-tag">{t("common:dp.pageTitle.coronography")}</div>
           <h1 className="cor-hero-h1">
             {t("CoronographyScanerDetails.page.title")}
           </h1>
@@ -457,7 +457,7 @@ export default function CoronographyScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

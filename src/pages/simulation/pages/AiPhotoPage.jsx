@@ -19,6 +19,7 @@
 // два и открывает редактор сразу.
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -64,6 +65,7 @@ const caseTitle = (c) => {
 };
 
 export default function AiPhotoPage() {
+  const { t } = useTranslation("common");
   const dispatch = useDispatch();
   const { cases, activeCase, loading, caseLoading, uploadingPhoto } =
     useSelector((s) => s.surgery);
@@ -137,18 +139,14 @@ export default function AiPhotoPage() {
   return (
     <div className={styles.page}>
       <header className={styles.head}>
-        <p className={styles.kicker}>Моделирование · ИИ по фото</p>
-        <h1 className={styles.title}>Снимок → область → результат</h1>
+        <p className={styles.kicker}>{t("dp.aiPhoto.eyebrow")}</p>
+        <h1 className={styles.title}>{t("dp.aiPhoto.title")}</h1>
         <p className={styles.lead}>
-          Выделите кистью участок, который должен измениться, и опишите
-          желаемый результат. Нейросеть перерисует только выделенное,
-          остальной кадр останется прежним.
+          {t("dp.aiPhoto.lead")}
         </p>
         <p className={styles.warn}>
-          Результат — иллюстрация, а не прогноз операции. Одна и та же
-          область с одним и тем же описанием каждый раз даёт другое
-          изображение. Для измеримого плана используйте{" "}
-          <Link to="/dp/simulation/face">разметку по ориентирам</Link>.
+          {t("dp.aiPhoto.warn")}{" "}
+          <Link to="/dp/simulation/face">{t("dp.aiPhoto.landmarksLink")}</Link>.
         </p>
       </header>
 
@@ -156,7 +154,7 @@ export default function AiPhotoPage() {
 
       {/* ── Шаг 1: случай ── */}
       <section className={styles.card}>
-        <h2 className={styles.cardTitle}>1. Случай</h2>
+        <h2 className={styles.cardTitle}>{t("dp.aiPhoto.step1")}</h2>
 
         {!creating ? (
           <div className={styles.row}>
@@ -180,7 +178,7 @@ export default function AiPhotoPage() {
               className={styles.secondary}
               onClick={() => setCreating(true)}
             >
-              + Создать новый
+              {t("dp.aiPhoto.createNew")}
             </button>
           </div>
         ) : (
@@ -198,7 +196,7 @@ export default function AiPhotoPage() {
             </select>
             <input
               className={styles.input}
-              placeholder="Пометка (необязательно)"
+              placeholder={t("dp.aiPhoto.note")}
               value={newMark}
               onChange={(e) => setNewMark(e.target.value)}
               maxLength={40}
@@ -208,14 +206,14 @@ export default function AiPhotoPage() {
               className={styles.primary}
               onClick={handleCreate}
             >
-              Создать
+              {t("dp.aiPhoto.create")}
             </button>
             <button
               type="button"
               className={styles.secondary}
               onClick={() => setCreating(false)}
             >
-              Отмена
+              {t("common:common.cancelBtn")}
             </button>
           </div>
         )}
@@ -224,10 +222,10 @@ export default function AiPhotoPage() {
       {/* ── Шаг 2: фото ── */}
       {selectedId && (
         <section className={styles.card}>
-          <h2 className={styles.cardTitle}>2. Фотография</h2>
+          <h2 className={styles.cardTitle}>{t("dp.aiPhoto.step2")}</h2>
 
           {caseLoading ? (
-            <p className={styles.muted}>Загрузка случая…</p>
+            <p className={styles.muted}>{t("dp.aiPhoto.loadingCase")}</p>
           ) : (
             <>
               <p className={styles.muted}>
@@ -256,7 +254,7 @@ export default function AiPhotoPage() {
           пустой редактор без снимка читается как поломка. */}
       {selectedId && photos.length > 0 && activeCase && (
         <section className={styles.card}>
-          <h2 className={styles.cardTitle}>3. Область и описание</h2>
+          <h2 className={styles.cardTitle}>{t("dp.aiPhoto.step3")}</h2>
           <SimulatorPanel cas={activeCase} />
         </section>
       )}

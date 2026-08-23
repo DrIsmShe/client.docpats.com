@@ -259,7 +259,7 @@ export default function Aside() {
       >
         {/* HEADER */}
         <div className="aside-dp-header">
-          <div className="aside-dp-brand">DocPats · Doctor Portal</div>
+          <div className="aside-dp-brand">{t("dp.pageTitle.doctorPortal")}</div>
           <Link
             target="_blank"
             className="nav-link nav-profile aside-dp-profile-link"
@@ -268,7 +268,7 @@ export default function Aside() {
             <div className="aside-dp-avatar-wrap">
               <img
                 src={imagedata || `${API_BASE}/uploads/default.png`}
-                alt="Profile"
+                alt={t("patientArea:addPatient.profile")}
                 className="aside-dp-avatar"
                 onError={(e) => {
                   e.currentTarget.onerror = null;

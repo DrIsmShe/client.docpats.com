@@ -214,7 +214,7 @@ export default function MRIScanerDetails() {
 
       <div className="mri-hero">
         <div className="mri-hero-inner">
-          <div className="mri-hero-tag">DocPats · MRI</div>
+          <div className="mri-hero-tag">{t("common:dp.pageTitle.mri")}</div>
           <h1 className="mri-hero-h1">{t("MRIScanerDetails.page.title")}</h1>
           <p className="mri-hero-sub">
             {patientName} · {dateFormatted}
@@ -385,7 +385,7 @@ export default function MRIScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

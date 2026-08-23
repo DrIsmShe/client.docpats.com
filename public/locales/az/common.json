@@ -1245,7 +1245,8 @@
     "errMicDenied": "Brauzer mikrofona icazə vermədi. Sayt parametrlərindən icazə verin.",
     "errMicUnavailable": "Mikrofon əlçatmazdır. Qoşulduğunu və başqa proqram tərəfindən istifadə olunmadığını yoxlayın.",
     "noteCodeFromSpeech": "ICD-10 kodu nitqdən götürülüb, rəsmi adı yoxdur. Rəsmi adın düşməsi üçün kodu axtarış sahəsində təsdiqləyin.",
-    "noteTextNeedsCode": "Diaqnoz mətni köçürülmədi: sahə yalnız ICD-10 kodu seçiləndən sonra görünür. Kod seçin və «→ sahəyə» düyməsini yenidən basın."
+    "noteTextNeedsCode": "Diaqnoz mətni köçürülmədi: sahə yalnız ICD-10 kodu seçiləndən sonra görünür. Kod seçin və «→ sahəyə» düyməsini yenidən basın.",
+    "langLabel": "Dil:"
   },
   "medicalHistoryForm": {
     "labels": {
@@ -1265,7 +1266,18 @@
     },
     "placeholders": {
       "diagnosisInput": "Diaqnozu siyahıdan seçin...",
-      "additionalDiagnosis": "Diaqnoza əlavə qeyd daxil edin..."
+      "additionalDiagnosis": "Diaqnoza əlavə qeyd daxil edin...",
+      "anamnesisMorbi": "Hazırkı xəstəliyin tarixçəsi…",
+      "anamnesisVitae": "Həyat anamnezi, keçirilmiş xəstəliklər…",
+      "complaints": "Pasiyentin şikayətlərini yazın…",
+      "ctScanResults": "KT nəticələri…",
+      "diagnosisText": "Diaqnozun mətni öz dilinizdə (MKB-10-dan dolduruldu, dəyişə bilərsiniz)…",
+      "laboratoryTestResults": "Analiz nəticələri…",
+      "mriResults": "MRT nəticələri…",
+      "recommendations": "Müalicə tövsiyələri, müşahidə planı…",
+      "statusLocalis": "Lokal statusun təsviri…",
+      "statusPreasens": "Hazırkı obyektiv status…",
+      "ultrasoundResults": "USM nəticələri…"
     },
     "buttons": {
       "insert": "Əlavə et",
@@ -1281,7 +1293,9 @@
       "fillRequired": "{{field}} sahəsini doldurun.",
       "requiredList": "Zəhmət olmasa, aşağıdakı məcburi sahələri doldurun:",
       "loginRequired": "Xahiş edirik, sistemə daxil olun.",
-      "invalidDiagnosis": "Düzgün diaqnozu siyahıdan seçin."
+      "invalidDiagnosis": "Düzgün diaqnozu siyahıdan seçin.",
+      "diagnosisTextRequired": "Diaqnozun mətnini öz dilinizdə yazın",
+      "icdRequired": "MKB-10 kodunu seçin"
     },
     "modal": {
       "title": "Şablon baxışı"
@@ -1293,7 +1307,19 @@
     "profileCard": {
       "speciality": "İxtisas"
     },
-    "loading": "Yüklənir..."
+    "loading": "Yüklənir...",
+    "hints": {
+      "diagnosisText": "MKB-10-dan avtomatik dolduruldu. Öz dilinizdə tərcümə edin və ya yenidən ifadə edin."
+    },
+    "messages": {
+      "errorOccurred": "Xəta baş verdi.",
+      "patientAdded": "Pasiyent əlavə edildi"
+    },
+    "requiredFilled": "məcburi sahə doldurulub",
+    "templateSelector": {
+      "select": "Şablon seçin"
+    },
+    "title": "Xəstəlik tarixçəsi əlavə et"
   },
   "publicClinic": {
     "leadFormTitle": "Müraciət qoyun — sizinlə əlaqə saxlayacağıq",
@@ -1941,5 +1967,178 @@
     "deleteOne": "Bildirişi sil",
     "deleteConfirm": "Bu bildiriş silinsin?"
   },
-  "profileAbout": "Haqqımda"
+  "profileAbout": "Haqqımda",
+  "contentLabel": "Mətn",
+  "doctorLabel": "Həkim",
+  "editButton": "Dəyiş",
+  "errorLoad": "Yükləmək alınmadı",
+  "pageTitle": "İfadələr",
+  "titleLabel": "Başlıq",
+  "errorUpdate": "Yadda saxlamaq alınmadı",
+  "successUpdate": "Yadda saxlanıldı",
+  "updateButton": "Yenilə",
+  "confirmDelete": "Bu qeyd silinsin?",
+  "deleteButton": "Sil",
+  "emptyList": "Siyahı boşdur",
+  "errorDelete": "Silmək alınmadı",
+  "successDelete": "Silindi",
+  "contentPlaceholder": "İfadənin mətni",
+  "errorAdd": "Əlavə etmək alınmadı",
+  "networkError": "Şəbəkə xətası. Yenidən cəhd edin.",
+  "saveButton": "Yadda saxla",
+  "successAdd": "Əlavə edildi",
+  "titlePlaceholder": "Qısa ad",
+  "dp": {
+    "pageTitle": {
+      "polyclinic": "DocPats · Poliklinika",
+      "patient": "DocPats · Pasiyent",
+      "privatePatient": "DocPats · Şəxsi pasiyent",
+      "doctorPortal": "DocPats · Həkim portalı",
+      "medicalHistory": "DocPats · Xəstəlik tarixçəsi",
+      "angiography": "DocPats · Angioqrafiya",
+      "ct": "DocPats · KT",
+      "capsule": "DocPats · Kapsul endoskopiyası",
+      "coronography": "DocPats · Koronaroqrafiya",
+      "doppler": "DocPats · Doppler",
+      "eeg": "DocPats · EEQ",
+      "ekg": "DocPats · EKQ",
+      "echo": "DocPats · Exo-EKQ",
+      "gastroscopy": "DocPats · Qastroskopiya",
+      "gynecology": "DocPats · Ginekologiya",
+      "holter": "DocPats · Holter",
+      "lab": "DocPats · Analizlər",
+      "mri": "DocPats · MRT",
+      "pet": "DocPats · PET",
+      "spect": "DocPats · SPECT",
+      "spirometry": "DocPats · Spirometriya",
+      "ultrasound": "DocPats · USM",
+      "xray": "DocPats · Rentgen"
+    },
+    "list": {
+      "all": "Hamısı",
+      "active": "Aktiv",
+      "archived": "Arxivdə",
+      "registered": "Qeydiyyatlı",
+      "private": "Şəxsi",
+      "registeredPatient": "Qeydiyyatlı pasiyent",
+      "privatePatient": "Şəxsi pasiyent",
+      "registeredBadge": "QEYDİYYATLI",
+      "privateBadge": "ŞƏXSİ",
+      "archive": "🗂 Arxivə",
+      "restore": "↩ Bərpa et"
+    },
+    "patient": {
+      "severity": "Vəziyyətin ağırlığı:",
+      "createSurgicalCase": "🔪 Cərrahi keys yarat",
+      "demography": "Demoqrafiya",
+      "contacts": "Əlaqə",
+      "mainInfo": "Əsas məlumat",
+      "medicalHistory": "Tibbi tarixçə",
+      "extra": "Əlavə",
+      "birthDate": "Doğum tarixi",
+      "phone": "Telefon",
+      "phoneHint": "Ölkə kodu avtomatik əlavə olunur.",
+      "dateHint": "Format: gg/aa/iiii.",
+      "word": "Pasiyent",
+      "required": "Məcburi"
+    },
+    "ai": {
+      "summaryTitle": "🩺 Pasiyent üzrə klinik xülasə",
+      "loading": "Təhlil hazırlanır…",
+      "clinicalStatus": "🚨 Klinik status",
+      "diagnosticAnalysis": "🧠 Diaqnostik təhlil",
+      "progression": "📈 Xəstəliyin dinamikası",
+      "details": "🔬 Təhlilin təfərrüatları",
+      "why": "🧠 Model niyə belə hesab edir",
+      "confidenceScore": "🧠 Modelin əminliyi",
+      "probabilityBars": "🧠 Diaqnozların ehtimalı",
+      "progressionGraph": "📈 Dinamika qrafiki",
+      "riskHeatmap": "📊 Risk xəritəsi",
+      "dataCompleteness": "📊 Məlumatların tamlığı",
+      "prognosis": "📈 Proqnoz",
+      "noFactors": "Açar amillər hələ müəyyən edilməyib",
+      "modelConfidence": "Modelin əminliyi",
+      "page": "Səhifə",
+      "prev": "← Əvvəlki",
+      "next": "Sonrakı →"
+    },
+    "timeline": {
+      "title": "📅 Pasiyentin hadisə lenti",
+      "ai": "🤖 Sİ",
+      "empty": "Tibbi hadisə tapılmadı"
+    },
+    "tpl": {
+      "eegRecDetails": "EEQ tövsiyə şablonu",
+      "eegRecEdit": "EEQ tövsiyə şablonunu dəyiş",
+      "update": "Şablonu yenilə",
+      "notFound": "Şablon tapılmadı",
+      "loading": "Yüklənir…",
+      "title": "Başlıq",
+      "content": "Mətn",
+      "titleLabel": "Başlıq:",
+      "contentLabel": "Mətn:",
+      "doctorLabel": "Həkim:",
+      "createdLabel": "Yaradılıb:",
+      "backToList": "← Siyahıya",
+      "edit": "✏️ Dəyiş"
+    },
+    "scan": {
+      "fullSize": "Tam ölçü",
+      "word": "təsvir",
+      "preview": "önizləmə",
+      "properties": "Xüsusiyyətlər",
+      "jpg": "JPG",
+      "png": "PNG"
+    },
+    "aiPhoto": {
+      "eyebrow": "Modelləşdirmə · Şəkil üzrə Sİ",
+      "step1": "1. Hal",
+      "step2": "2. Şəkil",
+      "step3": "3. Sahə və təsvir",
+      "createNew": "+ Yeni yarat",
+      "create": "Yarat",
+      "loadingCase": "Hal yüklənir…",
+      "note": "Qeyd (istəyə görə)",
+      "photo": "Şəkil",
+      "lead": "Dəyişməli olan sahəni fırça ilə seçin və istədiyiniz nəticəni təsvir edin. Model yalnız seçiləni yenidən çəkir, kadrın qalanı olduğu kimi qalır.",
+      "warn": "Nəticə illüstrasiyadır, əməliyyat proqnozu deyil. Eyni sahə eyni təsvirlə hər dəfə başqa şəkil verir. Ölçüləbilən plan üçün istifadə edin:",
+      "landmarksLink": "oriyentirlər üzrə işarələmə",
+      "title": "Şəkil → sahə → nəticə"
+    },
+    "plan": {
+      "eyebrow": "Modelləşdirmə · prototip",
+      "request": "Həkimin sorğusu",
+      "lead": "İstədiyiniz nəticəni adi sözlərlə təsvir edin. Sistem sorğunu əməliyyat kataloquna görə ayırır, «əvvəl/sonra» ölçmələrini hesablayır və sorğuda nəyin çatışmadığını deyir. Sonra plan sürgülərlə düzəlir — kəmiyyətlər ölçüləbilən və təkrarlanabilən qalır.",
+      "example": "Məsələn: 2 mm donqarı götürmək və ucu 5 dərəcə qaldırmaq",
+      "patientSex": "Pasiyentin cinsi",
+      "baseline": "İlkin məlumatlar",
+      "beforeMeasurements": "«Əvvəl» ölçmələri",
+      "beforeHint": "Onlarsız plan yenə də analiz olunur, amma cədvəl yalnız fərqləri göstərir: «sonra» dəyərini demək üçün «əvvəl» dəyərini bilmək lazımdır.",
+      "title": "Plan",
+      "empty": "Hələ plan yoxdur. Tapşırığı solda təsvir edin və «Sorğunu analiz et» düyməsini basın.",
+      "whatToDo": "Nə etmək lazımdır",
+      "addProcedure": "Əməliyyat əlavə et",
+      "procedure": "Prosedur",
+      "direction": "istiqamət",
+      "remove": "Çıxar",
+      "measurements": "Ölçmələr",
+      "measurement": "Ölçmə",
+      "before": "Əvvəl",
+      "after": "Sonra",
+      "norm": "Norma",
+      "noMeasurements": "Ölçmələrə toxunulmayıb.",
+      "remarks": "Qeydlər",
+      "needsClarification": "Dəqiqləşdirmək lazımdır",
+      "parsePrefix": "Analiz:",
+      "recalculating": "yenidən hesablanır…",
+      "noProcedures": "Heç bir əməliyyat yoxdur — icra etməyə bir şey yoxdur.",
+      "notInCatalogue": "Əməliyyat cari kataloqda yoxdur.",
+      "outsideCatalogue": "Kataloqdan kənar",
+      "catalogueSuffix": ", kataloq",
+      "catalogueError": "Əməliyyat kataloqunu yükləmək alınmadı:",
+      "choose": "— seçin —",
+      "optional": "— istəyə görə",
+      "pageTitle": "Həkimin sorğusu → əməliyyat planı"
+    }
+  }
 }

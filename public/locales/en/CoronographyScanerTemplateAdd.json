@@ -10,7 +10,6 @@
       "createError": "❌ Failed to add template",
       "networkError": "Network error"
     },
-
     "buttons": {
       "save": "Save",
       "update": "Update",
@@ -33,7 +32,6 @@
     "messages": {
       "loadError": "Failed to load template"
     },
-
     "buttons": {
       "save": "Save",
       "update": "Update",
@@ -213,5 +211,11 @@
       "loadError": "Failed to load report templates",
       "deleteError": "❌ Failed to delete the template"
     }
+  },
+  "confirm": {
+    "delete": "Delete"
+  },
+  "common": {
+    "loading": "Loading…"
   }
 }

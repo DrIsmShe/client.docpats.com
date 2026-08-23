@@ -214,7 +214,7 @@ export default function PETScanerDetails() {
 
       <div className="pet-hero">
         <div className="pet-hero-inner">
-          <div className="pet-hero-tag">DocPats · PET Scan</div>
+          <div className="pet-hero-tag">{t("common:dp.pageTitle.pet")}</div>
           <h1 className="pet-hero-h1">{t("PETScanerDetails.page.title")}</h1>
           <p className="pet-hero-sub">
             {patientName} · {dateFormatted}
@@ -389,7 +389,7 @@ export default function PETScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

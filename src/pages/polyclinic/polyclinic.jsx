@@ -407,16 +407,17 @@ export default function Polyclinic() {
   const getPatientType = (patient) => patient.patientType || "registered";
 
   const PatientTypeBadge = ({ type }) => {
+  const { t } = useTranslation("common");
     if (type === "private") {
       return (
-        <span className="plc-pill plc-pill-private" title="Private patient">
-          PRIVATE
+        <span className="plc-pill plc-pill-private" title={t("dp.list.privatePatient")}>
+          {t("dp.list.privateBadge")}
         </span>
       );
     }
     return (
-      <span className="plc-pill plc-pill-reg" title="Registered patient">
-        REGISTERED
+      <span className="plc-pill plc-pill-reg" title={t("dp.list.registeredPatient")}>
+        {t("dp.list.registeredBadge")}
       </span>
     );
   };
@@ -778,7 +779,7 @@ export default function Polyclinic() {
       <div className="plc-header">
         <div className="plc-header-inner">
           <div>
-            <div className="plc-header-eyebrow">DocPats · Polyclinic</div>
+            <div className="plc-header-eyebrow">{t("dp.pageTitle.polyclinic")}</div>
             <h1 className="plc-header-h1">🏥&nbsp;{t("polyclinic.title")}</h1>
             <p className="plc-header-sub">{t("polyclinic.header.subTitle")}</p>
           </div>
@@ -1099,9 +1100,9 @@ export default function Polyclinic() {
                       setCurrentPage(1);
                     }}
                   >
-                    <option value="">All</option>
-                    <option value="registered">Registered</option>
-                    <option value="private">Private</option>
+                    <option value="">{t("dp.list.all")}</option>
+                    <option value="registered">{t("dp.list.registered")}</option>
+                    <option value="private">{t("dp.list.private")}</option>
                   </select>
                 </div>
 
@@ -1120,9 +1121,9 @@ export default function Polyclinic() {
                       setCurrentPage(1);
                     }}
                   >
-                    <option value="active">Active</option>
-                    <option value="archived">Archived</option>
-                    <option value="all">All</option>
+                    <option value="active">{t("dp.list.active")}</option>
+                    <option value="archived">{t("dp.list.archived")}</option>
+                    <option value="all">{t("dp.list.all")}</option>
                   </select>
                 </div>
 
@@ -1377,7 +1378,7 @@ export default function Polyclinic() {
                                     }
                                   }}
                                 >
-                                  ↩ Restore
+                                  {t("dp.list.restore")}
                                 </button>
                               )}
 
@@ -1398,7 +1399,7 @@ export default function Polyclinic() {
                                     );
                                   }}
                                 >
-                                  ↩ Restore
+                                  {t("dp.list.restore")}
                                 </button>
                               )}
 
@@ -1411,7 +1412,7 @@ export default function Polyclinic() {
                                   className="plc-btn plc-btn-danger"
                                   onClick={() => requestDelete(patient._id)}
                                 >
-                                  🗂 Archive
+                                  {t("dp.list.archive")}
                                 </button>
                               )}
 
@@ -1423,7 +1424,7 @@ export default function Polyclinic() {
                                   className="plc-btn plc-btn-danger"
                                   onClick={() => requestDelete(patient._id)}
                                 >
-                                  🗂 Archive
+                                  {t("dp.list.archive")}
                                 </button>
                               )}
 

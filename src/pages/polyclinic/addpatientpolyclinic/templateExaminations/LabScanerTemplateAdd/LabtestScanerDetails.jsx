@@ -245,7 +245,7 @@ export default function LabtestScanerDetails() {
 
       <div className="lab-hero">
         <div className="lab-hero-inner">
-          <div className="lab-hero-tag">DocPats · Lab Test</div>
+          <div className="lab-hero-tag">{t("common:dp.pageTitle.lab")}</div>
           <h1 className="lab-hero-h1">
             {t("LabtestScanerDetails.page.title")}
           </h1>
@@ -451,7 +451,7 @@ export default function LabtestScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

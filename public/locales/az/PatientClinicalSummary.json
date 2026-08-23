@@ -4,7 +4,8 @@
   },
   "buttons": {
     "backToPatient": "Pasiyentə qayıt",
-    "openPatientCard": "Pasiyent kartını aç"
+    "openPatientCard": "Pasiyent kartını aç",
+    "generating": "Formalaşdırılır…"
   },
   "sections": {
     "mainComplaints": "Əsas şikayətlər",
@@ -24,7 +25,6 @@
     "background": "Klinik fon",
     "recommendations": "Müşahidə və tövsiyələr"
   },
-
   "deterioration": {
     "title": "Klinik vəziyyətin pisləşməsi aşkarlandı",
     "description": "Pasiyentin dinamikası vəziyyətin pisləşə biləcəyini göstərir."
@@ -73,7 +73,6 @@
     "defaultTitle": "Klinik xəbərdarlıq",
     "source": "Mənbə"
   },
-
   "severity": {
     "title": "Klinik ağırlıq",
     "level": {
@@ -101,7 +100,6 @@
     "title": "Pasiyentin tibbi xronologiyası",
     "noEvents": "Heç bir tibbi hadisə tapılmadı"
   },
-
   "diagnosticInventory": {
     "title": "Diaqnostik İcmal",
     "examinations": "müayinə",

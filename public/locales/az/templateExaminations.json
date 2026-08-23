@@ -24,6 +24,10 @@
       "download": "PDF yüklə",
       "upload": "PDF göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "AngiographyScanerTemplateDiagnosis": {
@@ -64,14 +68,12 @@
       "success": "✅ Diaqnoz şablonu uğurla yeniləndi!",
       "error": "❌ Şablon yenilənərkən xəta baş verdi"
     },
-
     "labels": {
       "title": "Başlıq",
       "titlePlaceholder": "Başlıq daxil edin...",
       "content": "Mətn",
       "contentPlaceholder": "Mətn daxil edin..."
     },
-
     "buttons": {
       "update": "Şablonu yenilə"
     }
@@ -352,6 +354,10 @@
       "download": "PDF yüklə",
       "upload": "PDF göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "CTScanerDetails": {
@@ -385,6 +391,10 @@
       "download": "PDF yüklə",
       "upload": "PDF göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "DopleryScanerDetails": {
@@ -418,6 +428,10 @@
       "download": "PDF yüklə",
       "upload": "PDF göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "EchoEKGScanerDetails": {
@@ -451,6 +465,10 @@
       "download": "PDF yüklə",
       "upload": "PDF göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "EEGScanerDetails": {
@@ -484,6 +502,10 @@
       "download": "PDF yüklə",
       "upload": "PDF göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "EKGScanerDetails": {
@@ -517,6 +539,10 @@
       "download": "PDF yüklə",
       "upload": "PDF göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "GastroscopyScanerDetails": {
@@ -550,6 +576,10 @@
       "download": "PDF yüklə",
       "upload": "PDF göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "GinecologyDetails": {
@@ -583,6 +613,10 @@
       "download": "PDF yüklə",
       "upload": "PDF göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "HOLTERScanerDetails": {
@@ -616,6 +650,10 @@
       "download": "PDF Yüklə",
       "upload": "PDF Göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "LabtestScanerDetails": {
@@ -625,6 +663,10 @@
       "noData": "Məlumat yoxdur",
       "errors": {
         "fetchError": "Laboratoriya analizinin yüklənməsi mümkün olmadı."
+      },
+      "messages": {
+        "uploadError": "PDF yükləmə xətası",
+        "uploadSuccess": "PDF uğurla yükləndi! Link:"
       }
     },
     "files": {
@@ -650,6 +692,10 @@
       "download": "PDF Yüklə",
       "upload": "PDF Göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "MRIScanerDetails": {
@@ -659,6 +705,10 @@
       "noData": "Məlumat yoxdur",
       "errors": {
         "fetchError": "MRT məlumatlarını yükləmək mümkün olmadı."
+      },
+      "messages": {
+        "uploadError": "PDF yükləmə xətası",
+        "uploadSuccess": "PDF uğurla yükləndi! Link:"
       }
     },
     "fields": {
@@ -679,6 +729,10 @@
       "download": "PDF Yüklə",
       "upload": "PDF Göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "PETScanerDetails": {
@@ -738,6 +792,10 @@
       "download": "PDF yüklə",
       "upload": "PDF göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "USMScanerDetails": {
@@ -767,6 +825,10 @@
       "download": "PDF yüklə",
       "upload": "PDF göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   },
   "XRAYScanerDetails": {
@@ -796,6 +858,40 @@
       "download": "PDF yüklə",
       "upload": "PDF göndər",
       "print": "Çap et"
+    },
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
+    }
+  },
+  "page": {
+    "error": "Xəta",
+    "errors": {
+      "fetchError": "Məlumatı yükləmək alınmadı",
+      "uploadError": "Faylı yükləmək alınmadı"
+    },
+    "loading": "Yüklənir…"
+  },
+  "buttons": {
+    "delete": "Sil",
+    "upload": "Yüklə"
+  },
+  "confirm": {
+    "delete": "Sil"
+  },
+  "fields": {
+    "images": "Şəkillər",
+    "no": "Xeyr",
+    "yes": "Bəli"
+  },
+  "sections": {
+    "findings": "Tapıntılar",
+    "general": "Ümumi məlumat"
+  },
+  "SpirometryScanerDetails": {
+    "sections": {
+      "findings": "Tapıntılar",
+      "general": "Ümumi məlumat"
     }
   }
 }

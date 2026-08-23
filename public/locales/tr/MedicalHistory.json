@@ -37,5 +37,13 @@
     "uploadError": "PDF yüklenirken hata oluştu.",
     "downloadError": "PDF oluşturulurken hata oluştu."
   },
-  "ageText": "{{age}} yaş"
+  "ageText": "{{age}} yaş",
+  "sections": {
+    "anamnesis": "Anamnez",
+    "diagnosis": "Tanı",
+    "examinations": "Tetkikler",
+    "meta": "Belge bilgileri",
+    "patient": "Hasta bilgileri",
+    "status": "Durum"
+  }
 }

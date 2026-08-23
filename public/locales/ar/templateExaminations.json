@@ -24,44 +24,52 @@
       "download": "تحميل PDF",
       "upload": "رفع PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "LabtestScanerDetails": {
     "page": {
-      "title": "Lab Test — Examination Details",
-      "loading": "Loading...",
-      "noData": "No data found",
+      "title": "تحليل مخبري",
+      "loading": "جارٍ التحميل...",
+      "noData": "لا توجد بيانات",
       "errors": {
-        "fetchError": "Failed to load examination data"
+        "fetchError": "تعذّر تحميل التحليل المخبري."
       },
       "messages": {
-        "uploadSuccess": "PDF uploaded successfully! Link:",
-        "uploadError": "PDF upload error. Please try again."
+        "uploadError": "خطأ في رفع ملف PDF",
+        "uploadSuccess": "تم رفع ملف PDF! الرابط:"
       }
     },
-    "sections": {
-      "general": "General Info",
-      "findings": "Findings"
+    "files": {
+      "noFile": "لم يتم اختيار ملف",
+      "chooseFile": "اختر ملفًا"
     },
     "fields": {
-      "patient": "Patient",
-      "doctor": "Doctor",
-      "date": "Date",
-      "labName": "Laboratory",
-      "diagnosis": "Diagnosis",
-      "report": "Report",
-      "parameters": "Test Parameters",
-      "paramName": "Parameter",
-      "paramValue": "Value",
-      "unit": "Unit",
-      "reference": "Reference Range",
-      "files": "Attached Files",
-      "doctorComments": "Doctor Comments"
+      "patient": "المريض",
+      "doctor": "الطبيب",
+      "date": "التاريخ",
+      "labName": "المختبر",
+      "diagnosis": "التشخيص الأولي",
+      "report": "تقرير الطبيب",
+      "parameters": "🧪 مؤشرات التحليل:",
+      "paramName": "المؤشر",
+      "paramValue": "القيمة",
+      "unit": "الوحدة",
+      "reference": "المدى المرجعي",
+      "files": "📎 الملفات المرفقة",
+      "doctorComments": "💬 تعليقات الأطباء"
     },
     "buttons": {
-      "download": "Download PDF",
-      "upload": "Upload PDF",
-      "print": "Print"
+      "download": "تحميل PDF",
+      "print": "طباعة",
+      "upload": "رفع PDF"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "AngiographyScanerTemplateDiagnosis": {
@@ -102,14 +110,12 @@
       "success": "✅ تم تحديث قالب التشخيص بنجاح!",
       "error": "❌ حدث خطأ أثناء تحديث القالب"
     },
-
     "labels": {
       "title": "العنوان",
       "titlePlaceholder": "أدخل العنوان...",
       "content": "المحتوى",
       "contentPlaceholder": "أدخل المحتوى..."
     },
-
     "buttons": {
       "update": "تحديث القالب"
     }
@@ -409,6 +415,10 @@
       "download": "تحميل PDF",
       "upload": "رفع PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "CTScanerDetails": {
@@ -442,6 +452,10 @@
       "download": "تحميل PDF",
       "upload": "رفع PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "DopleryScanerDetails": {
@@ -475,6 +489,10 @@
       "download": "تحميل PDF",
       "upload": "رفع PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "EchoEKGScanerDetails": {
@@ -508,6 +526,10 @@
       "download": "تحميل PDF",
       "upload": "رفع PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "EEGScanerDetails": {
@@ -541,6 +563,10 @@
       "download": "تحميل PDF",
       "upload": "رفع PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "EKGScanerDetails": {
@@ -574,6 +600,10 @@
       "download": "تحميل PDF",
       "upload": "رفع PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "GastroscopyScanerDetails": {
@@ -607,9 +637,12 @@
       "download": "تحميل PDF",
       "upload": "رفع PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
-
   "GinecologyDetails": {
     "page": {
       "title": "تفاصيل فحص أمراض النساء",
@@ -641,6 +674,10 @@
       "download": "تحميل PDF",
       "upload": "رفع PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "HOLTERScanerDetails": {
@@ -674,40 +711,10 @@
       "download": "تنزيل PDF",
       "upload": "رفع PDF",
       "print": "طباعة"
-    }
-  },
-  "LabtestScanerDetails": {
-    "page": {
-      "title": "تحليل مخبري",
-      "loading": "جارٍ التحميل...",
-      "noData": "لا توجد بيانات",
-      "errors": {
-        "fetchError": "تعذّر تحميل التحليل المخبري."
-      }
     },
-    "files": {
-      "noFile": "لم يتم اختيار ملف",
-      "chooseFile": "اختر ملفًا"
-    },
-    "fields": {
-      "patient": "المريض",
-      "doctor": "الطبيب",
-      "date": "التاريخ",
-      "labName": "المختبر",
-      "diagnosis": "التشخيص الأولي",
-      "report": "تقرير الطبيب",
-      "parameters": "🧪 مؤشرات التحليل:",
-      "paramName": "المؤشر",
-      "paramValue": "القيمة",
-      "unit": "الوحدة",
-      "reference": "المدى المرجعي",
-      "files": "📎 الملفات المرفقة",
-      "doctorComments": "💬 تعليقات الأطباء"
-    },
-    "buttons": {
-      "download": "تحميل PDF",
-      "print": "طباعة",
-      "upload": "رفع PDF"
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "MRIScanerDetails": {
@@ -717,6 +724,10 @@
       "noData": "لا توجد بيانات",
       "errors": {
         "fetchError": "فشل في جلب بيانات فحص الرنين."
+      },
+      "messages": {
+        "uploadError": "خطأ في رفع ملف PDF",
+        "uploadSuccess": "تم رفع ملف PDF! الرابط:"
       }
     },
     "fields": {
@@ -737,6 +748,10 @@
       "download": "تنزيل PDF",
       "upload": "تحميل PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "PETScanerDetails": {
@@ -797,6 +812,10 @@
       "download": "تنزيل PDF",
       "upload": "تحميل PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "SpirometryScanerDetails": {
@@ -826,6 +845,10 @@
       "download": "تنزيل PDF",
       "upload": "تحميل PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "USMScanerDetails": {
@@ -855,6 +878,10 @@
       "download": "تنزيل PDF",
       "upload": "تحميل PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
   },
   "XRAYScanerDetails": {
@@ -884,6 +911,34 @@
       "download": "تنزيل PDF",
       "upload": "تحميل PDF",
       "print": "طباعة"
+    },
+    "sections": {
+      "findings": "النتائج",
+      "general": "معلومات عامة"
     }
+  },
+  "page": {
+    "error": "خطأ",
+    "errors": {
+      "fetchError": "تعذّر تحميل البيانات",
+      "uploadError": "تعذّر رفع الملف"
+    },
+    "loading": "جارٍ التحميل…"
+  },
+  "buttons": {
+    "delete": "حذف",
+    "upload": "رفع"
+  },
+  "confirm": {
+    "delete": "حذف"
+  },
+  "fields": {
+    "images": "الصور",
+    "no": "لا",
+    "yes": "نعم"
+  },
+  "sections": {
+    "findings": "النتائج",
+    "general": "معلومات عامة"
   }
 }

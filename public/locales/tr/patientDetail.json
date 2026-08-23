@@ -18,7 +18,8 @@
     "loadingExaminations": "Tetkikler yükleniyor",
     "addGenerateClinicalSummary": "Klinik Özet Oluştur",
     "generating": "Oluşturuluyor",
-    "aiGeneratedSummaryDisclaimer": "Bu özet yapay zeka tarafından oluşturulmuştur. Yalnızca profesyonel kullanım içindir."
+    "aiGeneratedSummaryDisclaimer": "Bu özet yapay zeka tarafından oluşturulmuştur. Yalnızca profesyonel kullanım içindir.",
+    "PatientNotFound": "Hasta bulunamadı"
   },
   "examAddedSuccess": "✅ Tetkik başarıyla eklendi",
   "tabs": {

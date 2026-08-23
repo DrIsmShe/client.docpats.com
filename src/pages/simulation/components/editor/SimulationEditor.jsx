@@ -1148,7 +1148,7 @@ export default function SimulationEditor({ plan }) {
                   mobileOpenPanel === "properties" ? null : "properties",
                 )
               }
-              aria-label="Properties"
+              aria-label={t("common:dp.scan.properties")}
             >
               {mobileOpenPanel === "properties" ? "✕" : "⚙"}
             </button>

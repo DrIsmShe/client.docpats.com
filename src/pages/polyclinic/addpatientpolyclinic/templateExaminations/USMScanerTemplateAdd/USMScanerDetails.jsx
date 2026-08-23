@@ -214,7 +214,7 @@ export default function USMScanerDetails() {
 
       <div className="usm-hero">
         <div className="usm-hero-inner">
-          <div className="usm-hero-tag">DocPats · Ultrasound</div>
+          <div className="usm-hero-tag">{t("common:dp.pageTitle.ultrasound")}</div>
           <h1 className="usm-hero-h1">{t("USMScanerDetails.page.title")}</h1>
           <p className="usm-hero-sub">
             {patientName} · {dateFormatted}
@@ -385,7 +385,7 @@ export default function USMScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

@@ -267,7 +267,7 @@ export default function DopleryScanerDetails() {
       {/* ── HERO ── */}
       <div className="dop-hero">
         <div className="dop-hero-inner">
-          <div className="dop-hero-tag">DocPats · Doppler Scan</div>
+          <div className="dop-hero-tag">{t("common:dp.pageTitle.doppler")}</div>
           <h1 className="dop-hero-h1">
             {t("DopleryScanerDetails.page.title")}
           </h1>
@@ -451,7 +451,7 @@ export default function DopleryScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

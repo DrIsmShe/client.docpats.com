@@ -278,7 +278,13 @@
       "right_eye": "Sağ göz",
       "left_eyebrow": "Sol qaş",
       "right_eyebrow": "Sağ qaş"
-    }
+    },
+    "multiFace": {
+      "title": "Bir neçə proyeksiya",
+      "hint": "İşarələmək üçün üz seçin"
+    },
+    "rotationApplied": "Dönmə tətbiq edildi",
+    "statsVisible": "nöqtə"
   },
   "measurements": {
     "title": "Ölçmələr",
@@ -411,5 +417,30 @@
       "hint": "\"Sonra\" nəticəsini görmək üçün ən azı bir deformasiya nöqtəsi əlavə edin.",
       "backButton": "Redaktəyə qayıt"
     }
+  },
+  "manualLandmarks": {
+    "stepLabel": "Addım",
+    "cancel": "Ləğv et",
+    "undo": "Geri",
+    "cta": {
+      "hintShort": "Nöqtələri üz üzərində əl ilə qoyun — bir dəqiqədən az çəkir.",
+      "markedTitle": "Əl ilə işarələnib",
+      "redo": "Yenidən işarələ",
+      "redoHint": "Nöqtələr əl ilə qoyulub. Lazım gələrsə işarələməni dəyişə bilərsiniz.",
+      "start": "Əl ilə işarələ",
+      "titleShort": "Əl ilə işarələmə"
+    },
+    "title": "Üzün əl ilə işarələnməsi",
+    "confirmDelete": "Əl ilə qoyulmuş bütün nöqtələr silinsin?\n\nCari redaktə nəticəsi saxlanılır — şəkil vizual olaraq dəyişməyəcək.",
+    "confirmResetAll": "BÜTÜN düzəlişlər sıfırlansın və orijinal şəklə qayıdılsın?\n\nBu addımı geri qaytarmaq olmaz."
+  },
+  "actions": {
+    "deleteManual": "Əl ilə qoyulanları sil",
+    "deleteManualTitle": "Əl ilə qoyulmuş nöqtələri sil (nəticə saxlanılır)",
+    "resetAll": "Hamısını sıfırla",
+    "resetAllTitle": "Orijinal şəklə tam sıfırlama",
+    "title": "Əməliyyatlar",
+    "undo": "Bir addım geri",
+    "undoTitle": "Son əməliyyatı geri al (Ctrl+Z)"
   }
 }

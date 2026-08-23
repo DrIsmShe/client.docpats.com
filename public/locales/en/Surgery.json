@@ -297,7 +297,12 @@
     "filterPlanned": "Planned",
     "filterCompleted": "Completed",
     "filterFollowUp": "Follow-up",
-    "filterClosed": "Closed"
+    "filterClosed": "Closed",
+    "pagePosition": "{{current}} of {{total}}",
+    "perPageOption": "{{count}} per page",
+    "nextPage": "Next",
+    "perPage": "Per page",
+    "prevPage": "Previous"
   },
   "simulator": {
     "sourcePhoto": "Source photo",
@@ -333,7 +338,11 @@
     "simStatusPending": "Pending",
     "simStatusProcessing": "Generating...",
     "simStatusDone": "Done",
-    "simStatusFailed": "Failed"
+    "simStatusFailed": "Failed",
+    "promptModel": "For the model",
+    "promptSent": "What was sent to the model",
+    "promptYours": "Your request",
+    "wishesCompilerHint": "Write in any language and in your own words — the request will be translated for the model. It does not handle values in degrees and millimetres: they become “slightly”, “noticeably”."
   },
   "procedureGroups": {
     "facial_plastic": "Facial plastic surgery",
@@ -434,11 +443,21 @@
           },
           "smoking": {
             "label": "Smoking",
-            "options": ["No", "Quit >3 months", "Quit <3 months", "Smokes"]
+            "options": [
+              "No",
+              "Quit >3 months",
+              "Quit <3 months",
+              "Smokes"
+            ]
           },
           "alcohol": {
             "label": "Alcohol",
-            "options": ["None", "Rarely", "Moderate", "Frequent"]
+            "options": [
+              "None",
+              "Rarely",
+              "Moderate",
+              "Frequent"
+            ]
           },
           "previousSurgeries": {
             "label": "Previous surgeries",
@@ -473,7 +492,12 @@
           },
           "anesthesia": {
             "label": "Type of anesthesia",
-            "options": ["Local", "Sedation", "General (endotracheal)", "Spinal"]
+            "options": [
+              "Local",
+              "Sedation",
+              "General (endotracheal)",
+              "Spinal"
+            ]
           }
         }
       },
@@ -534,7 +558,12 @@
           },
           "drain": {
             "label": "Drain",
-            "options": ["Not placed", "Active (1)", "Active (2)", "Passive"]
+            "options": [
+              "Not placed",
+              "Active (1)",
+              "Active (2)",
+              "Passive"
+            ]
           },
           "special_instructions": {
             "label": "Special instructions",
@@ -559,7 +588,11 @@
         "fields": {
           "skin_type": {
             "label": "Skin type",
-            "options": ["Thin", "Medium", "Thick / oily"]
+            "options": [
+              "Thin",
+              "Medium",
+              "Thick / oily"
+            ]
           },
           "nasal_tip": {
             "label": "Nasal tip",
@@ -574,7 +607,12 @@
           },
           "nasal_bridge": {
             "label": "Nasal dorsum",
-            "options": ["Straight", "Hump", "Saddle", "Asymmetric"]
+            "options": [
+              "Straight",
+              "Hump",
+              "Saddle",
+              "Asymmetric"
+            ]
           },
           "septum": {
             "label": "Nasal septum",
@@ -591,7 +629,11 @@
           },
           "tip_projection": {
             "label": "Tip projection",
-            "options": ["Normal", "Insufficient", "Excessive"]
+            "options": [
+              "Normal",
+              "Insufficient",
+              "Excessive"
+            ]
           },
           "nasofrontal_angle": {
             "label": "Nasofrontal angle (°)",
@@ -621,11 +663,19 @@
         "fields": {
           "approach": {
             "label": "Approach",
-            "options": ["Open", "Closed"]
+            "options": [
+              "Open",
+              "Closed"
+            ]
           },
           "osteotomy": {
             "label": "Osteotomy",
-            "options": ["Medial", "Lateral", "Transverse", "Not planned"]
+            "options": [
+              "Medial",
+              "Lateral",
+              "Transverse",
+              "Not planned"
+            ]
           },
           "tip_technique": {
             "label": "Tip-refinement technique",
@@ -688,7 +738,11 @@
           },
           "nipple_position": {
             "label": "Nipple position",
-            "options": ["Normal", "Below IMF", "Above IMF"]
+            "options": [
+              "Normal",
+              "Below IMF",
+              "Above IMF"
+            ]
           },
           "asymmetry": {
             "label": "Asymmetry",
@@ -719,11 +773,19 @@
         "fields": {
           "implant_shape": {
             "label": "Implant shape",
-            "options": ["Round", "Anatomical (teardrop)"]
+            "options": [
+              "Round",
+              "Anatomical (teardrop)"
+            ]
           },
           "implant_profile": {
             "label": "Profile",
-            "options": ["Low", "Moderate", "High", "Extra High"]
+            "options": [
+              "Low",
+              "Moderate",
+              "High",
+              "Extra High"
+            ]
           },
           "implant_volume_l": {
             "label": "Volume left (cc)",
@@ -743,7 +805,11 @@
           },
           "implant_surface": {
             "label": "Surface",
-            "options": ["Smooth", "Textured", "Polyurethane"]
+            "options": [
+              "Smooth",
+              "Textured",
+              "Polyurethane"
+            ]
           },
           "implant_brand": {
             "label": "Brand / SKU",
@@ -823,7 +889,12 @@
           },
           "ptosis_degree": {
             "label": "Ptosis degree",
-            "options": ["Grade I", "Grade II", "Grade III", "Grade IV (severe)"]
+            "options": [
+              "Grade I",
+              "Grade II",
+              "Grade III",
+              "Grade IV (severe)"
+            ]
           },
           "nipple_to_fold": {
             "label": "Nipple-to-fold distance (mm)",
@@ -883,7 +954,11 @@
         "fields": {
           "type": {
             "label": "Blepharoplasty type",
-            "options": ["Upper", "Lower", "Combined (4-lid)"]
+            "options": [
+              "Upper",
+              "Lower",
+              "Combined (4-lid)"
+            ]
           },
           "upper_excess_skin": {
             "label": "Upper excess skin (mm)",
@@ -891,7 +966,12 @@
           },
           "ptosis_upper": {
             "label": "Upper lid ptosis",
-            "options": ["None", "Mild", "Moderate", "Severe"]
+            "options": [
+              "None",
+              "Mild",
+              "Moderate",
+              "Severe"
+            ]
           },
           "fat_herniation_upper": {
             "label": "Upper lid fat herniation",
@@ -911,7 +991,12 @@
           },
           "tear_trough": {
             "label": "Tear trough",
-            "options": ["None", "Mild", "Moderate", "Severe"]
+            "options": [
+              "None",
+              "Mild",
+              "Moderate",
+              "Severe"
+            ]
           },
           "lower_skin_excess": {
             "label": "Lower excess skin (mm)",
@@ -919,7 +1004,12 @@
           },
           "canthal_laxity": {
             "label": "Canthal laxity",
-            "options": ["None", "Mild", "Moderate", "Severe"]
+            "options": [
+              "None",
+              "Mild",
+              "Moderate",
+              "Severe"
+            ]
           },
           "dry_eye": {
             "label": "Dry eye syndrome",
@@ -952,11 +1042,18 @@
           },
           "lower_approach": {
             "label": "Lower lid approach",
-            "options": ["Transcutaneous", "Transconjunctival"]
+            "options": [
+              "Transcutaneous",
+              "Transconjunctival"
+            ]
           },
           "lower_fat_management": {
             "label": "Lower lid fat",
-            "options": ["Removal", "Transposition", "Leave alone"]
+            "options": [
+              "Removal",
+              "Transposition",
+              "Leave alone"
+            ]
           },
           "canthopexy": {
             "label": "Canthopexy"
@@ -1009,11 +1106,21 @@
           },
           "cellulite": {
             "label": "Cellulite",
-            "options": ["None", "Grade I", "Grade II", "Grade III"]
+            "options": [
+              "None",
+              "Grade I",
+              "Grade II",
+              "Grade III"
+            ]
           },
           "stretch_marks": {
             "label": "Stretch marks",
-            "options": ["None", "Minimal", "Moderate", "Severe"]
+            "options": [
+              "None",
+              "Minimal",
+              "Moderate",
+              "Severe"
+            ]
           }
         }
       },
@@ -1069,15 +1176,29 @@
           },
           "diastasis_length": {
             "label": "Diastasis extent",
-            "options": ["None", "Umbilical", "Supraumbilical", "Total"]
+            "options": [
+              "None",
+              "Umbilical",
+              "Supraumbilical",
+              "Total"
+            ]
           },
           "skin_excess": {
             "label": "Excess skin",
-            "options": ["Minimal", "Moderate", "Severe (apron)"]
+            "options": [
+              "Minimal",
+              "Moderate",
+              "Severe (apron)"
+            ]
           },
           "hernia": {
             "label": "Abdominal wall hernia",
-            "options": ["None", "Umbilical", "Incisional", "Other"]
+            "options": [
+              "None",
+              "Umbilical",
+              "Incisional",
+              "Other"
+            ]
           },
           "previous_scars": {
             "label": "Existing scars",
@@ -1104,11 +1225,20 @@
           },
           "liposuction_zones": {
             "label": "Concurrent liposuction",
-            "options": ["Flanks", "Back", "Bra rolls", "Not planned"]
+            "options": [
+              "Flanks",
+              "Back",
+              "Bra rolls",
+              "Not planned"
+            ]
           },
           "drain_count": {
             "label": "Number of drains",
-            "options": ["0", "1", "2"]
+            "options": [
+              "0",
+              "1",
+              "2"
+            ]
           }
         }
       },
@@ -1139,23 +1269,47 @@
           },
           "skin_quality": {
             "label": "Skin quality",
-            "options": ["Excellent", "Good", "Fair", "Lax / photodamaged"]
+            "options": [
+              "Excellent",
+              "Good",
+              "Fair",
+              "Lax / photodamaged"
+            ]
           },
           "jowls": {
             "label": "Jowls",
-            "options": ["None", "Mild", "Moderate", "Severe"]
+            "options": [
+              "None",
+              "Mild",
+              "Moderate",
+              "Severe"
+            ]
           },
           "nasolabial_folds": {
             "label": "Nasolabial folds",
-            "options": ["None", "Mild", "Moderate", "Deep"]
+            "options": [
+              "None",
+              "Mild",
+              "Moderate",
+              "Deep"
+            ]
           },
           "neck_laxity": {
             "label": "Neck laxity",
-            "options": ["None", "Mild", "Moderate", "Severe (turkey neck)"]
+            "options": [
+              "None",
+              "Mild",
+              "Moderate",
+              "Severe (turkey neck)"
+            ]
           },
           "platysmal_bands": {
             "label": "Platysmal bands",
-            "options": ["None", "Moderate", "Severe"]
+            "options": [
+              "None",
+              "Moderate",
+              "Severe"
+            ]
           },
           "fat_distribution": {
             "label": "Fat distribution",
@@ -1167,7 +1321,11 @@
           },
           "hair_line": {
             "label": "Hairline",
-            "options": ["Normal", "High (consider for incision)", "Thin hair"]
+            "options": [
+              "Normal",
+              "High (consider for incision)",
+              "Thin hair"
+            ]
           }
         }
       },
@@ -1238,15 +1396,28 @@
           },
           "antihelix": {
             "label": "Antihelix",
-            "options": ["Normal", "Flattened", "Absent"]
+            "options": [
+              "Normal",
+              "Flattened",
+              "Absent"
+            ]
           },
           "conchal_excess": {
             "label": "Conchal excess",
-            "options": ["None", "Moderate", "Severe"]
+            "options": [
+              "None",
+              "Moderate",
+              "Severe"
+            ]
           },
           "earlobe": {
             "label": "Earlobe",
-            "options": ["Normal", "Protruding", "Split", "Hypertrophic"]
+            "options": [
+              "Normal",
+              "Protruding",
+              "Split",
+              "Hypertrophic"
+            ]
           },
           "asymmetry": {
             "label": "Asymmetry",
@@ -1304,15 +1475,29 @@
           },
           "occlusion": {
             "label": "Occlusion",
-            "options": ["Normal", "Distal", "Mesial", "Open", "Crossbite"]
+            "options": [
+              "Normal",
+              "Distal",
+              "Mesial",
+              "Open",
+              "Crossbite"
+            ]
           },
           "orthodontics": {
             "label": "Orthodontic treatment",
-            "options": ["Not performed", "Completed", "In progress"]
+            "options": [
+              "Not performed",
+              "Completed",
+              "In progress"
+            ]
           },
           "neck_jaw_angle": {
             "label": "Cervicomental angle",
-            "options": ["Good", "Reduced", "Increased"]
+            "options": [
+              "Good",
+              "Reduced",
+              "Increased"
+            ]
           }
         }
       },
@@ -1335,7 +1520,10 @@
           },
           "access": {
             "label": "Access",
-            "options": ["Submental", "Intraoral"]
+            "options": [
+              "Submental",
+              "Intraoral"
+            ]
           },
           "liposuction": {
             "label": "Chin / neck liposuction"
@@ -1356,7 +1544,11 @@
           },
           "lower_lip_volume": {
             "label": "Lower lip volume",
-            "options": ["Normal", "Decreased", "Increased"]
+            "options": [
+              "Normal",
+              "Decreased",
+              "Increased"
+            ]
           },
           "lip_ratio": {
             "label": "Upper/lower ratio",
@@ -1364,11 +1556,19 @@
           },
           "cupid_bow": {
             "label": "Cupid's bow",
-            "options": ["Defined", "Flattened", "Asymmetric"]
+            "options": [
+              "Defined",
+              "Flattened",
+              "Asymmetric"
+            ]
           },
           "philtrum": {
             "label": "Philtrum",
-            "options": ["Defined", "Flattened", "Normal"]
+            "options": [
+              "Defined",
+              "Flattened",
+              "Normal"
+            ]
           },
           "previous_fillers": {
             "label": "Previous fillers",
@@ -1411,7 +1611,11 @@
           },
           "cannula_needle": {
             "label": "Instrument",
-            "options": ["Needle", "Cannula", "Combination"]
+            "options": [
+              "Needle",
+              "Cannula",
+              "Combination"
+            ]
           },
           "zones": {
             "label": "Correction zones",

@@ -1,0 +1,24 @@
+{
+  "actions": {
+    "confirmDelete": "Bu qeyd silinsin?",
+    "createNew": "Yarat",
+    "delete": "Sil"
+  },
+  "fields": {
+    "createdAt": "Yaradılıb",
+    "status": "Status",
+    "tags": "Teqlər"
+  },
+  "messages": {
+    "deleteError": "Silmək alınmadı",
+    "deleted": "Silinib",
+    "loadError": "Yükləmək alınmadı",
+    "loading": "Yüklənir…",
+    "noData": "Məlumat yoxdur",
+    "noTags": "Teq yoxdur"
+  },
+  "status": {
+    "active": "Aktiv",
+    "inactive": "Qeyri-aktiv"
+  }
+}

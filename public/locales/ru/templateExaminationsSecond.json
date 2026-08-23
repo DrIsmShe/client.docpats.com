@@ -1,0 +1,199 @@
+{
+  "AngiographyScanerTemplateNameofexam": {
+    "buttons": {
+      "save": "Сохранить"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "Текст формулировки"
+      },
+      "title": {
+        "placeholder": "Короткое название"
+      }
+    },
+    "messages": {
+      "createError": "Не удалось добавить",
+      "createSuccess": "Добавлено",
+      "networkError": "Ошибка сети. Попробуйте ещё раз."
+    },
+    "title": "Заголовок"
+  },
+  "AngiographyScanerTemplateNameofexamDetail": {
+    "buttons": {
+      "edit": "Изменить"
+    },
+    "fields": {
+      "content": "Текст",
+      "title": "Заголовок"
+    },
+    "messages": {
+      "loadError": "Не удалось загрузить"
+    },
+    "page": {
+      "loading": "Загрузка…"
+    },
+    "title": "Заголовок"
+  },
+  "AngiographyScanerTemplateNameofexamEdit": {
+    "buttons": {
+      "update": "Обновить"
+    },
+    "fields": {
+      "content": "Текст",
+      "title": "Заголовок"
+    },
+    "messages": {
+      "loadError": "Не удалось загрузить",
+      "updateError": "Не удалось сохранить",
+      "updateSuccess": "Сохранено"
+    },
+    "title": "Заголовок"
+  },
+  "AngiographyScanerTemplateNameofexamList": {
+    "buttons": {
+      "delete": "Удалить",
+      "edit": "Изменить"
+    },
+    "confirm": {
+      "delete": "Удалить эту формулировку?"
+    },
+    "messages": {
+      "deleteError": "Не удалось удалить",
+      "deleteSuccess": "Удалено",
+      "loadError": "Не удалось загрузить"
+    },
+    "title": "Заголовок"
+  },
+  "AngiographyScanerTemplateRecomendation": {
+    "buttons": {
+      "save": "Сохранить"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "Текст формулировки"
+      },
+      "title": {
+        "placeholder": "Короткое название"
+      }
+    },
+    "messages": {
+      "createError": "Не удалось добавить",
+      "createSuccess": "Добавлено",
+      "networkError": "Ошибка сети. Попробуйте ещё раз."
+    },
+    "title": "Заголовок"
+  },
+  "AngiographyScanerTemplateRecomendationDetails": {
+    "buttons": {
+      "edit": "Изменить"
+    },
+    "fields": {
+      "content": "Текст",
+      "doctor": "Врач",
+      "title": "Заголовок"
+    },
+    "messages": {
+      "loadError": "Не удалось загрузить"
+    },
+    "page": {
+      "loading": "Загрузка…"
+    },
+    "title": "Заголовок"
+  },
+  "AngiographyScanerTemplateRecomendationEdit": {
+    "buttons": {
+      "update": "Обновить"
+    },
+    "fields": {
+      "content": "Текст",
+      "title": "Заголовок"
+    },
+    "messages": {
+      "loadError": "Не удалось загрузить",
+      "updateError": "Не удалось сохранить",
+      "updateSuccess": "Сохранено"
+    },
+    "title": "Заголовок"
+  },
+  "AngiographyScanerTemplateRecomendationList": {
+    "buttons": {
+      "delete": "Удалить",
+      "edit": "Изменить"
+    },
+    "confirm": {
+      "delete": "Удалить эту формулировку?"
+    },
+    "messages": {
+      "deleteError": "Не удалось удалить",
+      "deleteSuccess": "Удалено",
+      "loadError": "Не удалось загрузить"
+    },
+    "title": "Заголовок"
+  },
+  "AngiographyScanerTemplateReport": {
+    "buttons": {
+      "save": "Сохранить"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "Текст формулировки"
+      },
+      "title": {
+        "placeholder": "Короткое название"
+      }
+    },
+    "messages": {
+      "createError": "Не удалось добавить",
+      "createSuccess": "Добавлено",
+      "networkError": "Ошибка сети. Попробуйте ещё раз."
+    },
+    "title": "Заголовок"
+  },
+  "AngiographyScanerTemplateReportDetails": {
+    "buttons": {
+      "edit": "Изменить"
+    },
+    "fields": {
+      "content": "Текст",
+      "doctor": "Врач",
+      "title": "Заголовок"
+    },
+    "messages": {
+      "loadError": "Не удалось загрузить"
+    },
+    "page": {
+      "loading": "Загрузка…"
+    },
+    "title": "Заголовок"
+  },
+  "AngiographyScanerTemplateReportEdit": {
+    "buttons": {
+      "update": "Обновить"
+    },
+    "fields": {
+      "content": "Текст",
+      "title": "Заголовок"
+    },
+    "messages": {
+      "loadError": "Не удалось загрузить",
+      "updateError": "Не удалось сохранить",
+      "updateSuccess": "Сохранено"
+    },
+    "title": "Заголовок"
+  },
+  "AngiographyScanerTemplateReportList": {
+    "buttons": {
+      "delete": "Удалить",
+      "edit": "Изменить"
+    },
+    "confirm": {
+      "delete": "Удалить эту формулировку?"
+    },
+    "messages": {
+      "deleteError": "Не удалось удалить",
+      "deleteSuccess": "Удалено",
+      "loadError": "Не удалось загрузить"
+    },
+    "title": "Заголовок"
+  }
+}

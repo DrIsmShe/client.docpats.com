@@ -27,7 +27,6 @@
       "submitError": "Ошибка при отправке данных"
     }
   },
-
   "tempAnamnesisVitae": {
     "fields": {
       "title": "Название",
@@ -389,6 +388,9 @@
       "next": "Вперёд",
       "page": "Страница",
       "of": "из"
+    },
+    "fields": {
+      "status": "Статус"
     }
   },
   "additionalDiagnosis": {
@@ -436,7 +438,6 @@
       "confirmDelete": "Вы уверены, что хотите удалить этот шаблон?"
     }
   },
-
   "additionalDiagnosisDetails": {
     "messages": {
       "loading": "Загрузка...",
@@ -560,27 +561,27 @@
   "common": {
     "loading": "Загрузка...",
     "noResults": "Шаблоны не найдены",
-    "loadError": "Ошибка при загрузке данных"
+    "loadError": "Ошибка при загрузке данных",
+    "deleteError": "Ошибка при удалении шаблона",
+    "deleted": "Удалено",
+    "noData": "Нет данных",
+    "noTags": "Без тегов"
   },
-
   "list": {
     "search": "Поиск..."
   },
-
   "fields": {
     "templateTitle": "Название шаблона",
     "createdAt": "Дата создания",
     "tags": "Теги",
     "status": "Статус"
   },
-
   "pagination": {
     "prev": "Назад",
     "next": "Вперёд",
     "page": "Страница",
     "of": "из"
   },
-
   "actions": {
     "delete": "Удалить шаблон",
     "createNew": "Создать новый шаблон",
@@ -644,7 +645,7 @@
       "success": "✅ Результаты ангиографии успешно добавлены!",
       "errorPrefix": "❌ Ошибка загрузки:",
       "patientMissing": "Отсутствует ID пациента!",
-      " outsideSpecialization": "⚠ Исследование добавлено вне вашей основной специализации."
+      "outsideSpecialization": "⚠ Исследование добавлено вне вашей основной специализации."
     },
     "fields": {
       "nameofexam": {
@@ -979,7 +980,8 @@
       "files": {
         "label": "Файлы (изображения, PDF, видео, аудио)",
         "choose": "Выбрать файлы",
-        "noneSelected": "Файлы не выбраны"
+        "noneSelected": "Файлы не выбраны",
+        "selected": "Выбрано файлов: {{count}}"
       }
     },
     "templates": {
@@ -988,7 +990,12 @@
       "list": "📂 Список шаблонов",
       "selectTitle": "Выберите шаблон для",
       "insert": "Вставить",
-      "close": "Закрыть"
+      "close": "Закрыть",
+      "modal": {
+        "close": "Закрыть",
+        "insert": "Вставить",
+        "title": "Выберите шаблон для «{{field}}»"
+      }
     },
     "buttons": {
       "submit": "Добавить результаты",
@@ -996,7 +1003,9 @@
     },
     "messages": {
       "success": "✅ Результаты успешно добавлены!",
-      "error": "❌ Ошибка: "
+      "error": "❌ Ошибка: ",
+      "errorPrefix": "❌ Ошибка загрузки:",
+      "patientMissing": "Отсутствует ID пациента!"
     }
   },
   "AddEEGScanUpload": {
@@ -1128,7 +1137,8 @@
       "submit": "Добавить результаты"
     },
     "modal": {
-      "selectTemplateFor": "Выберите шаблон для"
+      "selectTemplateFor": "Выберите шаблон для",
+      "title": "Выбор шаблона"
     },
     "fields": {
       "nameofexam": {
@@ -1162,6 +1172,9 @@
         "type": "Тип",
         "size": "Размер"
       }
+    },
+    "errors": {
+      "noPatientId": "Пациент не выбран"
     }
   },
   "AddGinecologyUpload": {
@@ -1183,7 +1196,8 @@
       "submit": "Добавить результаты"
     },
     "modal": {
-      "selectTemplateFor": "Выберите шаблон для"
+      "selectTemplateFor": "Выберите шаблон для",
+      "title": "Выбор шаблона"
     },
     "fields": {
       "nameofexam": {
@@ -1217,6 +1231,9 @@
         "type": "Тип",
         "size": "Размер"
       }
+    },
+    "errors": {
+      "noPatientId": "Пациент не выбран"
     }
   },
   "AddHOLTERScanUpload": {
@@ -1226,7 +1243,9 @@
     "messages": {
       "success": "✅ Результаты успешно добавлены!",
       "error": "❌ Ошибка: ",
-      "noPatientId": "❌ Ошибка: отсутствует ID пациента!"
+      "noPatientId": "❌ Ошибка: отсутствует ID пациента!",
+      "errorPrefix": "❌ Ошибка загрузки:",
+      "patientMissing": "Отсутствует ID пациента!"
     },
     "buttons": {
       "useTemplate": "📋 Использовать шаблон",
@@ -1238,7 +1257,8 @@
       "submit": "Добавить результаты"
     },
     "modal": {
-      "selectTemplateFor": "Выберите шаблон для"
+      "selectTemplateFor": "Выберите шаблон для",
+      "title": "Выбор шаблона"
     },
     "fields": {
       "nameofexam": {
@@ -1294,28 +1314,53 @@
             "cloudy": "мутная"
           }
         },
-        "specificGravity": { "name": "Удельный вес" },
-        "pH": { "name": "pH" },
-        "protein": { "name": "Белок" },
-        "glucose": { "name": "Глюкоза" },
-        "leukocytes": { "name": "Лейкоциты" }
+        "specificGravity": {
+          "name": "Удельный вес"
+        },
+        "pH": {
+          "name": "pH"
+        },
+        "protein": {
+          "name": "Белок"
+        },
+        "glucose": {
+          "name": "Глюкоза"
+        },
+        "leukocytes": {
+          "name": "Лейкоциты"
+        }
       },
-
       "BloodTestGeneral": {
-        "hemoglobin": { "name": "Гемоглобин" },
-        "erythrocytes": { "name": "Эритроциты" },
-        "leukocytes": { "name": "Лейкоциты" },
-        "platelets": { "name": "Тромбоциты" }
+        "hemoglobin": {
+          "name": "Гемоглобин"
+        },
+        "erythrocytes": {
+          "name": "Эритроциты"
+        },
+        "leukocytes": {
+          "name": "Лейкоциты"
+        },
+        "platelets": {
+          "name": "Тромбоциты"
+        }
       },
-
       "BloodTestBiochemistry": {
-        "glucose": { "name": "Глюкоза" },
-        "creatinine": { "name": "Креатинин" },
-        "urea": { "name": "Мочевина" },
-        "alt": { "name": "АЛТ" },
-        "ast": { "name": "АСТ" }
+        "glucose": {
+          "name": "Глюкоза"
+        },
+        "creatinine": {
+          "name": "Креатинин"
+        },
+        "urea": {
+          "name": "Мочевина"
+        },
+        "alt": {
+          "name": "АЛТ"
+        },
+        "ast": {
+          "name": "АСТ"
+        }
       },
-
       "StoolTest": {
         "consistency": {
           "name": "Консистенция",
@@ -1326,8 +1371,12 @@
             "watery": "водянистый"
           }
         },
-        "color": { "name": "Цвет" },
-        "reaction": { "name": "Реакция" },
+        "color": {
+          "name": "Цвет"
+        },
+        "reaction": {
+          "name": "Реакция"
+        },
         "mucus": {
           "name": "Слизь",
           "options": {
@@ -1336,21 +1385,32 @@
             "present": "есть"
           }
         },
-        "leukocytes": { "name": "Лейкоциты" }
+        "leukocytes": {
+          "name": "Лейкоциты"
+        }
       },
-
       "HormonePanel": {
-        "tsh": { "name": "ТТГ" },
-        "freeT4": { "name": "Т4 свободный" },
-        "freeT3": { "name": "Т3 свободный" }
+        "tsh": {
+          "name": "ТТГ"
+        },
+        "freeT4": {
+          "name": "Т4 свободный"
+        },
+        "freeT3": {
+          "name": "Т3 свободный"
+        }
       },
-
       "TumorMarkers": {
-        "cea": { "name": "РЭА" },
-        "ca125": { "name": "СА 125" },
-        "ca199": { "name": "СА 19-9" }
+        "cea": {
+          "name": "РЭА"
+        },
+        "ca125": {
+          "name": "СА 125"
+        },
+        "ca199": {
+          "name": "СА 19-9"
+        }
       },
-
       "PCR": {
         "covid19": {
           "name": "COVID-19 (SARS-CoV-2)",
@@ -1367,13 +1427,17 @@
           }
         }
       },
-
       "Immunology": {
-        "igg": { "name": "IgG" },
-        "iga": { "name": "IgA" },
-        "igm": { "name": "IgM" }
+        "igg": {
+          "name": "IgG"
+        },
+        "iga": {
+          "name": "IgA"
+        },
+        "igm": {
+          "name": "IgM"
+        }
       },
-
       "GeneticScreening": {
         "brca1": {
           "name": "BRCA1",
@@ -1390,79 +1454,159 @@
           }
         }
       },
-
       "CoagulationPanel": {
-        "pt": { "name": "PT" },
-        "inr": { "name": "INR" },
-        "aptt": { "name": "aPTT" },
-        "fibrinogen": { "name": "Фибриноген" },
-        "ddimer": { "name": "D-димер" }
+        "pt": {
+          "name": "PT"
+        },
+        "inr": {
+          "name": "INR"
+        },
+        "aptt": {
+          "name": "aPTT"
+        },
+        "fibrinogen": {
+          "name": "Фибриноген"
+        },
+        "ddimer": {
+          "name": "D-димер"
+        }
       },
-
       "LipidProfile": {
-        "totalCholesterol": { "name": "Общий холестерин" },
-        "ldl": { "name": "LDL-C" },
-        "hdl": { "name": "HDL-C" },
-        "triglycerides": { "name": "Триглицериды" },
-        "apoB": { "name": "ApoB" },
-        "lpa": { "name": "Lp(a)" }
+        "totalCholesterol": {
+          "name": "Общий холестерин"
+        },
+        "ldl": {
+          "name": "LDL-C"
+        },
+        "hdl": {
+          "name": "HDL-C"
+        },
+        "triglycerides": {
+          "name": "Триглицериды"
+        },
+        "apoB": {
+          "name": "ApoB"
+        },
+        "lpa": {
+          "name": "Lp(a)"
+        }
       },
-
       "LiverFunction": {
-        "ast": { "name": "АСТ" },
-        "alt": { "name": "АЛТ" },
-        "alp": { "name": "ЩФ (ALP)" },
-        "ggt": { "name": "ГГТ" },
-        "totalBilirubin": { "name": "Билирубин общий" },
-        "directBilirubin": { "name": "Билирубин прямой" },
-        "albumin": { "name": "Альбумин" }
+        "ast": {
+          "name": "АСТ"
+        },
+        "alt": {
+          "name": "АЛТ"
+        },
+        "alp": {
+          "name": "ЩФ (ALP)"
+        },
+        "ggt": {
+          "name": "ГГТ"
+        },
+        "totalBilirubin": {
+          "name": "Билирубин общий"
+        },
+        "directBilirubin": {
+          "name": "Билирубин прямой"
+        },
+        "albumin": {
+          "name": "Альбумин"
+        }
       },
-
       "RenalElectrolytes": {
-        "creatinine": { "name": "Креатинин" },
-        "egfr": { "name": "eGFR" },
-        "urea": { "name": "Мочевина" },
-        "sodium": { "name": "Натрий" },
-        "potassium": { "name": "Калий" },
-        "chloride": { "name": "Хлор" },
-        "magnesium": { "name": "Магний" }
+        "creatinine": {
+          "name": "Креатинин"
+        },
+        "egfr": {
+          "name": "eGFR"
+        },
+        "urea": {
+          "name": "Мочевина"
+        },
+        "sodium": {
+          "name": "Натрий"
+        },
+        "potassium": {
+          "name": "Калий"
+        },
+        "chloride": {
+          "name": "Хлор"
+        },
+        "magnesium": {
+          "name": "Магний"
+        }
       },
-
       "IronStudies": {
-        "iron": { "name": "Железо" },
-        "ferritin": { "name": "Ферритин" },
-        "tibc": { "name": "ОЖСС (TIBC)" },
-        "transferrinSaturation": { "name": "Насыщение трансферрина" }
+        "iron": {
+          "name": "Железо"
+        },
+        "ferritin": {
+          "name": "Ферритин"
+        },
+        "tibc": {
+          "name": "ОЖСС (TIBC)"
+        },
+        "transferrinSaturation": {
+          "name": "Насыщение трансферрина"
+        }
       },
-
       "DiabetesPanel": {
-        "fastingGlucose": { "name": "Глюкоза натощак" },
-        "hba1c": { "name": "HbA1c" },
-        "insulin": { "name": "Инсулин" },
-        "cPeptide": { "name": "C-пептид" }
+        "fastingGlucose": {
+          "name": "Глюкоза натощак"
+        },
+        "hba1c": {
+          "name": "HbA1c"
+        },
+        "insulin": {
+          "name": "Инсулин"
+        },
+        "cPeptide": {
+          "name": "C-пептид"
+        }
       },
-
       "ThyroidPanel": {
-        "tsh": { "name": "TSH" },
-        "freeT4": { "name": "Свободный T4" },
-        "freeT3": { "name": "Свободный T3" },
-        "antiTPO": { "name": "anti-TPO" },
-        "antiTG": { "name": "anti-TG" }
+        "tsh": {
+          "name": "TSH"
+        },
+        "freeT4": {
+          "name": "Свободный T4"
+        },
+        "freeT3": {
+          "name": "Свободный T3"
+        },
+        "antiTPO": {
+          "name": "anti-TPO"
+        },
+        "antiTG": {
+          "name": "anti-TG"
+        }
       },
-
       "CardiacMarkers": {
-        "troponin": { "name": "Тропонин I/T" },
-        "ckmb": { "name": "CK-MB" },
-        "ntproBNP": { "name": "NT-proBNP" }
+        "troponin": {
+          "name": "Тропонин I/T"
+        },
+        "ckmb": {
+          "name": "CK-MB"
+        },
+        "ntproBNP": {
+          "name": "NT-proBNP"
+        }
       },
-
       "VitaminsTrace": {
-        "vitaminD": { "name": "Витамин D (25-ОН)" },
-        "vitaminB12": { "name": "Витамин B12" },
-        "folate": { "name": "Фолаты" },
-        "zinc": { "name": "Цинк" }
+        "vitaminD": {
+          "name": "Витамин D (25-ОН)"
+        },
+        "vitaminB12": {
+          "name": "Витамин B12"
+        },
+        "folate": {
+          "name": "Фолаты"
+        },
+        "zinc": {
+          "name": "Цинк"
+        }
       },
-
       "InfectiousSerology": {
         "hbsAg": {
           "name": "HBsAg",
@@ -1471,7 +1615,9 @@
             "positive": "положительно"
           }
         },
-        "antiHbs": { "name": "anti-HBs" },
+        "antiHbs": {
+          "name": "anti-HBs"
+        },
         "antiHcv": {
           "name": "anti-HCV",
           "options": {
@@ -1494,15 +1640,21 @@
           }
         }
       },
-
       "UrineAlbuminACR": {
-        "urineAlbumin": { "name": "Альбумин (моча)" },
-        "urineCreatinine": { "name": "Креатинин (моча)" },
-        "acr": { "name": "ACR" }
+        "urineAlbumin": {
+          "name": "Альбумин (моча)"
+        },
+        "urineCreatinine": {
+          "name": "Креатинин (моча)"
+        },
+        "acr": {
+          "name": "ACR"
+        }
       },
-
       "StoolInflammation": {
-        "calprotectin": { "name": "Калпротектин" },
+        "calprotectin": {
+          "name": "Калпротектин"
+        },
         "occultBloodFit": {
           "name": "Скрытая кровь (FIT)",
           "options": {
@@ -1530,7 +1682,6 @@
       "Immunology": "Иммунологические тесты",
       "GeneticScreening": "Генетический скрининг",
       "Other": "Другие тесты",
-
       "CoagulationPanel": "Коагулограмма",
       "LipidProfile": "Липидный профиль",
       "LiverFunction": "Печёночные пробы",
@@ -1554,19 +1705,15 @@
       "vitamins": "Уровень витаминов",
       "others": "Другие тесты"
     },
-
     "units": {
       "none": "",
       "unit.defaultText": "—",
       "unit.defaultNumber": "ед.",
-
       "g/L": "г/л",
       "mmol/L": "ммоль/л",
       "cells/hpf": "в п/зр",
-
       "10^12/L": "10^12/л",
       "10^9/L": "10^9/л",
-
       "µmol/L": "мкмоль/л",
       "U/L": "Ед/л",
       "pmol/L": "пмоль/л",
@@ -1610,57 +1757,47 @@
     "page": {
       "title": "Добавить лабораторный анализ"
     },
-
     "fields": {
       "testType": {
         "label": "Тип анализа",
         "placeholder": "-- выберите тип --"
       },
-
       "labName": {
         "label": "Лаборатория",
         "placeholder": "Введите название лаборатории..."
       },
-
       "report": {
         "label": "Комментарий врача (заключение)",
         "placeholder": "Введите комментарий врача..."
       },
-
       "parameter": {
         "label": "Показатель",
         "placeholder": "Название показателя...",
         "valueTextPlaceholder": "Введите текстовое значение...",
         "valueNumberPlaceholder": "Введите числовое значение..."
       },
-
       "unit": {
         "label": "Единица измерения",
         "placeholder": "Ед. изм..."
       },
-
       "referenceRange": {
         "label": "Референсный диапазон",
         "min": "Нижняя норма",
         "max": "Верхняя норма"
       },
-
       "files": {
         "label": "Прикрепить файлы (PDF, изображения)",
         "choose": "Добавить файлы",
         "noFile": "Файлы не выбраны"
       }
     },
-
     "section": {
       "parameters": "Показатели анализа"
     },
-
     "valueType": {
       "text": "Текст",
       "number": "Число"
     },
-
     "buttons": {
       "copyFromPrevious": "Скопировать из предыдущего анализа",
       "addParameter": "Добавить показатель",
@@ -1668,14 +1805,12 @@
       "loading": "Сохранение...",
       "submit": "Сохранить анализ"
     },
-
     "messages": {
       "success": "✅ Анализ успешно добавлен.",
       "error": "❌ Произошла ошибка: ",
       "noPrevious": "Нет предыдущего анализа для копирования.",
       "copyError": "❌ Не удалось загрузить предыдущий анализ."
     },
-
     "errors": {
       "noTestType": "❗ Укажите тип анализа и добавьте хотя бы один показатель.",
       "missingValues": "Заполните значения для: {{list}}"
@@ -1685,7 +1820,6 @@
     "page": {
       "title": "Добавить результаты МРТ"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Название исследования",
@@ -1717,7 +1851,6 @@
         "selected": "Выбрано файлов: {{count}}"
       }
     },
-
     "buttons": {
       "useTemplate": "Использовать шаблон",
       "newTemplate": "Новый шаблон",
@@ -1727,10 +1860,20 @@
       "submit": "Добавить результаты",
       "loading": "Загрузка..."
     },
-
     "messages": {
       "success": "Результат МРТ успешно добавлен!",
       "error": "Ошибка загрузки"
+    },
+    "files": {
+      "audio": "Аудио файл",
+      "file": "Файл",
+      "image": "Изображение",
+      "pdf": "PDF документ",
+      "video": "Видео файл"
+    },
+    "modal": {
+      "select": "Выберите шаблон для",
+      "title": "Выбор шаблона"
     }
   },
   "errors": {
@@ -1740,7 +1883,6 @@
     "page": {
       "title": "Добавить результаты ПЭТ"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Название исследования",
@@ -1772,7 +1914,6 @@
         "selected": "Выбрано файлов: {{count}}"
       }
     },
-
     "buttons": {
       "useTemplate": "Использовать шаблон",
       "newTemplate": "Новый шаблон",
@@ -1782,12 +1923,10 @@
       "submit": "Добавить результаты",
       "loading": "Загрузка..."
     },
-
     "modal": {
       "title": "Выбор шаблона",
       "select": "Выберите шаблон для"
     },
-
     "files": {
       "image": "Изображение",
       "pdf": "PDF документ",
@@ -1795,7 +1934,6 @@
       "audio": "Аудио файл",
       "file": "Файл"
     },
-
     "messages": {
       "success": "Результат ПЭТ успешно добавлен!",
       "error": "Ошибка загрузки"
@@ -1805,7 +1943,6 @@
     "page": {
       "title": "Добавить результаты SPECT"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Название исследования",
@@ -1837,7 +1974,6 @@
         "selected": "Выбрано файлов: {{count}}"
       }
     },
-
     "buttons": {
       "useTemplate": "Использовать шаблон",
       "newTemplate": "Новый шаблон",
@@ -1847,12 +1983,10 @@
       "submit": "Добавить результаты",
       "loading": "Загрузка..."
     },
-
     "modal": {
       "title": "Выбор шаблона",
       "select": "Выберите шаблон для"
     },
-
     "files": {
       "image": "Изображение",
       "pdf": "PDF документ",
@@ -1860,17 +1994,17 @@
       "audio": "Аудио файл",
       "file": "Файл"
     },
-
     "messages": {
       "success": "Результат SPECT успешно добавлен!",
-      "error": "Ошибка загрузки"
+      "error": "Ошибка загрузки",
+      "errorPrefix": "❌ Ошибка загрузки:",
+      "patientMissing": "Отсутствует ID пациента!"
     }
   },
   "AddSpirometryScanUpload": {
     "page": {
       "title": "Добавить результаты спирометрии"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Название исследования",
@@ -1902,7 +2036,6 @@
         "selected": "Выбрано файлов: {{count}}"
       }
     },
-
     "buttons": {
       "useTemplate": "Использовать шаблон",
       "newTemplate": "Новый шаблон",
@@ -1912,12 +2045,10 @@
       "submit": "Добавить результаты",
       "loading": "Загрузка..."
     },
-
     "modal": {
       "title": "Выбор шаблона",
       "select": "Выберите шаблон для"
     },
-
     "files": {
       "image": "Изображение",
       "pdf": "PDF документ",
@@ -1925,7 +2056,6 @@
       "audio": "Аудио файл",
       "file": "Файл"
     },
-
     "messages": {
       "success": "Результат спирометрии успешно добавлен!",
       "error": "Ошибка загрузки"
@@ -1935,7 +2065,6 @@
     "page": {
       "title": "Добавить результаты УЗИ (USM)"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Название исследования",
@@ -1967,7 +2096,6 @@
         "selected": "Выбрано файлов: {{count}}"
       }
     },
-
     "buttons": {
       "useTemplate": "Использовать шаблон",
       "newTemplate": "Новый шаблон",
@@ -1977,23 +2105,23 @@
       "submit": "Добавить результаты",
       "loading": "Загрузка..."
     },
-
     "modal": {
       "title": "Выбор шаблона",
       "select": "Выберите шаблон для"
     },
-
     "files": {
       "image": "Изображение",
       "pdf": "PDF документ",
       "video": "Видео файл",
       "audio": "Аудио файл",
-      "file": "Файл"
+      "file": "Файл",
+      "size": "Размер",
+      "type": "Тип"
     },
-
     "messages": {
       "success": "Результат УЗИ успешно добавлен!",
-      "error": "Ошибка загрузки"
+      "error": "Ошибка загрузки",
+      "noPatientId": "❌ Ошибка: ID пациента отсутствует!"
     }
   },
   "AddXRAYScanUpload": {
@@ -2080,5 +2208,16 @@
       "deleteSuccess": "Шаблон успешно удалён",
       "deleteError": "Ошибка при удалении шаблона"
     }
+  },
+  "files": {
+    "audio": "Аудио",
+    "file": "Файл",
+    "image": "Изображение",
+    "pdf": "PDF",
+    "video": "Видео"
+  },
+  "status": {
+    "active": "Активные",
+    "inactive": "Неактивные"
   }
 }

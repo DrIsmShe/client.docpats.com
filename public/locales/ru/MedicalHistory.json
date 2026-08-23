@@ -17,7 +17,6 @@
     "anamnesisVitae": "Анамнез жизни (Anamnesis vitae)",
     "statusPreasens": "Общее состояние пациента (Status praesens)",
     "statusLocalis": "Локальный статус (Status localis)",
-
     "ctScanResults": "Результаты КТ",
     "mriResults": "Результаты МРТ",
     "ultrasoundResults": "Результаты УЗИ",
@@ -38,5 +37,13 @@
     "uploadError": "Ошибка при загрузке PDF.",
     "downloadError": "Ошибка при создании PDF."
   },
-  "ageText": "{{age}} лет"
+  "ageText": "{{age}} лет",
+  "sections": {
+    "anamnesis": "Анамнез",
+    "diagnosis": "Диагноз",
+    "examinations": "Исследования",
+    "meta": "Данные документа",
+    "patient": "Данные пациента",
+    "status": "Статус"
+  }
 }

@@ -1243,7 +1243,8 @@
     "errMicDenied": "Tarayıcı mikrofona erişim vermedi. Site ayarlarından izin verin.",
     "errMicUnavailable": "Mikrofon kullanılamıyor. Bağlı olduğundan ve başka bir programın kullanmadığından emin olun.",
     "noteCodeFromSpeech": "ICD-10 kodu konuşmadan alındı, resmî başlığı yok. Resmî başlığın gelmesi için kodu arama alanında onaylayın.",
-    "noteTextNeedsCode": "Tanı metni aktarılmadı: alan yalnızca ICD-10 kodu seçildikten sonra görünür. Bir kod seçin ve «→ alana» düğmesine tekrar basın."
+    "noteTextNeedsCode": "Tanı metni aktarılmadı: alan yalnızca ICD-10 kodu seçildikten sonra görünür. Bir kod seçin ve «→ alana» düğmesine tekrar basın.",
+    "langLabel": "Dil:"
   },
   "medicalHistoryForm": {
     "labels": {
@@ -1263,7 +1264,18 @@
     },
     "placeholders": {
       "diagnosisInput": "Listeden bir tanı seçin...",
-      "additionalDiagnosis": "Tanın ek bilgisini yazın..."
+      "additionalDiagnosis": "Tanın ek bilgisini yazın...",
+      "anamnesisMorbi": "Şimdiki hastalığın öyküsü…",
+      "anamnesisVitae": "Yaşam öyküsü, geçirilmiş hastalıklar…",
+      "complaints": "Hastanın şikâyetlerini yazın…",
+      "ctScanResults": "BT bulguları…",
+      "diagnosisText": "Kendi dilinizde tanı metni (ICD-10'dan dolduruldu, düzenleyebilirsiniz)…",
+      "laboratoryTestResults": "Tahlil sonuçları…",
+      "mriResults": "MR bulguları…",
+      "recommendations": "Tedavi önerileri, izlem planı…",
+      "statusLocalis": "Lokal durum açıklaması…",
+      "statusPreasens": "Güncel objektif durum…",
+      "ultrasoundResults": "Ultrason bulguları…"
     },
     "buttons": {
       "insert": "Ekle",
@@ -1278,7 +1290,9 @@
       "fillRequired": "{{field}} alanını doldurun.",
       "requiredList": "Lütfen aşağıdaki zorunlu alanları doldurun:",
       "loginRequired": "Lütfen giriş yapın.",
-      "invalidDiagnosis": "Listeden geçerli bir tanı seçin."
+      "invalidDiagnosis": "Listeden geçerli bir tanı seçin.",
+      "diagnosisTextRequired": "Tanı metnini kendi dilinizde girin",
+      "icdRequired": "ICD-10 kodunu seçin"
     },
     "modal": {
       "title": "Şablon önizlemesi"
@@ -1290,7 +1304,19 @@
     "profileCard": {
       "speciality": "Uzmanlık"
     },
-    "loading": "Yükleniyor..."
+    "loading": "Yükleniyor...",
+    "hints": {
+      "diagnosisText": "ICD-10'dan otomatik dolduruldu. Kendi dilinizde çevirin veya yeniden ifade edin."
+    },
+    "messages": {
+      "errorOccurred": "Bir hata oluştu.",
+      "patientAdded": "Hasta eklendi"
+    },
+    "requiredFilled": "zorunlu alan dolduruldu",
+    "templateSelector": {
+      "select": "Şablon seçin"
+    },
+    "title": "Hastalık geçmişi ekle"
   },
   "publicClinic": {
     "leadFormTitle": "Talep bırakın — sizinle iletişime geçelim",
@@ -1938,5 +1964,178 @@
     "deleteOne": "Bildirimi sil",
     "deleteConfirm": "Bu bildirim silinsin mi?"
   },
-  "profileAbout": "Hakkımda"
+  "profileAbout": "Hakkımda",
+  "contentLabel": "Metin",
+  "doctorLabel": "Doktor",
+  "editButton": "Düzenle",
+  "errorLoad": "Yüklenemedi",
+  "pageTitle": "İfadeler",
+  "titleLabel": "Başlık",
+  "errorUpdate": "Kaydedilemedi",
+  "successUpdate": "Kaydedildi",
+  "updateButton": "Güncelle",
+  "confirmDelete": "Bu kayıt silinsin mi?",
+  "deleteButton": "Sil",
+  "emptyList": "Liste boş",
+  "errorDelete": "Silinemedi",
+  "successDelete": "Silindi",
+  "contentPlaceholder": "İfadenin metni",
+  "errorAdd": "Eklenemedi",
+  "networkError": "Ağ hatası. Tekrar deneyin.",
+  "saveButton": "Kaydet",
+  "successAdd": "Eklendi",
+  "titlePlaceholder": "Kısa ad",
+  "dp": {
+    "pageTitle": {
+      "polyclinic": "DocPats · Poliklinik",
+      "patient": "DocPats · Hasta",
+      "privatePatient": "DocPats · Özel hasta",
+      "doctorPortal": "DocPats · Doktor portalı",
+      "medicalHistory": "DocPats · Hastalık geçmişi",
+      "angiography": "DocPats · Anjiyografi",
+      "ct": "DocPats · BT",
+      "capsule": "DocPats · Kapsül endoskopi",
+      "coronography": "DocPats · Koroner anjiyografi",
+      "doppler": "DocPats · Doppler",
+      "eeg": "DocPats · EEG",
+      "ekg": "DocPats · EKG",
+      "echo": "DocPats · Eko EKG",
+      "gastroscopy": "DocPats · Gastroskopi",
+      "gynecology": "DocPats · Jinekoloji",
+      "holter": "DocPats · Holter",
+      "lab": "DocPats · Tahliller",
+      "mri": "DocPats · MR",
+      "pet": "DocPats · PET",
+      "spect": "DocPats · SPECT",
+      "spirometry": "DocPats · Spirometri",
+      "ultrasound": "DocPats · Ultrason",
+      "xray": "DocPats · Röntgen"
+    },
+    "list": {
+      "all": "Tümü",
+      "active": "Etkin",
+      "archived": "Arşivde",
+      "registered": "Kayıtlı",
+      "private": "Özel",
+      "registeredPatient": "Kayıtlı hasta",
+      "privatePatient": "Özel hasta",
+      "registeredBadge": "KAYITLI",
+      "privateBadge": "ÖZEL",
+      "archive": "🗂 Arşivle",
+      "restore": "↩ Geri yükle"
+    },
+    "patient": {
+      "severity": "Klinik şiddet:",
+      "createSurgicalCase": "🔪 Cerrahi vaka oluştur",
+      "demography": "Demografi",
+      "contacts": "İletişim",
+      "mainInfo": "Temel bilgiler",
+      "medicalHistory": "Tıbbi geçmiş",
+      "extra": "Ek",
+      "birthDate": "Doğum tarihi",
+      "phone": "Telefon",
+      "phoneHint": "Ülke kodu otomatik eklenir.",
+      "dateHint": "Biçim: gg/aa/yyyy.",
+      "word": "Hasta",
+      "required": "Zorunlu"
+    },
+    "ai": {
+      "summaryTitle": "🩺 Hasta klinik özeti",
+      "loading": "Analiz hazırlanıyor…",
+      "clinicalStatus": "🚨 Klinik durum",
+      "diagnosticAnalysis": "🧠 Tanısal analiz",
+      "progression": "📈 Hastalık seyri",
+      "details": "🔬 Analiz ayrıntıları",
+      "why": "🧠 Model neden böyle düşünüyor",
+      "confidenceScore": "🧠 Model güven skoru",
+      "probabilityBars": "🧠 Tanı olasılıkları",
+      "progressionGraph": "📈 Seyir grafiği",
+      "riskHeatmap": "📊 Risk haritası",
+      "dataCompleteness": "📊 Veri bütünlüğü",
+      "prognosis": "📈 Prognoz",
+      "noFactors": "Anahtar faktörler henüz belirlenmedi",
+      "modelConfidence": "Model güveni",
+      "page": "Sayfa",
+      "prev": "← Önceki",
+      "next": "Sonraki →"
+    },
+    "timeline": {
+      "title": "📅 Hasta zaman çizelgesi",
+      "ai": "🤖 YZ",
+      "empty": "Tıbbi olay bulunamadı"
+    },
+    "tpl": {
+      "eegRecDetails": "EEG öneri şablonu",
+      "eegRecEdit": "EEG öneri şablonunu düzenle",
+      "update": "Şablonu güncelle",
+      "notFound": "Şablon bulunamadı",
+      "loading": "Yükleniyor…",
+      "title": "Başlık",
+      "content": "İçerik",
+      "titleLabel": "Başlık:",
+      "contentLabel": "İçerik:",
+      "doctorLabel": "Doktor:",
+      "createdLabel": "Oluşturuldu:",
+      "backToList": "← Listeye dön",
+      "edit": "✏️ Düzenle"
+    },
+    "scan": {
+      "fullSize": "Tam boyut",
+      "word": "görüntü",
+      "preview": "önizleme",
+      "properties": "Özellikler",
+      "jpg": "JPG",
+      "png": "PNG"
+    },
+    "aiPhoto": {
+      "eyebrow": "Modelleme · Fotoğrafla YZ",
+      "step1": "1. Vaka",
+      "step2": "2. Fotoğraf",
+      "step3": "3. Alan ve açıklama",
+      "createNew": "+ Yeni oluştur",
+      "create": "Oluştur",
+      "loadingCase": "Vaka yükleniyor…",
+      "note": "Not (isteğe bağlı)",
+      "photo": "Fotoğraf",
+      "lead": "Değişmesi gereken alanı fırçayla seçin ve istediğiniz sonucu anlatın. Model yalnızca seçili alanı yeniden çizer, karenin geri kalanı aynı kalır.",
+      "warn": "Sonuç bir görselleştirmedir, ameliyat tahmini değil. Aynı alan aynı açıklamayla her seferinde farklı bir görüntü verir. Ölçülebilir bir plan için şunu kullanın:",
+      "landmarksLink": "referans noktalarıyla işaretleme",
+      "title": "Fotoğraf → alan → sonuç"
+    },
+    "plan": {
+      "eyebrow": "Modelleme · prototip",
+      "request": "Doktorun isteği",
+      "lead": "İstediğiniz sonucu sade sözcüklerle anlatın. Sistem isteği işlem kataloğuna göre ayrıştırır, öncesi/sonrası ölçümleri hesaplar ve istekte neyin eksik olduğunu söyler. Ardından plan kaydırıcılarla düzenlenir — değerler ölçülebilir ve yinelenebilir kalır.",
+      "example": "Örneğin: 2 mm kamburu almak ve ucu 5 derece kaldırmak",
+      "patientSex": "Hastanın cinsiyeti",
+      "baseline": "Başlangıç verileri",
+      "beforeMeasurements": "“Öncesi” ölçümleri",
+      "beforeHint": "Onlar olmadan da plan çözümlenir, ama tablo yalnızca farkları gösterir: “sonrası” değerini söylemek için “öncesi” değerini bilmek gerekir.",
+      "title": "Plan",
+      "empty": "Henüz plan yok. Görevi solda anlatın ve “İsteği çözümle”ye basın.",
+      "whatToDo": "Ne yapılmalı",
+      "addProcedure": "İşlem ekle",
+      "procedure": "İşlem",
+      "direction": "yön",
+      "remove": "Kaldır",
+      "measurements": "Ölçümler",
+      "measurement": "Ölçüm",
+      "before": "Öncesi",
+      "after": "Sonrası",
+      "norm": "Referans",
+      "noMeasurements": "Ölçümler etkilenmiyor.",
+      "remarks": "Notlar",
+      "needsClarification": "Netleştirilmeli",
+      "parsePrefix": "Çözümleme:",
+      "recalculating": "yeniden hesaplanıyor…",
+      "noProcedures": "Hiç işlem yok — yapılacak bir şey yok.",
+      "notInCatalogue": "İşlem mevcut katalogda yok.",
+      "outsideCatalogue": "Katalog dışı",
+      "catalogueSuffix": ", katalog",
+      "catalogueError": "İşlem kataloğu yüklenemedi:",
+      "choose": "— seçin —",
+      "optional": "— isteğe bağlı",
+      "pageTitle": "Doktorun isteği → ameliyat planı"
+    }
+  }
 }

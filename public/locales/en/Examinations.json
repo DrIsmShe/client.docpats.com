@@ -388,6 +388,9 @@
       "next": "Next",
       "page": "Page",
       "of": "of"
+    },
+    "fields": {
+      "status": "Status"
     }
   },
   "additionalDiagnosis": {
@@ -558,27 +561,27 @@
   "common": {
     "loading": "Loading...",
     "noResults": "No templates found",
-    "loadError": "Error loading data"
+    "loadError": "Error loading data",
+    "deleteError": "Error deleting template",
+    "deleted": "Deleted",
+    "noData": "No data",
+    "noTags": "No tags"
   },
-
   "list": {
     "search": "Search..."
   },
-
   "actions": {
     "createNew": "Create a new template",
     "delete": "Delete template",
     "deletedSuccess": "Template successfully deleted",
     "deleteError": "Error deleting template"
   },
-
   "pagination": {
     "prev": "Prev",
     "next": "Next",
     "page": "Page",
     "of": "of"
   },
-
   "status": {
     "active": "Active",
     "inactive": "Inactive"
@@ -631,12 +634,10 @@
       "confirmDelete": "Are you sure you want to delete this template?"
     }
   },
-
   "addAngiographyScanUpload": {
     "page": {
       "title": "Add Angiography Results"
     },
-
     "messages": {
       "success": "✅ Angiography scan was added successfully!",
       "errorPrefix": "❌ Error loading:",
@@ -701,7 +702,6 @@
       "loading": "Loading..."
     }
   },
-
   "AddCoronographyScanUpload": {
     "page": {
       "title": "Add Coronography Results"
@@ -774,7 +774,6 @@
       "loading": "Loading..."
     }
   },
-
   "AddCTScanUpload": {
     "page": {
       "title": "Add CT Scan Results"
@@ -916,7 +915,8 @@
       "files": {
         "label": "Files (images, PDF, video, audio)",
         "choose": "Choose files",
-        "noneSelected": "No files selected"
+        "noneSelected": "No files selected",
+        "selected": "{{count}} file(s) selected"
       }
     },
     "templates": {
@@ -925,7 +925,12 @@
       "list": "📂 List of templates",
       "selectTitle": "Select a template for",
       "insert": "Insert",
-      "close": "Close"
+      "close": "Close",
+      "modal": {
+        "close": "Close",
+        "insert": "Insert",
+        "title": "Select a template for \"{{field}}\""
+      }
     },
     "buttons": {
       "submit": "Add results",
@@ -933,7 +938,9 @@
     },
     "messages": {
       "success": "✅ Results added successfully!",
-      "error": "❌ Error: "
+      "error": "❌ Error: ",
+      "errorPrefix": "❌ Error loading:",
+      "patientMissing": "Patient ID is missing!"
     }
   },
   "AddEEGScanUpload": {
@@ -1065,7 +1072,8 @@
       "submit": "Add results"
     },
     "modal": {
-      "selectTemplateFor": "Select a template for"
+      "selectTemplateFor": "Select a template for",
+      "title": "Template selection"
     },
     "fields": {
       "nameofexam": {
@@ -1099,6 +1107,9 @@
         "type": "Type",
         "size": "Size"
       }
+    },
+    "errors": {
+      "noPatientId": "No patient selected"
     }
   },
   "AddGinecologyUpload": {
@@ -1120,7 +1131,8 @@
       "submit": "Add results"
     },
     "modal": {
-      "selectTemplateFor": "Select a template for"
+      "selectTemplateFor": "Select a template for",
+      "title": "Template selection"
     },
     "fields": {
       "nameofexam": {
@@ -1154,6 +1166,9 @@
         "type": "Type",
         "size": "Size"
       }
+    },
+    "errors": {
+      "noPatientId": "No patient selected"
     }
   },
   "AddHOLTERScanUpload": {
@@ -1163,7 +1178,9 @@
     "messages": {
       "success": "✅ HOLTER scan result added successfully!",
       "error": "❌ Error: ",
-      "noPatientId": "❌ Error: Patient ID missing!"
+      "noPatientId": "❌ Error: Patient ID missing!",
+      "errorPrefix": "❌ Error loading:",
+      "patientMissing": "Patient ID is missing!"
     },
     "buttons": {
       "useTemplate": "📋 Use template",
@@ -1175,7 +1192,8 @@
       "submit": "Add results"
     },
     "modal": {
-      "selectTemplateFor": "Select a template for"
+      "selectTemplateFor": "Select a template for",
+      "title": "Template selection"
     },
     "fields": {
       "nameofexam": {
@@ -1231,28 +1249,53 @@
             "cloudy": "cloudy"
           }
         },
-        "specificGravity": { "name": "Specific gravity" },
-        "pH": { "name": "pH" },
-        "protein": { "name": "Protein" },
-        "glucose": { "name": "Glucose" },
-        "leukocytes": { "name": "Leukocytes" }
+        "specificGravity": {
+          "name": "Specific gravity"
+        },
+        "pH": {
+          "name": "pH"
+        },
+        "protein": {
+          "name": "Protein"
+        },
+        "glucose": {
+          "name": "Glucose"
+        },
+        "leukocytes": {
+          "name": "Leukocytes"
+        }
       },
-
       "BloodTestGeneral": {
-        "hemoglobin": { "name": "Hemoglobin" },
-        "erythrocytes": { "name": "Erythrocytes" },
-        "leukocytes": { "name": "Leukocytes" },
-        "platelets": { "name": "Platelets" }
+        "hemoglobin": {
+          "name": "Hemoglobin"
+        },
+        "erythrocytes": {
+          "name": "Erythrocytes"
+        },
+        "leukocytes": {
+          "name": "Leukocytes"
+        },
+        "platelets": {
+          "name": "Platelets"
+        }
       },
-
       "BloodTestBiochemistry": {
-        "glucose": { "name": "Glucose" },
-        "creatinine": { "name": "Creatinine" },
-        "urea": { "name": "Urea" },
-        "alt": { "name": "ALT" },
-        "ast": { "name": "AST" }
+        "glucose": {
+          "name": "Glucose"
+        },
+        "creatinine": {
+          "name": "Creatinine"
+        },
+        "urea": {
+          "name": "Urea"
+        },
+        "alt": {
+          "name": "ALT"
+        },
+        "ast": {
+          "name": "AST"
+        }
       },
-
       "StoolTest": {
         "consistency": {
           "name": "Consistency",
@@ -1263,8 +1306,12 @@
             "watery": "watery"
           }
         },
-        "color": { "name": "Color" },
-        "reaction": { "name": "Reaction" },
+        "color": {
+          "name": "Color"
+        },
+        "reaction": {
+          "name": "Reaction"
+        },
         "mucus": {
           "name": "Mucus",
           "options": {
@@ -1273,21 +1320,32 @@
             "present": "present"
           }
         },
-        "leukocytes": { "name": "Leukocytes" }
+        "leukocytes": {
+          "name": "Leukocytes"
+        }
       },
-
       "HormonePanel": {
-        "tsh": { "name": "TSH" },
-        "freeT4": { "name": "Free T4" },
-        "freeT3": { "name": "Free T3" }
+        "tsh": {
+          "name": "TSH"
+        },
+        "freeT4": {
+          "name": "Free T4"
+        },
+        "freeT3": {
+          "name": "Free T3"
+        }
       },
-
       "TumorMarkers": {
-        "cea": { "name": "CEA" },
-        "ca125": { "name": "CA 125" },
-        "ca199": { "name": "CA 19-9" }
+        "cea": {
+          "name": "CEA"
+        },
+        "ca125": {
+          "name": "CA 125"
+        },
+        "ca199": {
+          "name": "CA 19-9"
+        }
       },
-
       "PCR": {
         "covid19": {
           "name": "COVID-19 (SARS-CoV-2)",
@@ -1304,13 +1362,17 @@
           }
         }
       },
-
       "Immunology": {
-        "igg": { "name": "IgG" },
-        "iga": { "name": "IgA" },
-        "igm": { "name": "IgM" }
+        "igg": {
+          "name": "IgG"
+        },
+        "iga": {
+          "name": "IgA"
+        },
+        "igm": {
+          "name": "IgM"
+        }
       },
-
       "GeneticScreening": {
         "brca1": {
           "name": "BRCA1",
@@ -1327,81 +1389,159 @@
           }
         }
       },
-
       "CoagulationPanel": {
-        "pt": { "name": "PT" },
-        "inr": { "name": "INR" },
-        "aptt": { "name": "aPTT" },
-        "fibrinogen": { "name": "Fibrinogen" },
-        "ddimer": { "name": "D-dimer" }
+        "pt": {
+          "name": "PT"
+        },
+        "inr": {
+          "name": "INR"
+        },
+        "aptt": {
+          "name": "aPTT"
+        },
+        "fibrinogen": {
+          "name": "Fibrinogen"
+        },
+        "ddimer": {
+          "name": "D-dimer"
+        }
       },
-
       "LipidProfile": {
-        "totalCholesterol": { "name": "Total cholesterol" },
-        "ldl": { "name": "LDL-C" },
-        "hdl": { "name": "HDL-C" },
-        "triglycerides": { "name": "Triglycerides" },
-        "apoB": { "name": "ApoB" },
-        "lpa": { "name": "Lp(a)" }
+        "totalCholesterol": {
+          "name": "Total cholesterol"
+        },
+        "ldl": {
+          "name": "LDL-C"
+        },
+        "hdl": {
+          "name": "HDL-C"
+        },
+        "triglycerides": {
+          "name": "Triglycerides"
+        },
+        "apoB": {
+          "name": "ApoB"
+        },
+        "lpa": {
+          "name": "Lp(a)"
+        }
       },
-
       "LiverFunction": {
-        "ast": { "name": "AST" },
-        "alt": { "name": "ALT" },
-        "alp": { "name": "ALP" },
-        "ggt": { "name": "GGT" },
-        "totalBilirubin": { "name": "Total bilirubin" },
-        "directBilirubin": { "name": "Direct bilirubin" },
-        "albumin": { "name": "Albumin" }
+        "ast": {
+          "name": "AST"
+        },
+        "alt": {
+          "name": "ALT"
+        },
+        "alp": {
+          "name": "ALP"
+        },
+        "ggt": {
+          "name": "GGT"
+        },
+        "totalBilirubin": {
+          "name": "Total bilirubin"
+        },
+        "directBilirubin": {
+          "name": "Direct bilirubin"
+        },
+        "albumin": {
+          "name": "Albumin"
+        }
       },
-
       "RenalElectrolytes": {
-        "creatinine": { "name": "Creatinine" },
-        "egfr": { "name": "eGFR" },
-        "urea": { "name": "Urea" },
-        "sodium": { "name": "Sodium" },
-        "potassium": { "name": "Potassium" },
-        "chloride": { "name": "Chloride" },
-        "magnesium": { "name": "Magnesium" }
+        "creatinine": {
+          "name": "Creatinine"
+        },
+        "egfr": {
+          "name": "eGFR"
+        },
+        "urea": {
+          "name": "Urea"
+        },
+        "sodium": {
+          "name": "Sodium"
+        },
+        "potassium": {
+          "name": "Potassium"
+        },
+        "chloride": {
+          "name": "Chloride"
+        },
+        "magnesium": {
+          "name": "Magnesium"
+        }
       },
-
       "IronStudies": {
-        "iron": { "name": "Iron" },
-        "ferritin": { "name": "Ferritin" },
-        "tibc": { "name": "TIBC" },
+        "iron": {
+          "name": "Iron"
+        },
+        "ferritin": {
+          "name": "Ferritin"
+        },
+        "tibc": {
+          "name": "TIBC"
+        },
         "transferrinSaturation": {
           "name": "Transferrin saturation"
         }
       },
-
       "DiabetesPanel": {
-        "fastingGlucose": { "name": "Fasting glucose" },
-        "hba1c": { "name": "HbA1c" },
-        "insulin": { "name": "Insulin" },
-        "cPeptide": { "name": "C-peptide" }
+        "fastingGlucose": {
+          "name": "Fasting glucose"
+        },
+        "hba1c": {
+          "name": "HbA1c"
+        },
+        "insulin": {
+          "name": "Insulin"
+        },
+        "cPeptide": {
+          "name": "C-peptide"
+        }
       },
-
       "ThyroidPanel": {
-        "tsh": { "name": "TSH" },
-        "freeT4": { "name": "Free T4" },
-        "freeT3": { "name": "Free T3" },
-        "antiTPO": { "name": "anti-TPO" },
-        "antiTG": { "name": "anti-TG" }
+        "tsh": {
+          "name": "TSH"
+        },
+        "freeT4": {
+          "name": "Free T4"
+        },
+        "freeT3": {
+          "name": "Free T3"
+        },
+        "antiTPO": {
+          "name": "anti-TPO"
+        },
+        "antiTG": {
+          "name": "anti-TG"
+        }
       },
-
       "CardiacMarkers": {
-        "troponin": { "name": "Troponin I/T" },
-        "ckmb": { "name": "CK-MB" },
-        "ntproBNP": { "name": "NT-proBNP" }
+        "troponin": {
+          "name": "Troponin I/T"
+        },
+        "ckmb": {
+          "name": "CK-MB"
+        },
+        "ntproBNP": {
+          "name": "NT-proBNP"
+        }
       },
-
       "VitaminsTrace": {
-        "vitaminD": { "name": "Vitamin D (25-OH)" },
-        "vitaminB12": { "name": "Vitamin B12" },
-        "folate": { "name": "Folate" },
-        "zinc": { "name": "Zinc" }
+        "vitaminD": {
+          "name": "Vitamin D (25-OH)"
+        },
+        "vitaminB12": {
+          "name": "Vitamin B12"
+        },
+        "folate": {
+          "name": "Folate"
+        },
+        "zinc": {
+          "name": "Zinc"
+        }
       },
-
       "InfectiousSerology": {
         "hbsAg": {
           "name": "HBsAg",
@@ -1410,7 +1550,9 @@
             "positive": "positive"
           }
         },
-        "antiHbs": { "name": "anti-HBs" },
+        "antiHbs": {
+          "name": "anti-HBs"
+        },
         "antiHcv": {
           "name": "anti-HCV",
           "options": {
@@ -1433,15 +1575,21 @@
           }
         }
       },
-
       "UrineAlbuminACR": {
-        "urineAlbumin": { "name": "Urine albumin" },
-        "urineCreatinine": { "name": "Urine creatinine" },
-        "acr": { "name": "ACR" }
+        "urineAlbumin": {
+          "name": "Urine albumin"
+        },
+        "urineCreatinine": {
+          "name": "Urine creatinine"
+        },
+        "acr": {
+          "name": "ACR"
+        }
       },
-
       "StoolInflammation": {
-        "calprotectin": { "name": "Calprotectin" },
+        "calprotectin": {
+          "name": "Calprotectin"
+        },
         "occultBloodFit": {
           "name": "Occult blood (FIT)",
           "options": {
@@ -1458,7 +1606,6 @@
         }
       }
     },
-
     "testTypes": {
       "UrineTest": "Urinalysis",
       "BloodTestGeneral": "Complete blood count",
@@ -1470,7 +1617,6 @@
       "Immunology": "Immunology tests",
       "GeneticScreening": "Genetic screening",
       "Other": "Other tests",
-
       "CoagulationPanel": "Coagulation panel",
       "LipidProfile": "Lipid profile",
       "LiverFunction": "Liver function tests",
@@ -1494,19 +1640,15 @@
       "vitamins": "Vitamin levels",
       "others": "Other tests"
     },
-
     "units": {
       "none": "",
       "unit.defaultText": "—",
       "unit.defaultNumber": "unit",
-
       "g/L": "g/L",
       "mmol/L": "mmol/L",
       "cells/hpf": "per field of view",
-
       "10^12/L": "10^12/L",
       "10^9/L": "10^9/L",
-
       "µmol/L": "µmol/L",
       "U/L": "U/L",
       "pmol/L": "pmol/L",
@@ -1515,22 +1657,18 @@
       "IU/mL": "IU/mL",
       "pg/mL": "pg/mL",
       "ng/L": "ng/L",
-
       "mg/dL": "mg/dL",
       "mg/L": "mg/L",
       "mg/g": "mg/g",
-
       "µg/dL": "µg/dL",
       "µg/g": "µg/g",
       "µU/mL": "µU/mL",
       "mIU/mL": "mIU/mL",
-
       "mL/min/1.73m²": "mL/min/1.73m²",
       "nmol/L": "nmol/L",
       "%": "%",
       "sec": "sec",
       "mg/L_FEU": "mg/L FEU",
-
       "gPerL": "g/L",
       "mmolPerL": "mmol/L",
       "mcmolPerL": "µmol/L",
@@ -1551,61 +1689,50 @@
       "percent": "%",
       "mgPerLFEU": "mg/L FEU"
     },
-
     "page": {
       "title": "Add Laboratory Test"
     },
-
     "fields": {
       "testType": {
         "label": "Test type",
         "placeholder": "-- select test type --"
       },
-
       "labName": {
         "label": "Laboratory",
         "placeholder": "Enter laboratory name..."
       },
-
       "report": {
         "label": "Doctor's comment (result)",
         "placeholder": "Enter doctor's comment..."
       },
-
       "parameter": {
         "label": "Parameter",
         "placeholder": "Parameter name...",
         "valueTextPlaceholder": "Enter text value...",
         "valueNumberPlaceholder": "Enter numeric value..."
       },
-
       "unit": {
         "label": "Unit",
         "placeholder": "Measurement unit..."
       },
-
       "referenceRange": {
         "label": "Reference range",
         "min": "Lower limit",
         "max": "Upper limit"
       },
-
       "files": {
         "label": "Attach files (PDF, images)",
         "choose": "Add files",
         "noFile": "No files selected"
       }
     },
-
     "section": {
       "parameters": "Test parameters"
     },
-
     "valueType": {
       "text": "Text",
       "number": "Number"
     },
-
     "buttons": {
       "copyFromPrevious": "Copy from previous test",
       "addParameter": "Add parameter",
@@ -1613,14 +1740,12 @@
       "loading": "Saving...",
       "submit": "Save test"
     },
-
     "messages": {
       "success": "✅ Test successfully added.",
       "error": "❌ An error occurred: ",
       "noPrevious": "No previous test found to copy.",
       "copyError": "❌ Failed to load previous test."
     },
-
     "errors": {
       "noTestType": "❗ Please select a test type and add at least one parameter.",
       "missingValues": "Please enter values for the following parameters: {{list}}"
@@ -1660,19 +1785,15 @@
     "UrineAlbuminACR": "Microalbuminuria (ACR)",
     "StoolInflammation": "Stool – inflammation / blood"
   },
-
   "units": {
     "none": "",
     "unit.defaultText": "—",
     "unit.defaultNumber": "unit",
-
     "g/L": "g/L",
     "mmol/L": "mmol/L",
     "cells/hpf": "cells/hpf",
-
     "10^12/L": "10^12/L",
     "10^9/L": "10^9/L",
-
     "µmol/L": "µmol/L",
     "U/L": "U/L",
     "pmol/L": "pmol/L",
@@ -1681,22 +1802,18 @@
     "IU/mL": "IU/mL",
     "pg/mL": "pg/mL",
     "ng/L": "ng/L",
-
     "mg/dL": "mg/dL",
     "mg/L": "mg/L",
     "mg/g": "mg/g",
-
     "µg/dL": "µg/dL",
     "µg/g": "µg/g",
     "µU/mL": "µU/mL",
     "mIU/mL": "mIU/mL",
-
     "mL/min/1.73m²": "mL/min/1.73m²",
     "nmol/L": "nmol/L",
     "%": "%",
     "sec": "sec",
     "mg/L_FEU": "mg/L FEU",
-
     "gPerL": "g/L",
     "mmolPerL": "mmol/L",
     "mcmolPerL": "µmol/L",
@@ -1717,11 +1834,9 @@
     "percent": "%",
     "mgPerLFEU": "mg/L FEU"
   },
-
   "page": {
     "title": "Add Laboratory Test"
   },
-
   "fields": {
     "testType": {
       "label": "Type of test",
@@ -1735,46 +1850,38 @@
       "label": "Laboratory",
       "placeholder": "Enter laboratory name..."
     },
-
     "report": {
       "label": "Doctor's comment (conclusion)",
       "placeholder": "Enter doctor's comment..."
     },
-
     "parameter": {
       "label": "Parameter",
       "placeholder": "Parameter name...",
       "valueTextPlaceholder": "Enter text value...",
       "valueNumberPlaceholder": "Enter numeric value..."
     },
-
     "unit": {
       "label": "Unit",
       "placeholder": "Unit of measurement..."
     },
-
     "referenceRange": {
       "label": "Reference range",
       "min": "Lower norm",
       "max": "Upper norm"
     },
-
     "files": {
       "label": "Attach files (PDF, images)",
       "choose": "Add files",
       "noFile": "No files selected"
     }
   },
-
   "section": {
     "parameters": "Test parameters"
   },
-
   "valueType": {
     "text": "Text",
     "number": "Number"
   },
-
   "buttons": {
     "copyFromPrevious": "Copy from previous test",
     "addParameter": "Add parameter",
@@ -1782,14 +1889,12 @@
     "loading": "Saving...",
     "submit": "Save test"
   },
-
   "messages": {
     "success": "✅ Test successfully added.",
     "error": "❌ Error occurred: ",
     "noPrevious": "There is no previous test to copy.",
     "copyError": "❌ Failed to load previous test."
   },
-
   "errors": {
     "noTestType": "❗ Please select the type of test and add at least one parameter.",
     "missingValues": "Please fill in the values for: {{list}}",
@@ -1799,7 +1904,6 @@
     "page": {
       "title": "Add MRI results"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Title of the study",
@@ -1831,7 +1935,6 @@
         "selected": "{{count}} file(s) selected"
       }
     },
-
     "buttons": {
       "useTemplate": "Use template",
       "newTemplate": "New template",
@@ -1841,17 +1944,26 @@
       "submit": "Add results",
       "loading": "Loading..."
     },
-
     "messages": {
       "success": "MRI result added successfully!",
       "error": "Error loading"
+    },
+    "files": {
+      "audio": "Audio file",
+      "file": "File",
+      "image": "Image",
+      "pdf": "PDF document",
+      "video": "Video file"
+    },
+    "modal": {
+      "select": "Select a template for",
+      "title": "Template selection"
     }
   },
   "AddPETScanUpload": {
     "page": {
       "title": "Add PET results"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Title of the study",
@@ -1883,7 +1995,6 @@
         "selected": "{{count}} file(s) selected"
       }
     },
-
     "buttons": {
       "useTemplate": "Use template",
       "newTemplate": "New template",
@@ -1893,12 +2004,10 @@
       "submit": "Add results",
       "loading": "Loading..."
     },
-
     "modal": {
       "title": "Template selection",
       "select": "Select a template for"
     },
-
     "files": {
       "image": "Image",
       "pdf": "PDF document",
@@ -1906,7 +2015,6 @@
       "audio": "Audio file",
       "file": "File"
     },
-
     "messages": {
       "success": "PET result added successfully!",
       "error": "Error loading"
@@ -1916,7 +2024,6 @@
     "page": {
       "title": "Add SPECT results"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Title of the study",
@@ -1948,7 +2055,6 @@
         "selected": "{{count}} file(s) selected"
       }
     },
-
     "buttons": {
       "useTemplate": "Use template",
       "newTemplate": "New template",
@@ -1958,12 +2064,10 @@
       "submit": "Add results",
       "loading": "Loading..."
     },
-
     "modal": {
       "title": "Template selection",
       "select": "Select a template for"
     },
-
     "files": {
       "image": "Image",
       "pdf": "PDF document",
@@ -1971,17 +2075,17 @@
       "audio": "Audio file",
       "file": "File"
     },
-
     "messages": {
       "success": "SPECT result added successfully!",
-      "error": "Error loading"
+      "error": "Error loading",
+      "errorPrefix": "❌ Error loading:",
+      "patientMissing": "Patient ID is missing!"
     }
   },
   "AddSpirometryScanUpload": {
     "page": {
       "title": "Add Spirometry results"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Title of the study",
@@ -2013,7 +2117,6 @@
         "selected": "{{count}} file(s) selected"
       }
     },
-
     "buttons": {
       "useTemplate": "Use template",
       "newTemplate": "New template",
@@ -2023,12 +2126,10 @@
       "submit": "Add results",
       "loading": "Loading..."
     },
-
     "modal": {
       "title": "Template selection",
       "select": "Select a template for"
     },
-
     "files": {
       "image": "Image",
       "pdf": "PDF document",
@@ -2036,7 +2137,6 @@
       "audio": "Audio file",
       "file": "File"
     },
-
     "messages": {
       "success": "Spirometry result added successfully!",
       "error": "Loading error"
@@ -2046,7 +2146,6 @@
     "page": {
       "title": "Add Ultrasound (USM) results"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Title of the study",
@@ -2078,7 +2177,6 @@
         "selected": "{{count}} file(s) selected"
       }
     },
-
     "buttons": {
       "useTemplate": "Use template",
       "newTemplate": "New template",
@@ -2088,23 +2186,23 @@
       "submit": "Add results",
       "loading": "Loading..."
     },
-
     "modal": {
       "title": "Template selection",
       "select": "Select a template for"
     },
-
     "files": {
       "image": "Image",
       "pdf": "PDF document",
       "video": "Video file",
       "audio": "Audio file",
-      "file": "File"
+      "file": "File",
+      "size": "Size",
+      "type": "Type"
     },
-
     "messages": {
       "success": "Ultrasound result added successfully!",
-      "error": "Loading error"
+      "error": "Loading error",
+      "noPatientId": "❌ Error: Patient ID is missing!"
     }
   },
   "AddXRAYScanUpload": {
@@ -2191,5 +2289,12 @@
       "deleteSuccess": "Template successfully deleted",
       "deleteError": "Failed to delete template"
     }
+  },
+  "files": {
+    "audio": "Audio",
+    "file": "File",
+    "image": "Image",
+    "pdf": "PDF",
+    "video": "Video"
   }
 }

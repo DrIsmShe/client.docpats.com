@@ -278,7 +278,13 @@
       "right_eye": "Right eye",
       "left_eyebrow": "Left eyebrow",
       "right_eyebrow": "Right eyebrow"
-    }
+    },
+    "multiFace": {
+      "title": "Multiple views",
+      "hint": "Choose a face to annotate"
+    },
+    "rotationApplied": "Rotation applied",
+    "statsVisible": "points"
   },
   "measurements": {
     "title": "Measurements",
@@ -411,5 +417,30 @@
       "hint": "Add at least one deformation point to see the \"after\" result.",
       "backButton": "Return to editing"
     }
+  },
+  "manualLandmarks": {
+    "stepLabel": "Step",
+    "cancel": "Cancel",
+    "undo": "Back",
+    "cta": {
+      "hintShort": "Place the points on the face manually — it takes less than a minute.",
+      "markedTitle": "Annotated manually",
+      "redo": "Annotate again",
+      "redoHint": "The points are placed manually. You can change the annotation if needed.",
+      "start": "Annotate manually",
+      "titleShort": "Manual annotation"
+    },
+    "title": "Manual face annotation",
+    "confirmDelete": "Delete all manually placed points?\n\nThe current editing result is kept — the image will not change visually.",
+    "confirmResetAll": "Reset ALL edits and go back to the original photo?\n\nThis cannot be undone."
+  },
+  "actions": {
+    "deleteManual": "Delete manual points",
+    "deleteManualTitle": "Delete the manually placed points (the result is kept)",
+    "resetAll": "Reset everything",
+    "resetAllTitle": "Full reset to the original photo",
+    "title": "Actions",
+    "undo": "Step back",
+    "undoTitle": "Undo the last action (Ctrl+Z)"
   }
 }

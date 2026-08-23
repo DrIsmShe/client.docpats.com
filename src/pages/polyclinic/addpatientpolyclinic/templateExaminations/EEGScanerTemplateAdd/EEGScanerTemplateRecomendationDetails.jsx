@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 
 export default function EEGScanerTemplateRecomendationDetails() {
+  const { t } = useTranslation("common");
   const { id } = useParams();
   const API_BASE = process.env.REACT_APP_API_URL;
 
@@ -41,7 +43,7 @@ export default function EEGScanerTemplateRecomendationDetails() {
   /* ===================== RENDER STATES ===================== */
 
   if (loading) {
-    return <div className="text-center mt-4">Loading...</div>;
+    return <div className="text-center mt-4">{t("dp.tpl.loading")}</div>;
   }
 
   if (error) {
@@ -51,7 +53,7 @@ export default function EEGScanerTemplateRecomendationDetails() {
   if (!template) {
     return (
       <div className="alert alert-warning mt-4 text-center">
-        Template not found
+        {t("dp.tpl.notFound")}
       </div>
     );
   }
@@ -60,29 +62,29 @@ export default function EEGScanerTemplateRecomendationDetails() {
 
   return (
     <div className="container mt-4" style={{ maxWidth: "800px" }}>
-      <h3 className="mb-4 text-center">EEG Recommendation Template Details</h3>
+      <h3 className="mb-4 text-center">{t("dp.tpl.eegRecDetails")}</h3>
 
       <div className="card shadow-sm">
         <div className="card-body">
           <p>
-            <strong>Title:</strong>
+            <strong>{t("dp.tpl.titleLabel")}</strong>
           </p>
           <p className="border rounded p-2 bg-light">{template.title}</p>
 
           <p className="mt-3">
-            <strong>Content:</strong>
+            <strong>{t("dp.tpl.contentLabel")}</strong>
           </p>
           <div className="border rounded p-3 bg-light">{template.content}</div>
 
           {template.doctor && (
             <p className="mt-3 text-muted">
-              <strong>Doctor:</strong> {template.doctor.firstName}{" "}
+              <strong>{t("dp.tpl.doctorLabel")}</strong> {template.doctor.firstName}{" "}
               {template.doctor.lastName}
             </p>
           )}
 
           <p className="mt-2 text-muted small">
-            Created: {new Date(template.createdAt).toLocaleString()}
+            {t("dp.tpl.createdLabel")} {new Date(template.createdAt).toLocaleString()}
           </p>
 
           <div className="d-flex justify-content-between mt-4">
@@ -90,14 +92,14 @@ export default function EEGScanerTemplateRecomendationDetails() {
               to="/dp/list-eeg-scan-template-recomandation"
               className="btn btn-secondary btn-sm"
             >
-              ← Back to list
+              {t("dp.tpl.backToList")}
             </Link>
 
             <Link
               to={`/dp/update-eeg-scan-template-recomandation/${template._id}`}
               className="btn btn-warning btn-sm"
             >
-              ✏️ Edit
+              {t("dp.tpl.edit")}
             </Link>
           </div>
         </div>

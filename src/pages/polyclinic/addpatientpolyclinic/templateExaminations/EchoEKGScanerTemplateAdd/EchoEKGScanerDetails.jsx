@@ -214,7 +214,7 @@ export default function EchoEKGScanerDetails() {
 
       <div className="eek-hero">
         <div className="eek-hero-inner">
-          <div className="eek-hero-tag">DocPats · Echo EKG</div>
+          <div className="eek-hero-tag">{t("common:dp.pageTitle.echo")}</div>
           <h1 className="eek-hero-h1">
             {t("EchoEKGScanerDetails.page.title")}
           </h1>
@@ -391,7 +391,7 @@ export default function EchoEKGScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

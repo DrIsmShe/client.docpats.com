@@ -1,0 +1,24 @@
+{
+  "actions": {
+    "confirmDelete": "Удалить эту запись?",
+    "createNew": "Создать",
+    "delete": "Удалить"
+  },
+  "fields": {
+    "createdAt": "Создано",
+    "status": "Статус",
+    "tags": "Теги"
+  },
+  "messages": {
+    "deleteError": "Не удалось удалить",
+    "deleted": "Удалено",
+    "loadError": "Не удалось загрузить",
+    "loading": "Загрузка…",
+    "noData": "Нет данных",
+    "noTags": "Без тегов"
+  },
+  "status": {
+    "active": "Активные",
+    "inactive": "Неактивные"
+  }
+}

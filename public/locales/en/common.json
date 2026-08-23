@@ -1209,7 +1209,8 @@
     "errMicDenied": "The browser denied microphone access. Allow it in the site settings.",
     "errMicUnavailable": "Microphone unavailable. Check that it is connected and not used by another program.",
     "noteCodeFromSpeech": "The ICD-10 code was filled in from speech and has no official title. Confirm the code in the search field so the official title is applied.",
-    "noteTextNeedsCode": "The diagnosis text was not transferred: the field appears only after an ICD-10 code is chosen. Pick a code, then press «→ to field» again."
+    "noteTextNeedsCode": "The diagnosis text was not transferred: the field appears only after an ICD-10 code is chosen. Pick a code, then press «→ to field» again.",
+    "langLabel": "Language:"
   },
   "medicalHistoryForm": {
     "labels": {
@@ -1229,7 +1230,18 @@
     },
     "placeholders": {
       "diagnosisInput": "Choose a diagnosis from the list...",
-      "additionalDiagnosis": "Write your addition to the diagnosis..."
+      "additionalDiagnosis": "Write your addition to the diagnosis...",
+      "anamnesisMorbi": "History of the present illness…",
+      "anamnesisVitae": "Life history, past conditions…",
+      "complaints": "Describe patient complaints…",
+      "ctScanResults": "CT scan findings…",
+      "diagnosisText": "Diagnosis text in your language (auto-filled from ICD-10, you can edit)…",
+      "laboratoryTestResults": "Lab test results…",
+      "mriResults": "MRI findings…",
+      "recommendations": "Treatment recommendations, follow-up plan…",
+      "statusLocalis": "Local status description…",
+      "statusPreasens": "Current objective status…",
+      "ultrasoundResults": "Ultrasound findings…"
     },
     "filters": {
       "patientType": "Patient Type",
@@ -1254,7 +1266,9 @@
       "fillRequired": "Please fill out the {{field}} field.",
       "requiredList": "Please fill in the following required fields:",
       "loginRequired": "Please log in.",
-      "invalidDiagnosis": "Please select a valid diagnosis from the list."
+      "invalidDiagnosis": "Please select a valid diagnosis from the list.",
+      "diagnosisTextRequired": "Please enter the diagnosis text in your language",
+      "icdRequired": "Please select an ICD-10 code"
     },
     "modal": {
       "title": "Template preview"
@@ -1266,7 +1280,19 @@
     "profileCard": {
       "speciality": "Speciality"
     },
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "hints": {
+      "diagnosisText": "Auto-filled from ICD-10. Feel free to translate or rephrase in your language."
+    },
+    "messages": {
+      "errorOccurred": "An error occurred.",
+      "patientAdded": "Patient added successfully!"
+    },
+    "requiredFilled": "required fields filled",
+    "templateSelector": {
+      "select": "Select template"
+    },
+    "title": "Add medical history"
   },
   "publicClinic": {
     "leadFormTitle": "Leave a request — we'll get in touch",
@@ -1914,5 +1940,178 @@
     "deleteOne": "Delete the notification",
     "deleteConfirm": "Delete this notification?"
   },
-  "profileAbout": "About"
+  "profileAbout": "About",
+  "contentLabel": "Text",
+  "doctorLabel": "Doctor",
+  "editButton": "Edit",
+  "errorLoad": "Could not load",
+  "pageTitle": "Wordings",
+  "titleLabel": "Title",
+  "errorUpdate": "Could not save",
+  "successUpdate": "Saved",
+  "updateButton": "Update",
+  "confirmDelete": "Delete this entry?",
+  "deleteButton": "Delete",
+  "emptyList": "The list is empty",
+  "errorDelete": "Could not delete",
+  "successDelete": "Deleted",
+  "contentPlaceholder": "The wording text",
+  "errorAdd": "Could not add",
+  "networkError": "Network error. Please try again.",
+  "saveButton": "Save",
+  "successAdd": "Added",
+  "titlePlaceholder": "A short name",
+  "dp": {
+    "pageTitle": {
+      "polyclinic": "DocPats · Polyclinic",
+      "patient": "DocPats · Patient",
+      "privatePatient": "DocPats · Private Patient",
+      "doctorPortal": "DocPats · Doctor Portal",
+      "medicalHistory": "DocPats · Medical History",
+      "angiography": "DocPats · Angiography",
+      "ct": "DocPats · CT Scan",
+      "capsule": "DocPats · Capsule Endoscopy",
+      "coronography": "DocPats · Coronography",
+      "doppler": "DocPats · Doppler Scan",
+      "eeg": "DocPats · EEG",
+      "ekg": "DocPats · EKG",
+      "echo": "DocPats · Echo EKG",
+      "gastroscopy": "DocPats · Gastroscopy",
+      "gynecology": "DocPats · Gynecology",
+      "holter": "DocPats · Holter Monitor",
+      "lab": "DocPats · Lab Test",
+      "mri": "DocPats · MRI",
+      "pet": "DocPats · PET Scan",
+      "spect": "DocPats · SPECT",
+      "spirometry": "DocPats · Spirometry",
+      "ultrasound": "DocPats · Ultrasound",
+      "xray": "DocPats · X-Ray"
+    },
+    "list": {
+      "all": "All",
+      "active": "Active",
+      "archived": "Archived",
+      "registered": "Registered",
+      "private": "Private",
+      "registeredPatient": "Registered patient",
+      "privatePatient": "Private patient",
+      "registeredBadge": "REGISTERED",
+      "privateBadge": "PRIVATE",
+      "archive": "🗂 Archive",
+      "restore": "↩ Restore"
+    },
+    "patient": {
+      "severity": "Clinical severity:",
+      "createSurgicalCase": "🔪 Create a surgical case",
+      "demography": "Demographics",
+      "contacts": "Contacts",
+      "mainInfo": "Main information",
+      "medicalHistory": "Medical history",
+      "extra": "Additional",
+      "birthDate": "Birth date",
+      "phone": "Phone",
+      "phoneHint": "Automatically uses country phone code.",
+      "dateHint": "Use format dd/mm/yyyy.",
+      "word": "Patient",
+      "required": "Required"
+    },
+    "ai": {
+      "summaryTitle": "🩺 Patient clinical summary",
+      "loading": "AI analysis loading…",
+      "clinicalStatus": "🚨 Clinical status",
+      "diagnosticAnalysis": "🧠 Diagnostic analysis",
+      "progression": "📈 Disease progression",
+      "details": "🔬 AI analysis details",
+      "why": "🧠 Why AI thinks this",
+      "confidenceScore": "🧠 AI confidence score",
+      "probabilityBars": "🧠 Diagnosis probability bars",
+      "progressionGraph": "📈 Clinical progression graph",
+      "riskHeatmap": "📊 Risk heatmap",
+      "dataCompleteness": "📊 Data completeness",
+      "prognosis": "📈 Prognosis",
+      "noFactors": "AI has not identified key factors yet",
+      "modelConfidence": "Model confidence",
+      "page": "Page",
+      "prev": "← Prev",
+      "next": "Next →"
+    },
+    "timeline": {
+      "title": "📅 Patient timeline",
+      "ai": "🤖 AI",
+      "empty": "No medical events found"
+    },
+    "tpl": {
+      "eegRecDetails": "EEG recommendation template",
+      "eegRecEdit": "Edit EEG recommendation template",
+      "update": "Update template",
+      "notFound": "Template not found",
+      "loading": "Loading…",
+      "title": "Title",
+      "content": "Content",
+      "titleLabel": "Title:",
+      "contentLabel": "Content:",
+      "doctorLabel": "Doctor:",
+      "createdLabel": "Created:",
+      "backToList": "← Back to list",
+      "edit": "✏️ Edit"
+    },
+    "scan": {
+      "fullSize": "Full size",
+      "word": "scan",
+      "preview": "preview",
+      "properties": "Properties",
+      "jpg": "JPG",
+      "png": "PNG"
+    },
+    "aiPhoto": {
+      "eyebrow": "Simulation · AI from a photo",
+      "step1": "1. Case",
+      "step2": "2. Photo",
+      "step3": "3. Area and description",
+      "createNew": "+ Create new",
+      "create": "Create",
+      "loadingCase": "Loading the case…",
+      "note": "Note (optional)",
+      "photo": "Photo",
+      "lead": "Brush over the area that should change and describe the result you want. The model repaints only the selection; the rest of the frame stays as it is.",
+      "warn": "The result is an illustration, not a surgical forecast. The same area with the same description gives a different image every time. For a measurable plan use",
+      "landmarksLink": "landmark annotation",
+      "title": "Photo → area → result"
+    },
+    "plan": {
+      "eyebrow": "Simulation · prototype",
+      "request": "Doctor's request",
+      "lead": "Describe the result you want in plain words. The system maps the request onto the catalogue of procedures, computes before/after measurements and tells you what the request was missing. After that the plan is adjusted with sliders — the values stay measurable and reproducible.",
+      "example": "For example: remove a 2 mm hump and lift the tip by 5 degrees",
+      "patientSex": "Patient's sex",
+      "baseline": "Baseline data",
+      "beforeMeasurements": "“Before” measurements",
+      "beforeHint": "Without them the plan still parses, but the table shows only deltas: to state the “after” value you need the “before” value.",
+      "title": "Plan",
+      "empty": "There is no plan yet. Describe the task on the left and press “Parse request”.",
+      "whatToDo": "What needs to be done",
+      "addProcedure": "Add a procedure",
+      "procedure": "Procedure",
+      "direction": "direction",
+      "remove": "Remove",
+      "measurements": "Measurements",
+      "measurement": "Measurement",
+      "before": "Before",
+      "after": "After",
+      "norm": "Reference",
+      "noMeasurements": "The measurements are not affected.",
+      "remarks": "Remarks",
+      "needsClarification": "Needs clarification",
+      "parsePrefix": "Parsing:",
+      "recalculating": "recalculating…",
+      "noProcedures": "No procedures — there is nothing to perform.",
+      "notInCatalogue": "The procedure is not in the current catalogue.",
+      "outsideCatalogue": "Outside the catalogue",
+      "catalogueSuffix": ", catalogue",
+      "catalogueError": "Could not load the procedure catalogue:",
+      "choose": "— choose —",
+      "optional": "— optional",
+      "pageTitle": "Doctor's request → surgical plan"
+    }
+  }
 }

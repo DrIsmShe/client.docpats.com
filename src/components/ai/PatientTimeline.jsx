@@ -1,6 +1,7 @@
 // src/components/ai/PatientTimeline.jsx
 
 import React from "react";
+import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 
 const riskColors = {
@@ -16,18 +17,19 @@ const riskEmoji = {
 };
 
 export default function PatientTimeline({ events }) {
+  const { t } = useTranslation("common");
   if (!events || events.length === 0) {
     return (
       <div className="bg-white rounded-xl shadow p-4 mt-4">
-        <h3 className="font-semibold mb-3">📅 Patient Timeline</h3>
-        <div className="text-gray-500">Медицинские события не найдены</div>
+        <h3 className="font-semibold mb-3">{t("dp.timeline.title")}</h3>
+        <div className="text-gray-500">{t("dp.timeline.empty")}</div>
       </div>
     );
   }
 
   return (
     <div className="bg-white rounded-xl shadow p-4 mt-4">
-      <h3 className="font-semibold mb-4">📅 Patient Timeline</h3>
+      <h3 className="font-semibold mb-4">{t("dp.timeline.title")}</h3>
 
       <div className="timeline">
         {events.map((event, index) => {
@@ -63,7 +65,7 @@ export default function PatientTimeline({ events }) {
 
                   {event.aiConfidence && (
                     <span className="timeline-ai">
-                      🤖 AI {(event.aiConfidence * 100).toFixed(0)}%
+                      {t("dp.timeline.ai")} {(event.aiConfidence * 100).toFixed(0)}%
                     </span>
                   )}
                 </div>

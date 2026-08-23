@@ -1,5 +1,6 @@
 // ClinicalProgressionGraph.jsx — исправленная версия
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   LineChart,
   Line,
@@ -11,6 +12,7 @@ import {
 } from "recharts";
 
 export default function ClinicalProgressionGraph({ summary }) {
+  const { t } = useTranslation("common");
   const data =
     summary?.clinicalProgression ||
     summary?.progressionGraph ||
@@ -27,7 +29,7 @@ export default function ClinicalProgressionGraph({ summary }) {
 
   return (
     <div className="card shadow-sm border rounded-4 p-3 mb-3">
-      <h5 className="mb-3">📈 Clinical Progression Graph</h5>
+      <h5 className="mb-3">{t("dp.ai.progressionGraph")}</h5>
       <div style={{ width: "100%", height: 280 }}>
         <ResponsiveContainer>
           <LineChart data={normalized}>

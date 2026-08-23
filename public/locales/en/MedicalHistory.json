@@ -37,5 +37,13 @@
     "uploadError": "Error uploading PDF.",
     "downloadError": "Error generating PDF."
   },
-  "ageText": "{{age}} years"
+  "ageText": "{{age}} years",
+  "sections": {
+    "anamnesis": "Anamnesis",
+    "diagnosis": "Diagnosis",
+    "examinations": "Examinations",
+    "meta": "Document info",
+    "patient": "Patient info",
+    "status": "Status"
+  }
 }

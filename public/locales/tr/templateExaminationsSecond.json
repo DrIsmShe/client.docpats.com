@@ -1,0 +1,199 @@
+{
+  "AngiographyScanerTemplateNameofexam": {
+    "buttons": {
+      "save": "Kaydet"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "İfadenin metni"
+      },
+      "title": {
+        "placeholder": "Kısa ad"
+      }
+    },
+    "messages": {
+      "createError": "Eklenemedi",
+      "createSuccess": "Eklendi",
+      "networkError": "Ağ hatası. Tekrar deneyin."
+    },
+    "title": "Başlık"
+  },
+  "AngiographyScanerTemplateNameofexamDetail": {
+    "buttons": {
+      "edit": "Düzenle"
+    },
+    "fields": {
+      "content": "Metin",
+      "title": "Başlık"
+    },
+    "messages": {
+      "loadError": "Yüklenemedi"
+    },
+    "page": {
+      "loading": "Yükleniyor…"
+    },
+    "title": "Başlık"
+  },
+  "AngiographyScanerTemplateNameofexamEdit": {
+    "buttons": {
+      "update": "Güncelle"
+    },
+    "fields": {
+      "content": "Metin",
+      "title": "Başlık"
+    },
+    "messages": {
+      "loadError": "Yüklenemedi",
+      "updateError": "Kaydedilemedi",
+      "updateSuccess": "Kaydedildi"
+    },
+    "title": "Başlık"
+  },
+  "AngiographyScanerTemplateNameofexamList": {
+    "buttons": {
+      "delete": "Sil",
+      "edit": "Düzenle"
+    },
+    "confirm": {
+      "delete": "Bu ifade silinsin mi?"
+    },
+    "messages": {
+      "deleteError": "Silinemedi",
+      "deleteSuccess": "Silindi",
+      "loadError": "Yüklenemedi"
+    },
+    "title": "Başlık"
+  },
+  "AngiographyScanerTemplateRecomendation": {
+    "buttons": {
+      "save": "Kaydet"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "İfadenin metni"
+      },
+      "title": {
+        "placeholder": "Kısa ad"
+      }
+    },
+    "messages": {
+      "createError": "Eklenemedi",
+      "createSuccess": "Eklendi",
+      "networkError": "Ağ hatası. Tekrar deneyin."
+    },
+    "title": "Başlık"
+  },
+  "AngiographyScanerTemplateRecomendationDetails": {
+    "buttons": {
+      "edit": "Düzenle"
+    },
+    "fields": {
+      "content": "Metin",
+      "doctor": "Doktor",
+      "title": "Başlık"
+    },
+    "messages": {
+      "loadError": "Yüklenemedi"
+    },
+    "page": {
+      "loading": "Yükleniyor…"
+    },
+    "title": "Başlık"
+  },
+  "AngiographyScanerTemplateRecomendationEdit": {
+    "buttons": {
+      "update": "Güncelle"
+    },
+    "fields": {
+      "content": "Metin",
+      "title": "Başlık"
+    },
+    "messages": {
+      "loadError": "Yüklenemedi",
+      "updateError": "Kaydedilemedi",
+      "updateSuccess": "Kaydedildi"
+    },
+    "title": "Başlık"
+  },
+  "AngiographyScanerTemplateRecomendationList": {
+    "buttons": {
+      "delete": "Sil",
+      "edit": "Düzenle"
+    },
+    "confirm": {
+      "delete": "Bu ifade silinsin mi?"
+    },
+    "messages": {
+      "deleteError": "Silinemedi",
+      "deleteSuccess": "Silindi",
+      "loadError": "Yüklenemedi"
+    },
+    "title": "Başlık"
+  },
+  "AngiographyScanerTemplateReport": {
+    "buttons": {
+      "save": "Kaydet"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "İfadenin metni"
+      },
+      "title": {
+        "placeholder": "Kısa ad"
+      }
+    },
+    "messages": {
+      "createError": "Eklenemedi",
+      "createSuccess": "Eklendi",
+      "networkError": "Ağ hatası. Tekrar deneyin."
+    },
+    "title": "Başlık"
+  },
+  "AngiographyScanerTemplateReportDetails": {
+    "buttons": {
+      "edit": "Düzenle"
+    },
+    "fields": {
+      "content": "Metin",
+      "doctor": "Doktor",
+      "title": "Başlık"
+    },
+    "messages": {
+      "loadError": "Yüklenemedi"
+    },
+    "page": {
+      "loading": "Yükleniyor…"
+    },
+    "title": "Başlık"
+  },
+  "AngiographyScanerTemplateReportEdit": {
+    "buttons": {
+      "update": "Güncelle"
+    },
+    "fields": {
+      "content": "Metin",
+      "title": "Başlık"
+    },
+    "messages": {
+      "loadError": "Yüklenemedi",
+      "updateError": "Kaydedilemedi",
+      "updateSuccess": "Kaydedildi"
+    },
+    "title": "Başlık"
+  },
+  "AngiographyScanerTemplateReportList": {
+    "buttons": {
+      "delete": "Sil",
+      "edit": "Düzenle"
+    },
+    "confirm": {
+      "delete": "Bu ifade silinsin mi?"
+    },
+    "messages": {
+      "deleteError": "Silinemedi",
+      "deleteSuccess": "Silindi",
+      "loadError": "Yüklenemedi"
+    },
+    "title": "Başlık"
+  }
+}

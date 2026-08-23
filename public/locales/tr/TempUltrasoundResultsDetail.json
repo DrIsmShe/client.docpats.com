@@ -1,0 +1,24 @@
+{
+  "actions": {
+    "confirmDelete": "Bu kayıt silinsin mi?",
+    "createNew": "Oluştur",
+    "delete": "Sil"
+  },
+  "fields": {
+    "createdAt": "Oluşturuldu",
+    "status": "Durum",
+    "tags": "Etiketler"
+  },
+  "messages": {
+    "deleteError": "Silinemedi",
+    "deleted": "Silindi",
+    "loadError": "Yüklenemedi",
+    "loading": "Yükleniyor…",
+    "noData": "Veri yok",
+    "noTags": "Etiket yok"
+  },
+  "status": {
+    "active": "Etkin",
+    "inactive": "Etkin değil"
+  }
+}

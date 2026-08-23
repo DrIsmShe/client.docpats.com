@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
 export default function EEGScanerTemplateRecomendationEdit() {
+  const { t } = useTranslation("common");
   const { id } = useParams();
   const navigate = useNavigate();
   const API_BASE = process.env.REACT_APP_API_URL;
@@ -64,7 +66,7 @@ export default function EEGScanerTemplateRecomendationEdit() {
 
   return (
     <div style={{ maxWidth: "600px", margin: "20px auto" }}>
-      <h2>Edit EEG Scan Recommendation Template</h2>
+      <h2>{t("dp.tpl.eegRecEdit")}</h2>
 
       {message && (
         <div
@@ -82,7 +84,7 @@ export default function EEGScanerTemplateRecomendationEdit() {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Title</label>
+          <label>{t("dp.tpl.title")}</label>
           <input
             type="text"
             name="title"
@@ -94,7 +96,7 @@ export default function EEGScanerTemplateRecomendationEdit() {
         </div>
 
         <div className="form-group">
-          <label>Content</label>
+          <label>{t("dp.tpl.content")}</label>
           <textarea
             name="content"
             value={template.content}
@@ -110,7 +112,7 @@ export default function EEGScanerTemplateRecomendationEdit() {
           className="btn btn-primary"
           style={{ width: "100%", marginTop: "15px" }}
         >
-          Update Template
+          {t("dp.tpl.update")}
         </button>
       </form>
     </div>

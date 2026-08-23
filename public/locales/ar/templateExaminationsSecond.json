@@ -1,0 +1,199 @@
+{
+  "AngiographyScanerTemplateNameofexam": {
+    "buttons": {
+      "save": "حفظ"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "نص الصياغة"
+      },
+      "title": {
+        "placeholder": "اسم قصير"
+      }
+    },
+    "messages": {
+      "createError": "تعذّرت الإضافة",
+      "createSuccess": "تمت الإضافة",
+      "networkError": "خطأ في الشبكة. حاول مرة أخرى."
+    },
+    "title": "العنوان"
+  },
+  "AngiographyScanerTemplateNameofexamDetail": {
+    "buttons": {
+      "edit": "تعديل"
+    },
+    "fields": {
+      "content": "النص",
+      "title": "العنوان"
+    },
+    "messages": {
+      "loadError": "تعذّر التحميل"
+    },
+    "page": {
+      "loading": "جارٍ التحميل…"
+    },
+    "title": "العنوان"
+  },
+  "AngiographyScanerTemplateNameofexamEdit": {
+    "buttons": {
+      "update": "تحديث"
+    },
+    "fields": {
+      "content": "النص",
+      "title": "العنوان"
+    },
+    "messages": {
+      "loadError": "تعذّر التحميل",
+      "updateError": "تعذّر الحفظ",
+      "updateSuccess": "تم الحفظ"
+    },
+    "title": "العنوان"
+  },
+  "AngiographyScanerTemplateNameofexamList": {
+    "buttons": {
+      "delete": "حذف",
+      "edit": "تعديل"
+    },
+    "confirm": {
+      "delete": "حذف هذه الصياغة؟"
+    },
+    "messages": {
+      "deleteError": "تعذّر الحذف",
+      "deleteSuccess": "تم الحذف",
+      "loadError": "تعذّر التحميل"
+    },
+    "title": "العنوان"
+  },
+  "AngiographyScanerTemplateRecomendation": {
+    "buttons": {
+      "save": "حفظ"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "نص الصياغة"
+      },
+      "title": {
+        "placeholder": "اسم قصير"
+      }
+    },
+    "messages": {
+      "createError": "تعذّرت الإضافة",
+      "createSuccess": "تمت الإضافة",
+      "networkError": "خطأ في الشبكة. حاول مرة أخرى."
+    },
+    "title": "العنوان"
+  },
+  "AngiographyScanerTemplateRecomendationDetails": {
+    "buttons": {
+      "edit": "تعديل"
+    },
+    "fields": {
+      "content": "النص",
+      "doctor": "الطبيب",
+      "title": "العنوان"
+    },
+    "messages": {
+      "loadError": "تعذّر التحميل"
+    },
+    "page": {
+      "loading": "جارٍ التحميل…"
+    },
+    "title": "العنوان"
+  },
+  "AngiographyScanerTemplateRecomendationEdit": {
+    "buttons": {
+      "update": "تحديث"
+    },
+    "fields": {
+      "content": "النص",
+      "title": "العنوان"
+    },
+    "messages": {
+      "loadError": "تعذّر التحميل",
+      "updateError": "تعذّر الحفظ",
+      "updateSuccess": "تم الحفظ"
+    },
+    "title": "العنوان"
+  },
+  "AngiographyScanerTemplateRecomendationList": {
+    "buttons": {
+      "delete": "حذف",
+      "edit": "تعديل"
+    },
+    "confirm": {
+      "delete": "حذف هذه الصياغة؟"
+    },
+    "messages": {
+      "deleteError": "تعذّر الحذف",
+      "deleteSuccess": "تم الحذف",
+      "loadError": "تعذّر التحميل"
+    },
+    "title": "العنوان"
+  },
+  "AngiographyScanerTemplateReport": {
+    "buttons": {
+      "save": "حفظ"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "نص الصياغة"
+      },
+      "title": {
+        "placeholder": "اسم قصير"
+      }
+    },
+    "messages": {
+      "createError": "تعذّرت الإضافة",
+      "createSuccess": "تمت الإضافة",
+      "networkError": "خطأ في الشبكة. حاول مرة أخرى."
+    },
+    "title": "العنوان"
+  },
+  "AngiographyScanerTemplateReportDetails": {
+    "buttons": {
+      "edit": "تعديل"
+    },
+    "fields": {
+      "content": "النص",
+      "doctor": "الطبيب",
+      "title": "العنوان"
+    },
+    "messages": {
+      "loadError": "تعذّر التحميل"
+    },
+    "page": {
+      "loading": "جارٍ التحميل…"
+    },
+    "title": "العنوان"
+  },
+  "AngiographyScanerTemplateReportEdit": {
+    "buttons": {
+      "update": "تحديث"
+    },
+    "fields": {
+      "content": "النص",
+      "title": "العنوان"
+    },
+    "messages": {
+      "loadError": "تعذّر التحميل",
+      "updateError": "تعذّر الحفظ",
+      "updateSuccess": "تم الحفظ"
+    },
+    "title": "العنوان"
+  },
+  "AngiographyScanerTemplateReportList": {
+    "buttons": {
+      "delete": "حذف",
+      "edit": "تعديل"
+    },
+    "confirm": {
+      "delete": "حذف هذه الصياغة؟"
+    },
+    "messages": {
+      "deleteError": "تعذّر الحذف",
+      "deleteSuccess": "تم الحذف",
+      "loadError": "تعذّر التحميل"
+    },
+    "title": "العنوان"
+  }
+}

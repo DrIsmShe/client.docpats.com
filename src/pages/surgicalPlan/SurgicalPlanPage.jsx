@@ -79,16 +79,17 @@ const formatDelta = (value) =>
    Карточка операции с ползунками
    ══════════════════════════════════════════════════════════════ */
 function OperationCard({ operation, spec, lang, onChange, onRemove }) {
+  const { t } = useTranslation("common");
   if (!spec) {
     return (
       <div className={`${styles.opCard} ${styles.opCardUnknown}`}>
         <div className={styles.opHead}>
           <span className={styles.opTitle}>{operation.code}</span>
           <button type="button" className={styles.iconBtn} onClick={onRemove}>
-            Убрать
+            {t("dp.plan.remove")}
           </button>
         </div>
-        <p className={styles.opNote}>Операции нет в текущем каталоге.</p>
+        <p className={styles.opNote}>{t("dp.plan.notInCatalogue")}</p>
       </div>
     );
   }
@@ -118,7 +119,7 @@ function OperationCard({ operation, spec, lang, onChange, onRemove }) {
         </span>
 
         <button type="button" className={styles.iconBtn} onClick={onRemove}>
-          Убрать
+          {t("dp.plan.remove")}
         </button>
       </div>
 
@@ -197,8 +198,9 @@ function OperationCard({ operation, spec, lang, onChange, onRemove }) {
    Таблица «до / после»
    ══════════════════════════════════════════════════════════════ */
 function DeltaTable({ rows }) {
+  const { t } = useTranslation("common");
   if (!rows.length) {
-    return <p className={styles.muted}>Измерения не затронуты.</p>;
+    return <p className={styles.muted}>{t("dp.plan.noMeasurements")}</p>;
   }
 
   return (
@@ -206,11 +208,11 @@ function DeltaTable({ rows }) {
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Измерение</th>
-            <th>До</th>
-            <th>После</th>
+            <th>{t("dp.plan.measurement")}</th>
+            <th>{t("dp.plan.before")}</th>
+            <th>{t("dp.plan.after")}</th>
             <th>Δ</th>
-            <th>Норма</th>
+            <th>{t("dp.plan.norm")}</th>
           </tr>
         </thead>
         <tbody>
@@ -229,7 +231,7 @@ function DeltaTable({ rows }) {
                 {row.kind === "directional" ? (
                   <td className={styles.num} colSpan={2}>
                     <span className={styles.direction}>
-                      {DIRECTION_SIGN[row.direction] || "?"} направление
+                      {DIRECTION_SIGN[row.direction] || "?"} {t("dp.plan.direction")}
                     </span>
                   </td>
                 ) : (
@@ -261,7 +263,7 @@ function DeltaTable({ rows }) {
    Страница
    ══════════════════════════════════════════════════════════════ */
 export default function SurgicalPlanPage() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation("common");
   const lang = String(i18n?.language || "ru").slice(0, 2);
 
   const [catalog, setCatalog] = useState(null);
@@ -434,7 +436,7 @@ export default function SurgicalPlanPage() {
     return (
       <div className={styles.page}>
         <div className={styles.alertError}>
-          Не удалось загрузить каталог операций: {catalogError}
+          {t("dp.plan.catalogueError")} {catalogError}
         </div>
       </div>
     );
@@ -443,24 +445,21 @@ export default function SurgicalPlanPage() {
   return (
     <div className={styles.page}>
       <header className={styles.hero}>
-        <span className={styles.eyebrow}>Моделирование · прототип</span>
-        <h1 className={styles.title}>Запрос врача → план операции</h1>
+        <span className={styles.eyebrow}>{t("dp.plan.eyebrow")}</span>
+        <h1 className={styles.title}>{t("dp.plan.pageTitle")}</h1>
         <p className={styles.lead}>
-          Опишите желаемый результат обычными словами. Система разложит запрос
-          по каталогу операций, посчитает измерения «до/после» и скажет, чего в
-          запросе не хватило. Дальше план правится ползунками — величины
-          остаются измеримыми и воспроизводимыми.
+          {t("dp.plan.lead")}
         </p>
       </header>
 
       <div className={styles.columns}>
         {/* ── Ввод ──────────────────────────────────────────── */}
         <section className={styles.panel}>
-          <h2 className={styles.panelTitle}>Исходные данные</h2>
+          <h2 className={styles.panelTitle}>{t("dp.plan.baseline")}</h2>
 
           <div className={styles.field}>
             <label className={styles.fieldLabel} htmlFor="sp-procedure">
-              Процедура
+              {t("dp.plan.procedure")}
             </label>
             <select id="sp-procedure" className={styles.select} value={PROCEDURE} disabled>
               <option value={PROCEDURE}>
@@ -470,7 +469,7 @@ export default function SurgicalPlanPage() {
           </div>
 
           <div className={styles.field}>
-            <span className={styles.fieldLabel}>Пол пациента</span>
+            <span className={styles.fieldLabel}>{t("dp.plan.patientSex")}</span>
             <div className={styles.segmented}>
               {GENDERS.map((option) => (
                 <button
@@ -491,12 +490,11 @@ export default function SurgicalPlanPage() {
 
           <div className={styles.field}>
             <span className={styles.fieldLabel}>
-              Измерения «до»{" "}
-              <span className={styles.muted}>— необязательно</span>
+              {t("dp.plan.beforeMeasurements")}{" "}
+              <span className={styles.muted}>{t("dp.plan.optional")}</span>
             </span>
             <p className={styles.hint}>
-              Без них план разберётся, но таблица покажет только дельты: чтобы
-              назвать значение «после», нужно знать значение «до».
+              {t("dp.plan.beforeHint")}
             </p>
 
             <div className={styles.measurements}>
@@ -528,7 +526,7 @@ export default function SurgicalPlanPage() {
 
           <div className={styles.field}>
             <label className={styles.fieldLabel} htmlFor="sp-prompt">
-              Что нужно сделать
+              {t("dp.plan.whatToDo")}
             </label>
             <textarea
               id="sp-prompt"
@@ -536,7 +534,7 @@ export default function SurgicalPlanPage() {
               rows={4}
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Например: убрать горбинку 2 мм и приподнять кончик на 5 градусов"
+              placeholder={t("dp.plan.example")}
             />
           </div>
 
@@ -555,7 +553,7 @@ export default function SurgicalPlanPage() {
         {/* ── План ──────────────────────────────────────────── */}
         <section className={styles.panel}>
           <div className={styles.panelHead}>
-            <h2 className={styles.panelTitle}>План</h2>
+            <h2 className={styles.panelTitle}>{t("dp.plan.title")}</h2>
             {validation ? (
               <span
                 className={
@@ -568,13 +566,13 @@ export default function SurgicalPlanPage() {
               </span>
             ) : null}
             {revalidating ? (
-              <span className={styles.muted}>пересчёт…</span>
+              <span className={styles.muted}>{t("dp.plan.recalculating")}</span>
             ) : null}
           </div>
 
           {!plan ? (
             <p className={styles.placeholder}>
-              Плана пока нет. Опишите задачу слева и нажмите «Разобрать запрос».
+              {t("dp.plan.empty")}
             </p>
           ) : (
             <>
@@ -582,7 +580,7 @@ export default function SurgicalPlanPage() {
 
               {plan.operations.length === 0 ? (
                 <p className={styles.muted}>
-                  Ни одной операции — исполнять нечего.
+                  {t("dp.plan.noProcedures")}
                 </p>
               ) : (
                 plan.operations.map((operation, index) => (
@@ -602,7 +600,7 @@ export default function SurgicalPlanPage() {
               {addable.length ? (
                 <div className={styles.field}>
                   <label className={styles.fieldLabel} htmlFor="sp-add">
-                    Добавить операцию
+                    {t("dp.plan.addProcedure")}
                   </label>
                   <select
                     id="sp-add"
@@ -610,7 +608,7 @@ export default function SurgicalPlanPage() {
                     value=""
                     onChange={(e) => e.target.value && handleAdd(e.target.value)}
                   >
-                    <option value="">— выберите —</option>
+                    <option value="">{t("dp.plan.choose")}</option>
                     {addable.map((op) => (
                       <option key={op.code} value={op.code}>
                         {pickLabel(op.label, lang)}
@@ -622,7 +620,7 @@ export default function SurgicalPlanPage() {
 
               {plan.clarifications.length ? (
                 <div className={styles.block}>
-                  <h3 className={styles.blockTitle}>Нужно уточнить</h3>
+                  <h3 className={styles.blockTitle}>{t("dp.plan.needsClarification")}</h3>
                   {plan.clarifications.map((item, i) => (
                     <div
                       key={i}
@@ -641,7 +639,7 @@ export default function SurgicalPlanPage() {
 
               {plan.outOfScope.length ? (
                 <div className={styles.block}>
-                  <h3 className={styles.blockTitle}>Вне каталога</h3>
+                  <h3 className={styles.blockTitle}>{t("dp.plan.outsideCatalogue")}</h3>
                   {plan.outOfScope.map((item, i) => (
                     <div key={i} className={styles.note}>
                       <strong>{item.request}</strong>
@@ -654,13 +652,13 @@ export default function SurgicalPlanPage() {
               {validation ? (
                 <>
                   <div className={styles.block}>
-                    <h3 className={styles.blockTitle}>Измерения</h3>
+                    <h3 className={styles.blockTitle}>{t("dp.plan.measurements")}</h3>
                     <DeltaTable rows={validation.measurements.rows} />
                   </div>
 
                   {findings.length ? (
                     <div className={styles.block}>
-                      <h3 className={styles.blockTitle}>Замечания</h3>
+                      <h3 className={styles.blockTitle}>{t("dp.plan.remarks")}</h3>
                       {[...errors, ...warnings, ...infos].map((f, i) => (
                         <div
                           key={i}
@@ -682,7 +680,7 @@ export default function SurgicalPlanPage() {
 
               {meta ? (
                 <p className={styles.meta}>
-                  Разбор: {meta.model}, каталог {meta.catalogVersion}
+                  {t("dp.plan.parsePrefix")} {meta.model}{t("dp.plan.catalogueSuffix")} {meta.catalogVersion}
                   {meta.usage?.outputTokens
                     ? `, ${meta.usage.outputTokens} токенов ответа`
                     : ""}

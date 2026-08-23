@@ -212,7 +212,7 @@ export default function SPECTScanerDetails() {
 
       <div className="spe-hero">
         <div className="spe-hero-inner">
-          <div className="spe-hero-tag">DocPats · SPECT</div>
+          <div className="spe-hero-tag">{t("common:dp.pageTitle.spect")}</div>
           <h1 className="spe-hero-h1">{t("SPECTScanerDetails.page.title")}</h1>
           <p className="spe-hero-sub">
             {patientName} · {dateFormatted}
@@ -338,7 +338,7 @@ export default function SPECTScanerDetails() {
                       className="spe-img-wrap"
                       onClick={() => setLightboxImg(img)}
                     >
-                      <img src={img} alt="scan" />
+                      <img src={img} alt={t("common:dp.scan.word")} />
                     </div>
                   ))}
                 </div>
@@ -387,7 +387,7 @@ export default function SPECTScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

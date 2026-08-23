@@ -24,6 +24,10 @@
       "download": "PDF indir",
       "upload": "PDF yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "AngiographyScanerTemplateDiagnosis": {
@@ -63,14 +67,12 @@
         "success": "✅ Tanı şablonu başarıyla güncellendi!",
         "error": "❌ Şablon güncellenirken hata oluştu"
       },
-
       "labels": {
         "title": "Başlık",
         "titlePlaceholder": "Başlık girin...",
         "content": "İçerik",
         "contentPlaceholder": "İçeriği girin..."
       },
-
       "buttons": {
         "update": "Şablonu Güncelle"
       }
@@ -352,6 +354,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "CTScanerDetails": {
@@ -385,6 +391,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "DopleryScanerDetails": {
@@ -418,6 +428,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "EchoEKGScanerDetails": {
@@ -451,6 +465,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "EEGScanerDetails": {
@@ -484,6 +502,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "EKGScanerDetails": {
@@ -517,6 +539,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "GastroscopyScanerDetails": {
@@ -550,6 +576,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "GinecologyDetails": {
@@ -583,6 +613,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "HOLTERScanerDetails": {
@@ -616,6 +650,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "LabtestScanerDetails": {
@@ -625,6 +663,10 @@
       "noData": "Veri yok",
       "errors": {
         "fetchError": "Laboratuvar analizi yüklenemedi."
+      },
+      "messages": {
+        "uploadError": "PDF yükleme hatası",
+        "uploadSuccess": "PDF başarıyla yüklendi! Bağlantı:"
       }
     },
     "files": {
@@ -650,6 +692,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "MRIScanerDetails": {
@@ -659,6 +705,10 @@
       "noData": "Veri bulunamadı",
       "errors": {
         "fetchError": "MR inceleme verileri alınamadı."
+      },
+      "messages": {
+        "uploadError": "PDF yükleme hatası",
+        "uploadSuccess": "PDF başarıyla yüklendi! Bağlantı:"
       }
     },
     "fields": {
@@ -679,6 +729,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "PETScanerDetails": {
@@ -739,6 +793,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "SpirometryScanerDetails": {
@@ -768,6 +826,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "USMScanerDetails": {
@@ -797,6 +859,10 @@
       "download": "PDF İndir",
       "upload": "PDF Yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
   },
   "XRAYScanerDetails": {
@@ -826,6 +892,34 @@
       "download": "PDF indir",
       "upload": "PDF yükle",
       "print": "Yazdır"
+    },
+    "sections": {
+      "findings": "Bulgular",
+      "general": "Genel bilgi"
     }
+  },
+  "page": {
+    "error": "Hata",
+    "errors": {
+      "fetchError": "Veriler yüklenemedi",
+      "uploadError": "Dosya yüklenemedi"
+    },
+    "loading": "Yükleniyor…"
+  },
+  "buttons": {
+    "delete": "Sil",
+    "upload": "Yükle"
+  },
+  "confirm": {
+    "delete": "Sil"
+  },
+  "fields": {
+    "images": "Görüntüler",
+    "no": "Hayır",
+    "yes": "Evet"
+  },
+  "sections": {
+    "findings": "Bulgular",
+    "general": "Genel bilgi"
   }
 }

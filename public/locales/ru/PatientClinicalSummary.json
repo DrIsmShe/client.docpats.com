@@ -4,7 +4,8 @@
   },
   "buttons": {
     "backToPatient": "Назад к пациенту",
-    "openPatientCard": "Открыть карту пациента"
+    "openPatientCard": "Открыть карту пациента",
+    "generating": "Формируем…"
   },
   "sections": {
     "mainComplaints": "Основные жалобы",

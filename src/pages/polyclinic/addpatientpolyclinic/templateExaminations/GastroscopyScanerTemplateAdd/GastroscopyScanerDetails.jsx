@@ -219,7 +219,7 @@ export default function GastroscopyScanerDetails() {
 
       <div className="gas-hero">
         <div className="gas-hero-inner">
-          <div className="gas-hero-tag">DocPats · Gastroscopy</div>
+          <div className="gas-hero-tag">{t("common:dp.pageTitle.gastroscopy")}</div>
           <h1 className="gas-hero-h1">
             {t("GastroscopyScanerDetails.page.title")}
           </h1>
@@ -405,7 +405,7 @@ export default function GastroscopyScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

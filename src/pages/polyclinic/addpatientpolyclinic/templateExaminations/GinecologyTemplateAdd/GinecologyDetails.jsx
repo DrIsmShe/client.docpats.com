@@ -214,7 +214,7 @@ export default function GinecologyDetails() {
 
       <div className="gin-hero">
         <div className="gin-hero-inner">
-          <div className="gin-hero-tag">DocPats · Gynecology</div>
+          <div className="gin-hero-tag">{t("common:dp.pageTitle.gynecology")}</div>
           <h1 className="gin-hero-h1">{t("GinecologyDetails.page.title")}</h1>
           <p className="gin-hero-sub">
             {patientName} · {dateFormatted}
@@ -389,7 +389,7 @@ export default function GinecologyDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

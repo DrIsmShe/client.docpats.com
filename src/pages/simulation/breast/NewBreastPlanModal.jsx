@@ -275,7 +275,7 @@ export default function NewBreastPlanModal({ open, onClose, onCreated }) {
               <div style={photoPreviewStyle}>
                 <img
                   src={photo.url}
-                  alt="preview"
+                  alt={t("common:dp.scan.preview")}
                   style={photoPreviewImgStyle}
                 />
                 <div style={{ fontSize: 12, color: "#888", marginTop: 4 }}>

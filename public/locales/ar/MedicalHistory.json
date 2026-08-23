@@ -17,7 +17,6 @@
     "anamnesisVitae": "سوابق الحياة (Anamnesis vitae)",
     "statusPreasens": "الحالة الراهنة (Status praesens)",
     "statusLocalis": "الحالة الموضعية (Status localis)",
-
     "ctScanResults": "نتائج التصوير المقطعي المحوسب (CT)",
     "mriResults": "نتائج التصوير بالرنين المغناطيسي (MRI)",
     "ultrasoundResults": "نتائج فحص الأمواج فوق الصوتية",
@@ -38,5 +37,13 @@
     "uploadError": "حدث خطأ أثناء رفع ملف PDF.",
     "downloadError": "حدث خطأ أثناء إنشاء ملف PDF."
   },
-  "ageText": "عمر المريض {{age}} سنة"
+  "ageText": "عمر المريض {{age}} سنة",
+  "sections": {
+    "anamnesis": "السوابق",
+    "diagnosis": "التشخيص",
+    "examinations": "الفحوصات",
+    "meta": "معلومات الوثيقة",
+    "patient": "معلومات المريض",
+    "status": "الحالة"
+  }
 }

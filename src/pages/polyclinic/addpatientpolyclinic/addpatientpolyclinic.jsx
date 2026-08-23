@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import InputMask from "react-input-mask";
 import PhoneInput from "react-phone-input-2";
@@ -13,6 +14,7 @@ import { POLYCLINIC_PATIENT_CREATED } from "../../../lib/events";
 import { COUNTRIES, COUNTRY_ISO } from "../../../constants/countries";
 
 const Addpatient = () => {
+  const { t } = useTranslation("common");
   const navigate = useNavigate();
 
   // -------- Auth / UI state
@@ -276,13 +278,13 @@ const Addpatient = () => {
   }, [profileImage]);
 
   // -------- Render
-  if (!authChecked) return <div>Загрузка...</div>;
+  if (!authChecked) return <div>{t("common:common.loadingDots")}</div>;
   if (!isAuthenticated) return null;
 
   return (
     <div>
       <div className="pagetitle">
-        <h1>Add New patient</h1>
+        <h1>{t("patientArea:addPatient.title")}</h1>
       </div>
 
       <section className="section profile">
@@ -326,7 +328,7 @@ const Addpatient = () => {
                           htmlFor="profileImage"
                           className="col-md-4 col-lg-3 col-form-label"
                         >
-                          Patient photo
+                          {t("patientArea:addPatient.photo")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <img
@@ -335,7 +337,7 @@ const Addpatient = () => {
                                 ? URL.createObjectURL(profileImage)
                                 : "/images/avatar/1.jpg"
                             }
-                            alt="Profile"
+                            alt={t("patientArea:addPatient.profile")}
                             style={{ maxWidth: "150px", borderRadius: "8px" }}
                           />
                           <div className="pt-2 d-flex align-items-center gap-2">
@@ -346,7 +348,7 @@ const Addpatient = () => {
                                 document.getElementById("profileImage").click()
                               }
                             >
-                              📁 Choose Photo
+                              {t("patientArea:addPatient.choosePhoto")}
                             </button>
                             <span style={{ fontSize: "0.9em", color: "#555" }}>
                               {profileImage
@@ -368,7 +370,7 @@ const Addpatient = () => {
                       {/* Identity Document */}
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          Identity Document
+                          {t("patientArea:addPatient.idDocument")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <input
@@ -385,7 +387,7 @@ const Addpatient = () => {
                       {/* First & Last Name */}
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          First Name
+                          {t("patientArea:addPatient.firstName")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <input
@@ -401,7 +403,7 @@ const Addpatient = () => {
 
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          Last Name
+                          {t("patientArea:addPatient.lastName")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <input
@@ -418,7 +420,7 @@ const Addpatient = () => {
                       {/* Country */}
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          Country
+                          {t("patientArea:addPatient.country")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <select
@@ -427,7 +429,7 @@ const Addpatient = () => {
                             value={formData.country}
                             onChange={handleChange}
                           >
-                            <option value="">Select country</option>
+                            <option value="">{t("patientArea:addPatient.selectCountry")}</option>
                             {countries.map((c, i) => (
                               <option key={i} value={c}>
                                 {c}
@@ -439,7 +441,7 @@ const Addpatient = () => {
                       {/* Phone */}
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          Phone
+                          {t("dp.patient.phone")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <PhoneInput
@@ -458,7 +460,7 @@ const Addpatient = () => {
                           />
 
                           <small className="text-muted">
-                            Automatically uses country phone code.
+                            {t("dp.patient.phoneHint")}
                           </small>
                         </div>
                       </div>
@@ -466,7 +468,7 @@ const Addpatient = () => {
                       {/* Gender */}
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          Gender
+                          {t("patientArea:addPatient.gender")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <select
@@ -476,9 +478,9 @@ const Addpatient = () => {
                             onChange={handleChange}
                             required
                           >
-                            <option value="">Select gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="">{t("patientArea:addPatient.selectGender")}</option>
+                            <option value="male">{t("patientArea:addPatient.male")}</option>
+                            <option value="female">{t("patientArea:addPatient.female")}</option>
                           </select>
                         </div>
                       </div>
@@ -486,7 +488,7 @@ const Addpatient = () => {
                       {/* Birth date */}
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          Birth date
+                          {t("dp.patient.birthDate")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <InputMask
@@ -503,7 +505,7 @@ const Addpatient = () => {
                           />
                           {!isBirthDateValid && formData.birthDate && (
                             <div className="invalid-feedback">
-                              Use format dd/mm/yyyy.
+                              {t("dp.patient.dateHint")}
                             </div>
                           )}
                         </div>
@@ -512,7 +514,7 @@ const Addpatient = () => {
                       {/* Immunization */}
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          Immunization
+                          {t("patientArea:addPatient.immunization")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <select
@@ -522,18 +524,18 @@ const Addpatient = () => {
                             onChange={handleChange}
                           >
                             <option value="">
-                              Select your immunization status
+                              {t("patientArea:addPatient.selectImmunization")}
                             </option>
                             <option value="Fully vaccinated">
-                              Fully vaccinated
+                              {t("patientArea:addPatient.fullyVaccinated")}
                             </option>
                             <option value="Partially vaccinated">
-                              Partially vaccinated
+                              {t("patientArea:addPatient.partiallyVaccinated")}
                             </option>
                             <option value="Not vaccinated">
-                              Not vaccinated
+                              {t("patientArea:addPatient.notVaccinated")}
                             </option>
-                            <option value="Unknown">Unknown</option>
+                            <option value="Unknown">{t("patientArea:addPatient.unknown")}</option>
                           </select>
                         </div>
                       </div>
@@ -541,7 +543,7 @@ const Addpatient = () => {
                       {/* Allergies */}
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          Allergies
+                          {t("patientArea:addPatient.allergies")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <select
@@ -550,7 +552,7 @@ const Addpatient = () => {
                             value={formData.allergies}
                             onChange={handleChange}
                           >
-                            <option value="">Select an allergen</option>
+                            <option value="">{t("patientArea:addPatient.selectAllergen")}</option>
                             {allergens.map((a, i) => (
                               <option key={i} value={a}>
                                 {a}
@@ -563,7 +565,7 @@ const Addpatient = () => {
                       {/* Chronic / Family / Operations */}
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          Chronic Diseases
+                          {t("patientArea:addPatient.chronic")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <input
@@ -578,7 +580,7 @@ const Addpatient = () => {
 
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          Family History Of Disease
+                          {t("patientArea:addPatient.familyHistory")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <input
@@ -593,7 +595,7 @@ const Addpatient = () => {
 
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          History of operations
+                          {t("patientArea:addPatient.operations")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <input
@@ -609,7 +611,7 @@ const Addpatient = () => {
                       {/* Bad habits */}
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          Bad habits
+                          {t("patientArea:addPatient.badHabits")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <select
@@ -618,13 +620,13 @@ const Addpatient = () => {
                             value={formData.badHabits}
                             onChange={handleChange}
                           >
-                            <option value="">Choose a bad habit</option>
-                            <option value="No bad habits">No bad habits</option>
-                            <option value="Smoking">Smoking</option>
-                            <option value="Alcohol">Alcohol</option>
-                            <option value="Narcotic">Narcotic</option>
-                            <option value="Overeating">Overeating</option>
-                            <option value="Lack of sleep">Lack of sleep</option>
+                            <option value="">{t("patientArea:addPatient.chooseBadHabit")}</option>
+                            <option value="No bad habits">{t("patientArea:addPatient.noBadHabits")}</option>
+                            <option value="Smoking">{t("patientArea:addPatient.smoking")}</option>
+                            <option value="Alcohol">{t("patientArea:addPatient.alcohol")}</option>
+                            <option value="Narcotic">{t("patientArea:addPatient.narcotic")}</option>
+                            <option value="Overeating">{t("patientArea:addPatient.overeating")}</option>
+                            <option value="Lack of sleep">{t("patientArea:addPatient.lackOfSleep")}</option>
                           </select>
                         </div>
                       </div>
@@ -632,7 +634,7 @@ const Addpatient = () => {
                       {/* About */}
                       <div className="row mb-3">
                         <label className="col-md-4 col-lg-3 col-form-label">
-                          About
+                          {t("patientArea:addPatient.about")}
                         </label>
                         <div className="col-md-8 col-lg-9">
                           <textarea
@@ -665,7 +667,7 @@ const Addpatient = () => {
               <div className="card-body profile-card pt-4 d-flex flex-column align-items-center">
                 <img
                   src="assets/img/profile-img.jpg"
-                  alt="Profile"
+                  alt={t("patientArea:addPatient.profile")}
                   className="rounded-circle"
                 />
                 <h2>{user?.firstName}</h2>

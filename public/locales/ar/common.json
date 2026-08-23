@@ -1231,7 +1231,8 @@
     "errMicDenied": "لم يسمح المتصفح بالوصول إلى الميكروفون. اسمح به في إعدادات الموقع.",
     "errMicUnavailable": "الميكروفون غير متاح. تأكد من توصيله ومن أنه غير مستخدم من برنامج آخر.",
     "noteCodeFromSpeech": "أُدرج رمز ICD-10 من الكلام وليس له عنوان رسمي. أكّد الرمز في حقل البحث ليظهر العنوان الرسمي.",
-    "noteTextNeedsCode": "لم يُنقل نص التشخيص: يظهر الحقل فقط بعد اختيار رمز ICD-10. اختر رمزًا ثم اضغط «→ إلى الحقل» مرة أخرى."
+    "noteTextNeedsCode": "لم يُنقل نص التشخيص: يظهر الحقل فقط بعد اختيار رمز ICD-10. اختر رمزًا ثم اضغط «→ إلى الحقل» مرة أخرى.",
+    "langLabel": "اللغة:"
   },
   "medicalHistoryForm": {
     "labels": {
@@ -1251,7 +1252,18 @@
     },
     "placeholders": {
       "diagnosisInput": "اختر التشخيص من القائمة...",
-      "additionalDiagnosis": "أضف ملاحظة إضافية حول التشخيص..."
+      "additionalDiagnosis": "أضف ملاحظة إضافية حول التشخيص...",
+      "anamnesisMorbi": "قصة المرض الحالي…",
+      "anamnesisVitae": "قصة الحياة، الأمراض السابقة…",
+      "complaints": "صف شكاوى المريض…",
+      "ctScanResults": "نتائج التصوير المقطعي…",
+      "diagnosisText": "نص التشخيص بلغتك (مُعبأ من ICD-10، يمكنك التعديل)…",
+      "laboratoryTestResults": "نتائج التحاليل…",
+      "mriResults": "نتائج الرنين المغناطيسي…",
+      "recommendations": "توصيات العلاج وخطة المتابعة…",
+      "statusLocalis": "وصف الحالة الموضعية…",
+      "statusPreasens": "الحالة الموضوعية الحالية…",
+      "ultrasoundResults": "نتائج الموجات فوق الصوتية…"
     },
     "buttons": {
       "insert": "إدراج",
@@ -1267,7 +1279,9 @@
       "fillRequired": "يرجى تعبئة حقل {{field}}.",
       "requiredList": "يرجى تعبئة الحقول المطلوبة التالية:",
       "loginRequired": "يرجى تسجيل الدخول.",
-      "invalidDiagnosis": "يرجى اختيار تشخيص صحيح من القائمة."
+      "invalidDiagnosis": "يرجى اختيار تشخيص صحيح من القائمة.",
+      "diagnosisTextRequired": "أدخل نص التشخيص بلغتك",
+      "icdRequired": "اختر رمز ICD-10"
     },
     "modal": {
       "title": "معاينة القالب"
@@ -1279,7 +1293,19 @@
     "profileCard": {
       "speciality": "التخصص"
     },
-    "loading": "جارٍ التحميل..."
+    "loading": "جارٍ التحميل...",
+    "hints": {
+      "diagnosisText": "مُعبأ تلقائيًا من ICD-10. ترجمه أو أعد صياغته بلغتك."
+    },
+    "messages": {
+      "errorOccurred": "حدث خطأ.",
+      "patientAdded": "تمت إضافة المريض"
+    },
+    "requiredFilled": "حقول إلزامية مملوءة",
+    "templateSelector": {
+      "select": "اختر قالبًا"
+    },
+    "title": "إضافة سجل مرضي"
   },
   "publicClinic": {
     "leadFormTitle": "اترك طلبًا — سنتواصل معك",
@@ -1938,5 +1964,178 @@
     "deleteOne": "حذف الإشعار",
     "deleteConfirm": "حذف هذا الإشعار؟"
   },
-  "profileAbout": "نبذة"
+  "profileAbout": "نبذة",
+  "contentLabel": "النص",
+  "doctorLabel": "الطبيب",
+  "editButton": "تعديل",
+  "errorLoad": "تعذّر التحميل",
+  "pageTitle": "الصياغات",
+  "titleLabel": "العنوان",
+  "errorUpdate": "تعذّر الحفظ",
+  "successUpdate": "تم الحفظ",
+  "updateButton": "تحديث",
+  "confirmDelete": "حذف هذا العنصر؟",
+  "deleteButton": "حذف",
+  "emptyList": "القائمة فارغة",
+  "errorDelete": "تعذّر الحذف",
+  "successDelete": "تم الحذف",
+  "contentPlaceholder": "نص الصياغة",
+  "errorAdd": "تعذّرت الإضافة",
+  "networkError": "خطأ في الشبكة. حاول مرة أخرى.",
+  "saveButton": "حفظ",
+  "successAdd": "تمت الإضافة",
+  "titlePlaceholder": "اسم قصير",
+  "dp": {
+    "pageTitle": {
+      "polyclinic": "DocPats · العيادة الخارجية",
+      "patient": "DocPats · المريض",
+      "privatePatient": "DocPats · مريض خاص",
+      "doctorPortal": "DocPats · بوابة الطبيب",
+      "medicalHistory": "DocPats · السجل المرضي",
+      "angiography": "DocPats · تصوير الأوعية",
+      "ct": "DocPats · التصوير المقطعي",
+      "capsule": "DocPats · تنظير الكبسولة",
+      "coronography": "DocPats · تصوير الشرايين التاجية",
+      "doppler": "DocPats · دوبلر",
+      "eeg": "DocPats · تخطيط الدماغ",
+      "ekg": "DocPats · تخطيط القلب",
+      "echo": "DocPats · تخطيط صدى القلب",
+      "gastroscopy": "DocPats · تنظير المعدة",
+      "gynecology": "DocPats · أمراض النساء",
+      "holter": "DocPats · هولتر",
+      "lab": "DocPats · التحاليل",
+      "mri": "DocPats · الرنين المغناطيسي",
+      "pet": "DocPats · التصوير البوزيتروني",
+      "spect": "DocPats · سبيكت",
+      "spirometry": "DocPats · قياس التنفس",
+      "ultrasound": "DocPats · الموجات فوق الصوتية",
+      "xray": "DocPats · الأشعة السينية"
+    },
+    "list": {
+      "all": "الكل",
+      "active": "النشطون",
+      "archived": "المؤرشفون",
+      "registered": "المسجّلون",
+      "private": "الخاصون",
+      "registeredPatient": "مريض مسجّل",
+      "privatePatient": "مريض خاص",
+      "registeredBadge": "مسجّل",
+      "privateBadge": "خاص",
+      "archive": "🗂 أرشفة",
+      "restore": "↩ استعادة"
+    },
+    "patient": {
+      "severity": "شدّة الحالة:",
+      "createSurgicalCase": "🔪 إنشاء حالة جراحية",
+      "demography": "البيانات الديموغرافية",
+      "contacts": "جهات الاتصال",
+      "mainInfo": "المعلومات الأساسية",
+      "medicalHistory": "التاريخ الطبي",
+      "extra": "إضافي",
+      "birthDate": "تاريخ الميلاد",
+      "phone": "الهاتف",
+      "phoneHint": "يُضاف رمز الدولة تلقائيًا.",
+      "dateHint": "الصيغة: يوم/شهر/سنة.",
+      "word": "المريض",
+      "required": "إلزامي"
+    },
+    "ai": {
+      "summaryTitle": "🩺 الملخّص السريري للمريض",
+      "loading": "جارٍ إعداد التحليل…",
+      "clinicalStatus": "🚨 الحالة السريرية",
+      "diagnosticAnalysis": "🧠 التحليل التشخيصي",
+      "progression": "📈 تطوّر المرض",
+      "details": "🔬 تفاصيل التحليل",
+      "why": "🧠 لماذا يرى النموذج ذلك",
+      "confidenceScore": "🧠 درجة ثقة النموذج",
+      "probabilityBars": "🧠 احتمالات التشخيص",
+      "progressionGraph": "📈 رسم التطوّر السريري",
+      "riskHeatmap": "📊 خريطة المخاطر",
+      "dataCompleteness": "📊 اكتمال البيانات",
+      "prognosis": "📈 المآل",
+      "noFactors": "لم تُحدَّد العوامل الرئيسية بعد",
+      "modelConfidence": "ثقة النموذج",
+      "page": "الصفحة",
+      "prev": "← السابق",
+      "next": "التالي →"
+    },
+    "timeline": {
+      "title": "📅 الخط الزمني للمريض",
+      "ai": "🤖 ذكاء اصطناعي",
+      "empty": "لم يتم العثور على أحداث طبية"
+    },
+    "tpl": {
+      "eegRecDetails": "قالب توصيات تخطيط الدماغ",
+      "eegRecEdit": "تعديل قالب توصيات تخطيط الدماغ",
+      "update": "تحديث القالب",
+      "notFound": "لم يُعثر على القالب",
+      "loading": "جارٍ التحميل…",
+      "title": "العنوان",
+      "content": "المحتوى",
+      "titleLabel": "العنوان:",
+      "contentLabel": "المحتوى:",
+      "doctorLabel": "الطبيب:",
+      "createdLabel": "أُنشئ:",
+      "backToList": "← إلى القائمة",
+      "edit": "✏️ تعديل"
+    },
+    "scan": {
+      "fullSize": "الحجم الكامل",
+      "word": "لقطة",
+      "preview": "معاينة",
+      "properties": "الخصائص",
+      "jpg": "JPG",
+      "png": "PNG"
+    },
+    "aiPhoto": {
+      "eyebrow": "النمذجة · الذكاء الاصطناعي حسب الصورة",
+      "step1": "1. الحالة",
+      "step2": "2. الصورة",
+      "step3": "3. المنطقة والوصف",
+      "createNew": "+ إنشاء جديد",
+      "create": "إنشاء",
+      "loadingCase": "جارٍ تحميل الحالة…",
+      "note": "ملاحظة (اختياري)",
+      "photo": "الصورة",
+      "lead": "حدّد بالفرشاة المنطقة التي يجب أن تتغيّر وصِف النتيجة المرغوبة. يعيد النموذج رسم المحدّد فقط، ويبقى باقي الإطار كما هو.",
+      "warn": "النتيجة توضيح لا تنبؤ جراحي. المنطقة نفسها بالوصف نفسه تعطي صورة مختلفة في كل مرة. للحصول على خطة قابلة للقياس استخدم",
+      "landmarksLink": "التعليم حسب المعالم",
+      "title": "صورة ← منطقة ← نتيجة"
+    },
+    "plan": {
+      "eyebrow": "النمذجة · نموذج أولي",
+      "request": "طلب الطبيب",
+      "lead": "صِف النتيجة المرغوبة بكلمات عادية. يوزّع النظام الطلب على كتالوج العمليات، ويحسب قياسات «قبل/بعد»، ويخبرك بما نقص في الطلب. بعد ذلك تُعدَّل الخطة بالمنزلقات — وتبقى القيم قابلة للقياس والتكرار.",
+      "example": "مثال: إزالة حدبة 2 مم ورفع الطرف 5 درجات",
+      "patientSex": "جنس المريض",
+      "baseline": "البيانات الأولية",
+      "beforeMeasurements": "قياسات «قبل»",
+      "beforeHint": "بدونها تُحلَّل الخطة أيضًا، لكن الجدول يعرض الفروق فقط: لتحديد قيمة «بعد» يلزم معرفة قيمة «قبل».",
+      "title": "الخطة",
+      "empty": "لا توجد خطة بعد. صِف المهمة على اليسار واضغط «تحليل الطلب».",
+      "whatToDo": "ما المطلوب فعله",
+      "addProcedure": "إضافة عملية",
+      "procedure": "الإجراء",
+      "direction": "الاتجاه",
+      "remove": "إزالة",
+      "measurements": "القياسات",
+      "measurement": "القياس",
+      "before": "قبل",
+      "after": "بعد",
+      "norm": "المرجع",
+      "noMeasurements": "لم تتأثّر القياسات.",
+      "remarks": "الملاحظات",
+      "needsClarification": "يحتاج توضيحًا",
+      "parsePrefix": "التحليل:",
+      "recalculating": "إعادة الحساب…",
+      "noProcedures": "لا توجد عمليات — لا شيء لتنفيذه.",
+      "notInCatalogue": "العملية غير موجودة في الكتالوج الحالي.",
+      "outsideCatalogue": "خارج الكتالوج",
+      "catalogueSuffix": "، الكتالوج",
+      "catalogueError": "تعذّر تحميل كتالوج العمليات:",
+      "choose": "— اختر —",
+      "optional": "— اختياري",
+      "pageTitle": "طلب الطبيب ← خطة العملية"
+    }
+  }
 }

@@ -219,16 +219,20 @@ const CSS = `
 
 /* ─────────────────────── SUB-COMPONENTS ─────────────────────── */
 
-const SectionBlock = ({ icon, label, required, children, allowOverflow }) => (
+const SectionBlock = ({ icon, label, required, children, allowOverflow }) => {
+  // Стрелка была без тела, и хук вставить было некуда — разворачиваем.
+  const { t } = useTranslation();
+  return (
   <div className={`amh-section${allowOverflow ? " has-overflow" : ""}`}>
     <div className="amh-section-head">
       <div className="amh-section-icon">{icon}</div>
       <span className="amh-section-label">{label}</span>
-      {required && <span className="amh-req-badge">Required</span>}
+      {required && <span className="amh-req-badge">{t("dp.patient.required")}</span>}
     </div>
     <div className="amh-section-body">{children}</div>
   </div>
-);
+  );
+};
 
 const FieldError = ({ msg }) =>
   msg ? <div className="amh-field-error">⚠ {msg}</div> : null;
@@ -751,7 +755,7 @@ export default function AddPatientMedicalHistory() {
       {/* ── HERO ── */}
       <div className="amh-hero">
         <div className="amh-hero-inner">
-          <div className="amh-hero-tag">DocPats · Medical History</div>
+          <div className="amh-hero-tag">{t("dp.pageTitle.medicalHistory")}</div>
           <h1 className="amh-hero-h1">
             {t("medicalHistoryForm.title", "Add Medical History")}
           </h1>

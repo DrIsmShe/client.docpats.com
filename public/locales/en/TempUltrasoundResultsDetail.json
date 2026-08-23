@@ -1,0 +1,24 @@
+{
+  "actions": {
+    "confirmDelete": "Delete this entry?",
+    "createNew": "Create",
+    "delete": "Delete"
+  },
+  "fields": {
+    "createdAt": "Created",
+    "status": "Status",
+    "tags": "Tags"
+  },
+  "messages": {
+    "deleteError": "Could not delete",
+    "deleted": "Deleted",
+    "loadError": "Could not load",
+    "loading": "Loading…",
+    "noData": "No data",
+    "noTags": "No tags"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  }
+}

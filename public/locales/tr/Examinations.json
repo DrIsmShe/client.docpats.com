@@ -388,6 +388,9 @@
       "next": "İleri",
       "page": "Sayfa",
       "of": "/"
+    },
+    "fields": {
+      "status": "Durum"
     }
   },
   "additionalDiagnosis": {
@@ -531,7 +534,6 @@
       "confirmDelete": "Bu şablonu silmek istediğinize emin misiniz?"
     }
   },
-
   "laboratory-detail": {
     "messages": {
       "loading": "Yükleniyor...",
@@ -556,11 +558,9 @@
       "confirmDelete": "Bu şablonu silmek istediğinize emin misiniz?"
     }
   },
-
   "list": {
     "search": "Ara..."
   },
-
   "pagination": {
     "prev": "Önceki",
     "next": "Sonraki",
@@ -570,7 +570,10 @@
   "common": {
     "loading": "Yükleniyor...",
     "noData": "Veri bulunamadı",
-    "loadError": "Veri yükleme hatası"
+    "loadError": "Veri yükleme hatası",
+    "deleteError": "Şablon silinirken hata oluştu",
+    "deleted": "Silindi",
+    "noTags": "Etiket yok"
   },
   "fields": {
     "createdAt": "Oluşturulma tarihi",
@@ -640,7 +643,6 @@
     "page": {
       "title": "Anjiyografi Sonuçları Ekle"
     },
-
     "messages": {
       "success": "✅ Anjiyografi sonucu başarıyla eklendi!",
       "errorPrefix": "❌ Yükleme hatası:",
@@ -980,7 +982,8 @@
       "files": {
         "label": "Dosyalar (görsel, PDF, video, ses)",
         "choose": "Dosya seç",
-        "noneSelected": "Dosya seçilmedi"
+        "noneSelected": "Dosya seçilmedi",
+        "selected": "{{count}} dosya seçildi"
       }
     },
     "templates": {
@@ -989,7 +992,12 @@
       "list": "📂 Şablon listesi",
       "selectTitle": "Şablon seç:",
       "insert": "Ekle",
-      "close": "Kapat"
+      "close": "Kapat",
+      "modal": {
+        "close": "Kapat",
+        "insert": "Ekle",
+        "title": "\"{{field}}\" için şablon seçin"
+      }
     },
     "buttons": {
       "submit": "Sonuç ekle",
@@ -997,7 +1005,9 @@
     },
     "messages": {
       "success": "✅ Sonuçlar başarıyla eklendi!",
-      "error": "❌ Hata: "
+      "error": "❌ Hata: ",
+      "errorPrefix": "❌ Yükleme hatası:",
+      "patientMissing": "Hasta ID eksik!"
     }
   },
   "AddEEGScanUpload": {
@@ -1129,7 +1139,8 @@
       "submit": "Sonuçları ekle"
     },
     "modal": {
-      "selectTemplateFor": "Şablon seç:"
+      "selectTemplateFor": "Şablon seç:",
+      "title": "Şablon seçimi"
     },
     "fields": {
       "nameofexam": {
@@ -1163,6 +1174,9 @@
         "type": "Tür",
         "size": "Boyut"
       }
+    },
+    "errors": {
+      "noPatientId": "Hasta seçilmedi"
     }
   },
   "AddGinecologyUpload": {
@@ -1184,7 +1198,8 @@
       "submit": "Nəticələri əlavə et"
     },
     "modal": {
-      "selectTemplateFor": "Bu sahə üçün şablon seç:"
+      "selectTemplateFor": "Bu sahə üçün şablon seç:",
+      "title": "Şablon seçimi"
     },
     "fields": {
       "nameofexam": {
@@ -1218,6 +1233,9 @@
         "type": "Növ",
         "size": "Ölçü"
       }
+    },
+    "errors": {
+      "noPatientId": "Hasta seçilmedi"
     }
   },
   "AddHOLTERScanUpload": {
@@ -1227,7 +1245,9 @@
     "messages": {
       "success": "✅ Sonuçlar başarıyla eklendi!",
       "error": "❌ Hata: ",
-      "noPatientId": "❌ Hata: Hasta ID eksik!"
+      "noPatientId": "❌ Hata: Hasta ID eksik!",
+      "errorPrefix": "❌ Yükleme hatası:",
+      "patientMissing": "Hasta ID eksik!"
     },
     "buttons": {
       "useTemplate": "📋 Şablon kullan",
@@ -1239,7 +1259,8 @@
       "submit": "Sonuçları ekle"
     },
     "modal": {
-      "selectTemplateFor": "Şablon seç:"
+      "selectTemplateFor": "Şablon seç:",
+      "title": "Şablon seçimi"
     },
     "fields": {
       "nameofexam": {
@@ -1295,28 +1316,53 @@
             "cloudy": "bulanık"
           }
         },
-        "specificGravity": { "name": "Özgül ağırlık" },
-        "pH": { "name": "pH" },
-        "protein": { "name": "Protein" },
-        "glucose": { "name": "Glikoz" },
-        "leukocytes": { "name": "Lökositler" }
+        "specificGravity": {
+          "name": "Özgül ağırlık"
+        },
+        "pH": {
+          "name": "pH"
+        },
+        "protein": {
+          "name": "Protein"
+        },
+        "glucose": {
+          "name": "Glikoz"
+        },
+        "leukocytes": {
+          "name": "Lökositler"
+        }
       },
-
       "BloodTestGeneral": {
-        "hemoglobin": { "name": "Hemoglobin" },
-        "erythrocytes": { "name": "Eritrositler" },
-        "leukocytes": { "name": "Lökositler" },
-        "platelets": { "name": "Trombositler" }
+        "hemoglobin": {
+          "name": "Hemoglobin"
+        },
+        "erythrocytes": {
+          "name": "Eritrositler"
+        },
+        "leukocytes": {
+          "name": "Lökositler"
+        },
+        "platelets": {
+          "name": "Trombositler"
+        }
       },
-
       "BloodTestBiochemistry": {
-        "glucose": { "name": "Glikoz" },
-        "creatinine": { "name": "Kreatinin" },
-        "urea": { "name": "Üre" },
-        "alt": { "name": "ALT" },
-        "ast": { "name": "AST" }
+        "glucose": {
+          "name": "Glikoz"
+        },
+        "creatinine": {
+          "name": "Kreatinin"
+        },
+        "urea": {
+          "name": "Üre"
+        },
+        "alt": {
+          "name": "ALT"
+        },
+        "ast": {
+          "name": "AST"
+        }
       },
-
       "StoolTest": {
         "consistency": {
           "name": "Kıvam",
@@ -1327,8 +1373,12 @@
             "watery": "sulu"
           }
         },
-        "color": { "name": "Renk" },
-        "reaction": { "name": "Reaksiyon" },
+        "color": {
+          "name": "Renk"
+        },
+        "reaction": {
+          "name": "Reaksiyon"
+        },
         "mucus": {
           "name": "Mukus",
           "options": {
@@ -1337,21 +1387,32 @@
             "present": "var"
           }
         },
-        "leukocytes": { "name": "Lökositler" }
+        "leukocytes": {
+          "name": "Lökositler"
+        }
       },
-
       "HormonePanel": {
-        "tsh": { "name": "TSH" },
-        "freeT4": { "name": "Serbest T4" },
-        "freeT3": { "name": "Serbest T3" }
+        "tsh": {
+          "name": "TSH"
+        },
+        "freeT4": {
+          "name": "Serbest T4"
+        },
+        "freeT3": {
+          "name": "Serbest T3"
+        }
       },
-
       "TumorMarkers": {
-        "cea": { "name": "CEA" },
-        "ca125": { "name": "CA 125" },
-        "ca199": { "name": "CA 19-9" }
+        "cea": {
+          "name": "CEA"
+        },
+        "ca125": {
+          "name": "CA 125"
+        },
+        "ca199": {
+          "name": "CA 19-9"
+        }
       },
-
       "PCR": {
         "covid19": {
           "name": "COVID-19 (SARS-CoV-2)",
@@ -1368,13 +1429,17 @@
           }
         }
       },
-
       "Immunology": {
-        "igg": { "name": "IgG" },
-        "iga": { "name": "IgA" },
-        "igm": { "name": "IgM" }
+        "igg": {
+          "name": "IgG"
+        },
+        "iga": {
+          "name": "IgA"
+        },
+        "igm": {
+          "name": "IgM"
+        }
       },
-
       "GeneticScreening": {
         "brca1": {
           "name": "BRCA1",
@@ -1391,79 +1456,159 @@
           }
         }
       },
-
       "CoagulationPanel": {
-        "pt": { "name": "PT" },
-        "inr": { "name": "INR" },
-        "aptt": { "name": "aPTT" },
-        "fibrinogen": { "name": "Fibrinojen" },
-        "ddimer": { "name": "D-dimer" }
+        "pt": {
+          "name": "PT"
+        },
+        "inr": {
+          "name": "INR"
+        },
+        "aptt": {
+          "name": "aPTT"
+        },
+        "fibrinogen": {
+          "name": "Fibrinojen"
+        },
+        "ddimer": {
+          "name": "D-dimer"
+        }
       },
-
       "LipidProfile": {
-        "totalCholesterol": { "name": "Toplam kolesterol" },
-        "ldl": { "name": "LDL-K" },
-        "hdl": { "name": "HDL-K" },
-        "triglycerides": { "name": "Trigliseritler" },
-        "apoB": { "name": "ApoB" },
-        "lpa": { "name": "Lp(a)" }
+        "totalCholesterol": {
+          "name": "Toplam kolesterol"
+        },
+        "ldl": {
+          "name": "LDL-K"
+        },
+        "hdl": {
+          "name": "HDL-K"
+        },
+        "triglycerides": {
+          "name": "Trigliseritler"
+        },
+        "apoB": {
+          "name": "ApoB"
+        },
+        "lpa": {
+          "name": "Lp(a)"
+        }
       },
-
       "LiverFunction": {
-        "ast": { "name": "AST" },
-        "alt": { "name": "ALT" },
-        "alp": { "name": "ALP" },
-        "ggt": { "name": "GGT" },
-        "totalBilirubin": { "name": "Total bilirubin" },
-        "directBilirubin": { "name": "Direkt bilirubin" },
-        "albumin": { "name": "Albumin" }
+        "ast": {
+          "name": "AST"
+        },
+        "alt": {
+          "name": "ALT"
+        },
+        "alp": {
+          "name": "ALP"
+        },
+        "ggt": {
+          "name": "GGT"
+        },
+        "totalBilirubin": {
+          "name": "Total bilirubin"
+        },
+        "directBilirubin": {
+          "name": "Direkt bilirubin"
+        },
+        "albumin": {
+          "name": "Albumin"
+        }
       },
-
       "RenalElectrolytes": {
-        "creatinine": { "name": "Kreatinin" },
-        "egfr": { "name": "eGFR" },
-        "urea": { "name": "Üre" },
-        "sodium": { "name": "Sodyum" },
-        "potassium": { "name": "Potasyum" },
-        "chloride": { "name": "Klor" },
-        "magnesium": { "name": "Magnezyum" }
+        "creatinine": {
+          "name": "Kreatinin"
+        },
+        "egfr": {
+          "name": "eGFR"
+        },
+        "urea": {
+          "name": "Üre"
+        },
+        "sodium": {
+          "name": "Sodyum"
+        },
+        "potassium": {
+          "name": "Potasyum"
+        },
+        "chloride": {
+          "name": "Klor"
+        },
+        "magnesium": {
+          "name": "Magnezyum"
+        }
       },
-
       "IronStudies": {
-        "iron": { "name": "Demir" },
-        "ferritin": { "name": "Ferritin" },
-        "tibc": { "name": "TIBC" },
-        "transferrinSaturation": { "name": "Transferrin satürasyonu" }
+        "iron": {
+          "name": "Demir"
+        },
+        "ferritin": {
+          "name": "Ferritin"
+        },
+        "tibc": {
+          "name": "TIBC"
+        },
+        "transferrinSaturation": {
+          "name": "Transferrin satürasyonu"
+        }
       },
-
       "DiabetesPanel": {
-        "fastingGlucose": { "name": "Açlık glikozu" },
-        "hba1c": { "name": "HbA1c" },
-        "insulin": { "name": "İnsülin" },
-        "cPeptide": { "name": "C-peptid" }
+        "fastingGlucose": {
+          "name": "Açlık glikozu"
+        },
+        "hba1c": {
+          "name": "HbA1c"
+        },
+        "insulin": {
+          "name": "İnsülin"
+        },
+        "cPeptide": {
+          "name": "C-peptid"
+        }
       },
-
       "ThyroidPanel": {
-        "tsh": { "name": "TSH" },
-        "freeT4": { "name": "Serbest T4" },
-        "freeT3": { "name": "Serbest T3" },
-        "antiTPO": { "name": "anti-TPO" },
-        "antiTG": { "name": "anti-TG" }
+        "tsh": {
+          "name": "TSH"
+        },
+        "freeT4": {
+          "name": "Serbest T4"
+        },
+        "freeT3": {
+          "name": "Serbest T3"
+        },
+        "antiTPO": {
+          "name": "anti-TPO"
+        },
+        "antiTG": {
+          "name": "anti-TG"
+        }
       },
-
       "CardiacMarkers": {
-        "troponin": { "name": "Troponin I/T" },
-        "ckmb": { "name": "CK-MB" },
-        "ntproBNP": { "name": "NT-proBNP" }
+        "troponin": {
+          "name": "Troponin I/T"
+        },
+        "ckmb": {
+          "name": "CK-MB"
+        },
+        "ntproBNP": {
+          "name": "NT-proBNP"
+        }
       },
-
       "VitaminsTrace": {
-        "vitaminD": { "name": "Vitamin D (25-OH)" },
-        "vitaminB12": { "name": "Vitamin B12" },
-        "folate": { "name": "Folik asit (folat)" },
-        "zinc": { "name": "Çinko" }
+        "vitaminD": {
+          "name": "Vitamin D (25-OH)"
+        },
+        "vitaminB12": {
+          "name": "Vitamin B12"
+        },
+        "folate": {
+          "name": "Folik asit (folat)"
+        },
+        "zinc": {
+          "name": "Çinko"
+        }
       },
-
       "InfectiousSerology": {
         "hbsAg": {
           "name": "HBsAg",
@@ -1472,7 +1617,9 @@
             "positive": "pozitif"
           }
         },
-        "antiHbs": { "name": "anti-HBs" },
+        "antiHbs": {
+          "name": "anti-HBs"
+        },
         "antiHcv": {
           "name": "anti-HCV",
           "options": {
@@ -1495,15 +1642,21 @@
           }
         }
       },
-
       "UrineAlbuminACR": {
-        "urineAlbumin": { "name": "İdrar albümini" },
-        "urineCreatinine": { "name": "İdrar kreatinini" },
-        "acr": { "name": "ACR" }
+        "urineAlbumin": {
+          "name": "İdrar albümini"
+        },
+        "urineCreatinine": {
+          "name": "İdrar kreatinini"
+        },
+        "acr": {
+          "name": "ACR"
+        }
       },
-
       "StoolInflammation": {
-        "calprotectin": { "name": "Kalprotektin" },
+        "calprotectin": {
+          "name": "Kalprotektin"
+        },
         "occultBloodFit": {
           "name": "Gizli kan (FIT)",
           "options": {
@@ -1531,7 +1684,6 @@
       "Immunology": "İmmünoloji testleri",
       "GeneticScreening": "Genetik tarama",
       "Other": "Diğer testler",
-
       "CoagulationPanel": "Koagülasyon paneli",
       "LipidProfile": "Lipit profili",
       "LiverFunction": "Karaciğer fonksiyon testleri",
@@ -1555,19 +1707,15 @@
       "vitamins": "Vitamin seviyeleri",
       "others": "Diğer testler"
     },
-
     "units": {
       "none": "",
       "unit.defaultText": "—",
       "unit.defaultNumber": "birim",
-
       "g/L": "g/L",
       "mmol/L": "mmol/L",
       "cells/hpf": "görüş alanında",
-
       "10^12/L": "10^12/L",
       "10^9/L": "10^9/L",
-
       "µmol/L": "µmol/L",
       "U/L": "U/L",
       "pmol/L": "pmol/L",
@@ -1576,22 +1724,18 @@
       "IU/mL": "IU/mL",
       "pg/mL": "pg/mL",
       "ng/L": "ng/L",
-
       "mg/dL": "mg/dL",
       "mg/L": "mg/L",
       "mg/g": "mg/g",
-
       "µg/dL": "µg/dL",
       "µg/g": "µg/g",
       "µU/mL": "µU/mL",
       "mIU/mL": "mIU/mL",
-
       "mL/min/1.73m²": "mL/dak/1.73m²",
       "nmol/L": "nmol/L",
       "%": "%",
       "sec": "sn",
       "mg/L_FEU": "mg/L FEU",
-
       "gPerL": "g/L",
       "mmolPerL": "mmol/L",
       "mcmolPerL": "µmol/L",
@@ -1612,61 +1756,50 @@
       "percent": "%",
       "mgPerLFEU": "mg/L FEU"
     },
-
     "page": {
       "title": "Laboratuvar Testi Ekle"
     },
-
     "fields": {
       "testType": {
         "label": "Test türü",
         "placeholder": "-- test türünü seçin --"
       },
-
       "labName": {
         "label": "Laboratuvar",
         "placeholder": "Laboratuvar adını giriniz..."
       },
-
       "report": {
         "label": "Doktor yorumu (sonuç)",
         "placeholder": "Doktor yorumunu giriniz..."
       },
-
       "parameter": {
         "label": "Parametre",
         "placeholder": "Parametre adı...",
         "valueTextPlaceholder": "Metin değeri giriniz...",
         "valueNumberPlaceholder": "Sayısal değer giriniz..."
       },
-
       "unit": {
         "label": "Birim",
         "placeholder": "Ölçü birimi..."
       },
-
       "referenceRange": {
         "label": "Referans aralık",
         "min": "Alt sınır",
         "max": "Üst sınır"
       },
-
       "files": {
         "label": "Dosya ekle (PDF, resimler)",
         "choose": "Dosya ekle",
         "noFile": "Dosya seçilmedi"
       }
     },
-
     "section": {
       "parameters": "Test parametreleri"
     },
-
     "valueType": {
       "text": "Metin",
       "number": "Sayı"
     },
-
     "buttons": {
       "copyFromPrevious": "Önceki testten kopyala",
       "addParameter": "Parametre ekle",
@@ -1674,14 +1807,12 @@
       "loading": "Kaydediliyor...",
       "submit": "Testi kaydet"
     },
-
     "messages": {
       "success": "✅ Test başarıyla eklendi.",
       "error": "❌ Bir hata oluştu: ",
       "noPrevious": "Kopyalanacak önceki test bulunamadı.",
       "copyError": "❌ Önceki test yüklenemedi."
     },
-
     "errors": {
       "noTestType": "❗ Lütfen test türünü seçin ve en az bir parametre ekleyin.",
       "missingValues": "Lütfen şu parametreler için değer girin: {{list}}"
@@ -1694,7 +1825,6 @@
     "page": {
       "title": "MRI sonuçları ekle"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Çalışmanın adı",
@@ -1726,7 +1856,6 @@
         "selected": "{{count}} dosya seçildi"
       }
     },
-
     "buttons": {
       "useTemplate": "Şablon kullan",
       "newTemplate": "Yeni şablon",
@@ -1736,17 +1865,26 @@
       "submit": "Sonuçları ekle",
       "loading": "Yükleniyor..."
     },
-
     "messages": {
       "success": "MRI sonucu başarıyla eklendi!",
       "error": "Yükleme hatası"
+    },
+    "files": {
+      "audio": "Ses dosyası",
+      "file": "Dosya",
+      "image": "Görsel",
+      "pdf": "PDF belge",
+      "video": "Video dosyası"
+    },
+    "modal": {
+      "select": "Şablon seç",
+      "title": "Şablon seçimi"
     }
   },
   "AddPETScanUpload": {
     "page": {
       "title": "PET sonuçları ekle"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Çalışmanın adı",
@@ -1778,7 +1916,6 @@
         "selected": "{{count}} dosya seçildi"
       }
     },
-
     "buttons": {
       "useTemplate": "Şablon kullan",
       "newTemplate": "Yeni şablon",
@@ -1788,12 +1925,10 @@
       "submit": "Sonuçları ekle",
       "loading": "Yükleniyor..."
     },
-
     "modal": {
       "title": "Şablon seçimi",
       "select": "Şablon seç"
     },
-
     "files": {
       "image": "Görsel",
       "pdf": "PDF belge",
@@ -1801,7 +1936,6 @@
       "audio": "Ses dosyası",
       "file": "Dosya"
     },
-
     "messages": {
       "success": "PET sonucu başarıyla eklendi!",
       "error": "Yükleme hatası"
@@ -1811,7 +1945,6 @@
     "page": {
       "title": "SPECT sonuçları ekle"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Çalışmanın adı",
@@ -1843,7 +1976,6 @@
         "selected": "{{count}} dosya seçildi"
       }
     },
-
     "buttons": {
       "useTemplate": "Şablon kullan",
       "newTemplate": "Yeni şablon",
@@ -1853,12 +1985,10 @@
       "submit": "Sonuçları ekle",
       "loading": "Yükleniyor..."
     },
-
     "modal": {
       "title": "Şablon seçimi",
       "select": "Şablon seç"
     },
-
     "files": {
       "image": "Görsel",
       "pdf": "PDF belge",
@@ -1866,17 +1996,17 @@
       "audio": "Ses dosyası",
       "file": "Dosya"
     },
-
     "messages": {
       "success": "SPECT sonucu başarıyla eklendi!",
-      "error": "Yükleme hatası"
+      "error": "Yükleme hatası",
+      "errorPrefix": "❌ Yükleme hatası:",
+      "patientMissing": "Hasta ID eksik!"
     }
   },
   "AddSpirometryScanUpload": {
     "page": {
       "title": "Spirometri sonuçları ekle"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Çalışmanın adı",
@@ -1908,7 +2038,6 @@
         "selected": "{{count}} dosya seçildi"
       }
     },
-
     "buttons": {
       "useTemplate": "Şablon kullan",
       "newTemplate": "Yeni şablon",
@@ -1918,12 +2047,10 @@
       "submit": "Sonuçları ekle",
       "loading": "Yükleniyor..."
     },
-
     "modal": {
       "title": "Şablon seçimi",
       "select": "Şablon seç"
     },
-
     "files": {
       "image": "Görsel",
       "pdf": "PDF belge",
@@ -1931,7 +2058,6 @@
       "audio": "Ses dosyası",
       "file": "Dosya"
     },
-
     "messages": {
       "success": "Spirometri sonucu başarıyla eklendi!",
       "error": "Yükleme hatası"
@@ -1941,7 +2067,6 @@
     "page": {
       "title": "USM (Ultrason) sonuçları ekle"
     },
-
     "fields": {
       "nameofexam": {
         "label": "Çalışmanın adı",
@@ -1973,7 +2098,6 @@
         "selected": "{{count}} dosya seçildi"
       }
     },
-
     "buttons": {
       "useTemplate": "Şablon kullan",
       "newTemplate": "Yeni şablon",
@@ -1983,23 +2107,23 @@
       "submit": "Sonuçları ekle",
       "loading": "Yükleniyor..."
     },
-
     "modal": {
       "title": "Şablon seçimi",
       "select": "Şablon seç"
     },
-
     "files": {
       "image": "Görsel",
       "pdf": "PDF belge",
       "video": "Video dosyası",
       "audio": "Ses dosyası",
-      "file": "Dosya"
+      "file": "Dosya",
+      "size": "Boyut",
+      "type": "Tür"
     },
-
     "messages": {
       "success": "USM sonucu başarıyla eklendi!",
-      "error": "Yükleme hatası"
+      "error": "Yükleme hatası",
+      "noPatientId": "❌ Hata: Hasta ID eksik!"
     }
   },
   "AddXRAYScanUpload": {
@@ -2086,5 +2210,12 @@
       "deleteSuccess": "Şablon başarıyla silindi",
       "deleteError": "Şablon silinirken hata oluştu"
     }
+  },
+  "files": {
+    "audio": "Ses",
+    "file": "Dosya",
+    "image": "Görüntü",
+    "pdf": "PDF",
+    "video": "Video"
   }
 }

@@ -213,7 +213,7 @@ export default function SpirometryScanerDetails() {
 
       <div className="spi-hero">
         <div className="spi-hero-inner">
-          <div className="spi-hero-tag">DocPats · Spirometry</div>
+          <div className="spi-hero-tag">{t("common:dp.pageTitle.spirometry")}</div>
           <h1 className="spi-hero-h1">
             {t("SpirometryScanerDetails.page.title")}
           </h1>
@@ -341,7 +341,7 @@ export default function SpirometryScanerDetails() {
                       className="spi-img-wrap"
                       onClick={() => setLightboxImg(img)}
                     >
-                      <img src={img} alt="scan" />
+                      <img src={img} alt={t("common:dp.scan.word")} />
                     </div>
                   ))}
                 </div>
@@ -390,7 +390,7 @@ export default function SpirometryScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

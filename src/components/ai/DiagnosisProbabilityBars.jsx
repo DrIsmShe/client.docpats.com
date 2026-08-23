@@ -1,6 +1,8 @@
 import React from "react";
 
+import { useTranslation } from "react-i18next";
 export default function DiagnosisProbabilityBars({ probabilities }) {
+  const { t } = useTranslation("common");
   if (!Array.isArray(probabilities) || !probabilities.length) return null;
 
   const normalized = probabilities
@@ -12,7 +14,7 @@ export default function DiagnosisProbabilityBars({ probabilities }) {
 
   return (
     <div className="card shadow-sm border rounded-4 p-3 mb-3">
-      <h5 className="mb-3">🧠 Diagnosis Probability Bars</h5>
+      <h5 className="mb-3">{t("dp.ai.probabilityBars")}</h5>
 
       <div className="d-flex flex-column gap-3">
         {normalized.map((item, idx) => (

@@ -214,7 +214,7 @@ export default function HOLTERScanerDetails() {
 
       <div className="hol-hero">
         <div className="hol-hero-inner">
-          <div className="hol-hero-tag">DocPats · Holter Monitor</div>
+          <div className="hol-hero-tag">{t("common:dp.pageTitle.holter")}</div>
           <h1 className="hol-hero-h1">{t("HOLTERScanerDetails.page.title")}</h1>
           <p className="hol-hero-sub">
             {patientName} · {dateFormatted}
@@ -389,7 +389,7 @@ export default function HOLTERScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

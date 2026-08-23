@@ -115,6 +115,8 @@ const ALLOWED = new Set([
   "deletePatientFromOffice",
   // Технические обозначения в антропометрии: имя режима и единицы.
   "alert", "annotation", "calibration", "px/mm", "мм",
+  // Подпись автора и домен в подвале поликлиники.
+  "ISMAYIL ISMAYIL", "WWW.DOCPATS.COM",
 ]);
 
 const LETTER = /[A-Za-zА-Яа-яЁёĀ-ſƀ-ɏ؀-ۿ]/;

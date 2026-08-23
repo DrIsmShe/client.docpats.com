@@ -10,7 +10,6 @@
       "createError": "❌ Şablon əlavə edilə bilmədi",
       "networkError": "Şəbəkə xətası"
     },
-
     "buttons": {
       "save": "Yadda saxla",
       "update": "Yenilə",
@@ -33,7 +32,6 @@
     "messages": {
       "loadError": "Şablon yüklənmədi"
     },
-
     "buttons": {
       "save": "Yadda saxla",
       "update": "Yenilə",
@@ -230,5 +228,11 @@
       "loadError": "Hesabat şablonları yüklənə bilmədi",
       "deleteError": "❌ Şablon silinə bilmədi"
     }
+  },
+  "confirm": {
+    "delete": "Sil"
+  },
+  "common": {
+    "loading": "Yüklənir…"
   }
 }

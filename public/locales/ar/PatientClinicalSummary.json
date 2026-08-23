@@ -4,7 +4,8 @@
   },
   "buttons": {
     "backToPatient": "العودة إلى المريض",
-    "openPatientCard": "فتح بطاقة المريض"
+    "openPatientCard": "فتح بطاقة المريض",
+    "generating": "جارٍ الإنشاء…"
   },
   "sections": {
     "mainComplaints": "الشكاوى الرئيسية",

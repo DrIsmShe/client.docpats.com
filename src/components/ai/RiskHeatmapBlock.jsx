@@ -1,5 +1,6 @@
 import React from "react";
 
+import { useTranslation } from "react-i18next";
 const riskColor = (value) => {
   const n = Number(value || 0);
   if (n >= 80) return "#b91c1c";
@@ -10,6 +11,7 @@ const riskColor = (value) => {
 };
 
 export default function RiskHeatmapBlock({ summary }) {
+  const { t } = useTranslation("common");
   const source =
     summary?.riskHeatmap || summary?.riskMap || summary?.domainRiskMap || null;
 
@@ -33,7 +35,7 @@ export default function RiskHeatmapBlock({ summary }) {
 
   return (
     <div className="card shadow-sm border rounded-4 p-3 mb-3">
-      <h5 className="mb-3">📊 Risk Heatmap</h5>
+      <h5 className="mb-3">{t("dp.ai.riskHeatmap")}</h5>
 
       <div className="row g-2">
         {entries.map((item, idx) => {

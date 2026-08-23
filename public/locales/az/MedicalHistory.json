@@ -37,5 +37,13 @@
     "uploadError": "PDF yüklənərkən xəta baş verdi.",
     "downloadError": "PDF yaradılarkən xəta baş verdi."
   },
-  "ageText": "{{age}} yaş"
+  "ageText": "{{age}} yaş",
+  "sections": {
+    "anamnesis": "Anamnez",
+    "diagnosis": "Diaqnoz",
+    "examinations": "Tədqiqatlar",
+    "meta": "Sənədin məlumatları",
+    "patient": "Pasiyentin məlumatları",
+    "status": "Status"
+  }
 }

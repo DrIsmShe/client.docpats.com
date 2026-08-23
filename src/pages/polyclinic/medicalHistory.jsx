@@ -374,7 +374,7 @@ export default function MedicalHistory() {
         <div className="mh-hero-inner">
           <img
             src={photoSrc}
-            alt="Patient"
+            alt={t("common:dp.patient.word")}
             className="mh-hero-avatar"
             onError={(e) => {
               e.currentTarget.onerror = null;
@@ -382,7 +382,7 @@ export default function MedicalHistory() {
             }}
           />
           <div className="mh-hero-info">
-            <div className="mh-hero-tag">DocPats · Medical History</div>
+            <div className="mh-hero-tag">{t("common:dp.pageTitle.medicalHistory")}</div>
             <h1 className="mh-hero-h1">
               {patientInfo.firstName} {patientInfo.lastName}
             </h1>
@@ -628,7 +628,7 @@ export default function MedicalHistory() {
           <div className="mh-sidebar">
             <img
               src={photoSrc}
-              alt="Patient"
+              alt={t("common:dp.patient.word")}
               className="mh-sidebar-avatar"
               onError={(e) => {
                 e.currentTarget.onerror = null;

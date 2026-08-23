@@ -1,0 +1,199 @@
+{
+  "AngiographyScanerTemplateNameofexam": {
+    "buttons": {
+      "save": "Yadda saxla"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "İfadənin mətni"
+      },
+      "title": {
+        "placeholder": "Qısa ad"
+      }
+    },
+    "messages": {
+      "createError": "Əlavə etmək alınmadı",
+      "createSuccess": "Əlavə edildi",
+      "networkError": "Şəbəkə xətası. Yenidən cəhd edin."
+    },
+    "title": "Başlıq"
+  },
+  "AngiographyScanerTemplateNameofexamDetail": {
+    "buttons": {
+      "edit": "Dəyiş"
+    },
+    "fields": {
+      "content": "Mətn",
+      "title": "Başlıq"
+    },
+    "messages": {
+      "loadError": "Yükləmək alınmadı"
+    },
+    "page": {
+      "loading": "Yüklənir…"
+    },
+    "title": "Başlıq"
+  },
+  "AngiographyScanerTemplateNameofexamEdit": {
+    "buttons": {
+      "update": "Yenilə"
+    },
+    "fields": {
+      "content": "Mətn",
+      "title": "Başlıq"
+    },
+    "messages": {
+      "loadError": "Yükləmək alınmadı",
+      "updateError": "Yadda saxlamaq alınmadı",
+      "updateSuccess": "Yadda saxlanıldı"
+    },
+    "title": "Başlıq"
+  },
+  "AngiographyScanerTemplateNameofexamList": {
+    "buttons": {
+      "delete": "Sil",
+      "edit": "Dəyiş"
+    },
+    "confirm": {
+      "delete": "Bu ifadə silinsin?"
+    },
+    "messages": {
+      "deleteError": "Silmək alınmadı",
+      "deleteSuccess": "Silindi",
+      "loadError": "Yükləmək alınmadı"
+    },
+    "title": "Başlıq"
+  },
+  "AngiographyScanerTemplateRecomendation": {
+    "buttons": {
+      "save": "Yadda saxla"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "İfadənin mətni"
+      },
+      "title": {
+        "placeholder": "Qısa ad"
+      }
+    },
+    "messages": {
+      "createError": "Əlavə etmək alınmadı",
+      "createSuccess": "Əlavə edildi",
+      "networkError": "Şəbəkə xətası. Yenidən cəhd edin."
+    },
+    "title": "Başlıq"
+  },
+  "AngiographyScanerTemplateRecomendationDetails": {
+    "buttons": {
+      "edit": "Dəyiş"
+    },
+    "fields": {
+      "content": "Mətn",
+      "doctor": "Həkim",
+      "title": "Başlıq"
+    },
+    "messages": {
+      "loadError": "Yükləmək alınmadı"
+    },
+    "page": {
+      "loading": "Yüklənir…"
+    },
+    "title": "Başlıq"
+  },
+  "AngiographyScanerTemplateRecomendationEdit": {
+    "buttons": {
+      "update": "Yenilə"
+    },
+    "fields": {
+      "content": "Mətn",
+      "title": "Başlıq"
+    },
+    "messages": {
+      "loadError": "Yükləmək alınmadı",
+      "updateError": "Yadda saxlamaq alınmadı",
+      "updateSuccess": "Yadda saxlanıldı"
+    },
+    "title": "Başlıq"
+  },
+  "AngiographyScanerTemplateRecomendationList": {
+    "buttons": {
+      "delete": "Sil",
+      "edit": "Dəyiş"
+    },
+    "confirm": {
+      "delete": "Bu ifadə silinsin?"
+    },
+    "messages": {
+      "deleteError": "Silmək alınmadı",
+      "deleteSuccess": "Silindi",
+      "loadError": "Yükləmək alınmadı"
+    },
+    "title": "Başlıq"
+  },
+  "AngiographyScanerTemplateReport": {
+    "buttons": {
+      "save": "Yadda saxla"
+    },
+    "fields": {
+      "content": {
+        "placeholder": "İfadənin mətni"
+      },
+      "title": {
+        "placeholder": "Qısa ad"
+      }
+    },
+    "messages": {
+      "createError": "Əlavə etmək alınmadı",
+      "createSuccess": "Əlavə edildi",
+      "networkError": "Şəbəkə xətası. Yenidən cəhd edin."
+    },
+    "title": "Başlıq"
+  },
+  "AngiographyScanerTemplateReportDetails": {
+    "buttons": {
+      "edit": "Dəyiş"
+    },
+    "fields": {
+      "content": "Mətn",
+      "doctor": "Həkim",
+      "title": "Başlıq"
+    },
+    "messages": {
+      "loadError": "Yükləmək alınmadı"
+    },
+    "page": {
+      "loading": "Yüklənir…"
+    },
+    "title": "Başlıq"
+  },
+  "AngiographyScanerTemplateReportEdit": {
+    "buttons": {
+      "update": "Yenilə"
+    },
+    "fields": {
+      "content": "Mətn",
+      "title": "Başlıq"
+    },
+    "messages": {
+      "loadError": "Yükləmək alınmadı",
+      "updateError": "Yadda saxlamaq alınmadı",
+      "updateSuccess": "Yadda saxlanıldı"
+    },
+    "title": "Başlıq"
+  },
+  "AngiographyScanerTemplateReportList": {
+    "buttons": {
+      "delete": "Sil",
+      "edit": "Dəyiş"
+    },
+    "confirm": {
+      "delete": "Bu ifadə silinsin?"
+    },
+    "messages": {
+      "deleteError": "Silmək alınmadı",
+      "deleteSuccess": "Silindi",
+      "loadError": "Yükləmək alınmadı"
+    },
+    "title": "Başlıq"
+  }
+}

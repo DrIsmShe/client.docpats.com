@@ -278,7 +278,13 @@
       "right_eye": "Sağ göz",
       "left_eyebrow": "Sol kaş",
       "right_eyebrow": "Sağ kaş"
-    }
+    },
+    "multiFace": {
+      "title": "Çoklu görünüm",
+      "hint": "İşaretlemek için bir yüz seçin"
+    },
+    "rotationApplied": "Döndürme uygulandı",
+    "statsVisible": "nokta"
   },
   "measurements": {
     "title": "Ölçümler",
@@ -411,5 +417,30 @@
       "hint": "\"Sonra\" sonucunu görmek için en az bir deformasyon noktası ekleyin.",
       "backButton": "Düzenlemeye dön"
     }
+  },
+  "manualLandmarks": {
+    "stepLabel": "Adım",
+    "cancel": "İptal",
+    "undo": "Geri",
+    "cta": {
+      "hintShort": "Noktaları yüze elle yerleştirin — bir dakikadan az sürer.",
+      "markedTitle": "Elle işaretlendi",
+      "redo": "Yeniden işaretle",
+      "redoHint": "Noktalar elle yerleştirildi. Gerekirse işaretlemeyi değiştirebilirsiniz.",
+      "start": "Elle işaretle",
+      "titleShort": "Elle işaretleme"
+    },
+    "title": "Yüzün elle işaretlenmesi",
+    "confirmDelete": "Elle konulan tüm noktalar silinsin mi?\n\nMevcut düzenleme sonucu korunur — görüntü görsel olarak değişmez.",
+    "confirmResetAll": "TÜM düzenlemeler sıfırlansın ve orijinal fotoğrafa dönülsün mü?\n\nBu işlem geri alınamaz."
+  },
+  "actions": {
+    "deleteManual": "Elle konulanları sil",
+    "deleteManualTitle": "Elle konulan noktaları sil (sonuç korunur)",
+    "resetAll": "Tümünü sıfırla",
+    "resetAllTitle": "Orijinal fotoğrafa tam sıfırlama",
+    "title": "İşlemler",
+    "undo": "Bir adım geri",
+    "undoTitle": "Son işlemi geri al (Ctrl+Z)"
   }
 }

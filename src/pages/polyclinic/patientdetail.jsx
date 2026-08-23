@@ -211,6 +211,7 @@ export const Section = ({ title, children }) => (
 );
 
 export const SeverityBadge = ({ level }) => {
+  const { t } = useTranslation("common");
   const colors = { low: "#1a6b3c", moderate: "#b45309", high: "#c0392b" };
   const bgs = { low: "#f0fdf4", moderate: "#fffbeb", high: "#fef2f2" };
   return (
@@ -225,7 +226,7 @@ export const SeverityBadge = ({ level }) => {
         background: bgs[level] || "#f5f5f5",
       }}
     >
-      Clinical Severity: {level}
+      {t("dp.patient.severity")} {level}
     </span>
   );
 };
@@ -767,7 +768,7 @@ export default function PatientDetail() {
         <div className="ppd-hero-inner">
           <img
             src={photoSrc}
-            alt="Profile"
+            alt={t("patientArea:addPatient.profile")}
             className="ppd-hero-avatar"
             onError={(e) => {
               e.currentTarget.onerror = null;
@@ -775,7 +776,7 @@ export default function PatientDetail() {
             }}
           />
           <div className="ppd-hero-info">
-            <div className="ppd-hero-tag">DocPats · Patient</div>
+            <div className="ppd-hero-tag">{t("dp.pageTitle.patient")}</div>
             <h1 className="ppd-hero-h1">
               {t("titles.moreAboutPatient", {
                 firstName: patient.firstName,
@@ -840,7 +841,7 @@ export default function PatientDetail() {
               )
             }
           >
-            🔪 Создать хирургический кейс
+            {t("dp.patient.createSurgicalCase")}
           </button>
           <button
             className="ppd-btn ppd-btn-outline"
@@ -1076,7 +1077,7 @@ export default function PatientDetail() {
             <div className="ppd-profile-card">
               <img
                 src={photoSrc}
-                alt="Profile"
+                alt={t("patientArea:addPatient.profile")}
                 className="ppd-profile-avatar"
                 onError={(e) => {
                   e.currentTarget.onerror = null;

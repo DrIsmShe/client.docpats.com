@@ -1,6 +1,8 @@
 import React from "react";
 
+import { useTranslation } from "react-i18next";
 export default function AIConfidenceScoreBlock({ summary, meta }) {
+  const { t } = useTranslation("common");
   const confidence =
     meta?.confidenceScore ??
     summary?.confidenceScore ??
@@ -15,7 +17,7 @@ export default function AIConfidenceScoreBlock({ summary, meta }) {
 
   return (
     <div className="card shadow-sm border rounded-4 p-3 mb-3">
-      <h5 className="mb-3">🧠 AI Confidence Score</h5>
+      <h5 className="mb-3">{t("dp.ai.confidenceScore")}</h5>
 
       <div
         style={{
@@ -37,7 +39,7 @@ export default function AIConfidenceScoreBlock({ summary, meta }) {
       </div>
 
       <div className="mt-2 d-flex justify-content-between align-items-center">
-        <span className="text-muted small">Model confidence</span>
+        <span className="text-muted small">{t("dp.ai.modelConfidence")}</span>
         <strong style={{ color: tone }}>{normalized}%</strong>
       </div>
     </div>

@@ -351,7 +351,7 @@ export default function PatientClinicalSummary() {
         <>
           {/* SUMMARY */}
 
-          <h4 className="mb-3">🩺 Patient clinical summary</h4>
+          <h4 className="mb-3">{t("common:dp.ai.summaryTitle")}</h4>
 
           {sections.map((s, i) => (
             <Section key={i} {...s} />
@@ -359,12 +359,12 @@ export default function PatientClinicalSummary() {
 
           <Suspense
             fallback={
-              <div className="text-muted py-3">AI analysis loading...</div>
+              <div className="text-muted py-3">{t("common:dp.ai.loading")}</div>
             }
           >
             {/* CLINICAL STATUS */}
 
-            <h4 className="mt-5 mb-3">🚨 Clinical status</h4>
+            <h4 className="mt-5 mb-3">{t("common:dp.ai.clinicalStatus")}</h4>
 
             <ClinicalScoreBlock summary={aiSummary} />
 
@@ -384,7 +384,7 @@ export default function PatientClinicalSummary() {
 
             {/* DIAGNOSTIC */}
 
-            <h4 className="mt-5 mb-3">🧠 Diagnostic analysis</h4>
+            <h4 className="mt-5 mb-3">{t("common:dp.ai.diagnosticAnalysis")}</h4>
 
             <DiagnosisProbabilityBars
               probabilities={aiSummary?.diseaseProbabilities}
@@ -413,7 +413,7 @@ export default function PatientClinicalSummary() {
 
             {/* EVOLUTION */}
 
-            <h4 className="mt-5 mb-3">📈 Disease progression</h4>
+            <h4 className="mt-5 mb-3">{t("common:dp.ai.progression")}</h4>
 
             <ClinicalProgressionGraph
               summary={aiSummary}
@@ -428,11 +428,11 @@ export default function PatientClinicalSummary() {
                 disabled={timelinePage <= 1}
                 onClick={() => setTimelinePage((p) => Math.max(1, p - 1))}
               >
-                ← Prev
+                {t("common:dp.ai.prev")}
               </button>
 
               <span className="px-3 py-2">
-                Page {timelinePage} / {timelineTotalPages}
+                {t("common:dp.ai.page")} {timelinePage} / {timelineTotalPages}
               </span>
 
               <button
@@ -442,7 +442,7 @@ export default function PatientClinicalSummary() {
                   setTimelinePage((p) => Math.min(timelineTotalPages, p + 1))
                 }
               >
-                Next →
+                {t("common:dp.ai.next")}
               </button>
             </div>
 
@@ -450,7 +450,7 @@ export default function PatientClinicalSummary() {
 
             <details className="mt-5">
               <summary style={{ cursor: "pointer", fontWeight: 600 }}>
-                🔬 AI analysis details
+                {t("common:dp.ai.details")}
               </summary>
 
               <div className="mt-3">

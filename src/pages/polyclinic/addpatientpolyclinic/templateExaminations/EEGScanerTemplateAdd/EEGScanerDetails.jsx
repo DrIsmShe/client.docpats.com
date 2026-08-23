@@ -214,7 +214,7 @@ export default function EEGScanerDetails() {
 
       <div className="eeg-hero">
         <div className="eeg-hero-inner">
-          <div className="eeg-hero-tag">DocPats · EEG</div>
+          <div className="eeg-hero-tag">{t("common:dp.pageTitle.eeg")}</div>
           <h1 className="eeg-hero-h1">{t("EEGScanerDetails.page.title")}</h1>
           <p className="eeg-hero-sub">
             {patientName} · {dateFormatted}
@@ -389,7 +389,7 @@ export default function EEGScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>

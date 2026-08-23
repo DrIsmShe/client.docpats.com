@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useNavigate, Outlet } from "react-router-dom";
 import Aside from "../../components/ployclinic/aside/aside";
 import Header from "../../components/doctorprofileComponents/header/header";
@@ -6,6 +7,7 @@ import Footer from "../../components/ployclinic/footer/footer";
 import axios from "axios";
 import { useSelector } from "react-redux";
 export default function MainPolyclinicLayout() {
+  const { t } = useTranslation("common");
   const isOpen = useSelector((state) => state.menu.isOpen);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -47,7 +49,7 @@ export default function MainPolyclinicLayout() {
   }, [navigate]);
 
   if (isLoading) {
-    return <div>Загрузка...</div>;
+    return <div>{t("common:common.loadingDots")}</div>;
   }
 
   if (!isAuthenticated) {

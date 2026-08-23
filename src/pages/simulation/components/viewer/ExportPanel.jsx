@@ -68,7 +68,7 @@ export default function ExportPanel({ onDownload, disabled }) {
               checked={format === "image/jpeg"}
               onChange={() => setFormat("image/jpeg")}
             />
-            <span>JPG</span>
+            <span>{t("common:dp.scan.jpg")}</span>
           </label>
           <label className={styles.exportPanelRadio}>
             <input
@@ -78,7 +78,7 @@ export default function ExportPanel({ onDownload, disabled }) {
               checked={format === "image/png"}
               onChange={() => setFormat("image/png")}
             />
-            <span>PNG</span>
+            <span>{t("common:dp.scan.png")}</span>
           </label>
         </div>
       </div>

@@ -150,7 +150,8 @@
   "common": {
     "title": "Title",
     "content": "Content",
-    "save": "Save"
+    "save": "Save",
+    "loading": "Loading…"
   },
   "DoplerScanerTemplateReportDetails": {
     "page": {
@@ -218,7 +219,8 @@
       "title": "Examination Name Template Details"
     },
     "messages": {
-      "loadError": "Failed to load the template"
+      "loadError": "Failed to load the template",
+      "networkError": "⚠️ Network error"
     },
     "common": {
       "loading": "Loading...",

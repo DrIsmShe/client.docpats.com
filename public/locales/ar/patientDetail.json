@@ -18,7 +18,8 @@
     "loadingExaminations": "جارٍ تحميل الفحوصات",
     "addGenerateClinicalSummary": "إنشاء ملخص سريري",
     "generating": "جارٍ الإنشاء",
-    "aiGeneratedSummaryDisclaimer": "تم إنشاء هذا الملخص بواسطة الذكاء الاصطناعي. للاستخدام المهني فقط."
+    "aiGeneratedSummaryDisclaimer": "تم إنشاء هذا الملخص بواسطة الذكاء الاصطناعي. للاستخدام المهني فقط.",
+    "PatientNotFound": "لم يُعثر على المريض"
   },
   "examAddedSuccess": "✅ تمّت إضافة الفحص بنجاح",
   "tabs": {

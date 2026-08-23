@@ -273,7 +273,7 @@ export default function AngiographyScanerDetails() {
       {/* ── HERO ── */}
       <div className="ang-hero">
         <div className="ang-hero-inner">
-          <div className="ang-hero-tag">DocPats · Angiography</div>
+          <div className="ang-hero-tag">{t("common:dp.pageTitle.angiography")}</div>
           <h1 className="ang-hero-h1">
             {t("AngiographyScanerDetails.page.title")}
           </h1>
@@ -470,7 +470,7 @@ export default function AngiographyScanerDetails() {
           </button>
           <img
             src={lightboxImg}
-            alt="Full size"
+            alt={t("common:dp.scan.fullSize")}
             onClick={(e) => e.stopPropagation()}
           />
         </div>
