@@ -87,7 +87,7 @@ const CSS = `
  * Собрать пункты меню из реально присутствующих блоков layout.
  * Для "Врачи" подкладываем дропдаун из clinic.doctors (реальные данные).
  */
-function buildNavItems(clinic, t, hidden = [], order = []) {
+function buildNavItems(clinic, t, hidden = [], order = [], base = "") {
   const present = new Set(
     (clinic?.layout?.blocks || []).map((b) => b.type).filter(Boolean),
   );
@@ -124,9 +124,16 @@ function buildNavItems(clinic, t, hidden = [], order = []) {
     if (d.type === "doctors") {
       const docs = Array.isArray(clinic?.doctors) ? clinic.doctors : [];
       if (docs.length > 0) {
+        // Врач открывается ВНУТРИ витрины. Здесь оставался doc.profileUrl —
+        // адрес платформы, и меню уводило посетителя туда же, откуда его
+        // увели карточки: к чужой шапке. profileUrl — запасной путь для
+        // старого DTO без id.
         item.children = docs.slice(0, 8).map((doc) => ({
           label: doc.name || "—",
-          to: doc.profileUrl || null,
+          to:
+            doc.id && base
+              ? `${base}/doctors/${doc.id}`
+              : doc.profileUrl || null,
         }));
         item.hasMore = docs.length > 8;
       }
@@ -175,21 +182,24 @@ export default function NavBlock({ clinic, config = {} }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Многостраничность: каждый пункт ведёт на <база>/:section.
+  const params = useParams();
+  const location = useLocation();
+  const slug = params.slug || clinic?.slug || "";
+  const base = clinicBasePath(location.pathname, slug);
+
+  // base считается ДО построения пунктов: дропдаун «Врачи» строит по нему
+  // адреса врачей внутри витрины.
   const items = buildNavItems(
     clinic,
     t,
     config.hiddenNavItems,
     config.navOrder,
+    base,
   );
   const showBrand = config.showBrand !== false;
   const logoUrl = resolveUrl(clinic?.logo);
   const name = clinic?.name || "";
-
-  // Многостраничность: каждый пункт ведёт на /clinics/:slug/:section.
-  const params = useParams();
-  const location = useLocation();
-  const slug = params.slug || clinic?.slug || "";
-  const base = clinicBasePath(location.pathname, slug);
   const activeSection = params.section || ""; // "" = главная витрины
 
   // ссылка пункта меню: home-блоки (hero/stats/cta и т.п.) без своей секции

@@ -24,6 +24,9 @@ import {
   formatDate,
   clinicBasePath,
 } from "./lib/utils.js";
+import DoctorReviews from "../../../components/shared/DoctorReviews";
+import CommentSection from "../../../components/shared/CommentSection";
+import { useViewer } from "./lib/useViewer.js";
 
 const CHROME_TOP = new Set(["topbar", "nav"]);
 
@@ -57,6 +60,17 @@ const DOC_CSS = `
 .vt-doc-pub-abs { font-size: 14px; color: var(--v-text-muted); line-height: 1.5; }
 .vt-doc-pub-date { font-size: 12px; color: var(--v-text-muted); margin-top: 10px; }
 
+.vt-doc-section { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--v-border); }
+.vt-doc-section-title { font-family: var(--v-font-heading); font-size: 26px; font-weight: 700; margin: 0 0 20px; }
+.vt-doc-gate { text-align: center; padding: 30px 20px; background: var(--v-surface-alt); border: 1px solid var(--v-border); border-radius: 16px; }
+.vt-doc-gate-ico { font-size: 38px; opacity: .5; margin-bottom: 10px; }
+.vt-doc-gate-title { font-family: var(--v-font-heading); font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+.vt-doc-gate-sub { font-size: 14px; color: var(--v-text-muted); line-height: 1.55; margin-bottom: 18px; }
+.vt-doc-gate-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.vt-doc-gate-actions a { text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 100px; padding: 9px 20px; }
+.vt-doc-gate-primary { background: var(--v-primary); color: var(--v-on-primary); }
+.vt-doc-gate-ghost { border: 1px solid var(--v-border); color: var(--v-text); }
+
 @media (max-width: 720px) {
   .vt-doc-head { grid-template-columns: 1fr; gap: 22px; }
   .vt-doc-photo { max-width: 240px; }
@@ -69,6 +83,7 @@ export default function DoctorDetailRenderer({ clinic, doctor }) {
   const location = useLocation();
   const rootStyle = useVitrinaTheme(clinic?.theme);
   const slug = params.slug || clinic?.slug || "";
+  const viewer = useViewer();
 
   // SEO страницы врача — тем же способом, что и на детейле статьи витрины.
   // Роботам без JS достаётся версия edge-функции, остальным — эта.
@@ -229,6 +244,58 @@ export default function DoctorDetailRenderer({ clinic, doctor }) {
             </div>
           </section>
         )}
+
+        {/* Отзывы пациентов — тот же компонент и тот же источник, что на
+            странице врача платформы: отзыв один, и расходиться списки не
+            должны. Читать может любой, оставить — вошедший (компонент решает
+            это сам). */}
+        <section className="vt-doc-section">
+          <h2 className="vt-doc-section-title">
+            {t("publicPage.doctorReviews", { defaultValue: "Отзывы" })}
+          </h2>
+          <DoctorReviews doctorProfileId={doctor.id} />
+        </section>
+
+        {/* Комментарии врача — refId это DoctorProfile._id, ровно как на
+            платформе. Гостю показываем приглашение, а не форму: форма без
+            входа всё равно не отправится. */}
+        <section className="vt-doc-section">
+          <h2 className="vt-doc-section-title">
+            {t("publicPage.commentsTitle", { defaultValue: "Комментарии" })}
+          </h2>
+          {!viewer.ready ? null : viewer.isAuthenticated ? (
+            <CommentSection
+              refId={doctor.id}
+              userId={viewer.userId}
+              targetType="Doctor"
+            />
+          ) : (
+            <div className="vt-doc-gate">
+              <div className="vt-doc-gate-ico">💬</div>
+              <div className="vt-doc-gate-title">
+                {t("publicPage.commentsGateTitle", {
+                  defaultValue: "Присоединитесь к обсуждению",
+                })}
+              </div>
+              <div className="vt-doc-gate-sub">
+                {t("publicPage.commentsGateSubDoctor", {
+                  defaultValue:
+                    "Войдите в аккаунт DocPats, чтобы оставить комментарий врачу.",
+                })}
+              </div>
+              <div className="vt-doc-gate-actions">
+                <Link className="vt-doc-gate-primary" to="/login">
+                  {t("publicPage.login", { defaultValue: "Войти" })}
+                </Link>
+                <Link className="vt-doc-gate-ghost" to="/registration">
+                  {t("publicPage.register", {
+                    defaultValue: "Зарегистрироваться",
+                  })}
+                </Link>
+              </div>
+            </div>
+          )}
+        </section>
       </main>
 
       {footer.map(renderBlock)}

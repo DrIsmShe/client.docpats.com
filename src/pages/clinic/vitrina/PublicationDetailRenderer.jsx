@@ -15,7 +15,7 @@
 // Хлебная крошка ведёт к автору ВНУТРИ витрины (author.doctorId), а не на
 // платформу; если врача в клинике уже нет — на саму витрину.
 
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useVitrinaTheme } from "./theme/useVitrinaTheme.js";
@@ -27,6 +27,9 @@ import {
   clinicBasePath,
 } from "./lib/utils.js";
 import { sh } from "../../../lib/sanitizeHtml";
+import CommentSection from "../../../components/shared/CommentSection";
+import { useViewer } from "./lib/useViewer.js";
+import api from "../../../axios";
 
 const CHROME_TOP = new Set(["topbar", "nav"]);
 
@@ -54,6 +57,22 @@ const PUB_CSS = `
 .vt-pubd-body th, .vt-pubd-body td { border: 1px solid var(--v-border); padding: 8px 10px; text-align: start; }
 .vt-pubd-tags { margin-top: 22px; display: flex; gap: 8px; flex-wrap: wrap; }
 .vt-pubd-tag { font-size: 12px; color: var(--v-text-muted); background: var(--v-surface-alt); border: 1px solid var(--v-border); border-radius: 999px; padding: 3px 12px; }
+.vt-pubd-actions { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--v-border); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.vt-pubd-like { display: inline-flex; align-items: center; gap: 8px; font-family: inherit; font-size: 15px; font-weight: 600; color: var(--v-text); background: var(--v-surface-alt); border: 1px solid var(--v-border); border-radius: 100px; padding: 9px 18px; cursor: pointer; transition: all .15s; }
+.vt-pubd-like:hover:not(:disabled) { border-color: var(--v-primary); color: var(--v-primary); }
+.vt-pubd-like.vt-on { background: var(--v-primary); border-color: var(--v-primary); color: var(--v-on-primary); }
+.vt-pubd-like:disabled { cursor: default; opacity: .75; }
+.vt-pubd-views { font-size: 14px; color: var(--v-text-muted); }
+.vt-pubd-comments { margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--v-border); }
+.vt-pubd-comments-title { font-family: var(--v-font-heading); font-size: 22px; font-weight: 700; margin: 0 0 18px; }
+.vt-pubd-gate { text-align: center; padding: 30px 20px; background: var(--v-surface-alt); border: 1px solid var(--v-border); border-radius: 16px; }
+.vt-pubd-gate-ico { font-size: 38px; opacity: .5; margin-bottom: 10px; }
+.vt-pubd-gate-title { font-family: var(--v-font-heading); font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+.vt-pubd-gate-sub { font-size: 14px; color: var(--v-text-muted); line-height: 1.55; margin-bottom: 18px; }
+.vt-pubd-gate-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.vt-pubd-gate-actions a { text-decoration: none; font-size: 14px; font-weight: 600; border-radius: 100px; padding: 9px 20px; }
+.vt-pubd-gate-primary { background: var(--v-primary); color: var(--v-on-primary); }
+.vt-pubd-gate-ghost { border: 1px solid var(--v-border); color: var(--v-text); }
 .vt-pubd-refs { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--v-border); font-size: 14px; color: var(--v-text-muted); word-break: break-word; white-space: pre-line; }
 `;
 
@@ -63,6 +82,11 @@ export default function PublicationDetailRenderer({ clinic, publication }) {
   const location = useLocation();
   const rootStyle = useVitrinaTheme(clinic?.theme);
   const slug = params.slug || clinic?.slug || "";
+
+  const viewer = useViewer();
+  const [likesCount, setLikesCount] = useState(0);
+  const [liked, setLiked] = useState(false);
+  const [likeBusy, setLikeBusy] = useState(false);
 
   const clinicName = clinic?.name || "";
   const title = publication?.title || "";
@@ -86,6 +110,48 @@ export default function PublicationDetailRenderer({ clinic, publication }) {
       document.title = prev;
     };
   }, [title, metaDesc, clinicName]);
+
+  // Лайки — те же, что на платформе, и эндпоинты у мнения и научной статьи
+  // РАЗНЫЕ: они лежат в разных коллекциях. Ошибку гасим: гостю сервер отвечает
+  // отказом, и это нормальный ответ, а не сбой страницы.
+  const pubId = publication?.id;
+  const isScientific = publication?.kind === "scientific";
+  const likeStatusUrl = isScientific
+    ? `/comments/add-likes/article-status-scientific/article/${pubId}`
+    : `/comments/add-likes/status/article/${pubId}`;
+  const likeToggleUrl = isScientific
+    ? `/comments/add-likes/scientific-article/${pubId}`
+    : `/comments/add-likes/article/${pubId}`;
+
+  useEffect(() => {
+    if (!pubId) return undefined;
+    let alive = true;
+    api
+      .get(likeStatusUrl)
+      .then((res) => {
+        if (!alive) return;
+        setLikesCount(res?.data?.likesCount ?? 0);
+        setLiked(Boolean(res?.data?.liked));
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [pubId, likeStatusUrl]);
+
+  const toggleLike = useCallback(async () => {
+    if (!viewer.isAuthenticated || likeBusy) return;
+    setLikeBusy(true);
+    try {
+      const res = await api.post(likeToggleUrl, {});
+      setLikesCount(res?.data?.likesCount ?? 0);
+      setLiked(Boolean(res?.data?.liked));
+    } catch {
+      /* отказ сервера здесь ничего не ломает: счётчик остаётся прежним */
+    } finally {
+      setLikeBusy(false);
+    }
+  }, [viewer.isAuthenticated, likeBusy, likeToggleUrl]);
 
   if (!clinic || !publication) return null;
 
@@ -188,6 +254,75 @@ export default function PublicationDetailRenderer({ clinic, publication }) {
             {publication.references}
           </div>
         )}
+
+        {/* Лайки и просмотры — те же счётчики, что на платформе: статья одна,
+            и расходиться числа не должны. Гостю кнопка показана неактивной,
+            а не спрятана: иначе непонятно, почему у статьи есть лайки, но
+            поставить свой негде. */}
+        <div className="vt-pubd-actions">
+          <button
+            type="button"
+            className={`vt-pubd-like${liked ? " vt-on" : ""}`}
+            onClick={toggleLike}
+            disabled={!viewer.isAuthenticated || likeBusy}
+            title={
+              viewer.isAuthenticated
+                ? undefined
+                : t("publicPage.likeNeedsLogin", {
+                    defaultValue: "Войдите, чтобы оценить статью",
+                  })
+            }
+          >
+            <span aria-hidden="true">♥</span>
+            <span>{likesCount}</span>
+          </button>
+          {publication.views > 0 && (
+            <span className="vt-pubd-views">
+              {t("publicPage.views", {
+                defaultValue: "{{count}} просмотров",
+                count: publication.views,
+              })}
+            </span>
+          )}
+        </div>
+
+        {/* Комментарии. Читать может любой, писать — вошедший: CommentSection
+            это тот же компонент, что на странице статьи платформы, так что
+            обсуждение у статьи одно, где бы её ни открыли. */}
+        <section className="vt-pubd-comments">
+          <h2 className="vt-pubd-comments-title">
+            {t("publicPage.commentsTitle", { defaultValue: "Комментарии" })}
+          </h2>
+
+          {!viewer.ready ? null : viewer.isAuthenticated ? (
+            <CommentSection refId={publication.id} targetType="Article" />
+          ) : (
+            <div className="vt-pubd-gate">
+              <div className="vt-pubd-gate-ico">💬</div>
+              <div className="vt-pubd-gate-title">
+                {t("publicPage.commentsGateTitle", {
+                  defaultValue: "Присоединитесь к обсуждению",
+                })}
+              </div>
+              <div className="vt-pubd-gate-sub">
+                {t("publicPage.commentsGateSub", {
+                  defaultValue:
+                    "Войдите в аккаунт DocPats, чтобы оставлять комментарии и оценивать статьи.",
+                })}
+              </div>
+              <div className="vt-pubd-gate-actions">
+                <Link className="vt-pubd-gate-primary" to="/login">
+                  {t("publicPage.login", { defaultValue: "Войти" })}
+                </Link>
+                <Link className="vt-pubd-gate-ghost" to="/registration">
+                  {t("publicPage.register", {
+                    defaultValue: "Зарегистрироваться",
+                  })}
+                </Link>
+              </div>
+            </div>
+          )}
+        </section>
       </main>
 
       {footer.map(renderBlock)}
