@@ -893,6 +893,20 @@ function App() {
                   именами. Заводить им вторые адреса — плодить дубли. */}
               <Route path="analytics" element={<ClinicAnalyticsPage />} />
               <Route path="schedule" element={<EmployeeSchedulePage />} />
+              {/* Дочерние адреса расписания. EmployeeSchedulePage строит ссылки
+                  как <база>/schedule/:doctorId — и в зоне владельца они вели в
+                  «страница не найдена»: здесь расписание врача исторически
+                  живёт по другому адресу, staff/:doctorId/schedule (он ниже и
+                  сохранён для прежних ссылок). Список и его ссылки должны
+                  работать в обеих зонах одинаково. */}
+              <Route
+                path="schedule/:doctorId"
+                element={<ClinicSchedulePage />}
+              />
+              <Route
+                path="schedule/:doctorId/calendar"
+                element={<ClinicCalendarPage />}
+              />
               <Route path="book" element={<EmployeeBookAppointmentPage />} />
               <Route path="pharmacy" element={<PharmacyCatalogPage />} />
               <Route
