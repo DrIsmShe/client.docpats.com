@@ -663,7 +663,7 @@ export default function PatientAppointmentsPage() {
         <div className="pa-header-content">
           <span className="pa-eyebrow">
             <span className="dot" />
-            DocPats · Booking
+            {t("patientArea:common.booking")}
           </span>
           <h1 className="pa-title">
             <FaCalendarAlt />

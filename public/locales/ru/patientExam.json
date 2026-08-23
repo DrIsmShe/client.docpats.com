@@ -27,7 +27,10 @@
     "studyId": "ID исследования",
     "studyName": "Наименование исследования",
     "studyType": "Study Type",
-    "updated": "Обновлено"
+    "updated": "Обновлено",
+    "doctorOrSource": "Врач / источник",
+    "title": "Наименование",
+    "patientFullNameShort": "Пациент (ФИО)"
   },
   "common": {
     "download": "Скачать",
@@ -73,7 +76,8 @@
     "us": "Детали УЗИ-исследования",
     "usShort": "УЗИ — детали",
     "xray": "Детали рентген-исследования",
-    "xrayShort": "Рентген — детали"
+    "xrayShort": "Рентген — детали",
+    "generic": "— детали"
   },
   "links": {
     "previousEeg": "Предыдущее EEG",

@@ -7,6 +7,7 @@
 // Endpoint: GET /patient-profile/get-my-clinic-imaging-details/files/:id
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import jsPDF from "jspdf";
@@ -133,6 +134,7 @@ const alertStyle = (type) => ({
 
 /* ===================== Компонент ===================== */
 export default function PatientFileDetailClinic() {
+  const { t } = useTranslation("patientExam");
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -223,9 +225,9 @@ export default function PatientFileDetailClinic() {
       `}</style>
 
       <nav style={{ marginBottom: 12, fontSize: 14 }}>
-        <Link to="/patient/get-patients-files">Мои медицинские файлы</Link>
+        <Link to="/patient/get-patients-files">{t("nav.myFiles")}</Link>
         &nbsp;/&nbsp;
-        <span>{item?.studyTypeLabel || "Исследование"} — детали</span>
+        <span>{item?.studyTypeLabel || "Исследование"} {t("details.generic")}</span>
       </nav>
 
       <div
@@ -237,7 +239,7 @@ export default function PatientFileDetailClinic() {
         }}
       >
         <button onClick={() => navigate(-1)} style={btnStyle}>
-          ← Назад
+          {t("nav.back")}
         </button>
         <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700 }}>{title}</h1>
       </div>
@@ -245,7 +247,7 @@ export default function PatientFileDetailClinic() {
       {loading && <Skeleton />}
       {!loading && error && <div style={alertStyle("error")}>{error}</div>}
       {!loading && !error && !item && (
-        <div style={alertStyle("warning")}>Данные не найдены.</div>
+        <div style={alertStyle("warning")}>{t("common.notFound")}</div>
       )}
 
       {!loading && !error && item && (
@@ -258,39 +260,39 @@ export default function PatientFileDetailClinic() {
             }}
           >
             <button onClick={handleDownloadPDF} style={btnStyle}>
-              ⤓ Скачать PDF (сводка)
+              {t("common.downloadSummary")}
             </button>
           </div>
 
           <div ref={printRef}>
             <section style={card}>
-              <h3 style={h3}>Основное</h3>
-              <KV label="ID исследования" value={item._id} mono />
-              <KV label="Тип" value={item.studyTypeLabel} />
-              <KV label="Дата" value={fmtDateTime(item.date)} />
-              <KV label="Врач / источник" value={fullName(item.doctor)} />
-              <KV label="Пациент (ФИО)" value={fullName(item.patient)} />
+              <h3 style={h3}>{t("card.main")}</h3>
+              <KV label={t("card.studyId")} value={item._id} mono />
+              <KV label={t("media.type")} value={item.studyTypeLabel} />
+              <KV label={t("card.date")} value={fmtDateTime(item.date)} />
+              <KV label={t("card.doctorOrSource")} value={fullName(item.doctor)} />
+              <KV label={t("card.patientFullNameShort")} value={fullName(item.patient)} />
               <KV
-                label="Дата рождения"
+                label={t("card.dob")}
                 value={fmtDOBWithAge(item.patientId?.dateOfBirth)}
               />
               <KV
-                label="Контраст использован"
+                label={t("measure.contrastUsedAlt")}
                 value={item.contrastUsed ? "Да" : "Нет"}
               />
             </section>
 
             <section style={card}>
-              <h3 style={h3}>Заключение</h3>
-              <KV label="Наименование" value={item.nameofexam || "—"} />
-              <KV label="Диагноз" value={item.diagnosis || "—"} />
-              <KV label="Отчёт" value={<Pre value={item.report} />} />
+              <h3 style={h3}>{t("report.conclusion")}</h3>
+              <KV label={t("card.title")} value={item.nameofexam || "—"} />
+              <KV label={t("report.diagnosis")} value={item.diagnosis || "—"} />
+              <KV label={t("report.title")} value={<Pre value={item.report} />} />
             </section>
           </div>
 
           {/* Снимки (images[]) — основное содержимое clinic-загрузки */}
           <section style={card}>
-            <h3 style={h3}>Снимки ({item.images?.length || 0})</h3>
+            <h3 style={h3}>{t("media.scansPrefix")}{item.images?.length || 0})</h3>
             {Array.isArray(item.images) && item.images.length > 0 ? (
               <div style={gridImages}>
                 {item.images.map((src, i) => {
@@ -302,7 +304,7 @@ export default function PatientFileDetailClinic() {
                       target="_blank"
                       rel="noreferrer"
                       style={thumbWrap}
-                      title="Открыть снимок"
+                      title={t("common.openScan")}
                     >
                       <img
                         src={href}
@@ -330,19 +332,19 @@ export default function PatientFileDetailClinic() {
                   gap: 12,
                 }}
               >
-                <h3 style={h3}>Файлы ({item.files.length})</h3>
+                <h3 style={h3}>{t("media.filesPrefix")}{item.files.length})</h3>
                 <div style={{ color: "#6b7280" }}>
-                  Суммарный размер: {bytesToHuman(totalSize)}
+                  {t("media.totalSize")} {bytesToHuman(totalSize)}
                 </div>
               </div>
               <div className="clt-wrap">
                 <table className="clt">
                   <thead>
                     <tr>
-                      <th>Имя</th>
-                      <th>Тип</th>
-                      <th>Размер</th>
-                      <th>Действия</th>
+                      <th>{t("card.name")}</th>
+                      <th>{t("media.type")}</th>
+                      <th>{t("media.size")}</th>
+                      <th>{t("card.actions")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -360,7 +362,7 @@ export default function PatientFileDetailClinic() {
                               target="_blank"
                               rel="noreferrer"
                             >
-                              <button style={{ padding: 5 }}>Скачать</button>
+                              <button style={{ padding: 5 }}>{t("common.download")}</button>
                             </a>
                           ) : (
                             "—"
@@ -376,9 +378,9 @@ export default function PatientFileDetailClinic() {
 
           {/* Медиа-ссылки */}
           <section style={card}>
-            <h3 style={h3}>Медиа</h3>
+            <h3 style={h3}>{t("media.title")}</h3>
             <KV
-              label="PACS"
+              label={t("media.pacs")}
               mono
               value={
                 item.pacsLink ? (
@@ -395,7 +397,7 @@ export default function PatientFileDetailClinic() {
               }
             />
             <KV
-              label="DICOM (rawData)"
+              label={t("media.dicomRaw")}
               mono
               value={
                 item.rawData ? (
@@ -412,7 +414,7 @@ export default function PatientFileDetailClinic() {
               }
             />
             <KV
-              label="3D-модель"
+              label={t("media.model3d")}
               mono
               value={
                 item.threeDModel ? (
@@ -435,39 +437,39 @@ export default function PatientFileDetailClinic() {
             item.aiPrediction ||
             item.aiConfidence != null) && (
             <section style={card}>
-              <h3 style={h3}>AI-анализ</h3>
-              <KV label="AI версия" value={item.aiVersion || "—"} />
-              <KV label="AI предсказание" value={item.aiPrediction || "—"} />
-              <KV label="Доверие модели" value={item.aiConfidence ?? "—"} />
+              <h3 style={h3}>{t("ai.analysis")}</h3>
+              <KV label={t("ai.version")} value={item.aiVersion || "—"} />
+              <KV label={t("ai.prediction")} value={item.aiPrediction || "—"} />
+              <KV label={t("ai.confidence")} value={item.aiConfidence ?? "—"} />
               <KV
-                label="Доверие предсказанию"
+                label={t("ai.predictionConfidence")}
                 value={item.predictionConfidence ?? "—"}
               />
-              <KV label="Обработано" value={fmtDateTime(item.aiProcessedAt)} />
+              <KV label={t("ai.processed")} value={fmtDateTime(item.aiProcessedAt)} />
             </section>
           )}
 
           {/* Риск / валидация */}
           <section style={card}>
-            <h3 style={h3}>Оценка риска и валидация</h3>
-            <KV label="Уровень риска" value={item.riskLevel || "—"} />
-            <KV label="Факторы риска" value={safeJoin(item.riskFactors)} />
+            <h3 style={h3}>{t("validation.riskAndValidation")}</h3>
+            <KV label={t("risk.level")} value={item.riskLevel || "—"} />
+            <KV label={t("risk.factors")} value={safeJoin(item.riskFactors)} />
             <KV
-              label="Валидировано врачом"
+              label={t("validation.byDoctor")}
               value={item.validatedByDoctor ? "Да" : "Нет"}
             />
             <KV
-              label="Заметки врача"
+              label={t("report.doctorNotes")}
               value={<Pre value={item.doctorNotes} />}
             />
-            <KV label="Создано" value={fmtDateTime(item.createdAt)} />
-            <KV label="Обновлено" value={fmtDateTime(item.updatedAt)} />
+            <KV label={t("card.created")} value={fmtDateTime(item.createdAt)} />
+            <KV label={t("card.updated")} value={fmtDateTime(item.updatedAt)} />
           </section>
 
           {/* Комментарии */}
           <section style={card}>
             <h3 style={h3}>
-              Комментарии врача ({item.doctorComments?.length || 0})
+              {t("media.doctorCommentsPrefix")}{item.doctorComments?.length || 0})
             </h3>
             {Array.isArray(item.doctorComments) &&
             item.doctorComments.length > 0 ? (

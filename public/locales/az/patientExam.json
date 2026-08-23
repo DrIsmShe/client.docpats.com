@@ -27,7 +27,10 @@
     "studyId": "Tədqiqatın ID-si",
     "studyName": "Tədqiqatın adı",
     "studyType": "Tədqiqatın növü",
-    "updated": "Yenilənib"
+    "updated": "Yenilənib",
+    "doctorOrSource": "Həkim / mənbə",
+    "title": "Adı",
+    "patientFullNameShort": "Pasiyent (S.A.A.)"
   },
   "common": {
     "download": "Yüklə",
@@ -73,7 +76,8 @@
     "us": "USM tədqiqatının detalları",
     "usShort": "USM — detallar",
     "xray": "Rentgen tədqiqatının detalları",
-    "xrayShort": "Rentgen — detallar"
+    "xrayShort": "Rentgen — detallar",
+    "generic": "— detallar"
   },
   "links": {
     "previousEeg": "Əvvəlki EEQ",

@@ -21,6 +21,7 @@
 // заключение всегда заканчивается тем, к какому врачу идти.
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "../../../axios";
 import "./labInsight.css";
 
@@ -41,6 +42,7 @@ function fmtDate(d) {
 }
 
 function ParamCard({ p }) {
+  const { t } = useTranslation("patientArea");
   const level = LEVEL[p.level] || LEVEL.unknown;
   const arrow = p.direction === "high" ? "↑" : p.direction === "low" ? "↓" : "";
 
@@ -60,7 +62,7 @@ function ParamCard({ p }) {
         {/* Норма с бланка рядом с выводом — чтобы вывод можно было
             проверить, а не принять на веру. */}
         {p.refText ? (
-          <span className="li-param__ref"> · норма по бланку {p.refText}</span>
+          <span className="li-param__ref"> {t("lab.formNorm")} {p.refText}</span>
         ) : null}
       </p>
 
@@ -71,6 +73,7 @@ function ParamCard({ p }) {
 }
 
 export default function LabInsightPage() {
+  const { t } = useTranslation("patientArea");
   const [items, setItems] = useState([]);
   const [quota, setQuota] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -148,11 +151,9 @@ export default function LabInsightPage() {
   return (
     <div className="li-page">
       <header className="li-head">
-        <h1>Расшифровка анализов</h1>
+        <h1>{t("lab.title")}</h1>
         <p className="li-lead">
-          Сфотографируйте бланк — покажем, какие показатели вне нормы и что
-          они означают. Это не диагноз и не назначение: с результатом нужно
-          прийти к врачу.
+          {t("lab.lead")}
         </p>
       </header>
 
@@ -172,7 +173,7 @@ export default function LabInsightPage() {
 
         {quota && !quota.unlimited && (
           <span className="li-quota">
-            осталось {quota.left} из {quota.limit} за 30 дней
+            {t("lab.remaining")} {quota.left} {t("common.of")} {quota.limit} {t("lab.perThirtyDays")}
           </span>
         )}
       </section>
@@ -190,7 +191,7 @@ export default function LabInsightPage() {
             >
               {fmtDate(i.collectedAt || i.createdAt)}
               {i.summary.outOfRange > 0 && (
-                <span className="li-tab__dot" title="есть отклонения" />
+                <span className="li-tab__dot" title={t("lab.hasDeviations")} />
               )}
             </button>
           ))}
@@ -205,19 +206,19 @@ export default function LabInsightPage() {
               что часть бланка в разбор не попала. */}
           {open.unreadable.length > 0 && (
             <div className="li-unreadable">
-              <strong>Не удалось прочитать:</strong>
+              <strong>{t("lab.notReadable")}</strong>
               <ul>
                 {open.unreadable.map((u, i) => (
                   <li key={i}>{u}</li>
                 ))}
               </ul>
-              <p>Эти строки в разбор не вошли — покажите бланк врачу целиком.</p>
+              <p>{t("lab.notIncluded")}</p>
             </div>
           )}
 
           {abnormal.length > 0 && (
             <>
-              <h2 className="li-group">Вне нормы</h2>
+              <h2 className="li-group">{t("lab.outOfRange")}</h2>
               <div className="li-params">
                 {abnormal.map((p) => (
                   <ParamCard key={p.name} p={p} />
@@ -228,7 +229,7 @@ export default function LabInsightPage() {
 
           {borderline.length > 0 && (
             <>
-              <h2 className="li-group">У границы нормы</h2>
+              <h2 className="li-group">{t("lab.borderline")}</h2>
               <div className="li-params">
                 {borderline.map((p) => (
                   <ParamCard key={p.name} p={p} />
@@ -239,11 +240,9 @@ export default function LabInsightPage() {
 
           {unknown.length > 0 && (
             <>
-              <h2 className="li-group">Сравнить не с чем</h2>
+              <h2 className="li-group">{t("lab.noComparison")}</h2>
               <p className="li-note">
-                На бланке рядом с этими показателями не напечатана норма.
-                Подставлять «обычную» нельзя: у разных лабораторий нормы
-                различаются, и вывод получился бы неверным.
+                {t("lab.noPrintedNorm")}
               </p>
               <div className="li-params">
                 {unknown.map((p) => (
@@ -255,7 +254,7 @@ export default function LabInsightPage() {
 
           {normal.length > 0 && (
             <>
-              <h2 className="li-group">В пределах нормы</h2>
+              <h2 className="li-group">{t("lab.inRange")}</h2>
               <div className="li-params">
                 {normal.map((p) => (
                   <ParamCard key={p.name} p={p} />
@@ -271,7 +270,7 @@ export default function LabInsightPage() {
               className="li-btn li-btn--ghost"
               onClick={() => remove(open.id)}
             >
-              Удалить разбор
+              {t("lab.deleteAnalysis")}
             </button>
           </footer>
         </section>
@@ -279,8 +278,7 @@ export default function LabInsightPage() {
 
       {!open && !busy && (
         <p className="li-empty">
-          Пока ничего не разобрано. Загрузите бланк — фотография не
-          сохраняется, в вашем профиле останутся только показатели.
+          {t("lab.empty")}
         </p>
       )}
     </div>

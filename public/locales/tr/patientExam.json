@@ -27,7 +27,10 @@
     "studyId": "Çalışma kimliği",
     "studyName": "Çalışma adı",
     "studyType": "Çalışma türü",
-    "updated": "Güncellendi"
+    "updated": "Güncellendi",
+    "doctorOrSource": "Doktor / kaynak",
+    "title": "Adı",
+    "patientFullNameShort": "Hasta (ad soyad)"
   },
   "common": {
     "download": "İndir",
@@ -73,7 +76,8 @@
     "us": "Ultrason çalışma ayrıntıları",
     "usShort": "Ultrason — ayrıntılar",
     "xray": "Röntgen çalışma ayrıntıları",
-    "xrayShort": "Röntgen — ayrıntılar"
+    "xrayShort": "Röntgen — ayrıntılar",
+    "generic": "— ayrıntılar"
   },
   "links": {
     "previousEeg": "Önceki EEG",

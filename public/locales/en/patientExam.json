@@ -27,7 +27,10 @@
     "studyId": "Study ID",
     "studyName": "Study name",
     "studyType": "Study type",
-    "updated": "Updated"
+    "updated": "Updated",
+    "doctorOrSource": "Doctor / source",
+    "title": "Name",
+    "patientFullNameShort": "Patient (full name)"
   },
   "common": {
     "download": "Download",
@@ -73,7 +76,8 @@
     "us": "Ultrasound study details",
     "usShort": "Ultrasound — details",
     "xray": "X-ray study details",
-    "xrayShort": "X-ray — details"
+    "xrayShort": "X-ray — details",
+    "generic": "— details"
   },
   "links": {
     "previousEeg": "Previous EEG",

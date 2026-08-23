@@ -14,6 +14,7 @@
 // разбор остаётся администратору клиники: у него тот же журнал целиком.
 
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "../../../axios";
 import "./accessLog.css";
 
@@ -38,6 +39,7 @@ const ROLE = {
 };
 
 export default function AccessLogPage() {
+  const { t } = useTranslation("patientArea");
   const [items, setItems] = useState([]);
   const [includeOwn, setIncludeOwn] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -64,10 +66,9 @@ export default function AccessLogPage() {
 
   return (
     <div className="al-page">
-      <h1>Кто открывал мою карту</h1>
+      <h1>{t("accessLog.title")}</h1>
       <p className="al-lead">
-        Каждое обращение к вашим медицинским данным записывается и хранится
-        семь лет. Записи нельзя изменить или удалить — в том числе нам.
+        {t("accessLog.note")}
       </p>
 
       <label className="al-toggle">
@@ -76,15 +77,15 @@ export default function AccessLogPage() {
           checked={includeOwn}
           onChange={(e) => setIncludeOwn(e.target.checked)}
         />
-        <span>Показывать и мои собственные действия</span>
+        <span>{t("accessLog.showOwn")}</span>
       </label>
 
       {error && <p className="al-error">{error}</p>}
-      {loading && <p className="al-hint">Загружаем…</p>}
+      {loading && <p className="al-hint">{t("accessLog.loading")}</p>}
 
       {!loading && items.length === 0 && (
         <p className="al-hint">
-          К вашим данным пока никто не обращался.
+          {t("accessLog.empty")}
         </p>
       )}
 
@@ -109,7 +110,7 @@ export default function AccessLogPage() {
                 {/* Отказ показываем прямо: «вашу карту пытались открыть
                     и не смогли» — это ровно то, ради чего журнал ведут. */}
                 {it.denied && (
-                  <span className="al-row__denied">доступ отклонён</span>
+                  <span className="al-row__denied">{t("accessLog.denied")}</span>
                 )}
               </div>
             </li>
@@ -118,9 +119,7 @@ export default function AccessLogPage() {
       )}
 
       <p className="al-note">
-        Показана организация, а не конкретный сотрудник: за доступ к вашим
-        данным отвечает клиника. Если запись вызывает вопросы, обратитесь к
-        ней — по дате и времени она найдёт, кто именно открывал карту.
+        {t("accessLog.orgNote")}
       </p>
     </div>
   );

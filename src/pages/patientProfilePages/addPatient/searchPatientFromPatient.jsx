@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function SearchPatientFromPatient() {
+  const { t } = useTranslation("patientArea");
   const [query, setQuery] = useState("");
   const [result, setResult] = useState(null);
   const navigate = useNavigate();
@@ -49,14 +51,14 @@ export default function SearchPatientFromPatient() {
 
   return (
     <div>
-      <h2>Search Patient</h2>
+      <h2>{t("searchPatient.title")}</h2>
       <input
         type="text"
-        placeholder="Enter Email, Phone or Document"
+        placeholder={t("searchPatient.placeholder")}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch}>{t("searchPatient.search")}</button>
 
       {result && (
         <div>
@@ -64,9 +66,9 @@ export default function SearchPatientFromPatient() {
 
           {result.found && (
             <div>
-              <p>Name: {result.patient.fullName}</p>
-              <p>Email: {result.patient.email}</p>
-              <p>Phone: {result.patient.phoneNumber}</p>
+              <p>{t("searchPatient.name")} {result.patient.fullName}</p>
+              <p>{t("searchPatient.email")} {result.patient.email}</p>
+              <p>{t("searchPatient.phone")} {result.patient.phoneNumber}</p>
             </div>
           )}
 
@@ -76,7 +78,7 @@ export default function SearchPatientFromPatient() {
                 navigate("/patient/add-patient-to-clinic", { state: { query } })
               }
             >
-              Create Patient
+              {t("searchPatient.create")}
             </button>
           )}
         </div>

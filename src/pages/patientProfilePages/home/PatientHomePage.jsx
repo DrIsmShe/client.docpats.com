@@ -1341,7 +1341,7 @@ export default function ProfilePatientHomePage() {
               defaultValue: "Поиск врачей, статей, файлов…",
             })}
           />
-          <button type="submit" className="hp-search-kbd" aria-label="Search">
+          <button type="submit" className="hp-search-kbd" aria-label={t("patientArea:searchPatient.search")}>
             <svg
               width="14"
               height="14"

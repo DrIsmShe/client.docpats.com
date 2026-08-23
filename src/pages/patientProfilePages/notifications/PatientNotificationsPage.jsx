@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import {
   Spinner,
@@ -23,6 +24,7 @@ import NotificationSettings from "../../../components/shared/NotificationSetting
 const API_BASE = process.env.REACT_APP_API_URL;
 
 export default function PatientNotificationsPage() {
+  const { t } = useTranslation("patientArea");
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -140,8 +142,8 @@ export default function PatientNotificationsPage() {
         <Col md={8}>
           <h3 className="fw-bold">
             <FaBell className="me-2 text-warning" />
-            Уведомления{" "}
-            <Badge bg="secondary">{unreadCount} непрочитанных</Badge>
+            {t("notifications.title")}{" "}
+            <Badge bg="secondary">{unreadCount} {t("notifications.unreadWord")}</Badge>
           </h3>
         </Col>
         <Col
@@ -158,7 +160,7 @@ export default function PatientNotificationsPage() {
             }}
           >
             <FaSyncAlt className={refreshing ? "fa-spin me-1" : "me-1"} />
-            Обновить
+            {t("common.refresh")}
           </Button>
           {unreadCount > 0 && (
             <Button
@@ -168,7 +170,7 @@ export default function PatientNotificationsPage() {
               onClick={markAllAsRead}
             >
               <FaCheckCircle className="me-1" />
-              Отметить все как прочитанные
+              {t("notifications.markAllRead")}
             </Button>
           )}
         </Col>
@@ -189,19 +191,19 @@ export default function PatientNotificationsPage() {
               variant={filter === "all" ? "primary" : "outline-primary"}
               onClick={() => setFilter("all")}
             >
-              Все
+              {t("notifications.all")}
             </Button>
             <Button
               variant={filter === "unread" ? "warning" : "outline-warning"}
               onClick={() => setFilter("unread")}
             >
-              Непрочитанные
+              {t("notifications.unread")}
             </Button>
             <Button
               variant={filter === "read" ? "success" : "outline-success"}
               onClick={() => setFilter("read")}
             >
-              Прочитанные
+              {t("notifications.read")}
             </Button>
           </ButtonGroup>
         </Col>
@@ -227,7 +229,7 @@ export default function PatientNotificationsPage() {
 
       {filteredNotifications.length === 0 && (
         <Alert variant="info" className="text-center">
-          Нет уведомлений (
+          {t("notifications.emptyPrefix")}
           {filter === "all"
             ? "всех"
             : filter === "unread"
@@ -274,7 +276,7 @@ export default function PatientNotificationsPage() {
                     rel="noopener noreferrer"
                     className="text-decoration-none small text-primary"
                   >
-                    Перейти →
+                    {t("notifications.goTo")}
                   </a>
                 )}
 
@@ -292,7 +294,7 @@ export default function PatientNotificationsPage() {
                         onClick={() => markAsRead(n._id)}
                         className="d-flex align-items-center gap-1"
                       >
-                        <FaCheckCircle /> Не прочитано
+                        <FaCheckCircle /> {t("notifications.isUnread")}
                       </Button>
                     ) : (
                       <motion.div
@@ -312,7 +314,7 @@ export default function PatientNotificationsPage() {
                             gap: "5px",
                           }}
                         >
-                          <FaCheckCircle /> Прочитано
+                          <FaCheckCircle /> {t("notifications.isRead")}
                         </Badge>
                       </motion.div>
                     )}
@@ -323,7 +325,7 @@ export default function PatientNotificationsPage() {
                       onClick={() => deleteNotif(n._id)}
                       className="d-flex align-items-center gap-1"
                     >
-                      <FaTrashAlt /> Удалить
+                      <FaTrashAlt /> {t("common.delete")}
                     </Button>
                   </div>
                 </div>

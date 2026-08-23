@@ -1427,7 +1427,7 @@ export default function HomePatientMainPage() {
                 <img
                   key={av}
                   src={av}
-                  alt="avatar"
+                  alt={t("patientArea:common.avatar")}
                   className={`pp-avatar-option${selectedAvatar === av ? " selected" : ""}`}
                   onClick={() => setSelectedAvatar(av)}
                 />

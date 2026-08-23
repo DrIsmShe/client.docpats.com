@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaCommentDots, FaUserNurse } from "react-icons/fa6";
@@ -87,6 +88,7 @@ const pickContentHtml = (a) => {
 
 /* ====================== Component ====================== */
 export default function ArticlesFromDoctorsForPatient() {
+  const { t } = useTranslation("patientArea");
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -228,13 +230,13 @@ export default function ArticlesFromDoctorsForPatient() {
     sortBy,
   ]);
 
-  if (loading) return <div>Загрузка...</div>;
+  if (loading) return <div>{t("common.loading")}</div>;
   if (error) return <div className="text-danger">{error}</div>;
 
   return (
     <div>
       <div className="pagetitle">
-        <h1>Все статьи</h1>
+        <h1>{t("articles.all")}</h1>
       </div>
 
       <section className="section">
@@ -244,9 +246,9 @@ export default function ArticlesFromDoctorsForPatient() {
             <div className="card mb-3 shadow-sm">
               <div className="card-body">
                 <div className="d-flex flex-wrap align-items-center justify-content-between mb-2">
-                  <h5 className="card-title m-0">Фильтры и поиск</h5>
+                  <h5 className="card-title m-0">{t("articles.filtersAndSearch")}</h5>
                   <div style={{ fontSize: 14, opacity: 0.8 }}>
-                    Найдено: <b>{filtered.length}</b>
+                    {t("articles.found")} <b>{filtered.length}</b>
                   </div>
                 </div>
 
@@ -254,12 +256,12 @@ export default function ArticlesFromDoctorsForPatient() {
                   {/* Поиск (title + content) */}
                   <div className="col-md-6">
                     <label className="form-label">
-                      Поиск (название + текст)
+                      {t("articles.searchPlaceholder")}
                     </label>
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Например: кардиология, иммунитет, диета..."
+                      placeholder={t("articles.categoriesExample")}
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                     />
@@ -267,11 +269,11 @@ export default function ArticlesFromDoctorsForPatient() {
 
                   {/* Автор */}
                   <div className="col-md-6">
-                    <label className="form-label">Автор (имя/фамилия)</label>
+                    <label className="form-label">{t("articles.author")}</label>
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Например: Иванов"
+                      placeholder={t("articles.authorExample")}
                       value={authorQuery}
                       onChange={(e) => setAuthorQuery(e.target.value)}
                     />
@@ -279,7 +281,7 @@ export default function ArticlesFromDoctorsForPatient() {
 
                   {/* Страна */}
                   <div className="col-md-4">
-                    <label className="form-label">Страна</label>
+                    <label className="form-label">{t("articles.country")}</label>
                     <select
                       className="form-select"
                       value={country}
@@ -295,7 +297,7 @@ export default function ArticlesFromDoctorsForPatient() {
 
                   {/* Специализация */}
                   <div className="col-md-4">
-                    <label className="form-label">Специализация</label>
+                    <label className="form-label">{t("articles.specialty")}</label>
                     <select
                       className="form-select"
                       value={specialization}
@@ -311,17 +313,17 @@ export default function ArticlesFromDoctorsForPatient() {
 
                   {/* Сортировка */}
                   <div className="col-md-4">
-                    <label className="form-label">Сортировка</label>
+                    <label className="form-label">{t("articles.sorting")}</label>
                     <select
                       className="form-select"
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
                     >
-                      <option value="date_desc">Сначала новые</option>
-                      <option value="date_asc">Сначала старые</option>
-                      <option value="likes_desc">По лайкам</option>
-                      <option value="comments_desc">По комментариям</option>
-                      <option value="title_asc">По алфавиту (A→Я)</option>
+                      <option value="date_desc">{t("articles.sortNewest")}</option>
+                      <option value="date_asc">{t("articles.sortOldest")}</option>
+                      <option value="likes_desc">{t("articles.sortLikes")}</option>
+                      <option value="comments_desc">{t("articles.sortComments")}</option>
+                      <option value="title_asc">{t("articles.sortAlpha")}</option>
                     </select>
                   </div>
 
@@ -331,7 +333,7 @@ export default function ArticlesFromDoctorsForPatient() {
                       className="btn btn-outline-secondary ms-auto"
                       onClick={resetFilters}
                     >
-                      Сбросить фильтры
+                      {t("articles.resetFilters")}
                     </button>
                   </div>
 
@@ -339,7 +341,7 @@ export default function ArticlesFromDoctorsForPatient() {
                   {options.categories.length > 0 && (
                     <div className="col-12">
                       <label className="form-label d-block mb-2">
-                        Категории
+                        {t("articles.categories")}
                       </label>
                       <div className="d-flex flex-wrap gap-3">
                         {options.categories.map((c) => (
@@ -362,7 +364,7 @@ export default function ArticlesFromDoctorsForPatient() {
 
             {/* Список статей */}
             {filtered.length === 0 ? (
-              <p>Под выбранные фильтры ничего не найдено.</p>
+              <p>{t("articles.nothingForFilters")}</p>
             ) : (
               <div className="row">
                 {filtered.map((article) => {
@@ -440,7 +442,7 @@ export default function ArticlesFromDoctorsForPatient() {
 
                             <div
                               className="d-flex align-items-center"
-                              title="Страна"
+                              title={t("articles.country")}
                             >
                               <span className="badge text-bg-light ms-1">
                                 {getCountry(article)}
@@ -450,7 +452,7 @@ export default function ArticlesFromDoctorsForPatient() {
                             {article?.specialization && (
                               <div
                                 className="d-flex align-items-center"
-                                title="Специализация"
+                                title={t("articles.specialty")}
                               >
                                 <span className="badge text-bg-secondary ms-1">
                                   {article.specialization}

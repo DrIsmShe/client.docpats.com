@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { FaCommentDots } from "react-icons/fa6";
@@ -422,6 +423,7 @@ const S = `
 `;
 
 export default function SingleArticle() {
+  const { t } = useTranslation("patientArea");
   const { id } = useParams();
   const navigate = useNavigate();
   const [article, setArticle] = useState(null);
@@ -495,7 +497,7 @@ export default function SingleArticle() {
       <div className="sa-loading">
         <style>{S}</style>
         <div className="sa-spin" />
-        Загрузка статьи…
+        {t("article.loading")}
       </div>
     );
 
@@ -503,7 +505,7 @@ export default function SingleArticle() {
     return (
       <div className="sa-error">
         <style>{S}</style>
-        Ошибка: {error}
+        {t("common.error")} {error}
       </div>
     );
 
@@ -511,7 +513,7 @@ export default function SingleArticle() {
     return (
       <div className="sa-error">
         <style>{S}</style>
-        Статья не найдена
+        {t("article.notFound")}
       </div>
     );
 
@@ -529,7 +531,7 @@ export default function SingleArticle() {
 
       {/* Back */}
       <button className="sa-back" onClick={() => navigate(-1)}>
-        Назад
+        {t("common.back")}
       </button>
 
       {/* Main layout */}
@@ -546,7 +548,7 @@ export default function SingleArticle() {
             )}
 
             <div className="sa-body">
-              <div className="sa-chip">Статья</div>
+              <div className="sa-chip">{t("article.one")}</div>
 
               <h1 className="sa-title">{article.title}</h1>
 
@@ -557,14 +559,14 @@ export default function SingleArticle() {
                 </span>
                 <span className="sa-meta-item">
                   <FaCommentDots size={14} />
-                  {commentCount} комментариев
+                  {commentCount} {t("article.commentsWord")}
                 </span>
                 <span className="sa-meta-item">
                   <AiFillLike
                     size={14}
                     color={liked ? "#3b82f6" : "currentColor"}
                   />
-                  {likesCount} лайков
+                  {likesCount} {t("article.likesWord")}
                 </span>
               </div>
 
@@ -589,12 +591,12 @@ export default function SingleArticle() {
 
                 <span className="sa-meta-item" style={{ fontSize: 13 }}>
                   <FaCommentDots size={14} />
-                  {commentCount} комментариев
+                  {commentCount} {t("article.commentsWord")}
                 </span>
 
                 <button className="sa-btn sa-share-btn" onClick={handleShare}>
                   <BsFillShareFill size={13} />
-                  Поделиться
+                  {t("common.share")}
                 </button>
               </div>
             </div>
@@ -605,28 +607,28 @@ export default function SingleArticle() {
         <div className="sa-sidebar">
           <div className="sa-widget">
             <div className="sa-widget-head">
-              <span className="sa-widget-title">Статистика</span>
-              <span className="sa-widget-badge">Статья</span>
+              <span className="sa-widget-title">{t("article.stats")}</span>
+              <span className="sa-widget-badge">{t("article.one")}</span>
             </div>
             <div className="sa-widget-body">
               <div className="sa-stat-row">
                 <div className="sa-stat-icon blue">👍</div>
                 <div className="sa-stat-info">
-                  <div className="sa-stat-label">Лайки</div>
+                  <div className="sa-stat-label">{t("article.likes")}</div>
                   <div className="sa-stat-val blue">{likesCount}</div>
                 </div>
               </div>
               <div className="sa-stat-row">
                 <div className="sa-stat-icon green">💬</div>
                 <div className="sa-stat-info">
-                  <div className="sa-stat-label">Комментарии</div>
+                  <div className="sa-stat-label">{t("article.comments")}</div>
                   <div className="sa-stat-val green">{commentCount}</div>
                 </div>
               </div>
               <div className="sa-stat-row">
                 <div className="sa-stat-icon rose">📅</div>
                 <div className="sa-stat-info">
-                  <div className="sa-stat-label">Дата публикации</div>
+                  <div className="sa-stat-label">{t("article.publishedAt")}</div>
                   <div
                     style={{
                       fontSize: 13,
@@ -644,7 +646,7 @@ export default function SingleArticle() {
 
           <div className="sa-widget">
             <div className="sa-widget-head">
-              <span className="sa-widget-title">Действия</span>
+              <span className="sa-widget-title">{t("common.actions")}</span>
             </div>
             <div
               className="sa-widget-body"
@@ -664,7 +666,7 @@ export default function SingleArticle() {
                 style={{ justifyContent: "center", width: "100%" }}
               >
                 <BsFillShareFill size={13} />
-                Поделиться
+                {t("common.share")}
               </button>
             </div>
           </div>
@@ -674,7 +676,7 @@ export default function SingleArticle() {
       {/* ── Comments ── */}
       <div className="sa-comments">
         <div className="sa-comments-head">
-          <h2 className="sa-comments-title">Комментарии</h2>
+          <h2 className="sa-comments-title">{t("article.comments")}</h2>
           <span className="sa-comments-count">
             <FaCommentDots size={12} />
             {commentCount}
@@ -687,7 +689,7 @@ export default function SingleArticle() {
 
       {/* Toast */}
       {toast && (
-        <div className="sa-toast">✓ Ссылка скопирована в буфер обмена</div>
+        <div className="sa-toast">{t("article.linkCopied")}</div>
       )}
     </div>
   );

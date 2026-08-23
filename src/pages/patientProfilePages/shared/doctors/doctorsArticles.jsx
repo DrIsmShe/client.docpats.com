@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { BsCalendar2DateFill, BsFillShareFill } from "react-icons/bs";
@@ -7,6 +8,7 @@ import { AiFillLike } from "react-icons/ai";
 import { sh } from "../../../../lib/sanitizeHtml";
 
 export default function DoctorArticlesForPatient() {
+  const { t } = useTranslation("patientArea");
   const { id } = useParams();
   const [articles, setArticles] = useState([]);
   const [doctor, setDoctor] = useState(null);
@@ -42,7 +44,7 @@ export default function DoctorArticlesForPatient() {
     }
   }, [id]);
 
-  if (loading) return <div className="text-center mt-4">🔄 Загрузка...</div>;
+  if (loading) return <div className="text-center mt-4">{t("common.loadingSpin")}</div>;
 
   if (error)
     return <div className="text-danger text-center mt-4">❌ {error}</div>;
@@ -50,12 +52,12 @@ export default function DoctorArticlesForPatient() {
   return (
     <div className="container py-4">
       <h2 className="mb-4 text-center">
-        Статьи {doctor ? `${doctor.firstName} ${doctor.lastName}` : "доктора"}
+        {t("articles.title")} {doctor ? `${doctor.firstName} ${doctor.lastName}` : "доктора"}
       </h2>
 
       {articles.length === 0 ? (
         <p className="text-center">
-          📝 У врача пока нет опубликованных статей.
+          {t("articles.doctorHasNone")}
         </p>
       ) : (
         <div className="row">

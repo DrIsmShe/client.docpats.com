@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 export default function MyMedicalHistories() {
+  const { t } = useTranslation("patientArea");
   const [histories, setHistories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,13 +32,13 @@ export default function MyMedicalHistories() {
     fetchMedicalHistories();
   }, []);
 
-  if (loading) return <p>Загрузка...</p>;
+  if (loading) return <p>{t("common.loading")}</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
-  if (histories.length === 0) return <p>Истории болезни не найдены.</p>;
+  if (histories.length === 0) return <p>{t("histories.empty")}</p>;
 
   return (
     <div>
-      <h2>Мои истории болезни</h2>
+      <h2>{t("histories.title")}</h2>
       <ul>
         {histories.map((history) => {
           const doctorFirstName = history.doctorId?.firstName || "";
@@ -47,14 +49,14 @@ export default function MyMedicalHistories() {
 
           return (
             <li key={history._id} style={{ marginBottom: "1.5rem" }}>
-              <strong>Диагноз:</strong> {history.diagnosis}
+              <strong>{t("histories.diagnosis")}</strong> {history.diagnosis}
               <br />
-              <strong>Жалобы:</strong> {history.complaints || "—"}
+              <strong>{t("histories.complaints")}</strong> {history.complaints || "—"}
               <br />
-              <strong>Дата создания:</strong>{" "}
+              <strong>{t("histories.createdAt")}</strong>{" "}
               {new Date(history.createdAt).toLocaleDateString()}
               <br />
-              <strong>Врач:</strong>{" "}
+              <strong>{t("histories.doctor")}</strong>{" "}
               {doctorFirstName || doctorLastName
                 ? `${doctorFirstName} ${doctorLastName}`
                 : "Не указано"}

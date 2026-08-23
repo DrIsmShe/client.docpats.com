@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 import { Loader2, CheckCircle, Bell } from "lucide-react";
 
 const Notifications = () => {
+  const { t } = useTranslation("patientArea");
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState(null);
@@ -74,7 +76,7 @@ const Notifications = () => {
   return (
     <div className="max-w-lg mx-auto p-4">
       <h2 className="text-xl font-semibold flex items-center gap-2">
-        <Bell className="w-6 h-6 text-blue-500" /> Уведомления
+        <Bell className="w-6 h-6 text-blue-500" /> {t("notifications.title")}
       </h2>
 
       {loading ? (
@@ -84,7 +86,7 @@ const Notifications = () => {
       ) : (
         <>
           {notifications.length === 0 ? (
-            <p className="text-gray-500 mt-4">Уведомлений нет.</p>
+            <p className="text-gray-500 mt-4">{t("notifications.empty")}</p>
           ) : (
             <ul className="mt-4 space-y-3">
               {notifications.map((notif) => (
@@ -102,7 +104,7 @@ const Notifications = () => {
                     onClick={() => markAsRead(notif._id)}
                     className="text-green-600 border border-green-600 hover:bg-green-100 p-2 rounded-lg"
                   >
-                    <CheckCircle className="w-5 h-5 mr-1 inline" /> Прочитано
+                    <CheckCircle className="w-5 h-5 mr-1 inline" /> {t("notifications.isRead")}
                   </button>
                 </li>
               ))}
