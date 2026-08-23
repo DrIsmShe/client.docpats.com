@@ -10,6 +10,8 @@ import {
   FaCalendarCheck,
   FaComments,
   FaVideo,
+  FaFlask,
+  FaPrescriptionBottleMedical,
 } from "react-icons/fa6";
 import { GoFileSubmodule } from "react-icons/go";
 import { FaCommentMedical } from "react-icons/fa6";
@@ -484,11 +486,16 @@ export default function AsidePatient() {
         },
         {
           to: "/patient/my-lab-results",
-          icon: <GoFileSubmodule />,
+          // Своя иконка: раньше здесь стояла та же, что у медицинских файлов,
+          // и два соседних пункта читались как один раздел.
+          icon: <FaFlask />,
           label: t("AsidePatient.menu.myLabResults", "Мои анализы"),
         },
         {
           to: "/patient/my-prescriptions",
+          // Иконки не было вовсе — пункт висел с пустым местом слева и в ряду
+          // выглядел подпунктом соседнего.
+          icon: <FaPrescriptionBottleMedical />,
           label: t("AsidePatient.menu.myPrescriptions", "Мои рецепты"),
         },
         {
