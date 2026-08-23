@@ -2597,6 +2597,17 @@ export const getPublicArticleDetail = (slug, pageSlug, articleSlug) =>
       `/api/v1/public/clinics/${slug}/dp/${pageSlug}/articles/${articleSlug}`,
     )
     .then((r) => r.data); // → полный объект статьи
+// Врач и публикация ВНУТРИ витрины. Те же данные, что на страницах платформы,
+// но по адресу клиники: посетитель не уходит с её сайта, а адрес остаётся
+// настоящим — им можно поделиться и он индексируется.
+export const getPublicClinicDoctor = (slug, doctorId) =>
+  axios
+    .get(`/api/v1/public/clinics/${slug}/doctors/${doctorId}`)
+    .then((r) => r.data); // → врач + его публикации
+export const getPublicClinicPublication = (slug, publicationId) =>
+  axios
+    .get(`/api/v1/public/clinics/${slug}/publications/${publicationId}`)
+    .then((r) => r.data); // → публикация с телом
 export const listArticles = (params) =>
   axios.get(`/api/v1/clinic/articles`, { params }).then((r) => r.data);
 export const getArticle = (id) =>

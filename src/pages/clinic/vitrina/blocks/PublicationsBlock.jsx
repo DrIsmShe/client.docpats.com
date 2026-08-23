@@ -11,9 +11,10 @@
 // Контракт: ({ clinic, config }).
 
 import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Section from "../components/Section.jsx";
-import { blockBgStyle } from "../lib/utils.js";
+import { blockBgStyle, clinicBasePath } from "../lib/utils.js";
 import { resolveUrl } from "../lib/utils.js";
 
 const CSS = `
@@ -32,6 +33,10 @@ const CSS = `
 
 export default function PublicationsBlock({ clinic, config = {} }) {
   const { t: tr } = useTranslation("clinicReviews");
+  const location = useLocation();
+  const base = clinic?.slug
+    ? clinicBasePath(location.pathname, clinic.slug)
+    : "";
 
   const pubs = Array.isArray(clinic?.publications) ? clinic.publications : [];
   if (pubs.length === 0) return null;
@@ -46,10 +51,15 @@ export default function PublicationsBlock({ clinic, config = {} }) {
       <div className="vt-pubs">
         {pubs.map((p) => {
           const img = resolveUrl(p.imageUrl);
-          // url приходит из DTO уже корректный (мнение/научная). Фолбэк —
-          // защита от старого DTO с битым /articles/:id (это адрес синтез-
-          // статьи, а не публикации врача). Старая форма /public/articles/:id
-          // теперь редиректит на /articles/:id — ловим обе.
+          // Статья открывается ВНУТРИ витрины: /<slug>/publications/<id>, в той
+          // же вкладке. Раньше отсюда уходили на адрес платформы и в новую
+          // вкладку — посетитель терял сайт клиники на самом интересном.
+          //
+          // p.url (адрес платформы) остаётся запасным вариантом: у старого DTO
+          // нет id, и увести на платформу лучше, чем никуда. Фолбэк внутри
+          // фолбэка — защита от старого DTO с битым /articles/:id: это адрес
+          // синтез-статьи, а не публикации врача.
+          const inVitrina = p.id && base ? `${base}/publications/${p.id}` : null;
           let href = p.url || "";
           if (!href || /^\/(public\/)?articles\//.test(href)) {
             href = p.id
@@ -60,14 +70,8 @@ export default function PublicationsBlock({ clinic, config = {} }) {
             p.kind === "scientific"
               ? tr("kindScientific", { defaultValue: "Научная" })
               : tr("kindOpinion", { defaultValue: "Мнение" });
-          return (
-            <a
-              className="vt-pub"
-              href={href}
-              key={p.id}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+          const card = (
+            <>
               {img && <img className="vt-pub-img" src={img} alt={p.title} />}
               <div className="vt-pub-body">
                 <div
@@ -86,6 +90,26 @@ export default function PublicationsBlock({ clinic, config = {} }) {
                   )}
                 </div>
               </div>
+            </>
+          );
+
+          // Своя страница витрины — обычный переход в той же вкладке. Уход на
+          // платформу (запасной путь) остаётся в новой вкладке: там посетитель
+          // и правда покидает сайт клиники, и терять его текущую страницу
+          // незачем.
+          return inVitrina ? (
+            <Link className="vt-pub" to={inVitrina} key={p.id}>
+              {card}
+            </Link>
+          ) : (
+            <a
+              className="vt-pub"
+              href={href}
+              key={p.id}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {card}
             </a>
           );
         })}

@@ -13,11 +13,16 @@
 // Хлебная крошка ведёт назад в категорию (article.category.slug).
 
 import React, { useEffect, useState, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useVitrinaTheme } from "./theme/useVitrinaTheme.js";
 import { getBlockComponent } from "./blocks/blockRegistry.js";
-import { RTL_LANGS, resolveUrl, formatDate } from "./lib/utils.js";
+import {
+  RTL_LANGS,
+  resolveUrl,
+  formatDate,
+  clinicBasePath,
+} from "./lib/utils.js";
 import Lightbox from "./components/Lightbox.jsx";
 import { sh } from "../../../lib/sanitizeHtml";
 
@@ -55,6 +60,7 @@ const ART_CSS = `
 export default function ArticleDetailRenderer({ clinic, article }) {
   const { i18n, t } = useTranslation();
   const params = useParams();
+  const location = useLocation();
   const rootStyle = useVitrinaTheme(clinic?.theme);
   const slug = params.slug || clinic?.slug || "";
 
@@ -118,7 +124,12 @@ export default function ArticleDetailRenderer({ clinic, article }) {
 
   const cover = resolveUrl(article.cover);
   const cat = article.category || null;
-  const catHref = cat?.slug ? `/clinics/${slug}/dp/${cat.slug}` : null;
+  // Базу берём из текущего адреса, а не собираем из /clinics/<slug>:
+  // витрина живёт по двум адресам, и корневой — канонический. Жёсткая база
+  // перебрасывала посетителя с /<slug> на /clinics/<slug> посреди визита.
+  const catHref = cat?.slug
+    ? `${clinicBasePath(location.pathname, slug)}/dp/${cat.slug}`
+    : null;
 
   return (
     <div

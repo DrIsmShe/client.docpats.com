@@ -11,9 +11,14 @@
 // Контракт: ({ clinic, config }).
 
 import React, { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { resolveUrl, initials, blockBgStyle } from "../lib/utils.js";
+import {
+  resolveUrl,
+  initials,
+  blockBgStyle,
+  clinicBasePath,
+} from "../lib/utils.js";
 
 const CSS = `
 .vt-spec { padding: 56px 0 8px; }
@@ -50,7 +55,7 @@ const CSS = `
 }
 `;
 
-function DoctorCard({ d, t }) {
+function DoctorCard({ d, t, base }) {
   const img = resolveUrl(d.profileImage);
   const years = Number(d.experienceYears) || 0;
   const role = d.specialization || d.about || "";
@@ -89,8 +94,15 @@ function DoctorCard({ d, t }) {
     </>
   );
 
-  return d.profileUrl ? (
-    <Link className="vt-spec-card" to={d.profileUrl}>
+  // Карточка ведёт на страницу врача ВНУТРИ витрины: /<slug>/doctors/<id>.
+  // Раньше здесь стоял d.profileUrl — адрес страницы ПЛАТФОРМЫ
+  // (/public/doctor-profile/doctor-details/<id>), и посетитель уходил с сайта
+  // клиники к чужой шапке. profileUrl остаётся запасным вариантом: у старого
+  // DTO поля id ещё нет, и лучше увести на платформу, чем никуда.
+  const href = d.id && base ? `${base}/doctors/${d.id}` : d.profileUrl;
+
+  return href ? (
+    <Link className="vt-spec-card" to={href}>
       {inner}
     </Link>
   ) : (
@@ -100,6 +112,10 @@ function DoctorCard({ d, t }) {
 
 export default function DoctorsBlock({ clinic, config = {} }) {
   const { t } = useTranslation();
+  const location = useLocation();
+  const base = clinic?.slug
+    ? clinicBasePath(location.pathname, clinic.slug)
+    : "";
   const doctors = useMemo(
     () => (Array.isArray(clinic?.doctors) ? clinic.doctors : []),
     [clinic?.doctors],
@@ -163,7 +179,7 @@ export default function DoctorsBlock({ clinic, config = {} }) {
 
         <div className="vt-spec-grid">
           {shown.map((d) => (
-            <DoctorCard key={d.userId} d={d} t={t} />
+            <DoctorCard key={d.userId} d={d} t={t} base={base} />
           ))}
         </div>
       </div>

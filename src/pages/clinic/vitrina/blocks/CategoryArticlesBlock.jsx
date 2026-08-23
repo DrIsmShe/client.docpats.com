@@ -13,10 +13,15 @@
 //   config.title — заголовок секции (по умолчанию «Статьи»)
 
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Section from "../components/Section.jsx";
-import { blockBgStyle, resolveUrl, formatDate } from "../lib/utils.js";
+import {
+  blockBgStyle,
+  resolveUrl,
+  formatDate,
+  clinicBasePath,
+} from "../lib/utils.js";
 import { getPublicCategoryArticles } from "../../../../api/clinic";
 
 const CSS = `
@@ -36,6 +41,7 @@ export default function CategoryArticlesBlock({ clinic, config = {} }) {
   const { t } = useTranslation();
   const { i18n } = useTranslation();
   const params = useParams();
+  const location = useLocation();
   const slug = params.slug || clinic?.slug || "";
   const pageSlug = params.pageSlug || ""; // присутствует только на /dp/:pageSlug
 
@@ -72,7 +78,13 @@ export default function CategoryArticlesBlock({ clinic, config = {} }) {
     config.title ||
     t("publicPage.categoryArticlesTitle", { defaultValue: "Статьи" });
 
-  const base = `/clinics/${slug}/dp/${pageSlug}/articles`;
+  // Базу берём из текущего адреса, а не собираем из /clinics/<slug>:
+  // витрина живёт по двум адресам, и корневой — канонический. Жёсткая база
+  // перебрасывала посетителя с /<slug> на /clinics/<slug> посреди визита.
+  const base = `${clinicBasePath(
+    location.pathname,
+    slug,
+  )}/dp/${pageSlug}/articles`;
 
   return (
     <Section bg={blockBgStyle(config)} id="articles" title={title}>

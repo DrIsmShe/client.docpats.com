@@ -627,6 +627,8 @@ const ClinicPublicPageSettings = lazy(() => import("./pages/clinic/ClinicPublicP
 const PublicCustomPage = lazy(() => import("./pages/clinic/PublicClinicPage/PublicCustomPage.jsx"));
 const ClinicCustomPagesPage = lazy(() => import("./pages/clinic/ClinicCustomPagesPage/ClinicCustomPagesPage.jsx"));
 const PublicArticleDetail = lazy(() => import("./pages/clinic/PublicClinicPage/PublicArticleDetail.jsx"));
+const PublicDoctorDetail = lazy(() => import("./pages/clinic/PublicClinicPage/PublicDoctorDetail.jsx"));
+const PublicPublicationDetail = lazy(() => import("./pages/clinic/PublicClinicPage/PublicPublicationDetail.jsx"));
 const ServicesPage = lazy(() => import("./pages/clinic/ServicesPage/ServicesPage.jsx"));
 const MyClinicInvitations = lazy(() => import("./pages/clinic/ClinicStaffPage/MyClinicInvitations.jsx"));
 const MembershipInviteAccept = lazy(() => import("./pages/clinic/MembershipInviteAccept/MembershipInviteAccept.jsx"));
@@ -811,6 +813,18 @@ function App() {
             <Route
               path="/clinics/:slug/dp/:pageSlug/articles/:articleSlug"
               element={<PublicArticleDetail />}
+            />
+            {/* Врач и публикация ВНУТРИ витрины. Раньше эти карточки вели на
+                страницы платформы (/public/doctor-profile/...), и посетитель
+                уходил с сайта клиники. Три сегмента — с двухсегментным
+                /:slug/:section (раздел витрины) не конфликтуют. */}
+            <Route
+              path="/clinics/:slug/doctors/:doctorId"
+              element={<PublicDoctorDetail />}
+            />
+            <Route
+              path="/clinics/:slug/publications/:publicationId"
+              element={<PublicPublicationDetail />}
             />
             <Route
               path="/clinics/:slug/:section"
@@ -3032,6 +3046,14 @@ function App() {
               element={<PublicArticleDetail />}
             />
             <Route path="/:slug/dp/:pageSlug" element={<PublicCustomPage />} />
+            <Route
+              path="/:slug/doctors/:doctorId"
+              element={<PublicDoctorDetail />}
+            />
+            <Route
+              path="/:slug/publications/:publicationId"
+              element={<PublicPublicationDetail />}
+            />
             <Route path="/:slug/:section" element={<PublicClinicPage />} />
             <Route path="/:slug" element={<PublicClinicPage />} />
 

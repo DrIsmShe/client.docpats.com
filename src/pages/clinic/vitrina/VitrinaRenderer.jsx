@@ -13,7 +13,7 @@
 // Надстройки применяются ТОЛЬКО на странице раздела, на главную не влияют.
 
 import React, { useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useVitrinaTheme } from "./theme/useVitrinaTheme.js";
 import { getBlockComponent } from "./blocks/blockRegistry.js";
@@ -24,6 +24,7 @@ import {
   blockBgStyle,
   telHref,
   resolveVitrinaLink,
+  clinicBasePath,
 } from "./lib/utils.js";
 
 /**
@@ -151,6 +152,7 @@ const PAGE_CSS = `
 export default function VitrinaRenderer({ clinic }) {
   const { i18n } = useTranslation();
   const { section } = useParams();
+  const location = useLocation();
   const rootStyle = useVitrinaTheme(clinic?.theme);
 
   // SEO под-страницы (document.title + meta description). Без зависимостей.
@@ -264,7 +266,12 @@ export default function VitrinaRenderer({ clinic }) {
   const hasIntro = pageIntro && (pageIntro.title || pageIntro.text);
 
   // базовый путь витрины для умных ссылок
-  const vBase = clinic?.slug ? `/clinics/${clinic.slug}` : "";
+  // Базу берём из текущего адреса, а не собираем из /clinics/<slug>:
+  // витрина живёт по двум адресам, и корневой — канонический. Жёсткая база
+  // перебрасывала посетителя с /<slug> на /clinics/<slug> посреди визита.
+  const vBase = clinic?.slug
+    ? clinicBasePath(location.pathname, clinic.slug)
+    : "";
 
   // кнопки-якоря (общий рендер для intro и баннер-капшена)
   const renderButtons = () =>

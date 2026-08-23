@@ -157,6 +157,144 @@ export default async function handler(request, context) {
     }
   }
 
+  // ── Врач и публикация внутри витрины ──
+  //   /<slug>/doctors/<id>        (и /clinics/<slug>/doctors/<id>)
+  //   /<slug>/publications/<id>   (и /clinics/<slug>/publications/<id>)
+  //
+  // Эти страницы появились, чтобы посетитель не уходил с сайта клиники на
+  // страницы платформы. Ради этого их и стоило заводить — но без разметки они
+  // были бы обменом одной проблемы на другую: адрес есть, а для поисковика
+  // страница пустая.
+  //
+  // Клиника приходит внутри ответа API (поле clinic) — второй запрос за её
+  // названием не нужен. Канонический адрес всегда корневой, как и у витрины.
+  const vitrinaDoctorMatch = url.pathname.match(
+    /^\/(?:clinics\/)?([a-z0-9-]+)\/doctors\/([a-f0-9]{24})\/?$/i,
+  );
+  const vitrinaPubMatch = url.pathname.match(
+    /^\/(?:clinics\/)?([a-z0-9-]+)\/publications\/([a-f0-9]{24})\/?$/i,
+  );
+  const vitrinaMatch = vitrinaDoctorMatch || vitrinaPubMatch;
+
+  if (vitrinaMatch && !RESERVED_ROOT.has(vitrinaMatch[1].toLowerCase())) {
+    try {
+      const isDoctor = Boolean(vitrinaDoctorMatch);
+      const clinicSlug = vitrinaMatch[1];
+      const entityId = vitrinaMatch[2];
+      const segment = isDoctor ? "doctors" : "publications";
+
+      const res = await fetch(
+        `https://backend.docpats.com/api/v1/public/clinics/${encodeURIComponent(
+          clinicSlug,
+        )}/${segment}/${entityId}`,
+      );
+      if (!res.ok) return context.next();
+      const data = await res.json();
+      if (!data || (isDoctor ? !data.name : !data.title)) {
+        return context.next();
+      }
+
+      const clinicName = data.clinic?.name || "";
+      const clinicUrl = `https://docpats.com/${clinicSlug}`;
+      const pageUrl = `${clinicUrl}/${segment}/${entityId}`;
+      const publisher = {
+        "@type": "MedicalClinic",
+        name: clinicName,
+        url: clinicUrl,
+      };
+
+      const clip = (v) =>
+        String(v || "")
+          .replace(/<[^>]*>/g, " ")
+          .replace(/\s+/g, " ")
+          .trim()
+          .slice(0, 155);
+
+      let title, desc, image, jsonLd, ogType;
+
+      if (isDoctor) {
+        title = escAttr(
+          clinicName ? `${data.name} — ${clinicName}` : data.name,
+        );
+        desc = escAttr(
+          clip(data.about) ||
+            [data.specialization, clinicName].filter(Boolean).join(", ") ||
+            data.name,
+        );
+        image = data.profileImage || "https://docpats.com/og-image.jpg";
+        ogType = "profile";
+        jsonLd = {
+          "@context": "https://schema.org",
+          "@type": "Physician",
+          name: data.name,
+          url: pageUrl,
+          image: data.profileImage || undefined,
+          description: clip(data.about) || undefined,
+          medicalSpecialty: data.specialization || undefined,
+          // Врач показан именно как сотрудник этой клиники: страница живёт на
+          // её адресе, и разметка не должна утверждать иного.
+          worksFor: publisher,
+        };
+      } else {
+        title = escAttr(
+          clinicName ? `${data.title} — ${clinicName}` : data.title,
+        );
+        desc = escAttr(clip(data.metaDescription) || clip(data.abstract) || data.title);
+        image = data.imageUrl || "https://docpats.com/og-image.jpg";
+        ogType = "article";
+        jsonLd = {
+          "@context": "https://schema.org",
+          // Научная статья и мнение врача — разные типы: для медицинского
+          // домена это не косметика, Google разбирает их по-разному.
+          "@type":
+            data.kind === "scientific" ? "MedicalScholarlyArticle" : "Article",
+          headline: data.title,
+          url: pageUrl,
+          image: data.imageUrl || undefined,
+          description: clip(data.abstract) || undefined,
+          datePublished: data.createdAt || undefined,
+          dateModified: data.updatedAt || data.createdAt || undefined,
+          author: data.author?.name
+            ? {
+                "@type": "Person",
+                name: data.author.name,
+                url: data.author.doctorId
+                  ? `${clinicUrl}/doctors/${data.author.doctorId}`
+                  : undefined,
+              }
+            : undefined,
+          publisher,
+        };
+      }
+
+      const response = await context.next();
+      let html = await response.text();
+      html = stripShellSeo(html);
+
+      const inject = `
+    <title>${title}</title>
+    <meta name="description" content="${desc}" data-seo="edge">
+    <link rel="canonical" href="${pageUrl}" data-seo="edge">
+    <meta data-seo="edge" property="og:type" content="${ogType}">
+    <meta data-seo="edge" property="og:title" content="${title}">
+    <meta data-seo="edge" property="og:description" content="${desc}">
+    <meta data-seo="edge" property="og:url" content="${pageUrl}">
+    <meta data-seo="edge" property="og:image" content="${escAttr(image)}">
+    <meta data-seo="edge" name="twitter:card" content="summary_large_image">
+    <meta data-seo="edge" name="twitter:title" content="${title}">
+    <meta data-seo="edge" name="twitter:description" content="${desc}">
+    <meta data-seo="edge" name="twitter:image" content="${escAttr(image)}">
+    <script type="application/ld+json" data-seo="edge">${JSON.stringify(jsonLd)}</script>`;
+
+      html = html.replace("</head>", inject + "</head>");
+      return new Response(html, {
+        headers: { "content-type": "text/html; charset=utf-8" },
+      });
+    } catch {
+      return context.next();
+    }
+  }
+
   // ── Витрина клиники: /clinics/<slug> ──
   //
   // Страница есть в sitemap, но SEO-обработки у неё не было вовсе: бот
@@ -651,6 +789,11 @@ export const config = {
     // попадает и /login, и /pricing — отсекаются они в RESERVED_ROOT, а всё
     // незнакомое проверяется запросом к публичному API.
     "/:slug",
+    // Врач и публикация внутри витрины. Отдельными шаблонами, а не "/:slug/*":
+    // тот покрыл бы и /patient/appointments, и /doctor/schedule — весь
+    // авторизованный раздел приложения.
+    "/:slug/doctors/*",
+    "/:slug/publications/*",
   ],
   // Файлы в корне (favicon.ico, og-image.jpg, sitemap.xml, sw.js) шаблону
   // "/:slug" тоже соответствуют. Внутри функции они отсеиваются регуляркой,
