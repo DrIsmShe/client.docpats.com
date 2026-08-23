@@ -36,6 +36,8 @@ export default function PublicCustomPage() {
   const { slug, pageSlug } = useParams();
   const { t, i18n } = useTranslation();
   const dir = i18n.language === "ar" ? "rtl" : "ltr";
+  // Двухбуквенный код: i18n может отдать "ru-RU", сервер ждёт "ru".
+  const lang = String(i18n.language || "ru").slice(0, 2).toLowerCase();
 
   const [clinic, setClinic] = useState(null);
   const [page, setPage] = useState(null);
@@ -50,7 +52,7 @@ export default function PublicCustomPage() {
     setError(false);
 
     Promise.all([
-      getPublicClinicPage(slug),
+      getPublicClinicPage(slug, lang),
       getPublicCustomPage(slug, pageSlug),
     ])
       .then(([clinicData, pageData]) => {

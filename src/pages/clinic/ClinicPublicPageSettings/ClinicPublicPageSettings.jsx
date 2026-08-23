@@ -39,6 +39,16 @@ import {
 } from "../../../api/clinic";
 import "./clinicPublicPageSettings.css";
 
+// Языки витрины. Совпадает с локалями интерфейса и enum на сервере.
+const CLINIC_LANGS = ["ru", "en", "az", "tr", "ar"];
+const LANG_LABEL = {
+  ru: "Русский",
+  en: "English",
+  az: "Azərbaycan",
+  tr: "Türkçe",
+  ar: "العربية",
+};
+
 const DESC_MAX = 5000;
 const GALLERY_MAX = 20;
 
@@ -84,6 +94,14 @@ export default function ClinicPublicPageSettings() {
 
   // editable state
   const [description, setDescription] = useState("");
+  // Переводы описания и слогана: { az: "…", en: "…" }. Язык оригинала здесь
+  // НЕ хранится — он лежит в самих description/slogan, чтобы клиника, которая
+  // никогда не откроет эту вкладку, продолжала работать как прежде.
+  const [descI18n, setDescI18n] = useState({});
+  const [sloganI18n, setSloganI18n] = useState({});
+  const [origLang, setOrigLang] = useState("ru");
+  const [transLang, setTransLang] = useState(null);
+  const [savingTrans, setSavingTrans] = useState(false);
   const [isPublished, setIsPublished] = useState(false);
   const [logo, setLogo] = useState(null);
   const [gallery, setGallery] = useState([]);
@@ -155,6 +173,9 @@ export default function ClinicPublicPageSettings() {
 
         setClinic(c);
         setDescription(c.description || "");
+        setDescI18n(c.descriptionI18n || {});
+        setSloganI18n(c.sloganI18n || {});
+        setOrigLang(c.originalLanguage || "ru");
         setIsPublished(c.isPublished === true);
         setLogo(c.logo || null);
         setGallery(Array.isArray(c.gallery) ? c.gallery : []);
@@ -201,6 +222,26 @@ export default function ClinicPublicPageSettings() {
       setSavingDesc(false);
     }
   };
+  // ─── переводы ───
+  const handleSaveTranslations = async () => {
+    if (!clinic?.id || savingTrans) return;
+    setSavingTrans(true);
+    setError(null);
+    try {
+      await updateClinic(clinic.id, {
+        descriptionI18n: descI18n,
+        sloganI18n,
+        originalLanguage: origLang,
+      });
+      flashSaved();
+    } catch (err) {
+      console.error("save translations failed:", err);
+      showError(err, "publicPage.saveError", "Не удалось сохранить переводы");
+    } finally {
+      setSavingTrans(false);
+    }
+  };
+
   const handleSaveTheme = async (theme) => {
     if (!clinic?.id) return;
     await updateClinic(clinic.id, { theme });
@@ -559,6 +600,109 @@ export default function ClinicPublicPageSettings() {
               )}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* TRANSLATIONS */}
+      <section className="cpps-card">
+        <div className="cpps-card-head">
+          <h2 className="cpps-card-title">
+            {t("publicPage.i18nTitle", { defaultValue: "Языки витрины" })}
+          </h2>
+        </div>
+        <div className="cpps-card-body">
+          <p className="cpps-hint">
+            {t("publicPage.i18nHint", {
+              defaultValue:
+                "Витрина показывается на языке посетителя. Где перевода нет — показывается язык оригинала, так что заполнять все языки не обязательно.",
+            })}
+          </p>
+
+          <label className="cpps-label">
+            {t("publicPage.origLang", { defaultValue: "Язык оригинала" })}
+          </label>
+          <select
+            className="cpps-select"
+            value={origLang}
+            disabled={!canWrite || savingTrans}
+            onChange={(e) => setOrigLang(e.target.value)}
+          >
+            {CLINIC_LANGS.map((l) => (
+              <option key={l} value={l}>
+                {LANG_LABEL[l]}
+              </option>
+            ))}
+          </select>
+
+          <div className="cpps-lang-tabs">
+            {CLINIC_LANGS.filter((l) => l !== origLang).map((l) => (
+              <button
+                key={l}
+                type="button"
+                className={
+                  "cpps-lang-tab" +
+                  (transLang === l ? " is-active" : "") +
+                  (descI18n[l] || sloganI18n[l] ? " is-filled" : "")
+                }
+                onClick={() => setTransLang(transLang === l ? null : l)}
+              >
+                {LANG_LABEL[l]}
+              </button>
+            ))}
+          </div>
+
+          {transLang && (
+            <div className="cpps-lang-editor">
+              <label className="cpps-label">
+                {t("publicPage.sloganLabel", { defaultValue: "Слоган" })} —{" "}
+                {LANG_LABEL[transLang]}
+              </label>
+              <input
+                className="cpps-input"
+                maxLength={200}
+                value={sloganI18n[transLang] || ""}
+                disabled={!canWrite || savingTrans}
+                onChange={(e) =>
+                  setSloganI18n({ ...sloganI18n, [transLang]: e.target.value })
+                }
+              />
+
+              <label className="cpps-label">
+                {t("publicPage.descTitle", { defaultValue: "Описание клиники" })}{" "}
+                — {LANG_LABEL[transLang]}
+              </label>
+              <textarea
+                className="cpps-textarea"
+                rows={8}
+                maxLength={DESC_MAX}
+                value={descI18n[transLang] || ""}
+                disabled={!canWrite || savingTrans}
+                placeholder={description}
+                onChange={(e) =>
+                  setDescI18n({ ...descI18n, [transLang]: e.target.value })
+                }
+              />
+
+              <div className="cpps-desc-foot">
+                <span className="cpps-counter">
+                  {(descI18n[transLang] || "").length} / {DESC_MAX}
+                </span>
+                <div className="cpps-actions">
+                  {savedMsg && <span className="cpps-saved">{savedMsg}</span>}
+                  <button
+                    type="button"
+                    className="cpps-btn cpps-btn-primary"
+                    disabled={!canWrite || savingTrans}
+                    onClick={handleSaveTranslations}
+                  >
+                    {savingTrans
+                      ? t("common.saving", { defaultValue: "Сохранение…" })
+                      : t("common.save", { defaultValue: "Сохранить" })}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

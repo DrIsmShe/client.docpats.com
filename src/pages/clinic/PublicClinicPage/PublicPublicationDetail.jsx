@@ -36,6 +36,8 @@ export default function PublicPublicationDetail() {
   const { slug, publicationId } = useParams();
   const { t, i18n } = useTranslation();
   const dir = i18n.language === "ar" ? "rtl" : "ltr";
+  // Двухбуквенный код: i18n может отдать "ru-RU", сервер ждёт "ru".
+  const lang = String(i18n.language || "ru").slice(0, 2).toLowerCase();
 
   const [clinic, setClinic] = useState(null);
   const [publication, setPublication] = useState(null);
@@ -50,7 +52,7 @@ export default function PublicPublicationDetail() {
     setError(false);
 
     Promise.all([
-      getPublicClinicPage(slug),
+      getPublicClinicPage(slug, lang),
       getPublicClinicPublication(slug, publicationId),
     ])
       .then(([clinicData, pubData]) => {
@@ -73,7 +75,7 @@ export default function PublicPublicationDetail() {
     return () => {
       alive = false;
     };
-  }, [slug, publicationId]);
+  }, [slug, publicationId, lang]);
 
   if (loading) {
     return (

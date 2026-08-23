@@ -503,3 +503,32 @@
   color: #94a3b8;
   font-size: 14px;
 }
+
+/* Языки витрины */
+.cpps-lang-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0 4px; }
+.cpps-lang-tab {
+  border: 1px solid #e7e5e4; background: #fff; color: #44403c;
+  font: inherit; font-size: 14px; font-weight: 600;
+  padding: 7px 16px; border-radius: 100px; cursor: pointer; transition: all .15s;
+}
+.cpps-lang-tab:hover { border-color: #0f766e; color: #0f766e; }
+.cpps-lang-tab.is-active { background: #0f766e; border-color: #0f766e; color: #fff; }
+/* Точка у языка, где перевод уже есть — видно, что заполнено, без открытия. */
+.cpps-lang-tab.is-filled::after {
+  content: "•"; margin-inline-start: 6px; color: #0f766e;
+}
+.cpps-lang-tab.is-active.is-filled::after { color: #fff; }
+.cpps-lang-editor { margin-top: 14px; }
+.cpps-select {
+  font: inherit; font-size: 14px; padding: 8px 12px;
+  border: 1px solid #e7e5e4; border-radius: 10px; background: #fff;
+}
+
+/* Подпись, метка и однострочное поле — используются блоком языков. */
+.cpps-hint { font-size: 13px; line-height: 1.5; color: #78716c; margin: 0 0 14px; }
+.cpps-label { display: block; font-size: 13px; font-weight: 600; color: #57534e; margin: 14px 0 6px; }
+.cpps-input {
+  width: 100%; font: inherit; font-size: 14px; padding: 10px 12px;
+  border: 1px solid #e7e5e4; border-radius: 10px; background: #fff; color: #292524;
+}
+.cpps-input:focus, .cpps-select:focus { outline: none; border-color: #0f766e; }

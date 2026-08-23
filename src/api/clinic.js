@@ -2388,9 +2388,15 @@ export const rejectMembershipRequest = async (id) => {
  *
  * @param {string} slug
  */
-export const getPublicClinicPage = async (slug) => {
+export const getPublicClinicPage = async (slug, locale = null) => {
+  // Язык передаём ЯВНЫМ параметром, а не только заголовком X-Language.
+  //
+  // Ответ кэшируется на минуту, а CDN различает запросы по адресу: язык из
+  // заголовка мог бы «прилипнуть» к адресу и приехать посетителю, который
+  // просил другой. С параметром у каждого языка свой ключ кэша.
+  const qs = locale ? `?locale=${encodeURIComponent(locale)}` : "";
   const res = await axios.get(
-    `/api/v1/public/clinics/${encodeURIComponent(slug)}`,
+    `/api/v1/public/clinics/${encodeURIComponent(slug)}${qs}`,
   );
   return res.data; // DTO напрямую
 };

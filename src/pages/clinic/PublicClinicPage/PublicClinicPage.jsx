@@ -39,6 +39,8 @@ export default function PublicClinicPage() {
   const { slug } = useParams();
   const { t, i18n } = useTranslation();
   const dir = i18n.language === "ar" ? "rtl" : "ltr";
+  // Двухбуквенный код: i18n может отдать "ru-RU", сервер ждёт "ru".
+  const lang = String(i18n.language || "ru").slice(0, 2).toLowerCase();
 
   const [clinic, setClinic] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -51,7 +53,10 @@ export default function PublicClinicPage() {
     setNotFound(false);
     setError(false);
 
-    getPublicClinicPage(slug)
+    // Язык — часть запроса, а не только интерфейса: описание и слоган клиники
+    // приходят с сервера уже на нужном языке. При переключении языка страница
+    // перезапрашивает данные — иначе шапка сменила бы язык, а текст остался.
+    getPublicClinicPage(slug, lang)
       .then((data) => {
         if (!alive) return;
         setClinic(data);
@@ -67,7 +72,7 @@ export default function PublicClinicPage() {
     return () => {
       alive = false;
     };
-  }, [slug]);
+  }, [slug, lang]);
 
   if (loading) {
     return (

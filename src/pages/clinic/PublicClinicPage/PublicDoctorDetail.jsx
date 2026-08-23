@@ -33,6 +33,8 @@ export default function PublicDoctorDetail() {
   const { slug, doctorId } = useParams();
   const { t, i18n } = useTranslation();
   const dir = i18n.language === "ar" ? "rtl" : "ltr";
+  // Двухбуквенный код: i18n может отдать "ru-RU", сервер ждёт "ru".
+  const lang = String(i18n.language || "ru").slice(0, 2).toLowerCase();
 
   const [clinic, setClinic] = useState(null);
   const [doctor, setDoctor] = useState(null);
@@ -46,7 +48,10 @@ export default function PublicDoctorDetail() {
     setNotFound(false);
     setError(false);
 
-    Promise.all([getPublicClinicPage(slug), getPublicClinicDoctor(slug, doctorId)])
+    Promise.all([
+      getPublicClinicPage(slug, lang),
+      getPublicClinicDoctor(slug, doctorId),
+    ])
       .then(([clinicData, doctorData]) => {
         if (!alive) return;
         if (!clinicData || !doctorData) {
@@ -67,7 +72,7 @@ export default function PublicDoctorDetail() {
     return () => {
       alive = false;
     };
-  }, [slug, doctorId]);
+  }, [slug, doctorId, lang]);
 
   if (loading) {
     return (
