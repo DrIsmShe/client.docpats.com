@@ -54,8 +54,10 @@
 }
 
 .clinic-layout-context {
-  padding-left: 16px;
-  border-left: 1px solid #e6eaf0;
+  /* Разделитель перед блоком — логическими свойствами: на арабском
+     он должен быть справа, иначе отделяет не то от не того. */
+  padding-inline-start: 16px;
+  border-inline-start: 1px solid #e6eaf0;
   color: #4a5568;
   font-size: 14px;
 }

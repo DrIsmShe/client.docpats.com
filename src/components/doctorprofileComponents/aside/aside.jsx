@@ -183,7 +183,10 @@ const S = `
   }
   .dp2-item::before {
     content:''; position:absolute;
-    left:0; top:22%; bottom:22%;
+    /* Логическое свойство: полоска активного пункта должна стоять
+       со стороны начала строки. При left:0 на арабском она оказывалась
+       с противоположной стороны от текста и читалась как чужая. */
+    inset-inline-start:0; top:22%; bottom:22%;
     width:2px; background: var(--c-accent); border-radius:2px;
     transform: scaleY(0); transition: transform 0.2s ease;
   }
