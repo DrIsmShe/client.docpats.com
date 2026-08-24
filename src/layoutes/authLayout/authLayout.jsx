@@ -1020,6 +1020,19 @@ export default function AuthLayout() {
     }
   };
 
+  // Запись на операцию или обследование — тот же врачебный гейт, что и
+  // у записи на приём. Сервер закрыт authMiddleware + проверкой
+  // профиля врача; здесь — чтобы пациент не упирался в пустую
+  // страницу без объяснения.
+  const [procedureNote, setProcedureNote] = useState(false);
+  const handleBookProcedureClick = () => {
+    if (["doctor", "admin", "superadmin"].includes(userRole)) {
+      navigate("/doctor/book-procedure");
+    } else {
+      setProcedureNote(true);
+    }
+  };
+
   // Создание научной статьи по источникам — тоже врачебный раздел.
   // Сервер закрыт (requireDoctorRole на /api/user-synthesis), здесь — чтобы
   // пациент не упирался в пустую страницу без объяснения.
@@ -1329,6 +1342,73 @@ export default function AuthLayout() {
                         {t("bookPatientDoctorsOnly", {
                           defaultValue:
                             "Запись пациентов доступна только врачам. Войдите как врач.",
+                        })}
+                      </div>
+                    )}
+                  </motion.div>
+
+                  {/* Запись на операцию или обследование — соседней
+                      карточкой с записью на приём, но ведёт в другую сущность:
+                      у вмешательства своё время, подготовка и журнал. */}
+                  <motion.div variants={item} style={{ marginBottom: 12 }}>
+                    <div
+                      className="dp-news-card"
+                      role="button"
+                      tabIndex={0}
+                      style={{ cursor: "pointer" }}
+                      onClick={handleBookProcedureClick}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          handleBookProcedureClick();
+                        }
+                      }}
+                    >
+                      <div
+                        className="dp-news-card-accent"
+                        style={{
+                          background:
+                            "linear-gradient(180deg, #2dd4bf, #0f766e)",
+                        }}
+                      />
+                      <div className="dp-news-card-body">
+                        <div className="dp-news-card-icon">🩺</div>
+                        <div className="dp-news-card-copy">
+                          <div className="dp-news-card-tag">
+                            {"DocPats · "}
+                            {t("bookProcedureTag", {
+                              defaultValue:
+                                "Операции · только для врачей",
+                            })}
+                          </div>
+                          <div className="dp-news-card-text">
+                            {t("bookProcedureText", {
+                              defaultValue:
+                                "Записать на операцию или обследование — длительность, подготовка, журнал",
+                            })}
+                          </div>
+                        </div>
+                        <span className="dp-news-card-arrow">
+                          <Arrow />
+                        </span>
+                      </div>
+                    </div>
+                    {procedureNote && (
+                      <div
+                        style={{
+                          marginTop: 8,
+                          padding: "8px 12px",
+                          borderRadius: 10,
+                          background: "rgba(45,212,191,.15)",
+                          border: "1px solid rgba(45,212,191,.4)",
+                          color: "#99f6e4",
+                          fontSize: 13,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {t("bookProcedureDoctorsOnly", {
+                          defaultValue:
+                            "Запись на операции и обследования доступна только врачам. Войдите как врач.",
                         })}
                       </div>
                     )}

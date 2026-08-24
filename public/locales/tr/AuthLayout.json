@@ -171,5 +171,8 @@
   "bookPatientText": "Hasta randevusu oluştur — takvim ve boş saatler",
   "bookPatientDoctorsOnly": "Hasta kaydı yalnızca doktorlar içindir. Doktor olarak giriş yapın.",
   "doctorsOnlyTag": "yalnızca doktorlar",
-  "synthesisDoctorsOnly": "Bilimsel makale oluşturma yalnızca doktorlara açıktır. Doktor olarak giriş yapın."
+  "synthesisDoctorsOnly": "Bilimsel makale oluşturma yalnızca doktorlara açıktır. Doktor olarak giriş yapın.",
+  "bookProcedureTag": "İşlemler · yalnızca doktorlar",
+  "bookProcedureText": "Ameliyat veya tetkike kaydet — süre, hazırlık, günlük",
+  "bookProcedureDoctorsOnly": "Ameliyat ve tetkik kaydı yalnızca doktorlar içindir. Doktor olarak giriş yapın."
 }

@@ -98,7 +98,8 @@
       },
       "scientific_articles": "Elmi məqalələr"
     },
-    "book_patient": "Pasiyenti qəbula yazdır"
+    "book_patient": "Pasiyenti qəbula yazdır",
+    "book_procedure": "Əməliyyata və ya müayinəyə yazmaq"
   },
   "my_clinic": "Klinikam",
   "chat": "Söhbət",

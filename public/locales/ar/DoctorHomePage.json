@@ -98,7 +98,8 @@
       },
       "scientific_articles": "المقالات العلمية"
     },
-    "book_patient": "حجز موعد لمريض"
+    "book_patient": "حجز موعد لمريض",
+    "book_procedure": "حجز عملية أو فحص"
   },
   "my_clinic": "عيادتي",
   "chat": "الدردشة",

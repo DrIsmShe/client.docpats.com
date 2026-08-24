@@ -171,5 +171,8 @@
   "bookPatientText": "Book a patient — calendar and free slots",
   "bookPatientDoctorsOnly": "Booking patients is available to doctors only. Sign in as a doctor.",
   "doctorsOnlyTag": "doctors only",
-  "synthesisDoctorsOnly": "Creating scientific articles is available to doctors only. Sign in as a doctor."
+  "synthesisDoctorsOnly": "Creating scientific articles is available to doctors only. Sign in as a doctor.",
+  "bookProcedureTag": "Procedures · doctors only",
+  "bookProcedureText": "Book a surgery or examination — duration, preparation, log",
+  "bookProcedureDoctorsOnly": "Booking surgeries and examinations is available to doctors only. Sign in as a doctor."
 }

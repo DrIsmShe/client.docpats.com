@@ -628,6 +628,24 @@ export default function Aside() {
               defaultValue: "Записать на приём",
             })}
           </NavLink>
+          {/* Операции и обследования — рядом с записью на приём и
+              отдельным пунктом: это другая сущность, а не режим той же формы. */}
+          <NavLink className={itemClass} to="/doctor/book-procedure">
+            <span className="dp2-icon">
+              <LuCalendarPlus />
+            </span>
+            {t("book_procedure_menu", {
+              defaultValue: "Записать на операцию",
+            })}
+          </NavLink>
+          <NavLink className={itemClass} to="/doctor/procedures">
+            <span className="dp2-icon">
+              <LuCalendarClock />
+            </span>
+            {t("procedures_journal_menu", {
+              defaultValue: "Журнал вмешательств",
+            })}
+          </NavLink>
           <div
             className="dp2-item is-chat"
             onClick={() => navigate("doctor-dashboard-main")}

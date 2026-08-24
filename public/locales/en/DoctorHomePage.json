@@ -98,7 +98,8 @@
       },
       "scientific_articles": "Scientific articles"
     },
-    "book_patient": "Book a patient"
+    "book_patient": "Book a patient",
+    "book_procedure": "Book a surgery or examination"
   },
   "my_clinic": "My clinic",
   "chat": "Chat",

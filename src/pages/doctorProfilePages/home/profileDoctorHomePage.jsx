@@ -103,9 +103,14 @@ const S = `
     flex-wrap: wrap;
     position: relative;
   }
-  /* Кнопка записи пациента: собственная строка под приветствием, во всю
-     ширину шапки — её должно быть видно раньше всего остального. */
-  .hp-hero-cta { position: relative; margin-top: 18px; }
+  /* Кнопки записи: собственная строка под приветствием — их должно
+     быть видно раньше всего остального.
+     flex + gap обязательны: без них две inline-flex кнопки встают
+     вплотную друг к другу и читаются как один блок. */
+  .hp-hero-cta {
+    position: relative; margin-top: 18px;
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: stretch;
+  }
   .hp-cta-btn {
     display: inline-flex;
     align-items: center;
@@ -124,6 +129,20 @@ const S = `
     transform: translateY(-1px);
     box-shadow: 0 12px 30px rgba(14,165,233,.36);
     color: #fff !important;
+  }
+  /* Второе действие — другая сущность, а не второй режим первого,
+     поэтому и выглядит иначе: две одинаковые градиентные плашки рядом
+     читаются как одна разрезанная кнопка. */
+  .hp-cta-btn.is-secondary {
+    background: #fff;
+    color: var(--accent) !important;
+    border: 1.5px solid rgba(14,165,233,.45);
+    box-shadow: 0 4px 14px rgba(14,165,233,.14);
+  }
+  .hp-cta-btn.is-secondary:hover {
+    color: var(--accent) !important;
+    background: rgba(14,165,233,.06);
+    box-shadow: 0 8px 20px rgba(14,165,233,.2);
   }
   .hp-cta-btn svg { width: 20px; height: 20px; }
   @media (max-width: 600px) {
@@ -1571,6 +1590,14 @@ export default function ProfileDoctorHomePage() {
               <LuCalendarPlus />
               {t("doctor_home.book_patient", {
                 defaultValue: "Записать пациента на приём",
+              })}
+            </Link>
+            {/* Второе регистратурное действие рядом с первым: операция
+                или обследование назначаются оттуда же, откуда и приём. */}
+            <Link to="/doctor/book-procedure" className="hp-cta-btn is-secondary">
+              <LuCalendarPlus />
+              {t("doctor_home.book_procedure", {
+                defaultValue: "Записать на операцию или обследование",
               })}
             </Link>
           </div>

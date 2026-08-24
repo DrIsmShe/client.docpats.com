@@ -98,7 +98,8 @@
       },
       "scientific_articles": "Bilimsel makaleler"
     },
-    "book_patient": "Hasta randevusu oluştur"
+    "book_patient": "Hasta randevusu oluştur",
+    "book_procedure": "Ameliyat veya tetkike kaydet"
   },
   "my_clinic": "Kliniğim",
   "chat": "Sohbet",
