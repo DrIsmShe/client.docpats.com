@@ -1,3 +1,11 @@
+/* РАСКЛАДКА ЗАВИСИТ ОТ НАПРАВЛЕНИЯ ПИСЬМА.
+   Отступ контента под сайдбар и смещение самого сайдбара заданы ЛОГИЧЕСКИМИ
+   свойствами (margin-inline-start, inset-inline-start), а не margin-left/left.
+   Причина конкретная: сайдбар здесь position:fixed без горизонтальной
+   привязки, поэтому при dir="rtl" он сам встаёт справа — а контент
+   продолжал отступать от ЛЕВОГО края на 300px и уезжал за правый.
+   Менять обратно на физические свойства нельзя: сломается арабская версия. */
+
 /**
 * Template Name: NiceAdmin
 * Updated: Sep 18 2023 with Bootstrap v5.3.2
@@ -986,7 +994,7 @@ h6 {
 
 @media (max-width: 1199px) {
   .sidebar {
-    left: -300px;
+    inset-inline-start: -300px;
   }
 }
 @media (max-width: 1199px) {
@@ -1024,28 +1032,28 @@ h6 {
 @media (min-width: 1200px) {
   .main,
   .footer {
-    margin-left: 300px;
+    margin-inline-start: 300px;
   }
   .main.open,
   .footer.open {
-    margin-left: 1px;
+    margin-inline-start: 1px;
   }
 }
 
 @media (max-width: 1199px) {
   .toggle-sidebar .sidebar {
-    left: 0;
+    inset-inline-start: 0;
   }
 }
 
 @media (min-width: 1200px) {
   .toggle-sidebar #main,
   .toggle-sidebar #footer {
-    margin-left: 0;
+    margin-inline-start: 0;
   }
 
   .toggle-sidebar .sidebar {
-    left: -300px;
+    inset-inline-start: -300px;
   }
 }
 
