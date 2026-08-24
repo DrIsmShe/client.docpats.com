@@ -50,6 +50,8 @@ export default async function handler(request, context) {
       const response = await context.next();
       let html = await response.text();
       html = stripShellSeo(html);
+      // Главная: текст статичный и русский.
+      html = withHtmlLang(html, "ru");
 
       const inject = `
     <title>${title}</title>
@@ -115,6 +117,8 @@ export default async function handler(request, context) {
       const response = await context.next();
       let html = await response.text();
       html = stripShellSeo(html);
+      // Документация: разделы написаны по-русски.
+      html = withHtmlLang(html, "ru");
 
       const inject = `
     <title>${escAttr(title)}</title>
@@ -638,7 +642,15 @@ export default async function handler(request, context) {
       const langs = Array.isArray(clinic.availableLanguages)
         ? clinic.availableLanguages
         : [];
-      const original = langs[0] || clinic.language || "ru";
+      // Оригинал — тот язык, что отдаётся по ГОЛОМУ адресу. Берём его полем
+      // DTO, а не первым элементом списка: clinicLanguages() на сервере
+      // возвращает языки в фиксированном порядке (ru, en, az, tr, ar), и для
+      // клиники с оригиналом az и переводом на ru первым шёл бы ru. Тогда
+      // hreflang="ru" указывал бы на адрес, где сервер отдаёт азербайджанский,
+      // а canonical голой страницы уезжал на ?locale=az. Фолбэки оставлены
+      // для ответов, отданных из кэша до появления поля.
+      const original =
+        clinic.originalLanguage || langs[0] || clinic.language || "ru";
       const shown = clinic.language || original;
       const base = `https://docpats.com/${slug}`;
       const urlFor = (lang) => (lang === original ? base : `${base}?locale=${lang}`);
@@ -719,6 +731,8 @@ export default async function handler(request, context) {
       const response = await context.next();
       let html = await response.text();
       html = stripShellSeo(html);
+      // Витрина: контент запрошен у API с этой локалью.
+      html = withHtmlLang(html, shown);
 
       const inject = `
     <title>${title} | DocPats</title>
@@ -1001,6 +1015,8 @@ export default async function handler(request, context) {
     let html = await response.text();
 
     html = stripShellSeo(html);
+    // Материал или новость: локаль разобрана из адреса.
+    html = withHtmlLang(html, locale);
 
     const inject = `
     <title>${title} | DocPats</title>
@@ -1170,6 +1186,42 @@ function stripShellSeo(html) {
         "",
       )
   );
+}
+
+// Языки, которые пишутся справа налево. Список продублирован в
+// src/lib/language.js — значения ОБЯЗАНЫ совпадать: здесь атрибут ставится в
+// сыром HTML для бота, там подтверждается приложением для человека, и
+// расхождение дало бы прыжок раскладки на первом кадре.
+const RTL_LANGS = new Set(["ar", "he", "fa", "ur"]);
+
+/**
+ * Проставить язык и направление письма самому документу.
+ *
+ * Оболочка index.html зашита с <html lang="en"> — одним значением на все пять
+ * языков. Для бота это и есть язык страницы: он читает сырой HTML и до
+ * выполнения JS не доходит, поэтому клиентская правка (src/i18n.js) до него
+ * не долетает. Арабская страница, объявленная английской, — несовпадение
+ * заявленного и фактического языка, ровно то, из-за чего версия выпадает
+ * из индекса.
+ *
+ * Вызывается ТОЛЬКО там, где язык действительно известен и контент ему
+ * следует. Ветки, которые локаль не разрешают, оставлены как есть намеренно:
+ * соврать про язык хуже, чем промолчать.
+ */
+function withHtmlLang(html, lang) {
+  const code = String(lang || "").slice(0, 2).toLowerCase();
+  if (!code) return html;
+  const dir = RTL_LANGS.has(code) ? "rtl" : "ltr";
+  // Заменяем открывающий <html ...> целиком: у него могут быть свои атрибуты
+  // (их сохраняем), а lang/dir выставляем свои. Регулярка нежадная и
+  // ограничена первым вхождением — второго <html> в документе быть не может.
+  return html.replace(/<html([^>]*)>/i, (match, attrs) => {
+    const kept = String(attrs)
+      .replace(/\s+lang="[^"]*"/gi, "")
+      .replace(/\s+dir="[^"]*"/gi, "")
+      .trim();
+    return `<html${kept ? " " + kept : ""} lang="${code}" dir="${dir}">`;
+  });
 }
 
 function escAttr(s) {

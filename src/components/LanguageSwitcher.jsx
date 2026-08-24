@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
+import { persistLanguage, urlWithLanguage } from "../lib/language";
 
 const LANGS = [
   { code: "en", label: "EN", name: "English" },
@@ -77,12 +78,27 @@ const STYLES = `
 
 export default function LanguageSwitcher() {
   const { t } = useTranslation("common");
-  const current = localStorage.getItem("lang") || i18n.language || "en";
+  // Показываем ДЕЙСТВУЮЩИЙ язык, а не сохранённый: на публичной странице с
+  // ?locale= в адресе они расходятся, и селектор с сохранённым значением
+  // сообщал бы неправду о том, что человек сейчас видит.
+  const current = i18n.language || localStorage.getItem("lang") || "en";
 
   const handleChange = async (e) => {
     const lang = e.target.value;
-    localStorage.setItem("lang", lang);
+    // Явный выбор — единственное, что записывается в хранилище: язык из
+    // адреса действует на просмотр и предпочтение не перебивает.
+    persistLanguage(lang);
     await i18n.changeLanguage(lang);
+
+    // Если язык стоит в адресе, его надо поправить ДО перезагрузки. Иначе
+    // страница перезагрузится со старым ?locale=, тот окажется главнее
+    // сохранённого — и выбор человека молча откатится: переключатель
+    // выглядел бы сломанным.
+    const next = urlWithLanguage(lang);
+    if (next) {
+      window.location.replace(next);
+      return;
+    }
     window.location.reload();
   };
 

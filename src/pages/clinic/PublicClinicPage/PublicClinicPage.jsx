@@ -14,6 +14,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useLocaleAddressable } from "../../../lib/useLocaleAddressable";
 import { getPublicClinicPage } from "../../../api/clinic";
 import VitrinaRenderer from "../vitrina/VitrinaRenderer.jsx";
 
@@ -46,6 +47,12 @@ export default function PublicClinicPage() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState(false);
+
+  // У витрины есть языковые адреса: переключатель языка допишет
+  // ?locale=, чтобы скопированная ссылка открылась на том же языке, а не
+  // на языке получателя. На языке оригинала параметр убирается — оригинал
+  // живёт на голом адресе, так же его пишет карта сайта и canonical.
+  useLocaleAddressable(clinic?.originalLanguage || null);
 
   useEffect(() => {
     let alive = true;

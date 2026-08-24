@@ -10,6 +10,7 @@ import { BsFillShareFill } from "react-icons/bs";
 import ShareMenu from "../../../../components/shared/ShareMenu";
 import CommentSection from "../../../../components/shared/CommentSection";
 import useCommentCount from "../../../../components/shared/useCommentCountDetail";
+import { useLocaleAddressable } from "../../../../lib/useLocaleAddressable";
 import { useTranslation } from "react-i18next";
 import { categoryName } from "../../../../utils/categoryName";
 import { Helmet } from "react-helmet-async";
@@ -556,6 +557,11 @@ export default function SingleArticleForAll() {
   const navigate = useNavigate();
   const [isWaiting, setIsWaiting] = useState(false);
   const [article, setArticle] = useState(null);
+
+  // У статьи есть языковые адреса: она переводится, и переводы лежат в
+  // ContentTranslation. Переключатель допишет ?locale=, чтобы ссылка
+  // открывалась на том же языке; на языке оригинала — уберёт.
+  useLocaleAddressable(article?.originalLanguage || null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);

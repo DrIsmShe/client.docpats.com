@@ -14,6 +14,12 @@ import { ThemeProvider } from "./theme/ThemeContext";
 // requests fire — hence importing it at the application root.
 import "./api/provisionalInterceptor";
 
+// Side-effect импорт: инициализирует i18next и сразу выставляет
+// <html lang>/<html dir> по сохранённому языку. До этого i18n
+// подтягивался транзитом через axios.js — то есть когда повезёт
+// с порядком импортов. Направление письма не должно зависеть от везения.
+import "./i18n";
+
 // Счётчик продуктовых событий. Без REACT_APP_POSTHOG_KEY не делает ничего и
 // не тянет библиотеку — импорт внутри initAnalytics динамический.
 import { initAnalytics } from "./lib/analytics";

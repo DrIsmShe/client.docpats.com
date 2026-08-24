@@ -38,19 +38,15 @@ const ONBOARDING_PATHS = ["/clinic", "/clinic/create"];
 export default function ClinicLayout({ employeeMode = false }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { t, i18n } = useTranslation("clinic");
+  const { t } = useTranslation("clinic");
 
   const [loading, setLoading] = useState(true);
   const [context, setContext] = useState(null);
   const [error, setError] = useState(null);
 
-  // ─── RTL support for Arabic ───
-  useEffect(() => {
-    const lang = (i18n.language || "en").split("-")[0];
-    const isRtl = lang === "ar";
-    document.documentElement.setAttribute("dir", isRtl ? "rtl" : "ltr");
-    document.documentElement.setAttribute("lang", lang);
-  }, [i18n.language]);
+  // RTL для арабского переехал в src/i18n.js: он выставляется на всё
+  // приложение сразу, а не только внутри этого лейаута. Витрина клиники и
+  // карточка врача сюда не заходят и оставались dir="ltr".
 
   // ─── Load auth context ───
   useEffect(() => {
