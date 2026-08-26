@@ -35,6 +35,7 @@ import AiReviewPanel, {
 } from "./AiReviewPanel";
 import AdminCaseList, { STATUS_LABELS } from "./AdminCaseList";
 import AgentReportPanel from "./AgentReportPanel";
+import { waitForAgentRun, AGENT_TIMED_OUT_NOTICE } from "./agentRun";
 import CaseTranslationsPanel from "./CaseTranslationsPanel";
 import "../../education/education.css";
 import "../../radiology/radiology.css";
@@ -554,10 +555,27 @@ export default function AdminVpCasesPage() {
     setAgentReport(null);
     try {
       await updateVpCase(selected, buildPayload());
-      const r = await runVpCaseAgent(selected, { hint: fixHint.trim() || undefined });
+      await runVpCaseAgent(selected, { hint: fixHint.trim() || undefined });
 
+      // Запуск только ПОСТАВИЛ задачу — ждём её опросом кейса.
+      const run = await waitForAgentRun({
+        // fetch* отдаёт { case }, а опросу нужен сам кейс: без
+        // разворачивания он не нашёл бы agentRun и вышел бы сразу.
+        fetchCase: async () => (await fetchVpCase(selected)).case,
+      });
       await refresh();
       await openCase(selected);
+
+      if (run.timedOut) {
+        setNotice(AGENT_TIMED_OUT_NOTICE);
+        return;
+      }
+      if (run.error) {
+        setError(run.error);
+        return;
+      }
+      const r = run.report;
+      if (!r) return;
 
       const parts = [];
       if (r.published) {
