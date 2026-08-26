@@ -366,6 +366,7 @@
     "wishesPlaceholder": "Məs.: daha dar burun ucu, təbii görünüş...",
     "disclaimer": "Başa düşürəm ki, AI simulyasiyası yalnız illüstrativdir və əməliyyatın real nəticəsinə <1>zəmanət vermir</1>",
     "generate": "{{count}} variant yarat",
+    "gateHint": "Yaratmaq üçün:",
     "generating": "Yaradılır...",
     "generatingWithTime": "Yaradılır... (~{{sec}} san)",
     "history": "Simulyasiya tarixi",

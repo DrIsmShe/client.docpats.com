@@ -366,6 +366,7 @@
     "wishesPlaceholder": "E.g.: a narrower tip, a natural-looking result...",
     "disclaimer": "I understand that the AI simulation is illustrative and <1>does not guarantee</1> the real outcome of the surgery",
     "generate": "Generate {{count}} variants",
+    "gateHint": "To generate:",
     "generating": "Generating...",
     "generatingWithTime": "Generating... (~{{sec}}s)",
     "history": "Simulation history",

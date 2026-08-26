@@ -4,7 +4,7 @@
 // Авторинг сценариев: жалоба + список обследований (каждое с результатом и
 // пометкой «нужное») + верный диагноз.
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   fetchAllCases,
@@ -28,7 +28,10 @@ import AiReviewPanel, {
   AiRowIssues,
   AiRevisionPanel,
   unresolvedIssues,
+  reviewBlocker,
+  BlockerHint,
 } from "./AiReviewPanel";
+import AdminCaseList, { STATUS_LABELS } from "./AdminCaseList";
 import CaseTranslationsPanel from "./CaseTranslationsPanel";
 import "../../education/education.css";
 import "../../radiology/radiology.css";
@@ -44,7 +47,6 @@ const SOURCE_KINDS = [
   { key: "licensed", label: "По лицензии" },
   { key: "ai_generated", label: "Сгенерирован ИИ" },
 ];
-const STATUS_LABELS = { draft: "Черновик", published: "Опубликован", archived: "В архиве" };
 const parseList = (s) => String(s ?? "").split(/[\n,;]+/).map((x) => x.trim()).filter(Boolean);
 const newKey = () => `i_${Date.now().toString(36)}_${Math.floor(Math.random() * 1e4)}`;
 const newInv = () => ({ key: newKey(), name: "", category: "", resultText: "", imageUrl: "", necessary: false });
@@ -90,6 +92,9 @@ export default function AdminVpCasesPage() {
   // Второй проход: замечания рецензента и отметки «разобрано».
   const [review, setReview] = useState(null);
   const [dismissed, setDismissed] = useState(() => new Set());
+  // Панель рецензента: якорь для прокрутки из списка блокеров и её подсветка.
+  const reviewRef = useRef(null);
+  const [reviewFlash, setReviewFlash] = useState(false);
   const [verifyBusy, setVerifyBusy] = useState(false);
 
   // Третий проход: что машина исправила сама и с чем не согласилась.
@@ -627,6 +632,14 @@ export default function AdminVpCasesPage() {
     }
   }
 
+  // Панель ИИ-рецензента: по ссылке из списка блокеров сюда прокручивают и
+  // на секунду подсвечивают — иначе после скролла неясно, куда смотреть.
+  function focusReview() {
+    reviewRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    setReviewFlash(true);
+    window.setTimeout(() => setReviewFlash(false), 1700);
+  }
+
   const filledInvs = invs.filter((i) => i.name.trim());
   const liveBlockers = [];
   if (filledInvs.length < 2) liveBlockers.push("минимум 2 обследования");
@@ -638,7 +651,35 @@ export default function AdminVpCasesPage() {
   // ненадёжна как предохранитель (см. комментарий в AiReviewPanel).
   const openIssues = unresolvedIssues(review, dismissed).length;
   if (openIssues > 0)
-    liveBlockers.push(`разберите замечания рецензента (${openIssues})`);
+    liveBlockers.push(reviewBlocker(openIssues));
+
+  // Кнопка «Опубликовать» рисуется дважды — внизу формы и в подвале панели
+  // рецензента, — поэтому собрана один раз здесь. Рядом счётчик неразобранных
+  // замечаний: серая кнопка без цифры читается как сломанная.
+  const publishBtn =
+    selected !== "new" && status !== "published" ? (
+      <>
+        <button
+          type="button"
+          className="edu-btn"
+          onClick={() => changeStatus("published")}
+          disabled={busy || liveBlockers.length > 0}
+          title={liveBlockers.length ? `Сначала устраните: ${liveBlockers.join("; ")}` : ""}
+        >
+          Опубликовать
+        </button>
+        {openIssues > 0 && (
+          <button
+            type="button"
+            className="rad-gate-count"
+            onClick={focusReview}
+            title="Перейти к панели ИИ-рецензента"
+          >
+            осталось разобрать: {openIssues}
+          </button>
+        )}
+      </>
+    ) : null;
 
   if (loading) return <div className="rad-page"><div className="edu-state">Загрузка…</div></div>;
 
@@ -733,21 +774,18 @@ export default function AdminVpCasesPage() {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "280px minmax(0,1fr)", gap: 20, marginTop: 16, alignItems: "start" }}>
-        <div className="rad-panel">
-          <div className="edu-card-title" style={{ fontSize: 15 }}>Кейсы ({cases.length})</div>
-          {cases.length === 0 && <div className="edu-hint">Пока нет кейсов.</div>}
-          <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 8 }}>
-            {cases.map((c) => (
-              <button key={c._id} type="button" className="edu-list-item" style={{ border: "1px solid #eef2f7", borderRadius: 8, textAlign: "left", background: selected === c._id ? "#eef4ff" : "#fff" }} onClick={() => openCase(c._id)}>
-                <div className="edu-list-item-title">{c.title || "Без названия"}</div>
-                <div className="edu-list-item-meta">
-                  {c.autoGen?.isAuto && <span className="rad-tag" title={c.autoGen.autoPublished ? "Создан и опубликован ночной автогенерацией" : "Создан ночной автогенерацией"}>🤖 авто</span>}
-                  {STATUS_LABELS[c.status] ?? c.status}
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* Список: опубликованные и неопубликованные врозь */}
+        <AdminCaseList
+          cases={cases}
+          selected={selected}
+          onOpen={openCase}
+          emptyText="Пока нет кейсов."
+          renderTags={(c) =>
+            c.autoGen?.isAuto ? (
+              <span className="rad-tag" title={c.autoGen.autoPublished ? "Создан и опубликован ночной автогенерацией" : "Создан ночной автогенерацией"}>🤖 авто</span>
+            ) : null
+          }
+        />
 
         <div>
           {!selected ? (
@@ -758,7 +796,13 @@ export default function AdminVpCasesPage() {
                 <div className="edu-card-title" style={{ fontSize: 15 }}>
                   {selected === "new" ? "Новый кейс" : "Редактирование"} · {STATUS_LABELS[status] ?? status}
                 </div>
-                {liveBlockers.length > 0 && <div className="edu-warn" style={{ marginTop: 8 }}>Опубликовать нельзя: {liveBlockers.join("; ")}.</div>}
+                <BlockerHint
+                  className="edu-warn"
+                  style={{ marginTop: 8 }}
+                  prefix="Опубликовать нельзя:"
+                  blockers={liveBlockers}
+                  onFocusReview={focusReview}
+                />
                 <div className="edu-form-row" style={{ marginTop: 12 }}>
                   <div style={{ flex: 2 }}>
                     <div className="edu-field-label" style={{ marginTop: 0 }}>Название</div>
@@ -896,6 +940,9 @@ export default function AdminVpCasesPage() {
                 onFix={(index) => handleAutofix(index)}
                 busy={verifyBusy}
                 fixBusy={fixBusy}
+                panelRef={reviewRef}
+                flash={reviewFlash}
+                footer={publishBtn}
               />
 
               {/* Отчёт третьего прохода: что машина исправила сама */}
@@ -953,9 +1000,7 @@ export default function AdminVpCasesPage() {
                       {agentBusy ? "Агент дорабатывает…" : "🤖 Запустить агента"}
                     </button>
                   )}
-                  {selected !== "new" && status !== "published" && (
-                    <button type="button" className="edu-btn" onClick={() => changeStatus("published")} disabled={busy || liveBlockers.length > 0}>Опубликовать</button>
-                  )}
+                  {publishBtn}
                   {status === "published" && (
                     <button type="button" className="edu-btn edu-btn--ghost" onClick={() => changeStatus("draft")} disabled={busy}>Снять с публикации</button>
                   )}
@@ -1011,7 +1056,12 @@ export default function AdminVpCasesPage() {
                     )}
                   </div>
                 )}
-                {liveBlockers.length > 0 && <div className="edu-hint" style={{ marginTop: 8 }}>Для публикации: {liveBlockers.join("; ")}.</div>}
+                <BlockerHint
+                  style={{ marginTop: 8 }}
+                  prefix="Для публикации:"
+                  blockers={liveBlockers}
+                  onFocusReview={focusReview}
+                />
               </div>
             </>
           )}

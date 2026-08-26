@@ -194,6 +194,11 @@ export function AiRowIssues({ issues }) {
  * @param {(i:number)=>void} [props.onFix] исправить ОДНО замечание силами ИИ
  * @param {boolean} props.busy
  * @param {boolean} [props.fixBusy]      идёт правка
+ * @param {object} [props.panelRef]      ref на корень — по нему сюда прокручивают
+ * @param {boolean} [props.flash]        кратко подсветить панель (пришли по ссылке)
+ * @param {import("react").ReactNode} [props.footer]
+ *        дубль кнопки публикации/отправки на ревью. Разобрав последнее
+ *        замечание, автор нажимает её здесь же, а не ищет низ формы заново.
  */
 export default function AiReviewPanel({
   review,
@@ -203,6 +208,9 @@ export default function AiReviewPanel({
   onFix,
   busy,
   fixBusy,
+  panelRef,
+  flash,
+  footer,
 }) {
   if (!review) return null;
 
@@ -210,7 +218,7 @@ export default function AiReviewPanel({
   const errors = open.filter((i) => i.severity === "error").length;
 
   return (
-    <div className="rad-panel">
+    <div className={`rad-panel${flash ? " rad-panel--flash" : ""}`} ref={panelRef}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
         <div className="edu-card-title" style={{ fontSize: 15, margin: 0 }}>
           🔍 Проверка ИИ-рецензентом
@@ -295,6 +303,53 @@ export default function AiReviewPanel({
           </div>
         </>
       )}
+
+      {footer && <div className="rad-review-footer">{footer}</div>}
+    </div>
+  );
+}
+
+// ─── Препятствия к публикации ────────────────────────────────────────────
+//
+// Текст блокера про замечания собирается здесь, а не в трёх страницах: по
+// этому префиксу BlockerHint узнаёт пункт, который можно сделать ссылкой.
+export const REVIEW_BLOCKER_PREFIX = "разберите замечания рецензента";
+
+export function reviewBlocker(openIssues) {
+  return `${REVIEW_BLOCKER_PREFIX} (${openIssues})`;
+}
+
+/**
+ * Список препятствий к публикации. Пункт про замечания рецензента — кнопка:
+ * она уводит к панели и подсвечивает её.
+ *
+ * Зачем: со дна формы кнопка «Отправить на ревью» выглядит просто сломанной.
+ * Причина написана рядом серым текстом, но панель рецензента — экраном выше,
+ * и подсказка называет проблему, не говоря, куда идти. Гейт при этом не
+ * трогаем: «разобрано» по-прежнему ставится по одному замечанию.
+ *
+ * @param {string} props.prefix          вступление ("Чтобы отправить на ревью…")
+ * @param {string[]} props.blockers
+ * @param {()=>void} [props.onFocusReview] прокрутить к панели и подсветить
+ */
+export function BlockerHint({ prefix, blockers, onFocusReview, className = "edu-hint", style }) {
+  if (!blockers?.length) return null;
+  return (
+    <div className={className} style={style}>
+      {prefix ? `${prefix} ` : ""}
+      {blockers.map((b, i) => (
+        <span key={b}>
+          {i > 0 ? "; " : ""}
+          {onFocusReview && b.startsWith(REVIEW_BLOCKER_PREFIX) ? (
+            <button type="button" className="rad-blocker-link" onClick={onFocusReview}>
+              {b}
+            </button>
+          ) : (
+            b
+          )}
+        </span>
+      ))}
+      .
     </div>
   );
 }

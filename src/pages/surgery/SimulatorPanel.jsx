@@ -20,6 +20,12 @@ export default function SimulatorPanel({ cas }) {
 
   const overlayRef = useRef(null);
   const imgRef = useRef(null);
+  // Якоря шагов: по подсказке под серой кнопкой «Сгенерировать» врача
+  // уводят прямо к тому шагу, которого не хватает.
+  const photoStepRef = useRef(null);
+  const maskStepRef = useRef(null);
+  const disclaimerStepRef = useRef(null);
+  const [flashStep, setFlashStep] = useState(null);
   const [photos, setPhotos] = useState([]);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -243,6 +249,38 @@ export default function SimulatorPanel({ cas }) {
       maskCanvas.toBlob(resolve, "image/png");
     });
 
+  // Увести к нужному шагу и подсветить его на секунду.
+  const focusStep = useCallback((key, ref) => {
+    ref.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    setFlashStep(key);
+    window.setTimeout(() => setFlashStep(null), 1700);
+  }, []);
+
+  // Чего не хватает для генерации. Те же три условия, что в handleGenerate,
+  // но показанные ДО клика: по отключённой кнопке кликнуть нельзя, и её
+  // setError никогда не срабатывал — врач видел серую кнопку без причины.
+  const gate = [];
+  if (!selectedPhoto)
+    gate.push({
+      key: "photo",
+      text: t("simulator.errorSelectPhoto"),
+      ref: photoStepRef,
+    });
+  // Про маску говорим только когда фото уже выбрано: без фото этого шага
+  // на экране просто нет, и ссылка вела бы в никуда.
+  else if (!hasMask)
+    gate.push({
+      key: "mask",
+      text: t("simulator.errorDrawMask"),
+      ref: maskStepRef,
+    });
+  if (!disclaimer)
+    gate.push({
+      key: "disclaimer",
+      text: t("simulator.errorAcceptDisclaimer"),
+      ref: disclaimerStepRef,
+    });
+
   // ─── Генерация ────────────────────────────────────────────────────────
   const handleGenerate = async () => {
     if (!selectedPhoto) return setError(t("simulator.errorSelectPhoto"));
@@ -414,7 +452,10 @@ export default function SimulatorPanel({ cas }) {
       <div className={sim.panel}>
         {/* ─── Левая колонка: редактор ── */}
         <div className={sim.editor}>
-          <div className={sim.section}>
+          <div
+            className={`${sim.section} ${flashStep === "photo" ? sim.flash : ""}`}
+            ref={photoStepRef}
+          >
             <div className={sim.sectionTitle}>{t("simulator.sourcePhoto")}</div>
             {photos.length === 0 ? (
               <p className={styles.empty}>{t("simulator.uploadFirst")}</p>
@@ -445,7 +486,10 @@ export default function SimulatorPanel({ cas }) {
           </div>
 
           {selectedPhoto && (
-            <div className={sim.section}>
+            <div
+              className={`${sim.section} ${flashStep === "mask" ? sim.flash : ""}`}
+              ref={maskStepRef}
+            >
               <div className={sim.sectionTitle}>
                 {t("simulator.drawMaskArea")}
                 <span className={sim.sectionHint}>
@@ -529,7 +573,10 @@ export default function SimulatorPanel({ cas }) {
             </p>
           </div>
 
-          <label className={`${styles.checkRow} ${sim.disclaimer}`}>
+          <label
+            className={`${styles.checkRow} ${sim.disclaimer} ${flashStep === "disclaimer" ? sim.flash : ""}`}
+            ref={disclaimerStepRef}
+          >
             <input
               type="checkbox"
               checked={disclaimer}
@@ -570,6 +617,28 @@ export default function SimulatorPanel({ cas }) {
               </>
             )}
           </button>
+
+          {/* Почему кнопка серая. Каждый пункт — ссылка на свой шаг. */}
+          {!loading && gate.length > 0 && (
+            <div className={sim.gateHint}>
+              <span className={sim.gateHintLabel}>
+                {t("simulator.gateHint")}
+              </span>{" "}
+              {gate.map((g, i) => (
+                <span key={g.key}>
+                  {i > 0 ? "; " : ""}
+                  <button
+                    type="button"
+                    className={sim.gateLink}
+                    onClick={() => focusStep(g.key, g.ref)}
+                  >
+                    {g.text}
+                  </button>
+                </span>
+              ))}
+              .
+            </div>
+          )}
         </div>
 
         {/* ─── Правая колонка: результаты ── */}

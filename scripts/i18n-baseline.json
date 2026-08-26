@@ -1,5 +1,4 @@
 [
-  "src/components/FontSizeControl.jsx → fontSize.drag",
   "src/layoutes/DashboardLayout/DashboardLayout.jsx → go_to_top",
   "src/pages/ai/PrivatePatientClinicalSummary.jsx → buttons.backToPatient",
   "src/pages/ai/PrivatePatientClinicalSummary.jsx → buttons.openPatientCard",

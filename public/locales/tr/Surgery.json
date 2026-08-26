@@ -366,6 +366,7 @@
     "wishesPlaceholder": "Örn: daha dar burun ucu, doğal görünümlü sonuç...",
     "disclaimer": "AI simülasyonunun yalnızca görsel amaçlı olduğunu ve ameliyatın gerçek sonucunu <1>garanti etmediğini</1> anlıyorum",
     "generate": "{{count}} varyant oluştur",
+    "gateHint": "Oluşturmak için:",
     "generating": "Oluşturuluyor...",
     "generatingWithTime": "Oluşturuluyor... (~{{sec}} sn)",
     "history": "Simülasyon geçmişi",

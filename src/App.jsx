@@ -3136,7 +3136,14 @@ function App() {
               редакторов (список в самом компоненте). Внутри BrowserRouter:
               ему нужен текущий адрес, чтобы понять зону и роль. */}
           <GuideWidget />
-          <ToastContainer position="bottom-right" autoClose={5000} />
+          {/* Тосты приподняты над регулятором размера текста: он закреплён
+              в том же правом нижнем углу (FontSizeControl), и без отступа
+              нижнее уведомление уезжало бы под него. */}
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            style={{ bottom: 72 }}
+          />
         </BrowserRouter>
       </GlobalCallProvider>
     </>

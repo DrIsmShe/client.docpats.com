@@ -44,7 +44,10 @@ import AiReviewPanel, {
   AiRowIssues,
   AiRevisionPanel,
   unresolvedIssues,
+  reviewBlocker,
+  BlockerHint,
 } from "./AiReviewPanel";
+import AdminCaseList, { STATUS_LABELS } from "./AdminCaseList";
 import CaseTranslationsPanel from "./CaseTranslationsPanel";
 import { MODALITY_LABELS } from "../../radiology/arenaLabels";
 import "../../education/education.css";
@@ -66,13 +69,15 @@ const SIGNIFICANCES = [
   { key: "major", label: "Значимая", color: "#2563eb" },
   { key: "incidental", label: "Случайная", color: "#64748b" },
 ];
-const STATUS_LABELS = {
-  draft: "Черновик",
-  in_review: "На ревью",
-  published: "Опубликован",
-  rejected: "Отклонён",
-  archived: "В архиве",
-};
+// Склонение числительного: 1 препятствие / 2 препятствия / 5 препятствий.
+function plural(n, one, few, many) {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return `${n} ${one}`;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${n} ${few}`;
+  return `${n} ${many}`;
+}
+
 // Разделы автогенерации. Ключи те же, что на сервере (AUTOGEN_SCOPES в
 // jobs/radiologyDailyCases.job.js).
 //
@@ -163,6 +168,10 @@ export default function AdminRadiologyCasesPage() {
   const [ready, setReady] = useState(null);
   const oneClickRef = useRef(null);
   const editorRef = useRef(null);
+  // Панель ИИ-рецензента: по ссылке из списка блокеров сюда прокручивают и
+  // на секунду подсвечивают — иначе после скролла неясно, куда смотреть.
+  const reviewRef = useRef(null);
+  const [reviewFlash, setReviewFlash] = useState(false);
   // Подсказка автора для сборки в один клик: диагноз, находка, локализация,
   // анамнез. Необязательна и живёт отдельно от подсказки в «Помощи ИИ».
   const [oneClickHint, setOneClickHint] = useState("");
@@ -1254,6 +1263,15 @@ export default function AdminRadiologyCasesPage() {
 
   const editable = status === "draft" || status === "rejected";
 
+  // Увести автора к панели рецензента и подсветить её. Вешается на пункт
+  // «разберите замечания рецензента» в списке блокеров: сам гейт не трогаем,
+  // просто перестаём быть тупиком.
+  function focusReview() {
+    reviewRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    setReviewFlash(true);
+    window.setTimeout(() => setReviewFlash(false), 1700);
+  }
+
   // Живой список препятствий к публикации — зеркалит collectPublishBlockers
   // на бэкенде. Считается на каждый рендер из текущей формы, поэтому баннер и
   // кнопка «Отправить на ревью» реагируют на правки сразу, а не показывают
@@ -1273,7 +1291,7 @@ export default function AdminRadiologyCasesPage() {
   // модели ненадёжна как предохранитель (см. комментарий в AiReviewPanel).
   const openIssues = unresolvedIssues(review, dismissed).length;
   if (openIssues > 0)
-    liveBlockers.push(`разберите замечания рецензента (${openIssues})`);
+    liveBlockers.push(reviewBlocker(openIssues));
 
   // Есть ли кадр — от этого зависит доступность агента. Он читает кейс из базы,
   // но кнопка сама сохраняет форму перед запуском, поэтому смотрим на форму:
@@ -1283,6 +1301,34 @@ export default function AdminRadiologyCasesPage() {
   const editorAnn = findings
     .filter((f) => f.imageIndex === activeImg)
     .map((f) => ({ shape: f.geometry.shape, coords: f.geometry.coords, label: labelOf(f.label), color: sigColor(f.significance) }));
+
+  // Кнопка «Отправить на ревью» рисуется дважды — внизу формы и в подвале
+  // панели рецензента, — поэтому собрана один раз здесь. Рядом счётчик
+  // неразобранных замечаний: серая кнопка без цифры читается как сломанная.
+  const submitReviewBtn =
+    selected !== "new" && editable ? (
+      <>
+        <button
+          type="button"
+          className="edu-btn edu-btn--ghost"
+          onClick={handleSubmitReview}
+          disabled={busy || liveBlockers.length > 0}
+          title={liveBlockers.length ? `Сначала устраните: ${liveBlockers.join("; ")}` : ""}
+        >
+          Отправить на ревью
+        </button>
+        {openIssues > 0 && (
+          <button
+            type="button"
+            className="rad-gate-count"
+            onClick={focusReview}
+            title="Перейти к панели ИИ-рецензента"
+          >
+            осталось разобрать: {openIssues}
+          </button>
+        )}
+      </>
+    ) : null;
 
   if (loading) return <div className="rad-page"><div className="edu-state">Загрузка…</div></div>;
 
@@ -1712,29 +1758,18 @@ export default function AdminRadiologyCasesPage() {
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "300px minmax(0,1fr)", gap: 20, marginTop: 16, alignItems: "start" }}>
-        {/* ─── Список кейсов ─── */}
-        <div className="rad-panel">
-          <div className="edu-card-title" style={{ fontSize: 15 }}>Кейсы ({cases.length})</div>
-          {cases.length === 0 && <div className="edu-hint">Пока нет ни одного кейса.</div>}
-          <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 8 }}>
-            {cases.map((c) => (
-              <button
-                key={c._id}
-                type="button"
-                className="edu-list-item"
-                style={{ border: "1px solid #eef2f7", borderRadius: 8, textAlign: "left", background: selected === c._id ? "#eef4ff" : "#fff" }}
-                onClick={() => openCase(c._id)}
-              >
-                <div className="edu-list-item-title">{c.title || "Без названия"}</div>
-                <div className="edu-list-item-meta">
-                  <span className="rad-tag">{MODALITY_LABELS[c.modality] ?? c.modality}</span>
-                  {c.autoGen?.isAuto && <span className="rad-tag" title="Создан ночной автогенерацией">🤖 авто</span>}
-                  {STATUS_LABELS[c.status] ?? c.status}
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* ─── Список кейсов: опубликованные и неопубликованные врозь ─── */}
+        <AdminCaseList
+          cases={cases}
+          selected={selected}
+          onOpen={openCase}
+          renderTags={(c) => (
+            <>
+              <span className="rad-tag">{MODALITY_LABELS[c.modality] ?? c.modality}</span>
+              {c.autoGen?.isAuto && <span className="rad-tag" title="Создан ночной автогенерацией">🤖 авто</span>}
+            </>
+          )}
+        />
 
         {/* ─── Редактор ─── */}
         {/* Якорь: после сборки в один клик страница сама прокручивается сюда —
@@ -1749,7 +1784,20 @@ export default function AdminRadiologyCasesPage() {
                   <div className="edu-card-title" style={{ fontSize: 15, margin: 0 }}>
                     {selected === "new" ? "Новый кейс" : "Редактирование"} · {STATUS_LABELS[status] ?? status}
                   </div>
-                  {liveBlockers.length > 0 && <span className="rad-fail" style={{ fontSize: 12 }}>к публикации: {liveBlockers.length} замечаний</span>}
+                  {/* Считаем ПРЕПЯТСТВИЯ, а не замечания рецензента: раньше
+                      плашка говорила «1 замечаний» там, где баннер под ней
+                      писал «разберите замечания рецензента (6)». */}
+                  {liveBlockers.length > 0 && (
+                    <button
+                      type="button"
+                      className="rad-fail"
+                      style={{ fontSize: 12, border: 0, background: "none", padding: 0, cursor: "pointer", textDecoration: "underline" }}
+                      onClick={focusReview}
+                      title={`Осталось устранить: ${liveBlockers.join("; ")}`}
+                    >
+                      к публикации: {plural(liveBlockers.length, "препятствие", "препятствия", "препятствий")}
+                    </button>
+                  )}
                 </div>
                 {autoGen && (
                   <div className="edu-hint" style={{ marginTop: 8 }}>
@@ -1759,9 +1807,13 @@ export default function AdminRadiologyCasesPage() {
                     как обычный кейс или удалите навсегда.
                   </div>
                 )}
-                {liveBlockers.length > 0 && (
-                  <div className="edu-warn" style={{ marginTop: 8 }}>Опубликовать нельзя: {liveBlockers.join("; ")}.</div>
-                )}
+                <BlockerHint
+                  className="edu-warn"
+                  style={{ marginTop: 8 }}
+                  prefix="Опубликовать нельзя:"
+                  blockers={liveBlockers}
+                  onFocusReview={focusReview}
+                />
 
                 <div className="edu-form-row" style={{ marginTop: 12 }}>
                   <div>
@@ -2011,6 +2063,9 @@ export default function AdminRadiologyCasesPage() {
                 onFix={(index) => handleAutofix(index)}
                 busy={verifyBusy}
                 fixBusy={fixBusy}
+                panelRef={reviewRef}
+                flash={reviewFlash}
+                footer={submitReviewBtn}
               />
 
               {/* Отчёт третьего прохода: что машина исправила в тексте */}
@@ -2087,17 +2142,7 @@ export default function AdminRadiologyCasesPage() {
                       {agentBusy ? "Агент дорабатывает кейс…" : "🤖 Запустить агента"}
                     </button>
                   )}
-                  {selected !== "new" && editable && (
-                    <button
-                      type="button"
-                      className="edu-btn edu-btn--ghost"
-                      onClick={handleSubmitReview}
-                      disabled={busy || liveBlockers.length > 0}
-                      title={liveBlockers.length ? `Сначала устраните: ${liveBlockers.join("; ")}` : ""}
-                    >
-                      Отправить на ревью
-                    </button>
-                  )}
+                  {submitReviewBtn}
                   {status === "in_review" && (
                     <>
                       <button type="button" className="edu-btn" onClick={() => handleReview("approve")} disabled={busy}>Опубликовать</button>
@@ -2122,10 +2167,13 @@ export default function AdminRadiologyCasesPage() {
                     </button>
                   )}
                 </div>
-                {editable && liveBlockers.length > 0 && (
-                  <div className="edu-hint" style={{ marginTop: 8 }}>
-                    Чтобы отправить на ревью и опубликовать, устраните: {liveBlockers.join("; ")}.
-                  </div>
+                {editable && (
+                  <BlockerHint
+                    style={{ marginTop: 8 }}
+                    prefix="Чтобы отправить на ревью и опубликовать, устраните:"
+                    blockers={liveBlockers}
+                    onFocusReview={focusReview}
+                  />
                 )}
                 {agentReport && (
                   <div

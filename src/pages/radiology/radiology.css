@@ -1091,3 +1091,114 @@
   padding-inline-start: 20px;
   line-height: 1.6;
 }
+
+/* ─── Админка: список кейсов группами ─────────────────────────────────── */
+/* Опубликованные и неопубликованные разведены: см. AdminCaseList.jsx. */
+.adm-case-group {
+  margin-top: 10px;
+}
+.adm-case-group__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: #f5f8fc;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+.adm-case-group__head:hover {
+  background: #eef4ff;
+}
+.adm-case-group__chevron {
+  width: 10px;
+  font-size: 11px;
+  color: #64748b;
+}
+.adm-case-group__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #0f172a;
+}
+.adm-case-group__count {
+  margin-left: auto;
+  padding: 0 8px;
+  border: 1px solid #e6ecf3;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 12px;
+  color: #64748b;
+}
+.adm-case-group__hint {
+  padding: 4px 8px 0 26px;
+  font-size: 11px;
+  color: #94a3b8;
+}
+.adm-case-group__items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+/* ─── Гейт публикации ─────────────────────────────────────────────────── */
+/* Пункт-ссылка в списке блокеров: уводит к панели ИИ-рецензента. */
+.rad-blocker-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: #2563eb;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.rad-blocker-link:hover {
+  color: #1d4ed8;
+}
+
+/* Подсветка панели рецензента после перехода по такой ссылке — иначе после
+   прокрутки непонятно, на что именно смотреть. */
+@keyframes rad-flash {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+  15%, 60% { box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.28); }
+}
+.rad-panel--flash {
+  border-color: #2563eb;
+  animation: rad-flash 1.6s ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rad-panel--flash { animation: none; }
+}
+
+/* Дубль кнопки публикации внизу панели рецензента. */
+.rad-review-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #e6ecf3;
+}
+
+/* Счётчик у кнопки: «осталось разобрать: 6». Сам кликабелен и ведёт к панели
+   рецензента — цифра и есть самый короткий путь к причине. */
+.rad-gate-count {
+  padding: 3px 10px;
+  border: 1px solid #fecaca;
+  border-radius: 999px;
+  background: #fef2f2;
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #b91c1c;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.rad-gate-count:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
