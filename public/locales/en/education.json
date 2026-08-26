@@ -457,6 +457,8 @@
       "allCategories": "All categories",
       "lang": "Test language",
       "allLangs": "All languages",
+      "showAllLangs": "Show all languages",
+      "showMyLang": "{{lang}} only",
       "reset": "reset filters"
     },
     "card": {

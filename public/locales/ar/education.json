@@ -457,6 +457,8 @@
       "allCategories": "كل الأقسام",
       "lang": "لغة الاختبار",
       "allLangs": "كل اللغات",
+      "showAllLangs": "عرض جميع اللغات",
+      "showMyLang": "{{lang}} فقط",
       "reset": "إعادة ضبط عوامل التصفية"
     },
     "card": {

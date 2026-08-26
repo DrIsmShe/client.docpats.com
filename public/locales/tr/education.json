@@ -457,6 +457,8 @@
       "allCategories": "Tüm bölümler",
       "lang": "Test dili",
       "allLangs": "Tüm diller",
+      "showAllLangs": "Tüm dilleri göster",
+      "showMyLang": "Yalnızca {{lang}}",
       "reset": "filtreleri sıfırla"
     },
     "card": {

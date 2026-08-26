@@ -1464,6 +1464,30 @@
   font-size: 13.5px;
   color: var(--edu-ink-soft);
 }
+/* Переключатель «мой язык ↔ все». Не кнопка-действие, а тумблер рядом с
+   фильтрами: оформлен ссылкой, чтобы не спорить по весу с поиском. */
+.edu-filter-langtoggle {
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  border: 1px solid var(--edu-rule, #e0d9cc);
+  border-radius: 999px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--edu-ink-soft);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.edu-filter-langtoggle:hover {
+  background: var(--edu-paper-2, #f6f1e7);
+  color: var(--edu-ink, #2b2b2b);
+}
+.edu-filter-langtoggle:focus-visible {
+  outline: 2px solid var(--edu-accent, #8a6f3f);
+  outline-offset: 2px;
+}
+
 .edu-filter-count {
   font-size: 13px;
   color: var(--edu-ink-soft);

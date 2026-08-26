@@ -457,6 +457,8 @@
       "allCategories": "Все разделы",
       "lang": "Язык теста",
       "allLangs": "Все языки",
+      "showAllLangs": "Показать все языки",
+      "showMyLang": "Только {{lang}}",
       "reset": "сбросить фильтры"
     },
     "card": {

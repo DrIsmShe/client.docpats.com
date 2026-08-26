@@ -12,7 +12,7 @@
 // самозащищается сам. 401 от API означает, что сессии нет, и мы уводим
 // на /login.
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import {
@@ -164,7 +164,9 @@ export default function ExamCatalogPage() {
   const [categories, setCategories] = useState([]);
   const [activeId, setActiveId] = useState(""); // "" = корень
   const [query, setQuery] = useState("");
-  const [langFilter, setLangFilter] = useState(""); // "" = все языки
+  // "" = все языки. Начальное значение ставится после загрузки каталога —
+  // языком врача, см. эффект ниже.
+  const [langFilter, setLangFilter] = useState("");
   const [catFilter, setCatFilter] = useState(""); // "" = все разделы
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -255,6 +257,26 @@ export default function ExamCatalogPage() {
 
   const langLabel = (code) =>
     t(`shared.langs.${code}`, { defaultValue: code });
+
+  // Язык врача — «az» из «az-AZ» и подобных.
+  const myLang = (i18n.language || "").slice(0, 2);
+
+  // КАТАЛОГ ОТКРЫВАЕТСЯ НА ЯЗЫКЕ ВРАЧА. Раньше он открывался на всех языках
+  // сразу, и азербайджанский врач первым делом видел «Психология» и
+  // «Научные» вперемешку со своими рубриками — притом что тесты на его
+  // языке в каталоге есть. Показать сначала своё, а всё остальное по кнопке
+  // — тот же порядок, что и везде: сперва то, что можно читать.
+  //
+  // Ставим ОДИН раз и только после загрузки: до неё availableLangs пуст, и
+  // фильтр встал бы на язык, которого в каталоге нет. Дальше значение —
+  // выбор врача, и переписывать его нельзя.
+  const langDefaultApplied = useRef(false);
+  useEffect(() => {
+    if (langDefaultApplied.current) return;
+    if (!programs.length) return;
+    langDefaultApplied.current = true;
+    if (availableLangs.includes(myLang)) setLangFilter(myLang);
+  }, [programs, availableLangs, myLang]);
 
   // Цифры реестра в шапке. Считаем по всему каталогу, а не по текущей
   // выборке: это «выходные данные» издания, а не счётчик фильтра.
@@ -504,6 +526,22 @@ export default function ExamCatalogPage() {
               </option>
             ))}
           </select>
+        )}
+
+        {/* Переключатель «моё ↔ всё». Селектор рядом умеет то же самое, но
+            в нём это один пункт из шести: врач, открывший каталог и не
+            нашедший знакомого теста, должен видеть выход одной кнопкой, а не
+            догадываться, что список отфильтрован. */}
+        {availableLangs.includes(myLang) && (
+          <button
+            type="button"
+            className="edu-filter-langtoggle"
+            onClick={() => setLangFilter(langFilter ? "" : myLang)}
+          >
+            {langFilter
+              ? t("catalog.filters.showAllLangs")
+              : t("catalog.filters.showMyLang", { lang: langLabel(myLang) })}
+          </button>
         )}
       </div>
 
