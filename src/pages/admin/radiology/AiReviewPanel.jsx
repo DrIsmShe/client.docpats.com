@@ -14,6 +14,8 @@
 // становится декоративным. Блокируют ВСЕ замечания, а не только severity
 // "error": почему именно так — см. unresolvedIssues ниже.
 
+import { useState } from "react";
+
 const norm = (s) => String(s ?? "").trim().toLowerCase();
 
 // Служебные значения target, которые не относятся к конкретной строке.
@@ -75,6 +77,9 @@ const STOPPED_BY = {
   max_rounds: "исчерпан лимит кругов",
   no_progress: "правка перестала убирать замечания — спор по существу",
   error: "цикл прервался ошибкой модели",
+  targeted: "точечная правка по выбранному замечанию",
+  adjudicated: "спор разобран судьёй, застрявшие замечания правились точечно",
+  adjudication_failed: "разбор застрявших замечаний не отработал",
 };
 
 /**
@@ -196,6 +201,11 @@ export function AiRowIssues({ issues }) {
  * @param {boolean} [props.fixBusy]      идёт правка
  * @param {object} [props.panelRef]      ref на корень — по нему сюда прокручивают
  * @param {boolean} [props.flash]        кратко подсветить панель (пришли по ссылке)
+ * @param {Array<{index:number, why:string}>} [props.agentResolved]
+ *        замечания, закрытые АГЕНТОМ с обоснованием. Показываются отдельным
+ *        списком: закрыла их машина, и человек должен видеть чем именно
+ *        обосновано и мочь вернуть замечание обратно.
+ * @param {(i:number)=>void} [props.onReopen] вернуть закрытое агентом
  * @param {import("react").ReactNode} [props.footer]
  *        дубль кнопки публикации/отправки на ревью. Разобрав последнее
  *        замечание, автор нажимает её здесь же, а не ищет низ формы заново.
@@ -211,6 +221,8 @@ export default function AiReviewPanel({
   panelRef,
   flash,
   footer,
+  agentResolved,
+  onReopen,
 }) {
   if (!review) return null;
 
@@ -304,7 +316,71 @@ export default function AiReviewPanel({
         </>
       )}
 
+      <AgentClosedIssues
+        review={review}
+        agentResolved={agentResolved}
+        onReopen={onReopen}
+      />
+
       {footer && <div className="rad-review-footer">{footer}</div>}
+    </div>
+  );
+}
+
+/**
+ * Замечания, закрытые агентом. Отдельный, свёрнутый список — не в общей
+ * ленте: там лежит то, что ждёт человека, а здесь то, что за него уже решила
+ * машина. Смешивать их значило бы прятать решение агента среди своих же
+ * галочек «разобрано».
+ */
+function AgentClosedIssues({ review, agentResolved, onReopen }) {
+  const [open, setOpen] = useState(false);
+  const rows = (agentResolved ?? [])
+    .map((r) => ({ ...r, issue: review?.issues?.[r.index] }))
+    .filter((r) => r.issue);
+  if (!rows.length) return null;
+
+  return (
+    <div style={{ marginTop: 10, paddingTop: 10, borderTop: "1px dashed #e6ecf3" }}>
+      <button type="button" className="rad-blocker-link" onClick={() => setOpen((v) => !v)}>
+        {open ? "▾" : "▸"} Закрыто агентом: {rows.length}
+      </button>
+      {open && (
+        <div style={{ marginTop: 6, display: "flex", flexDirection: "column", gap: 6 }}>
+          {rows.map((r) => (
+            <div
+              key={r.index}
+              style={{
+                padding: 8,
+                borderRadius: 8,
+                border: "1px solid #e2e8f0",
+                background: "#f8fafc",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
+                <span style={{ fontSize: 12, color: "#64748b", fontWeight: 600 }}>
+                  {r.issue.target ? r.issue.target : "замечание"}
+                </span>
+                {onReopen && (
+                  <button
+                    type="button"
+                    className="edu-btn edu-btn--ghost"
+                    style={{ padding: "2px 8px", fontSize: 12 }}
+                    onClick={() => onReopen(r.index)}
+                    title="Вернуть замечание в работу — публикация снова будет ждать вашего решения"
+                  >
+                    вернуть
+                  </button>
+                )}
+              </div>
+              <div style={{ marginTop: 4, fontSize: 13 }}>{r.issue.issue}</div>
+              <div style={{ marginTop: 2, fontSize: 13, color: "#64748b" }}>
+                Агент закрыл: {r.why}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

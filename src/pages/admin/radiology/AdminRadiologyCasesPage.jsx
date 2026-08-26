@@ -48,6 +48,7 @@ import AiReviewPanel, {
   BlockerHint,
 } from "./AiReviewPanel";
 import AdminCaseList, { STATUS_LABELS } from "./AdminCaseList";
+import AgentReportPanel from "./AgentReportPanel";
 import CaseTranslationsPanel from "./CaseTranslationsPanel";
 import { MODALITY_LABELS } from "../../radiology/arenaLabels";
 import "../../education/education.css";
@@ -179,6 +180,10 @@ export default function AdminRadiologyCasesPage() {
   // Второй проход: замечания рецензента и отметки «разобрано».
   const [review, setReview] = useState(null);
   const [dismissed, setDismissed] = useState(() => new Set());
+  // Замечания, закрытые АГЕНТОМ, с обоснованием по каждому. Лежат рядом с
+  // dismissed, а не внутри: гейт считает dismissed, а этот список отвечает
+  // на другой вопрос — кто закрыл и почему.
+  const [agentResolved, setAgentResolved] = useState([]);
   const [verifyBusy, setVerifyBusy] = useState(false);
 
   // Третий проход: что машина исправила в ТЕКСТОВОЙ части и с чем не
@@ -283,6 +288,7 @@ export default function AdminRadiologyCasesPage() {
   function resetReview() {
     setReview(null);
     setDismissed(new Set());
+    setAgentResolved([]);
     setRevision(null);
     setAgentReport(null);
   }
@@ -300,6 +306,7 @@ export default function AdminRadiologyCasesPage() {
       summary: doc.aiReview.summary ?? "",
     });
     setDismissed(new Set(doc.aiReview.dismissed ?? []));
+    setAgentResolved(doc.aiReview.agentResolved ?? []);
   }
 
   async function refreshList() {
@@ -318,6 +325,7 @@ export default function AdminRadiologyCasesPage() {
     setAutoGen(null);
     setReview(null);
     setDismissed(new Set());
+    setAgentResolved([]);
     setActiveImg(0);
     setActiveLabel(null);
     setNotice(null);
@@ -474,6 +482,23 @@ export default function AdminRadiologyCasesPage() {
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
       setError(readApiError(err, "Не удалось сохранить отметку «разобрано»"));
+    }
+  }
+
+  // ВЕРНУТЬ замечание, которое закрыл агент. Без этого решение машины
+  // необратимо через интерфейс: она закрыла — человек только читает. Кнопка
+  // снимает отметку, и публикация снова ждёт его решения.
+  async function handleReopen(index) {
+    const next = new Set(dismissed);
+    next.delete(index);
+    setDismissed(next);
+    setAgentResolved((prev) => prev.filter((r) => Number(r.index) !== index));
+    if (selected === "new") return;
+    try {
+      await dismissCaseAiIssues(selected, [...next]);
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Не удалось вернуть замечание в работу"));
     }
   }
 
@@ -1002,6 +1027,7 @@ export default function AdminRadiologyCasesPage() {
       setArmed(null);
       setReview(null);
       setDismissed(new Set());
+      setAgentResolved([]);
       // Второй проход сразу — к моменту чтения замечания уже будут.
       runVerify(draft.plannedFindings ?? [], wasNew ? findings : [], {
         ...form,
@@ -1085,6 +1111,7 @@ export default function AdminRadiologyCasesPage() {
       });
       setReview(res);
       setDismissed(new Set());
+      setAgentResolved([]);
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
       setError(readApiError(err, "Не удалось выполнить проверку ИИ"));
@@ -1173,6 +1200,7 @@ export default function AdminRadiologyCasesPage() {
         );
         setReview(res.review);
         setDismissed(new Set());
+        setAgentResolved([]);
         setRevision({
           rounds: res.rounds?.length ?? 0,
           stoppedBy: res.stoppedBy,
@@ -2065,6 +2093,8 @@ export default function AdminRadiologyCasesPage() {
                 fixBusy={fixBusy}
                 panelRef={reviewRef}
                 flash={reviewFlash}
+                agentResolved={agentResolved}
+                onReopen={handleReopen}
                 footer={submitReviewBtn}
               />
 
@@ -2175,47 +2205,7 @@ export default function AdminRadiologyCasesPage() {
                     onFocusReview={focusReview}
                   />
                 )}
-                {agentReport && (
-                  <div
-                    className="edu-hint"
-                    style={{
-                      marginTop: 10,
-                      padding: 10,
-                      borderRadius: 8,
-                      border: "1px solid #dbe4f0",
-                      background: "#f7faff",
-                    }}
-                  >
-                    <div style={{ fontWeight: 600, color: "#0f172a" }}>
-                      🤖 Прогон агента:{" "}
-                      {agentReport.published
-                        ? "кейс опубликован"
-                        : agentReport.fixed
-                          ? `текст поправлен, кругов ${agentReport.rounds?.length ?? 0}`
-                          : "правка не запускалась"}
-                    </div>
-                    {agentReport.fixed && (
-                      <div style={{ marginTop: 4 }}>
-                        Замечаний осталось: {agentReport.review?.issues?.length ?? 0}
-                        {" · "}
-                        внесено правок: {agentReport.changes?.length ?? 0}
-                        {agentReport.disputed?.length
-                          ? ` · редактор возразил: ${agentReport.disputed.length}`
-                          : ""}
-                      </div>
-                    )}
-                    {agentReport.blockers?.length > 0 && (
-                      <div style={{ marginTop: 4 }}>
-                        Осталось сделать вам: {agentReport.blockers.join("; ")}.
-                      </div>
-                    )}
-                    {!agentReport.fixed && agentReport.stoppedBy === "prerequisites" && (
-                      <div style={{ marginTop: 4 }}>
-                        Модель не вызывалась — без кадра рецензенту не на что смотреть.
-                      </div>
-                    )}
-                  </div>
-                )}
+                <AgentReportPanel report={agentReport} />
                 {selected !== "new" && (
                   <div className="edu-hint" style={{ marginTop: 8 }}>
                     «Запустить агента» — для случая «снимок загружен, доделай сам»:
