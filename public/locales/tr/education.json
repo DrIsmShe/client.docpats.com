@@ -76,7 +76,9 @@
       "description": "Açıklama (isteğe bağlı)",
       "descriptionPlaceholder": "Vitrin için kısa açıklama",
       "iconNone": "Simgesiz",
-      "iconCustom": "Özel simge: {{icon}}"
+      "iconCustom": "Özel simge: {{icon}}",
+      "lang": "Rubrik dili",
+      "langHint": "Diğer dillere bu dilden çevrilir; katalogdaki filtre de buna göre çalışır."
     },
     "node": {
       "directPrograms": "doğrudan {{count}} sınav",
@@ -298,7 +300,9 @@
       "blockSizeLabel": "Bloklara böl, her blokta",
       "blockSizePlaceholder": "yok",
       "freeLabel": "«Ücretsiz» rozeti",
-      "freeHint": "kartta rozeti göster"
+      "freeHint": "kartta rozeti göster",
+      "primaryLang": "Ana dil",
+      "primaryLangAuto": "İçeriğe göre"
     },
     "hints": {
       "noCategories": "Henüz kategori yok —",
@@ -334,7 +338,8 @@
       "deleteForbidden": "Silme işlemine izin verilmiyor",
       "renameFailed": "Sınav yeniden adlandırılamadı",
       "emptyTitle": "Ad boş olamaz",
-      "freeFailed": "Misafir erişimi değiştirilemedi"
+      "freeFailed": "Misafir erişimi değiştirilemedi",
+      "update": "Değişiklik kaydedilemedi"
     }
   },
   "adminReview": {

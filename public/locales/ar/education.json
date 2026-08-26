@@ -76,7 +76,9 @@
       "description": "الوصف (اختياري)",
       "descriptionPlaceholder": "شرح مختصر للواجهة",
       "iconNone": "بدون أيقونة",
-      "iconCustom": "أيقونة مخصصة: {{icon}}"
+      "iconCustom": "أيقونة مخصصة: {{icon}}",
+      "lang": "لغة القسم",
+      "langHint": "تُترجم منها إلى بقية اللغات، وبها يُصفّى القسم في الكتالوج."
     },
     "node": {
       "directPrograms": "{{count}} اختبار مباشرةً",
@@ -298,7 +300,9 @@
       "blockSizeLabel": "التقسيم إلى كتل من",
       "blockSizePlaceholder": "بدون",
       "freeLabel": "شارة «مجاني»",
-      "freeHint": "إظهار الشارة على البطاقة"
+      "freeHint": "إظهار الشارة على البطاقة",
+      "primaryLang": "اللغة الأساسية",
+      "primaryLangAuto": "حسب المحتوى"
     },
     "hints": {
       "noCategories": "لا توجد فئات بعد —",
@@ -334,7 +338,8 @@
       "deleteForbidden": "الحذف غير مسموح",
       "renameFailed": "تعذّرت إعادة تسمية الاختبار",
       "emptyTitle": "لا يمكن أن يكون الاسم فارغًا",
-      "freeFailed": "تعذّر تغيير وصول الزوار"
+      "freeFailed": "تعذّر تغيير وصول الزوار",
+      "update": "تعذّر حفظ التغيير"
     }
   },
   "adminReview": {

@@ -76,7 +76,9 @@
       "description": "Təsvir (könüllü)",
       "descriptionPlaceholder": "Vitrin üçün qısa izah",
       "iconNone": "İkonsuz",
-      "iconCustom": "Fərdi ikon: {{icon}}"
+      "iconCustom": "Fərdi ikon: {{icon}}",
+      "lang": "Rubrika dili",
+      "langHint": "Digər dillərə bu dildən tərcümə olunur; kataloqda filtr də bu dilə görə işləyir."
     },
     "node": {
       "directPrograms": "birbaşa {{count}} test",
@@ -298,7 +300,9 @@
       "blockSizeLabel": "Bloklara böl, hər blokda",
       "blockSizePlaceholder": "yox",
       "freeLabel": "«Pulsuz» nişanı",
-      "freeHint": "kartda nişanı göstər"
+      "freeHint": "kartda nişanı göstər",
+      "primaryLang": "Əsas dil",
+      "primaryLangAuto": "Məzmuna görə"
     },
     "hints": {
       "noCategories": "Hələ kateqoriya yoxdur —",
@@ -334,7 +338,8 @@
       "deleteForbidden": "Silmə qadağandır",
       "renameFailed": "Testin adını dəyişmək alınmadı",
       "emptyTitle": "Ad boş ola bilməz",
-      "freeFailed": "Qonaq girişini dəyişmək mümkün olmadı"
+      "freeFailed": "Qonaq girişini dəyişmək mümkün olmadı",
+      "update": "Dəyişikliyi yadda saxlamaq mümkün olmadı"
     }
   },
   "adminReview": {

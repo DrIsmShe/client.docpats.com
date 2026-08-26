@@ -76,7 +76,9 @@
       "description": "Description (optional)",
       "descriptionPlaceholder": "A short note for the storefront",
       "iconNone": "No icon",
-      "iconCustom": "Custom icon: {{icon}}"
+      "iconCustom": "Custom icon: {{icon}}",
+      "lang": "Rubric language",
+      "langHint": "Source for the other translations and the language it is filtered by in the catalogue."
     },
     "node": {
       "directPrograms": "{{count}} exam(s) directly",
@@ -298,7 +300,9 @@
       "blockSizeLabel": "Split into blocks of",
       "blockSizePlaceholder": "none",
       "freeLabel": "\"Free\" badge",
-      "freeHint": "show the badge on the card"
+      "freeHint": "show the badge on the card",
+      "primaryLang": "Primary language",
+      "primaryLangAuto": "From content"
     },
     "hints": {
       "noCategories": "There are no categories yet —",
@@ -334,7 +338,8 @@
       "deleteForbidden": "Deletion is not allowed",
       "renameFailed": "Could not rename the exam",
       "emptyTitle": "The title cannot be empty",
-      "freeFailed": "Could not change guest access"
+      "freeFailed": "Could not change guest access",
+      "update": "Could not save the change"
     }
   },
   "adminReview": {

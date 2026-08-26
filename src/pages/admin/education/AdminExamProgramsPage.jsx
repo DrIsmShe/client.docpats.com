@@ -207,6 +207,25 @@ export default function AdminExamProgramsPage() {
     }
   }
 
+  // ОСНОВНОЙ ЯЗЫК ТЕСТА. Отдельно от languages: там «на чём есть вопросы», и
+  // у переведённого теста это все пять. Врач, выбравший в каталоге English,
+  // получал русскоязычные карточки — тест правда доступен на английском, но
+  // каталог отвечает на вопрос «что здесь есть на моём языке». Отвечает на
+  // него теперь это поле, и ставит его человек.
+  async function handleSetPrimaryLang(program, lang) {
+    setBusyId(program._id);
+    setError(null);
+    try {
+      await updateProgram(program._id, { primaryLang: lang || null });
+      await load();
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, t("adminPrograms.errors.update")));
+    } finally {
+      setBusyId(null);
+    }
+  }
+
   async function handleAssignCategory(program, categoryId) {
     setBusyId(program._id);
     setError(null);
@@ -586,6 +605,26 @@ export default function AdminExamProgramsPage() {
                   {categoryOptions.map((o) => (
                     <option key={o.value} value={o.value}>
                       {o.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="edu-prog-setting">
+                <span>{t("adminPrograms.settings.primaryLang")}</span>
+                <select
+                  className="edu-select"
+                  value={program.primaryLang ?? ""}
+                  disabled={isBusy}
+                  onChange={(e) => handleSetPrimaryLang(program, e.target.value)}
+                >
+                  {/* Пусто = не размечен: витрина откатывается к первому из
+                      languages, чтобы тест не пропал из каталога до разметки. */}
+                  <option value="">
+                    {t("adminPrograms.settings.primaryLangAuto")}
+                  </option>
+                  {LANG_CODES.map((code) => (
+                    <option key={code} value={code}>
+                      {t(`shared.langs.${code}`, { defaultValue: code })}
                     </option>
                   ))}
                 </select>

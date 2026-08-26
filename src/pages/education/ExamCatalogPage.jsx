@@ -249,7 +249,13 @@ export default function ExamCatalogPage() {
   // предлагать фильтр, который заведомо ничего не найдёт, бессмысленно.
   const availableLangs = useMemo(() => {
     const present = new Set();
-    for (const p of programs) for (const l of p.languages ?? []) present.add(l);
+    // Предлагаем те языки, к которым тесты ОТНЕСЕНЫ. Иначе список показывал
+    // бы все пять всегда — переведён хоть один тест, и выбор есть, а выдача
+    // по нему пуста или полна чужих заголовков.
+    for (const p of programs) {
+      const l = programLang(p);
+      if (l) present.add(l);
+    }
     const known = LANG_CODES.filter((l) => present.has(l));
     const unknown = [...present].filter((l) => !LANG_CODES.includes(l)).sort();
     return [...known, ...unknown];
@@ -296,6 +302,15 @@ export default function ExamCatalogPage() {
     return { sections, questions };
   }, [categories, programs]);
 
+  // ЯЗЫК ТЕСТА для фильтра — тот, к которому его отнёс админ, а НЕ набор
+  // языков, на которых есть вопросы. Разница и была причиной жалобы: врач
+  // выбирал English и получал «Типологию личности по Карлу Юнгу» с русским
+  // заголовком. Тест действительно доступен на английском — languages честно
+  // содержит все пять, — но каталог отвечает на вопрос «что здесь есть на
+  // моём языке», а не «что я технически могу открыть». Без разметки
+  // откатываемся к первому из languages, чтобы неразмеченный тест не пропал.
+  const programLang = (p) => p.primaryLang || (p.languages ?? [])[0] || null;
+
   const q = query.trim().toLowerCase();
 
   const filtered = useMemo(() => {
@@ -318,7 +333,7 @@ export default function ExamCatalogPage() {
       const rootId = rootIdOf(cid);
 
       // Язык: тест подходит, если у него есть вопросы на этом языке.
-      if (langFilter && !(p.languages ?? []).includes(langFilter)) return false;
+      if (langFilter && programLang(p) !== langFilter) return false;
       if (catFilter && rootId !== catFilter) return false;
 
       if (q) {
@@ -372,8 +387,14 @@ export default function ExamCatalogPage() {
 
   // Папки, в которых после фильтрации ничего не осталось, не показываем —
   // иначе пользователь проваливается в заведомо пустой раздел.
-  const keepFolder = (node) =>
-    !filtersActive || (countBySubtree.get(node.id) ?? 0) > 0;
+  // Рубрику прячем и по её собственному языку: админ относит её к языку так
+  // же явно, как и тест. Рубрика без языка (старая, ещё не размеченная) под
+  // это правило не попадает — иначе исчезла бы до разметки.
+  const keepFolder = (node) => {
+    if (!filtersActive) return true;
+    if (langFilter && node.lang && node.lang !== langFilter) return false;
+    return (countBySubtree.get(node.id) ?? 0) > 0;
+  };
 
   const visibleFolders = childFolders.filter(keepFolder);
 
