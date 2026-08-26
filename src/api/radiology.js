@@ -707,6 +707,34 @@ export async function runCaseAgent(caseId, { maxRounds, hint, publish } = {}) {
   return data;
 }
 
+/**
+ * АГЕНТ-ДОВОДЧИК станций «Анализы» и «Виртуальный пациент».
+ *
+ * Отличие от aiAutofix*: тот правит черновик ИЗ ФОРМЫ и возвращает его в форму,
+ * публикацию оставляя человеку. Агент работает с СОХРАНЁННЫМ кейсом и сам
+ * проходит гейт публикации, если после правки блокеров не осталось.
+ *
+ * Идёт минуты: до трёх кругов «правка → перепроверка», каждый круг — два
+ * вызова модели с рассуждением.
+ */
+export async function runLabCaseAgent(caseId, { maxRounds, hint, publish } = {}) {
+  const { data } = await axios.post(`${BASE}/labs/cases/${caseId}/ai/agent`, {
+    maxRounds,
+    hint,
+    publish,
+  });
+  return data;
+}
+
+export async function runVpCaseAgent(caseId, { maxRounds, hint, publish } = {}) {
+  const { data } = await axios.post(`${BASE}/vp/cases/${caseId}/ai/agent`, {
+    maxRounds,
+    hint,
+    publish,
+  });
+  return data;
+}
+
 export async function aiAutofixVpCase({ draft, caseId, maxRounds, issues, hint }) {
   const { data } = await axios.post(`${BASE}/vp/ai/autofix`, {
     draft,

@@ -16,6 +16,7 @@ import {
   aiGenerateLabCase,
   aiVerifyLabCase,
   aiAutofixLabCase,
+  runLabCaseAgent,
   dismissLabAiIssues,
   generateLabAiBaseline,
   generateLabVariants,
@@ -104,6 +105,11 @@ export default function AdminLabCasesPage() {
   // автор должен видеть, что цифры правил не человек, и через неделю тоже.
   const [revision, setRevision] = useState(null);
   const [fixBusy, setFixBusy] = useState(false);
+  const [agentBusy, setAgentBusy] = useState(false);
+  // Отчёт последнего прогона агента. Живёт отдельно от notice: тот висит
+  // наверху страницы, а кнопку жмут внизу — сообщение о том, что агент
+  // сделал и чего не смог, просто не попадало человеку на глаза.
+  const [agentReport, setAgentReport] = useState(null);
   // Указание автора редактору: чем править и в какую сторону. Рецензент часто
   // предлагает два пути, и выбор между ними врачебный, а не редакторский.
   const [fixHint, setFixHint] = useState("");
@@ -135,6 +141,7 @@ export default function AdminLabCasesPage() {
     setReview(null);
     setDismissed(new Set());
     setRevision(null);
+    setAgentReport(null);
   }
 
   // Рецензия, сохранённая у кейса, восстанавливается вместе с ним: гейт
@@ -516,6 +523,71 @@ export default function AdminLabCasesPage() {
   // Удаление варианта — правка кейса как обычно: сохранится по «Сохранить».
   function removeVariant(index) {
     setVariants((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  // ─── АГЕНТ-ДОВОДЧИК ───────────────────────────────────────────────────
+  //
+  // «Доделай и опубликуй»: агент правит текст циклом «правка → перепроверка» и
+  // сам проходит гейт публикации, если после правки блокеров не осталось.
+  //
+  // Сохранение перед запуском обязательно, а не для удобства: агент читает
+  // кейс ИЗ БАЗЫ, и правки, которые сейчас в форме, иначе не попали бы ни в
+  // рецензию, ни в публикацию — опубликовалось бы одно, а на экране осталось
+  // другое.
+  //
+  // Ставим и busy, и agentBusy: первый выключает соседние действия (публикацию
+  // того, что прямо сейчас переписывается), второй нужен только для подписи на
+  // самой кнопке.
+  async function handleRunAgent() {
+    if (selected === "new") return setError("Сначала сохраните кейс");
+    setAgentBusy(true);
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    setAgentReport(null);
+    try {
+      await updateLabCase(selected, buildPayload());
+      const r = await runLabCaseAgent(selected, { hint: fixHint.trim() || undefined });
+
+      await refresh();
+      await openCase(selected);
+
+      const parts = [];
+      if (r.published) {
+        parts.push("Опубликовано — перевод на остальные языки запущен.");
+      } else if (r.stoppedBy === "already_published") {
+        parts.push("Уже опубликовано.");
+      } else if (r.blockers?.length) {
+        parts.push(`Публиковать рано — осталось: ${r.blockers.join("; ")}.`);
+      }
+      if (r.fixed) {
+        parts.push(
+          r.converged
+            ? `Замечаний не осталось (кругов правки: ${r.rounds?.length ?? 0}).`
+            : `Осталось замечаний: ${r.review?.issues?.length ?? 0} (кругов: ${
+                r.rounds?.length ?? 0
+              }, остановка: ${r.stoppedBy}).`,
+        );
+      } else if (r.stoppedBy === "prerequisites") {
+        parts.push("Модель не вызывалась — править было нечего.");
+      }
+      if (r.disputed?.length) {
+        parts.push(
+          `Редактор возразил по ${r.disputed.length} замечанию(-ям) — решение за вами.`,
+        );
+      }
+      if (r.variantsStale) {
+        parts.push("Значения менялись — числовые варианты стоит пересобрать.");
+      }
+      setAgentReport(r);
+      setNotice(parts.join(" "));
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Агент не смог доработать кейс"));
+    } finally {
+      setAgentBusy(false);
+      setBusy(false);
+    }
   }
 
   async function handleSave() {
@@ -908,6 +980,17 @@ export default function AdminLabCasesPage() {
               <div className="rad-panel">
                 <div className="edu-btn-row" style={{ flexWrap: "wrap" }}>
                   <button type="button" className="edu-btn" onClick={handleSave} disabled={busy}>{busy ? "Сохраняем…" : "Сохранить"}</button>
+                  {selected !== "new" && status !== "published" && status !== "archived" && (
+                    <button
+                      type="button"
+                      className="edu-btn"
+                      onClick={handleRunAgent}
+                      disabled={busy || verifyBusy || fixBusy}
+                      title="Сохранит, вычистит замечания рецензента и опубликует, если гейт чист"
+                    >
+                      {agentBusy ? "Агент дорабатывает…" : "🤖 Запустить агента"}
+                    </button>
+                  )}
                   {selected !== "new" && status !== "published" && (
                     <button type="button" className="edu-btn" onClick={() => changeStatus("published")} disabled={busy || liveBlockers.length > 0}>Опубликовать</button>
                   )}
@@ -931,6 +1014,42 @@ export default function AdminLabCasesPage() {
                     </button>
                   )}
                 </div>
+                {agentReport && (
+                  <div
+                    className="edu-hint"
+                    style={{
+                      marginTop: 10,
+                      padding: 10,
+                      borderRadius: 8,
+                      border: "1px solid #dbe4f0",
+                      background: "#f7faff",
+                    }}
+                  >
+                    <div style={{ fontWeight: 600, color: "#0f172a" }}>
+                      🤖 Прогон агента:{" "}
+                      {agentReport.published
+                        ? "опубликовано"
+                        : agentReport.fixed
+                          ? `текст поправлен, кругов ${agentReport.rounds?.length ?? 0}`
+                          : "правка не запускалась"}
+                    </div>
+                    {agentReport.fixed && (
+                      <div style={{ marginTop: 4 }}>
+                        Замечаний осталось: {agentReport.review?.issues?.length ?? 0}
+                        {" · "}
+                        внесено правок: {agentReport.changes?.length ?? 0}
+                        {agentReport.disputed?.length
+                          ? ` · редактор возразил: ${agentReport.disputed.length}`
+                          : ""}
+                      </div>
+                    )}
+                    {agentReport.blockers?.length > 0 && (
+                      <div style={{ marginTop: 4 }}>
+                        Осталось сделать вам: {agentReport.blockers.join("; ")}.
+                      </div>
+                    )}
+                  </div>
+                )}
                 {liveBlockers.length > 0 && (
                   <div className="edu-hint" style={{ marginTop: 8 }}>Для публикации: {liveBlockers.join("; ")}.</div>
                 )}
