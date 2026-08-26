@@ -559,6 +559,8 @@
       "topicPlaceholder": "e.g. medical genetics; carbohydrate biochemistry; cardiac physiology",
       "count": "How many questions",
       "lang": "Language",
+      "langMismatch": "The topic is written in {{topicLang}}, but the question language is set to “{{selected}}” — the model will write in the selected one.",
+      "langMismatchFix": "Switch to {{lang}}",
       "difficulty": "Difficulty",
       "sourceNote": "Origin note (optional)",
       "sourceNotePlaceholder": "e.g. inspired by the open USMLE bank",

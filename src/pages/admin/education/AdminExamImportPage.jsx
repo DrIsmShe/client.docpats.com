@@ -122,6 +122,28 @@ const ACCEPTED_EXTENSIONS = [
   ".gif",
 ].join(",");
 
+// Языки, на которых модель пишет вопросы. Порядок — как в селекторе.
+const LANGS = ["ru", "en", "az", "tr", "ar"];
+
+/**
+ * Какого языка ТЕМА, если это видно по письменности. Нужен не ради точности,
+ * а ради одного сценария: тема набрана на одном языке, а в селекторе стоит
+ * другой — и оператор узнаёт об этом, только получив готовый тест не на том
+ * языке, за который уже заплачено вызовами модели.
+ *
+ * Отвечаем ТОЛЬКО там, где письменность не оставляет вариантов: кириллица,
+ * арабица и азербайджанская «ə», которой нет ни в турецком, ни в английском.
+ * Турецкий и английский на латинице различать не беремся — ошибиться здесь
+ * хуже, чем промолчать: ложное предупреждение обесценит настоящее.
+ */
+function detectTopicLang(topic) {
+  const t = String(topic ?? "");
+  if (/[Ѐ-ӿ]/.test(t)) return "ru";
+  if (/[؀-ۿ]/.test(t)) return "ar";
+  if (/[əƏ]/.test(t)) return "az";
+  return null;
+}
+
 export default function AdminExamImportPage() {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation("education");
@@ -136,6 +158,13 @@ export default function AdminExamImportPage() {
   const [stage, setStage] = useState(null); // текст текущего шага
   const [error, setError] = useState(null);
   const [notice, setNotice] = useState(null);
+
+  // Язык, на котором оператор СЕЙЧАС работает. Дефолтом для генерации стоял
+  // жёстко "ru", и это давало ровно один сценарий: админка на азербайджанском,
+  // тема набрана по-азербайджански, а вопросы приходят русские — потому что
+  // селектор языка никто не трогал. Своя рабочая раскладка — куда более
+  // вероятное намерение, чем русский по умолчанию.
+  const uiLang = LANGS.includes(i18n.language) ? i18n.language : "ru";
 
   const [form, setForm] = useState({
     programId: NEW_PROGRAM,
@@ -157,10 +186,18 @@ export default function AdminExamImportPage() {
     programId: NEW_PROGRAM,
     topic: "",
     count: 20,
-    lang: "ru",
+    lang: uiLang,
     difficulty: "mixed",
     sourceNote: "",
   });
+
+  // Язык темы разошёлся с выбранным языком вопросов — или null, если всё
+  // сходится либо письменность ничего не говорит (латиница tr/en).
+  const detectedTopicLang = detectTopicLang(genForm.topic);
+  const topicLangMismatch =
+    detectedTopicLang && detectedTopicLang !== genForm.lang
+      ? detectedTopicLang
+      : null;
 
   // Ручной ввод. Метаданные (программа, происхождение) — как у загрузки
   // файла, потому что дальше та же цепочка createProgram → createImportJob →
@@ -172,7 +209,7 @@ export default function AdminExamImportPage() {
     country: "INT",
     region: "international",
     examType: "cme",
-    lang: "ru",
+    lang: uiLang,
     // Для набранных руками вопросов дефолт — авторский материал: он не
     // требует указания органа, в отличие от public_government.
     sourceKind: "original",
@@ -1071,12 +1108,34 @@ export default function AdminExamImportPage() {
                 setGenForm((f) => ({ ...f, lang: e.target.value }))
               }
             >
-              {["ru", "en", "az", "tr", "ar"].map((code) => (
+              {LANGS.map((code) => (
                 <option key={code} value={code}>
                   {t(`shared.langs.${code}`)}
                 </option>
               ))}
             </select>
+            {/* Тема и выбранный язык разошлись. Молчать здесь дорого: о
+                несовпадении оператор узнаёт, только получив готовый тест не
+                на том языке, за который модель уже отработала. */}
+            {topicLangMismatch && (
+              <div className="edu-warn" style={{ marginTop: 6, fontSize: 12 }}>
+                {t("adminGenerate.form.langMismatch", {
+                  topicLang: t(`shared.langs.${topicLangMismatch}`),
+                  selected: t(`shared.langs.${genForm.lang}`),
+                })}{" "}
+                <button
+                  type="button"
+                  className="rad-blocker-link"
+                  onClick={() =>
+                    setGenForm((f) => ({ ...f, lang: topicLangMismatch }))
+                  }
+                >
+                  {t("adminGenerate.form.langMismatchFix", {
+                    lang: t(`shared.langs.${topicLangMismatch}`),
+                  })}
+                </button>
+              </div>
+            )}
           </div>
           <div>
             <div className="edu-field-label" style={{ marginTop: 0 }}>

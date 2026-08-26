@@ -559,6 +559,8 @@
       "topicPlaceholder": "Örn.: tıbbi genetik; karbonhidrat biyokimyası; kalp fizyolojisi",
       "count": "Kaç soru",
       "lang": "Dil",
+      "langMismatch": "Konu {{topicLang}} dilinde yazılmış, ancak soru dili “{{selected}}” seçili — model seçili dilde yazacak.",
+      "langMismatchFix": "{{lang}} diline geç",
       "difficulty": "Zorluk",
       "sourceNote": "Köken notu (isteğe bağlı)",
       "sourceNotePlaceholder": "Örn.: açık USMLE bankasından esinlenerek",

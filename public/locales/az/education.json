@@ -559,6 +559,8 @@
       "topicPlaceholder": "Məs.: tibbi genetika; karbohidratların biokimyası; ürək fiziologiyası",
       "count": "Neçə sual",
       "lang": "Dil",
+      "langMismatch": "Mövzu {{topicLang}} dilində yazılıb, sual dili isə «{{selected}}» seçilib — model seçilmiş dildə yazacaq.",
+      "langMismatchFix": "{{lang}} dilinə keçir",
       "difficulty": "Çətinlik",
       "sourceNote": "Mənşə qeydi (könüllü)",
       "sourceNotePlaceholder": "Məs.: açıq USMLE bankı əsasında",
