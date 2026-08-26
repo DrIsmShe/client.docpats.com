@@ -30,6 +30,8 @@ import AiReviewPanel, {
   unresolvedIssues,
   reviewBlocker,
   BlockerHint,
+  isConnectionLost,
+  AGENT_LOST_NOTICE,
 } from "./AiReviewPanel";
 import AdminCaseList, { STATUS_LABELS } from "./AdminCaseList";
 import AgentReportPanel from "./AgentReportPanel";
@@ -579,7 +581,11 @@ export default function AdminLabCasesPage() {
 
       const parts = [];
       if (r.published) {
-        parts.push("Опубликовано — перевод на остальные языки запущен.");
+        parts.push(
+          r.translation?.pending
+            ? "Опубликовано — перевод на остальные языки продолжается в фоне."
+            : "Опубликовано.",
+        );
       } else if (r.stoppedBy === "already_published") {
         parts.push("Уже опубликовано.");
       } else if (r.blockers?.length) {
@@ -608,7 +614,11 @@ export default function AdminLabCasesPage() {
       setNotice(parts.join(" "));
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
-      setError(readApiError(err, "Агент не смог доработать кейс"));
+      // Оборванное соединение — не отказ: агент дорабатывает на сервере.
+      // Показать здесь «Network Error» значило бы сказать врачу, что ничего
+      // не произошло, ровно тогда, когда кейс публикуется.
+      if (isConnectionLost(err)) setNotice(AGENT_LOST_NOTICE);
+      else setError(readApiError(err, "Агент не смог доработать кейс"));
     } finally {
       setAgentBusy(false);
       setBusy(false);
