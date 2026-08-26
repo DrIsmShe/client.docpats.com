@@ -911,6 +911,7 @@
   "src/pages/admin/radiology/AdminRadiologyCasesPage.jsx → https://… (PNG/JPEG)",
   "src/pages/admin/radiology/AdminRadiologyCasesPage.jsx → «Анализы»",
   "src/pages/admin/radiology/AdminRadiologyCasesPage.jsx → «Виртуальный пациент»",
+  "src/pages/admin/radiology/AdminRadiologyCasesPage.jsx → «Запустить агента» — для случая «снимок загружен, доделай сам»: кей…",
   "src/pages/admin/radiology/AdminRadiologyCasesPage.jsx → «Исправить замечания» правит ТЕКСТ: план находок, контекст, заключе…",
   "src/pages/admin/radiology/AdminRadiologyCasesPage.jsx → · коммерчески:",
   "src/pages/admin/radiology/AdminRadiologyCasesPage.jsx → · снимок",

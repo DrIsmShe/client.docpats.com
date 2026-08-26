@@ -37,5 +37,8 @@ export const publishCase = (caseId, publish = true) =>
 
 export const getStats = () => instance.get(`${BASE}/stats`);
 
+// Счётчики долгов врача: сегодня, на неделе, нет протокола, просрочен контроль.
+export const getWorklist = () => instance.get(`${BASE}/worklist`);
+
 export const getPublicCases = (params = {}) =>
   instance.get(`${BASE}/public`, { params });

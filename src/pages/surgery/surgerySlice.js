@@ -15,6 +15,10 @@ export const fetchCases = createAsyncThunk(
       const cleanParams = {};
       if (params.status) cleanParams.status = params.status;
       if (params.procedure) cleanParams.procedure = params.procedure;
+      if (params.patientType) cleanParams.patientType = params.patientType;
+      if (params.bucket) cleanParams.bucket = params.bucket;
+      if (params.q) cleanParams.q = params.q;
+      if (params.sort) cleanParams.sort = params.sort;
       if (params.page) cleanParams.page = params.page;
       if (params.limit) cleanParams.limit = params.limit;
 
@@ -118,6 +122,18 @@ export const togglePublish = createAsyncThunk(
   },
 );
 
+export const fetchWorklist = createAsyncThunk(
+  "surgery/fetchWorklist",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.getWorklist();
+      return res.data.worklist;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.error || "Ошибка");
+    }
+  },
+);
+
 export const fetchStats = createAsyncThunk(
   "surgery/fetchStats",
   async (_, { rejectWithValue }) => {
@@ -168,6 +184,7 @@ const surgerySlice = createSlice({
     cases: [],
     activeCase: null,
     stats: null,
+    worklist: null,
     total: 0,
     page: 1,
     pages: 1,
@@ -276,6 +293,9 @@ const surgerySlice = createSlice({
     // fetchStats
     builder.addCase(fetchStats.fulfilled, (s, a) => {
       s.stats = a.payload;
+    });
+    builder.addCase(fetchWorklist.fulfilled, (s, a) => {
+      s.worklist = a.payload;
     });
     builder.addCase(deleteCase.fulfilled, (s, a) => {
       s.cases = s.cases.filter((c) => c._id !== a.payload);

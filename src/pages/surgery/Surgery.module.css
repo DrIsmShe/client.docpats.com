@@ -918,3 +918,469 @@
   line-height: 38px;
   font-size: 14px;
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ЖУРНАЛ ОПЕРАЦИЙ — рабочий список, режимы просмотра, строки
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Тона срочности ───────────────────────────────────────────────────────
+   Один набор переменных на все элементы, которые несут срочность: счётчики
+   долгов и подсказка «что сделать дальше». Цвет здесь — смысл, а не украшение,
+   поэтому он задаётся один раз и переиспользуется. */
+.tone_now {
+  --tone-fg: #1d4ed8;
+  --tone-bg: #eff6ff;
+  --tone-bd: #bfdbfe;
+}
+.tone_soon {
+  --tone-fg: #0f766e;
+  --tone-bg: #f0fdfa;
+  --tone-bd: #99f6e4;
+}
+.tone_debt {
+  --tone-fg: #92400e;
+  --tone-bg: #fffbeb;
+  --tone-bd: #fde68a;
+}
+.tone_alarm {
+  --tone-fg: #b91c1c;
+  --tone-bg: #fef2f2;
+  --tone-bd: #fecaca;
+}
+.tone_muted {
+  --tone-fg: #64748b;
+  --tone-bg: #f8fafc;
+  --tone-bd: #e2e8f0;
+}
+
+/* ─── Рабочий список ─────────────────────────────────────────────────────── */
+.workRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.workChip {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--tone-bd);
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.12s;
+}
+.workChip:hover {
+  filter: brightness(0.97);
+}
+.workChipActive {
+  outline: 2px solid var(--tone-fg);
+  outline-offset: -1px;
+}
+.workNum {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.workLbl {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.workClean {
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ─── Панель управления ──────────────────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.viewSwitch {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 10px;
+  background: #e8edf5;
+  gap: 2px;
+}
+.viewBtn {
+  padding: 7px 15px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.12s;
+}
+.viewBtn:hover {
+  color: #0f172a;
+}
+.viewBtnActive {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+.searchWrap {
+  flex: 1 1 220px;
+  min-width: 200px;
+  margin-inline-start: auto;
+}
+.search {
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  font-size: 13px;
+  font-family: inherit;
+  color: #0f172a;
+}
+.search:focus {
+  outline: none;
+  border-color: #94a3b8;
+}
+.btnGhost {
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #475569;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.btnGhost:hover {
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+/* ─── Пациент ────────────────────────────────────────────────────────────── */
+.patientName {
+  font-size: 14px;
+  font-weight: 650;
+  color: #0f172a;
+  letter-spacing: -0.01em;
+}
+.patientSub {
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+.avatar,
+.avatarStub {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+.avatarStub {
+  display: grid;
+  place-items: center;
+  background: #e2e8f0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+}
+/* Приватный режим: лицо пациента — такие же персональные данные, как имя,
+   и журнал часто открыт на общем экране. Размытие снимается кнопкой в шапке. */
+.blurred {
+  filter: blur(7px);
+}
+
+/* ─── Что сделать дальше ─────────────────────────────────────────────────── */
+.nextAction {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid var(--tone-bd);
+  background: var(--tone-bg);
+  color: var(--tone-fg);
+}
+.readiness {
+  font-size: 11px;
+  font-weight: 600;
+  color: #92400e;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 20px;
+  padding: 3px 10px;
+  white-space: nowrap;
+  cursor: help;
+}
+.complicationFlag {
+  font-size: 11px;
+  font-weight: 600;
+  color: #b91c1c;
+  white-space: nowrap;
+}
+
+/* ─── Меню действий ──────────────────────────────────────────────────────── */
+/* «Удалить» больше не лежит открытой кнопкой в каждой строке: это медицинская
+   запись, и промах пальцем не должен её убирать. Частое действие — открыть
+   кейс (клик по строке), редкое и опасное — спрятано под ⋯. */
+.menuWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.menuBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  font-family: inherit;
+}
+.menuBtn:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+.menu {
+  position: absolute;
+  inset-inline-end: 0;
+  top: 34px;
+  z-index: 20;
+  min-width: 190px;
+  padding: 5px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+}
+.menuItem {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 7px;
+  text-align: start;
+  font-size: 13px;
+  color: #334155;
+  cursor: pointer;
+  font-family: inherit;
+}
+.menuItem:hover {
+  background: #f1f5f9;
+}
+.menuItemDanger {
+  color: #dc2626;
+}
+.menuItemDanger:hover {
+  background: #fef2f2;
+}
+.menuSep {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 5px 0;
+}
+
+/* ─── Расписание ─────────────────────────────────────────────────────────── */
+.agenda {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.agendaGroup {
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.agendaDay {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 12px 18px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e8edf5;
+}
+.agendaDayName {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: capitalize;
+}
+.agendaDayRel {
+  font-size: 11.5px;
+  color: #64748b;
+}
+.agendaDayCount {
+  margin-inline-start: auto;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #94a3b8;
+}
+.agendaRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 18px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.agendaRow:last-child {
+  border-bottom: none;
+}
+.agendaRow:hover {
+  background: #f8fafc;
+}
+.agendaTime {
+  width: 52px;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  font-variant-numeric: tabular-nums;
+}
+.timeStub {
+  font-size: 11px;
+  font-weight: 500;
+  color: #cbd5e1;
+}
+.agendaMain {
+  min-width: 0;
+  flex: 1;
+}
+.agendaTop {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.agendaSub {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+.agendaSide {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* ─── Журнал (таблица) ───────────────────────────────────────────────────── */
+/* Регистр из двухсот операций листают глазами по колонкам, а не по плиткам:
+   плотная таблица показывает на экран в пять раз больше строк, чем сетка. */
+.tableWrap {
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 14px;
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 860px;
+}
+.table th {
+  text-align: start;
+  padding: 11px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  background: #f8fafc;
+  border-bottom: 1px solid #e8edf5;
+  white-space: nowrap;
+}
+.table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+  color: #334155;
+}
+.tRow {
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.tRow:hover {
+  background: #f8fafc;
+}
+.tRow:last-child td {
+  border-bottom: none;
+}
+.tPatientCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tPatient {
+  min-width: 210px;
+}
+.codeCell,
+.relCell {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+.tResult {
+  white-space: nowrap;
+}
+.tActions {
+  width: 44px;
+}
+
+/* ─── Шапка карточки витрины ─────────────────────────────────────────────── */
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px 0;
+}
+.cardHeadText {
+  min-width: 0;
+  flex: 1;
+}
+
+/* ─── Адаптив ────────────────────────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .agendaRow {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .agendaSide {
+    width: 100%;
+    justify-content: flex-start;
+    padding-inline-start: 66px;
+  }
+  .searchWrap {
+    margin-inline-start: 0;
+    order: 3;
+    flex-basis: 100%;
+  }
+  .workChip {
+    flex: 1 1 140px;
+  }
+}

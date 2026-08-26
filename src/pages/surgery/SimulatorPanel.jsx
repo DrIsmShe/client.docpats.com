@@ -122,15 +122,57 @@ export default function SimulatorPanel({ cas }) {
   }, []);
 
   // ─── Canvas drawing ───────────────────────────────────────────────────
+  //
+  // Координаты считаются от ИЗОБРАЖЕНИЯ, а не от канваса. CSS сейчас сводит их
+  // прямоугольники в один (см. .canvasWrap), но эта функция — последняя защита:
+  // если вёрстка когда-нибудь снова разведёт оверлей и картинку, маска всё
+  // равно ляжет туда, куда указал врач, а не уедет на ширину полей.
+  //
+  // Масштаб отдельно по осям: при неточном совпадении rect'ов один общий
+  // множитель молча растянул бы мазок.
   const getPos = (e, canvas) => {
-    const rect = canvas.getBoundingClientRect();
+    const box = (imgRef.current ?? canvas).getBoundingClientRect();
     const touch = e.touches?.[0];
     const clientX = touch ? touch.clientX : e.clientX;
     const clientY = touch ? touch.clientY : e.clientY;
+    const scaleX = canvas.width / box.width;
+    const scaleY = canvas.height / box.height;
     return {
-      x: (clientX - rect.left) * (canvas.width / rect.width),
-      y: (clientY - rect.top) * (canvas.height / rect.height),
+      x: (clientX - box.left) * scaleX,
+      y: (clientY - box.top) * scaleY,
+      // Множитель для радиуса кисти: она задана в ЭКРАННЫХ пикселях (курсор
+      // рисуется ровно такого размера), а мазок кладётся в пикселях оригинала.
+      // Без пересчёта на снимке 2000 px, показанном в 400 px, закрашивалась
+      // полоска в пять раз тоньше курсора — врач видел толстую кисть, а модель
+      // получала волосок, за который не за что зацепиться.
+      scale: (scaleX + scaleY) / 2,
     };
+  };
+
+  // Точка мазка + непрерывная линия от предыдущей. Отдельные кружки на каждом
+  // событии мыши оставляли в маске пунктир при быстром движении: между
+  // соседними событиями курсор успевает пройти десятки пикселей, и в маске
+  // появлялись дыры — модель дорисовывала полосами.
+  const lastPosRef = useRef(null);
+
+  const paint = (ctx, pos, radius) => {
+    ctx.fillStyle = "rgba(99,102,241,0.6)";
+    ctx.strokeStyle = "rgba(99,102,241,0.6)";
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.lineWidth = radius * 2;
+
+    const prev = lastPosRef.current;
+    if (prev) {
+      ctx.beginPath();
+      ctx.moveTo(prev.x, prev.y);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+    ctx.beginPath();
+    ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    lastPosRef.current = pos;
   };
 
   const startDraw = useCallback(
@@ -140,10 +182,8 @@ export default function SimulatorPanel({ cas }) {
       if (!canvas || !selectedPhoto) return;
       const ctx = canvas.getContext("2d");
       const pos = getPos(e, canvas);
-      ctx.beginPath();
-      ctx.arc(pos.x, pos.y, brushSize / 2, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(99,102,241,0.6)";
-      ctx.fill();
+      lastPosRef.current = null;
+      paint(ctx, pos, (brushSize / 2) * pos.scale);
       setIsDrawing(true);
       setHasMask(true);
     },
@@ -158,20 +198,21 @@ export default function SimulatorPanel({ cas }) {
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       const pos = getPos(e, canvas);
-      ctx.beginPath();
-      ctx.arc(pos.x, pos.y, brushSize / 2, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(99,102,241,0.6)";
-      ctx.fill();
+      paint(ctx, pos, (brushSize / 2) * pos.scale);
     },
     [isDrawing, brushSize],
   );
 
-  const stopDraw = useCallback(() => setIsDrawing(false), []);
+  const stopDraw = useCallback(() => {
+    lastPosRef.current = null;
+    setIsDrawing(false);
+  }, []);
 
   const clearMask = () => {
     const canvas = overlayRef.current;
     if (!canvas) return;
     canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    lastPosRef.current = null;
     setHasMask(false);
   };
 

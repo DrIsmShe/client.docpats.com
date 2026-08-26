@@ -686,6 +686,27 @@ export async function aiAutofixCase({ draft, caseId, modality, imageUrl, maxRoun
   return data;
 }
 
+/**
+ * АГЕНТ-ДОВОДЧИК станции «Снимки»: «кадр загружен — доведи кейс до конца».
+ *
+ * Отличие от aiAutofixCase: тот правит черновик ИЗ ФОРМЫ и возвращает его в
+ * форму, публикацию оставляя человеку. Агент работает с СОХРАНЁННЫМ кейсом,
+ * перепроверяет текст уже со снимком и сам публикует, если после правки гейт
+ * чист. Галочку деидентификации и точки на кадре он не трогает — если их нет,
+ * вернёт их в blockers.
+ *
+ * Идёт минуты: до трёх кругов «правка → перепроверка», каждый круг — два
+ * вызова модели с рассуждением.
+ */
+export async function runCaseAgent(caseId, { maxRounds, hint, publish } = {}) {
+  const { data } = await axios.post(`${BASE}/cases/${caseId}/ai/agent`, {
+    maxRounds,
+    hint,
+    publish,
+  });
+  return data;
+}
+
 export async function aiAutofixVpCase({ draft, caseId, maxRounds, issues, hint }) {
   const { data } = await axios.post(`${BASE}/vp/ai/autofix`, {
     draft,

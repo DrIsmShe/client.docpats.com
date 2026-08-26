@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   fetchCaseById,
@@ -304,7 +304,15 @@ export default function SurgeryCasePage() {
   } = useSelector((s) => s.surgery);
 
   const fileRef = useRef();
-  const [tab, setTab] = useState("info");
+
+  // Журнал ведёт сюда сразу на нужную вкладку («заполнить протокол»,
+  // «добавить фото»): без этого рабочий список доводил врача до кейса и
+  // бросал на обзорной вкладке, откуда нужно искать действие заново.
+  const [searchParams] = useSearchParams();
+  const [tab, setTab] = useState(() => {
+    const requested = searchParams.get("tab");
+    return TAB_KEYS.includes(requested) ? requested : "info";
+  });
   const [photoLabel, setPhotoLabel] = useState("before");
   const [scoreInput, setScoreInput] = useState("");
   const [fuForm, setFuForm] = useState({

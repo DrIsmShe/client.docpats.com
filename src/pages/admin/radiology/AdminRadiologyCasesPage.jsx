@@ -20,6 +20,7 @@ import {
   createCase,
   updateCase,
   submitCaseForReview,
+  runCaseAgent,
   reviewCase,
   archiveCase,
   deleteCasePermanently,
@@ -176,6 +177,7 @@ export default function AdminRadiologyCasesPage() {
   // снимок видел.
   const [revision, setRevision] = useState(null);
   const [fixBusy, setFixBusy] = useState(false);
+  const [agentBusy, setAgentBusy] = useState(false);
   // Указание автора редактору: чем править и в какую сторону.
   const [fixHint, setFixHint] = useState("");
   const [cases, setCases] = useState([]);
@@ -487,6 +489,69 @@ export default function AdminRadiologyCasesPage() {
       if (isAuthError(err)) return navigate("/login");
       setError(readApiError(err, "Не удалось сохранить кейс"));
     } finally {
+      setBusy(false);
+    }
+  }
+
+  // ─── АГЕНТ-ДОВОДЧИК ───────────────────────────────────────────────────
+  //
+  // «Снимок загружен — доведи кейс до конца»: агент правит текст, перепроверяет
+  // его УЖЕ СО СНИМКОМ и сам публикует, если после правки гейт чист.
+  //
+  // Сохранение перед запуском не удобство, а обязательное условие: загруженный
+  // кадр до нажатия «Сохранить» живёт только в состоянии формы, а агент читает
+  // кейс из базы. Без этого он бы честно ответил «загрузите снимок» на кейс, у
+  // которого снимок на экране есть.
+  //
+  // Ставим и busy, и agentBusy: первый выключает соседние действия (публикацию
+  // кейса, который прямо сейчас переписывается), второй нужен только для
+  // подписи на самой кнопке.
+  async function handleRunAgent() {
+    if (selected === "new") return setError("Сначала сохраните кейс");
+    setAgentBusy(true);
+    setBusy(true);
+    setError(null);
+    setNotice(null);
+    try {
+      await updateCase(selected, buildPayload());
+      const r = await runCaseAgent(selected, { hint: fixHint.trim() || undefined });
+
+      await refreshList();
+      await openCase(selected);
+
+      const parts = [];
+      if (r.published) {
+        parts.push("Кейс опубликован — перевод на остальные языки запущен.");
+      } else if (r.stoppedBy === "already_published") {
+        parts.push("Кейс уже опубликован.");
+      } else if (r.blockers?.length) {
+        parts.push(`Публиковать рано — осталось: ${r.blockers.join("; ")}.`);
+      }
+      if (r.fixed) {
+        parts.push(
+          r.converged
+            ? `Замечаний не осталось (кругов правки: ${r.rounds?.length ?? 0}).`
+            : `Осталось замечаний: ${r.review?.issues?.length ?? 0} (кругов: ${
+                r.rounds?.length ?? 0
+              }, остановка: ${r.stoppedBy}).`,
+        );
+      } else if (r.stoppedBy === "prerequisites") {
+        parts.push("Модель не вызывалась — работать было рано.");
+      }
+      if (r.disputed?.length) {
+        parts.push(
+          `Редактор возразил по ${r.disputed.length} замечанию(-ям) — решение за вами.`,
+        );
+      }
+      if (r.markupPresent && r.fixed) {
+        parts.push("Находки уже размечены, а план правился — сверьте кадр с планом.");
+      }
+      setNotice(parts.join(" "));
+    } catch (err) {
+      if (isAuthError(err)) return navigate("/login");
+      setError(readApiError(err, "Агент не смог доработать кейс"));
+    } finally {
+      setAgentBusy(false);
       setBusy(false);
     }
   }
@@ -1202,6 +1267,11 @@ export default function AdminRadiologyCasesPage() {
   const openIssues = unresolvedIssues(review, dismissed).length;
   if (openIssues > 0)
     liveBlockers.push(`разберите замечания рецензента (${openIssues})`);
+
+  // Есть ли кадр — от этого зависит доступность агента. Он читает кейс из базы,
+  // но кнопка сама сохраняет форму перед запуском, поэтому смотрим на форму:
+  // иначе кнопка осталась бы серой сразу после загрузки снимка.
+  const hasFrame = images.some((i) => i.url.trim());
 
   const editorAnn = findings
     .filter((f) => f.imageIndex === activeImg)
@@ -1995,6 +2065,21 @@ export default function AdminRadiologyCasesPage() {
               <div className="rad-panel">
                 <div className="edu-btn-row" style={{ flexWrap: "wrap" }}>
                   <button type="button" className="edu-btn" onClick={handleSave} disabled={busy}>{busy ? "Сохраняем…" : "Сохранить"}</button>
+                  {selected !== "new" && (status === "draft" || status === "rejected" || status === "in_review") && (
+                    <button
+                      type="button"
+                      className="edu-btn"
+                      onClick={handleRunAgent}
+                      disabled={busy || verifyBusy || fixBusy || !hasFrame}
+                      title={
+                        hasFrame
+                          ? "Сохранит кейс, вычистит замечания текстом со взглядом на снимок и опубликует, если гейт чист"
+                          : "Сначала загрузите снимок — агент запускается после кадра"
+                      }
+                    >
+                      {agentBusy ? "Агент дорабатывает кейс…" : "🤖 Запустить агента"}
+                    </button>
+                  )}
                   {selected !== "new" && editable && (
                     <button
                       type="button"
@@ -2033,6 +2118,16 @@ export default function AdminRadiologyCasesPage() {
                 {editable && liveBlockers.length > 0 && (
                   <div className="edu-hint" style={{ marginTop: 8 }}>
                     Чтобы отправить на ревью и опубликовать, устраните: {liveBlockers.join("; ")}.
+                  </div>
+                )}
+                {selected !== "new" && (
+                  <div className="edu-hint" style={{ marginTop: 8 }}>
+                    «Запустить агента» — для случая «снимок загружен, доделай сам»:
+                    кейс сохраняется, рецензент перепроверяет текст уже ПО СНИМКУ,
+                    редактор чинит замечания, и кейс публикуется, если гейт чист.
+                    Галочку деидентификации и точки находок на кадре агент не
+                    ставит: и то и другое подписывает тот, кто снимок видел, —
+                    их отсутствие он вернёт списком того, что осталось сделать.
                   </div>
                 )}
               </div>
