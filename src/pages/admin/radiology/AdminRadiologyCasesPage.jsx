@@ -178,6 +178,10 @@ export default function AdminRadiologyCasesPage() {
   const [revision, setRevision] = useState(null);
   const [fixBusy, setFixBusy] = useState(false);
   const [agentBusy, setAgentBusy] = useState(false);
+  // Отчёт последнего прогона агента. Живёт отдельно от notice: тот висит
+  // наверху страницы, а кнопку жмут внизу — сообщение о том, что агент
+  // ничего не менял и почему, просто не попадало человеку на глаза.
+  const [agentReport, setAgentReport] = useState(null);
   // Указание автора редактору: чем править и в какую сторону.
   const [fixHint, setFixHint] = useState("");
   const [cases, setCases] = useState([]);
@@ -271,6 +275,7 @@ export default function AdminRadiologyCasesPage() {
     setReview(null);
     setDismissed(new Set());
     setRevision(null);
+    setAgentReport(null);
   }
 
   // Рецензия, сохранённая у кейса, восстанавливается вместе с ним: гейт
@@ -512,6 +517,7 @@ export default function AdminRadiologyCasesPage() {
     setBusy(true);
     setError(null);
     setNotice(null);
+    setAgentReport(null);
     try {
       await updateCase(selected, buildPayload());
       const r = await runCaseAgent(selected, { hint: fixHint.trim() || undefined });
@@ -546,6 +552,7 @@ export default function AdminRadiologyCasesPage() {
       if (r.markupPresent && r.fixed) {
         parts.push("Находки уже размечены, а план правился — сверьте кадр с планом.");
       }
+      setAgentReport(r);
       setNotice(parts.join(" "));
     } catch (err) {
       if (isAuthError(err)) return navigate("/login");
@@ -2118,6 +2125,47 @@ export default function AdminRadiologyCasesPage() {
                 {editable && liveBlockers.length > 0 && (
                   <div className="edu-hint" style={{ marginTop: 8 }}>
                     Чтобы отправить на ревью и опубликовать, устраните: {liveBlockers.join("; ")}.
+                  </div>
+                )}
+                {agentReport && (
+                  <div
+                    className="edu-hint"
+                    style={{
+                      marginTop: 10,
+                      padding: 10,
+                      borderRadius: 8,
+                      border: "1px solid #dbe4f0",
+                      background: "#f7faff",
+                    }}
+                  >
+                    <div style={{ fontWeight: 600, color: "#0f172a" }}>
+                      🤖 Прогон агента:{" "}
+                      {agentReport.published
+                        ? "кейс опубликован"
+                        : agentReport.fixed
+                          ? `текст поправлен, кругов ${agentReport.rounds?.length ?? 0}`
+                          : "правка не запускалась"}
+                    </div>
+                    {agentReport.fixed && (
+                      <div style={{ marginTop: 4 }}>
+                        Замечаний осталось: {agentReport.review?.issues?.length ?? 0}
+                        {" · "}
+                        внесено правок: {agentReport.changes?.length ?? 0}
+                        {agentReport.disputed?.length
+                          ? ` · редактор возразил: ${agentReport.disputed.length}`
+                          : ""}
+                      </div>
+                    )}
+                    {agentReport.blockers?.length > 0 && (
+                      <div style={{ marginTop: 4 }}>
+                        Осталось сделать вам: {agentReport.blockers.join("; ")}.
+                      </div>
+                    )}
+                    {!agentReport.fixed && agentReport.stoppedBy === "prerequisites" && (
+                      <div style={{ marginTop: 4 }}>
+                        Модель не вызывалась — без кадра рецензенту не на что смотреть.
+                      </div>
+                    )}
                   </div>
                 )}
                 {selected !== "new" && (

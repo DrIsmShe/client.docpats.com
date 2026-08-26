@@ -98,11 +98,25 @@ export function AiRevisionPanel({ revision }) {
   return (
     <div className="rad-panel">
       <div className="edu-card-title" style={{ fontSize: 15 }}>🛠 Что исправил ИИ</div>
+      {/* ДАТА ПРОГОНА ОБЯЗАТЕЛЬНА. Панель заполняется из сохранённого кейса при
+          его открытии, то есть показывает ПОСЛЕДНЮЮ правку — она могла быть и
+          две недели назад. Без даты свежезапущенный агент, который ничего не
+          изменил, выглядел как «вот что он сделал», и человек искал изменения
+          там, где их не было. */}
       <div className="edu-hint" style={{ marginTop: 6 }}>
         Кругов правки: {revision.rounds ?? 0}
         {revision.stoppedBy ? ` · остановка: ${STOPPED_BY[revision.stoppedBy] ?? revision.stoppedBy}` : ""}
         {" · "}
         {revision.converged ? "замечаний не осталось" : "замечания остались"}
+        {revision.revisedAt
+          ? ` · ${new Date(revision.revisedAt).toLocaleString("ru-RU", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}`
+          : ""}
       </div>
       <div className="edu-hint" style={{ marginTop: 4 }}>
         Правил и проверял ОДИН и тот же ИИ. Согласованность он вычищает хорошо, общее
