@@ -27,17 +27,22 @@ import "../../education/education.css";
 // Языки совпадают с EXAM_LANGUAGES на бэкенде.
 const LANG_CODES = ["ru", "en", "az", "tr", "ar"];
 
-// lang — язык, на котором админ набирает имя рубрики. От него зависит две
-// вещи: с какого языка переводить на остальные четыре и к какому языку
-// рубрика относится в каталоге. По умолчанию берём рабочий язык админа: он
-// набирает имя на нём, а не на русском «потому что так в форме стояло».
+// ЯЗЫК РУБРИКИ БОЛЬШЕ НЕ СПРАШИВАЕМ. Он остался в модели — с него переводится
+// имя рубрики на остальные четыре, — но выбирать его руками было незачем и
+// вредно: админ набирает имя на своём рабочем языке, а поле предлагало ему
+// объявить его чужим. Берём язык интерфейса, на котором имя и набирается.
+//
+// Сам ЯЗЫК КУРСА в этой раскладке — обычная рубрика каталога
+// («Азербайджанский», «Türkçe», …), в каждую кладётся свой тест, написанный
+// сразу на нужном языке. Поле в форме создавало впечатление, будто рубрика
+// принадлежит одному языку, — а она одна на всех, только называется на каждом
+// по-своему.
 const EMPTY_FORM = {
   name: "",
   parentId: "",
   description: "",
   icon: "",
   order: 0,
-  lang: "",
 };
 
 // Иконки рубрик. Раньше класс вписывали руками, и опечатка («bi bi-globus»)
@@ -206,7 +211,9 @@ export default function AdminExamCategoriesPage() {
     try {
       await createCategory({
         name,
-        lang: form.lang || uiLang,
+        // Язык, на котором набрано имя: рабочий язык админа. С него рубрика
+        // переводится на остальные четыре.
+        lang: uiLang,
         parentId: form.parentId || null,
         description: form.description.trim() || undefined,
         icon: form.icon.trim() || undefined,
@@ -230,7 +237,6 @@ export default function AdminExamCategoriesPage() {
     setEditId(node.id);
     setEditForm({
       name: node.name,
-      lang: node.lang || "",
       parentId: node.parentId || "",
       description: node.description || "",
       icon: node.icon || "",
@@ -251,9 +257,8 @@ export default function AdminExamCategoriesPage() {
     try {
       await updateCategory(editId, {
         name,
-        // Смена языка пересобирает переводы: имя на другом языке — другой
-        // исходник, и старые переводы к нему не относятся.
-        lang: editForm.lang || undefined,
+        // Язык не шлём: он проставлен при создании и менять его вручную больше
+        // негде. Переводы всё равно пересобираются при смене имени.
         parentId: editForm.parentId || null,
         description: editForm.description.trim(),
         icon: editForm.icon.trim(),
@@ -310,25 +315,6 @@ export default function AdminExamCategoriesPage() {
                 setEditForm((f) => ({ ...f, name: e.target.value }))
               }
             />
-          </div>
-          <div>
-            <div className="edu-field-label" style={{ marginTop: 0 }}>
-              {t("adminCategories.form.lang")}
-            </div>
-            <select
-              className="edu-select"
-              value={editForm.lang}
-              onChange={(e) =>
-                setEditForm((f) => ({ ...f, lang: e.target.value }))
-              }
-            >
-              {LANG_CODES.map((code) => (
-                <option key={code} value={code}>
-                  {t(`shared.langs.${code}`, { defaultValue: code })}
-                </option>
-              ))}
-            </select>
-            <div className="edu-hint">{t("adminCategories.form.langHint")}</div>
           </div>
           <div>
             <div className="edu-field-label" style={{ marginTop: 0 }}>
@@ -518,27 +504,6 @@ export default function AdminExamCategoriesPage() {
                   setForm((f) => ({ ...f, name: e.target.value }))
                 }
               />
-            </div>
-            <div>
-              <div className="edu-field-label" style={{ marginTop: 0 }}>
-                {t("adminCategories.form.lang")}
-              </div>
-              <select
-                className="edu-select"
-                value={form.lang || uiLang}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, lang: e.target.value }))
-                }
-              >
-                {LANG_CODES.map((code) => (
-                  <option key={code} value={code}>
-                    {t(`shared.langs.${code}`, { defaultValue: code })}
-                  </option>
-                ))}
-              </select>
-              <div className="edu-hint">
-                {t("adminCategories.form.langHint")}
-              </div>
             </div>
             <div>
               <div className="edu-field-label" style={{ marginTop: 0 }}>
