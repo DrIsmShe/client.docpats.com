@@ -301,7 +301,7 @@
       "blockSizePlaceholder": "بدون",
       "freeLabel": "شارة «مجاني»",
       "freeHint": "إظهار الشارة على البطاقة",
-      "primaryLang": "اللغة الأساسية",
+      "primaryLang": "لغة الأصل",
       "primaryLangAuto": "حسب المحتوى"
     },
     "hints": {
@@ -469,7 +469,8 @@
     "card": {
       "questions": "الأسئلة: {{count}}",
       "blocks": "كتل من {{size}} سؤالاً",
-      "free": "مجاني"
+      "free": "مجاني",
+      "langCount": "{{count}} لغات"
     },
     "empty": {
       "title": "لا توجد اختبارات منشورة بعد.",
@@ -590,7 +591,8 @@
       "noTopic": "أدخل موضوعًا للإنشاء",
       "badCount": "يجب أن يكون عدد الأسئلة رقمًا صحيحًا أكبر من صفر",
       "failed": "تعذّر إنشاء الأسئلة"
-    }
+    },
+    "jobLabel": "إنشاء: {{topic}}"
   },
   "machineTranslated": "ترجمة آلية",
   "machineTranslatedHint": "تُرجم هذا السؤال آليًا من لغته الأصلية. الخيارات والإجابة الصحيحة هي نفسها الواردة في الأصل.",

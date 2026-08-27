@@ -301,7 +301,7 @@
       "blockSizePlaceholder": "none",
       "freeLabel": "\"Free\" badge",
       "freeHint": "show the badge on the card",
-      "primaryLang": "Primary language",
+      "primaryLang": "Source language",
       "primaryLangAuto": "From content"
     },
     "hints": {
@@ -469,7 +469,8 @@
     "card": {
       "questions": "Questions: {{count}}",
       "blocks": "blocks of {{size}}",
-      "free": "Free"
+      "free": "Free",
+      "langCount": "{{count}} languages"
     },
     "empty": {
       "title": "No published tests yet.",
@@ -590,7 +591,8 @@
       "noTopic": "Enter a topic to generate",
       "badCount": "The number of questions must be a whole number above zero",
       "failed": "Could not generate questions"
-    }
+    },
+    "jobLabel": "Generated: {{topic}}"
   },
   "machineTranslated": "Machine translation",
   "machineTranslatedHint": "This question was translated automatically from the original language. The options and the correct answer are the same as in the original.",

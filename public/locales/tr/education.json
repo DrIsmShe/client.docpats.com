@@ -301,7 +301,7 @@
       "blockSizePlaceholder": "yok",
       "freeLabel": "«Ücretsiz» rozeti",
       "freeHint": "kartta rozeti göster",
-      "primaryLang": "Ana dil",
+      "primaryLang": "Kaynak dili",
       "primaryLangAuto": "İçeriğe göre"
     },
     "hints": {
@@ -469,7 +469,8 @@
     "card": {
       "questions": "Soru sayısı: {{count}}",
       "blocks": "{{size}} soruluk bloklar",
-      "free": "Ücretsiz"
+      "free": "Ücretsiz",
+      "langCount": "{{count}} dilde"
     },
     "empty": {
       "title": "Henüz yayımlanmış test yok.",
@@ -590,7 +591,8 @@
       "noTopic": "Oluşturmak için bir konu girin",
       "badCount": "Soru sayısı sıfırdan büyük tam sayı olmalı",
       "failed": "Sorular oluşturulamadı"
-    }
+    },
+    "jobLabel": "Oluşturma: {{topic}}"
   },
   "machineTranslated": "Makine çevirisi",
   "machineTranslatedHint": "Bu soru orijinal dilinden otomatik olarak çevrildi. Seçenekler ve doğru cevap orijinaldekiyle aynıdır.",

@@ -62,11 +62,24 @@ function ProgramCard({ program, t }) {
             count: program.publishedItemCount ?? 0,
           })}
         </span>
-        {(program.languages ?? []).map((lang) => (
-          <span key={lang} className="edu-tag">
-            {t(`shared.langs.${lang}`, { defaultValue: lang })}
+        {/* Языки. Переведённый тест существует на всех пяти, и пять ярлыков
+            подряд — шум, а не сведения: карточка и так открыта на языке
+            врача. Поэтому у одноязычного теста показываем его язык, у
+            переведённого — одну строку «доступен на N языках». */}
+        {(program.languages ?? []).length > 1 ? (
+          <span className="edu-tag">
+            {t("catalog.card.langCount", {
+              count: program.languages.length,
+              defaultValue: `${program.languages.length} языков`,
+            })}
           </span>
-        ))}
+        ) : (
+          (program.languages ?? []).map((lang) => (
+            <span key={lang} className="edu-tag">
+              {t(`shared.langs.${lang}`, { defaultValue: lang })}
+            </span>
+          ))
+        )}
         {program.blockSize > 0 && (
           <span className="edu-tag">
             {t("catalog.card.blocks", { size: program.blockSize })}
@@ -208,8 +221,14 @@ export default function ExamCatalogPage() {
     return () => {
       cancelled = true;
     };
+    // ПЕРЕЗАГРУЖАЕМ ПРИ СМЕНЕ ЯЗЫКА. Имена рубрик приходят с сервера уже
+    // переведёнными — он выбирает перевод по заголовку X-Language, который
+    // axios ставит из i18n на момент запроса. Переключатель языка стоит на
+    // этой же странице, а список грузился ровно один раз: после переключения
+    // интерфейс становился азербайджанским, а названия категорий оставались
+    // на языке, который был при открытии страницы (то есть на русском).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [i18n.language]);
 
   // Разворачиваем дерево любой глубины в индексы: узел по id и его родитель.
   const { nodeById, parentOf } = useMemo(() => {
@@ -247,23 +266,22 @@ export default function ExamCatalogPage() {
 
   // Языки для выпадающего списка — только те, что реально есть в каталоге:
   // предлагать фильтр, который заведомо ничего не найдёт, бессмысленно.
-  // ЯЗЫК ТЕСТА для фильтра — тот, к которому его отнёс админ, а НЕ набор
-  // языков, на которых есть вопросы. Разница и была причиной жалобы: врач
-  // выбирал English и получал «Типологию личности по Карлу Юнгу» с русским
-  // заголовком. Тест действительно доступен на английском — languages честно
-  // содержит все пять, — но каталог отвечает на вопрос «что здесь есть на
-  // моём языке», а не «что я технически могу открыть». Без разметки
-  // откатываемся к первому из languages, чтобы неразмеченный тест не пропал.
-  const programLang = (p) => p.primaryLang || (p.languages ?? [])[0] || null;
+  //
+  // ЯЗЫК ТЕСТА — все языки, на которых у него есть вопросы. Здесь стоял отбор
+  // по одному «основному» языку (primaryLang), и это был обходной путь: у
+  // теста не было переведённого названия, поэтому врач, выбравший English,
+  // получал карточку «Типология личности по Карлу Юнгу» с русским
+  // заголовком — вопросы на английском есть, а список нечитаем.
+  //
+  // Теперь сервер переводит и название с описанием, и отдаёт их на языке
+  // врача (program.service → localizeProgram). Один тест — одна карточка,
+  // читаемая, и видна она везде, где у теста есть вопросы.
+  const programLangs = (p) => p.languages ?? [];
 
   const availableLangs = useMemo(() => {
     const present = new Set();
-    // Предлагаем те языки, к которым тесты ОТНЕСЕНЫ. Иначе список показывал
-    // бы все пять всегда — переведён хоть один тест, и выбор есть, а выдача
-    // по нему пуста или полна чужих заголовков.
     for (const p of programs) {
-      const l = programLang(p);
-      if (l) present.add(l);
+      for (const l of programLangs(p)) present.add(l);
     }
     const known = LANG_CODES.filter((l) => present.has(l));
     const unknown = [...present].filter((l) => !LANG_CODES.includes(l)).sort();
@@ -282,15 +300,22 @@ export default function ExamCatalogPage() {
   // языке в каталоге есть. Показать сначала своё, а всё остальное по кнопке
   // — тот же порядок, что и везде: сперва то, что можно читать.
   //
-  // Ставим ОДИН раз и только после загрузки: до неё availableLangs пуст, и
-  // фильтр встал бы на язык, которого в каталоге нет. Дальше значение —
-  // выбор врача, и переписывать его нельзя.
-  const langDefaultApplied = useRef(false);
+  // Ставим только после загрузки: до неё availableLangs пуст, и фильтр встал
+  // бы на язык, которого в каталоге нет.
+  //
+  // Перебивать РУЧНОЙ выбор нельзя — но смена языка интерфейса это тоже
+  // выбор врача, и каталог обязан переехать следом. Раньше подстановка
+  // работала один раз за жизнь страницы: врач, открывший каталог на русском
+  // и переключившийся на азербайджанский, оставался с фильтром «ru» — то
+  // есть в русской части каталога, с русскими рубриками, хотя весь
+  // интерфейс уже был азербайджанским.
+  //
+  // Поэтому запоминаем не «подставляли ли мы», а «трогал ли фильтр человек».
+  const langTouched = useRef(false);
   useEffect(() => {
-    if (langDefaultApplied.current) return;
+    if (langTouched.current) return;
     if (!programs.length) return;
-    langDefaultApplied.current = true;
-    if (availableLangs.includes(myLang)) setLangFilter(myLang);
+    setLangFilter(availableLangs.includes(myLang) ? myLang : "");
   }, [programs, availableLangs, myLang]);
 
   // Цифры реестра в шапке. Считаем по всему каталогу, а не по текущей
@@ -333,7 +358,7 @@ export default function ExamCatalogPage() {
       const rootId = rootIdOf(cid);
 
       // Язык: тест подходит, если у него есть вопросы на этом языке.
-      if (langFilter && programLang(p) !== langFilter) return false;
+      if (langFilter && !(p.languages ?? []).includes(langFilter)) return false;
       if (catFilter && rootId !== catFilter) return false;
 
       if (q) {
@@ -387,12 +412,23 @@ export default function ExamCatalogPage() {
 
   // Папки, в которых после фильтрации ничего не осталось, не показываем —
   // иначе пользователь проваливается в заведомо пустой раздел.
-  // Рубрику прячем и по её собственному языку: админ относит её к языку так
-  // же явно, как и тест. Рубрика без языка (старая, ещё не размеченная) под
-  // это правило не попадает — иначе исчезла бы до разметки.
+  //
+  // ПО СОБСТВЕННОМУ ЯЗЫКУ РУБРИКИ НЕ ПРЯЧЕМ. Здесь стояла ещё одна проверка
+  // («node.lang !== langFilter → скрыть»), и она отрезала не пустые рубрики,
+  // а как раз наполненные: азербайджанский тест, привязанный к рубрике,
+  // заведённой админом по-русски, пропадал из каталога на азербайджанском
+  // совсем — по фильтру «az» скрывалась папка, а по фильтру «ru» отсеивался
+  // сам тест. Найти его можно было только сняв фильтр, и тогда он лежал в
+  // русской рубрике: ровно это и выглядит как «тест на азербайджанском
+  // показывается в русских категориях».
+  //
+  // Пустые чужие рубрики («Психология», «Научные» у азербайджанского врача)
+  // отсекает счётчик ниже — он и так считает только прошедшие фильтр тесты.
+  // Язык рубрики остаётся тем, чем он и был задуман: источником перевода
+  // имени (сервер отдаёт name уже на языке врача, см. category.service →
+  // localize), а не правом на показ.
   const keepFolder = (node) => {
     if (!filtersActive) return true;
-    if (langFilter && node.lang && node.lang !== langFilter) return false;
     return (countBySubtree.get(node.id) ?? 0) > 0;
   };
 
@@ -536,7 +572,10 @@ export default function ExamCatalogPage() {
           <select
             className="edu-select edu-filter-select"
             value={langFilter}
-            onChange={(e) => setLangFilter(e.target.value)}
+            onChange={(e) => {
+              langTouched.current = true;
+              setLangFilter(e.target.value);
+            }}
             title={t("catalog.filters.lang")}
             aria-label={t("catalog.filters.lang")}
           >
@@ -557,7 +596,10 @@ export default function ExamCatalogPage() {
           <button
             type="button"
             className="edu-filter-langtoggle"
-            onClick={() => setLangFilter(langFilter ? "" : myLang)}
+            onClick={() => {
+              langTouched.current = true;
+              setLangFilter(langFilter ? "" : myLang);
+            }}
           >
             {langFilter
               ? t("catalog.filters.showAllLangs")
@@ -580,6 +622,7 @@ export default function ExamCatalogPage() {
                 type="button"
                 className="edu-crumb"
                 onClick={() => {
+                  langTouched.current = true;
                   setLangFilter("");
                   setCatFilter("");
                 }}

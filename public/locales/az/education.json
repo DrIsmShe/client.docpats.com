@@ -301,7 +301,7 @@
       "blockSizePlaceholder": "yox",
       "freeLabel": "«Pulsuz» nişanı",
       "freeHint": "kartda nişanı göstər",
-      "primaryLang": "Əsas dil",
+      "primaryLang": "Orijinal dili",
       "primaryLangAuto": "Məzmuna görə"
     },
     "hints": {
@@ -469,7 +469,8 @@
     "card": {
       "questions": "Sual sayı: {{count}}",
       "blocks": "{{size}} suallıq bloklar",
-      "free": "Pulsuz"
+      "free": "Pulsuz",
+      "langCount": "{{count}} dildə"
     },
     "empty": {
       "title": "Hələ dərc olunmuş test yoxdur.",
@@ -590,7 +591,8 @@
       "noTopic": "Generasiya üçün mövzu göstərin",
       "badCount": "Sualların sayı tam və sıfırdan böyük olmalıdır",
       "failed": "Sualları yaratmaq alınmadı"
-    }
+    },
+    "jobLabel": "Generasiya: {{topic}}"
   },
   "machineTranslated": "Maşın tərcüməsi",
   "machineTranslatedHint": "Bu sual orijinal dildən avtomatik tərcümə olunub. Cavab variantları və düzgün cavab orijinaldakı ilə eynidir.",

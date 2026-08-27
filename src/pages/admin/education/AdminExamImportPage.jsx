@@ -92,6 +92,25 @@ function newManualQuestion() {
   };
 }
 
+// Подпись задания в списке загрузок.
+//
+// У генерации файла нет, и сервер кладёт в file.originalName техническую
+// строку «Генерация: <тема>» — по-русски, в какой бы локали ни работал
+// оператор: в азербайджанской админке список выглядел как «Генерация: Prion
+// xəstəlikləri». Сама тема лежит отдельно (generationSpec.topic), поэтому
+// подпись собираем здесь, на языке интерфейса. Старые задания под это
+// правило тоже попадают — тема у них записана с самого начала.
+function jobLabel(job, t) {
+  const topic = job?.generationSpec?.topic;
+  if (job?.extractor === "generate" && topic) {
+    return t("adminGenerate.jobLabel", {
+      topic,
+      defaultValue: `Генерация: ${topic}`,
+    });
+  }
+  return job?.file?.originalName ?? t("adminImport.jobs.noFile");
+}
+
 // Кейс = общая вводная + свой набор подвопросов. Кейсов можно добавлять
 // сколько угодно; вводная каждого подставится в начало ЕГО подвопросов.
 // Пустая вводная — просто группа одиночных вопросов.
@@ -824,7 +843,7 @@ export default function AdminExamImportPage() {
     if (
       !window.confirm(
         t("adminImport.confirms.cancelJob", {
-          name: target.file?.originalName ?? t("adminImport.jobs.noFile"),
+          name: jobLabel(target, t),
           defaultValue:
             "Остановить распознавание? Что успело распознаться — сохранится, остальное придётся запускать заново.",
         }),
@@ -856,11 +875,11 @@ export default function AdminExamImportPage() {
     const imported = target.stats?.imported ?? 0;
     const question = imported
       ? t("adminImport.confirms.deleteJobImported", {
-          name: target.file?.originalName ?? t("adminImport.jobs.noFile"),
+          name: jobLabel(target, t),
           count: imported,
         })
       : t("adminImport.confirms.deleteJob", {
-          name: target.file?.originalName ?? t("adminImport.jobs.noFile"),
+          name: jobLabel(target, t),
         });
     if (!window.confirm(question)) return;
 
@@ -1802,7 +1821,7 @@ export default function AdminExamImportPage() {
                 onClick={() => openJob(j._id)}
               >
                 <div className="edu-list-item-title">
-                  {j.file?.originalName ?? t("adminImport.jobs.noFile")}{" "}
+                  {jobLabel(j, t)}{" "}
                   <span style={{ color: "#8b9aab" }}>
                     ·{" "}
                     {/* Идущему заданию показываем прогресс по частям, а не
