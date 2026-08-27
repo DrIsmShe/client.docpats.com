@@ -92,7 +92,12 @@ export default function ArenaHubPage() {
       setReviewDue(rev);
       setBoard(lb);
     })();
-  }, []);
+    // Заголовки кейса дня и кейса недели приходят с сервера переведёнными
+    // (game.service → translateCaseList), перевод выбирается по X-Language.
+    // Значит при смене языка их нужно перезапросить: иначе карточки остаются
+    // на языке, который был при открытии страницы.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language]);
 
   /* ─── Счётчики на вкладках ─────────────────────────────────────────── */
   useEffect(() => {
@@ -135,7 +140,10 @@ export default function ArenaHubPage() {
       .finally(() => {
         if (seq === requestSeq.current) setCatalogLoading(false);
       });
-  }, [station, qApplied, difficulty, modality, navigate]);
+    // i18n.language — по той же причине, что и у кейса дня: названия кейсов
+    // сервер отдаёт на языке врача.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [station, qApplied, difficulty, modality, navigate, i18n.language]);
 
   const loadMore = useCallback(async () => {
     if (loadingMore || !page.hasMore) return;
