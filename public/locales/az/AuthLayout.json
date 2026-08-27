@@ -174,5 +174,8 @@
   "synthesisDoctorsOnly": "Elmi məqalə yaratmaq yalnız həkimlər üçündür. Həkim kimi daxil olun.",
   "bookProcedureTag": "Əməliyyatlar · yalnız həkimlər üçün",
   "bookProcedureText": "Əməliyyata və ya müayinəyə yazmaq — müddət, hazırlıq, jurnal",
-  "bookProcedureDoctorsOnly": "Əməliyyat və müayinəyə yazılma yalnız həkimlər üçündür. Həkim kimi daxil olun."
+  "bookProcedureDoctorsOnly": "Əməliyyat və müayinəyə yazılma yalnız həkimlər üçündür. Həkim kimi daxil olun.",
+  "portalDoctorsOnly": "Həkim portalı yalnız həkimlər üçündür. Siz başqa rolla daxil olmusunuz.",
+  "portalPatientsOnly": "Pasiyent portalı yalnız pasiyentlər üçündür. Siz başqa rolla daxil olmusunuz.",
+  "portalGoToCabinet": "Öz kabinetinizə keçin"
 }

@@ -995,6 +995,29 @@ export default function AuthLayout() {
   );
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState("");
+  // Проверка сессии вынесена из useEffect: её повторяет обработчик кнопок
+  // порталов, если по ним кликнули раньше, чем пришёл первый ответ.
+  const [authChecked, setAuthChecked] = useState(false);
+  const fetchSession = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/common-for-user`,
+        { withCredentials: true },
+      );
+      const authenticated = !!res.data?.authenticated;
+      const role = authenticated
+        ? String(res.data.user?.role || "").toLowerCase()
+        : "";
+      setIsAuthenticated(authenticated);
+      setUserRole(role);
+      return { authenticated, role };
+    } catch {
+      setIsAuthenticated(false);
+      return { authenticated: false, role: "" };
+    } finally {
+      setAuthChecked(true);
+    }
+  };
   // Карточка «Подготовка к экзаменам» видна всем (в т.ч. гостю без
   // регистрации). Врача клик уводит в раздел, остальным показываем заметку,
   // что доступ только для врачей.
@@ -1044,26 +1067,54 @@ export default function AuthLayout() {
       setSynthesisNote(true);
     }
   };
+
+  // Кабинет по роли. Гварды layoutов сверяют роль строго
+  // (PatientLayout ждёт "patient", DoctorLayout — "doctor") и при
+  // несовпадении молча уводят на /login, поэтому чужой портал открывать
+  // нельзя — только свой.
+  const cabinetPath = (role) => {
+    if (role === "doctor") return "/doctor/home-page";
+    if (role === "patient") return "/patient/home-page";
+    if (role === "admin" || role === "superadmin") return "/admin/admin-panel";
+    if (role === "clinic_admin" || role === "clinic_staff") return "/clinic";
+    return null;
+  };
+
+  // Кнопки порталов (и герой, и карточки ролей ниже). Раньше они вели на
+  // /registration безусловно: вошедший врач с главной падал на форму
+  // регистрации, хотя сессия у него есть. Теперь гостя ведём на
+  // регистрацию с нужной ролью, своего — в его кабинет, чужой портал
+  // не открываем (гвард всё равно выбросит на /login) и объясняем это
+  // заметкой, как в остальных гейтах на этой странице.
+  const [portalNote, setPortalNote] = useState("");
+  const handlePortalClick = async (target) => {
+    setPortalNote("");
+    // Клик может прийти раньше ответа /common-for-user (герой виден сразу,
+    // проверка сессии идёт в фоне). Тогда спрашиваем сессию прямо здесь,
+    // иначе вошедшего опять унесёт на регистрацию — из-за одного лишь
+    // стартового значения isAuthenticated=false.
+    let authed = isAuthenticated;
+    let role = userRole;
+    if (!authChecked) {
+      const session = await fetchSession();
+      authed = session.authenticated;
+      role = session.role;
+    }
+    if (!authed) {
+      navigate(`/registration?role=${target}`);
+      return;
+    }
+    const isDoctorSide = ["doctor", "admin", "superadmin"].includes(role);
+    if (target === "doctor" ? isDoctorSide : role === "patient") {
+      navigate(cabinetPath(role) || `/registration?role=${target}`);
+      return;
+    }
+    setPortalNote(target);
+  };
+
   useEffect(() => {
-    const checkAuthentication = async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_API_URL}/common-for-user`,
-          {
-            withCredentials: true,
-          },
-        );
-        if (res.data?.authenticated) {
-          setIsAuthenticated(true);
-          setUserRole(String(res.data.user?.role || "").toLowerCase());
-        } else {
-          setIsAuthenticated(false);
-        }
-      } catch {
-        setIsAuthenticated(false);
-      }
-    };
-    checkAuthentication();
+    fetchSession();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
@@ -1120,12 +1171,11 @@ export default function AuthLayout() {
               )}
               <LanguageSwitcher />
               {isAuthenticated ? (
+                // Раньше здесь было «врач → /doctor, все остальные →
+                // /patient»: админ и сотрудник клиники попадали в чужую зону,
+                // и её гвард молча уводил их на /login.
                 <a
-                  href={
-                    userRole === "doctor"
-                      ? "/doctor/home-page"
-                      : "/patient/home-page"
-                  }
+                  href={cabinetPath(userRole) || "/login"}
                   className="dp-nav-sign-in"
                 >
                   {t("nav.dashboard") || "My Cabinet"}
@@ -1182,7 +1232,7 @@ export default function AuthLayout() {
                   <motion.div className="dp-portal-ctas" variants={item}>
                     <button
                       className="dp-portal-btn patient"
-                      onClick={() => navigate("/registration?role=patient")}
+                      onClick={() => handlePortalClick("patient")}
                     >
                       <div className="dp-portal-icon">👤</div>
                       <div className="dp-portal-info">
@@ -1199,7 +1249,7 @@ export default function AuthLayout() {
                     </button>
                     <button
                       className="dp-portal-btn doctor"
-                      onClick={() => navigate("/registration?role=doctor")}
+                      onClick={() => handlePortalClick("doctor")}
                     >
                       <div className="dp-portal-icon">👨‍⚕️</div>
                       <div className="dp-portal-info">
@@ -1215,6 +1265,47 @@ export default function AuthLayout() {
                       </span>
                     </button>
                   </motion.div>
+                  {portalNote && (
+                    <motion.div variants={item} style={{ marginBottom: 12 }}>
+                      <div
+                        style={{
+                          padding: "8px 12px",
+                          borderRadius: 10,
+                          background: "rgba(216,196,140,.15)",
+                          border: "1px solid rgba(216,196,140,.4)",
+                          color: "#e6d3a0",
+                          fontSize: 13,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {portalNote === "doctor"
+                          ? t("portalDoctorsOnly", {
+                              defaultValue:
+                                "Портал врача доступен только врачам. Вы вошли под другой ролью.",
+                            })
+                          : t("portalPatientsOnly", {
+                              defaultValue:
+                                "Портал пациента доступен только пациентам. Вы вошли под другой ролью.",
+                            })}
+                        {cabinetPath(userRole) && (
+                          <>
+                            {" "}
+                            <Link
+                              to={cabinetPath(userRole)}
+                              style={{
+                                color: "#e6d3a0",
+                                textDecoration: "underline",
+                              }}
+                            >
+                              {t("portalGoToCabinet", {
+                                defaultValue: "Перейти в свой кабинет",
+                              })}
+                            </Link>
+                          </>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
                   {/* Подготовка к экзаменам. Карточка видна всем без
                       регистрации; клик гейтится по роли (см. handleExamPrepClick):
                       врач → /education, остальным — заметка ниже. */}
@@ -1866,7 +1957,7 @@ export default function AuthLayout() {
                   {/* Patient */}
                   <div
                     className="dp-role-card dp-role-patient"
-                    onClick={() => navigate("/patient/home-page")}
+                    onClick={() => handlePortalClick("patient")}
                     role="button"
                     tabIndex={0}
                   >
@@ -1899,7 +1990,7 @@ export default function AuthLayout() {
                         className="dp-role-cta"
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate("/patient/home-page");
+                          handlePortalClick("patient");
                         }}
                       >
                         {t("rolePatient.cta") || "Enter Patient Portal"}{" "}
@@ -1910,7 +2001,7 @@ export default function AuthLayout() {
                   {/* Doctor */}
                   <div
                     className="dp-role-card dp-role-doctor"
-                    onClick={() => navigate("/doctor/home-page")}
+                    onClick={() => handlePortalClick("doctor")}
                     role="button"
                     tabIndex={0}
                   >
@@ -1943,7 +2034,7 @@ export default function AuthLayout() {
                         className="dp-role-cta"
                         onClick={(e) => {
                           e.stopPropagation();
-                          navigate("/doctor/home-page");
+                          handlePortalClick("doctor");
                         }}
                       >
                         {t("roleDoctor.cta") || "Enter Doctor Portal"} <Arrow />
@@ -1994,6 +2085,48 @@ export default function AuthLayout() {
                     </div>
                   </div>
                 </div>
+                {/* Та же заметка, что и под кнопками в герое: карточки ролей
+                    ведут через тот же гейт, а заметка в герое отсюда не видна. */}
+                {portalNote && (
+                  <div
+                    style={{
+                      marginTop: 16,
+                      padding: "8px 12px",
+                      borderRadius: 10,
+                      background: "rgba(216,196,140,.15)",
+                      border: "1px solid rgba(216,196,140,.4)",
+                      color: "#e6d3a0",
+                      fontSize: 13,
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {portalNote === "doctor"
+                      ? t("portalDoctorsOnly", {
+                          defaultValue:
+                            "Портал врача доступен только врачам. Вы вошли под другой ролью.",
+                        })
+                      : t("portalPatientsOnly", {
+                          defaultValue:
+                            "Портал пациента доступен только пациентам. Вы вошли под другой ролью.",
+                        })}
+                    {cabinetPath(userRole) && (
+                      <>
+                        {" "}
+                        <Link
+                          to={cabinetPath(userRole)}
+                          style={{
+                            color: "#e6d3a0",
+                            textDecoration: "underline",
+                          }}
+                        >
+                          {t("portalGoToCabinet", {
+                            defaultValue: "Перейти в свой кабинет",
+                          })}
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                )}
               </div>
             </motion.section>
 

@@ -174,5 +174,8 @@
   "synthesisDoctorsOnly": "Creating scientific articles is available to doctors only. Sign in as a doctor.",
   "bookProcedureTag": "Procedures · doctors only",
   "bookProcedureText": "Book a surgery or examination — duration, preparation, log",
-  "bookProcedureDoctorsOnly": "Booking surgeries and examinations is available to doctors only. Sign in as a doctor."
+  "bookProcedureDoctorsOnly": "Booking surgeries and examinations is available to doctors only. Sign in as a doctor.",
+  "portalDoctorsOnly": "The Doctor Portal is available to doctors only. You are signed in with a different role.",
+  "portalPatientsOnly": "The Patient Portal is available to patients only. You are signed in with a different role.",
+  "portalGoToCabinet": "Go to your cabinet"
 }

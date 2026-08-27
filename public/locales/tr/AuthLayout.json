@@ -174,5 +174,8 @@
   "synthesisDoctorsOnly": "Bilimsel makale oluşturma yalnızca doktorlara açıktır. Doktor olarak giriş yapın.",
   "bookProcedureTag": "İşlemler · yalnızca doktorlar",
   "bookProcedureText": "Ameliyat veya tetkike kaydet — süre, hazırlık, günlük",
-  "bookProcedureDoctorsOnly": "Ameliyat ve tetkik kaydı yalnızca doktorlar içindir. Doktor olarak giriş yapın."
+  "bookProcedureDoctorsOnly": "Ameliyat ve tetkik kaydı yalnızca doktorlar içindir. Doktor olarak giriş yapın.",
+  "portalDoctorsOnly": "Doktor portalı yalnızca doktorlar içindir. Farklı bir rolle giriş yaptınız.",
+  "portalPatientsOnly": "Hasta portalı yalnızca hastalar içindir. Farklı bir rolle giriş yaptınız.",
+  "portalGoToCabinet": "Kendi kabinenize gidin"
 }
