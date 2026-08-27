@@ -356,8 +356,31 @@ export default function ExamAttemptPage() {
   const total = attempt.questions.length;
   const progressPercent = Math.round((answeredCount / total) * 100);
 
+  // ЯЗЫК ПОПЫТКИ ФИКСИРУЕТСЯ ПРИ ЕЁ СБОРКЕ и потом не меняется: вопросы уже
+  // отобраны, и подменить их на переводы значило бы подменить саму попытку —
+  // с уже данными ответами и засчитанным временем.
+  //
+  // Молчать об этом нельзя. Незавершённая попытка блокирует запуск новой, и
+  // страница теста уводит на неё же (обработка 409 в ExamProgramPage). Врач,
+  // переключивший интерфейс на турецкий, нажимал «начать» и попадал в
+  // русскую попытку, начатую три недели назад, — без единого слова о том,
+  // что произошло. Выглядело это как «перевод не работает».
+  const attemptLang = (attempt.lang || "").slice(0, 2);
+  const uiLang = (i18n.language || "").slice(0, 2);
+  const langMismatch = attemptLang && uiLang && attemptLang !== uiLang;
+
   return (
     <div className="edu-page" dir={dir}>
+      {langMismatch && (
+        <div className="edu-hint edu-hint--warn" style={{ marginBottom: 12 }}>
+          {t("attempt.langMismatch", {
+            lang: t(`shared.langs.${attemptLang}`, { defaultValue: attemptLang }),
+            date: new Date(attempt.startedAt).toLocaleDateString(i18n.language),
+            defaultValue:
+              "Эта попытка начата {{date}} на другом языке ({{lang}}) — вопросы в ней остаются на нём. Завершите её, чтобы начать заново на текущем языке.",
+          })}
+        </div>
+      )}
       <div className="edu-runner-head">
         <span>
           {t("attempt.runner.progress", {

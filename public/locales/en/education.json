@@ -443,7 +443,8 @@
       "skip": "Skip",
       "finish": "Finish and see the result",
       "finishHint": "Unanswered questions are counted as incorrect."
-    }
+    },
+    "langMismatch": "This attempt was started on {{date}} in another language ({{lang}}) — its questions stay in that language. Finish it to start again in the current one."
   },
   "catalog": {
     "title": "Exam preparation",

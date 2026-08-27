@@ -443,7 +443,8 @@
       "skip": "Ötür",
       "finish": "Bitir və nəticəyə bax",
       "finishHint": "Cavablanmamış suallar səhv sayılır."
-    }
+    },
+    "langMismatch": "Bu cəhd {{date}} tarixində başqa dildə ({{lang}}) başlanıb — suallar həmin dildə qalır. Cari dildə yenidən başlamaq üçün onu tamamlayın."
   },
   "catalog": {
     "title": "İmtahanlara hazırlıq",

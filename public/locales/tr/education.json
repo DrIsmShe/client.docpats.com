@@ -443,7 +443,8 @@
       "skip": "Atla",
       "finish": "Bitir ve sonucu gör",
       "finishHint": "Cevaplanmayan sorular yanlış sayılır."
-    }
+    },
+    "langMismatch": "Bu deneme {{date}} tarihinde başka bir dilde ({{lang}}) başlatıldı — soruları o dilde kalır. Geçerli dilde yeniden başlamak için onu bitirin."
   },
   "catalog": {
     "title": "Sınavlara hazırlık",
