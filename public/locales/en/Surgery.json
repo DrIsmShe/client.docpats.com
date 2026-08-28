@@ -406,7 +406,8 @@
     "promptSubject": "Person in the photo",
     "maskTooSmall": "Too little marked — looks like an outline. The brush fills: paint over the whole surgical area",
     "maskPreview": "What was painted",
-    "brushFillHint": "fill the whole area, do not trace its outline"
+    "brushFillHint": "fill the whole area, do not trace its outline",
+    "maskCoverageLimit": "up to {{limit}}% allowed"
   },
   "procedureGroups": {
     "facial_plastic": "Facial plastic surgery",

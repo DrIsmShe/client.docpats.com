@@ -406,7 +406,8 @@
     "promptSubject": "Fotoğraftaki kişi",
     "maskTooSmall": "Çok az işaretlendi — kontur çizimi gibi görünüyor. Fırça boyar: ameliyat bölgesinin tamamını doldurun",
     "maskPreview": "Boyanan alan",
-    "brushFillHint": "bölgenin tamamını boyayın, çevresini çizmeyin"
+    "brushFillHint": "bölgenin tamamını boyayın, çevresini çizmeyin",
+    "maskCoverageLimit": "en fazla %{{limit}}"
   },
   "procedureGroups": {
     "facial_plastic": "Yüz plastik cerrahisi",

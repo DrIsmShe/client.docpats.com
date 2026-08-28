@@ -623,6 +623,8 @@ export default function SimulatorPanel({ cas }) {
                   {t("simulator.maskCoverage", {
                     pct: maskCoverage.toFixed(1),
                   })}
+                  {" · "}
+                  {t("simulator.maskCoverageLimit", { limit: coverageLimit })}
                   {overPainted && (
                     <span style={{ color: "#dc2626", display: "block" }}>
                       {t("simulator.maskTooLarge", { limit: coverageLimit })}

@@ -406,7 +406,8 @@
     "promptSubject": "Şəkildəki şəxs",
     "maskTooSmall": "Çox az işarələnib — kontur cızığına bənzəyir. Fırça boyayır: əməliyyat zonasını tam doldurun",
     "maskPreview": "Nə boyanıb",
-    "brushFillHint": "zonanı bütövlükdə boyayın, konturunu çəkməyin"
+    "brushFillHint": "zonanı bütövlükdə boyayın, konturunu çəkməyin",
+    "maskCoverageLimit": "icazə verilir {{limit}}%-ə qədər"
   },
   "procedureGroups": {
     "facial_plastic": "Üzün plastik cərrahiyyəsi",
