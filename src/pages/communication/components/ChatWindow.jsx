@@ -1084,8 +1084,13 @@ function ChatWindow({
     "User";
 
   // ── Язык перевода ─────────────────────────────────────────────────────────
+  //
+  // Отдельно от языка человека. Выбор здесь раньше писался прямо в
+  // preferredLanguage, и врач, переключивший перевод на арабский ради одного
+  // сообщения пациента, получал арабские напоминания о приёмах — навсегда и
+  // без способа это отменить.
   const [userLang, setUserLang] = useState(
-    currentUser?.preferredLanguage || "ru",
+    currentUser?.chatTranslationLang || currentUser?.preferredLanguage || "ru",
   );
   // Запоминаем какие сообщения были показаны переведёнными — чтобы переперевести при смене языка
   const shownTranslationsRef = useRef(new Map()); // messageId → originalText

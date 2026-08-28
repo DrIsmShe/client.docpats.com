@@ -419,7 +419,12 @@ export default function Header() {
                 <li>
                   <hr className="dropdown-divider" />
                 </li>
-                {/* <li className="px-3 py-2">
+                {/* Язык уведомлений и писем. Единственное место, где врач
+                    может его выбрать: профиль такого поля раньше не принимал,
+                    а записывался preferredLanguage только выбором языка
+                    перевода в чате — отсюда и брались арабские напоминания у
+                    русскоязычного врача. */}
+                <li className="px-3 py-2">
                   <div
                     style={{
                       fontSize: 12,
@@ -428,15 +433,25 @@ export default function Header() {
                       fontWeight: 600,
                     }}
                   >
-                    🌐 Translation language
+                    🔔 {t("notification_language", "Язык уведомлений")}
                   </div>
                   <LanguageSelector
                     value={user?.preferredLanguage || "ru"}
-                    onChange={(lang) =>
-                      setUser((prev) => ({ ...prev, preferredLanguage: lang }))
-                    }
+                    onChange={async (lang) => {
+                      setUser((prev) => ({ ...prev, preferredLanguage: lang }));
+                      try {
+                        await axios.post(
+                          `${API_BASE}/doctor-profile/update-main-profile-of-doctor`,
+                          { preferredLanguage: lang },
+                          { withCredentials: true },
+                        );
+                      } catch {
+                        // Молчим намеренно: язык уведомлений — не то, ради
+                        // чего стоит показывать врачу ошибку поверх работы.
+                      }
+                    }}
                   />
-                </li> */}
+                </li>
                 <li>
                   <button
                     className="dropdown-item d-flex align-items-center"

@@ -13,30 +13,18 @@ import sim from "./Simulator.module.css";
 import { API_BASE } from "../../config";
 
 const photoUrl = (filename) => `${API_BASE}/uploads/surgery/${filename}`;
-const BRUSH_SIZES = [10, 20, 35, 50];
 
 export default function SimulatorPanel({ cas }) {
   const { t, i18n } = useTranslation("Surgery");
 
-  const overlayRef = useRef(null);
   const imgRef = useRef(null);
   // Якоря шагов: по подсказке под серой кнопкой «Сгенерировать» врача
   // уводят прямо к тому шагу, которого не хватает.
   const photoStepRef = useRef(null);
-  const maskStepRef = useRef(null);
   const disclaimerStepRef = useRef(null);
   const [flashStep, setFlashStep] = useState(null);
   const [photos, setPhotos] = useState([]);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const [imgLoaded, setImgLoaded] = useState(false);
-  const [brushSize, setBrushSize] = useState(20);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [hasMask, setHasMask] = useState(false);
-  // Доля закрашенного кадра. Сервер откажет, если её слишком много (для
-  // лица — больше 30%: это уже не зона операции, а новое лицо), и врач
-  // должен видеть цифру ДО оплаченной генерации, а не в тексте ошибки.
-  const [maskCoverage, setMaskCoverage] = useState(0);
-  const [coverageLimit, setCoverageLimit] = useState(70);
   const [presets, setPresets] = useState([]);
   const [promptIdx, setPromptIdx] = useState(0);
   const [customPrompt, setCustomPrompt] = useState("");
@@ -96,10 +84,7 @@ export default function SimulatorPanel({ cas }) {
     if (!procedure) return;
     instance
       .get(`/api/surgery/prompts/${procedure}`)
-      .then((r) => {
-        setPresets(r.data.prompts || []);
-        if (r.data.maxPaintedPct) setCoverageLimit(r.data.maxPaintedPct);
-      })
+      .then((r) => setPresets(r.data.prompts || []))
       .catch(() => setPresets([]));
     setPromptIdx(0);
   }, [cas?.procedure]);
@@ -154,161 +139,12 @@ export default function SimulatorPanel({ cas }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ─── Canvas drawing ───────────────────────────────────────────────────
-  //
-  // Координаты считаются от ИЗОБРАЖЕНИЯ, а не от канваса. CSS сейчас сводит их
-  // прямоугольники в один (см. .canvasWrap), но эта функция — последняя защита:
-  // если вёрстка когда-нибудь снова разведёт оверлей и картинку, маска всё
-  // равно ляжет туда, куда указал врач, а не уедет на ширину полей.
-  //
-  // Масштаб отдельно по осям: при неточном совпадении rect'ов один общий
-  // множитель молча растянул бы мазок.
-  const getPos = (e, canvas) => {
-    const box = (imgRef.current ?? canvas).getBoundingClientRect();
-    const touch = e.touches?.[0];
-    const clientX = touch ? touch.clientX : e.clientX;
-    const clientY = touch ? touch.clientY : e.clientY;
-    const scaleX = canvas.width / box.width;
-    const scaleY = canvas.height / box.height;
-    return {
-      x: (clientX - box.left) * scaleX,
-      y: (clientY - box.top) * scaleY,
-      // Множитель для радиуса кисти: она задана в ЭКРАННЫХ пикселях (курсор
-      // рисуется ровно такого размера), а мазок кладётся в пикселях оригинала.
-      // Без пересчёта на снимке 2000 px, показанном в 400 px, закрашивалась
-      // полоска в пять раз тоньше курсора — врач видел толстую кисть, а модель
-      // получала волосок, за который не за что зацепиться.
-      scale: (scaleX + scaleY) / 2,
-    };
-  };
-
-  // Точка мазка + непрерывная линия от предыдущей. Отдельные кружки на каждом
-  // событии мыши оставляли в маске пунктир при быстром движении: между
-  // соседними событиями курсор успевает пройти десятки пикселей, и в маске
-  // появлялись дыры — модель дорисовывала полосами.
-  const lastPosRef = useRef(null);
-
-  const paint = (ctx, pos, radius) => {
-    ctx.fillStyle = "rgba(99,102,241,0.6)";
-    ctx.strokeStyle = "rgba(99,102,241,0.6)";
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-    ctx.lineWidth = radius * 2;
-
-    const prev = lastPosRef.current;
-    if (prev) {
-      ctx.beginPath();
-      ctx.moveTo(prev.x, prev.y);
-      ctx.lineTo(pos.x, pos.y);
-      ctx.stroke();
-    }
-    ctx.beginPath();
-    ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
-    ctx.fill();
-    lastPosRef.current = pos;
-  };
-
-  const startDraw = useCallback(
-    (e) => {
-      e.preventDefault();
-      const canvas = overlayRef.current;
-      if (!canvas || !selectedPhoto) return;
-      const ctx = canvas.getContext("2d");
-      const pos = getPos(e, canvas);
-      lastPosRef.current = null;
-      paint(ctx, pos, (brushSize / 2) * pos.scale);
-      setIsDrawing(true);
-      setHasMask(true);
-    },
-    [brushSize, selectedPhoto],
-  );
-
-  const draw = useCallback(
-    (e) => {
-      e.preventDefault();
-      if (!isDrawing) return;
-      const canvas = overlayRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      const pos = getPos(e, canvas);
-      paint(ctx, pos, (brushSize / 2) * pos.scale);
-    },
-    [isDrawing, brushSize],
-  );
-
-  // Доля закрашенного — по уменьшенной копии канваса. Считать её по
-  // оригиналу нельзя: getImageData снимка 3264×2448 — это 32 МБ на каждое
-  // отпускание кисти, и рисование начинает подтормаживать. Для показанного
-  // врачу процента хватает сетки 256×256.
-  const measureCoverage = useCallback(() => {
-    const canvas = overlayRef.current;
-    if (!canvas || !canvas.width) return setMaskCoverage(0);
-    const S = 256;
-    const tmp = document.createElement("canvas");
-    tmp.width = S;
-    tmp.height = S;
-    const ctx = tmp.getContext("2d");
-    ctx.drawImage(canvas, 0, 0, S, S);
-    const { data } = ctx.getImageData(0, 0, S, S);
-    let painted = 0;
-    for (let i = 3; i < data.length; i += 4) if (data[i] > 10) painted++;
-    setMaskCoverage((painted / (S * S)) * 100);
-  }, []);
-
-  const stopDraw = useCallback(() => {
-    lastPosRef.current = null;
-    setIsDrawing(false);
-    measureCoverage();
-  }, [measureCoverage]);
-
-  const clearMask = () => {
-    const canvas = overlayRef.current;
-    if (!canvas) return;
-    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-    lastPosRef.current = null;
-    setHasMask(false);
-    setMaskCoverage(0);
-  };
-
-  // ─── Экспорт маски ────────────────────────────────────────────────────
-  const getMaskBlob = () =>
-    new Promise((resolve) => {
-      const canvas = overlayRef.current;
-      if (!canvas) return resolve(null);
-      const maskCanvas = document.createElement("canvas");
-      maskCanvas.width = canvas.width;
-      maskCanvas.height = canvas.height;
-      const ctx = maskCanvas.getContext("2d");
-      ctx.fillStyle = "#000000";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      const overlayCtx = canvas.getContext("2d");
-      const data = overlayCtx.getImageData(0, 0, canvas.width, canvas.height);
-      const maskData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < data.data.length; i += 4) {
-        if (data.data[i + 3] > 10) {
-          maskData.data[i] =
-            maskData.data[i + 1] =
-            maskData.data[i + 2] =
-            maskData.data[i + 3] =
-              255;
-        }
-      }
-      ctx.putImageData(maskData, 0, 0);
-      maskCanvas.toBlob(resolve, "image/png");
-    });
-
   // Увести к нужному шагу и подсветить его на секунду.
   const focusStep = useCallback((key, ref) => {
     ref.current?.scrollIntoView({ behavior: "smooth", block: "center" });
     setFlashStep(key);
     window.setTimeout(() => setFlashStep(null), 1700);
   }, []);
-
-  const overPainted = hasMask && maskCoverage > coverageLimit;
-  // Слишком тонкий след — почти всегда обводка контуром вместо заливки.
-  // Модель перерисует ровно линию: запрос останется невыполненным, а на
-  // снимке появится чёткая черта по следу кисти.
-  const tooSmall = hasMask && maskCoverage < 0.5;
 
   // Чего не хватает для генерации. Те же три условия, что в handleGenerate,
   // но показанные ДО клика: по отключённой кнопке кликнуть нельзя, и её
@@ -320,24 +156,6 @@ export default function SimulatorPanel({ cas }) {
       text: t("simulator.errorSelectPhoto"),
       ref: photoStepRef,
     });
-  // Маски в этом списке нет: она необязательна. Без выделения модель
-  // правит снимок целиком по инструкции — сама находит нос, веки, брови.
-  // Проверки ниже касаются только уже нарисованной маски.
-  // Слишком большая область — тот же отказ, что и на сервере, но до
-  // оплаченной генерации. Закрашенное пол-лица означает не симуляцию
-  // операции, а новое лицо: модели нечего сохранять.
-  else if (overPainted)
-    gate.push({
-      key: "mask",
-      text: t("simulator.maskTooLarge", { limit: coverageLimit }),
-      ref: maskStepRef,
-    });
-  else if (tooSmall)
-    gate.push({
-      key: "mask",
-      text: t("simulator.maskTooSmall"),
-      ref: maskStepRef,
-    });
   if (!disclaimer)
     gate.push({
       key: "disclaimer",
@@ -348,14 +166,10 @@ export default function SimulatorPanel({ cas }) {
   // ─── Генерация ────────────────────────────────────────────────────────
   const handleGenerate = async () => {
     if (!selectedPhoto) return setError(t("simulator.errorSelectPhoto"));
-    if (overPainted)
-      return setError(t("simulator.maskTooLarge", { limit: coverageLimit }));
-    if (tooSmall) return setError(t("simulator.maskTooSmall"));
     if (!disclaimer) return setError(t("simulator.errorAcceptDisclaimer"));
     setError("");
     setLoading(true);
     try {
-      const maskBlob = await getMaskBlob();
       const formData = new FormData();
       formData.append("sourcePhotoFilename", selectedPhoto.filename);
       formData.append("disclaimerAccepted", "true");
@@ -363,7 +177,6 @@ export default function SimulatorPanel({ cas }) {
       // пресет каталога по этому номеру, и без него это был вечный нулевой.
       formData.append("promptIdx", String(promptIdx));
       if (customPrompt) formData.append("customPrompt", customPrompt);
-      if (maskBlob) formData.append("mask", maskBlob, "mask.png");
       const res = await instance.post(
         `/api/surgery/cases/${caseId}/simulate`,
         formData,
@@ -373,7 +186,6 @@ export default function SimulatorPanel({ cas }) {
       );
       setSimulations((prev) => [res.data.simulation, ...prev]);
       setActiveSimId(res.data.simulation._id);
-      clearMask();
     } catch (err) {
       setLoading(false);
       setError(err.response?.data?.error || t("simulator.errorLaunch"));
@@ -412,45 +224,6 @@ export default function SimulatorPanel({ cas }) {
       window.open(url, "_blank");
     }
   };
-
-  const handleImgLoad = () => setImgLoaded(true);
-
-  // Размер канваса задаётся ЗДЕСЬ, а не в onLoad изображения, и это не
-  // вкусовщина.
-  //
-  // Канвас рендерится под условием {imgLoaded && …}, то есть появляется в
-  // DOM только ПОСЛЕ того, как onLoad отработал. Присвоение размеров внутри
-  // onLoad попадало в overlayRef.current === null, молча ничего не делало,
-  // и канвас монтировался с дефолтными 300×150 — навсегда.
-  //
-  // Последствие было не косметическим: координаты мазка считаются как
-  // canvas.width / rect.width, поэтому врач красил нос, а в маску попадало
-  // крошечное пятно в другом месте кадра. Модель перерисовывала не то, и
-  // результат выглядел как «другой человек, ничего не изменилось».
-  useEffect(() => {
-    const img = imgRef.current;
-    const canvas = overlayRef.current;
-    if (!img || !canvas) return;
-
-    const w = img.naturalWidth;
-    const h = img.naturalHeight;
-    if (!w || !h) return;
-    if (canvas.width === w && canvas.height === h) return;
-
-    // Присвоение width/height очищает содержимое канваса — при смене
-    // фотографии это ровно то, что нужно: старая маска к новому снимку
-    // не относится.
-    canvas.width = w;
-    canvas.height = h;
-    setHasMask(false);
-  }, [imgLoaded, selectedPhoto]);
-
-  // Изображение из кеша браузера может не выдать onLoad вовсе: событие
-  // успевает пройти до подписки. Тогда imgLoaded остаётся false, и канвас
-  // не появляется — рисовать не по чему.
-  useEffect(() => {
-    if (imgRef.current?.complete && !imgLoaded) setImgLoaded(true);
-  }, [selectedPhoto, imgLoaded]);
 
   return (
     <>
@@ -534,11 +307,7 @@ export default function SimulatorPanel({ cas }) {
                   <div
                     key={p._id}
                     className={`${sim.photoChip} ${selectedPhoto?._id === p._id ? sim.photoChipActive : ""}`}
-                    onClick={() => {
-                      setSelectedPhoto(p);
-                      setImgLoaded(false);
-                      clearMask();
-                    }}
+                    onClick={() => setSelectedPhoto(p)}
                   >
                     <img
                       src={photoUrl(p.filename)}
@@ -601,83 +370,22 @@ export default function SimulatorPanel({ cas }) {
             </p>
           </div>
 
+          {/* Снимок показываем как есть, без слоёв поверх.
+              Выделение зоны отсюда убрано совсем: модель находит лицо и
+              нужную область сама, а навязанная маска только мешала ей —
+              она получала вырезанный кусок кадра и дорисовывала в нём
+              чужую анатомию. */}
           {selectedPhoto && (
-            <div
-              className={`${sim.section} ${flashStep === "mask" ? sim.flash : ""}`}
-              ref={maskStepRef}
-            >
-              <div className={sim.sectionTitle}>
-                {t("simulator.maskOptionalTitle")}
-                <span className={sim.sectionHint}>
-                  {t("simulator.maskOptionalHint")}
-                </span>
-              </div>
-              <div className={sim.toolbar}>
-                {BRUSH_SIZES.map((sz) => (
-                  <button
-                    key={sz}
-                    className={`${sim.brushBtn} ${brushSize === sz ? sim.brushBtnActive : ""}`}
-                    onClick={() => setBrushSize(sz)}
-                  >
-                    <span
-                      className={sim.brushPreview}
-                      style={{
-                        width: Math.min(sz, 28),
-                        height: Math.min(sz, 28),
-                      }}
-                    />
-                  </button>
-                ))}
-                <button className={sim.clearBtn} onClick={clearMask}>
-                  {t("simulator.clearMask")}
-                </button>
-              </div>
+            <div className={sim.section}>
               <div className={sim.canvasWrap}>
                 <img
                   src={photoUrl(selectedPhoto.filename)}
                   alt={t("simulator.sourcePhoto")}
                   ref={imgRef}
                   className={sim.canvasImg}
-                  onLoad={handleImgLoad}
                   draggable={false}
                 />
-                {imgLoaded && (
-                  <canvas
-                    ref={overlayRef}
-                    className={sim.overlay}
-                    onMouseDown={startDraw}
-                    onMouseMove={draw}
-                    onMouseUp={stopDraw}
-                    onMouseLeave={stopDraw}
-                    onTouchStart={startDraw}
-                    onTouchMove={draw}
-                    onTouchEnd={stopDraw}
-                    style={{
-                      cursor: `url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='${brushSize}' height='${brushSize}'><circle cx='${brushSize / 2}' cy='${brushSize / 2}' r='${brushSize / 2 - 1}' fill='rgba(99,102,241,0.5)' stroke='%236366f1' stroke-width='1'/></svg>") ${brushSize / 2} ${brushSize / 2}, crosshair`,
-                    }}
-                  />
-                )}
               </div>
-              {hasMask && (
-                <div className={sim.maskHint}>
-                  {t("simulator.maskDrawn")} —{" "}
-                  {t("simulator.maskCoverage", {
-                    pct: maskCoverage.toFixed(1),
-                  })}
-                  {" · "}
-                  {t("simulator.maskCoverageLimit", { limit: coverageLimit })}
-                  {overPainted && (
-                    <span style={{ color: "#dc2626", display: "block" }}>
-                      {t("simulator.maskTooLarge", { limit: coverageLimit })}
-                    </span>
-                  )}
-                  {tooSmall && (
-                    <span style={{ color: "#dc2626", display: "block" }}>
-                      {t("simulator.maskTooSmall")}
-                    </span>
-                  )}
-                </div>
-              )}
             </div>
           )}
 
@@ -711,10 +419,7 @@ export default function SimulatorPanel({ cas }) {
             onClick={handleGenerate}
             disabled={
               loading ||
-              !selectedPhoto ||
-              overPainted ||
-              tooSmall ||
-              !disclaimer
+              !selectedPhoto || !disclaimer
             }
           >
             {loading ? (
