@@ -397,7 +397,13 @@
     "promptModel": "Model için",
     "promptSent": "Modele ne gönderildi",
     "promptYours": "İsteğiniz",
-    "wishesCompilerHint": "Herhangi bir dilde ve kendi sözlerinizle yazın — istek model için çevrilecek. Derece ve milimetre cinsinden değerleri işlemez: bunlar “hafifçe”, “belirgin şekilde” olur."
+    "wishesCompilerHint": "Herhangi bir dilde ve kendi sözlerinizle yazın — istek model için çevrilecek. Derece ve milimetre cinsinden değerleri işlemez: bunlar “hafifçe”, “belirgin şekilde” olur.",
+    "preset": "Sonuç türü",
+    "presetHint": "aşağıdaki alan boşsa kullanılır",
+    "maskCoverage": "karenin %{{pct}} kadarı işaretlendi",
+    "maskTooLarge": "Karenin %{{limit}} değerinden fazlası işaretlendi — bu artık ameliyat bölgesi değil, sonuçta farklı bir kişi çıkar",
+    "maskArea": "Düzenlenen alan",
+    "promptSubject": "Fotoğraftaki kişi"
   },
   "procedureGroups": {
     "facial_plastic": "Yüz plastik cerrahisi",

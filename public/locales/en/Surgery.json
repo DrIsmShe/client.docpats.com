@@ -397,7 +397,13 @@
     "promptModel": "For the model",
     "promptSent": "What was sent to the model",
     "promptYours": "Your request",
-    "wishesCompilerHint": "Write in any language and in your own words — the request will be translated for the model. It does not handle values in degrees and millimetres: they become “slightly”, “noticeably”."
+    "wishesCompilerHint": "Write in any language and in your own words — the request will be translated for the model. It does not handle values in degrees and millimetres: they become “slightly”, “noticeably”.",
+    "preset": "Result type",
+    "presetHint": "used when the field below is empty",
+    "maskCoverage": "{{pct}}% of the frame marked",
+    "maskTooLarge": "More than {{limit}}% of the frame is marked — that is no longer the surgical area, the result will be a different person",
+    "maskArea": "Edited area",
+    "promptSubject": "Person in the photo"
   },
   "procedureGroups": {
     "facial_plastic": "Facial plastic surgery",

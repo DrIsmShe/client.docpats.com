@@ -32,6 +32,13 @@ export default function SimulatorPanel({ cas }) {
   const [brushSize, setBrushSize] = useState(20);
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasMask, setHasMask] = useState(false);
+  // Доля закрашенного кадра. Сервер откажет, если её слишком много (для
+  // лица — больше 30%: это уже не зона операции, а новое лицо), и врач
+  // должен видеть цифру ДО оплаченной генерации, а не в тексте ошибки.
+  const [maskCoverage, setMaskCoverage] = useState(0);
+  const [coverageLimit, setCoverageLimit] = useState(70);
+  const [presets, setPresets] = useState([]);
+  const [promptIdx, setPromptIdx] = useState(0);
   const [customPrompt, setCustomPrompt] = useState("");
   const [disclaimer, setDisclaimer] = useState(false);
   const [simulations, setSimulations] = useState([]);
@@ -76,6 +83,26 @@ export default function SimulatorPanel({ cas }) {
       .catch(() => {})
       .finally(() => setLoadingSims(false));
   }, [caseId]);
+
+  // ─── Готовые описания результата ─────────────────────────────────────
+  //
+  // Каталог из восьмидесяти промтов лежал в сервисе мёртвым грузом: клиент
+  // не запрашивал список и не передавал promptIdx, поэтому при пустом поле
+  // «пожелания» в модель всегда уходил нулевой пресет. Для блефаропластики
+  // это «верхние веки» — врач просил убрать мешки под глазами, а модель
+  // получала запрос на другую зону.
+  useEffect(() => {
+    const procedure = cas?.procedure;
+    if (!procedure) return;
+    instance
+      .get(`/api/surgery/prompts/${procedure}`)
+      .then((r) => {
+        setPresets(r.data.prompts || []);
+        if (r.data.maxPaintedPct) setCoverageLimit(r.data.maxPaintedPct);
+      })
+      .catch(() => setPresets([]));
+    setPromptIdx(0);
+  }, [cas?.procedure]);
 
   // ─── Фото для выбора ─────────────────────────────────────────────────
   useEffect(() => {
@@ -209,10 +236,30 @@ export default function SimulatorPanel({ cas }) {
     [isDrawing, brushSize],
   );
 
+  // Доля закрашенного — по уменьшенной копии канваса. Считать её по
+  // оригиналу нельзя: getImageData снимка 3264×2448 — это 32 МБ на каждое
+  // отпускание кисти, и рисование начинает подтормаживать. Для показанного
+  // врачу процента хватает сетки 256×256.
+  const measureCoverage = useCallback(() => {
+    const canvas = overlayRef.current;
+    if (!canvas || !canvas.width) return setMaskCoverage(0);
+    const S = 256;
+    const tmp = document.createElement("canvas");
+    tmp.width = S;
+    tmp.height = S;
+    const ctx = tmp.getContext("2d");
+    ctx.drawImage(canvas, 0, 0, S, S);
+    const { data } = ctx.getImageData(0, 0, S, S);
+    let painted = 0;
+    for (let i = 3; i < data.length; i += 4) if (data[i] > 10) painted++;
+    setMaskCoverage((painted / (S * S)) * 100);
+  }, []);
+
   const stopDraw = useCallback(() => {
     lastPosRef.current = null;
     setIsDrawing(false);
-  }, []);
+    measureCoverage();
+  }, [measureCoverage]);
 
   const clearMask = () => {
     const canvas = overlayRef.current;
@@ -220,6 +267,7 @@ export default function SimulatorPanel({ cas }) {
     canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
     lastPosRef.current = null;
     setHasMask(false);
+    setMaskCoverage(0);
   };
 
   // ─── Экспорт маски ────────────────────────────────────────────────────
@@ -256,6 +304,8 @@ export default function SimulatorPanel({ cas }) {
     window.setTimeout(() => setFlashStep(null), 1700);
   }, []);
 
+  const overPainted = hasMask && maskCoverage > coverageLimit;
+
   // Чего не хватает для генерации. Те же три условия, что в handleGenerate,
   // но показанные ДО клика: по отключённой кнопке кликнуть нельзя, и её
   // setError никогда не срабатывал — врач видел серую кнопку без причины.
@@ -274,6 +324,15 @@ export default function SimulatorPanel({ cas }) {
       text: t("simulator.errorDrawMask"),
       ref: maskStepRef,
     });
+  // Слишком большая область — тот же отказ, что и на сервере, но до
+  // оплаченной генерации. Закрашенное пол-лица означает не симуляцию
+  // операции, а новое лицо: модели нечего сохранять.
+  else if (overPainted)
+    gate.push({
+      key: "mask",
+      text: t("simulator.maskTooLarge", { limit: coverageLimit }),
+      ref: maskStepRef,
+    });
   if (!disclaimer)
     gate.push({
       key: "disclaimer",
@@ -285,6 +344,8 @@ export default function SimulatorPanel({ cas }) {
   const handleGenerate = async () => {
     if (!selectedPhoto) return setError(t("simulator.errorSelectPhoto"));
     if (!hasMask) return setError(t("simulator.errorDrawMask"));
+    if (overPainted)
+      return setError(t("simulator.maskTooLarge", { limit: coverageLimit }));
     if (!disclaimer) return setError(t("simulator.errorAcceptDisclaimer"));
     setError("");
     setLoading(true);
@@ -293,6 +354,9 @@ export default function SimulatorPanel({ cas }) {
       const formData = new FormData();
       formData.append("sourcePhotoFilename", selectedPhoto.filename);
       formData.append("disclaimerAccepted", "true");
+      // promptIdx нужен всегда: при пустом поле пожеланий сервер берёт
+      // пресет каталога по этому номеру, и без него это был вечный нулевой.
+      formData.append("promptIdx", String(promptIdx));
       if (customPrompt) formData.append("customPrompt", customPrompt);
       if (maskBlob) formData.append("mask", maskBlob, "mask.png");
       const res = await instance.post(
@@ -543,8 +607,46 @@ export default function SimulatorPanel({ cas }) {
                 )}
               </div>
               {hasMask && (
-                <div className={sim.maskHint}>{t("simulator.maskDrawn")}</div>
+                <div className={sim.maskHint}>
+                  {t("simulator.maskDrawn")} —{" "}
+                  {t("simulator.maskCoverage", {
+                    pct: maskCoverage.toFixed(1),
+                  })}
+                  {overPainted && (
+                    <span style={{ color: "#dc2626", display: "block" }}>
+                      {t("simulator.maskTooLarge", { limit: coverageLimit })}
+                    </span>
+                  )}
+                </div>
               )}
+            </div>
+          )}
+
+          {/* Готовое описание результата. Каталог пресетов существовал в
+              сервисе с самого начала, но клиент его не показывал и номер
+              не передавал — в модель всегда уходил нулевой вариант. Для
+              блефаропластики это «верхние веки», хотя врач мог оперировать
+              нижние. */}
+          {presets.length > 1 && (
+            <div className={sim.section}>
+              <div className={sim.sectionTitle}>
+                {t("simulator.preset", "Тип результата")}
+                <span className={sim.sectionHint}>
+                  {t("simulator.presetHint", "используется, если поле ниже пустое")}
+                </span>
+              </div>
+              <select
+                className={styles.select}
+                value={promptIdx}
+                onChange={(e) => setPromptIdx(Number(e.target.value))}
+                disabled={Boolean(customPrompt.trim())}
+              >
+                {presets.map((p) => (
+                  <option key={p.idx} value={p.idx}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
             </div>
           )}
 
@@ -596,7 +698,13 @@ export default function SimulatorPanel({ cas }) {
           <button
             className={`${styles.btnPrimary} ${sim.generateBtn}`}
             onClick={handleGenerate}
-            disabled={loading || !selectedPhoto || !hasMask || !disclaimer}
+            disabled={
+              loading ||
+              !selectedPhoto ||
+              !hasMask ||
+              overPainted ||
+              !disclaimer
+            }
           >
             {loading ? (
               <>
@@ -704,19 +812,46 @@ export default function SimulatorPanel({ cas }) {
                 {/* Что реально ушло в модель. Без этого разобраться,
                     почему результат не тот — запрос врача виноват или его
                     перевод, — нельзя ни ему, ни нам. */}
-                {activeSimId === s._id && s.promptCompiled && s.promptRaw && (
+                {activeSimId === s._id && (s.promptFinal || s.prompt) && (
                   <details className={sim.sectionHint} style={{ padding: "6px 0" }}>
                     <summary style={{ cursor: "pointer" }}>
                       {t("simulator.promptSent", "Что было отправлено модели")}
                     </summary>
-                    <p style={{ margin: "6px 0 0" }}>
-                      <b>{t("simulator.promptYours", "Ваш запрос")}:</b>{" "}
-                      {s.promptRaw}
-                    </p>
+                    {s.promptRaw && (
+                      <p style={{ margin: "6px 0 0" }}>
+                        <b>{t("simulator.promptYours", "Ваш запрос")}:</b>{" "}
+                        {s.promptRaw}
+                      </p>
+                    )}
+                    {/* Кого модель считала изображённым на снимке. Пустая
+                        строка здесь — прямая причина «получился другой
+                        человек»: без описания субъекта модель берёт
+                        среднее по обучающей выборке. */}
+                    {s.subjectDescription && (
+                      <p style={{ margin: "4px 0 0", opacity: 0.85 }}>
+                        <b>{t("simulator.promptSubject", "Кто на фото")}:</b>{" "}
+                        {s.subjectDescription}
+                      </p>
+                    )}
                     <p style={{ margin: "4px 0 0", opacity: 0.85 }}>
                       <b>{t("simulator.promptModel", "Для модели")}:</b>{" "}
-                      {s.prompt}
+                      {s.promptFinal || s.prompt}
                     </p>
+                    {/* Геометрия правки. Без этих цифр разбор жалобы на
+                        результат упирается в логи воркера, которых у врача
+                        нет. */}
+                    {s.maskStats?.paintedPct != null && (
+                      <p style={{ margin: "4px 0 0", opacity: 0.85 }}>
+                        <b>{t("simulator.maskArea", "Область правки")}:</b>{" "}
+                        {t("simulator.maskCoverage", {
+                          pct: Number(s.maskStats.paintedPct).toFixed(1),
+                        })}
+                        {s.maskStats.width
+                          ? ` · ${s.maskStats.width}×${s.maskStats.height}`
+                          : ""}
+                        {s.provider ? ` · ${s.provider}` : ""}
+                      </p>
+                    )}
                   </details>
                 )}
 

@@ -397,7 +397,13 @@
     "promptModel": "Model üçün",
     "promptSent": "Modelə nə göndərilib",
     "promptYours": "Sorğunuz",
-    "wishesCompilerHint": "İstənilən dildə və öz sözlərinizlə yazın — sorğu model üçün tərcümə olunacaq. Dərəcə və millimetrlə verilən kəmiyyətləri o işləmir: onlar «bir az», «nəzərəçarpacaq» olacaq."
+    "wishesCompilerHint": "İstənilən dildə və öz sözlərinizlə yazın — sorğu model üçün tərcümə olunacaq. Dərəcə və millimetrlə verilən kəmiyyətləri o işləmir: onlar «bir az», «nəzərəçarpacaq» olacaq.",
+    "preset": "Nəticə növü",
+    "presetHint": "aşağıdakı sahə boş olduqda istifadə olunur",
+    "maskCoverage": "kadrın {{pct}}%-i işarələnib",
+    "maskTooLarge": "Kadrın {{limit}}%-dən çoxu işarələnib — bu artıq əməliyyat zonası deyil, nəticədə başqa adam alınacaq",
+    "maskArea": "Dəyişdirilən sahə",
+    "promptSubject": "Şəkildəki şəxs"
   },
   "procedureGroups": {
     "facial_plastic": "Üzün plastik cərrahiyyəsi",
