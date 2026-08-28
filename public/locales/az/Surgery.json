@@ -407,7 +407,13 @@
     "maskTooSmall": "Çox az işarələnib — kontur cızığına bənzəyir. Fırça boyayır: əməliyyat zonasını tam doldurun",
     "maskPreview": "Nə boyanıb",
     "brushFillHint": "zonanı bütövlükdə boyayın, konturunu çəkməyin",
-    "maskCoverageLimit": "icazə verilir {{limit}}%-ə qədər"
+    "maskCoverageLimit": "icazə verilir {{limit}}%-ə qədər",
+    "requestTitle": "Nə dəyişsin",
+    "requestHint": "öz sözlərinizlə, istənilən dildə",
+    "requestPlaceholder": "Məsələn: burun ucunu qaldır və göz altı torbaları aradan qaldır",
+    "requestCompilerHint": "Süni intellekt üzü və lazımi nahiyəni özü tapır — seçim etməyə ehtiyac yoxdur. Dərəcə və millimetrləri model işləmir: onlar «bir az», «nəzərəçarpacaq» olur.",
+    "maskOptionalTitle": "Düzəlişi zona ilə məhdudlaşdır",
+    "maskOptionalHint": "məcburi deyil — seçim olmadan şəkil bütövlükdə düzəldilir"
   },
   "procedureGroups": {
     "facial_plastic": "Üzün plastik cərrahiyyəsi",

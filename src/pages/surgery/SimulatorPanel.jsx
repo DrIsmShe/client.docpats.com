@@ -320,14 +320,9 @@ export default function SimulatorPanel({ cas }) {
       text: t("simulator.errorSelectPhoto"),
       ref: photoStepRef,
     });
-  // Про маску говорим только когда фото уже выбрано: без фото этого шага
-  // на экране просто нет, и ссылка вела бы в никуда.
-  else if (!hasMask)
-    gate.push({
-      key: "mask",
-      text: t("simulator.errorDrawMask"),
-      ref: maskStepRef,
-    });
+  // Маски в этом списке нет: она необязательна. Без выделения модель
+  // правит снимок целиком по инструкции — сама находит нос, веки, брови.
+  // Проверки ниже касаются только уже нарисованной маски.
   // Слишком большая область — тот же отказ, что и на сервере, но до
   // оплаченной генерации. Закрашенное пол-лица означает не симуляцию
   // операции, а новое лицо: модели нечего сохранять.
@@ -353,7 +348,6 @@ export default function SimulatorPanel({ cas }) {
   // ─── Генерация ────────────────────────────────────────────────────────
   const handleGenerate = async () => {
     if (!selectedPhoto) return setError(t("simulator.errorSelectPhoto"));
-    if (!hasMask) return setError(t("simulator.errorDrawMask"));
     if (overPainted)
       return setError(t("simulator.maskTooLarge", { limit: coverageLimit }));
     if (tooSmall) return setError(t("simulator.maskTooSmall"));
@@ -560,15 +554,62 @@ export default function SimulatorPanel({ cas }) {
             )}
           </div>
 
+          {presets.length > 1 && (
+            <div className={sim.section}>
+              <div className={sim.sectionTitle}>
+                {t("simulator.preset", "Тип результата")}
+                <span className={sim.sectionHint}>
+                  {t("simulator.presetHint", "используется, если поле ниже пустое")}
+                </span>
+              </div>
+              <select
+                className={styles.select}
+                value={promptIdx}
+                onChange={(e) => setPromptIdx(Number(e.target.value))}
+                disabled={Boolean(customPrompt.trim())}
+              >
+                {presets.map((p) => (
+                  <option key={p.idx} value={p.idx}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div className={sim.section}>
+            <div className={sim.sectionTitle}>
+              {t("simulator.requestTitle")}
+              <span className={sim.sectionHint}>
+                {t("simulator.requestHint")}
+              </span>
+            </div>
+            <textarea
+              className={styles.textarea}
+              placeholder={t("simulator.requestPlaceholder")}
+              value={customPrompt}
+              onChange={(e) => setCustomPrompt(e.target.value)}
+              rows={2}
+            />
+            {/* Модель изображений не выполняет действия и не понимает
+                градусов — сервер переписывает текст врача в описание
+                желаемого вида. Сказать об этом здесь честнее, чем молча
+                подменить запрос: иначе результат «сделал наоборот»
+                выглядит поломкой, а не непониманием. */}
+            <p className={sim.sectionHint}>
+              {t("simulator.requestCompilerHint")}
+            </p>
+          </div>
+
           {selectedPhoto && (
             <div
               className={`${sim.section} ${flashStep === "mask" ? sim.flash : ""}`}
               ref={maskStepRef}
             >
               <div className={sim.sectionTitle}>
-                {t("simulator.drawMaskArea")}
+                {t("simulator.maskOptionalTitle")}
                 <span className={sim.sectionHint}>
-                  {t("simulator.brushFillHint", t("simulator.brushHint"))}
+                  {t("simulator.maskOptionalHint")}
                 </span>
               </div>
               <div className={sim.toolbar}>
@@ -645,54 +686,6 @@ export default function SimulatorPanel({ cas }) {
               не передавал — в модель всегда уходил нулевой вариант. Для
               блефаропластики это «верхние веки», хотя врач мог оперировать
               нижние. */}
-          {presets.length > 1 && (
-            <div className={sim.section}>
-              <div className={sim.sectionTitle}>
-                {t("simulator.preset", "Тип результата")}
-                <span className={sim.sectionHint}>
-                  {t("simulator.presetHint", "используется, если поле ниже пустое")}
-                </span>
-              </div>
-              <select
-                className={styles.select}
-                value={promptIdx}
-                onChange={(e) => setPromptIdx(Number(e.target.value))}
-                disabled={Boolean(customPrompt.trim())}
-              >
-                {presets.map((p) => (
-                  <option key={p.idx} value={p.idx}>
-                    {p.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          <div className={sim.section}>
-            <div className={sim.sectionTitle}>
-              {t("simulator.additionalWishes")}
-              <span className={sim.sectionHint}>{t("simulator.optional")}</span>
-            </div>
-            <textarea
-              className={styles.textarea}
-              placeholder={t("simulator.wishesPlaceholder")}
-              value={customPrompt}
-              onChange={(e) => setCustomPrompt(e.target.value)}
-              rows={2}
-            />
-            {/* Модель изображений не выполняет действия и не понимает
-                градусов — сервер переписывает текст врача в описание
-                желаемого вида. Сказать об этом здесь честнее, чем молча
-                подменить запрос: иначе результат «сделал наоборот»
-                выглядит поломкой, а не непониманием. */}
-            <p className={sim.sectionHint}>
-              {t(
-                "simulator.wishesCompilerHint",
-                "Пишите на любом языке и своими словами — запрос будет переведён для модели. Величины в градусах и миллиметрах она не отрабатывает: они станут «слегка», «заметно».",
-              )}
-            </p>
-          </div>
-
           <label
             className={`${styles.checkRow} ${sim.disclaimer} ${flashStep === "disclaimer" ? sim.flash : ""}`}
             ref={disclaimerStepRef}
@@ -719,7 +712,6 @@ export default function SimulatorPanel({ cas }) {
             disabled={
               loading ||
               !selectedPhoto ||
-              !hasMask ||
               overPainted ||
               tooSmall ||
               !disclaimer

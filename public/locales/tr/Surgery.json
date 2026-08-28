@@ -407,7 +407,13 @@
     "maskTooSmall": "Çok az işaretlendi — kontur çizimi gibi görünüyor. Fırça boyar: ameliyat bölgesinin tamamını doldurun",
     "maskPreview": "Boyanan alan",
     "brushFillHint": "bölgenin tamamını boyayın, çevresini çizmeyin",
-    "maskCoverageLimit": "en fazla %{{limit}}"
+    "maskCoverageLimit": "en fazla %{{limit}}",
+    "requestTitle": "Ne değişsin",
+    "requestHint": "kendi kelimelerinizle, herhangi bir dilde",
+    "requestPlaceholder": "Örnek: burun ucunu kaldır ve göz altı torbalarını gider",
+    "requestCompilerHint": "Yapay zekâ yüzü ve ilgili bölgeyi kendisi bulur — seçim yapmanız gerekmez. Derece ve milimetre değerleri modelce uygulanmaz: «hafifçe», «belirgin şekilde» olur.",
+    "maskOptionalTitle": "Düzenlemeyi bir bölgeyle sınırla",
+    "maskOptionalHint": "isteğe bağlı — seçim yapılmazsa fotoğrafın tamamı düzenlenir"
   },
   "procedureGroups": {
     "facial_plastic": "Yüz plastik cerrahisi",
