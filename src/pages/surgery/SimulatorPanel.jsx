@@ -531,11 +531,10 @@ export default function SimulatorPanel({ cas }) {
             {loading ? (
               <>
                 <span className={sim.spinner} />{" "}
-                {/* Честное ожидание: gpt-image-2 отдаёт два варианта за
-                    ~100 секунд, четыре — заметно дольше. Обещание «~30 сек»
-                    превращало нормальную работу в подозрение, что всё
-                    зависло. */}
-                {t("simulator.generatingWithTime", { sec: 120 })}
+                {/* Честное ожидание: gpt-image-2 отдаёт один вариант
+                    примерно за минуту. Обещание «~30 сек» превращало
+                    нормальную работу в подозрение, что всё зависло. */}
+                {t("simulator.generatingWithTime", { sec: 60 })}
               </>
             ) : (
               <>
@@ -547,7 +546,7 @@ export default function SimulatorPanel({ cas }) {
                     strokeLinejoin="round"
                   />
                 </svg>
-                {t("simulator.generate", { count: 4 })}
+                {t("simulator.generate")}
               </>
             )}
           </button>
