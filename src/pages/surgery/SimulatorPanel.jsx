@@ -305,6 +305,10 @@ export default function SimulatorPanel({ cas }) {
   }, []);
 
   const overPainted = hasMask && maskCoverage > coverageLimit;
+  // Слишком тонкий след — почти всегда обводка контуром вместо заливки.
+  // Модель перерисует ровно линию: запрос останется невыполненным, а на
+  // снимке появится чёткая черта по следу кисти.
+  const tooSmall = hasMask && maskCoverage < 0.5;
 
   // Чего не хватает для генерации. Те же три условия, что в handleGenerate,
   // но показанные ДО клика: по отключённой кнопке кликнуть нельзя, и её
@@ -333,6 +337,12 @@ export default function SimulatorPanel({ cas }) {
       text: t("simulator.maskTooLarge", { limit: coverageLimit }),
       ref: maskStepRef,
     });
+  else if (tooSmall)
+    gate.push({
+      key: "mask",
+      text: t("simulator.maskTooSmall"),
+      ref: maskStepRef,
+    });
   if (!disclaimer)
     gate.push({
       key: "disclaimer",
@@ -346,6 +356,7 @@ export default function SimulatorPanel({ cas }) {
     if (!hasMask) return setError(t("simulator.errorDrawMask"));
     if (overPainted)
       return setError(t("simulator.maskTooLarge", { limit: coverageLimit }));
+    if (tooSmall) return setError(t("simulator.maskTooSmall"));
     if (!disclaimer) return setError(t("simulator.errorAcceptDisclaimer"));
     setError("");
     setLoading(true);
@@ -557,7 +568,7 @@ export default function SimulatorPanel({ cas }) {
               <div className={sim.sectionTitle}>
                 {t("simulator.drawMaskArea")}
                 <span className={sim.sectionHint}>
-                  {t("simulator.brushHint")}
+                  {t("simulator.brushFillHint", t("simulator.brushHint"))}
                 </span>
               </div>
               <div className={sim.toolbar}>
@@ -615,6 +626,11 @@ export default function SimulatorPanel({ cas }) {
                   {overPainted && (
                     <span style={{ color: "#dc2626", display: "block" }}>
                       {t("simulator.maskTooLarge", { limit: coverageLimit })}
+                    </span>
+                  )}
+                  {tooSmall && (
+                    <span style={{ color: "#dc2626", display: "block" }}>
+                      {t("simulator.maskTooSmall")}
                     </span>
                   )}
                 </div>
@@ -703,6 +719,7 @@ export default function SimulatorPanel({ cas }) {
               !selectedPhoto ||
               !hasMask ||
               overPainted ||
+              tooSmall ||
               !disclaimer
             }
           >
@@ -840,6 +857,26 @@ export default function SimulatorPanel({ cas }) {
                     {/* Геометрия правки. Без этих цифр разбор жалобы на
                         результат упирается в логи воркера, которых у врача
                         нет. */}
+                    {/* Сама маска. Строка «отмечено N%» не показывает
+                        ФОРМУ выделения, а именно форма объясняет результат:
+                        обведённый контур вместо залитой зоны выглядит на
+                        снимке чертой по следу кисти. */}
+                    {s.maskFilename && (
+                      <div style={{ margin: "6px 0 0" }}>
+                        <b>{t("simulator.maskPreview", "Что закрашено")}:</b>
+                        <img
+                          src={photoUrl(s.maskFilename)}
+                          alt={t("simulator.maskPreview", "Что закрашено")}
+                          style={{
+                            display: "block",
+                            marginTop: 4,
+                            maxWidth: 140,
+                            borderRadius: 6,
+                            background: "#000",
+                          }}
+                        />
+                      </div>
+                    )}
                     {s.maskStats?.paintedPct != null && (
                       <p style={{ margin: "4px 0 0", opacity: 0.85 }}>
                         <b>{t("simulator.maskArea", "Область правки")}:</b>{" "}

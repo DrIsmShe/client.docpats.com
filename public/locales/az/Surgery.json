@@ -403,7 +403,10 @@
     "maskCoverage": "kadrın {{pct}}%-i işarələnib",
     "maskTooLarge": "Kadrın {{limit}}%-dən çoxu işarələnib — bu artıq əməliyyat zonası deyil, nəticədə başqa adam alınacaq",
     "maskArea": "Dəyişdirilən sahə",
-    "promptSubject": "Şəkildəki şəxs"
+    "promptSubject": "Şəkildəki şəxs",
+    "maskTooSmall": "Çox az işarələnib — kontur cızığına bənzəyir. Fırça boyayır: əməliyyat zonasını tam doldurun",
+    "maskPreview": "Nə boyanıb",
+    "brushFillHint": "zonanı bütövlükdə boyayın, konturunu çəkməyin"
   },
   "procedureGroups": {
     "facial_plastic": "Üzün plastik cərrahiyyəsi",

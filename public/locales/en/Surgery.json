@@ -403,7 +403,10 @@
     "maskCoverage": "{{pct}}% of the frame marked",
     "maskTooLarge": "More than {{limit}}% of the frame is marked — that is no longer the surgical area, the result will be a different person",
     "maskArea": "Edited area",
-    "promptSubject": "Person in the photo"
+    "promptSubject": "Person in the photo",
+    "maskTooSmall": "Too little marked — looks like an outline. The brush fills: paint over the whole surgical area",
+    "maskPreview": "What was painted",
+    "brushFillHint": "fill the whole area, do not trace its outline"
   },
   "procedureGroups": {
     "facial_plastic": "Facial plastic surgery",

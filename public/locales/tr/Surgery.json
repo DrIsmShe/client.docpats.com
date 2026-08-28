@@ -403,7 +403,10 @@
     "maskCoverage": "karenin %{{pct}} kadarı işaretlendi",
     "maskTooLarge": "Karenin %{{limit}} değerinden fazlası işaretlendi — bu artık ameliyat bölgesi değil, sonuçta farklı bir kişi çıkar",
     "maskArea": "Düzenlenen alan",
-    "promptSubject": "Fotoğraftaki kişi"
+    "promptSubject": "Fotoğraftaki kişi",
+    "maskTooSmall": "Çok az işaretlendi — kontur çizimi gibi görünüyor. Fırça boyar: ameliyat bölgesinin tamamını doldurun",
+    "maskPreview": "Boyanan alan",
+    "brushFillHint": "bölgenin tamamını boyayın, çevresini çizmeyin"
   },
   "procedureGroups": {
     "facial_plastic": "Yüz plastik cerrahisi",
