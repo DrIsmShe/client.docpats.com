@@ -425,7 +425,11 @@ export default function SimulatorPanel({ cas }) {
             {loading ? (
               <>
                 <span className={sim.spinner} />{" "}
-                {t("simulator.generatingWithTime", { sec: 30 })}
+                {/* Честное ожидание: gpt-image-2 отдаёт два варианта за
+                    ~100 секунд, четыре — заметно дольше. Обещание «~30 сек»
+                    превращало нормальную работу в подозрение, что всё
+                    зависло. */}
+                {t("simulator.generatingWithTime", { sec: 120 })}
               </>
             ) : (
               <>
