@@ -135,7 +135,8 @@
     "pMyDoctors": "Your doctors and clinics in one list",
     "pArticles": "Medical articles and news",
     "pLangs": "Interface and messaging in five languages",
-    "pInvite": "Invite a relative — they get their own account"
+    "pInvite": "Invite a relative — they get their own account",
+    "aiSimulations": "{{count}} AI surgical outcome simulations per month"
   },
   "examAddon": {
     "title": "Exam preparation",

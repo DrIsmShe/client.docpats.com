@@ -135,7 +135,8 @@
     "pMyDoctors": "Öz həkimləriniz və klinikalarınız bir siyahıda",
     "pArticles": "Tibbi məqalələr və xəbərlər",
     "pLangs": "İnterfeys və yazışma beş dildə",
-    "pInvite": "Yaxınınızı dəvət edin — o öz hesabını açacaq"
+    "pInvite": "Yaxınınızı dəvət edin — o öz hesabını açacaq",
+    "aiSimulations": "Ayda {{count}} AI əməliyyat nəticəsi simulyasiyası"
   },
   "examAddon": {
     "title": "İmtahanlara hazırlıq",

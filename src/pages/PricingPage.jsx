@@ -134,6 +134,7 @@ const DOCTOR_PLANS = [
       { i18nKey: "features.videoMinutes", vars: { count: 60 } },
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
+      { i18nKey: "features.aiSimulations", vars: { count: 5 } },
     ],
   },
   {
@@ -158,6 +159,7 @@ const DOCTOR_PLANS = [
       { i18nKey: "features.videoMinutes", vars: { count: 240 } },
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
+      { i18nKey: "features.aiSimulations", vars: { count: 15 } },
     ],
   },
   {
@@ -180,6 +182,7 @@ const DOCTOR_PLANS = [
       },
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
+      { i18nKey: "features.aiSimulations", vars: { count: 40 } },
     ],
   },
   {
@@ -210,13 +213,7 @@ const DOCTOR_PLANS = [
         vars: { count: 1200, hours: 20 },
       },
       { i18nKey: "features.anthropometryTools" },
-      // Хирургическая симуляция ОСТАЁТСЯ, но она не эксклюзив Pro: модуль
-      // открыт любому врачу, включая пробный период, и тарифного гейта у
-      // него нет. Строка честна как перечисление того, что входит в Pro,
-      // и нечестна как признак отличия от Growth. Закрывать симуляцию
-      // тарифом сейчас — забрать её у тех, кто уже пользуется; поэтому
-      // решение за владельцем, а не правка на бегу.
-      { i18nKey: "features.surgicalSimulation" },
+      { i18nKey: "features.aiSimulations", vars: { count: 100 } },
     ],
   },
 ];
@@ -242,6 +239,7 @@ const CLINIC_PLANS = [
       { i18nKey: "features.videoMinutesClinic", vars: { count: 1500 } },
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.clinicAnalytics", off: true },
+      { i18nKey: "features.aiSimulations", vars: { count: 100 } },
     ],
   },
   {
@@ -263,6 +261,7 @@ const CLINIC_PLANS = [
       },
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.clinicAnalytics" },
+      { i18nKey: "features.aiSimulations", vars: { count: 250 } },
     ],
   },
   {
@@ -289,6 +288,7 @@ const CLINIC_PLANS = [
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.extendedAnalytics" },
       { i18nKey: "features.personalManager" },
+      { i18nKey: "features.aiSimulations", vars: { count: 500 } },
     ],
   },
 ];

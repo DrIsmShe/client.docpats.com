@@ -135,7 +135,8 @@
     "pMyDoctors": "Kendi hekimleriniz ve klinikleriniz tek listede",
     "pArticles": "Tıbbi makaleler ve haberler",
     "pLangs": "Arayüz ve yazışma beş dilde",
-    "pInvite": "Bir yakınınızı davet edin — kendi hesabını açar"
+    "pInvite": "Bir yakınınızı davet edin — kendi hesabını açar",
+    "aiSimulations": "Ayda {{count}} AI ameliyat sonucu simülasyonu"
   },
   "examAddon": {
     "title": "Sınavlara hazırlık",
