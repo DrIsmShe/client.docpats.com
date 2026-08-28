@@ -29,6 +29,10 @@ export default function SimulatorPanel({ cas }) {
   // Каталог зон правки целиком. Тип операции в кейсе и зона на снимке —
   // разные вещи: кейс заведён на брови, а посмотреть врач хочет нос.
   const [catalog, setCatalog] = useState({});
+  // Остаток симуляций по тарифу. Симуляция — самая дорогая операция
+  // платформы, и врач должен видеть, сколько их осталось, до нажатия, а не
+  // узнавать из отказа.
+  const [quota, setQuota] = useState(null);
   const [zone, setZone] = useState("");
   const [promptIdx, setPromptIdx] = useState(0);
   const [customPrompt, setCustomPrompt] = useState("");
@@ -94,6 +98,17 @@ export default function SimulatorPanel({ cas }) {
       .catch(() => setCatalog({}));
   }, []);
 
+  const loadQuota = useCallback(() => {
+    instance
+      .get("/api/surgery/simulations/quota")
+      .then((r) => setQuota(r.data.quota || null))
+      .catch(() => setQuota(null));
+  }, []);
+
+  useEffect(() => {
+    loadQuota();
+  }, [loadQuota]);
+
   // Зона по умолчанию — процедура кейса, если для неё есть описания.
   useEffect(() => {
     const p = cas?.procedure;
@@ -130,6 +145,7 @@ export default function SimulatorPanel({ cas }) {
       );
       setLoading(false);
       setActiveSimId(simulationId);
+      loadQuota();
     };
     const onFailed = ({ simulationId, error: errMsg }) => {
       setSimulations((prev) =>
@@ -535,6 +551,15 @@ export default function SimulatorPanel({ cas }) {
               </>
             )}
           </button>
+
+          {quota && !quota.unlimited && (
+            <div className={sim.sectionHint} style={{ marginTop: 6 }}>
+              {t("simulator.quotaLeft", {
+                left: quota.left,
+                limit: quota.limit,
+              })}
+            </div>
+          )}
 
           {/* Почему кнопка серая. Каждый пункт — ссылка на свой шаг. */}
           {!loading && gate.length > 0 && (

@@ -415,7 +415,8 @@
     "maskOptionalTitle": "Düzenlemeyi bir bölgeyle sınırla",
     "maskOptionalHint": "isteğe bağlı — seçim yapılmazsa fotoğrafın tamamı düzenlenir",
     "zone": "Düzenlenecek bölge",
-    "zoneAny": "— aşağıdaki açıklamaya göre —"
+    "zoneAny": "— aşağıdaki açıklamaya göre —",
+    "quotaLeft": "Kalan simülasyon: 30 günde {{limit}} içinden {{left}}"
   },
   "procedureGroups": {
     "facial_plastic": "Yüz plastik cerrahisi",

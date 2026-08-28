@@ -415,7 +415,8 @@
     "maskOptionalTitle": "Düzəlişi zona ilə məhdudlaşdır",
     "maskOptionalHint": "məcburi deyil — seçim olmadan şəkil bütövlükdə düzəldilir",
     "zone": "Düzəliş zonası",
-    "zoneAny": "— aşağıdakı təsvirə görə —"
+    "zoneAny": "— aşağıdakı təsvirə görə —",
+    "quotaLeft": "Qalan simulyasiya: 30 gündə {{limit}}-dən {{left}}"
   },
   "procedureGroups": {
     "facial_plastic": "Üzün plastik cərrahiyyəsi",

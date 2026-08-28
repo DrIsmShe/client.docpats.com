@@ -415,7 +415,8 @@
     "maskOptionalTitle": "Limit the edit to an area",
     "maskOptionalHint": "optional — without a selection the AI edits the whole photo",
     "zone": "Area to edit",
-    "zoneAny": "— from the description below —"
+    "zoneAny": "— from the description below —",
+    "quotaLeft": "Simulations left: {{left}} of {{limit}} per 30 days"
   },
   "procedureGroups": {
     "facial_plastic": "Facial plastic surgery",
