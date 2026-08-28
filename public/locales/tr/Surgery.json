@@ -413,7 +413,9 @@
     "requestPlaceholder": "Örnek: burun ucunu kaldır ve göz altı torbalarını gider",
     "requestCompilerHint": "Yapay zekâ yüzü ve ilgili bölgeyi kendisi bulur — seçim yapmanız gerekmez. Derece ve milimetre değerleri modelce uygulanmaz: «hafifçe», «belirgin şekilde» olur.",
     "maskOptionalTitle": "Düzenlemeyi bir bölgeyle sınırla",
-    "maskOptionalHint": "isteğe bağlı — seçim yapılmazsa fotoğrafın tamamı düzenlenir"
+    "maskOptionalHint": "isteğe bağlı — seçim yapılmazsa fotoğrafın tamamı düzenlenir",
+    "zone": "Düzenlenecek bölge",
+    "zoneAny": "— aşağıdaki açıklamaya göre —"
   },
   "procedureGroups": {
     "facial_plastic": "Yüz plastik cerrahisi",

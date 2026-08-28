@@ -11,6 +11,7 @@ import { getSocket } from "../communication/socket";
 import styles from "./Surgery.module.css";
 import sim from "./Simulator.module.css";
 import { API_BASE } from "../../config";
+import { PROCEDURE_GROUPS } from "./surgeryConstants";
 
 const photoUrl = (filename) => `${API_BASE}/uploads/surgery/${filename}`;
 
@@ -25,7 +26,10 @@ export default function SimulatorPanel({ cas }) {
   const [flashStep, setFlashStep] = useState(null);
   const [photos, setPhotos] = useState([]);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
-  const [presets, setPresets] = useState([]);
+  // Каталог зон правки целиком. Тип операции в кейсе и зона на снимке —
+  // разные вещи: кейс заведён на брови, а посмотреть врач хочет нос.
+  const [catalog, setCatalog] = useState({});
+  const [zone, setZone] = useState("");
   const [promptIdx, setPromptIdx] = useState(0);
   const [customPrompt, setCustomPrompt] = useState("");
   const [disclaimer, setDisclaimer] = useState(false);
@@ -76,18 +80,26 @@ export default function SimulatorPanel({ cas }) {
   //
   // Каталог из восьмидесяти промтов лежал в сервисе мёртвым грузом: клиент
   // не запрашивал список и не передавал promptIdx, поэтому при пустом поле
-  // «пожелания» в модель всегда уходил нулевой пресет. Для блефаропластики
-  // это «верхние веки» — врач просил убрать мешки под глазами, а модель
+  // запроса в модель всегда уходил нулевой пресет. Для блефаропластики это
+  // «верхние веки» — врач просил убрать мешки под глазами, а модель
   // получала запрос на другую зону.
   useEffect(() => {
-    const procedure = cas?.procedure;
-    if (!procedure) return;
     instance
-      .get(`/api/surgery/prompts/${procedure}`)
-      .then((r) => setPresets(r.data.prompts || []))
-      .catch(() => setPresets([]));
+      .get("/api/surgery/prompts")
+      .then((r) => {
+        const map = {};
+        for (const row of r.data.catalog || []) map[row.procedure] = row.prompts;
+        setCatalog(map);
+      })
+      .catch(() => setCatalog({}));
+  }, []);
+
+  // Зона по умолчанию — процедура кейса, если для неё есть описания.
+  useEffect(() => {
+    const p = cas?.procedure;
+    setZone(p && catalog[p] ? p : "");
     setPromptIdx(0);
-  }, [cas?.procedure]);
+  }, [cas?.procedure, catalog]);
 
   // ─── Фото для выбора ─────────────────────────────────────────────────
   useEffect(() => {
@@ -176,6 +188,7 @@ export default function SimulatorPanel({ cas }) {
       // promptIdx нужен всегда: при пустом поле пожеланий сервер берёт
       // пресет каталога по этому номеру, и без него это был вечный нулевой.
       formData.append("promptIdx", String(promptIdx));
+      if (zone) formData.append("promptProcedure", zone);
       if (customPrompt) formData.append("customPrompt", customPrompt);
       const res = await instance.post(
         `/api/surgery/cases/${caseId}/simulate`,
@@ -323,26 +336,103 @@ export default function SimulatorPanel({ cas }) {
             )}
           </div>
 
-          {presets.length > 1 && (
+          <div className={sim.section}>
+            <div className={sim.sectionTitle}>
+              {t("simulator.requestTitle")}
+              <span className={sim.sectionHint}>
+                {t("simulator.requestHint")}
+              </span>
+            </div>
+            <textarea
+              className={styles.textarea}
+              placeholder={t("simulator.requestPlaceholder")}
+              value={customPrompt}
+              onChange={(e) => setCustomPrompt(e.target.value)}
+              rows={2}
+            />
+            {/* Модель изображений не выполняет действия и не понимает
+                градусов — сервер переписывает текст врача в описание
+                желаемого вида. Сказать об этом здесь честнее, чем молча
+                подменить запрос: иначе результат «сделал наоборот»
+                выглядит поломкой, а не непониманием. */}
+            <p className={sim.sectionHint}>
+              {t("simulator.requestCompilerHint")}
+            </p>
+          </div>
+
+          {/* Снимок показываем как есть, без слоёв поверх.
+              Выделение зоны отсюда убрано совсем: модель находит лицо и
+              нужную область сама, а навязанная маска только мешала ей —
+              она получала вырезанный кусок кадра и дорисовывала в нём
+              чужую анатомию. */}
+          {selectedPhoto && (
+            <div className={sim.section}>
+              <div className={sim.canvasWrap}>
+                <img
+                  src={photoUrl(selectedPhoto.filename)}
+                  alt={t("simulator.sourcePhoto")}
+                  ref={imgRef}
+                  className={sim.canvasImg}
+                  draggable={false}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Зона правки и готовое описание результата.
+              Список зон — весь каталог, а не одна процедура кейса: кейс
+              заведён на брови, а посмотреть врач может нос, грудь или
+              живот. Названия зон переводятся клиентскими ключами
+              procedures.* — они уже есть на всех пяти языках. */}
+          {Object.keys(catalog).length > 0 && (
             <div className={sim.section}>
               <div className={sim.sectionTitle}>
-                {t("simulator.preset", "Тип результата")}
-                <span className={sim.sectionHint}>
-                  {t("simulator.presetHint", "используется, если поле ниже пустое")}
-                </span>
+                {t("simulator.zone")}
+                <span className={sim.sectionHint}>{t("simulator.presetHint")}</span>
               </div>
               <select
                 className={styles.select}
-                value={promptIdx}
-                onChange={(e) => setPromptIdx(Number(e.target.value))}
+                value={zone}
+                onChange={(e) => {
+                  setZone(e.target.value);
+                  setPromptIdx(0);
+                }}
                 disabled={Boolean(customPrompt.trim())}
               >
-                {presets.map((p) => (
-                  <option key={p.idx} value={p.idx}>
-                    {p.label}
-                  </option>
-                ))}
+                <option value="">{t("simulator.zoneAny")}</option>
+                {PROCEDURE_GROUPS.map((g) => {
+                  const items = g.items.filter((k) => catalog[k]);
+                  if (!items.length) return null;
+                  return (
+                    <optgroup
+                      key={g.groupKey}
+                      label={t(`procedureGroups.${g.groupKey}`, g.groupKey)}
+                    >
+                      {items.map((k) => (
+                        <option key={k} value={k}>
+                          {t(`procedures.${k}`, k)}
+                        </option>
+                      ))}
+                    </optgroup>
+                  );
+                })}
               </select>
+
+              {(catalog[zone] || []).length > 1 && (
+                <select
+                  className={styles.select}
+                  style={{ marginTop: 8 }}
+                  value={promptIdx}
+                  onChange={(e) => setPromptIdx(Number(e.target.value))}
+                  disabled={Boolean(customPrompt.trim())}
+                >
+                  {catalog[zone].map((p) => (
+                    <option key={p.idx} value={p.idx}>
+                      {p.label}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
           )}
 

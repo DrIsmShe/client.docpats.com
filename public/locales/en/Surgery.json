@@ -413,7 +413,9 @@
     "requestPlaceholder": "For example: raise the nasal tip and remove the under-eye bags",
     "requestCompilerHint": "The AI finds the face and the relevant area by itself — no selection needed. Degrees and millimetres are not honoured by image models: they become “slightly”, “noticeably”.",
     "maskOptionalTitle": "Limit the edit to an area",
-    "maskOptionalHint": "optional — without a selection the AI edits the whole photo"
+    "maskOptionalHint": "optional — without a selection the AI edits the whole photo",
+    "zone": "Area to edit",
+    "zoneAny": "— from the description below —"
   },
   "procedureGroups": {
     "facial_plastic": "Facial plastic surgery",

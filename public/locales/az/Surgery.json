@@ -413,7 +413,9 @@
     "requestPlaceholder": "Məsələn: burun ucunu qaldır və göz altı torbaları aradan qaldır",
     "requestCompilerHint": "Süni intellekt üzü və lazımi nahiyəni özü tapır — seçim etməyə ehtiyac yoxdur. Dərəcə və millimetrləri model işləmir: onlar «bir az», «nəzərəçarpacaq» olur.",
     "maskOptionalTitle": "Düzəlişi zona ilə məhdudlaşdır",
-    "maskOptionalHint": "məcburi deyil — seçim olmadan şəkil bütövlükdə düzəldilir"
+    "maskOptionalHint": "məcburi deyil — seçim olmadan şəkil bütövlükdə düzəldilir",
+    "zone": "Düzəliş zonası",
+    "zoneAny": "— aşağıdakı təsvirə görə —"
   },
   "procedureGroups": {
     "facial_plastic": "Üzün plastik cərrahiyyəsi",
