@@ -1,0 +1,46 @@
+{
+  "title": "Tıbbi kongreler",
+  "subtitle": "Yaklaşan kongreler, toplantılar ve okullar. Sıralama en yakın kayıt son tarihine göre.",
+  "all_categories": "Tüm alanlar",
+  "all_countries": "Tüm ülkeler",
+  "all_formats": "Tüm formatlar",
+  "format": {
+    "onsite": "Yüz yüze",
+    "online": "Çevrimiçi",
+    "hybrid": "Yüz yüze ve çevrimiçi"
+  },
+  "sort": {
+    "label": "Sıralama",
+    "deadline": "Kayıt son tarihine göre",
+    "date": "Başlangıç tarihine göre",
+    "recent": "Önce yeni eklenenler"
+  },
+  "organizer": "Düzenleyen",
+  "registration_until": "Son kayıt",
+  "abstracts_until": "Bildiri son tarihi",
+  "cme": "CME kredileri",
+  "price": "Ücret",
+  "website": "Kongre web sitesi",
+  "back": "Tüm kongreler",
+  "empty": "Bu filtrelere uyan sonuç yok.",
+  "error": "Kongreler yüklenemedi.",
+  "not_found": "Kongre bulunamadı veya yayından kaldırılmış.",
+  "loading": "Yükleniyor…",
+  "show_more": "Daha fazla göster",
+  "categories": {
+    "therapeutic": "Dahili branşlar",
+    "surgical": "Cerrahi branşlar",
+    "diagnostics": "Tanı",
+    "rehabilitation": "Rehabilitasyon",
+    "dentistry": "Diş hekimliği",
+    "womens-health": "Kadın sağlığı",
+    "pediatrics": "Çocuk sağlığı",
+    "mental-health": "Ruh sağlığı",
+    "ophthalmology-ent": "Göz ve KBB",
+    "sports-medicine": "Spor hekimliği",
+    "oncology": "Onkoloji",
+    "emergency": "Acil tıp",
+    "mens-health": "Erkek sağlığı",
+    "pharmacy": "Eczacılık"
+  }
+}

@@ -137,6 +137,7 @@ const AdminDoctorsManagePage = lazy(() => import("./pages/admin/doctor/AdminDoct
 const AdminVerificationPage = lazy(() => import("./pages/admin/ops/AdminVerificationPage.jsx"));
 const AdminSecurityPage = lazy(() => import("./pages/admin/ops/AdminSecurityPage.jsx"));
 const AdminReviewsPage = lazy(() => import("./pages/admin/ops/AdminReviewsPage.jsx"));
+const AdminConferencesPage = lazy(() => import("./pages/admin/ops/AdminConferencesPage.jsx"));
 const AdminSystemPage = lazy(() => import("./pages/admin/ops/AdminSystemPage.jsx"));
 const AdminFeaturesPage = lazy(() => import("./pages/admin/ops/AdminFeaturesPage.jsx"));
 const AdminDatabasePage = lazy(() => import("./pages/admin/database/AdminDatabasePage.jsx"));
@@ -546,6 +547,8 @@ const ChatPage = lazy(() => import("./pages/communication/ChatPage.jsx"));
 const CommunicationLayout = lazy(() => import("./layoutes/CommunicationLayout/CommunicationLayout.jsx"));
 const EmptyChat = lazy(() => import("./pages/communication/components/EmptyChat.jsx"));
 const NewsList = lazy(() => import("./pages/NewsAI/NewsList.jsx"));
+const ConferencesList = lazy(() => import("./pages/Conferences/ConferencesList.jsx"));
+const ConferencePage = lazy(() => import("./pages/Conferences/ConferencePage.jsx"));
 const NewsArticle = lazy(() => import("./pages/NewsAI/NewsArticle"));
 const SynthesisPage = lazy(() => import("./pages/SynthesisPage/SynthesisPage.jsx"));
 const SynthesisArticlePage = lazy(() => import("./pages/SynthesisPage/SynthesisArticlePage.jsx"));
@@ -758,6 +761,11 @@ function App() {
               />
               <Route path="/news" element={<NewsList />} />
               <Route path="/news/:slug" element={<NewsArticle />} />
+              {/* Конференции. Публично и без авторизации: сюда ведут ссылки
+                  из писем врачам, и открываться они должны с телефона, где
+                  сессии может не быть. */}
+              <Route path="/conferences" element={<ConferencesList />} />
+              <Route path="/conferences/:slug" element={<ConferencePage />} />
             </Route>
             <Route path="/public" element={<DashboardLayout />}>
               {/* <Route path="/clinic/accept" element={<InvitationAcceptPage />} />
@@ -3046,6 +3054,10 @@ function App() {
               <Route path="verification" element={<AdminVerificationPage />} />
               <Route path="security" element={<AdminSecurityPage />} />
               <Route path="reviews" element={<AdminReviewsPage />} />
+              {/* Модерация конференций: карточки лежат в новостном движке,
+                  backend ходит туда по внутреннему токену. Публикует человек —
+                  автопубликация недопустима, см. страницу. */}
+              <Route path="conferences" element={<AdminConferencesPage />} />
               <Route path="features" element={<AdminFeaturesPage />} />
               <Route path="system" element={<AdminSystemPage />} />
               <Route path="database" element={<AdminDatabasePage />} />

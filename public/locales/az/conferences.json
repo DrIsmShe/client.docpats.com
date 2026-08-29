@@ -1,0 +1,46 @@
+{
+  "title": "Tibbi konfranslar",
+  "subtitle": "Qarşıdan gələn konqreslər, qurultaylar və məktəblər. Sıralama — ən yaxın qeydiyyat son tarixinə görə.",
+  "all_categories": "Bütün sahələr",
+  "all_countries": "Bütün ölkələr",
+  "all_formats": "İstənilən format",
+  "format": {
+    "onsite": "Əyani",
+    "online": "Onlayn",
+    "hybrid": "Əyani və onlayn"
+  },
+  "sort": {
+    "label": "Sıralama",
+    "deadline": "Qeydiyyat son tarixinə görə",
+    "date": "Başlama tarixinə görə",
+    "recent": "Əvvəlcə yenilər"
+  },
+  "organizer": "Təşkilatçı",
+  "registration_until": "Qeydiyyat son tarixi",
+  "abstracts_until": "Tezislərin qəbulu",
+  "cme": "CME kreditləri",
+  "price": "Qiymət",
+  "website": "Konfransın saytı",
+  "back": "Bütün konfranslar",
+  "empty": "Bu şərtlərə uyğun heç nə tapılmadı.",
+  "error": "Konfranslar yüklənmədi.",
+  "not_found": "Konfrans tapılmadı və ya dərci dayandırılıb.",
+  "loading": "Yüklənir…",
+  "show_more": "Daha çox göstər",
+  "categories": {
+    "therapeutic": "Terapevtik",
+    "surgical": "Cərrahi",
+    "diagnostics": "Diaqnostika",
+    "rehabilitation": "Reabilitasiya",
+    "dentistry": "Stomatologiya",
+    "womens-health": "Qadın sağlamlığı",
+    "pediatrics": "Pediatriya",
+    "mental-health": "Psixi sağlamlıq",
+    "ophthalmology-ent": "Oftalmologiya və LOR",
+    "sports-medicine": "İdman təbabəti",
+    "oncology": "Onkologiya",
+    "emergency": "Təcili yardım",
+    "mens-health": "Kişi sağlamlığı",
+    "pharmacy": "Farmasiya"
+  }
+}

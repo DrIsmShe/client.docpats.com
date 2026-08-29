@@ -94,6 +94,15 @@ export default function Header({
             >
               {t("nav.newsLink", { defaultValue: "Medical News" })}
             </a>
+            {/* Рубрика конференций. Link, а не <a>: соседняя ссылка на
+                новости перезагружает страницу целиком, здесь этого не нужно. */}
+            <Link
+              className="dp-nav-link"
+              to="/conferences"
+              style={{ color: "white" }}
+            >
+              {t("nav.conferencesLink", { defaultValue: "Conferences" })}
+            </Link>
           </div>
 
           <Link to="/" className="nl-nav-logo">

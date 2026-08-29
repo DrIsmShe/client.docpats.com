@@ -1,0 +1,46 @@
+{
+  "title": "Medical conferences",
+  "subtitle": "Upcoming congresses, meetings and schools. Sorted by the nearest registration deadline.",
+  "all_categories": "All fields",
+  "all_countries": "All countries",
+  "all_formats": "Any format",
+  "format": {
+    "onsite": "On-site",
+    "online": "Online",
+    "hybrid": "On-site and online"
+  },
+  "sort": {
+    "label": "Sort by",
+    "deadline": "Registration deadline",
+    "date": "Start date",
+    "recent": "Recently added"
+  },
+  "organizer": "Organizer",
+  "registration_until": "Register by",
+  "abstracts_until": "Abstracts by",
+  "cme": "CME credits",
+  "price": "Fee",
+  "website": "Conference website",
+  "back": "All conferences",
+  "empty": "Nothing matches these filters.",
+  "error": "Could not load conferences.",
+  "not_found": "This conference was not found or is no longer published.",
+  "loading": "Loading…",
+  "show_more": "Show more",
+  "categories": {
+    "therapeutic": "Therapeutic",
+    "surgical": "Surgical",
+    "diagnostics": "Diagnostics",
+    "rehabilitation": "Rehabilitation",
+    "dentistry": "Dentistry",
+    "womens-health": "Women's health",
+    "pediatrics": "Pediatrics",
+    "mental-health": "Mental health",
+    "ophthalmology-ent": "Ophthalmology and ENT",
+    "sports-medicine": "Sports medicine",
+    "oncology": "Oncology",
+    "emergency": "Emergency care",
+    "mens-health": "Men's health",
+    "pharmacy": "Pharmacy"
+  }
+}

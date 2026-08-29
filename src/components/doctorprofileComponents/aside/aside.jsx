@@ -27,6 +27,7 @@ import {
   LuStethoscope,
   LuBookMarked,
   LuLibraryBig,
+  LuCalendarDays,
 } from "react-icons/lu";
 import { TbStethoscope } from "react-icons/tb";
 
@@ -477,6 +478,15 @@ export default function Aside() {
               <LuNewspaper />
             </span>
             {t("medical_feed")}
+          </NavLink>
+
+          {/* Конференции. Страница публичная (её же открывают ссылки из
+              писем), поэтому адрес без префикса /doctor. */}
+          <NavLink className={itemClass} to="/conferences">
+            <span className="dp2-icon">
+              <LuCalendarDays />
+            </span>
+            {t("conferences_menu", { defaultValue: "Конференции" })}
           </NavLink>
 
           <NavLink className={itemClass} to="/doctor/consultation-ai">

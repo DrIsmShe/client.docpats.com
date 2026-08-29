@@ -62,6 +62,15 @@ export default function Aside() {
             </Link>
           </li>
 
+          {/* ─── Конференции ─── */}
+          <li className="nav-heading" data-sec="conferences">Конференции</li>
+          <li className="nav-item" data-sec="conferences">
+            <Link className="nav-link collapsed" to="conferences">
+              <i className="bi bi-calendar-event"></i>
+              <span>Модерация конференций</span>
+            </Link>
+          </li>
+
           {/* ─── Тесты и экзамены ─── */}
           <li className="nav-heading" data-sec="education">Тесты и экзамены</li>
           <li className="nav-item" data-sec="education">
