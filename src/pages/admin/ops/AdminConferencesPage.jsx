@@ -140,6 +140,63 @@ export default function AdminConferencesPage() {
     }
   }
 
+  // Добор подробностей со страниц самих конференций: программа, условия,
+  // дедлайны и цена. На страницах обществ этого нет — только анонс.
+  async function enrich(id) {
+    setRunning(true);
+    setError(null);
+    setNotice(null);
+    setRunResult(null);
+    try {
+      const r = await axios.post(
+        `${API_BASE}/admin/conferences/enrich`,
+        id ? { id } : {},
+        { withCredentials: true, timeout: 10 * 60 * 1000 },
+      );
+      const d = r.data;
+      setNotice(
+        id
+          ? d.filled?.length
+            ? `Дополнено: ${d.filled.join(", ")}`
+            : d.error || "На странице конференции ничего нового не нашлось."
+          : `Обработано карточек: ${d.processed ?? 0}`,
+      );
+      await load();
+    } catch (e) {
+      setError(e.response?.data?.message || "Не удалось дополнить.");
+    } finally {
+      setRunning(false);
+    }
+  }
+
+  // Перевод карточек на пять языков. Обычно не нужен — стартует сам при
+  // публикации; кнопка для тех, что опубликованы раньше или где сорвалось.
+  async function translateAll() {
+    setRunning(true);
+    setError(null);
+    setNotice(null);
+    setRunResult(null);
+    try {
+      const r = await axios.post(
+        `${API_BASE}/admin/conferences/translate`,
+        {},
+        { withCredentials: true, timeout: 10 * 60 * 1000 },
+      );
+      const done = (r.data.results || []).filter((x) => x.done?.length).length;
+      setNotice(
+        `Переведено карточек: ${done} из ${r.data.processed ?? 0}` +
+          ((r.data.results || []).find((x) => x.error)
+            ? ` · ошибка: ${(r.data.results || []).find((x) => x.error).error}`
+            : ""),
+      );
+      await load();
+    } catch (e) {
+      setError(e.response?.data?.message || "Не удалось перевести.");
+    } finally {
+      setRunning(false);
+    }
+  }
+
   async function submitForm(e) {
     e.preventDefault();
     setError(null);
@@ -201,6 +258,12 @@ export default function AdminConferencesPage() {
         </button>
         <button onClick={runIngestion} disabled={running} style={{ ...btn, background: "#7c3aed" }}>
           {running ? "Обхожу источники…" : "Запустить обход"}
+        </button>
+        <button onClick={() => enrich()} disabled={running} style={{ ...btn, background: "#0369a1" }}>
+          {running ? "Работаю…" : "Дополнить подробностями"}
+        </button>
+        <button onClick={translateAll} disabled={running} style={{ ...btn, background: "#b45309" }}>
+          {running ? "Работаю…" : "Перевести на 5 языков"}
         </button>
       </div>
 
@@ -386,6 +449,20 @@ export default function AdminConferencesPage() {
               </div>
             )}
 
+            {c.status === "published" && c.translationStatus !== "done" && (
+              <div style={{ fontSize: 12, color: "#64748b", marginTop: 8 }}>
+                Перевод ещё не готов — врачам карточка показывается
+                по-английски.
+              </div>
+            )}
+
+            {!c.detailsFetchedAt && (
+              <div style={{ fontSize: 12, color: "#64748b", marginTop: 8 }}>
+                Подробности со страницы конференции ещё не добирались —
+                программы, условий и дедлайнов на карточке не будет.
+              </div>
+            )}
+
             {c.rejectedReason && (
               <div style={{ fontSize: 13, color: "#b45309", marginTop: 8 }}>
                 Причина отклонения: {c.rejectedReason}
@@ -408,6 +485,9 @@ export default function AdminConferencesPage() {
                   Вернуть в черновики
                 </button>
               )}
+              <button onClick={() => enrich(c._id)} disabled={running} style={smallBtn}>
+                {c.detailsFetchedAt ? "Перечитать страницу" : "Дополнить со страницы"}
+              </button>
             </div>
           </div>
         ))

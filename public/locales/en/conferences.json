@@ -21,6 +21,11 @@
   "cme": "CME credits",
   "price": "Fee",
   "website": "Conference website",
+  "details": "Details",
+  "program": "Programme",
+  "conditions": "Terms of participation",
+  "venue": "Venue",
+  "audience": "Who it is for",
   "back": "All conferences",
   "empty": "Nothing matches these filters.",
   "error": "Could not load conferences.",
@@ -42,5 +47,7 @@
     "emergency": "Emergency care",
     "mens-health": "Men's health",
     "pharmacy": "Pharmacy"
-  }
+  },
+  "back_prev": "Back",
+  "to_cabinet": "To my account"
 }

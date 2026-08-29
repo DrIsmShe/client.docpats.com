@@ -11,15 +11,15 @@
 // публичные эндпоинты открыты для docpats.com. Через backend это гонять
 // незачем — здесь нет ни персональных данных, ни авторизации.
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import PageNav from "../../components/shared/PageNav";
 import axios from "axios";
 import { NEWS_API_BASE } from "../../config";
+import { formatDateRange, formatPlace } from "../../lib/localeFormat";
 
 const RTL_LOCALES = new Set(["ar"]);
-const LOCALE_TAG = { ru: "ru-RU", en: "en-US", az: "az-AZ", tr: "tr-TR", ar: "ar" };
-
 const CATEGORY_CODES = [
   "therapeutic",
   "surgical",
@@ -55,25 +55,13 @@ export default function ConferencesList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fmt = useMemo(() => {
-    const tag = LOCALE_TAG[locale] || "ru-RU";
-    return (d) =>
-      d
-        ? new Intl.DateTimeFormat(tag, {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-            timeZone: "UTC",
-          }).format(new Date(d))
-        : "";
-  }, [locale]);
-
   const load = useCallback(
     async (nextPage = 1, append = false) => {
       setLoading(true);
       setError(null);
       try {
-        const params = { page: nextPage, limit: PER_PAGE, sort };
+        // Карточки приходят на языке интерфейса: движок накладывает перевод.
+        const params = { page: nextPage, limit: PER_PAGE, sort, locale };
         if (category) params.category = category;
         if (country) params.country = country;
         if (format) params.format = format;
@@ -88,7 +76,7 @@ export default function ConferencesList() {
         setLoading(false);
       }
     },
-    [category, country, format, sort, t],
+    [category, country, format, sort, locale, t],
   );
 
   useEffect(() => {
@@ -102,14 +90,17 @@ export default function ConferencesList() {
       .catch(() => setCountries([]));
   }, []);
 
+  // Страна словом, а не кодом: «Milan, IT» ничего не говорит врачу, который
+  // решает, поедет ли он туда.
   const place = (c) =>
     c.format === "online"
       ? t("format.online")
-      : [c.city, c.country].filter(Boolean).join(", ") +
+      : formatPlace(c.city, c.country, locale) +
         (c.format === "hybrid" ? ` · ${t("format.hybrid")}` : "");
 
   return (
     <div dir={dir} style={wrap}>
+      <PageNav fallback="/conferences" />
       <h1 style={h1}>{t("title")}</h1>
       <p style={sub}>{t("subtitle")}</p>
 
@@ -159,8 +150,7 @@ export default function ConferencesList() {
               <h2 style={cardTitle}>{c.title}</h2>
 
               <div style={meta}>
-                {fmt(c.startDate)}
-                {c.endDate ? ` — ${fmt(c.endDate)}` : ""}
+                {formatDateRange(c.startDate, c.endDate, locale)}
                 {place(c) ? ` · ${place(c)}` : ""}
               </div>
 
@@ -171,8 +161,8 @@ export default function ConferencesList() {
               {(c.registrationDeadline || c.abstractDeadline) && (
                 <div style={deadline}>
                   {c.registrationDeadline
-                    ? `${t("registration_until")} ${fmt(c.registrationDeadline)}`
-                    : `${t("abstracts_until")} ${fmt(c.abstractDeadline)}`}
+                    ? `${t("registration_until")} ${formatDateRange(c.registrationDeadline, null, locale)}`
+                    : `${t("abstracts_until")} ${formatDateRange(c.abstractDeadline, null, locale)}`}
                 </div>
               )}
 
@@ -185,6 +175,11 @@ export default function ConferencesList() {
                   ))}
                 </div>
               )}
+
+              {/* Карточка кликабельна целиком, но видимая ссылка нужна: без
+                  неё непонятно, что за карточкой есть страница, и врач уходит
+                  искать конференцию в поиске. */}
+              <div style={moreLink}>{t("details")} →</div>
             </article>
           </Link>
         ))
@@ -209,5 +204,6 @@ const card = { background: "#fff", border: "1px solid #e6eaf0", borderRadius: 12
 const cardTitle = { fontSize: 17, margin: "0 0 8px", lineHeight: 1.35 };
 const meta = { color: "#475569", fontSize: 14, marginBottom: 2 };
 const deadline = { marginTop: 8, color: "#9a3412", fontSize: 14, fontWeight: 600 };
+const moreLink = { marginTop: 10, color: "#3d7fff", fontSize: 14, fontWeight: 500 };
 const chip = { fontSize: 12, color: "#0f766e", background: "rgba(15,118,110,.1)", padding: "3px 8px", borderRadius: 999 };
 const moreBtn = { padding: "10px 20px", background: "#3d7fff", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", marginTop: 8 };

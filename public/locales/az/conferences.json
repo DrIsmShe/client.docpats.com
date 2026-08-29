@@ -21,6 +21,11 @@
   "cme": "CME kreditləri",
   "price": "Qiymət",
   "website": "Konfransın saytı",
+  "details": "Ətraflı",
+  "program": "Proqram",
+  "conditions": "İştirak şərtləri",
+  "venue": "Məkan",
+  "audience": "Kimlər üçün",
   "back": "Bütün konfranslar",
   "empty": "Bu şərtlərə uyğun heç nə tapılmadı.",
   "error": "Konfranslar yüklənmədi.",
@@ -42,5 +47,7 @@
     "emergency": "Təcili yardım",
     "mens-health": "Kişi sağlamlığı",
     "pharmacy": "Farmasiya"
-  }
+  },
+  "back_prev": "Geri",
+  "to_cabinet": "Kabinetə"
 }

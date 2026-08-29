@@ -21,6 +21,11 @@
   "cme": "CME kredileri",
   "price": "Ücret",
   "website": "Kongre web sitesi",
+  "details": "Ayrıntılar",
+  "program": "Program",
+  "conditions": "Katılım koşulları",
+  "venue": "Mekân",
+  "audience": "Kimler için",
   "back": "Tüm kongreler",
   "empty": "Bu filtrelere uyan sonuç yok.",
   "error": "Kongreler yüklenemedi.",
@@ -42,5 +47,7 @@
     "emergency": "Acil tıp",
     "mens-health": "Erkek sağlığı",
     "pharmacy": "Eczacılık"
-  }
+  },
+  "back_prev": "Geri",
+  "to_cabinet": "Hesabıma"
 }
