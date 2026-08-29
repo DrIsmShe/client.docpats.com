@@ -30,8 +30,28 @@ function pickSupported(lang, probe) {
   return "en";
 }
 
-const dateLocale = (lang) =>
-  pickSupported(lang, (t) => Intl.DateTimeFormat.supportedLocalesOf([t]));
+// supportedLocalesOf для дат недостаточно: Chrome отвечает, что `az`
+// поддерживает, но названий месяцев у него нет и он печатает корневой
+// шаблон — «2027 M03 3». Поэтому спрашиваем не мнение браузера, а результат:
+// форматируем пробную дату и смотрим, получилось ли название месяца буквами.
+function hasMonthNames(tag) {
+  try {
+    const probe = new Intl.DateTimeFormat(tag, {
+      month: "short",
+      timeZone: "UTC",
+    }).format(new Date(Date.UTC(2026, 2, 3)));
+    // «M03» — признак корневой локали; ждём буквы или цифры арабского письма.
+    return !/^M\d/i.test(probe) && /[^\d\s.]/u.test(probe);
+  } catch {
+    return false;
+  }
+}
+
+function dateLocale(lang) {
+  const chain = FALLBACK_CHAIN[lang] || [lang, "en"];
+  for (const tag of chain) if (hasMonthNames(tag)) return tag;
+  return "en";
+}
 
 const regionLocale = (lang) =>
   pickSupported(lang, (t) =>
