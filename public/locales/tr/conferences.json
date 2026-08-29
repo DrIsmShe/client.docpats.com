@@ -49,5 +49,8 @@
     "pharmacy": "Eczacılık"
   },
   "back_prev": "Geri",
-  "to_cabinet": "Hesabıma"
+  "to_cabinet": "Hesabıma",
+  "field_dates": "Tarihler",
+  "field_place": "Yer",
+  "field_format": "Format"
 }

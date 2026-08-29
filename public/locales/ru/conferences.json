@@ -49,5 +49,8 @@
     "pharmacy": "Фармация"
   },
   "back_prev": "Назад",
-  "to_cabinet": "В кабинет"
+  "to_cabinet": "В кабинет",
+  "field_dates": "Даты",
+  "field_place": "Место",
+  "field_format": "Формат"
 }

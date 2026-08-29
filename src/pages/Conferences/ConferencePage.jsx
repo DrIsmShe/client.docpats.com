@@ -77,10 +77,11 @@ export default function ConferencePage() {
       ? t("format.online")
       : formatPlace(c.city, c.country, locale) || t(`format.${c.format}`);
 
+  // Подписи полей, а не фильтров: «Даты», а не «По дате начала».
   const facts = [
-    [t("sort.date"), formatDateRange(c.startDate, c.endDate, locale, { long: true })],
-    [t("all_countries"), place],
-    [t("all_formats"), t(`format.${c.format}`)],
+    [t("field_dates"), formatDateRange(c.startDate, c.endDate, locale, { long: true })],
+    [t("field_place"), place],
+    [t("field_format"), t(`format.${c.format}`)],
     [t("organizer"), c.organizer],
     [t("venue"), c.venue],
   ].filter(([, v]) => v);

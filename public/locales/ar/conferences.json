@@ -49,5 +49,8 @@
     "pharmacy": "الصيدلة"
   },
   "back_prev": "رجوع",
-  "to_cabinet": "إلى الحساب"
+  "to_cabinet": "إلى الحساب",
+  "field_dates": "التواريخ",
+  "field_place": "المكان",
+  "field_format": "الصيغة"
 }

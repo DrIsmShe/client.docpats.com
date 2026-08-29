@@ -49,5 +49,8 @@
     "pharmacy": "Pharmacy"
   },
   "back_prev": "Back",
-  "to_cabinet": "To my account"
+  "to_cabinet": "To my account",
+  "field_dates": "Dates",
+  "field_place": "Location",
+  "field_format": "Format"
 }

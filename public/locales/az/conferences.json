@@ -49,5 +49,8 @@
     "pharmacy": "Farmasiya"
   },
   "back_prev": "Geri",
-  "to_cabinet": "Kabinetə"
+  "to_cabinet": "Kabinetə",
+  "field_dates": "Tarixlər",
+  "field_place": "Yer",
+  "field_format": "Format"
 }
