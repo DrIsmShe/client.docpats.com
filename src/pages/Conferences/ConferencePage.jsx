@@ -82,6 +82,7 @@ export default function ConferencePage() {
 
   return (
     <div dir={dir} style={wrap}>
+      <PageNav fallback="/conferences" />
       <Link to="/conferences" style={backLink}>
         ← {t("back")}
       </Link>
