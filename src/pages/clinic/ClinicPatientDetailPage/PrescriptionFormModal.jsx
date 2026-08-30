@@ -68,6 +68,13 @@ function emptyItem() {
     inn: "",
     brandName: "",
     strength: "",
+    strengthAmount: null,
+    strengthUnit: "",
+    doseAmount: null,
+    doseUnit: "",
+    durationAmount: null,
+    durationUnit: "",
+    frequencyCode: "",
     form: "tablet",
     route: "oral",
     dose: "",
@@ -127,6 +134,14 @@ export default function PrescriptionFormModal({
   );
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+
+  // Несколько полей позиции разом. Дозирование хранит и текст, и коды —
+  // менять их по одному значит два рендера и рассинхрон между ними.
+  function setItemFields(idx, patch) {
+    setItems((prev) =>
+      prev.map((it, i) => (i === idx ? { ...it, ...patch } : it)),
+    );
+  }
 
   function setItemField(idx, name, value) {
     setItems((prev) =>
@@ -193,6 +208,14 @@ export default function PrescriptionFormModal({
         inn: it.inn.trim(),
         brandName: it.brandName.trim(),
         strength: it.strength.trim(),
+        // Коды дозирования: по ним бланк напечатает строку на своём языке.
+        strengthAmount: it.strengthAmount ?? null,
+        strengthUnit: it.strengthUnit || "",
+        doseAmount: it.doseAmount ?? null,
+        doseUnit: it.doseUnit || "",
+        durationAmount: it.durationAmount ?? null,
+        durationUnit: it.durationUnit || "",
+        frequencyCode: it.frequencyCode || "",
         form: it.form,
         route: it.route,
         dose: it.dose.trim(),
@@ -409,7 +432,11 @@ export default function PrescriptionFormModal({
                       defaultValue: "Дозировка",
                     })}
                     value={it.strength}
-                    onChange={(v) => setItemField(idx, "strength", v)}
+                    onChange={(v, meta) => setItemFields(idx, {
+                      strength: v,
+                      strengthAmount: meta.amount,
+                      strengthUnit: meta.unit,
+                    })}
                     unitKeys={STRENGTH_UNITS}
                     unitPrefix="medical.prescriptions.units.strength"
                     disabled={submitting}
@@ -473,7 +500,11 @@ export default function PrescriptionFormModal({
                       defaultValue: "Разовая доза",
                     })}
                     value={it.dose}
-                    onChange={(v) => setItemField(idx, "dose", v)}
+                    onChange={(v, meta) => setItemFields(idx, {
+                      dose: v,
+                      doseAmount: meta.amount,
+                      doseUnit: meta.unit,
+                    })}
                     unitKeys={doseUnitsFor(it.form)}
                     unitPrefix="medical.prescriptions.units.dose"
                     disabled={submitting}
@@ -490,7 +521,10 @@ export default function PrescriptionFormModal({
                       defaultValue: "Кратность",
                     })}
                     value={it.frequency}
-                    onChange={(v) => setItemField(idx, "frequency", v)}
+                    onChange={(v, code) => setItemFields(idx, {
+                      frequency: v,
+                      frequencyCode: code,
+                    })}
                     disabled={submitting}
                   />
                   <AmountField
@@ -498,7 +532,11 @@ export default function PrescriptionFormModal({
                       defaultValue: "Длительность",
                     })}
                     value={it.duration}
-                    onChange={(v) => setItemField(idx, "duration", v)}
+                    onChange={(v, meta) => setItemFields(idx, {
+                      duration: v,
+                      durationAmount: meta.amount,
+                      durationUnit: meta.unit,
+                    })}
                     unitKeys={DURATION_UNITS}
                     unitPrefix="medical.prescriptions.units.duration"
                     disabled={submitting}

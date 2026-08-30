@@ -108,11 +108,18 @@ export function AmountField({
   const [num, setNum] = React.useState(parsed.number);
   const [unit, setUnit] = React.useState(parsed.unit);
 
+  // Наружу уходит и готовая строка, и код с числом. Строка нужна форме и
+  // старым рецептам; коды — бланку: без них он не сможет напечатать
+  // дозирование на своём языке, и на азербайджанском бланке останется
+  // «4 раза в день» по-русски.
   const emit = (n, u) => {
     const clean = String(n).replace(",", ".").trim();
-    if (!clean) return onChange("");
+    if (!clean) return onChange("", { amount: null, unit: "" });
     const count = Number(clean);
-    return onChange(`${clean} ${labelOf(u, Number.isFinite(count) ? count : 1)}`);
+    return onChange(
+      `${clean} ${labelOf(u, Number.isFinite(count) ? count : 1)}`,
+      { amount: Number.isFinite(count) ? count : null, unit: u },
+    );
   };
 
   if (mode === "free") {
@@ -122,7 +129,9 @@ export function AmountField({
         <input
           type="text"
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) =>
+            onChange(e.target.value, { amount: null, unit: "" })
+          }
           disabled={disabled}
           placeholder={placeholder}
         />
@@ -131,7 +140,7 @@ export function AmountField({
           className="rx-unit-switch"
           onClick={() => {
             setMode("list");
-            onChange("");
+            onChange("", { amount: null, unit: "" });
           }}
           disabled={disabled}
         >
@@ -209,7 +218,7 @@ export function FrequencyField({ label, value, onChange, disabled }) {
         <input
           type="text"
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => onChange(e.target.value, "")}
           disabled={disabled}
         />
         <button
@@ -217,7 +226,7 @@ export function FrequencyField({ label, value, onChange, disabled }) {
           className="rx-unit-switch"
           onClick={() => {
             setMode("list");
-            onChange("");
+            onChange("", "");
           }}
           disabled={disabled}
         >
@@ -237,10 +246,15 @@ export function FrequencyField({ label, value, onChange, disabled }) {
         onChange={(e) => {
           if (e.target.value === "__free") {
             setMode("free");
-            onChange("");
+            onChange("", "");
             return;
           }
-          onChange(e.target.value ? labelOf(e.target.value) : "");
+          // Код уходит вместе с текстом: по нему бланк напечатает
+          // кратность на своём языке.
+          onChange(
+            e.target.value ? labelOf(e.target.value) : "",
+            e.target.value || "",
+          );
         }}
         disabled={disabled}
       >
