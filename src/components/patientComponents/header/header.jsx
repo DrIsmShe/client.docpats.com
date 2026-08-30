@@ -155,11 +155,16 @@ export default function HeaderPatient() {
                   <hr className="dropdown-divider" />
                 </li>
 
-                {/* <li className="px-2">
-                  <NotificationBell onUnreadChange={setUnreadCount} limit={5} />
-                </li> */}
                 <li className="nav-item d-flex align-items-center">
+                  {/* onUnreadChange обязателен: счётчик над колокольчиком
+                      живёт в этой шапке, а считает непрочитанные сам
+                      колокольчик. Раньше обработчик стоял на втором,
+                      закомментированном экземпляре, и setUnreadCount не
+                      вызывался никогда — значок не загорался, а в шапке
+                      списка всегда стояло «Нет новых уведомлений», хотя
+                      непрочитанные в списке выделялись жирным. */}
                   <NotificationBell
+                    onUnreadChange={setUnreadCount}
                     viewAllLink="/patient/notification-for-patient"
                     limit={8}
                   />
