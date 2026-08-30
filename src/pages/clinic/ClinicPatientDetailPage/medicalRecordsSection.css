@@ -1530,3 +1530,22 @@
   font-size: 13px;
   color: #a02617;
 }
+
+/* Две кнопки над картой: печать для человека, выгрузка для другой системы.
+   На узком экране встают в столбик — иначе длинная подпись выгрузки
+   выдавливает печать за край. */
+.med-export-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+@media (max-width: 640px) {
+  .med-export-actions {
+    width: 100%;
+  }
+  .med-export-actions > * {
+    flex: 1 1 100%;
+  }
+}

@@ -28,6 +28,7 @@ import PrescriptionsTab from "./PrescriptionsTab";
 import LabResultsTab from "./LabResultsTab";
 import SummaryTab from "./SummaryTab";
 import FhirExportButton from "./FhirExportButton";
+import PrintCardButton from "./PrintCardButton";
 import "./medicalRecordsSection.css";
 
 const TABS = [
@@ -110,7 +111,15 @@ export default function MedicalRecordsSection({ patient, canWrite }) {
             как на сервере. Забрать карту целиком не рядовое чтение:
             файл дальше живёт своей жизнью, и роли, которой положено
             смотреть, не обязательно положено уносить. */}
-        {canWrite && <FhirExportButton patient={patient} />}
+        {/* Печать — для чтения человеком, выгрузка — для другой системы.
+            Стоят рядом намеренно: без соседа «Выгрузить в FHIR» читается
+            как «показать карту», и врач открывает файл, ожидая документ. */}
+        {canWrite && (
+          <div className="med-export-actions">
+            <PrintCardButton patient={patient} />
+            <FhirExportButton patient={patient} />
+          </div>
+        )}
       </div>
 
       <div className="med-tabs">

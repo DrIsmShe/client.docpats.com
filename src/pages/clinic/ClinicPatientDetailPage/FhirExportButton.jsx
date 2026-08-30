@@ -61,9 +61,11 @@ export default function FhirExportButton({ patient }) {
         className="edu-btn edu-btn--ghost"
         disabled={busy}
         onClick={download}
-        title="Стандарт FHIR R4 — формат, который принимают другие медицинские системы"
+        title="Машинный формат FHIR R4 для передачи карты в другую клинику, лабораторию или реестр. Файл открывается кодом — это не документ для чтения; для чтения и печати есть «Печать карты»."
       >
-        {busy ? "Готовим выгрузку…" : "Выгрузить в FHIR"}
+        {busy
+          ? "Готовим выгрузку…"
+          : "Выгрузить для другой системы (FHIR)"}
       </button>
       {error && <span className="med-export__error">{error}</span>}
     </div>
