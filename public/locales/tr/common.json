@@ -1706,7 +1706,8 @@
   "no_notifications": "Bildirim yok",
   "notifSettings": {
     "title": "Bildirim ayarları",
-    "emailDigest": "Okunmayanların e-posta özeti"
+    "emailDigest": "Okunmayanların e-posta özeti",
+    "conferenceDigest": "Konferans derlemesi — haftada bir"
   },
   "push": {
     "enable": "Anlık bildirimleri aç",
@@ -2285,5 +2286,6 @@
     "empty_archive": "Arşiv boş",
     "err_load": "Günlük yüklenemedi",
     "err_action": "İşlem gerçekleştirilemedi"
-  }
+  },
+  "notification_language": "Bildirim dili"
 }

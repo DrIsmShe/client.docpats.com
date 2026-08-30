@@ -1707,7 +1707,8 @@
   "no_notifications": "Bildiriş yoxdur",
   "notifSettings": {
     "title": "Bildiriş parametrləri",
-    "emailDigest": "Oxunmamışların e-poçt icmalı"
+    "emailDigest": "Oxunmamışların e-poçt icmalı",
+    "conferenceDigest": "Konfranslar toplusu — həftədə bir dəfə"
   },
   "push": {
     "enable": "Push bildirişləri aç",
@@ -2286,5 +2287,6 @@
     "empty_archive": "Arxiv boşdur",
     "err_load": "Jurnal yüklənə bilmədi",
     "err_action": "Əməliyyat yerinə yetirilmədi"
-  }
+  },
+  "notification_language": "Bildiriş dili"
 }

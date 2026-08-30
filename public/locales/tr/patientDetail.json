@@ -19,7 +19,8 @@
     "addGenerateClinicalSummary": "Klinik Özet Oluştur",
     "generating": "Oluşturuluyor",
     "aiGeneratedSummaryDisclaimer": "Bu özet yapay zeka tarafından oluşturulmuştur. Yalnızca profesyonel kullanım içindir.",
-    "PatientNotFound": "Hasta bulunamadı"
+    "PatientNotFound": "Hasta bulunamadı",
+    "issuePrescription": "Reçete yaz"
   },
   "examAddedSuccess": "✅ Tetkik başarıyla eklendi",
   "tabs": {
@@ -52,7 +53,8 @@
     "ekg": "EKG",
     "echoEkg": "Eko-KG",
     "coronography": "Koroner anjiografi",
-    "labTests": "Laboratuvar testleri"
+    "labTests": "Laboratuvar testleri",
+    "prescriptions": "Reçeteler"
   },
   "generalInfo": {
     "firstName": "Ad",
@@ -150,5 +152,9 @@
     "Immunology": "İmmünoloji",
     "GeneticScreening": "Genetik tarama",
     "Other": "Diğer"
+  },
+  "prescriptions": {
+    "empty": "Henüz reçete yok",
+    "print": "Form"
   }
 }

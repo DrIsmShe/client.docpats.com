@@ -655,7 +655,8 @@
       "email": "E-poçt",
       "dateOfBirth": "Doğum tarixi",
       "gender": "Cins",
-      "departmentNone": "Şöbəsiz"
+      "departmentNone": "Şöbəsiz",
+      "weightKg": "Çəki (kq)"
     },
     "gender": {
       "male": "Kişi",
@@ -1190,7 +1191,14 @@
       "errors": {
         "innRequired": "Dərmanın BDA-sını daxil edin",
         "atLeastOne": "Ən azı bir dərman əlavə edin"
-      }
+      },
+      "dispensingTitle": "Buraxılış şərtləri",
+      "substitution": "Analoqla əvəzetmə",
+      "substitutionUnset": "Göstərilməyib",
+      "substitutionYes": "Analoqla əvəzetməyə icazə verilir",
+      "substitutionNo": "Yazıldığı kimi buraxılsın (əvəzetmə olmadan)",
+      "refills": "Təkrar buraxılışlar",
+      "validUntil": "Resept etibarlıdır"
     },
     "tabs": {
       "labResults": "Laborator nəticələr",
@@ -1467,7 +1475,8 @@
       "viewKnowledge": "Bilik bazası",
       "viewRooms": "Otaqlar",
       "viewServices": "Xidmətlər və qiymətlər",
-      "viewTelemed": "Telemedisina"
+      "viewTelemed": "Telemedisina",
+      "requisites": "Klinikanın rekvizitləri"
     },
     "team": "Komanda",
     "viewAll": "Hamısına bax ({{count}}) →",
@@ -2465,5 +2474,24 @@
     "noSlots": "Bu gün boş vaxt yoxdur. Ola bilsin həkim işləmir və ya gün tam doludur.",
     "reasonPlaceholder": "məsələn: təkrar qəbul, konsultasiya",
     "subtitle": "Həkim və boş vaxt seçin, sonra pasiyenti tapın."
+  },
+  "requisites": {
+    "title": "Klinikanın rekvizitləri",
+    "hint": "Bu məlumatlar reseptlərin və digər blankların başlığında çap olunur. Doldurulmamış sahələr blankda boş qalır.",
+    "legal": "Hüquqi məlumatlar",
+    "legalName": "Hüquqi ad",
+    "taxId": "VÖEN",
+    "licenseNumber": "Müəssisənin lisenziya nömrəsi",
+    "address": "Ünvan",
+    "street": "Küçə, bina",
+    "city": "Şəhər",
+    "country": "Ölkə (kod: AZ, TR)",
+    "contacts": "Əlaqə",
+    "phone": "Telefon",
+    "email": "E-poçt",
+    "website": "Sayt (https://…)",
+    "saved": "Yadda saxlanıldı",
+    "saveFailed": "Yadda saxlamaq mümkün olmadı",
+    "loadFailed": "Klinikanın məlumatlarını yükləmək mümkün olmadı"
   }
 }

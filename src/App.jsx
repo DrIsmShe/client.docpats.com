@@ -16,6 +16,9 @@ import FontSizeControl from "./components/FontSizeControl";
 // Рендерится вне <Routes> и вне Suspense — только обычный импорт (import/first
 // здесь ошибка сборки, а lazy без границы Suspense сорвал бы первый рендер).
 import UpcomingAppointmentBanner from "./components/shared/UpcomingAppointmentBanner";
+// Тоже обычный импорт, и намеренно: граница ошибок должна существовать
+// РАНЬШЕ, чем что-либо начнёт грузиться лениво, — иначе ловить нечем.
+import ChunkErrorBoundary from "./components/shared/ChunkErrorBoundary";
 
 const DoctorsAll = lazy(() => import("./pages/doctorProfilePages/shared/doctors/doctors"));
 
@@ -592,6 +595,7 @@ const BreastEditorPage = lazy(() =>
 );
 const UserSynthesisArticlePage = lazy(() => import("./pages/UserSynthesis/UserSynthesisArticlePage"));
 const ClinicLayout = lazy(() => import("./layoutes/clinicLayout/ClinicLayout.jsx"));
+const ClinicRequisitesPage = lazy(() => import("./pages/clinic/ClinicRequisitesPage/ClinicRequisitesPage.jsx"));
 const ClinicHubPage = lazy(() => import("./pages/clinic/ClinicHubPage/ClinicHubPage.jsx"));
 const CreateClinicPage = lazy(() => import("./pages/clinic/CreateClinicPage/CreateClinicPage.jsx"));
 const ClinicDashboardPage = lazy(() => import("./pages/clinic/ClinicDashboardPage/ClinicDashboardPage.jsx"));
@@ -722,6 +726,11 @@ function App() {
               смотрит не на расписание, а на карту пациента или статью.
               Eager-импорт обязателен — здесь нет границы Suspense. */}
           <UpcomingAppointmentBanner />
+          {/* Граница ошибок ВОКРУГ Suspense, а не внутри: сбой загрузки
+              файла страницы происходит при разрешении ленивого импорта, то
+              есть снаружи. Без неё такая ошибка снимала всё дерево — это и
+              был белый экран, который лечился перезагрузкой. */}
+          <ChunkErrorBoundary>
           <Suspense fallback={<RouteFallback />}>
             <Routes>
             {/* Встреча по ссылке. Корневой адрес намеренно: ссылку
@@ -871,6 +880,10 @@ function App() {
                 path="public-page"
                 element={<ClinicPublicPageSettings />}
               />
+              {/* Реквизиты учреждения: печатаются в шапке рецепта. Сервер
+                  их принимал и модель хранила, а формы не было — бланк
+                  выходил без адреса и без номера лицензии. */}
+              <Route path="requisites" element={<ClinicRequisitesPage />} />
 
               <Route path="services" element={<ServicesPage />} />
               {/* Заявки с витрины. Страница существовала только в зоне
@@ -3144,6 +3157,7 @@ function App() {
             <Route path="*" element={<Pagenotfound />} />
             </Routes>
           </Suspense>
+          </ChunkErrorBoundary>
           {/* Помощник по продукту — на всех страницах, кроме экранов-
               редакторов (список в самом компоненте). Внутри BrowserRouter:
               ему нужен текущий адрес, чтобы понять зону и роль. */}

@@ -331,6 +331,20 @@ export default function ClinicDashboardPage() {
               <span className="clinic-dashboard-action-arrow">→</span>
             </Link>
           )}
+          {/* Реквизиты — рядом с публичной страницей: и то и другое
+              «лицо» клиники, только одно для посетителя, другое для
+              бланков. Права те же, что у настроек клиники. */}
+          {canRead("clinic") && (
+            <Link to="/clinic/requisites" className="clinic-dashboard-action">
+              <span className="clinic-dashboard-action-icon">📄</span>
+              <span className="clinic-dashboard-action-label">
+                {t("dashboard.actions.requisites", {
+                  defaultValue: "Реквизиты клиники",
+                })}
+              </span>
+              <span className="clinic-dashboard-action-arrow">→</span>
+            </Link>
+          )}
           {canRead("clinic") && (
             <Link to="/clinic/public-page" className="clinic-dashboard-action">
               <span className="clinic-dashboard-action-icon">🌐</span>

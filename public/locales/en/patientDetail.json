@@ -34,7 +34,8 @@
     "edit": "Edit Profile",
     "settings": "Settings",
     "changePassword": "Change Password",
-    "changeEmail": "Change Email"
+    "changeEmail": "Change Email",
+    "prescriptions": "Prescriptions"
   },
   "generalInfo": {
     "firstName": "First name",
@@ -100,7 +101,8 @@
     "addGenerateClinicalSummary": "Generate Clinical Summary",
     "generating": "Generating",
     "aiGeneratedSummaryDisclaimer": "AI-generated summary. For professional reference only.",
-    "PatientNotFound": "Patient not found"
+    "PatientNotFound": "Patient not found",
+    "issuePrescription": "Issue prescription"
   },
   "values": {
     "notSpecified": "Not specified",
@@ -150,5 +152,9 @@
     "Immunology": "Immunology",
     "GeneticScreening": "Genetic screening",
     "Other": "Other"
+  },
+  "prescriptions": {
+    "empty": "No prescriptions yet",
+    "print": "Form"
   }
 }

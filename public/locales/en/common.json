@@ -1680,7 +1680,8 @@
   "no_notifications": "No notifications",
   "notifSettings": {
     "title": "Notification settings",
-    "emailDigest": "Email digest of unread items"
+    "emailDigest": "Email digest of unread items",
+    "conferenceDigest": "Conference digest — once a week"
   },
   "push": {
     "enable": "Enable push notifications",
@@ -2312,5 +2313,6 @@
     "empty_archive": "The archive is empty",
     "err_load": "Could not load the log",
     "err_action": "The action failed"
-  }
+  },
+  "notification_language": "Notification language"
 }

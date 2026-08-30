@@ -19,7 +19,8 @@
     "addGenerateClinicalSummary": "Сформировать клиническое резюме",
     "generating": "Генерация",
     "aiGeneratedSummaryDisclaimer": "Сводка создана ИИ. Только для профессионального использования.",
-    "PatientNotFound": "Пациент не найден"
+    "PatientNotFound": "Пациент не найден",
+    "issuePrescription": "Выписать рецепт"
   },
   "examAddedSuccess": "✅ Исследование успешно добавлено",
   "tabs": {
@@ -52,7 +53,8 @@
     "ekg": "ЭКГ",
     "echoEkg": "ЭхоКГ",
     "coronography": "Коронарография",
-    "labTests": "Лабораторные анализы"
+    "labTests": "Лабораторные анализы",
+    "prescriptions": "Рецепты"
   },
   "generalInfo": {
     "firstName": "Имя",
@@ -150,5 +152,9 @@
     "Immunology": "Иммунология",
     "GeneticScreening": "Генетический скрининг",
     "Other": "Другое"
+  },
+  "prescriptions": {
+    "empty": "Рецептов пока нет",
+    "print": "Бланк"
   }
 }

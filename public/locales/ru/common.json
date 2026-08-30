@@ -1751,7 +1751,8 @@
   "no_notifications": "Уведомлений нет",
   "notifSettings": {
     "title": "Настройки уведомлений",
-    "emailDigest": "Email-дайджест непрочитанных"
+    "emailDigest": "Email-дайджест непрочитанных",
+    "conferenceDigest": "Подборка конференций — раз в неделю"
   },
   "push": {
     "enable": "Включить пуш-уведомления",
@@ -2285,5 +2286,6 @@
     "empty_archive": "В архиве пусто",
     "err_load": "Не удалось загрузить журнал",
     "err_action": "Действие не выполнено"
-  }
+  },
+  "notification_language": "Язык уведомлений"
 }

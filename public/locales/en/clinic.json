@@ -655,7 +655,8 @@
       "email": "Email",
       "dateOfBirth": "Date of birth",
       "gender": "Gender",
-      "departmentNone": "No department"
+      "departmentNone": "No department",
+      "weightKg": "Weight (kg)"
     },
     "gender": {
       "male": "Male",
@@ -1190,7 +1191,14 @@
       "errors": {
         "innRequired": "Enter the drug INN",
         "atLeastOne": "Add at least one drug"
-      }
+      },
+      "dispensingTitle": "Dispensing conditions",
+      "substitution": "Generic substitution",
+      "substitutionUnset": "Not specified",
+      "substitutionYes": "Generic substitution permitted",
+      "substitutionNo": "Dispense as written (no substitution)",
+      "refills": "Repeats / refills",
+      "validUntil": "Prescription valid until"
     },
     "tabs": {
       "labResults": "Lab Results",
@@ -1467,7 +1475,8 @@
       "viewKnowledge": "Knowledge base",
       "viewRooms": "Rooms",
       "viewServices": "Services and prices",
-      "viewTelemed": "Telemedicine"
+      "viewTelemed": "Telemedicine",
+      "requisites": "Clinic details"
     },
     "team": "Team",
     "viewAll": "View all ({{count}}) →",
@@ -2465,5 +2474,24 @@
     "noSlots": "No free slots on this day. The doctor may not be working, or the day is fully booked.",
     "reasonPlaceholder": "e.g. follow-up, consultation",
     "subtitle": "Pick a doctor and a free slot, then find the patient."
+  },
+  "requisites": {
+    "title": "Clinic details",
+    "hint": "These details are printed in the letterhead of prescriptions and other forms. Fields left blank stay blank on the form.",
+    "legal": "Legal details",
+    "legalName": "Legal name",
+    "taxId": "Tax ID",
+    "licenseNumber": "Facility licence number",
+    "address": "Address",
+    "street": "Street and building",
+    "city": "City",
+    "country": "Country (code: AZ, TR)",
+    "contacts": "Contacts",
+    "phone": "Phone",
+    "email": "Email",
+    "website": "Website (https://…)",
+    "saved": "Saved",
+    "saveFailed": "Could not save",
+    "loadFailed": "Could not load clinic details"
   }
 }

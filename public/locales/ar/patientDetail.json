@@ -19,7 +19,8 @@
     "addGenerateClinicalSummary": "إنشاء ملخص سريري",
     "generating": "جارٍ الإنشاء",
     "aiGeneratedSummaryDisclaimer": "تم إنشاء هذا الملخص بواسطة الذكاء الاصطناعي. للاستخدام المهني فقط.",
-    "PatientNotFound": "لم يُعثر على المريض"
+    "PatientNotFound": "لم يُعثر على المريض",
+    "issuePrescription": "كتابة وصفة"
   },
   "examAddedSuccess": "✅ تمّت إضافة الفحص بنجاح",
   "tabs": {
@@ -52,7 +53,8 @@
     "ekg": "تخطيط القلب ECG",
     "echoEkg": "تصوير صدى القلب",
     "coronography": "تصوير الشرايين التاجية",
-    "labTests": "التحاليل المخبرية"
+    "labTests": "التحاليل المخبرية",
+    "prescriptions": "الوصفات"
   },
   "generalInfo": {
     "firstName": "الاسم",
@@ -150,5 +152,9 @@
     "Immunology": "المناعة",
     "GeneticScreening": "الفحص الجيني",
     "Other": "أخرى"
+  },
+  "prescriptions": {
+    "empty": "لا توجد وصفات بعد",
+    "print": "النموذج"
   }
 }

@@ -655,7 +655,8 @@
       "email": "E-posta",
       "dateOfBirth": "Doğum tarihi",
       "gender": "Cinsiyet",
-      "departmentNone": "Bölümsüz"
+      "departmentNone": "Bölümsüz",
+      "weightKg": "Kilo (kg)"
     },
     "gender": {
       "male": "Erkek",
@@ -1190,7 +1191,14 @@
       "errors": {
         "innRequired": "İlacın INN'ini girin",
         "atLeastOne": "En az bir ilaç ekleyin"
-      }
+      },
+      "dispensingTitle": "Veriliş koşulları",
+      "substitution": "Eşdeğer ile değişim",
+      "substitutionUnset": "Belirtilmemiş",
+      "substitutionYes": "Eşdeğer ile değişime izin verilir",
+      "substitutionNo": "Yazıldığı gibi verilsin (değişim yok)",
+      "refills": "Tekrar sayısı",
+      "validUntil": "Reçete geçerlilik tarihi"
     },
     "tabs": {
       "labResults": "Laboratuvar sonuçları",
@@ -1467,7 +1475,8 @@
       "viewKnowledge": "Bilgi bankası",
       "viewRooms": "Odalar",
       "viewServices": "Hizmetler ve fiyatlar",
-      "viewTelemed": "Teletıp"
+      "viewTelemed": "Teletıp",
+      "requisites": "Klinik bilgileri"
     },
     "team": "Ekip",
     "viewAll": "Tümünü gör ({{count}}) →",
@@ -2465,5 +2474,24 @@
     "noSlots": "Bu gün boş saat yok. Doktor çalışmıyor olabilir ya da gün tamamen dolu.",
     "reasonPlaceholder": "örn. kontrol, konsültasyon",
     "subtitle": "Bir doktor ve boş saat seçin, ardından hastayı bulun."
+  },
+  "requisites": {
+    "title": "Klinik bilgileri",
+    "hint": "Bu bilgiler reçetelerin ve diğer belgelerin başlığında yazdırılır. Boş bırakılan alanlar belgede de boş kalır.",
+    "legal": "Yasal bilgiler",
+    "legalName": "Yasal unvan",
+    "taxId": "Vergi no",
+    "licenseNumber": "Kurum lisans numarası",
+    "address": "Adres",
+    "street": "Sokak, bina",
+    "city": "Şehir",
+    "country": "Ülke (kod: AZ, TR)",
+    "contacts": "İletişim",
+    "phone": "Telefon",
+    "email": "E-posta",
+    "website": "Web sitesi (https://…)",
+    "saved": "Kaydedildi",
+    "saveFailed": "Kaydedilemedi",
+    "loadFailed": "Klinik bilgileri yüklenemedi"
   }
 }

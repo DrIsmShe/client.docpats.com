@@ -8,12 +8,18 @@
 // WHO principle: prescribe by INN (generic), brand optional.
 //
 // Uses shared .med-modal-* / .patients-form-* classes from
-// medicalRecordsSection.css. No draft — single "Issue" action.
+// medicalRecordsSection.css (импортируется этим же файлом).
+// No draft — single "Issue" action.
 
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createPrescription } from "../../../api/clinic";
 import ICD10Autocomplete from "../../../components/ICD10Autocomplete";
+// Стили импортируются здесь, а не только у родителя: ту же форму открывает
+// страница частного пациента врача, где MedicalRecordsSection не
+// отрисовывается, и модалка приезжала бы вообще без оформления. Повторный
+// импорт того же файла бесплатен — сборщик подключает его один раз.
+import "./medicalRecordsSection.css";
 
 const DRUG_FORMS = [
   "tablet",
@@ -61,7 +67,17 @@ function emptyItem() {
   };
 }
 
-export default function PrescriptionFormModal({ patient, onClose, onSaved }) {
+// submit — необязательная подмена способа отправки. Ту же форму открывает
+// кабинет врача для своего частного пациента, а туда ведёт другой маршрут:
+// клинический сервис требует членства в клинике, которого у частного
+// приёма нет. Копировать бланк ради одной строки было бы хуже — он бы
+// разошёлся с клиническим при первой же правке.
+export default function PrescriptionFormModal({
+  patient,
+  onClose,
+  onSaved,
+  submit,
+}) {
   const { t } = useTranslation("clinic");
 
   const [items, setItems] = useState([emptyItem()]);
@@ -71,6 +87,12 @@ export default function PrescriptionFormModal({ patient, onClose, onSaved }) {
     text: "",
   });
   const [generalNotes, setGeneralNotes] = useState("");
+  // Условия отпуска. На бланке эти графы были всегда, но заполнить их было
+  // негде: аптека получала рецепт без указания, можно ли заменить препарат.
+  // "" — врач не выбрал: на бланке не отмечается ни один квадрат.
+  const [substitution, setSubstitution] = useState("");
+  const [refills, setRefills] = useState("");
+  const [validUntil, setValidUntil] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -159,6 +181,9 @@ export default function PrescriptionFormModal({ patient, onClose, onSaved }) {
       };
     }
     if (generalNotes.trim()) payload.generalNotes = generalNotes.trim();
+    if (substitution !== "") payload.substitutionAllowed = substitution === "yes";
+    if (refills !== "") payload.refills = Number(refills);
+    if (validUntil) payload.validUntil = validUntil;
 
     return payload;
   }
@@ -171,7 +196,8 @@ export default function PrescriptionFormModal({ patient, onClose, onSaved }) {
     }
     setSubmitting(true);
     try {
-      const created = await createPrescription(patient._id, buildPayload());
+      const send = submit || createPrescription;
+      const created = await send(patient._id, buildPayload());
       const saved = created.prescription || created;
       onSaved && onSaved(saved);
     } catch (err) {
@@ -534,6 +560,88 @@ export default function PrescriptionFormModal({ patient, onClose, onSaved }) {
                 defaultValue: "+ Добавить препарат",
               })}
             </button>
+          </fieldset>
+
+          {/* Условия отпуска — то, что аптека читает первым делом */}
+          <fieldset className="med-fieldset">
+            <legend>
+              {t("medical.prescriptions.dispensingTitle", {
+                defaultValue: "Условия отпуска",
+              })}
+              <span className="patients-form-optional">
+                {t("common.optional", { defaultValue: "необязательно" })}
+              </span>
+            </legend>
+
+            <div className="patients-form-field">
+              <label>
+                {t("medical.prescriptions.substitution", {
+                  defaultValue: "Замена на аналог",
+                })}
+              </label>
+              <select
+                value={substitution}
+                onChange={(e) => setSubstitution(e.target.value)}
+                disabled={submitting}
+              >
+                <option value="">
+                  {t("medical.prescriptions.substitutionUnset", {
+                    defaultValue: "Не указано",
+                  })}
+                </option>
+                <option value="yes">
+                  {t("medical.prescriptions.substitutionYes", {
+                    defaultValue: "Замена на аналог разрешена",
+                  })}
+                </option>
+                <option value="no">
+                  {t("medical.prescriptions.substitutionNo", {
+                    defaultValue: "Отпустить как выписано (без замены)",
+                  })}
+                </option>
+              </select>
+            </div>
+
+            {/* Два коротких поля в ряд: на узком экране переносятся. */}
+            <div
+              style={{
+                display: "flex",
+                gap: 12,
+                flexWrap: "wrap",
+                marginTop: 12,
+              }}
+            >
+              <div className="patients-form-field" style={{ flex: "1 1 160px" }}>
+                <label>
+                  {t("medical.prescriptions.refills", {
+                    defaultValue: "Повторные отпуски",
+                  })}
+                </label>
+                <input
+                  type="number"
+                  min={0}
+                  max={12}
+                  value={refills}
+                  onChange={(e) => setRefills(e.target.value)}
+                  disabled={submitting}
+                  placeholder="0"
+                />
+              </div>
+              <div className="patients-form-field" style={{ flex: "1 1 180px" }}>
+                <label>
+                  {t("medical.prescriptions.validUntil", {
+                    defaultValue: "Рецепт действителен до",
+                  })}
+                </label>
+                <input
+                  type="date"
+                  value={validUntil}
+                  min={new Date().toISOString().slice(0, 10)}
+                  onChange={(e) => setValidUntil(e.target.value)}
+                  disabled={submitting}
+                />
+              </div>
+            </div>
           </fieldset>
 
           {/* General notes */}
