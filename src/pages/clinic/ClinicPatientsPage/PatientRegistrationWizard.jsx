@@ -95,6 +95,7 @@ export default function PatientRegistrationWizard({ onComplete, onCancel }) {
     email: "",
     dateOfBirth: "",
     gender: "",
+    weightKg: "",
     departmentId: "",
     notes: "",
   });
@@ -316,6 +317,11 @@ export default function PatientRegistrationWizard({ onComplete, onCancel }) {
         email: formData.email.trim() || null,
         dateOfBirth: formData.dateOfBirth || null,
         gender: formData.gender || null,
+        // Пустое поле — это «не измеряли», а не ноль килограммов.
+        weightKg:
+          String(formData.weightKg).trim() === ""
+            ? null
+            : Number(formData.weightKg),
         notes: formData.notes.trim() || null,
         ...(formData.departmentId && { departmentId: formData.departmentId }),
         patientConsentConfirmed,
@@ -885,6 +891,22 @@ export default function PatientRegistrationWizard({ onComplete, onCancel }) {
                   {t("patients.gender.unknown", { defaultValue: "Не указан" })}
                 </option>
               </select>
+            </div>
+            {/* Вес нужен не для статистики: по нему считают дозу у детей, в
+                нефрологии и онкологии, и он печатается в рецептурном бланке —
+                там это поле стандарта ВОЗ. */}
+            <div className="prw-field">
+              <label>
+                {t("patients.fields.weightKg", { defaultValue: "Вес, кг" })}
+              </label>
+              <input
+                type="number"
+                min="0"
+                max="700"
+                step="0.1"
+                value={formData.weightKg}
+                onChange={(e) => handleFormChange("weightKg", e.target.value)}
+              />
             </div>
           </div>
 
