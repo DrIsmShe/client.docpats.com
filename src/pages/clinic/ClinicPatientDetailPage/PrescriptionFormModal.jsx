@@ -15,6 +15,13 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createPrescription } from "../../../api/clinic";
 import ICD10Autocomplete from "../../../components/ICD10Autocomplete";
+import {
+  AmountField,
+  FrequencyField,
+  STRENGTH_UNITS,
+  DURATION_UNITS,
+  doseUnitsFor,
+} from "./DosingFields";
 // Стили импортируются здесь, а не только у родителя: ту же форму открывает
 // страница частного пациента врача, где MedicalRecordsSection не
 // отрисовывается, и модалка приезжала бы вообще без оформления. Повторный
@@ -397,22 +404,17 @@ export default function PrescriptionFormModal({
 
                 {/* Strength + Form */}
                 <div className="rx-item-row">
-                  <div className="patients-form-field">
-                    <label>
-                      {t("medical.prescriptions.fields.strength", {
-                        defaultValue: "Сила препарата",
-                      })}
-                    </label>
-                    <input
-                      type="text"
-                      value={it.strength}
-                      onChange={(e) =>
-                        setItemField(idx, "strength", e.target.value)
-                      }
-                      disabled={submitting}
-                      placeholder="10 мг"
-                    />
-                  </div>
+                  <AmountField
+                    label={t("medical.prescriptions.fields.strength", {
+                      defaultValue: "Дозировка",
+                    })}
+                    value={it.strength}
+                    onChange={(v) => setItemField(idx, "strength", v)}
+                    unitKeys={STRENGTH_UNITS}
+                    unitPrefix="medical.prescriptions.units.strength"
+                    disabled={submitting}
+                    placeholder="10 мг"
+                  />
                   <div className="patients-form-field">
                     <label>
                       {t("medical.prescriptions.fields.form", {
@@ -461,69 +463,49 @@ export default function PrescriptionFormModal({
                       ))}
                     </select>
                   </div>
-                  <div className="patients-form-field">
-                    <label>
-                      {t("medical.prescriptions.fields.dose", {
-                        defaultValue: "Разовая доза",
-                      })}
-                    </label>
-                    <input
-                      type="text"
-                      value={it.dose}
-                      onChange={(e) =>
-                        setItemField(idx, "dose", e.target.value)
-                      }
-                      disabled={submitting}
-                      placeholder={t(
-                        "medical.prescriptions.placeholders.dose",
-                        {
-                          defaultValue: "1 таблетка",
-                        },
-                      )}
-                    />
-                  </div>
+                  {/* Единицы разовой дозы зависят от формы препарата:
+                      для спрея это впрыски, для капель — капли. Ключ по
+                      форме заставляет поле пересобраться при её смене,
+                      иначе у мази осталась бы «таблетка». */}
+                  <AmountField
+                    key={`dose-${it.form}`}
+                    label={t("medical.prescriptions.fields.dose", {
+                      defaultValue: "Разовая доза",
+                    })}
+                    value={it.dose}
+                    onChange={(v) => setItemField(idx, "dose", v)}
+                    unitKeys={doseUnitsFor(it.form)}
+                    unitPrefix="medical.prescriptions.units.dose"
+                    disabled={submitting}
+                    placeholder={t("medical.prescriptions.placeholders.dose", {
+                      defaultValue: "1 таблетка",
+                    })}
+                  />
                 </div>
 
                 {/* Frequency + Duration */}
                 <div className="rx-item-row">
-                  <div className="patients-form-field">
-                    <label>
-                      {t("medical.prescriptions.fields.frequency", {
-                        defaultValue: "Приём",
-                      })}
-                    </label>
-                    <input
-                      type="text"
-                      value={it.frequency}
-                      onChange={(e) =>
-                        setItemField(idx, "frequency", e.target.value)
-                      }
-                      disabled={submitting}
-                      placeholder={t(
-                        "medical.prescriptions.placeholders.frequency",
-                        { defaultValue: "1 раз в день" },
-                      )}
-                    />
-                  </div>
-                  <div className="patients-form-field">
-                    <label>
-                      {t("medical.prescriptions.fields.duration", {
-                        defaultValue: "Длительность",
-                      })}
-                    </label>
-                    <input
-                      type="text"
-                      value={it.duration}
-                      onChange={(e) =>
-                        setItemField(idx, "duration", e.target.value)
-                      }
-                      disabled={submitting}
-                      placeholder={t(
-                        "medical.prescriptions.placeholders.duration",
-                        { defaultValue: "14 дней" },
-                      )}
-                    />
-                  </div>
+                  <FrequencyField
+                    label={t("medical.prescriptions.fields.frequency", {
+                      defaultValue: "Кратность",
+                    })}
+                    value={it.frequency}
+                    onChange={(v) => setItemField(idx, "frequency", v)}
+                    disabled={submitting}
+                  />
+                  <AmountField
+                    label={t("medical.prescriptions.fields.duration", {
+                      defaultValue: "Длительность",
+                    })}
+                    value={it.duration}
+                    onChange={(v) => setItemField(idx, "duration", v)}
+                    unitKeys={DURATION_UNITS}
+                    unitPrefix="medical.prescriptions.units.duration"
+                    disabled={submitting}
+                    placeholder={t("medical.prescriptions.placeholders.duration", {
+                      defaultValue: "14 дней",
+                    })}
+                  />
                 </div>
 
                 {/* Instructions */}

@@ -1549,3 +1549,50 @@
     flex: 1 1 100%;
   }
 }
+
+/* ─── Дозирование: число + единица ─────────────────────────────────── */
+/*
+ * Число и единица стоят в одной строке: врач вводит «7» и выбирает «дней»,
+ * а на бланк уходит готовая строка. Раньше здесь было свободное поле, и в
+ * одном рецепте оказывались «1 таб.», «1 табл» и «одна таблетка».
+ */
+.rx-amount {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.rx-amount-num {
+  /* Число короткое — ему хватает трети, остальное отдаём единице:
+     «каждые 12 часов» длиннее любого числа. */
+  flex: 0 1 90px;
+  min-width: 70px;
+}
+
+.rx-amount-unit {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Переключатель на свободный ввод. Ссылкой, а не кнопкой: это запасной
+   путь, и выглядеть он должен скромнее самих полей. */
+.rx-unit-switch {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #2563eb;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.rx-unit-switch:hover:not(:disabled) {
+  color: #1d4ed8;
+}
+
+.rx-unit-switch:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
