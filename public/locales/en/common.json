@@ -2340,6 +2340,7 @@
     "confirmExpiredText": "The link is valid for a week. Subscribe again and we will send a new one.",
     "confirmBad": "The link did not work",
     "confirmBadText": "The subscription may already be confirmed, or the link was opened twice — it works only once.",
-    "toSite": "Go to the site"
+    "toSite": "Go to the site",
+    "language": "Newsletter language"
   }
 }

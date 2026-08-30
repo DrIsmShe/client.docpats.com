@@ -21,10 +21,26 @@ import "./newsletterModal.css";
 
 const API = process.env.REACT_APP_API_URL;
 
+// Языки рассылки. Тот же набор, что на сайте: подписчик выбирает его
+// явно, а не наследует от языка интерфейса. Человек может читать сайт
+// по-русски, а письма хотеть на родном — это разные решения.
+const LOCALES = [
+  { code: "ru", label: "Русский" },
+  { code: "en", label: "English" },
+  { code: "az", label: "Azərbaycanca" },
+  { code: "tr", label: "Türkçe" },
+  { code: "ar", label: "العربية" },
+];
+
 export default function NewsletterModal({ onClose, locale }) {
   const { t } = useTranslation("common");
   const [email, setEmail] = useState("");
   const [audience, setAudience] = useState("doctor");
+  // По умолчанию — язык, на котором человек читает сайт: чаще всего он же
+  // и нужен, а менять никто не мешает.
+  const [lang, setLang] = useState(
+    LOCALES.some((l) => l.code === locale) ? locale : "ru",
+  );
   const [agreed, setAgreed] = useState(false);
   const [state, setState] = useState("idle"); // idle | sending | done | error
   const inputRef = useRef(null);
@@ -51,7 +67,7 @@ export default function NewsletterModal({ onClose, locale }) {
         body: JSON.stringify({
           email: email.trim(),
           audience,
-          locale,
+          locale: lang,
           source: "modal",
         }),
       });
@@ -143,6 +159,25 @@ export default function NewsletterModal({ onClose, locale }) {
                   {t("newsletter.asPatient", { defaultValue: "Мне как пациенту" })}
                 </button>
               </div>
+
+              <label className="nl-lang">
+                <span className="nl-lang-label">
+                  {t("newsletter.language", {
+                    defaultValue: "Язык писем",
+                  })}
+                </span>
+                <select
+                  value={lang}
+                  onChange={(e) => setLang(e.target.value)}
+                  className="nl-lang-select"
+                >
+                  {LOCALES.map((l) => (
+                    <option key={l.code} value={l.code}>
+                      {l.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
 
               <input
                 ref={inputRef}

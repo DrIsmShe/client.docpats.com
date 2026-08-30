@@ -2313,6 +2313,7 @@
     "confirmExpiredText": "Bağlantı bir hafta geçerlidir. Tekrar abone olun, yenisini gönderelim.",
     "confirmBad": "Bağlantı işe yaramadı",
     "confirmBadText": "Abonelik zaten onaylanmış olabilir veya bağlantı ikinci kez açıldı — tek kullanımlıktır.",
-    "toSite": "Ana sayfaya"
+    "toSite": "Ana sayfaya",
+    "language": "Bülten dili"
   }
 }

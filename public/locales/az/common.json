@@ -2314,6 +2314,7 @@
     "confirmExpiredText": "Keçid bir həftə etibarlıdır. Yenidən abunə olun — yenisini göndərəcəyik.",
     "confirmBad": "Keçid uyğun gəlmədi",
     "confirmBadText": "Ola bilsin, abunəlik artıq təsdiqlənib və ya keçid təkrar açılıb — o birdəfəlikdir.",
-    "toSite": "Ana səhifəyə"
+    "toSite": "Ana səhifəyə",
+    "language": "Məktubların dili"
   }
 }

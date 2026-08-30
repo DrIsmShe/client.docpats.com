@@ -224,3 +224,34 @@
   .nl-title { font-size: 21px; }
   .nl-audience { flex-direction: column; }
 }
+
+/* Выбор языка писем. Отдельным полем, а не наследованием от интерфейса:
+   человек может читать сайт по-русски, а письма хотеть на родном. */
+.nl-lang {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.nl-lang-label {
+  font-size: 13px;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.nl-lang-select {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #d5dbe5;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #0f172a;
+  background: #fff;
+  cursor: pointer;
+}
+.nl-lang-select:focus {
+  outline: none;
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+}
