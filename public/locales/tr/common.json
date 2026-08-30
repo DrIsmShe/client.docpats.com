@@ -2290,5 +2290,29 @@
     "err_load": "Günlük yüklenemedi",
     "err_action": "İşlem gerçekleştirilemedi"
   },
-  "notification_language": "Bildirim dili"
+  "notification_language": "Bildirim dili",
+  "newsletter": {
+    "title": "Önemli olanlar — haftada bir",
+    "text": "Tıbbi haberlerin analizi, araştırmalar ve yaklaşan konferanslar. Editörün seçtiği beş içerik — günlük akış yok.",
+    "asDoctor": "Ben hekimim",
+    "asPatient": "Hasta olarak",
+    "placeholder": "you@example.com",
+    "agree": "E-posta almayı kabul ediyorum. Her e-postadaki tek bir bağlantıyla abonelikten çıkabilirsiniz.",
+    "cta": "Abone ol",
+    "sending": "Gönderiliyor…",
+    "later": "Şimdi değil",
+    "close": "Kapat",
+    "error": "Gönderilemedi. Lütfen biraz sonra tekrar deneyin.",
+    "doneTitle": "E-postanızı kontrol edin",
+    "doneText": "Bağlantı içeren bir e-posta gönderdik. Abonelik siz açtıktan sonra başlar — böylece başkalarının adresi izinsiz abone edilmez.",
+    "doneCta": "Anladım",
+    "confirmChecking": "Bağlantı kontrol ediliyor…",
+    "confirmOk": "Abonelik onaylandı",
+    "confirmOkText": "İlk e-posta bir sonraki sayıyla gelecek. Her e-postadaki tek bağlantıyla abonelikten çıkabilirsiniz.",
+    "confirmExpired": "Bağlantının süresi doldu",
+    "confirmExpiredText": "Bağlantı bir hafta geçerlidir. Tekrar abone olun, yenisini gönderelim.",
+    "confirmBad": "Bağlantı işe yaramadı",
+    "confirmBadText": "Abonelik zaten onaylanmış olabilir veya bağlantı ikinci kez açıldı — tek kullanımlıktır.",
+    "toSite": "Ana sayfaya"
+  }
 }

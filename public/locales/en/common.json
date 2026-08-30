@@ -2317,5 +2317,29 @@
     "err_load": "Could not load the log",
     "err_action": "The action failed"
   },
-  "notification_language": "Notification language"
+  "notification_language": "Notification language",
+  "newsletter": {
+    "title": "The essentials — once a week",
+    "text": "Medical news explained, research and upcoming conferences. Five hand-picked items — not a daily stream.",
+    "asDoctor": "I'm a doctor",
+    "asPatient": "As a patient",
+    "placeholder": "you@example.com",
+    "agree": "I agree to receive emails. One link in any email unsubscribes you.",
+    "cta": "Subscribe",
+    "sending": "Sending…",
+    "later": "Not now",
+    "close": "Close",
+    "error": "Could not send. Please try again a little later.",
+    "doneTitle": "Check your inbox",
+    "doneText": "We sent an email with a link. The subscription starts once you open it — that is how we keep other people's addresses from being signed up without asking.",
+    "doneCta": "Got it",
+    "confirmChecking": "Checking the link…",
+    "confirmOk": "Subscription confirmed",
+    "confirmOkText": "Your first email will arrive with the next issue. One link in any email unsubscribes you.",
+    "confirmExpired": "The link has expired",
+    "confirmExpiredText": "The link is valid for a week. Subscribe again and we will send a new one.",
+    "confirmBad": "The link did not work",
+    "confirmBadText": "The subscription may already be confirmed, or the link was opened twice — it works only once.",
+    "toSite": "Go to the site"
+  }
 }

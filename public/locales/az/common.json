@@ -2291,5 +2291,29 @@
     "err_load": "Jurnal yüklənə bilmədi",
     "err_action": "Əməliyyat yerinə yetirilmədi"
   },
-  "notification_language": "Bildiriş dili"
+  "notification_language": "Bildiriş dili",
+  "newsletter": {
+    "title": "Ən vacibi — həftədə bir dəfə",
+    "text": "Tibbi xəbərlərin təhlili, araşdırmalar və qarşıdakı konfranslar. Redaksiyanın seçdiyi beş material — gündəlik axın olmadan.",
+    "asDoctor": "Mən həkiməm",
+    "asPatient": "Xəstə kimi",
+    "placeholder": "you@example.com",
+    "agree": "Məktub almağa razıyam. İstənilən məktubdakı bir keçidlə abunəlikdən çıxmaq olar.",
+    "cta": "Abunə ol",
+    "sending": "Göndərilir…",
+    "later": "İndi yox",
+    "close": "Bağla",
+    "error": "Göndərmək alınmadı. Bir az sonra yenidən cəhd edin.",
+    "doneTitle": "Poçtunuzu yoxlayın",
+    "doneText": "Keçid olan məktub göndərdik. Abunəlik siz onu açandan sonra başlayır — beləcə başqalarının ünvanı icazəsiz abunə edilmir.",
+    "doneCta": "Aydındır",
+    "confirmChecking": "Keçid yoxlanılır…",
+    "confirmOk": "Abunəlik təsdiqləndi",
+    "confirmOkText": "İlk məktub növbəti buraxılışla gələcək. İstənilən məktubdakı bir keçidlə abunəlikdən çıxmaq olar.",
+    "confirmExpired": "Keçidin vaxtı bitib",
+    "confirmExpiredText": "Keçid bir həftə etibarlıdır. Yenidən abunə olun — yenisini göndərəcəyik.",
+    "confirmBad": "Keçid uyğun gəlmədi",
+    "confirmBadText": "Ola bilsin, abunəlik artıq təsdiqlənib və ya keçid təkrar açılıb — o birdəfəlikdir.",
+    "toSite": "Ana səhifəyə"
+  }
 }

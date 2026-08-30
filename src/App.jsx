@@ -19,6 +19,9 @@ import UpcomingAppointmentBanner from "./components/shared/UpcomingAppointmentBa
 // Тоже обычный импорт, и намеренно: граница ошибок должна существовать
 // РАНЬШЕ, чем что-либо начнёт грузиться лениво, — иначе ловить нечем.
 import ChunkErrorBoundary from "./components/shared/ChunkErrorBoundary";
+// Обычный импорт, как у остальных компонентов вне <Routes>: окно решает
+// само, показываться ли, и рендерится поверх любой открытой страницы.
+import NewsletterGate from "./components/newsletter/NewsletterGate";
 
 const DoctorsAll = lazy(() => import("./pages/doctorProfilePages/shared/doctors/doctors"));
 
@@ -540,6 +543,7 @@ const PatientFileDetailEKGScan = lazy(() => import("./pages/patientProfilePages/
 const PatientFileDetailECHOEKGScan = lazy(() => import("./pages/patientProfilePages/MyMedicalHistories/MyExams/PatientFileDetailEchoEKGScan.jsx"));
 const PatientFileDetailECoronographyScan = lazy(() => import("./pages/patientProfilePages/MyMedicalHistories/MyExams/PatientFileDetailCoronographyScan.jsx"));
 const PricingPage = lazy(() => import("./pages/PricingPage.jsx"));
+const NewsletterConfirmPage = lazy(() => import("./pages/newsletter/NewsletterConfirmPage"));
 const DemoPage = lazy(() => import("./pages/demo/DemoPage.jsx"));
 const AdminExportDatabase = lazy(() => import("./pages/admin/components/AdminExportDatabase"));
 const AdminImportCollection = lazy(() => import("./pages/admin/components/AdminImportCollection.jsx"));
@@ -2523,6 +2527,12 @@ function App() {
             <Route path="/demo" element={<DemoPage />} />
             <Route path="/terms-consent-page" element={<TermsConsentPage />} />
             <Route path="/pricing" element={<PricingPage />} />
+            {/* Подтверждение адреса из письма. Открытый маршрут: по ссылке
+                переходят из почты, ещё не будучи на сайте. */}
+            <Route
+              path="/newsletter/confirm"
+              element={<NewsletterConfirmPage />}
+            />
             {/* Публичная SEO-страница «Лучшие врачи» */}
             <Route path="/top-doctors" element={<TopDoctorsPage />} />
             {/* Документация: одна страница на весь корпус, раздел в адресе.
@@ -3158,6 +3168,7 @@ function App() {
             </Routes>
           </Suspense>
           </ChunkErrorBoundary>
+          <NewsletterGate />
           {/* Помощник по продукту — на всех страницах, кроме экранов-
               редакторов (список в самом компоненте). Внутри BrowserRouter:
               ему нужен текущий адрес, чтобы понять зону и роль. */}

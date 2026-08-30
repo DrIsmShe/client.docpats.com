@@ -1,0 +1,226 @@
+/* client/src/components/newsletter/newsletterModal.css
+ *
+ * Оформление предложения подписки.
+ *
+ * Задача — выглядеть как часть сайта, а не как рекламный баннер, который
+ * закрывают не читая. Отсюда решения: спокойный фон вместо чёрной заливки,
+ * карточка появляется мягко и снизу, кнопка одна и в фирменном цвете, а
+ * отказ — обычная неприметная ссылка. Никаких мигающих рамок, обратного
+ * отсчёта и кнопок «нет, я не хочу быть здоровым».
+ */
+
+.nl-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  /* Не сплошная чернота: за окном должно быть видно, что сайт на месте. */
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(3px);
+  animation: nl-fade 0.22s ease-out;
+}
+
+.nl-card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 34px 34px 26px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.22);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  animation: nl-rise 0.26s cubic-bezier(0.2, 0.8, 0.3, 1);
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+}
+
+@keyframes nl-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes nl-rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Уважение к тем, кто отключил анимации в системе. */
+@media (prefers-reduced-motion: reduce) {
+  .nl-overlay,
+  .nl-card {
+    animation: none;
+  }
+}
+
+.nl-close {
+  position: absolute;
+  top: 12px;
+  inset-inline-end: 14px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  color: #94a3b8;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.nl-close:hover { color: #475569; background: #f1f5f9; }
+
+.nl-brand {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0f766e;
+  margin-bottom: 14px;
+}
+
+.nl-title {
+  margin: 0 0 10px;
+  font-size: 23px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.nl-text {
+  margin: 0 0 22px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #475569;
+}
+
+/* Выбор аудитории. Две кнопки, а не выпадающий список: выбор из двух
+   вариантов виден целиком и делается одним движением. */
+.nl-audience {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.nl-aud {
+  flex: 1;
+  padding: 11px 12px;
+  border: 1px solid #d5dbe5;
+  border-radius: 10px;
+  background: #fff;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.nl-aud:hover { border-color: #94a3b8; }
+.nl-aud.is-on {
+  border-color: #0f766e;
+  background: #f0fdfa;
+  color: #0f766e;
+  font-weight: 600;
+}
+
+.nl-input {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1px solid #d5dbe5;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #0f172a;
+  background: #fff;
+}
+.nl-input:focus {
+  outline: none;
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+}
+
+/* Галочка согласия. Мелким, но читаемым: прятать её серым по светло-серому
+   значит собирать согласие, которого человек не заметил. */
+.nl-agree {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  margin: 14px 0 18px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #64748b;
+  cursor: pointer;
+}
+.nl-agree input {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  accent-color: #0f766e;
+  cursor: pointer;
+}
+
+.nl-submit {
+  width: 100%;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 11px;
+  background: #0f766e;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.nl-submit:hover:not(:disabled) { background: #0d5f58; }
+.nl-submit:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+/* Отказ. Намеренно скромный, но настоящей кнопкой и с внятной подписью. */
+.nl-later {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px;
+  border: none;
+  background: none;
+  color: #94a3b8;
+  font-size: 13px;
+  cursor: pointer;
+}
+.nl-later:hover { color: #64748b; }
+
+.nl-error {
+  margin-bottom: 14px;
+  padding: 10px 13px;
+  border-radius: 9px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Экран «проверьте почту» */
+.nl-done { text-align: center; padding: 8px 0 0; }
+
+.nl-done-mark {
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: #f0fdfa;
+  color: #0f766e;
+  font-size: 27px;
+  line-height: 54px;
+  font-weight: 700;
+}
+
+.nl-done .nl-text { margin-bottom: 24px; }
+
+@media (max-width: 480px) {
+  .nl-card { padding: 28px 22px 20px; border-radius: 16px; }
+  .nl-title { font-size: 21px; }
+  .nl-audience { flex-direction: column; }
+}
