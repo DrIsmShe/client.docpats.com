@@ -1,40 +1,5 @@
 @import "../clinicPageShell.css";
 
-/* client/src/pages/clinic/ClinicStaffPage/clinicStaffPage.css */
-
-.staff-page {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 8px 0;
-}
-
-/* ─── Header ─── */
-
-.staff-page-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 28px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #e6eaf0;
-}
-
-/* ─── Section ─── */
-
-.staff-page-section {
-  margin-bottom: 32px;
-}
-
-/* ─── List ─── */
-
-.staff-page-list {
-  background: #fff;
-  border: 1px solid #e6eaf0;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
 .staff-row {
   display: flex;
   align-items: center;
@@ -199,41 +164,24 @@
   color: #dc2626;
 }
 
-/* ─── Empty ─── */
-
-.staff-page-empty {
-  background: #fff;
-  border: 1px dashed #d4dae2;
-  border-radius: 10px;
-  padding: 40px 20px;
-  text-align: center;
-}
-
-/* ─── Loading / Error ─── */
-
-.staff-page-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 300px;
-}
-
-to {
+@keyframes staff-spin {
+  to {
     transform: rotate(360deg);
   }
+}
 
-.staff-row {
+@media (max-width: 768px) {
+  .staff-row {
     flex-wrap: wrap;
     gap: 10px;
   }
-
-.staff-row-info {
+  .staff-row-info {
     flex: 1 1 calc(100% - 60px);
   }
-
-.staff-row-role {
+  .staff-row-role {
     flex: 1 1 auto;
   }
+}
 
 .staff-row-btn-calendar {
   padding: 6px 12px;

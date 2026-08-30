@@ -3,14 +3,36 @@
  * Каркас страниц кабинета клиники: шапка, кнопки, список, состояния
  * «пусто / загрузка / ошибка».
  *
- * Вынесен из clinicStaffPage.css, потому что этими классами пользуются ТРИ
- * страницы — сотрудники, пациенты и карточка пациента, — а импортировала файл
- * только первая. CSS в сборке подключается при импорте, поэтому пациенты,
- * открытые по прямой ссылке, оставались вообще без стилей: голый заголовок,
- * счётчик, прилипший к названию, и кнопка «Удалить» системным шрифтом.
- * Стоило зайти сначала на «Сотрудников» — и всё выглядело нормально, поэтому
- * дефект и не замечался.
+ * Вынесен из clinicStaffPage.css: этими классами пользуются ТРИ страницы —
+ * сотрудники, пациенты и карточка пациента, — а импортировала файл только
+ * первая. Стили подключаются при импорте, поэтому страницы, открытые по
+ * прямой ссылке, оставались без оформления.
+ *
+ * ВАЖНО: медиазапросы переносятся целиком, вместе с обёрткой @media. При
+ * первой попытке правила были выдернуты из них по отдельности, и мобильные
+ * «шапка в колонку» и «кнопка во всю ширину» начали действовать на любом
+ * экране — карточка пациента покрылась синими полосами.
  */
+
+/* client/src/pages/clinic/ClinicStaffPage/clinicStaffPage.css */
+
+.staff-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 8px 0;
+}
+
+/* ─── Header ─── */
+
+.staff-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e6eaf0;
+}
 
 .staff-page-back {
   display: inline-block;
@@ -75,6 +97,12 @@
   border-color: #9ca3af;
 }
 
+/* ─── Section ─── */
+
+.staff-page-section {
+  margin-bottom: 32px;
+}
+
 .staff-page-section h2 {
   display: flex;
   align-items: center;
@@ -94,9 +122,37 @@
   font-weight: 500;
 }
 
+/* ─── List ─── */
+
+.staff-page-list {
+  background: #fff;
+  border: 1px solid #e6eaf0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ─── Empty ─── */
+
+.staff-page-empty {
+  background: #fff;
+  border: 1px dashed #d4dae2;
+  border-radius: 10px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
 .staff-page-empty p {
   margin: 0 0 16px;
   color: #6b7280;
+}
+
+/* ─── Loading / Error ─── */
+
+.staff-page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
 }
 
 .staff-page-spinner {
@@ -133,19 +189,19 @@
   cursor: pointer;
 }
 
-.staff-page-header {
+@media (max-width: 768px) {
+  .staff-page-header {
     flex-direction: column;
   }
-
-.staff-page-header-actions {
+  .staff-page-header-actions {
     width: 100%;
     flex-direction: column;
   }
-
-.staff-page-btn-primary,
+  .staff-page-btn-primary,
   .staff-page-btn-secondary {
     width: 100%;
   }
+}
 
 /* Использовался в разметке пациентов, но не был описан нигде. */
 .staff-page-header-left {
