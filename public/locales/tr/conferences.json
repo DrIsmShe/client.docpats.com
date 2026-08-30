@@ -58,5 +58,8 @@
   "with_deadline": "son tarihi açık",
   "locked_title": "Program ve koşullar — hekimler için",
   "locked_text": "Programı, katılım koşullarını, kayıt ve bildiri son tarihlerini, ücreti ve CME kredilerini görmek için hekim hesabınızla giriş yapın.",
-  "locked_cta": "Giriş yap"
+  "locked_cta": "Giriş yap",
+  "finished_title": "Bu kongre sona erdi",
+  "finished_text": "Sayfa arşiv olarak bırakıldı — tarihler ve koşullar geçmiş bir etkinliğe aittir.",
+  "finished_cta": "Yaklaşanlara bak"
 }

@@ -115,6 +115,15 @@ export default function ConferencePage() {
     [t("price"), c.price],
   ].filter(([, v]) => v);
 
+  // Конференция уже прошла. Страницу не прячем: на неё ведут ссылки из
+  // писем и из поисковой выдачи, и 404 вместо ответа — худшее, что можно
+  // показать человеку, который пришёл по ссылке. Но и молчать нельзя: без
+  // пометки страница читается как анонс предстоящего.
+  const finished = (() => {
+    const end = c.endDate || c.startDate;
+    return end ? new Date(end) < new Date() : false;
+  })();
+
   const hasHiddenParts =
     (c.program || []).length > 0 ||
     Boolean(c.conditions) ||
@@ -138,6 +147,18 @@ export default function ConferencePage() {
 
         <h1 style={h1}>{c.title}</h1>
 
+        {finished && (
+          <div style={pastBox}>
+            <b>{t("finished_title")}</b>
+            <div style={{ marginTop: 4 }}>
+              {t("finished_text")}{" "}
+              <Link to="/conferences" style={{ color: "#0f766e", fontWeight: 600 }}>
+                {t("finished_cta")}
+              </Link>
+            </div>
+          </div>
+        )}
+
         <div style={factsBox}>
           {facts.map(([label, value]) => (
             <div key={label} style={{ minWidth: 0 }}>
@@ -147,7 +168,7 @@ export default function ConferencePage() {
           ))}
         </div>
 
-        {canSeeDetails && deadlines.length > 0 && (
+        {!finished && canSeeDetails && deadlines.length > 0 && (
           <div style={deadlineBox}>
             {deadlines.map(([label, value]) => (
               <div key={label} style={{ fontSize: 16 }}>
@@ -316,6 +337,16 @@ const dlRow = {
 };
 const dt = { color: "#64748b", fontSize: 15, minWidth: 190, margin: 0, fontWeight: 600 };
 const dd = { margin: 0, fontSize: 16, lineHeight: 1.6, color: "#1f2937", flex: 1, minWidth: 220 };
+const pastBox = {
+  background: "#f1f5f9",
+  border: "1px solid #cbd5e1",
+  borderRadius: 12,
+  padding: "14px 18px",
+  marginBottom: 20,
+  color: "#334155",
+  fontSize: 15,
+  lineHeight: 1.55,
+};
 const lockBox = {
   background: "#f0f7ff",
   border: "1px solid #cfe1ff",

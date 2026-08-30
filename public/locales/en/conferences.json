@@ -58,5 +58,8 @@
   "with_deadline": "with an open deadline",
   "locked_title": "Programme and terms — for doctors",
   "locked_text": "Sign in with a doctor account to see the programme, terms of participation, registration and abstract deadlines, fees and CME credits.",
-  "locked_cta": "Sign in"
+  "locked_cta": "Sign in",
+  "finished_title": "This conference has ended",
+  "finished_text": "The page is kept for reference — the dates and terms refer to a past event.",
+  "finished_cta": "See upcoming conferences"
 }

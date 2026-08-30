@@ -58,5 +58,8 @@
   "with_deadline": "son tarixi açıq",
   "locked_title": "Proqram və şərtlər — həkimlər üçün",
   "locked_text": "Proqramı, iştirak şərtlərini, qeydiyyat və tezis son tarixlərini, qiyməti və CME kreditlərini görmək üçün həkim hesabı ilə daxil olun.",
-  "locked_cta": "Daxil ol"
+  "locked_cta": "Daxil ol",
+  "finished_title": "Konfrans artıq keçib",
+  "finished_text": "Səhifə arxiv üçün saxlanılır — tarixlər və şərtlər keçmiş tədbirə aiddir.",
+  "finished_cta": "Qarşıdan gələnlərə bax"
 }
