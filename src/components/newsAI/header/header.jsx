@@ -94,25 +94,6 @@ export default function Header({
         }
         .dp-conf-btn:hover { background: rgba(255,255,255,.3); }
 
-        @media (max-width: 820px) {
-          .nl-nav { height: auto; }
-          .nl-nav-inner {
-            flex-wrap: wrap; height: auto; gap: 8px;
-            padding-top: 10px; padding-bottom: 10px;
-          }
-          .nl-nav-logo { position: static; transform: none; order: -1; }
-          .dp-nav-links { order: 1; }
-          .nl-nav-right { order: 2; margin-left: auto; gap: 6px; }
-        }
-
-        @media (max-width: 520px) {
-          .dp-conf-btn { padding: 7px 14px; font-size: 13px; }
-          .nl-topbar-left { display: none; }
-          .nl-btn-member span:not([aria-hidden]) {
-            max-width: 90px; overflow: hidden; text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-        }
       `}</style>
 
       {/* TOP BAR */}

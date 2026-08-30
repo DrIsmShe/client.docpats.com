@@ -1291,7 +1291,31 @@ const CSS = `
 .nl-root[dir=rtl] .nl-nav-logo{left:auto;right:50%;transform:translateX(50%)}
 .nl-nav-logo span{color:#5eead4}
 .nl-nav-right{margin-inline-start:auto;display:flex;align-items:center;gap:10px}
-@media (max-width: 768px){.nl-nav-inner{flex-wrap:wrap}.nl-nav-right{display:block}}
+/* Шапка на телефоне и небольшом планшете — ДВА ряда: логотип слева, язык и
+   вход справа; навигация отдельной строкой. Правило продублировано вместе со
+   всей шапкой в DashboardLayout.jsx — стили этой страницы идут в каскаде
+   позже и перекрывают его, поэтому менять надо оба места. */
+@media (max-width: 900px){
+  .nl-nav{height:auto}
+  .nl-nav-inner{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    grid-template-areas:"logo right" "nav nav";
+    align-items:center;
+    row-gap:10px;column-gap:10px;
+    height:auto;padding-top:10px;padding-bottom:10px
+  }
+  .nl-nav-logo{grid-area:logo;position:static;transform:none;justify-self:start;font-size:22px}
+  .nl-root[dir=rtl] .nl-nav-logo{right:auto;transform:none}
+  .nl-nav-right{grid-area:right;justify-self:end;display:flex;align-items:center;gap:8px;margin-inline-start:0;min-width:0}
+  .dp-nav-links{grid-area:nav;display:flex}
+  .dp-conf-btn{width:100%;justify-content:center}
+}
+@media (max-width: 520px){
+  .nl-topbar-left{display:none}
+  .dp-conf-btn{padding:9px 14px;font-size:13px}
+  .nl-btn-member{max-width:46vw;overflow:hidden;text-overflow:ellipsis;padding:8px 12px}
+}
 .nl-locale-switcher{display:flex;align-items:center;gap:2px}
 .nl-locale-btn{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgb(3 3 3);background:none;border:1px solid transparent;border-radius:6px;padding:4px 8px;cursor:pointer;transition:all .12s}
 .nl-locale-btn:hover{color:rgba(64,67,233,.85);border-color:rgba(199,222,230,.2)}
