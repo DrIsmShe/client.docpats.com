@@ -59,8 +59,8 @@ export default function ClinicEquipmentPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
 
-  // Permission-based gating вЂ” mirrors backend RBAC (EQUIPMENT resource).
-  // admin has EQUIPMENT:RO в†’ create/edit/archive stay hidden (no 403).
+  // Permission-based gating — mirrors backend RBAC (EQUIPMENT resource).
+  // admin has EQUIPMENT:RO → create/edit/archive stay hidden (no 403).
   // Owner is always-full (never restricted, guards against absent perms).
   const myRole = layoutContext?.role || "member";
   const perms = layoutContext?.permissions || {};
@@ -141,7 +141,7 @@ export default function ClinicEquipmentPage() {
     search,
   ]);
 
-  // Group by the selected mode в†’ [{ key, label, items: [] }].
+  // Group by the selected mode → [{ key, label, items: [] }].
   const grouped = useMemo(() => {
     if (groupMode === "flat") {
       return [{ key: "all", label: null, items: filtered }];
@@ -154,7 +154,7 @@ export default function ClinicEquipmentPage() {
         key = String(e.departmentId);
         label =
           deptMap[key]?.name ||
-          t("equipment.unknownDepartment", { defaultValue: "Р‘РµР· РѕС‚РґРµР»РµРЅРёСЏ" });
+          t("equipment.unknownDepartment", { defaultValue: "Без отделения" });
       } else if (groupMode === "category") {
         key = e.category || "other";
         label = t(`equipment.category.${key}`, { defaultValue: key });
@@ -189,7 +189,7 @@ export default function ClinicEquipmentPage() {
       !window.confirm(
         t("equipment.confirmArchive", {
           name: eq.name,
-          defaultValue: `РђСЂС…РёРІРёСЂРѕРІР°С‚СЊ В«${eq.name}В»?`,
+          defaultValue: `Архивировать «${eq.name}»?`,
         }),
       )
     )
@@ -203,7 +203,7 @@ export default function ClinicEquipmentPage() {
       alert(
         err.response?.data?.error ||
           t("equipment.archiveFailed", {
-            defaultValue: "РќРµ СѓРґР°Р»РѕСЃСЊ Р°СЂС…РёРІРёСЂРѕРІР°С‚СЊ РѕР±РѕСЂСѓРґРѕРІР°РЅРёРµ",
+            defaultValue: "Не удалось архивировать оборудование",
           }),
       );
     } finally {
@@ -221,7 +221,7 @@ export default function ClinicEquipmentPage() {
       alert(
         err.response?.data?.error ||
           t("equipment.restoreFailed", {
-            defaultValue: "РќРµ СѓРґР°Р»РѕСЃСЊ РІРѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊ РѕР±РѕСЂСѓРґРѕРІР°РЅРёРµ",
+            defaultValue: "Не удалось восстановить оборудование",
           }),
       );
     } finally {
@@ -240,10 +240,10 @@ export default function ClinicEquipmentPage() {
   if (error) {
     return (
       <div className="equip-page-error">
-        <h2>{t("equipment.errorTitle", { defaultValue: "РћС€РёР±РєР°" })}</h2>
+        <h2>{t("equipment.errorTitle", { defaultValue: "Ошибка" })}</h2>
         <p>{error}</p>
         <button onClick={loadAll}>
-          {t("common.retry", { defaultValue: "РџРѕРІС‚РѕСЂРёС‚СЊ" })}
+          {t("common.retry", { defaultValue: "Повторить" })}
         </button>
       </div>
     );
@@ -256,12 +256,12 @@ export default function ClinicEquipmentPage() {
       <div className="equip-page-header">
         <div className="equip-page-header-left">
           <Link to={dashboardPath} className="equip-page-back">
-            {t("equipment.back", { defaultValue: "в†ђ Р”Р°С€Р±РѕСЂРґ" })}
+            {t("equipment.back", { defaultValue: "← Дашборд" })}
           </Link>
-          <h1>{t("equipment.title", { defaultValue: "РћР±РѕСЂСѓРґРѕРІР°РЅРёРµ" })}</h1>
+          <h1>{t("equipment.title", { defaultValue: "Оборудование" })}</h1>
           <p className="equip-page-subtitle">
             {t("equipment.subtitle", {
-              defaultValue: "РћР±РѕСЂСѓРґРѕРІР°РЅРёРµ РєР»РёРЅРёРєРё РїРѕ РѕС‚РґРµР»РµРЅРёСЏРј",
+              defaultValue: "Оборудование клиники по отделениям",
             })}
           </p>
         </div>
@@ -272,7 +272,7 @@ export default function ClinicEquipmentPage() {
               onClick={openCreate}
               type="button"
             >
-              {t("equipment.create", { defaultValue: "Р”РѕР±Р°РІРёС‚СЊ РѕР±РѕСЂСѓРґРѕРІР°РЅРёРµ" })}
+              {t("equipment.create", { defaultValue: "Добавить оборудование" })}
             </button>
           </div>
         )}
@@ -283,12 +283,12 @@ export default function ClinicEquipmentPage() {
           <p>
             {t("equipment.needDepartmentFirst", {
               defaultValue:
-                "РЎРЅР°С‡Р°Р»Р° СЃРѕР·РґР°Р№С‚Рµ С…РѕС‚СЏ Р±С‹ РѕРґРЅРѕ РѕС‚РґРµР»РµРЅРёРµ вЂ” РѕР±РѕСЂСѓРґРѕРІР°РЅРёРµ РІСЃРµРіРґР° РїСЂРёРЅР°РґР»РµР¶РёС‚ РѕС‚РґРµР»РµРЅРёСЋ.",
+                "Сначала создайте хотя бы одно отделение — оборудование всегда принадлежит отделению.",
             })}
           </p>
           <Link to={`${basePath}/departments`} className="equip-page-btn-primary">
             {t("equipment.goToDepartments", {
-              defaultValue: "РџРµСЂРµР№С‚Рё Рє РѕС‚РґРµР»РµРЅРёСЏРј",
+              defaultValue: "Перейти к отделениям",
             })}
           </Link>
         </div>
@@ -301,7 +301,7 @@ export default function ClinicEquipmentPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("equipment.searchPlaceholder", {
-                defaultValue: "РџРѕРёСЃРє: РЅР°Р·РІР°РЅРёРµ, РёРЅРІ. в„–, СЃРµСЂРёР№РЅС‹Р№вЂ¦",
+                defaultValue: "Поиск: название, инв. №, серийный…",
               })}
             />
             <select
@@ -311,7 +311,7 @@ export default function ClinicEquipmentPage() {
             >
               <option value="">
                 {t("equipment.allDepartments", {
-                  defaultValue: "Р’СЃРµ РѕС‚РґРµР»РµРЅРёСЏ",
+                  defaultValue: "Все отделения",
                 })}
               </option>
               {activeDepartments.map((d) => (
@@ -327,7 +327,7 @@ export default function ClinicEquipmentPage() {
             >
               <option value="">
                 {t("equipment.allCategories", {
-                  defaultValue: "Р’СЃРµ РєР°С‚РµРіРѕСЂРёРё",
+                  defaultValue: "Все категории",
                 })}
               </option>
               {CATEGORIES.map((c) => (
@@ -342,7 +342,7 @@ export default function ClinicEquipmentPage() {
               onChange={(e) => setStatusFilter(e.target.value)}
             >
               <option value="">
-                {t("equipment.allStatuses", { defaultValue: "Р’СЃРµ СЃС‚Р°С‚СѓСЃС‹" })}
+                {t("equipment.allStatuses", { defaultValue: "Все статусы" })}
               </option>
               {STATUSES.map((s) => (
                 <option key={s} value={s}>
@@ -356,14 +356,14 @@ export default function ClinicEquipmentPage() {
                 checked={showArchived}
                 onChange={(e) => setShowArchived(e.target.checked)}
               />
-              {t("equipment.showArchived", { defaultValue: "РђСЂС…РёРІ" })}
+              {t("equipment.showArchived", { defaultValue: "Архив" })}
             </label>
           </div>
 
           {/* Group-by mode switcher */}
           <div className="equip-page-groupby">
             <span className="equip-page-groupby-label">
-              {t("equipment.groupBy", { defaultValue: "Р“СЂСѓРїРїРёСЂРѕРІРєР°:" })}
+              {t("equipment.groupBy", { defaultValue: "Группировка:" })}
             </span>
             {GROUP_MODES.map((mode) => (
               <button
@@ -382,7 +382,7 @@ export default function ClinicEquipmentPage() {
           <section className="equip-page-section">
             <h2>
               {t("equipment.listTitle", {
-                defaultValue: "РЎРїРёСЃРѕРє РѕР±РѕСЂСѓРґРѕРІР°РЅРёСЏ",
+                defaultValue: "Список оборудования",
               })}
               <span className="equip-page-count">{filtered.length}</span>
             </h2>
@@ -391,7 +391,7 @@ export default function ClinicEquipmentPage() {
               <div className="equip-page-empty">
                 <p>
                   {t("equipment.empty", {
-                    defaultValue: "РћР±РѕСЂСѓРґРѕРІР°РЅРёСЏ РїРѕРєР° РЅРµС‚",
+                    defaultValue: "Оборудования пока нет",
                   })}
                 </p>
                 {canManage && (
@@ -401,7 +401,7 @@ export default function ClinicEquipmentPage() {
                     type="button"
                   >
                     {t("equipment.createFirst", {
-                      defaultValue: "Р”РѕР±Р°РІРёС‚СЊ РїРµСЂРІРѕРµ РѕР±РѕСЂСѓРґРѕРІР°РЅРёРµ",
+                      defaultValue: "Добавить первое оборудование",
                     })}
                   </button>
                 )}
@@ -459,7 +459,7 @@ export default function ClinicEquipmentPage() {
   );
 }
 
-// в”Ђв”Ђв”Ђ Sub-component в”Ђв”Ђв”Ђ
+// ─── Sub-component ───
 
 function EquipmentRow({
   eq,
@@ -517,9 +517,9 @@ function EquipmentRow({
           )}
           {/* Show department unless grouping by it */}
           {groupMode !== "department" && deptName && (
-            <span className="equip-row-dept">рџЏҐ {deptName}</span>
+            <span className="equip-row-dept">🏥 {deptName}</span>
           )}
-          {roomName && <span className="equip-row-room">рџљЄ {roomName}</span>}
+          {roomName && <span className="equip-row-room">🚪 {roomName}</span>}
           {eq.manufacturer && (
             <span className="equip-row-mfr">{eq.manufacturer}</span>
           )}
@@ -527,13 +527,13 @@ function EquipmentRow({
             <span className="equip-row-staff">
               {t("equipment.staffCount", {
                 count: assignedCount,
-                defaultValue: `РІСЂР°С‡РµР№: ${assignedCount}`,
+                defaultValue: `врачей: ${assignedCount}`,
               })}
             </span>
           )}
           {nextService && (
             <span className="equip-row-service">
-              {t("equipment.nextServiceShort", { defaultValue: "РўРћ РґРѕ" })}{" "}
+              {t("equipment.nextServiceShort", { defaultValue: "ТО до" })}{" "}
               {nextService}
             </span>
           )}
@@ -549,7 +549,7 @@ function EquipmentRow({
               disabled={isLoading}
               type="button"
             >
-              {t("common.edit", { defaultValue: "РР·РјРµРЅРёС‚СЊ" })}
+              {t("common.edit", { defaultValue: "Изменить" })}
             </button>
           )}
           {archived ? (
@@ -559,7 +559,7 @@ function EquipmentRow({
               disabled={isLoading}
               type="button"
             >
-              {t("equipment.restore", { defaultValue: "Р’РѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊ" })}
+              {t("equipment.restore", { defaultValue: "Восстановить" })}
             </button>
           ) : (
             <button
@@ -568,7 +568,7 @@ function EquipmentRow({
               disabled={isLoading}
               type="button"
             >
-              {t("equipment.archive", { defaultValue: "Р’ Р°СЂС…РёРІ" })}
+              {t("equipment.archive", { defaultValue: "В архив" })}
             </button>
           )}
         </div>

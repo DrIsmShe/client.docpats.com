@@ -1198,7 +1198,10 @@
       "substitutionYes": "يُسمح بالاستبدال بالبديل",
       "substitutionNo": "يُصرف كما هو مكتوب (دون استبدال)",
       "refills": "مرات الصرف المتكررة",
-      "validUntil": "الوصفة صالحة حتى"
+      "validUntil": "الوصفة صالحة حتى",
+      "newTitle": "وصفة جديدة",
+      "editTitle": "تعديل الوصفة",
+      "saveButton": "حفظ التغييرات"
     },
     "tabs": {
       "labResults": "نتائج المختبر",

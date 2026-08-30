@@ -77,22 +77,42 @@ export default function PrescriptionFormModal({
   onClose,
   onSaved,
   submit,
+  initial,
 }) {
   const { t } = useTranslation("clinic");
 
-  const [items, setItems] = useState([emptyItem()]);
+  // initial — правка выписанного бланка. Форма та же: врач исправляет
+  // опечатку в тех же полях, в которых её сделал, и вторая форма «для
+  // правки» разошлась бы с этой при первом же изменении.
+  const editing = Boolean(initial?._id);
+
+  const [items, setItems] = useState(
+    initial?.items?.length
+      ? initial.items.map((it) => ({ ...emptyItem(), ...it }))
+      : [emptyItem()],
+  );
   const [diagnosis, setDiagnosis] = useState({
-    code: "",
-    codeTitle: "",
-    text: "",
+    code: initial?.diagnosis?.code || "",
+    codeTitle: initial?.diagnosis?.codeTitle || "",
+    text: initial?.diagnosis?.text || "",
   });
-  const [generalNotes, setGeneralNotes] = useState("");
+  const [generalNotes, setGeneralNotes] = useState(initial?.generalNotes || "");
   // Условия отпуска. На бланке эти графы были всегда, но заполнить их было
   // негде: аптека получала рецепт без указания, можно ли заменить препарат.
   // "" — врач не выбрал: на бланке не отмечается ни один квадрат.
-  const [substitution, setSubstitution] = useState("");
-  const [refills, setRefills] = useState("");
-  const [validUntil, setValidUntil] = useState("");
+  const [substitution, setSubstitution] = useState(
+    initial?.substitutionAllowed === true
+      ? "yes"
+      : initial?.substitutionAllowed === false
+        ? "no"
+        : "",
+  );
+  const [refills, setRefills] = useState(
+    initial?.refills != null ? String(initial.refills) : "",
+  );
+  const [validUntil, setValidUntil] = useState(
+    initial?.validUntil ? String(initial.validUntil).slice(0, 10) : "",
+  );
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -180,10 +200,18 @@ export default function PrescriptionFormModal({
         text: diagnosis.text.trim(),
       };
     }
-    if (generalNotes.trim()) payload.generalNotes = generalNotes.trim();
-    if (substitution !== "") payload.substitutionAllowed = substitution === "yes";
-    if (refills !== "") payload.refills = Number(refills);
-    if (validUntil) payload.validUntil = validUntil;
+    // При правке отправляем поля даже пустыми: сервер меняет только то, что
+    // пришло, и очищенное значение иначе не снялось бы — врач стёр дату, а
+    // на бланке она осталась.
+    if (editing || generalNotes.trim()) payload.generalNotes = generalNotes.trim();
+    if (editing || substitution !== "") {
+      payload.substitutionAllowed =
+        substitution === "" ? null : substitution === "yes";
+    }
+    if (editing || refills !== "") {
+      payload.refills = refills === "" ? null : Number(refills);
+    }
+    if (editing || validUntil) payload.validUntil = validUntil || null;
 
     return payload;
   }
@@ -197,7 +225,12 @@ export default function PrescriptionFormModal({
     setSubmitting(true);
     try {
       const send = submit || createPrescription;
-      const created = await send(patient._id, buildPayload());
+      // При создании отправляем идентификатор пациента, при правке —
+      // идентификатор рецепта: это разные адреса, и путать их нельзя.
+      const created = await send(
+        editing ? initial._id : patient._id,
+        buildPayload(),
+      );
       const saved = created.prescription || created;
       onSaved && onSaved(saved);
     } catch (err) {
@@ -226,9 +259,13 @@ export default function PrescriptionFormModal({
       >
         <div className="med-modal-head">
           <h3>
-            {t("medical.prescriptions.createTitle", {
-              defaultValue: "Новый рецепт",
-            })}
+            {editing
+              ? t("medical.prescriptions.editTitle", {
+                  defaultValue: "Правка рецепта",
+                })
+              : t("medical.prescriptions.newTitle", {
+                  defaultValue: "Новый рецепт",
+                })}
           </h3>
           <button
             type="button"
@@ -692,9 +729,13 @@ export default function PrescriptionFormModal({
           >
             {submitting
               ? t("common.submitting", { defaultValue: "Сохранение..." })
-              : t("medical.prescriptions.issueButton", {
-                  defaultValue: "Выписать рецепт",
-                })}
+              : editing
+                ? t("medical.prescriptions.saveButton", {
+                    defaultValue: "Сохранить изменения",
+                  })
+                : t("medical.prescriptions.issueButton", {
+                    defaultValue: "Выписать рецепт",
+                  })}
           </button>
         </div>
       </div>

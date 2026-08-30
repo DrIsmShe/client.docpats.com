@@ -4,6 +4,12 @@ import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import SurgeryTab from "../surgery/SurgeryTab";
 import { SCAN_TEST_TYPES, ENDPOINTS } from "./examConstants";
+import PrescriptionFormModal from "../clinic/ClinicPatientDetailPage/PrescriptionFormModal";
+import {
+  createDoctorPrescription,
+  listDoctorPrescriptions,
+  openDoctorPrescriptionPdf,
+} from "../../api/doctorPrescriptions";
 
 /* ─────────────────────────── CSS ─────────────────────────── */
 const CSS = `
@@ -326,6 +332,27 @@ export default function PatientDetail() {
   const API_BASE = process.env.REACT_APP_API_URL;
 
   const [activeTab, setActiveTab] = useState("overview");
+
+  // Рецепты. Бланк и форма те же, что в клинике; отличается только
+  // маршрут — клинический сервис требует членства в клинике, которого у
+  // приёма в поликлинике врача нет.
+  const [rxOpen, setRxOpen] = useState(false);
+  const [prescriptions, setPrescriptions] = useState([]);
+
+  // Хук стоит здесь, среди остальных: ниже по файлу есть ранние return, а
+  // pid объявлен уже после них — рядом с ним вызов был бы условным.
+  const loadedPatientId = patient?._id;
+  useEffect(() => {
+    if (!loadedPatientId) return;
+    let alive = true;
+    listDoctorPrescriptions(loadedPatientId)
+      .then((rows) => alive && setPrescriptions(rows))
+      // Молча: рецептов может не быть, и это не ошибка страницы.
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [loadedPatientId]);
   const [medicalHistory, setMedicalHistory] = useState([]);
   const [ctScans, setCtScans] = useState([]);
   const [mriScans, setMRIScans] = useState([]);
@@ -853,6 +880,12 @@ export default function PatientDetail() {
               ? t("common:dp.patient.opening")
               : t("common:dp.patient.writeToPatient")}
           </button>
+          <button
+            className="ppd-btn ppd-btn-primary"
+            onClick={() => setRxOpen(true)}
+          >
+            💊 {t("buttons.issuePrescription", { defaultValue: "Выписать рецепт" })}
+          </button>
           {error && <div className="ppd-error-box">⚠ {error}</div>}
         </div>
 
@@ -873,6 +906,10 @@ export default function PatientDetail() {
                 { id: "overview", label: t("tabs.generalInfo") },
                 { id: "clinical", label: t("tabs.clinicalInfo") },
                 { id: "history", label: t("tabs.caseHistories") },
+                {
+                  id: "prescriptions",
+                  label: t("tabs.prescriptions", { defaultValue: "Рецепты" }),
+                },
                 { id: "surgery", label: t("common:dp.patient.tabSurgery") },
               ].map((tab) => (
                 <button
@@ -993,6 +1030,44 @@ export default function PatientDetail() {
                   </div>
                 ))}
               </div>
+              {activeTab === "prescriptions" && (
+                <div className="ppd-tab-pane active">
+                  {prescriptions.length === 0 ? (
+                    <div className="ppd-info-row">
+                      <span className="ppd-info-value">
+                        {t("prescriptions.empty", {
+                          defaultValue: "Рецептов пока нет",
+                        })}
+                      </span>
+                    </div>
+                  ) : (
+                    prescriptions.map((rx) => (
+                      <div key={rx._id} className="ppd-info-row">
+                        <span className="ppd-info-label">
+                          {new Date(
+                            rx.issuedAt || rx.createdAt,
+                          ).toLocaleDateString()}
+                          {rx.diagnosis?.code ? ` · ${rx.diagnosis.code}` : ""}
+                        </span>
+                        <span className="ppd-info-value">
+                          {(rx.items || [])
+                            .map((it) => it.inn)
+                            .filter(Boolean)
+                            .join(", ") || "—"}
+                          <button
+                            type="button"
+                            className="ppd-btn ppd-btn-outline"
+                            style={{ marginInlineStart: 12, padding: "4px 12px" }}
+                            onClick={() => openDoctorPrescriptionPdf(rx._id)}
+                          >
+                            {t("prescriptions.print", { defaultValue: "Бланк" })}
+                          </button>
+                        </span>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
               {activeTab === "surgery" && (
                 <SurgeryTab patientId={pid} patientType="registered" />
               )}
@@ -1113,6 +1188,20 @@ export default function PatientDetail() {
           </div>
         </div>
       </div>
+
+      {/* Бланк тот же, что в клинике: подменяем только способ отправки. */}
+      {rxOpen && (
+        <PrescriptionFormModal
+          patient={{ _id: pid }}
+          submit={createDoctorPrescription}
+          onClose={() => setRxOpen(false)}
+          onSaved={(saved) => {
+            setRxOpen(false);
+            if (saved?._id) setPrescriptions((prev) => [saved, ...prev]);
+            setActiveTab("prescriptions");
+          }}
+        />
+      )}
     </div>
   );
 }

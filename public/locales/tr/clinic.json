@@ -1198,7 +1198,10 @@
       "substitutionYes": "Eşdeğer ile değişime izin verilir",
       "substitutionNo": "Yazıldığı gibi verilsin (değişim yok)",
       "refills": "Tekrar sayısı",
-      "validUntil": "Reçete geçerlilik tarihi"
+      "validUntil": "Reçete geçerlilik tarihi",
+      "newTitle": "Yeni reçete",
+      "editTitle": "Reçeteyi düzenle",
+      "saveButton": "Değişiklikleri kaydet"
     },
     "tabs": {
       "labResults": "Laboratuvar sonuçları",

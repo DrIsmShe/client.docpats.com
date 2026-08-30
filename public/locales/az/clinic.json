@@ -1198,7 +1198,10 @@
       "substitutionYes": "Analoqla əvəzetməyə icazə verilir",
       "substitutionNo": "Yazıldığı kimi buraxılsın (əvəzetmə olmadan)",
       "refills": "Təkrar buraxılışlar",
-      "validUntil": "Resept etibarlıdır"
+      "validUntil": "Resept etibarlıdır",
+      "newTitle": "Yeni resept",
+      "editTitle": "Reseptin düzəlişi",
+      "saveButton": "Dəyişiklikləri yadda saxla"
     },
     "tabs": {
       "labResults": "Laborator nəticələr",

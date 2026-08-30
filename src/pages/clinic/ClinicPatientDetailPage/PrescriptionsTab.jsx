@@ -21,6 +21,7 @@ import {
   completePrescription,
   deletePrescription,
   getPrescriptionPdf,
+  updatePrescription,
 } from "../../../api/clinic";
 import PrescriptionFormModal from "./PrescriptionFormModal";
 
@@ -53,6 +54,8 @@ export default function PrescriptionsTab({ patient, canWrite, canDelete }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  // Какой рецепт правим. null — форма открыта на создание.
+  const [editing, setEditing] = useState(null);
   const [expanded, setExpanded] = useState(null); // prescriptionId
   const [busyId, setBusyId] = useState(null); // row with in-flight action
 
@@ -267,6 +270,7 @@ export default function PrescriptionsTab({ patient, canWrite, canDelete }) {
               onComplete={() => handleComplete(rx)}
               onDelete={() => handleDelete(rx)}
               onPdf={() => handlePdf(rx)}
+              onEdit={() => setEditing(rx)}
               t={t}
             />
           ))}
@@ -278,6 +282,26 @@ export default function PrescriptionsTab({ patient, canWrite, canDelete }) {
           patient={patient}
           onClose={() => setShowForm(false)}
           onSaved={handleCreated}
+        />
+      )}
+
+      {/* Правка выписанного. Та же форма: врач исправляет опечатку в тех же
+          полях, в которых её сделал. Сервер разрешит её только пока рецепт
+          активен и по нему ничего не отпущено. */}
+      {editing && (
+        <PrescriptionFormModal
+          patient={patient}
+          initial={editing}
+          submit={updatePrescription}
+          onClose={() => setEditing(null)}
+          onSaved={(saved) => {
+            setEditing(null);
+            setItems((prev) =>
+              prev.map((x) =>
+                String(x._id) === String(saved._id) ? saved : x,
+              ),
+            );
+          }}
         />
       )}
     </div>
@@ -294,6 +318,7 @@ function PrescriptionCard({
   busy,
   onCancel,
   onComplete,
+  onEdit,
   onDelete,
   onPdf,
   t,
@@ -461,6 +486,14 @@ function PrescriptionCard({
 
             {!isCross && canWrite && isActive && (
               <>
+                <button
+                  type="button"
+                  className="staff-page-btn-secondary"
+                  onClick={act(onEdit)}
+                  disabled={busy}
+                >
+                  {t("common.edit", { defaultValue: "Изменить" })}
+                </button>
                 <button
                   type="button"
                   className="staff-page-btn-secondary"

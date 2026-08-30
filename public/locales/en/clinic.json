@@ -1198,7 +1198,10 @@
       "substitutionYes": "Generic substitution permitted",
       "substitutionNo": "Dispense as written (no substitution)",
       "refills": "Repeats / refills",
-      "validUntil": "Prescription valid until"
+      "validUntil": "Prescription valid until",
+      "newTitle": "New prescription",
+      "editTitle": "Edit prescription",
+      "saveButton": "Save changes"
     },
     "tabs": {
       "labResults": "Lab Results",

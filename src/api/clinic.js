@@ -1438,6 +1438,21 @@ export const createPrescription = async (patientId, payload) => {
 };
 
 /**
+ * PATCH /api/v1/clinic/medical/prescriptions/:id
+ * Правка выписанного бланка. Сервер разрешает её только пока рецепт
+ * активен и по нему ничего не отпущено; каждое изменение попадает в
+ * историю рецепта со старым и новым значением.
+ * Returns { prescription }.
+ */
+export const updatePrescription = async (prescriptionId, payload) => {
+  const res = await axios.patch(
+    `/api/v1/clinic/medical/prescriptions/${prescriptionId}`,
+    payload,
+  );
+  return res.data;
+};
+
+/**
  * GET /api/v1/clinic/medical/patients/:patientId/prescriptions
  * Options: { status?, limit?, before? }
  * Returns { items, nextCursor, count } (normalized).

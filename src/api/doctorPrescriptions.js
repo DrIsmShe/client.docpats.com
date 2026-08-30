@@ -36,3 +36,12 @@ export async function openDoctorPrescriptionPdf(id, lang = "ru") {
   // Освобождаем не сразу: вкладка ещё не успела прочитать содержимое.
   setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
+
+// Правка выписанного бланка. Сервер разрешает её только пока рецепт
+// активен; каждое изменение ложится в историю рецепта.
+export async function updateDoctorPrescription(prescriptionId, payload) {
+  const res = await axios.patch(`${BASE}/${prescriptionId}`, payload, {
+    withCredentials: true,
+  });
+  return res.data;
+}

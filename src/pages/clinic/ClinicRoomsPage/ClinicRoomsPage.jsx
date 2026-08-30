@@ -31,15 +31,15 @@ export default function ClinicRoomsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null); // null = create, room = edit
 
-  // Permission-based gating вЂ” mirrors backend RBAC (ROOM resource).
-  // admin has ROOM:RO в†’ create/edit/archive stay hidden (no 403).
+  // Permission-based gating — mirrors backend RBAC (ROOM resource).
+  // admin has ROOM:RO → create/edit/archive stay hidden (no 403).
   // Owner is always-full (never restricted, guards against absent perms).
   const myRole = layoutContext?.role || "member";
   const perms = layoutContext?.permissions || {};
   const isOwner = myRole === "owner";
   const canManage = isOwner || !!perms?.room?.write;
 
-  // Map departmentId в†’ dept (for resolving names on each room row).
+  // Map departmentId → dept (for resolving names on each room row).
   const deptMap = useMemo(() => {
     const m = {};
     for (const d of departments) m[String(d._id || d.id)] = d;
@@ -72,7 +72,7 @@ export default function ClinicRoomsPage() {
     loadAll();
   }, [loadAll]);
 
-  // Active departments only вЂ” for the create/edit modal + the filter select.
+  // Active departments only — for the create/edit modal + the filter select.
   const activeDepartments = useMemo(
     () => departments.filter((d) => d.status === "active"),
     [departments],
@@ -95,7 +95,7 @@ export default function ClinicRoomsPage() {
 
   // Group filtered rooms by department for display.
   const grouped = useMemo(() => {
-    const groups = new Map(); // deptId в†’ { dept, rooms: [] }
+    const groups = new Map(); // deptId → { dept, rooms: [] }
     for (const r of filtered) {
       const did = String(r.departmentId);
       if (!groups.has(did)) {
@@ -132,7 +132,7 @@ export default function ClinicRoomsPage() {
       !window.confirm(
         t("rooms.confirmArchive", {
           name: room.name,
-          defaultValue: `РђСЂС…РёРІРёСЂРѕРІР°С‚СЊ В«${room.name}В»?`,
+          defaultValue: `Архивировать «${room.name}»?`,
         }),
       )
     )
@@ -147,7 +147,7 @@ export default function ClinicRoomsPage() {
       alert(
         err.response?.data?.error ||
           t("rooms.archiveFailed", {
-            defaultValue: "РќРµ СѓРґР°Р»РѕСЃСЊ Р°СЂС…РёРІРёСЂРѕРІР°С‚СЊ РєР°Р±РёРЅРµС‚",
+            defaultValue: "Не удалось архивировать кабинет",
           }),
       );
     } finally {
@@ -165,7 +165,7 @@ export default function ClinicRoomsPage() {
       alert(
         err.response?.data?.error ||
           t("rooms.restoreFailed", {
-            defaultValue: "РќРµ СѓРґР°Р»РѕСЃСЊ РІРѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊ РєР°Р±РёРЅРµС‚",
+            defaultValue: "Не удалось восстановить кабинет",
           }),
       );
     } finally {
@@ -184,10 +184,10 @@ export default function ClinicRoomsPage() {
   if (error) {
     return (
       <div className="room-page-error">
-        <h2>{t("rooms.errorTitle", { defaultValue: "РћС€РёР±РєР°" })}</h2>
+        <h2>{t("rooms.errorTitle", { defaultValue: "Ошибка" })}</h2>
         <p>{error}</p>
         <button onClick={loadAll}>
-          {t("common.retry", { defaultValue: "РџРѕРІС‚РѕСЂРёС‚СЊ" })}
+          {t("common.retry", { defaultValue: "Повторить" })}
         </button>
       </div>
     );
@@ -200,12 +200,12 @@ export default function ClinicRoomsPage() {
       <div className="room-page-header">
         <div className="room-page-header-left">
           <Link to={dashboardPath} className="room-page-back">
-            {t("rooms.back", { defaultValue: "в†ђ Р”Р°С€Р±РѕСЂРґ" })}
+            {t("rooms.back", { defaultValue: "← Дашборд" })}
           </Link>
-          <h1>{t("rooms.title", { defaultValue: "РљР°Р±РёРЅРµС‚С‹" })}</h1>
+          <h1>{t("rooms.title", { defaultValue: "Кабинеты" })}</h1>
           <p className="room-page-subtitle">
             {t("rooms.subtitle", {
-              defaultValue: "РљР°Р±РёРЅРµС‚С‹ РєР»РёРЅРёРєРё РїРѕ РѕС‚РґРµР»РµРЅРёСЏРј",
+              defaultValue: "Кабинеты клиники по отделениям",
             })}
           </p>
         </div>
@@ -216,24 +216,24 @@ export default function ClinicRoomsPage() {
               onClick={openCreate}
               type="button"
             >
-              {t("rooms.create", { defaultValue: "РЎРѕР·РґР°С‚СЊ РєР°Р±РёРЅРµС‚" })}
+              {t("rooms.create", { defaultValue: "Создать кабинет" })}
             </button>
           </div>
         )}
       </div>
 
-      {/* No departments yet в†’ rooms can't exist. Guide the user. */}
+      {/* No departments yet → rooms can't exist. Guide the user. */}
       {noDepartments ? (
         <div className="room-page-empty">
           <p>
             {t("rooms.needDepartmentFirst", {
               defaultValue:
-                "РЎРЅР°С‡Р°Р»Р° СЃРѕР·РґР°Р№С‚Рµ С…РѕС‚СЏ Р±С‹ РѕРґРЅРѕ РѕС‚РґРµР»РµРЅРёРµ вЂ” РєР°Р±РёРЅРµС‚ РІСЃРµРіРґР° РїСЂРёРЅР°РґР»РµР¶РёС‚ РѕС‚РґРµР»РµРЅРёСЋ.",
+                "Сначала создайте хотя бы одно отделение — кабинет всегда принадлежит отделению.",
             })}
           </p>
           <Link to={`${basePath}/departments`} className="room-page-btn-primary">
             {t("rooms.goToDepartments", {
-              defaultValue: "РџРµСЂРµР№С‚Рё Рє РѕС‚РґРµР»РµРЅРёСЏРј",
+              defaultValue: "Перейти к отделениям",
             })}
           </Link>
         </div>
@@ -246,7 +246,7 @@ export default function ClinicRoomsPage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t("rooms.searchPlaceholder", {
-                defaultValue: "РџРѕРёСЃРє РїРѕ РЅР°Р·РІР°РЅРёСЋ РёР»Рё РєРѕРґСѓвЂ¦",
+                defaultValue: "Поиск по названию или коду…",
               })}
             />
             <select
@@ -256,7 +256,7 @@ export default function ClinicRoomsPage() {
             >
               <option value="">
                 {t("rooms.allDepartments", {
-                  defaultValue: "Р’СЃРµ РѕС‚РґРµР»РµРЅРёСЏ",
+                  defaultValue: "Все отделения",
                 })}
               </option>
               {activeDepartments.map((d) => (
@@ -271,20 +271,20 @@ export default function ClinicRoomsPage() {
                 checked={showArchived}
                 onChange={(e) => setShowArchived(e.target.checked)}
               />
-              {t("rooms.showArchived", { defaultValue: "РџРѕРєР°Р·Р°С‚СЊ Р°СЂС…РёРІ" })}
+              {t("rooms.showArchived", { defaultValue: "Показать архив" })}
             </label>
           </div>
 
           <section className="room-page-section">
             <h2>
-              {t("rooms.listTitle", { defaultValue: "РЎРїРёСЃРѕРє РєР°Р±РёРЅРµС‚РѕРІ" })}
+              {t("rooms.listTitle", { defaultValue: "Список кабинетов" })}
               <span className="room-page-count">{filtered.length}</span>
             </h2>
 
             {filtered.length === 0 ? (
               <div className="room-page-empty">
                 <p>
-                  {t("rooms.empty", { defaultValue: "РљР°Р±РёРЅРµС‚РѕРІ РїРѕРєР° РЅРµС‚" })}
+                  {t("rooms.empty", { defaultValue: "Кабинетов пока нет" })}
                 </p>
                 {canManage && (
                   <button
@@ -293,7 +293,7 @@ export default function ClinicRoomsPage() {
                     type="button"
                   >
                     {t("rooms.createFirst", {
-                      defaultValue: "РЎРѕР·РґР°С‚СЊ РїРµСЂРІС‹Р№ РєР°Р±РёРЅРµС‚",
+                      defaultValue: "Создать первый кабинет",
                     })}
                   </button>
                 )}
@@ -308,7 +308,7 @@ export default function ClinicRoomsPage() {
                     <div className="room-group-title">
                       {dept?.name ||
                         t("rooms.unknownDepartment", {
-                          defaultValue: "Р‘РµР· РѕС‚РґРµР»РµРЅРёСЏ",
+                          defaultValue: "Без отделения",
                         })}
                       <span className="room-group-count">
                         {deptRooms.length}
@@ -351,7 +351,7 @@ export default function ClinicRoomsPage() {
   );
 }
 
-// в”Ђв”Ђв”Ђ Sub-component в”Ђв”Ђв”Ђ
+// ─── Sub-component ───
 
 function RoomRow({
   room,
@@ -378,7 +378,7 @@ function RoomRow({
           {room.name}
           {archived && (
             <span className="room-row-archived-badge">
-              {t("rooms.archivedBadge", { defaultValue: "Р°СЂС…РёРІ" })}
+              {t("rooms.archivedBadge", { defaultValue: "архив" })}
             </span>
           )}
         </div>
@@ -386,12 +386,12 @@ function RoomRow({
           {room.code && <span className="room-row-code">{room.code}</span>}
           {room.floor && (
             <span className="room-row-floor">
-              {t("rooms.floorShort", { defaultValue: "СЌС‚Р°Р¶" })} {room.floor}
+              {t("rooms.floorShort", { defaultValue: "этаж" })} {room.floor}
             </span>
           )}
           {typeof room.capacity === "number" && (
             <span className="room-row-capacity">
-              {t("rooms.capacityShort", { defaultValue: "РјРµСЃС‚" })}:{" "}
+              {t("rooms.capacityShort", { defaultValue: "мест" })}:{" "}
               {room.capacity}
             </span>
           )}
@@ -399,7 +399,7 @@ function RoomRow({
             <span className="room-row-staff">
               {t("rooms.staffCount", {
                 count: assignedCount,
-                defaultValue: `РІСЂР°С‡РµР№: ${assignedCount}`,
+                defaultValue: `врачей: ${assignedCount}`,
               })}
             </span>
           )}
@@ -415,7 +415,7 @@ function RoomRow({
               disabled={isLoading}
               type="button"
             >
-              {t("common.edit", { defaultValue: "РР·РјРµРЅРёС‚СЊ" })}
+              {t("common.edit", { defaultValue: "Изменить" })}
             </button>
           )}
           {archived ? (
@@ -425,7 +425,7 @@ function RoomRow({
               disabled={isLoading}
               type="button"
             >
-              {t("rooms.restore", { defaultValue: "Р’РѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊ" })}
+              {t("rooms.restore", { defaultValue: "Восстановить" })}
             </button>
           ) : (
             <button
@@ -434,7 +434,7 @@ function RoomRow({
               disabled={isLoading}
               type="button"
             >
-              {t("rooms.archive", { defaultValue: "Р’ Р°СЂС…РёРІ" })}
+              {t("rooms.archive", { defaultValue: "В архив" })}
             </button>
           )}
         </div>

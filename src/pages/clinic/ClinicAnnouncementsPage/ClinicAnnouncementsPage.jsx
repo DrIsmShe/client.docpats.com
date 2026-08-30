@@ -2,7 +2,7 @@
 //
 // Clinic corporate-portal bulletin board. The head physician / admin posts;
 // every member sees the feed. Pinned announcements float to the top. Authors
-// and admins see a read-receipt badge ("РџСЂРѕС‡РёС‚Р°Р»Рё N РёР· M") вЂ” variant A.
+// and admins see a read-receipt badge ("Прочитали N из M") — variant A.
 //
 // Role gating mirrors ClinicDashboardPage: role comes from the clinic layout
 // outlet context. Write actions (create/pin/archive/delete) are limited to
@@ -100,7 +100,7 @@ export default function ClinicAnnouncementsPage() {
       await pinAnnouncement(a._id, !a.pinned);
       load();
     } catch {
-      alert(t("announcements.errorTitle", { defaultValue: "РћС€РёР±РєР°" }));
+      alert(t("announcements.errorTitle", { defaultValue: "Ошибка" }));
     }
   }
 
@@ -110,7 +110,7 @@ export default function ClinicAnnouncementsPage() {
       await archiveAnnouncement(a._id);
       load();
     } catch {
-      alert(t("announcements.errorTitle", { defaultValue: "РћС€РёР±РєР°" }));
+      alert(t("announcements.errorTitle", { defaultValue: "Ошибка" }));
     }
   }
   async function handleUnarchive(a, e) {
@@ -119,7 +119,7 @@ export default function ClinicAnnouncementsPage() {
       await unarchiveAnnouncement(a._id);
       load();
     } catch {
-      alert(t("announcements.errorTitle", { defaultValue: "РћС€РёР±РєР°" }));
+      alert(t("announcements.errorTitle", { defaultValue: "Ошибка" }));
     }
   }
   async function handleDelete(a, e) {
@@ -127,7 +127,7 @@ export default function ClinicAnnouncementsPage() {
     if (
       !window.confirm(
         t("announcements.confirmDelete", {
-          defaultValue: "РЈРґР°Р»РёС‚СЊ РѕР±СЉСЏРІР»РµРЅРёРµ РЅР°РІСЃРµРіРґР°?",
+          defaultValue: "Удалить объявление навсегда?",
         }),
       )
     )
@@ -136,26 +136,26 @@ export default function ClinicAnnouncementsPage() {
       await deleteAnnouncement(a._id);
       load();
     } catch {
-      alert(t("announcements.errorTitle", { defaultValue: "РћС€РёР±РєР°" }));
+      alert(t("announcements.errorTitle", { defaultValue: "Ошибка" }));
     }
   }
 
   return (
     <div className="clinic-ann">
       <Link to={dashboardPath} className="clinic-ann-back">
-        в†ђ {t("announcements.back", { defaultValue: "Р”Р°С€Р±РѕСЂРґ" })}
+        ← {t("announcements.back", { defaultValue: "Дашборд" })}
       </Link>
       <div className="clinic-ann-header">
         <div>
           <div className="clinic-ann-eyebrow">
-            {t("announcements.title", { defaultValue: "РћР±СЉСЏРІР»РµРЅРёСЏ" })}
+            {t("announcements.title", { defaultValue: "Объявления" })}
           </div>
           <h1 className="clinic-ann-title">
-            {t("announcements.title", { defaultValue: "РћР±СЉСЏРІР»РµРЅРёСЏ" })}
+            {t("announcements.title", { defaultValue: "Объявления" })}
           </h1>
           <p className="clinic-ann-subtitle">
             {t("announcements.subtitle", {
-              defaultValue: "Р’РЅСѓС‚СЂРµРЅРЅРёРµ РѕР±СЉСЏРІР»РµРЅРёСЏ РєР»РёРЅРёРєРё РґР»СЏ РІСЃРµР№ РєРѕРјР°РЅРґС‹",
+              defaultValue: "Внутренние объявления клиники для всей команды",
             })}
           </p>
         </div>
@@ -164,7 +164,7 @@ export default function ClinicAnnouncementsPage() {
             className="clinic-ann-create-btn"
             onClick={() => setFormOpen(true)}
           >
-            + {t("announcements.create", { defaultValue: "РќРѕРІРѕРµ РѕР±СЉСЏРІР»РµРЅРёРµ" })}
+            + {t("announcements.create", { defaultValue: "Новое объявление" })}
           </button>
         )}
       </div>
@@ -175,22 +175,22 @@ export default function ClinicAnnouncementsPage() {
           checked={showArchived}
           onChange={(e) => setShowArchived(e.target.checked)}
         />
-        {t("announcements.showArchived", { defaultValue: "РђСЂС…РёРІ" })}
+        {t("announcements.showArchived", { defaultValue: "Архив" })}
       </label>
 
       {loading ? (
         <div className="clinic-ann-state">
-          {t("common.loading", { defaultValue: "Р—Р°РіСЂСѓР·РєР°вЂ¦" })}
+          {t("common.loading", { defaultValue: "Загрузка…" })}
         </div>
       ) : error ? (
         <div className="clinic-ann-state">
           {t("announcements.errorTitle", {
-            defaultValue: "РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ РѕР±СЉСЏРІР»РµРЅРёСЏ",
+            defaultValue: "Не удалось загрузить объявления",
           })}
         </div>
       ) : items.length === 0 ? (
         <div className="clinic-ann-state">
-          {t("announcements.empty", { defaultValue: "РћР±СЉСЏРІР»РµРЅРёР№ РїРѕРєР° РЅРµС‚" })}
+          {t("announcements.empty", { defaultValue: "Объявлений пока нет" })}
           {canWrite && (
             <button
               className="clinic-ann-create-btn"
@@ -198,7 +198,7 @@ export default function ClinicAnnouncementsPage() {
               onClick={() => setFormOpen(true)}
             >
               {t("announcements.createFirst", {
-                defaultValue: "РЎРѕР·РґР°С‚СЊ РїРµСЂРІРѕРµ РѕР±СЉСЏРІР»РµРЅРёРµ",
+                defaultValue: "Создать первое объявление",
               })}
             </button>
           )}
@@ -220,9 +220,9 @@ export default function ClinicAnnouncementsPage() {
                     <div className="clinic-ann-card-title">
                       {a.pinned && (
                         <span className="clinic-ann-pin-badge">
-                          рџ“Њ{" "}
+                          📌{" "}
                           {t("announcements.pinned", {
-                            defaultValue: "Р—Р°РєСЂРµРїР»РµРЅРѕ",
+                            defaultValue: "Закреплено",
                           })}
                         </span>
                       )}
@@ -230,14 +230,14 @@ export default function ClinicAnnouncementsPage() {
                     </div>
                     <div className="clinic-ann-card-sub">
                       {a.authorName ||
-                        t("announcements.author", { defaultValue: "РђРІС‚РѕСЂ" })}
-                      {"  В·  "}
+                        t("announcements.author", { defaultValue: "Автор" })}
+                      {"  ·  "}
                       {fmtDate(a.createdAt)}
                       {a.audience === "department" && (
                         <span className="clinic-ann-aud">
-                          {"  В·  "}
+                          {"  ·  "}
                           {t("announcements.audienceDepartment", {
-                            defaultValue: "РћС‚РґРµР»РµРЅРёРµ",
+                            defaultValue: "Отделение",
                           })}
                         </span>
                       )}
@@ -251,12 +251,12 @@ export default function ClinicAnnouncementsPage() {
                   )}
                   {a.status !== "archived" ? (
                     <button onClick={(e) => handleArchive(a, e)}>
-                      {t("announcements.archive", { defaultValue: "Р’ Р°СЂС…РёРІ" })}
+                      {t("announcements.archive", { defaultValue: "В архив" })}
                     </button>
                   ) : (
                     <button onClick={(e) => handleUnarchive(a, e)}>
                       {t("announcements.unarchive", {
-                        defaultValue: "Р’РµСЂРЅСѓС‚СЊ РёР· Р°СЂС…РёРІР°",
+                        defaultValue: "Вернуть из архива",
                       })}
                     </button>
                   )}
@@ -273,8 +273,8 @@ export default function ClinicAnnouncementsPage() {
                       <div className="clinic-ann-receipt">
                         {t("announcements.readBy", {
                           read: a.readCount || 0,
-                          total: layoutContext?.memberCount || "вЂ”",
-                          defaultValue: `РџСЂРѕС‡РёС‚Р°Р»Рё ${a.readCount || 0}`,
+                          total: layoutContext?.memberCount || "—",
+                          defaultValue: `Прочитали ${a.readCount || 0}`,
                         })}
                       </div>
                     )}
@@ -284,16 +284,16 @@ export default function ClinicAnnouncementsPage() {
                         <button onClick={(e) => handlePin(a, e)}>
                           {a.pinned
                             ? t("announcements.unpin", {
-                                defaultValue: "РћС‚РєСЂРµРїРёС‚СЊ",
+                                defaultValue: "Открепить",
                               })
                             : t("announcements.pin", {
-                                defaultValue: "Р—Р°РєСЂРµРїРёС‚СЊ",
+                                defaultValue: "Закрепить",
                               })}
                         </button>
                         {a.status !== "archived" && (
                           <button onClick={(e) => handleArchive(a, e)}>
                             {t("announcements.archive", {
-                              defaultValue: "Р’ Р°СЂС…РёРІ",
+                              defaultValue: "В архив",
                             })}
                           </button>
                         )}
@@ -302,7 +302,7 @@ export default function ClinicAnnouncementsPage() {
                           onClick={(e) => handleDelete(a, e)}
                         >
                           {t("announcements.delete", {
-                            defaultValue: "РЈРґР°Р»РёС‚СЊ",
+                            defaultValue: "Удалить",
                           })}
                         </button>
                       </div>
