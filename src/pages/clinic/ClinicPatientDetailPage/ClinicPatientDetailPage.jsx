@@ -47,6 +47,7 @@ import {
   listDepartments,
 } from "../../../api/clinic";
 import "../ClinicPatientsPage/clinicPatientsPage.css";
+import "../clinicPageShell.css";
 import "./clinicPatientDetailPage.css";
 import ClinicConsentsPanel from "./ClinicConsentsPanel.jsx";
 

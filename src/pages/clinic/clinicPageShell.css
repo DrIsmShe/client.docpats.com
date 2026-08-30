@@ -1,0 +1,156 @@
+/* client/src/pages/clinic/clinicPageShell.css
+ *
+ * Каркас страниц кабинета клиники: шапка, кнопки, список, состояния
+ * «пусто / загрузка / ошибка».
+ *
+ * Вынесен из clinicStaffPage.css, потому что этими классами пользуются ТРИ
+ * страницы — сотрудники, пациенты и карточка пациента, — а импортировала файл
+ * только первая. CSS в сборке подключается при импорте, поэтому пациенты,
+ * открытые по прямой ссылке, оставались вообще без стилей: голый заголовок,
+ * счётчик, прилипший к названию, и кнопка «Удалить» системным шрифтом.
+ * Стоило зайти сначала на «Сотрудников» — и всё выглядело нормально, поэтому
+ * дефект и не замечался.
+ */
+
+.staff-page-back {
+  display: inline-block;
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.staff-page-back:hover {
+  color: #2563eb;
+}
+
+.staff-page-header h1 {
+  margin: 0 0 4px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1f2e;
+}
+
+.staff-page-subtitle {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.staff-page-header-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.staff-page-btn-primary,
+.staff-page-btn-secondary {
+  padding: 9px 18px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.staff-page-btn-primary {
+  background: #2563eb;
+  color: #fff;
+}
+
+.staff-page-btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.staff-page-btn-secondary {
+  background: #fff;
+  color: #1a1f2e;
+  border-color: #d4dae2;
+}
+
+.staff-page-btn-secondary:hover {
+  background: #f7f9fc;
+  border-color: #9ca3af;
+}
+
+.staff-page-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1f2e;
+}
+
+.staff-page-count {
+  background: #e6eaf0;
+  color: #4a5568;
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.staff-page-empty p {
+  margin: 0 0 16px;
+  color: #6b7280;
+}
+
+.staff-page-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e6eaf0;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: staff-spin 0.8s linear infinite;
+}
+
+.staff-page-error {
+  text-align: center;
+  padding: 48px 20px;
+}
+
+.staff-page-error h2 {
+  font-size: 18px;
+  margin: 0 0 8px;
+  color: #1a1f2e;
+}
+
+.staff-page-error p {
+  color: #6b7280;
+  margin: 0 0 16px;
+}
+
+.staff-page-error button {
+  padding: 8px 20px;
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.staff-page-header {
+    flex-direction: column;
+  }
+
+.staff-page-header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+.staff-page-btn-primary,
+  .staff-page-btn-secondary {
+    width: 100%;
+  }
+
+/* Использовался в разметке пациентов, но не был описан нигде. */
+.staff-page-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}

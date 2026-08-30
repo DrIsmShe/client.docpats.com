@@ -39,6 +39,7 @@ import {
   searchPatients,
   deletePatient,
 } from "../../../api/clinic";
+import "../clinicPageShell.css";
 import "./clinicPatientsPage.css";
 
 const SEARCH_DEBOUNCE_MS = 400;
