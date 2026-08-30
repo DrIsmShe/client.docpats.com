@@ -13,6 +13,7 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
+import { NEWS_API_BASE } from "../../../config";
 
 const API_BASE = process.env.REACT_APP_API_URL;
 
@@ -75,6 +76,7 @@ export default function AdminConferencesPage() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [running, setRunning] = useState(false);
   const [runResult, setRunResult] = useState(null);
+  const [stats, setStats] = useState(null);
 
   const load = useCallback(async () => {
     setError(null);
@@ -95,6 +97,20 @@ export default function AdminConferencesPage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  // Счётчики берём прямо у движка: это публичные данные, и гонять их через
+  // backend незачем. Обновляем вместе со списком — после публикации число
+  // должно меняться сразу.
+  const loadStats = useCallback(() => {
+    axios
+      .get(`${NEWS_API_BASE}/api/conferences/stats`)
+      .then((r) => setStats(r.data))
+      .catch(() => setStats(null));
+  }, []);
+
+  useEffect(() => {
+    loadStats();
+  }, [loadStats, items]);
 
   async function moderate(id, next) {
     setBusy(id);
@@ -245,6 +261,40 @@ export default function AdminConferencesPage() {
         врачам. Проверяйте организатора: приглашения на несуществующие
         конференции выглядят убедительнее настоящих.
       </p>
+
+      {stats && (
+        <div style={statsBox}>
+          <div style={{ marginBottom: 8 }}>
+            В каталоге опубликовано: <b>{stats.total}</b>
+            {" · "}в этом списке: <b>{items.length}</b>
+            {stats.upcomingDeadlines > 0 && (
+              <>
+                {" · "}со сроком подачи: <b>{stats.upcomingDeadlines}</b>
+              </>
+            )}
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {(stats.byCategory || []).map((c) => (
+              <span key={c._id} style={statChip}>
+                {CATEGORIES.find(([code]) => code === c._id)?.[1] || c._id}: <b>{c.count}</b>
+              </span>
+            ))}
+          </div>
+          {/* Направления без единой карточки — это дыры в источниках, а не
+              пустой список: по ним врачу показывать нечего. */}
+          {CATEGORIES.filter(([code]) => !(stats.byCategory || []).some((c) => c._id === code))
+            .length > 0 && (
+            <div style={{ marginTop: 8, fontSize: 12, color: "#b45309" }}>
+              Нет ни одной конференции:{" "}
+              {CATEGORIES.filter(
+                ([code]) => !(stats.byCategory || []).some((c) => c._id === code),
+              )
+                .map(([, label]) => label)
+                .join(", ")}
+            </div>
+          )}
+        </div>
+      )}
 
       <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
         <select value={status} onChange={(e) => setStatus(e.target.value)} style={input}>
@@ -498,6 +548,8 @@ export default function AdminConferencesPage() {
 
 const statusColor = (s) => (s === "published" ? "#067647" : s === "rejected" ? "#b91c1c" : "#b45309");
 const cardBox = { background: "#fff", border: "1px solid #e6eaf0", borderRadius: 10, padding: 16, marginBottom: 12 };
+const statsBox = { background: "#f8fafc", border: "1px solid #e6eaf0", borderRadius: 10, padding: "14px 16px", marginBottom: 16, fontSize: 14, color: "#334155" };
+const statChip = { fontSize: 13, background: "#fff", border: "1px solid #e2e8f0", borderRadius: 999, padding: "3px 10px" };
 const runBox = { background: "#faf5ff", border: "1px solid #e9d5ff", borderRadius: 10, padding: 14, marginBottom: 16 };
 const flagsBox = { marginTop: 10, padding: "8px 10px", background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 8, color: "#9a3412", fontSize: 13 };
 const grid2 = { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12 };

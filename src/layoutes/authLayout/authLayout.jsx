@@ -1149,6 +1149,13 @@ export default function AuthLayout() {
               <a className="dp-nav-link" href="/news">
                 {t("nav.newsLink") || "Medical News"}
               </a>
+              {/* Конференции показываем всем: список — публичный, а вот
+                  программа и условия внутри карточки открываются только
+                  врачу после входа. Прятать ссылку от гостя значило бы
+                  прятать и повод зарегистрироваться. */}
+              <Link className="dp-nav-link" to="/conferences">
+                {t("nav.conferences", { defaultValue: "Конференции" })}
+              </Link>
             </div>
 
             {/* Centre logo */}

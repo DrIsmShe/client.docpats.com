@@ -52,5 +52,11 @@
   "to_cabinet": "Kabinetə",
   "field_dates": "Tarixlər",
   "field_place": "Yer",
-  "field_format": "Format"
+  "field_format": "Format",
+  "total_found": "kataloqda konfrans",
+  "shown_by_filter": "filtrə uyğun",
+  "with_deadline": "son tarixi açıq",
+  "locked_title": "Proqram və şərtlər — həkimlər üçün",
+  "locked_text": "Proqramı, iştirak şərtlərini, qeydiyyat və tezis son tarixlərini, qiyməti və CME kreditlərini görmək üçün həkim hesabı ilə daxil olun.",
+  "locked_cta": "Daxil ol"
 }

@@ -15,9 +15,10 @@
 //     мелкий шрифт на длинном описании читать никто не станет.
 
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import PageNav from "../../components/shared/PageNav";
+import { getSession } from "../../api/session";
 import axios from "axios";
 import { NEWS_API_BASE } from "../../config";
 import { formatDate, formatDateRange, formatPlace } from "../../lib/localeFormat";
@@ -33,6 +34,20 @@ export default function ConferencePage() {
 
   const [conference, setConference] = useState(null);
   const [state, setState] = useState("loading");
+  const [role, setRole] = useState(null);
+
+  // Кто смотрит. Список конференций открыт всем — он и приманка, и то, что
+  // индексирует поисковик. А программа, условия и сроки открываются врачу
+  // после входа: это та часть, ради которой имеет смысл регистрироваться.
+  useEffect(() => {
+    let alive = true;
+    getSession()
+      .then((d) => alive && setRole(d?.authenticated ? d.user?.role || "" : ""))
+      .catch(() => alive && setRole(""));
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -91,11 +106,20 @@ export default function ConferencePage() {
     [t("abstracts_until"), c.abstractDeadline],
   ].filter(([, v]) => v);
 
+  // Админ тоже врач по правам просмотра: он эти карточки и модерирует.
+  const canSeeDetails = ["doctor", "admin", "superadmin"].includes(role);
+
   const extras = [
     [t("audience"), c.audience],
     [t("cme"), c.cmeCredits],
     [t("price"), c.price],
   ].filter(([, v]) => v);
+
+  const hasHiddenParts =
+    (c.program || []).length > 0 ||
+    Boolean(c.conditions) ||
+    deadlines.length > 0 ||
+    extras.length > 0;
 
   return (
     <div dir={dir} style={wrap}>
@@ -123,7 +147,7 @@ export default function ConferencePage() {
           ))}
         </div>
 
-        {deadlines.length > 0 && (
+        {canSeeDetails && deadlines.length > 0 && (
           <div style={deadlineBox}>
             {deadlines.map(([label, value]) => (
               <div key={label} style={{ fontSize: 16 }}>
@@ -135,7 +159,21 @@ export default function ConferencePage() {
 
         {c.description && <p style={lead}>{c.description}</p>}
 
-        {c.program?.length > 0 && (
+        {!canSeeDetails && hasHiddenParts && (
+          <section style={lockBox}>
+            <div style={{ fontWeight: 700, fontSize: 17, marginBottom: 8, color: "#0f172a" }}>
+              {t("locked_title")}
+            </div>
+            <p style={{ margin: "0 0 14px", lineHeight: 1.6, color: "#334155" }}>
+              {t("locked_text")}
+            </p>
+            <Link to="/login" style={cta}>
+              {t("locked_cta")}
+            </Link>
+          </section>
+        )}
+
+        {canSeeDetails && c.program?.length > 0 && (
           <section style={section}>
             <h2 style={h2}>{t("program")}</h2>
             <ol style={programList}>
@@ -149,14 +187,14 @@ export default function ConferencePage() {
           </section>
         )}
 
-        {c.conditions && (
+        {canSeeDetails && c.conditions && (
           <section style={section}>
             <h2 style={h2}>{t("conditions")}</h2>
             <p style={body}>{c.conditions}</p>
           </section>
         )}
 
-        {extras.length > 0 && (
+        {canSeeDetails && extras.length > 0 && (
           <section style={section}>
             <dl style={dl}>
               {extras.map(([label, value]) => (
@@ -278,6 +316,13 @@ const dlRow = {
 };
 const dt = { color: "#64748b", fontSize: 15, minWidth: 190, margin: 0, fontWeight: 600 };
 const dd = { margin: 0, fontSize: 16, lineHeight: 1.6, color: "#1f2937", flex: 1, minWidth: 220 };
+const lockBox = {
+  background: "#f0f7ff",
+  border: "1px solid #cfe1ff",
+  borderRadius: 14,
+  padding: "20px 22px",
+  marginBottom: 32,
+};
 const cta = {
   display: "inline-block",
   padding: "14px 28px",

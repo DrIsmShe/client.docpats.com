@@ -53,6 +53,7 @@ export default function ConferencesList() {
   const [country, setCountry] = useState("");
   const [format, setFormat] = useState("");
   const [sort, setSort] = useState("deadline");
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -86,6 +87,10 @@ export default function ConferencesList() {
 
   useEffect(() => {
     axios
+      .get(`${NEWS_API_BASE}/api/conferences/stats`)
+      .then((r) => setStats(r.data))
+      .catch(() => setStats(null));
+    axios
       .get(`${NEWS_API_BASE}/api/conferences/countries`)
       .then((r) => setCountries(r.data.countries || []))
       .catch(() => setCountries([]));
@@ -93,6 +98,9 @@ export default function ConferencesList() {
 
   // Страна словом, а не кодом: «Milan, IT» ничего не говорит врачу, который
   // решает, поедет ли он туда.
+  const catCount = (code) =>
+    (stats?.byCategory || []).find((x) => x._id === code)?.count || 0;
+
   const place = (c) =>
     c.format === "online"
       ? t("format.online")
@@ -105,14 +113,41 @@ export default function ConferencesList() {
       <h1 style={h1}>{t("title")}</h1>
       <p style={sub}>{t("subtitle")}</p>
 
+      {/* Сколько всего и сколько показано сейчас. Витрина листается
+          страницами, поэтому «найдено 20» без общего числа вводит в
+          заблуждение сильнее, чем отсутствие счётчика. */}
+      {stats && (
+        <div style={counter}>
+          <b>{stats.total}</b> {t("total_found")}
+          {total !== stats.total && (
+            <>
+              {" · "}
+              {t("shown_by_filter")}: <b>{total}</b>
+            </>
+          )}
+          {stats.upcomingDeadlines > 0 && (
+            <>
+              {" · "}
+              {t("with_deadline")}: <b>{stats.upcomingDeadlines}</b>
+            </>
+          )}
+        </div>
+      )}
+
       <div style={filters}>
         <select value={category} onChange={(e) => setCategory(e.target.value)} style={input}>
           <option value="">{t("all_categories")}</option>
-          {CATEGORY_CODES.map((code) => (
-            <option key={code} value={code}>
-              {t(`categories.${code}`)}
-            </option>
-          ))}
+          {/* С числами: врач сразу видит, где вообще есть что смотреть, и не
+              тыкает в пустые направления. */}
+          {CATEGORY_CODES.map((code) => {
+            const n = catCount(code);
+            return (
+              <option key={code} value={code} disabled={n === 0}>
+                {t(`categories.${code}`)}
+                {n ? ` (${n})` : ""}
+              </option>
+            );
+          })}
         </select>
 
         <select value={country} onChange={(e) => setCountry(e.target.value)} style={input}>
@@ -151,7 +186,8 @@ export default function ConferencesList() {
       ) : items.length === 0 ? (
         <div style={{ color: "#64748b" }}>{t("empty")}</div>
       ) : (
-        items.map((c) => (
+        <div style={grid}>
+          {items.map((c) => (
           <Link key={c._id} to={`/conferences/${c.slug}`} style={cardLink}>
             <article style={card}>
               <h2 style={cardTitle}>{c.title}</h2>
@@ -187,9 +223,10 @@ export default function ConferencesList() {
                   неё непонятно, что за карточкой есть страница, и врач уходит
                   искать конференцию в поиске. */}
               <div style={moreLink}>{t("details")} →</div>
-            </article>
-          </Link>
-        ))
+              </article>
+            </Link>
+          ))}
+        </div>
       )}
 
       {items.length > 0 && items.length < total && (
@@ -201,9 +238,19 @@ export default function ConferencesList() {
   );
 }
 
+const counter = { fontSize: 15, color: "#334155", marginBottom: 18 };
+// Три колонки на широком экране, две на планшете, одна на телефоне — число
+// колонок задаёт не медиазапрос, а auto-fill с минимальной шириной карточки.
+// Так же ведёт себя и при увеличении шрифта в шапке сайта.
+const grid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+  gap: 16,
+  alignItems: "stretch",
+};
 const wrap = {
   padding: "28px 20px 72px",
-  maxWidth: 860,
+  maxWidth: 1180,
   margin: "0 auto",
   fontFamily: CONFERENCE_FONT,
   color: "#1f2937",
@@ -212,11 +259,19 @@ const h1 = { fontSize: 30, marginBottom: 8, fontWeight: 700, color: "#0f172a" };
 const sub = { color: "#475569", fontSize: 16, marginBottom: 22, lineHeight: 1.6 };
 const filters = { display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 20 };
 const input = { padding: "8px 10px", border: "1px solid #d9dfe8", borderRadius: 8, fontSize: 14, background: "#fff" };
-const cardLink = { textDecoration: "none", color: "inherit" };
-const card = { background: "#fff", border: "1px solid #e6eaf0", borderRadius: 14, padding: 22, marginBottom: 14 };
-const cardTitle = { fontSize: 20, margin: "0 0 10px", lineHeight: 1.3, fontWeight: 700, color: "#0f172a" };
+const cardLink = { textDecoration: "none", color: "inherit", display: "block", height: "100%" };
+const card = {
+  background: "#fff",
+  border: "1px solid #e6eaf0",
+  borderRadius: 14,
+  padding: 20,
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+};
+const cardTitle = { fontSize: 18, margin: "0 0 10px", lineHeight: 1.35, fontWeight: 700, color: "#0f172a" };
 const meta = { color: "#334155", fontSize: 16, marginBottom: 3, lineHeight: 1.5 };
 const deadline = { marginTop: 10, color: "#9a3412", fontSize: 15, fontWeight: 600 };
-const moreLink = { marginTop: 12, color: "#2563eb", fontSize: 15, fontWeight: 600 };
+const moreLink = { marginTop: "auto", paddingTop: 14, color: "#2563eb", fontSize: 15, fontWeight: 600 };
 const chip = { fontSize: 12, color: "#0f766e", background: "rgba(15,118,110,.1)", padding: "3px 8px", borderRadius: 999 };
 const moreBtn = { padding: "10px 20px", background: "#3d7fff", color: "#fff", border: "none", borderRadius: 8, cursor: "pointer", marginTop: 8 };

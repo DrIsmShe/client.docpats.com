@@ -52,5 +52,11 @@
   "to_cabinet": "Hesabıma",
   "field_dates": "Tarihler",
   "field_place": "Yer",
-  "field_format": "Format"
+  "field_format": "Format",
+  "total_found": "katalogda kongre",
+  "shown_by_filter": "filtreye uyan",
+  "with_deadline": "son tarihi açık",
+  "locked_title": "Program ve koşullar — hekimler için",
+  "locked_text": "Programı, katılım koşullarını, kayıt ve bildiri son tarihlerini, ücreti ve CME kredilerini görmek için hekim hesabınızla giriş yapın.",
+  "locked_cta": "Giriş yap"
 }

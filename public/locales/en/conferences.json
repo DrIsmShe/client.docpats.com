@@ -52,5 +52,11 @@
   "to_cabinet": "To my account",
   "field_dates": "Dates",
   "field_place": "Location",
-  "field_format": "Format"
+  "field_format": "Format",
+  "total_found": "conferences in the catalogue",
+  "shown_by_filter": "matching filters",
+  "with_deadline": "with an open deadline",
+  "locked_title": "Programme and terms — for doctors",
+  "locked_text": "Sign in with a doctor account to see the programme, terms of participation, registration and abstract deadlines, fees and CME credits.",
+  "locked_cta": "Sign in"
 }
