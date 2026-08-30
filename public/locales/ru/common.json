@@ -636,7 +636,10 @@
     "repeatNewPassword": "Повторите новый пароль",
     "oldEmail": "Старый email",
     "newEmail": "Новый email",
-    "otpCode": "Код подтверждения (OTP)"
+    "otpCode": "Код подтверждения (OTP)",
+    "licenseNumber": "Номер лицензии",
+    "licenseNumberPlaceholder": "Например, AZ-078412",
+    "licenseNumberHint": "Печатается на бланке рецепта, который вы выписываете вне клиники."
   },
   "days": {
     "monday": "Понедельник",

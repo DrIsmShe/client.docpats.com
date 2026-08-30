@@ -590,7 +590,10 @@
     "repeatNewPassword": "Yeni şifrəni təkrar edin",
     "oldEmail": "Köhnə email",
     "newEmail": "Yeni email",
-    "otpCode": "OTP kodu"
+    "otpCode": "OTP kodu",
+    "licenseNumber": "Lisenziya nömrəsi",
+    "licenseNumberPlaceholder": "Məsələn, AZ-078412",
+    "licenseNumberHint": "Klinikadan kənarda yazdığınız reseptin blankında çap olunur."
   },
   "days": {
     "monday": "Bazar ertəsi",

@@ -551,7 +551,10 @@
     "repeatNewPassword": "Repeat New Password",
     "oldEmail": "Old Email",
     "newEmail": "New Email",
-    "otpCode": "OTP Code"
+    "otpCode": "OTP Code",
+    "licenseNumber": "Licence number",
+    "licenseNumberPlaceholder": "For example, AZ-078412",
+    "licenseNumberHint": "Printed on prescriptions you issue outside a clinic."
   },
   "days": {
     "monday": "Monday",

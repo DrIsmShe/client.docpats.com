@@ -427,6 +427,10 @@ export default function HomeMainPage() {
   const [phoneNumber, setPhone] = useState("");
   const [clinic, setClinic] = useState("");
   const [about, setAbout] = useState("");
+  // Номер врачебной лицензии. Печатается на бланке рецепта в графе
+  // «Регистрационный номер»: до сих пор хранились только сканы документов,
+  // а из файла номер в бланк не подставишь.
+  const [licenseNumber, setLicenseNumber] = useState("");
   const [country, setCountry] = useState("");
   const [twitter, setTwitter] = useState("");
   const [facebook, setFacebook] = useState("");
@@ -484,6 +488,7 @@ export default function HomeMainPage() {
     setPhone(doctorProfile.phoneNumber?.replace(/^\+/, "") || "");
     setClinic(doctorProfile.clinic || "");
     setAbout(doctorProfile.about || "");
+    setLicenseNumber(doctorProfile.licenseNumber || "");
     setCountry(doctorProfile.country || "");
     setTwitter(doctorProfile.twitter || "");
     setFacebook(doctorProfile.facebook || "");
@@ -573,6 +578,7 @@ export default function HomeMainPage() {
       );
       formData.append("clinic", clinic);
       formData.append("about", about);
+      formData.append("licenseNumber", licenseNumber);
       formData.append("country", country);
       formData.append("twitter", twitter);
       formData.append("facebook", facebook);
@@ -1081,6 +1087,12 @@ export default function HomeMainPage() {
                     value={doctorProfile?.email}
                   />
                   <ProfileItem
+                    label={t("fields.licenseNumber", {
+                      defaultValue: "Номер лицензии",
+                    })}
+                    value={doctorProfile?.licenseNumber}
+                  />
+                  <ProfileItem
                     label={t("fields.educationInstitution")}
                     value={
                       <>
@@ -1315,6 +1327,32 @@ export default function HomeMainPage() {
                         onChange={(e) => setClinic(e.target.value)}
                         placeholder={t("fields.clinic")}
                       />
+                    </div>
+                  </div>
+
+                  <div className="hmp-row">
+                    <label className="hmp-lbl">
+                      {t("fields.licenseNumber", {
+                        defaultValue: "Номер лицензии",
+                      })}
+                    </label>
+                    <div className="hmp-field">
+                      <input
+                        type="text"
+                        className="hmp-input"
+                        id="doctor-license-number"
+                        value={licenseNumber}
+                        onChange={(e) => setLicenseNumber(e.target.value)}
+                        placeholder={t("fields.licenseNumberPlaceholder", {
+                          defaultValue: "Например, AZ-078412",
+                        })}
+                      />
+                      <div className="hmp-info-sub">
+                        {t("fields.licenseNumberHint", {
+                          defaultValue:
+                            "Печатается на бланке рецепта, который вы выписываете вне клиники.",
+                        })}
+                      </div>
                     </div>
                   </div>
 

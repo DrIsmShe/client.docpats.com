@@ -589,7 +589,10 @@
     "repeatNewPassword": "أعد إدخال كلمة المرور الجديدة",
     "oldEmail": "البريد الإلكتروني القديم",
     "newEmail": "البريد الإلكتروني الجديد",
-    "otpCode": "رمز التحقق (OTP)"
+    "otpCode": "رمز التحقق (OTP)",
+    "licenseNumber": "رقم الترخيص",
+    "licenseNumberPlaceholder": "مثال: AZ-078412",
+    "licenseNumberHint": "يُطبع على الوصفات التي تكتبها خارج العيادة."
   },
   "days": {
     "monday": "الإثنين",

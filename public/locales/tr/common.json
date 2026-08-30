@@ -589,7 +589,10 @@
     "repeatNewPassword": "Yeni şifreyi tekrar girin",
     "oldEmail": "Eski email",
     "newEmail": "Yeni email",
-    "otpCode": "OTP kodu"
+    "otpCode": "OTP kodu",
+    "licenseNumber": "Lisans numarası",
+    "licenseNumberPlaceholder": "Örneğin, AZ-078412",
+    "licenseNumberHint": "Klinik dışında yazdığınız reçetelerde yazdırılır."
   },
   "days": {
     "monday": "Pazartesi",
