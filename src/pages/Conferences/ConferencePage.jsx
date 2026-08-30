@@ -228,11 +228,17 @@ export default function ConferencePage() {
           </section>
         )}
 
-        {/* Внешняя ссылка: rel закрывает и подмену вкладки, и передачу веса
-            домену, который мы не контролируем. */}
-        <a href={c.url} target="_blank" rel="noopener noreferrer nofollow" style={cta}>
-          {t("website")} →
-        </a>
+        {/* Ссылка на сайт организатора — тоже за входом. Иначе стена
+            обходится в один клик: гость не читает программу у нас, но уходит
+            за ней на сайт конференции, и повода войти не остаётся.
+
+            rel закрывает подмену вкладки и передачу веса домену, который мы
+            не контролируем. */}
+        {canSeeDetails && (
+          <a href={c.url} target="_blank" rel="noopener noreferrer nofollow" style={cta}>
+            {t("website")} →
+          </a>
+        )}
       </article>
     </div>
   );

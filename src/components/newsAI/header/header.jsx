@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "../../LanguageSwitcher";
 
@@ -17,9 +17,11 @@ export default function Header({
 }) {
   // Header now owns its own translation namespace — no more t/i18n props
   const { t, i18n } = useTranslation("NewsAiTranslate");
-  const onConferences =
-    typeof window !== "undefined" &&
-    window.location.pathname.startsWith("/conferences");
+  // Через useLocation, а не window.location: переходы внутри приложения не
+  // перезагружают страницу, и подпись кнопки залипала — на новостях висело
+  // «Медицинские новости», то есть ссылка на текущий же раздел.
+  const location = useLocation();
+  const onConferences = location.pathname.startsWith("/conferences");
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
