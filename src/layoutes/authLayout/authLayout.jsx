@@ -1611,6 +1611,38 @@ export default function AuthLayout() {
                     </a>
                   </motion.div>
                   {/* News card */}
+                  {/* Конференции. Карточка видна всем без регистрации: список
+                      конференций открыт, а программа и условия внутри
+                      открываются врачу после входа. Прятать карточку от гостя
+                      значило бы прятать повод зарегистрироваться. */}
+                  <motion.div className="dp-news-card-wrap" variants={item}>
+                    <a href="/conferences" className="dp-news-card">
+                      <div
+                        className="dp-news-card-accent"
+                        style={{ background: "linear-gradient(180deg, #38bdf8, #1d4ed8)" }}
+                      />
+                      <div className="dp-news-card-body">
+                        <div className="dp-news-card-icon">🗓️</div>
+                        <div className="dp-news-card-copy">
+                          <div className="dp-news-card-tag">
+                            {t("conferencesTag", {
+                              defaultValue: "DOCPATS · КОНФЕРЕНЦИИ",
+                            })}
+                          </div>
+                          <div className="dp-news-card-text">
+                            {t("conferencesText", {
+                              defaultValue:
+                                "Медицинские конференции — программа, сроки регистрации, условия участия",
+                            })}
+                          </div>
+                        </div>
+                        <span className="dp-news-card-arrow">
+                          <Arrow />
+                        </span>
+                      </div>
+                    </a>
+                  </motion.div>
+
                   <motion.div className="dp-news-card-wrap" variants={item}>
                     <a href="/news" className="dp-news-card">
                       <div className="dp-news-card-accent" />

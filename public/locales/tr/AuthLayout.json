@@ -178,5 +178,7 @@
   "bookProcedureDoctorsOnly": "Ameliyat ve tetkik kaydı yalnızca doktorlar içindir. Doktor olarak giriş yapın.",
   "portalDoctorsOnly": "Doktor portalı yalnızca doktorlar içindir. Farklı bir rolle giriş yaptınız.",
   "portalPatientsOnly": "Hasta portalı yalnızca hastalar içindir. Farklı bir rolle giriş yaptınız.",
-  "portalGoToCabinet": "Kendi kabinenize gidin"
+  "portalGoToCabinet": "Kendi kabinenize gidin",
+  "conferencesTag": "DOCPATS · KONGRELER",
+  "conferencesText": "Tıbbi kongreler — program, kayıt son tarihleri, katılım koşulları"
 }

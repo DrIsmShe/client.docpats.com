@@ -77,6 +77,7 @@ export default function AdminConferencesPage() {
   const [running, setRunning] = useState(false);
   const [runResult, setRunResult] = useState(null);
   const [stats, setStats] = useState(null);
+  const [dates, setDates] = useState({});
 
   const load = useCallback(async () => {
     setError(null);
@@ -213,6 +214,30 @@ export default function AdminConferencesPage() {
     }
   }
 
+  // Проставить дату руками. На части сайтов обществ года нет вовсе — модель
+  // обязана оставить поле пустым, и без этой формы карточка застревала бы в
+  // очереди навсегда.
+  async function saveDates(id) {
+    const value = dates[id];
+    if (!value?.startDate) {
+      setError("Укажите хотя бы дату начала.");
+      return;
+    }
+    setBusy(id);
+    setError(null);
+    try {
+      await axios.patch(`${API_BASE}/admin/conferences/${id}/dates`, value, {
+        withCredentials: true,
+      });
+      setDates((d) => ({ ...d, [id]: undefined }));
+      await load();
+    } catch (e) {
+      setError(e.response?.data?.message || "Не удалось сохранить даты.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
   async function submitForm(e) {
     e.preventDefault();
     setError(null);
@@ -301,6 +326,9 @@ export default function AdminConferencesPage() {
           <option value="draft">На модерации</option>
           <option value="published">Опубликованные</option>
           <option value="rejected">Отклонённые</option>
+          {/* Отдельным списком: карточки без даты опубликовать нельзя, и в
+              общей очереди они теряются среди готовых. */}
+          <option value="no-date">Без даты — нужна рука</option>
         </select>
         <button onClick={load} style={btn}>Обновить</button>
         <button onClick={() => setShowForm((v) => !v)} style={{ ...btn, background: "#0f766e" }}>
@@ -506,6 +534,51 @@ export default function AdminConferencesPage() {
               </div>
             )}
 
+            {/* Карточка без даты. Опубликовать её нельзя — витрина отбирает
+                по датам, и она просто не появилась бы в списке. Поэтому дату
+                вписываем прямо здесь. */}
+            {!c.startDate && (
+              <div style={datesBox}>
+                <div style={{ fontSize: 13, marginBottom: 8, color: "#9a3412" }}>
+                  На странице источника нет даты — впишите её, иначе карточку
+                  нельзя опубликовать.
+                </div>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                  <label style={{ fontSize: 13 }}>
+                    Начало{" "}
+                    <input
+                      type="date"
+                      value={dates[c._id]?.startDate || ""}
+                      onChange={(e) =>
+                        setDates((d) => ({
+                          ...d,
+                          [c._id]: { ...d[c._id], startDate: e.target.value },
+                        }))
+                      }
+                      style={input}
+                    />
+                  </label>
+                  <label style={{ fontSize: 13 }}>
+                    Окончание{" "}
+                    <input
+                      type="date"
+                      value={dates[c._id]?.endDate || ""}
+                      onChange={(e) =>
+                        setDates((d) => ({
+                          ...d,
+                          [c._id]: { ...d[c._id], endDate: e.target.value },
+                        }))
+                      }
+                      style={input}
+                    />
+                  </label>
+                  <button onClick={() => saveDates(c._id)} disabled={busy === c._id} style={smallBtn}>
+                    Сохранить даты
+                  </button>
+                </div>
+              </div>
+            )}
+
             {!c.detailsFetchedAt && (
               <div style={{ fontSize: 12, color: "#64748b", marginTop: 8 }}>
                 Подробности со страницы конференции ещё не добирались —
@@ -551,6 +624,7 @@ const cardBox = { background: "#fff", border: "1px solid #e6eaf0", borderRadius:
 const statsBox = { background: "#f8fafc", border: "1px solid #e6eaf0", borderRadius: 10, padding: "14px 16px", marginBottom: 16, fontSize: 14, color: "#334155" };
 const statChip = { fontSize: 13, background: "#fff", border: "1px solid #e2e8f0", borderRadius: 999, padding: "3px 10px" };
 const runBox = { background: "#faf5ff", border: "1px solid #e9d5ff", borderRadius: 10, padding: 14, marginBottom: 16 };
+const datesBox = { marginTop: 10, padding: "12px 14px", background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 10 };
 const flagsBox = { marginTop: 10, padding: "8px 10px", background: "#fff7ed", border: "1px solid #fed7aa", borderRadius: 8, color: "#9a3412", fontSize: 13 };
 const grid2 = { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12 };
 const lbl = { display: "flex", flexDirection: "column", gap: 4, fontSize: 13, color: "#475569" };

@@ -140,7 +140,8 @@
       "all": "Tümü",
       "news": "Haberler",
       "research": "Araştırma"
-    }
+    },
+    "newsShort": "Tıbbi haberler"
   },
   "role": {
     "doctor": "Doktor",

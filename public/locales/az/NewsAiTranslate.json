@@ -13,7 +13,8 @@
       "all": "Hamısı",
       "news": "Xəbərlər",
       "research": "Tədqiqat"
-    }
+    },
+    "newsShort": "Tibbi xəbərlər"
   },
   "role": {
     "doctor": "Həkim",

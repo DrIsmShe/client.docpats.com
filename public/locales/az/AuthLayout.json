@@ -178,5 +178,7 @@
   "bookProcedureDoctorsOnly": "Əməliyyat və müayinəyə yazılma yalnız həkimlər üçündür. Həkim kimi daxil olun.",
   "portalDoctorsOnly": "Həkim portalı yalnız həkimlər üçündür. Siz başqa rolla daxil olmusunuz.",
   "portalPatientsOnly": "Pasiyent portalı yalnız pasiyentlər üçündür. Siz başqa rolla daxil olmusunuz.",
-  "portalGoToCabinet": "Öz kabinetinizə keçin"
+  "portalGoToCabinet": "Öz kabinetinizə keçin",
+  "conferencesTag": "DOCPATS · KONFRANSLAR",
+  "conferencesText": "Tibbi konfranslar — proqram, qeydiyyat son tarixləri, iştirak şərtləri"
 }

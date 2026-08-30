@@ -17,6 +17,9 @@ export default function Header({
 }) {
   // Header now owns its own translation namespace — no more t/i18n props
   const { t, i18n } = useTranslation("NewsAiTranslate");
+  const onConferences =
+    typeof window !== "undefined" &&
+    window.location.pathname.startsWith("/conferences");
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const userMenuRef = useRef(null);
@@ -73,6 +76,41 @@ export default function Header({
       <style>{`
         .nl-user-menu-item { transition: background .12s; }
         .nl-user-menu-item:hover { background: #faf8f4; }
+
+        /* Шапка на телефоне. Раньше три блока — ссылка, логотип и правый
+           угол — стояли в один ряд фиксированной высоты: на узком экране
+           кнопка налезала на логотип, а приветствие с переключателем языка
+           уезжало за край. Теперь ряд переносится, логотип перестаёт быть
+           абсолютно спозиционированным, а подписи ужимаются. */
+        .dp-conf-btn {
+          display: inline-flex; align-items: center; gap: 6px;
+          padding: 8px 18px; border-radius: 999px;
+          background: rgba(255,255,255,.18);
+          border: 1px solid rgba(255,255,255,.38);
+          color: #fff; font-size: 14px; font-weight: 600;
+          text-decoration: none; white-space: nowrap;
+        }
+        .dp-conf-btn:hover { background: rgba(255,255,255,.3); }
+
+        @media (max-width: 820px) {
+          .nl-nav { height: auto; }
+          .nl-nav-inner {
+            flex-wrap: wrap; height: auto; gap: 8px;
+            padding-top: 10px; padding-bottom: 10px;
+          }
+          .nl-nav-logo { position: static; transform: none; order: -1; }
+          .dp-nav-links { order: 1; }
+          .nl-nav-right { order: 2; margin-left: auto; gap: 6px; }
+        }
+
+        @media (max-width: 520px) {
+          .dp-conf-btn { padding: 7px 14px; font-size: 13px; }
+          .nl-topbar-left { display: none; }
+          .nl-btn-member span:not([aria-hidden]) {
+            max-width: 90px; overflow: hidden; text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
       `}</style>
 
       {/* TOP BAR */}
@@ -87,21 +125,18 @@ export default function Header({
       <header className="nl-nav">
         <div className="nl-nav-inner">
           <div className="dp-nav-links">
-            <a
-              className="dp-nav-link"
-              href="/news"
-              style={{ color: "white" }}
-            >
-              {t("nav.newsLink", { defaultValue: "Medical News" })}
-            </a>
-            {/* Рубрика конференций. Link, а не <a>: соседняя ссылка на
-                новости перезагружает страницу целиком, здесь этого не нужно. */}
+            {/* Одна заметная кнопка вместо двух текстовых ссылок. Раньше здесь
+                шли подряд «Медицинские новости и исследования · актуальные
+                данные» и «Конференции» — без отбивки они слипались в одну
+                строку и читались как подпись, а не как навигация.
+                Кнопка ведёт туда, где посетитель сейчас НЕ находится. */}
             <Link
-              className="dp-nav-link"
-              to="/conferences"
-              style={{ color: "white" }}
+              to={onConferences ? "/news" : "/conferences"}
+              className="dp-conf-btn"
             >
-              {t("nav.conferencesLink", { defaultValue: "Conferences" })}
+              {onConferences
+                ? t("nav.newsShort", { defaultValue: "Медицинские новости" })
+                : t("nav.conferencesLink", { defaultValue: "Конференции" })}
             </Link>
           </div>
 
