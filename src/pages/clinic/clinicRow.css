@@ -1,0 +1,154 @@
+/* client/src/pages/clinic/clinicRow.css
+ *
+ * Строка списка в кабинете клиники: аватар, имя, вторая строка мелким,
+ * значок справа, кнопки действий.
+ *
+ * Вынесено из clinicStaffPage.css, потому что этой разметкой пользуются и
+ * сотрудники, и пациенты. У пациентов классы в JSX были, а правил не было
+ * вовсе — их файл стилей чужой не подключает, — и список пациентов
+ * рисовался без вёрстки: имя, контакты, значок и кнопка «Удалить» падали
+ * друг под друга. Один общий файл вместо копии в каждой странице: копия
+ * разошлась бы при первой правке, и списки перестали бы выглядеть
+ * одинаково.
+ */
+
+.staff-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e6eaf0;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.staff-row:last-child {
+  border-bottom: none;
+}
+
+.staff-row:hover {
+  background: #f8fafc;
+}
+
+.staff-row.is-loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.staff-row-invitation {
+  background: #fffbeb;
+}
+
+/* ─── Аватар ─── */
+
+.staff-row-avatar {
+  width: 38px;
+  height: 38px;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.staff-row-avatar-pending {
+  background: #f59e0b;
+}
+
+/* ─── Основное ─── */
+
+.staff-row-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.staff-row-name {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 15px;
+  /* Длинное имя не должно расталкивать значок и кнопки. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.staff-row-email {
+  color: #64748b;
+  font-size: 13px;
+  margin-top: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─── Значок справа ─── */
+
+.staff-row-role {
+  flex-shrink: 0;
+}
+
+/* ─── Действия ─── */
+
+.staff-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.staff-row-btn-remove {
+  padding: 7px 14px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff;
+  color: #b91c1c;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.staff-row-btn-remove:hover:not(:disabled) {
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.staff-row-btn-remove:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─── Телефон ─── */
+/*
+ * На узком экране строка перестаёт быть строкой: имя и контакты занимают
+ * всю ширину, значок и кнопки уходят под них. Иначе кнопка «Удалить»
+ * выдавливает контакты за край, а имя обрезается на втором символе.
+ */
+@media (max-width: 640px) {
+  .staff-row {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  .staff-row-info {
+    /* 38px аватар + 14px зазор — чтобы имя встало рядом с аватаром. */
+    flex: 1 1 calc(100% - 52px);
+  }
+
+  .staff-row-name {
+    white-space: normal;
+  }
+
+  .staff-row-role,
+  .staff-row-actions {
+    margin-inline-start: 52px;
+  }
+
+  .staff-row-actions {
+    margin-inline-start: auto;
+  }
+}

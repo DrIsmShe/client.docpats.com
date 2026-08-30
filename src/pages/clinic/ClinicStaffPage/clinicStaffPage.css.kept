@@ -1,7 +1,67 @@
 @import "../clinicPageShell.css";
-/* Строка списка — общая с пациентами. Вынесена, чтобы два списка не
-   разошлись при первой же правке одного из них. */
+
 @import "../clinicRow.css";
+
+.staff-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e6eaf0;
+  transition: opacity 0.15s;
+}
+
+.staff-row:last-child {
+  border-bottom: none;
+}
+
+.staff-row.is-loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.staff-row-invitation {
+  background: #fffbeb;
+}
+
+.staff-row-avatar {
+  width: 38px;
+  height: 38px;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.staff-row-avatar-pending {
+  background: #f59e0b;
+}
+
+.staff-row-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.staff-row-name {
+  font-weight: 500;
+  color: #1a1f2e;
+  font-size: 14px;
+}
+
+.staff-row-email {
+  color: #6b7280;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.staff-row-role {
+  flex-shrink: 0;
+}
 
 .staff-row-role-badge {
   padding: 5px 12px;
@@ -77,9 +137,45 @@
   text-transform: uppercase;
 }
 
+.staff-row-actions {
+  flex-shrink: 0;
+}
+
+.staff-row-btn-remove {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid #d4dae2;
+  color: #6b7280;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.staff-row-btn-remove:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
 @keyframes staff-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .staff-row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .staff-row-info {
+    flex: 1 1 calc(100% - 60px);
+  }
+
+  .staff-row-role {
+    flex: 1 1 auto;
   }
 }
 

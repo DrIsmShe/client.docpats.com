@@ -1,4 +1,16 @@
 /* client/src/pages/clinic/ClinicPatientsPage/clinicPatientsPage.css
+   Список пациентов: только своё. Общее — в двух файлах ниже. */
+
+/* Поля формы: ими пользуется и форма выписки рецепта, которая
+   открывается со страниц кабинета врача. */
+@import "../clinicForm.css";
+/* Строка списка: общая с сотрудниками. У пациентов этих правил не было
+   вовсе — классы в разметке были, а стилей к ним нет, — и список
+   рисовался без вёрстки: имя, контакты, значок и кнопка «Удалить»
+   падали друг под друга. */
+@import "../clinicRow.css";
+
+/* client/src/pages/clinic/ClinicPatientsPage/clinicPatientsPage.css
    Patient page — overrides and additions on top of staff-page tokens. */
 
 /* ─── Patient avatar (slightly different color from staff) ─── */
@@ -67,89 +79,22 @@
   margin-bottom: 24px;
 }
 
-.patients-form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-bottom: 14px;
-}
-
-.patients-form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.patients-form-field label {
-  font-size: 13px;
-  font-weight: 500;
-  color: #1a1f2e;
-}
-
-.patients-form-optional {
-  font-size: 11px;
-  color: #9ca3af;
-  font-weight: 400;
-}
-
-.patients-form-field input,
-.patients-form-field select {
-  padding: 9px 12px;
-  border: 1px solid #d4dae2;
-  border-radius: 6px;
-  font-size: 14px;
-  font-family: inherit;
-  background: #fff;
-  outline: none;
-  transition: border-color 0.15s;
-}
-
-.patients-form-field input:focus,
-.patients-form-field select:focus {
-  border-color: #2563eb;
-}
-
-.patients-form-field input.has-error,
-.patients-form-field select.has-error {
-  border-color: #dc2626;
-}
-
-.patients-form-error {
-  color: #dc2626;
-  font-size: 12px;
-}
-
-.patients-form-error-banner {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  padding: 10px 14px;
-  border-radius: 6px;
-  margin-bottom: 12px;
-  text-align: center;
-}
-
-.patients-form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 8px;
-  padding-top: 14px;
-  border-top: 1px solid #e6eaf0;
-}
-
 /* ─── Responsive ─── */
 @media (max-width: 640px) {
   .patients-form-row {
     grid-template-columns: 1fr;
   }
 }
+
 /* ─── Clickable rows ─── */
 .patient-row-clickable {
   transition: background 0.15s;
 }
+
 .patient-row-clickable:hover {
   background: #f7f9fc;
 }
+
 .patient-row-link {
   display: flex;
   align-items: center;
@@ -159,6 +104,7 @@
   text-decoration: none;
   color: inherit;
 }
+
 .patient-row-link:hover {
   text-decoration: none;
   color: inherit;

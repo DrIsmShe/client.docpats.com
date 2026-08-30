@@ -218,7 +218,14 @@ export default function MyPrescriptions() {
                     <div className="rxp-card-summary">{summaryOf(rx)}</div>
                     <div className="rxp-card-sub">
                       {fmtDate(rx.issuedAt || rx.createdAt)}
-                      {rx.clinicName ? `  ·  ${rx.clinicName}` : ""}
+                      {/* Источник рецепта: клиника или врач, выписавший
+                          его лично. Без этого рецепт от врача стоял в
+                          списке вообще без подписи. */}
+                      {rx.clinicName
+                        ? `  ·  ${rx.clinicName}`
+                        : rx.issuedByName
+                          ? `  ·  ${rx.issuedByName}`
+                          : ""}
                     </div>
                   </div>
                   <span

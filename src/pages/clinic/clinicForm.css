@@ -1,0 +1,81 @@
+/* client/src/pages/clinic/clinicForm.css
+ *
+ * Поля формы в кабинете клиники: подпись над полем, рамка, отступы, ряд
+ * из двух колонок.
+ *
+ * Вынесено из clinicPatientsPage.css. Этими классами пользуется не только
+ * список пациентов: на них построена форма выписки рецепта, а она
+ * открывается ещё и со страниц кабинета врача, где стили списка пациентов
+ * никто не подключает. Там форма приезжала вообще без вёрстки — подписи
+ * прилипали к полям сбоку, кнопки выглядели системными.
+ */
+
+.patients-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.patients-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.patients-form-field label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a1f2e;
+}
+
+.patients-form-optional {
+  font-size: 11px;
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.patients-form-field input,
+.patients-form-field select {
+  padding: 9px 12px;
+  border: 1px solid #d4dae2;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.patients-form-field input:focus,
+.patients-form-field select:focus {
+  border-color: #2563eb;
+}
+
+.patients-form-field input.has-error,
+.patients-form-field select.has-error {
+  border-color: #dc2626;
+}
+
+.patients-form-error {
+  color: #dc2626;
+  font-size: 12px;
+}
+
+.patients-form-error-banner {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  padding: 10px 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.patients-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid #e6eaf0;
+}
