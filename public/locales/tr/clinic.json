@@ -2646,7 +2646,19 @@
     "previsitVerbatim": "Hastanın yanıtları birebir",
     "marked": "Belirtildi:",
     "was": "önceki",
-    "norm": "referans"
+    "norm": "referans",
+    "loadFailed": "Özet yüklenemedi",
+    "emptyAllergies": "Kayıtlı alerji yok",
+    "emptyMedications": "Aktif reçete yok",
+    "emptyLabs": "Tahlil yok",
+    "noAbnormal": "Sapma yok",
+    "encounters": "Son muayeneler",
+    "emptyEncounters": "Henüz muayene yok",
+    "noDiagnosis": "tanısız",
+    "emptyFemale": "Kayıtlı değil",
+    "immunization": "Aşılar",
+    "emptyNone": "Kayıtlı değil",
+    "footnote": "Özet, kayıtlardaki girdilerden değiştirilmeden derlenmiştir. Tam bölümler komşu sekmelerdedir."
   },
   "theme": {
     "resetToTheme": "Temaya sıfırla",

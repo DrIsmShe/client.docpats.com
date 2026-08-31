@@ -118,7 +118,7 @@ export default function SummaryTab({ patient }) {
       setSummary(data.summary);
     } catch (err) {
       setError(
-        err?.response?.data?.message ?? "Не удалось загрузить сводку",
+        err?.response?.data?.message ?? t("summary.loadFailed", { defaultValue: "Не удалось загрузить сводку" }),
       );
     } finally {
       setLoading(false);
@@ -197,7 +197,7 @@ export default function SummaryTab({ patient }) {
         title={t("summary.allergies")}
         tone="danger"
         items={summary.allergies}
-        empty="Аллергии не зафиксированы"
+        empty={t("summary.emptyAllergies", { defaultValue: "Аллергии не зафиксированы" })}
         render={(a) => (
           <li key={a.id} className="sum-item">
             <span>{a.content}</span>
@@ -219,7 +219,7 @@ export default function SummaryTab({ patient }) {
       <Block
         title={t("summary.currentMeds")}
         items={summary.prescriptions}
-        empty="Действующих назначений нет"
+        empty={t("summary.emptyMedications", { defaultValue: "Действующих назначений нет" })}
         render={(p) => (
           <li key={p.id} className="sum-item">
             <span>
@@ -234,7 +234,7 @@ export default function SummaryTab({ patient }) {
       <Block
         title={t("summary.chronic")}
         items={summary.chronic}
-        empty="Не зафиксированы"
+        empty={t("summary.emptyNone", { defaultValue: "Не зафиксированы" })}
         render={(c) => (
           <li key={c.id} className="sum-item">
             <span>{c.content}</span>
@@ -249,20 +249,20 @@ export default function SummaryTab({ patient }) {
         items={abnormal}
         empty={
           summary.labs.panelsScanned === 0
-            ? "Анализов нет"
-            : "Отклонений нет"
+            ? t("summary.emptyLabs", { defaultValue: "Анализов нет" })
+            : t("summary.noAbnormal", { defaultValue: "Отклонений нет" })
         }
         render={(i) => <LabRow key={i.key} item={i} />}
       />
 
       <Block
-        title="Последние приёмы"
+        title={t("summary.encounters", { defaultValue: "Последние приёмы" })}
         items={summary.encounters}
-        empty="Приёмов не было"
+        empty={t("summary.emptyEncounters", { defaultValue: "Приёмов не было" })}
         render={(e) => (
           <li key={e.id} className="sum-item">
             <span>
-              {e.diagnosis || "без диагноза"}
+              {e.diagnosis || t("summary.noDiagnosis", { defaultValue: "без диагноза" })}
               {e.code ? ` (${e.code})` : ""}
             </span>
             <span className="sum-item__date">{fmtDate(e.date)}</span>
@@ -273,7 +273,7 @@ export default function SummaryTab({ patient }) {
       <Block
         title={t("summary.operations")}
         items={summary.operations}
-        empty="Не зафиксированы"
+        empty={t("summary.emptyNone", { defaultValue: "Не зафиксированы" })}
         render={(o) => (
           <li key={o.id} className="sum-item">
             <span>{o.content}</span>
@@ -285,7 +285,7 @@ export default function SummaryTab({ patient }) {
       <Block
         title={t("summary.family")}
         items={summary.familyHistory}
-        empty="Не зафиксирована"
+        empty={t("summary.emptyFemale", { defaultValue: "Не зафиксирована" })}
         render={(f) => (
           <li key={f.id} className="sum-item">
             <span>{f.content}</span>
@@ -294,9 +294,9 @@ export default function SummaryTab({ patient }) {
       />
 
       <Block
-        title="Прививки"
+        title={t("summary.immunization", { defaultValue: "Прививки" })}
         items={summary.immunization}
-        empty="Не зафиксированы"
+        empty={t("summary.emptyNone", { defaultValue: "Не зафиксированы" })}
         render={(i) => (
           <li key={i.id} className="sum-item">
             <span>{i.content}</span>
@@ -308,8 +308,10 @@ export default function SummaryTab({ patient }) {
       {/* Прямо сказать, что это выжимка, а не вся карта: врач должен
           знать, где кончается сводка и начинается первоисточник. */}
       <p className="sum-footnote">
-        Сводка собрана из записей карты без пересказа. Полные разделы — на
-        соседних вкладках.
+        {t("summary.footnote", {
+          defaultValue:
+            "Сводка собрана из записей карты без пересказа. Полные разделы — на соседних вкладках.",
+        })}
       </p>
     </div>
   );

@@ -2652,7 +2652,19 @@
     "previsitVerbatim": "إجابات المريض حرفيًا",
     "marked": "أُشير إلى:",
     "was": "كان",
-    "norm": "المرجع"
+    "norm": "المرجع",
+    "loadFailed": "تعذر تحميل الملخص",
+    "emptyAllergies": "لا توجد حساسيات مسجلة",
+    "emptyMedications": "لا توجد وصفات فعّالة",
+    "emptyLabs": "لا توجد تحاليل",
+    "noAbnormal": "لا توجد قيم شاذة",
+    "encounters": "آخر الزيارات",
+    "emptyEncounters": "لا توجد زيارات بعد",
+    "noDiagnosis": "دون تشخيص",
+    "emptyFemale": "غير مسجل",
+    "immunization": "التطعيمات",
+    "emptyNone": "غير مسجلة",
+    "footnote": "جُمِّع الملخص من مدونات البطاقة دون إعادة صياغة. الأقسام الكاملة في علامات التبويب المجاورة."
   },
   "theme": {
     "resetToTheme": "إعادة إلى السمة",

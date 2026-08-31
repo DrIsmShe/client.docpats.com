@@ -2646,7 +2646,19 @@
     "previsitVerbatim": "The patient's answers verbatim",
     "marked": "Reported:",
     "was": "was",
-    "norm": "reference"
+    "norm": "reference",
+    "loadFailed": "Could not load the summary",
+    "emptyAllergies": "No allergies recorded",
+    "emptyMedications": "No active prescriptions",
+    "emptyLabs": "No lab results",
+    "noAbnormal": "No abnormal values",
+    "encounters": "Recent encounters",
+    "emptyEncounters": "No encounters yet",
+    "noDiagnosis": "no diagnosis",
+    "emptyFemale": "Not recorded",
+    "immunization": "Immunisations",
+    "emptyNone": "Not recorded",
+    "footnote": "The summary is assembled from record entries without paraphrasing. Full sections are on the neighbouring tabs."
   },
   "theme": {
     "resetToTheme": "Reset to the theme",

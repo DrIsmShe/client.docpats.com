@@ -2646,7 +2646,19 @@
     "previsitVerbatim": "Pasiyentin cavabları hərfi",
     "marked": "Qeyd olunub:",
     "was": "idi",
-    "norm": "norma"
+    "norm": "norma",
+    "loadFailed": "Xülasəni yükləmək mümkün olmadı",
+    "emptyAllergies": "Allergiya qeyd olunmayıb",
+    "emptyMedications": "Aktiv təyinat yoxdur",
+    "emptyLabs": "Analiz yoxdur",
+    "noAbnormal": "Kənarlaşma yoxdur",
+    "encounters": "Son qəbullar",
+    "emptyEncounters": "Hələ qəbul olmayıb",
+    "noDiagnosis": "diaqnozsuz",
+    "emptyFemale": "Qeyd olunmayıb",
+    "immunization": "Peyvəndlər",
+    "emptyNone": "Qeyd olunmayıb",
+    "footnote": "Xülasə kartdakı qeydlərdən dəyişdirilmədən toplanıb. Tam bölmələr qonşu tablarda yerləşir."
   },
   "theme": {
     "resetToTheme": "Temaya sıfırla",
