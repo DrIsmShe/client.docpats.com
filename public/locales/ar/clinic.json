@@ -2406,6 +2406,9 @@
       "patientLinked": "لديه حساب — سيفتح الموعد في حسابه مباشرة",
       "patientWillBeInvited": "لا يوجد حساب — سترسل الدعوة بالبريد",
       "patientNoContact": "لا حساب ولا بريد — لا سبيل لدعوته"
+    },
+    "fromPatient": {
+      "openButton": "موعد مرئي"
     }
   },
   "notifications": {

@@ -52,6 +52,10 @@ function splitDateTime(v) {
 
 export default function TelemedFormModal({
   session,
+  // Готовый пациент: модалку открывают не только из раздела
+  // телемедицины, но и из карты — там человек уже выбран, и заставлять
+  // искать его заново было бы издевательством.
+  initialPatient = null,
   departments = [],
   staff = [],
   onClose,
@@ -79,7 +83,7 @@ export default function TelemedFormModal({
   // регистратор должен был знать наизусть, — а он выглядит как
   // 6a1d4f... и нигде в интерфейсе не показывается. Поэтому пациента
   // выбирают из картотеки клиники, а идентификаторы подставляются сами.
-  const [patient, setPatient] = useState(session?.patient || null);
+  const [patient, setPatient] = useState(session?.patient || initialPatient || null);
   const [query, setQuery] = useState("");
   const [found, setFound] = useState([]);
   const [searching, setSearching] = useState(false);

@@ -2400,6 +2400,9 @@
       "patientLinked": "Hesabı var — qəbul birbaşa kabinetdə açılacaq",
       "patientWillBeInvited": "Hesabı yoxdur — dəvət e-poçta göndəriləcək",
       "patientNoContact": "Nə hesab, nə e-poçt — dəvət etmək mümkün olmayacaq"
+    },
+    "fromPatient": {
+      "openButton": "Video qəbul"
     }
   },
   "notifications": {

@@ -2400,6 +2400,9 @@
       "patientLinked": "Hesabı var — randevu doğrudan hesabında açılır",
       "patientWillBeInvited": "Hesabı yok — davet e-posta ile gönderilecek",
       "patientNoContact": "Ne hesap ne e-posta — davet edilemeyecek"
+    },
+    "fromPatient": {
+      "openButton": "Görüntülü randevu"
     }
   },
   "notifications": {

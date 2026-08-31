@@ -45,6 +45,8 @@ import {
   searchUsersForLink,
   createConsentRequest,
   listDepartments,
+  listStaff,
+  createTelemed,
 } from "../../../api/clinic";
 import "../ClinicPatientsPage/clinicPatientsPage.css";
 import "../clinicPageShell.css";
@@ -54,6 +56,7 @@ import ClinicConsentsPanel from "./ClinicConsentsPanel.jsx";
 // Pull in the calendar-modal stylesheet so the .ccal-* classes used
 // inside BookFromPatientModal are styled here too.
 import "../ClinicCalendarPage/clinicCalendarPage.css";
+import TelemedFormModal from "../ClinicTelemedPage/TelemedFormModal";
 import BookFromPatientModal from "../ClinicCalendarPage/BookFromPatientModal.jsx";
 import ConsentRequestModal from "./ConsentRequestModal.jsx";
 import ConsentRequestsList from "./ConsentRequestsList.jsx";
@@ -89,6 +92,11 @@ export default function ClinicPatientDetailPage() {
   const loginPath = isEmployee ? "/clinic/staff-login" : "/login";
 
   const [bookModalOpen, setBookModalOpen] = useState(false);
+  // Видеоприём прямо из карты. Раньше его можно было назначить только в
+  // отдельном разделе телемедицины, где пациента приходилось искать
+  // заново — хотя врач уже стоит на его карте.
+  const [telemedOpen, setTelemedOpen] = useState(false);
+  const [telemedStaff, setTelemedStaff] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [patient, setPatient] = useState(null);
@@ -494,6 +502,24 @@ export default function ClinicPatientDetailPage() {
               >
                 {t("calendar.fromPatient.openButton", {
                   defaultValue: "Book appointment",
+                })}
+              </button>
+            )}
+            {canBook && (
+              <button
+                className="staff-page-btn-secondary"
+                onClick={() => {
+                  // Список врачей нужен только здесь, поэтому берём его
+                  // при открытии, а не при загрузке карты.
+                  listStaff()
+                    .then((r) => setTelemedStaff(r.items || r.staff || []))
+                    .catch(() => setTelemedStaff([]));
+                  setTelemedOpen(true);
+                }}
+                type="button"
+              >
+                {t("telemed.fromPatient.openButton", {
+                  defaultValue: "Видеоприём",
                 })}
               </button>
             )}
@@ -1052,6 +1078,23 @@ export default function ClinicPatientDetailPage() {
             setBookModalOpen(false);
             // Patient detail itself doesn't show an appointment history
             // yet (that's a separate widget), so no reload needed.
+          }}
+        />
+      )}
+
+      {/* ─── Видеоприём прямо из карты ───
+          Пациент уже выбран: модалка получает его готовым и не заставляет
+          искать заново. Приглашение уходит само — уведомлением, если у
+          человека есть аккаунт, письмом на адрес карты, если нет. */}
+      {telemedOpen && patient && (
+        <TelemedFormModal
+          initialPatient={patient}
+          departments={activeDepartments}
+          staff={telemedStaff}
+          onClose={() => setTelemedOpen(false)}
+          onSubmit={async (payload) => {
+            await createTelemed(payload);
+            setTelemedOpen(false);
           }}
         />
       )}

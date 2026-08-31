@@ -2400,6 +2400,9 @@
       "patientLinked": "Has an account — the appointment opens right in their portal",
       "patientWillBeInvited": "No account — an invitation will be emailed",
       "patientNoContact": "Neither account nor email — there is no way to invite them"
+    },
+    "fromPatient": {
+      "openButton": "Video appointment"
     }
   },
   "notifications": {

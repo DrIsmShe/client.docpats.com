@@ -2434,6 +2434,9 @@
       "patientLinked": "Есть аккаунт — приём откроется прямо в кабинете",
       "patientWillBeInvited": "Аккаунта нет — приглашение уйдёт на почту",
       "patientNoContact": "Ни аккаунта, ни почты — позвать будет нечем"
+    },
+    "fromPatient": {
+      "openButton": "Видеоприём"
     }
   },
   "booking": {
