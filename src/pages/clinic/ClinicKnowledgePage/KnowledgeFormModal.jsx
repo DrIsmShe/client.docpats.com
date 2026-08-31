@@ -7,6 +7,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./knowledgeFormModal.css";
+import "../formModal.css";
 
 const CATEGORIES = [
   "protocol",
@@ -116,7 +117,7 @@ export default function KnowledgeFormModal({
   }
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className="modal-backdrop dp-modal" onClick={onClose}>
       <div
         className="modal-window kb-modal-wide"
         onClick={(e) => e.stopPropagation()}

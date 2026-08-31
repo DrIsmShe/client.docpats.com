@@ -6,6 +6,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./consiliumFormModal.css";
+import "../formModal.css";
 
 export default function ResolveConsiliumModal({ onClose, onSubmit }) {
   const { t } = useTranslation("clinic");
@@ -31,7 +32,7 @@ export default function ResolveConsiliumModal({ onClose, onSubmit }) {
   }
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className="modal-backdrop dp-modal" onClick={onClose}>
       <div className="modal-window" onClick={(e) => e.stopPropagation()}>
         <header className="modal-header">
           <h2>

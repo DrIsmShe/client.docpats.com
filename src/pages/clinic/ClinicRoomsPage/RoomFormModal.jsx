@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createRoom, updateRoom, listStaff } from "../../../api/clinic";
 import "./roomFormModal.css";
+import "../formModal.css";
 
 /**
  * Extract a department id from a room record (string | populated | null).
@@ -179,7 +180,7 @@ export default function RoomFormModal({
     !departments.some((d) => String(d._id) === String(departmentId));
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className="modal-backdrop dp-modal" onClick={onClose}>
       <div className="modal-window" onClick={(e) => e.stopPropagation()}>
         <header className="modal-header">
           <h2>

@@ -1465,7 +1465,6 @@
   "src/pages/clinic/ClinicCustomPagesPage/ClinicCustomPagesPage.jsx → /dp/",
   "src/pages/clinic/ClinicDepartmentsPage/DepartmentFormModal.jsx → NEURO",
   "src/pages/clinic/ClinicEquipmentPage/EquipmentFormModal.jsx → INV-001",
-  "src/pages/clinic/ClinicExamTemplatesPage/ClinicExamTemplatesPage.jsx → Готовые формулировки для заполнения исследований и записей приёма. …",
   "src/pages/clinic/ClinicKnowledgePage/KnowledgeFormModal.jsx → Markdown",
   "src/pages/clinic/ClinicKnowledgePage/KnowledgeFormModal.jsx → triage, covid, реанимация",
   "src/pages/clinic/ClinicLeadsPage/ClinicLeadsPage.jsx → время не забронировано — подтвердите",

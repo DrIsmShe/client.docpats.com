@@ -7,6 +7,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./consiliumFormModal.css";
+import "../formModal.css";
 
 export default function ConsiliumFormModal({
   departments = [],
@@ -97,7 +98,7 @@ export default function ConsiliumFormModal({
   }
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className="modal-backdrop dp-modal" onClick={onClose}>
       <div
         className="modal-window cons-modal-wide"
         onClick={(e) => e.stopPropagation()}

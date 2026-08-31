@@ -8,6 +8,7 @@ import {
   listStaff,
 } from "../../../api/clinic";
 import "./equipmentFormModal.css";
+import "../formModal.css";
 
 const STATUSES = ["operational", "maintenance", "broken", "decommissioned"];
 const CATEGORIES = [
@@ -237,7 +238,7 @@ export default function EquipmentFormModal({
     !departments.some((d) => String(d._id) === String(departmentId));
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className="modal-backdrop dp-modal" onClick={onClose}>
       <div className="modal-window" onClick={(e) => e.stopPropagation()}>
         <header className="modal-header">
           <h2>

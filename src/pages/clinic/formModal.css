@@ -1,0 +1,223 @@
+/* client/src/pages/clinic/formModal.css */
+/*
+ * Общие стили модальных форм клиники.
+ *
+ * ЗАЧЕМ. Девять модалок в приложении рисовались классами modal-*, не
+ * описав их у себя: рабочие правила лежали в файлах стилей страниц
+ * отделений и сотрудников. Стили здесь глобальные, поэтому модалка
+ * выглядела правильно ровно тогда, когда человек до этого заходил в один
+ * из тех разделов. Открыв страницу напрямую, он видел голые поля
+ * браузера на чёрном фоне.
+ *
+ * ПОЧЕМУ ВСЁ ВЛОЖЕНО В .dp-modal. Имена классов общие, а страницы
+ * отделений и сотрудников держат собственные копии этих правил, и копии
+ * расходятся почти целиком — разные отступы, скругления, тени. Третий
+ * набор глобальных .modal-* спорил бы с ними, и побеждал бы тот, чей файл
+ * загрузился последним. Вложенность убирает спор: эти правила действуют
+ * только внутри модалки, помеченной классом dp-modal.
+ */
+
+.dp-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 1000;
+}
+
+.dp-modal .modal-window {
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dp-modal .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e6eaf0;
+}
+
+.dp-modal .modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.dp-modal .modal-close {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.dp-modal .modal-close:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+/* Прокручивается только тело: шапка и кнопки остаются на виду. */
+.dp-modal .modal-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+
+.dp-modal .modal-error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.dp-modal .modal-field {
+  margin-bottom: 16px;
+}
+
+.dp-modal .modal-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.dp-modal .modal-field .required {
+  color: #dc2626;
+  margin-left: 2px;
+}
+
+.dp-modal .modal-field .optional {
+  color: #94a3b8;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.dp-modal .modal-field input,
+.dp-modal .modal-field select,
+.dp-modal .modal-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #0f172a;
+  background: #fff;
+}
+
+.dp-modal .modal-field textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.dp-modal .modal-field input:focus,
+.dp-modal .modal-field select:focus,
+.dp-modal .modal-field textarea:focus {
+  outline: none;
+  border-color: #4f8bff;
+  box-shadow: 0 0 0 3px rgba(79, 139, 255, 0.15);
+}
+
+.dp-modal .modal-field input:disabled,
+.dp-modal .modal-field select:disabled,
+.dp-modal .modal-field textarea:disabled {
+  background: #f8fafc;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.dp-modal .modal-field input.has-error,
+.dp-modal .modal-field select.has-error,
+.dp-modal .modal-field textarea.has-error {
+  border-color: #dc2626;
+}
+
+.dp-modal .modal-field-error {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.dp-modal .modal-hint {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.5;
+  margin: -10px 0 16px;
+}
+
+.dp-modal .modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid #e6eaf0;
+  background: #f8fafc;
+}
+
+.dp-modal .modal-btn-cancel,
+.dp-modal .modal-btn-submit {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.dp-modal .modal-btn-cancel {
+  background: #fff;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+.dp-modal .modal-btn-cancel:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+.dp-modal .modal-btn-submit {
+  background: #0f766e;
+  color: #fff;
+}
+
+.dp-modal .modal-btn-submit:hover:not(:disabled) {
+  background: #0e6b63;
+}
+
+.dp-modal .modal-btn-cancel:disabled,
+.dp-modal .modal-btn-submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+
+.dp-modal .modal-row .modal-field {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+@media (max-width: 520px) {
+  .dp-modal .modal-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

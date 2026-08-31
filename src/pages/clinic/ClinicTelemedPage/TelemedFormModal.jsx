@@ -7,6 +7,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./telemedFormModal.css";
+import "../formModal.css";
 
 const DURATIONS = [15, 20, 30, 45, 60, 90];
 
@@ -165,7 +166,7 @@ export default function TelemedFormModal({
   }
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className="modal-backdrop dp-modal" onClick={onClose}>
       <div
         className="modal-window tm-modal"
         onClick={(e) => e.stopPropagation()}
