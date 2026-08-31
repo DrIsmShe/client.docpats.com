@@ -4,12 +4,33 @@
 // they are combined into one local Date and sent as an ISO string. The parent
 // passes an async onSubmit performing create-or-update.
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { searchPatients, getPatient } from "../../../api/clinic";
 import "./telemedFormModal.css";
 import "../formModal.css";
 
 const DURATIONS = [15, 20, 30, 45, 60, 90];
+
+// Поиск начинается с трёх знаков и с задержкой: иначе запрос уходит на
+// каждую букву, а по одной букве всё равно вернётся полкартотеки.
+const MIN_SEARCH = 3;
+const SEARCH_DELAY = 300;
+
+// По введённому решаем, чем искать. Регистратор набирает то, что у него
+// перед глазами, и не должен выбирать вид поиска руками.
+function classifySearch(raw) {
+  const trimmed = String(raw || "").trim();
+  if (!trimmed) return { kind: null, value: "" };
+  if (trimmed.includes("@")) return { kind: "email", value: trimmed };
+  const digits = (trimmed.match(/\d/g) || []).length;
+  if (trimmed.startsWith("+") || digits >= 7) return { kind: "phone", value: trimmed };
+  return { kind: "lastName", value: trimmed };
+}
+
+function patientName(p) {
+  return [p?.lastName, p?.firstName].filter(Boolean).join(" ") || "—";
+}
 
 function extractId(v) {
   if (!v) return "";
@@ -54,13 +75,81 @@ export default function TelemedFormModal({
   );
   const [notes, setNotes] = useState(session?.notes || "");
   const [meetingUrl, setMeetingUrl] = useState(session?.meetingUrl || "");
-  const [patientUserId, setPatientUserId] = useState(
-    session?.patientUserId ? String(session.patientUserId) : "",
-  );
+  // Выбранная карта пациента. Раньше здесь был идентификатор, который
+  // регистратор должен был знать наизусть, — а он выглядит как
+  // 6a1d4f... и нигде в интерфейсе не показывается. Поэтому пациента
+  // выбирают из картотеки клиники, а идентификаторы подставляются сами.
+  const [patient, setPatient] = useState(session?.patient || null);
+  const [query, setQuery] = useState("");
+  const [found, setFound] = useState([]);
+  const [searching, setSearching] = useState(false);
+  const [searched, setSearched] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({});
+
+  // При правке приёма сервер отдаёт только идентификатор карты, без имени.
+  // Без подгрузки поле выглядело бы пустым, а сохранение стёрло бы уже
+  // выбранного пациента — приглашать стало бы некого.
+  useEffect(() => {
+    const id = session?.patientId ? String(session.patientId) : "";
+    if (!id || patient) return undefined;
+    let cancelled = false;
+    getPatient(id)
+      .then((p) => {
+        if (!cancelled && p) setPatient(p.patient || p);
+      })
+      .catch(() => {
+        // Карта могла быть удалена. Держим сам идентификатор, чтобы
+        // сохранение не обнулило связь молча.
+        if (!cancelled) setPatient({ _id: id });
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.patientId]);
+
+  const seqRef = useRef(0);
+
+  const runSearch = useCallback(async (raw) => {
+    const seq = ++seqRef.current;
+    const { kind, value } = classifySearch(raw);
+    if (!kind || value.length < MIN_SEARCH) {
+      setFound([]);
+      setSearching(false);
+      return;
+    }
+    setSearching(true);
+    setSearched(true);
+    try {
+      const params = { limit: 10 };
+      if (kind === "phone") params.phone = value;
+      else if (kind === "email") params.email = value;
+      else params.lastName = value;
+      const res = await searchPatients(params);
+      // Ответ на устаревший запрос игнорируем: набирая быстро, легко
+      // получить список от предыдущей строки поверх нужного.
+      if (seq !== seqRef.current) return;
+      setFound(res.items || []);
+    } catch {
+      if (seq === seqRef.current) setFound([]);
+    } finally {
+      if (seq === seqRef.current) setSearching(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (patient) return undefined;
+    if (!query || query.trim().length < MIN_SEARCH) {
+      setFound([]);
+      setSearched(false);
+      return undefined;
+    }
+    const h = setTimeout(() => runSearch(query), SEARCH_DELAY);
+    return () => clearTimeout(h);
+  }, [query, patient, runSearch]);
 
   function membershipIdOf(m) {
     return String(m.membershipId || m._id || m.id);
@@ -128,10 +217,18 @@ export default function TelemedFormModal({
         : isEdit
           ? { meetingUrl: null }
           : {}),
-      ...(patientUserId.trim()
-        ? { patientUserId: patientUserId.trim() }
+      // Отправляем карту пациента, а не только идентификатор аккаунта.
+      // По карте сервер зовёт человека на приём: уведомлением, если
+      // аккаунт есть, письмом на её адрес — если аккаунта ещё нет.
+      ...(patient?._id
+        ? {
+            patientId: String(patient._id),
+            patientUserId: patient.linkedUserId
+              ? String(patient.linkedUserId)
+              : null,
+          }
         : isEdit
-          ? { patientUserId: null }
+          ? { patientId: null, patientUserId: null }
           : {}),
     };
 
@@ -357,37 +454,108 @@ export default function TelemedFormModal({
             )}
           </div>
 
-          {/* Patient user id (Variant 1 — built-in video call) */}
+          {/* Пациент: выбор из картотеки клиники. */}
           <div className="modal-field">
-            <label htmlFor="tm-patient-user">
-              {t("telemed.form.patientUserId", {
-                defaultValue: "User ID пациента (встроенный звонок)",
-              })}{" "}
+            <label htmlFor="tm-patient">
+              {t("telemed.form.patient", { defaultValue: "Пациент" })}{" "}
               <span className="optional">
                 {t("common.optional", { defaultValue: "необязательно" })}
               </span>
             </label>
-            <input
-              id="tm-patient-user"
-              type="text"
-              value={patientUserId}
-              onChange={(e) => setPatientUserId(e.target.value)}
-              disabled={submitting}
-              maxLength={24}
-              placeholder="6a1d…"
-              className={fieldErrors.patientUserId ? "has-error" : ""}
-            />
-            {fieldErrors.patientUserId ? (
-              <div className="modal-field-error">
-                {fieldErrors.patientUserId}
+
+            {patient ? (
+              <div className="tm-patient-chosen">
+                <div>
+                  <div className="tm-patient-name">{patientName(patient)}</div>
+                  <div className="tm-patient-meta">
+                    {patient.linkedUserId
+                      ? t("telemed.form.patientLinked", {
+                          defaultValue:
+                            "Есть аккаунт — приём откроется прямо в кабинете",
+                        })
+                      : patient.email
+                        ? t("telemed.form.patientWillBeInvited", {
+                            defaultValue:
+                              "Аккаунта нет — приглашение уйдёт на почту",
+                          })
+                        : t("telemed.form.patientNoContact", {
+                            defaultValue:
+                              "Ни аккаунта, ни почты — позвать будет нечем",
+                          })}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="tm-patient-clear"
+                  onClick={() => {
+                    setPatient(null);
+                    setQuery("");
+                    setFound([]);
+                    setSearched(false);
+                  }}
+                  disabled={submitting}
+                >
+                  {t("common.change", { defaultValue: "Изменить" })}
+                </button>
               </div>
             ) : (
-              <div className="modal-hint">
-                {t("telemed.form.patientUserIdHint", {
-                  defaultValue:
-                    "Если пациент зарегистрирован в DocPats — «Войти» начнёт видеозвонок. Иначе используйте ссылку выше.",
-                })}
-              </div>
+              <>
+                <input
+                  id="tm-patient"
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  disabled={submitting}
+                  placeholder={t("telemed.form.patientSearch", {
+                    defaultValue: "Фамилия, телефон или почта",
+                  })}
+                  autoComplete="off"
+                />
+                {searching && (
+                  <div className="modal-hint">
+                    {t("common.searching", { defaultValue: "Ищем…" })}
+                  </div>
+                )}
+                {!searching && found.length > 0 && (
+                  <div className="tm-patient-results">
+                    {found.map((cand) => (
+                      <button
+                        key={cand._id}
+                        type="button"
+                        className="tm-patient-row"
+                        onClick={() => {
+                          setPatient(cand);
+                          setQuery("");
+                          setFound([]);
+                        }}
+                      >
+                        <span className="tm-patient-name">
+                          {patientName(cand)}
+                        </span>
+                        <span className="tm-patient-meta">
+                          {cand.phone || cand.email || ""}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {!searching && searched && found.length === 0 && (
+                  <div className="modal-hint">
+                    {t("telemed.form.patientNotFound", {
+                      defaultValue:
+                        "Никого не нашли. Заведите карту в разделе «Пациенты» — тогда приглашение уйдёт само.",
+                    })}
+                  </div>
+                )}
+                {!searched && (
+                  <div className="modal-hint">
+                    {t("telemed.form.patientHint", {
+                      defaultValue:
+                        "Выберите пациента — система сама позовёт его на приём. Без выбора останется только ссылка выше, которую придётся передать вручную.",
+                    })}
+                  </div>
+                )}
+              </>
             )}
           </div>
 

@@ -26,3 +26,79 @@
     gap: 0;
   }
 }
+
+/* ── Выбор пациента ──────────────────────────────────────────────────
+ * Раньше здесь было поле для идентификатора вида 6a1d4f…, который
+ * регистратору взять неоткуда: он нигде в интерфейсе не показывается.
+ * Поэтому пациента выбирают из картотеки, а идентификаторы система
+ * подставляет сама.
+ */
+
+.dp-modal .tm-patient-chosen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.dp-modal .tm-patient-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.dp-modal .tm-patient-meta {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.dp-modal .tm-patient-clear {
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #334155;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dp-modal .tm-patient-clear:hover:not(:disabled) {
+  background: #f1f5f9;
+}
+
+/* Список не длиннее четырёх строк: он раскрывается внутри формы, и
+   длинный перекрыл бы кнопки сохранения. */
+.dp-modal .tm-patient-results {
+  margin-top: 6px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dp-modal .tm-patient-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 9px 12px;
+  border: none;
+  border-bottom: 1px solid #f1f5f9;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dp-modal .tm-patient-row:last-child {
+  border-bottom: none;
+}
+
+.dp-modal .tm-patient-row:hover {
+  background: #f8fafc;
+}

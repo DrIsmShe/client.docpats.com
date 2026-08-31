@@ -760,7 +760,9 @@
     "moveDown": "Aşağı",
     "moveUp": "Yukarı",
     "search": "Ara",
-    "nothingFound": "Bir şey bulunamadı"
+    "nothingFound": "Bir şey bulunamadı",
+    "change": "Değiştir",
+    "searching": "Aranıyor…"
   },
   "publicPage": {
     "title": "Herkese açık sayfa",
@@ -2390,7 +2392,14 @@
         "dateInvalid": "Geçersiz tarih/saat",
         "fix": "Lütfen formdaki hataları düzeltin",
         "generic": "Görüşme kaydedilemedi"
-      }
+      },
+      "patient": "Hasta",
+      "patientSearch": "Soyadı, telefon veya e-posta",
+      "patientHint": "Bir hasta seçin — sistem onu randevuya kendisi davet eder. Seçim yapılmazsa yalnızca yukarıdaki bağlantı kalır, onu elle iletmeniz gerekir.",
+      "patientNotFound": "Kimse bulunamadı. “Hastalar” bölümünde dosya oluşturun — davet kendiliğinden gider.",
+      "patientLinked": "Hesabı var — randevu doğrudan hesabında açılır",
+      "patientWillBeInvited": "Hesabı yok — davet e-posta ile gönderilecek",
+      "patientNoContact": "Ne hesap ne e-posta — davet edilemeyecek"
     }
   },
   "notifications": {

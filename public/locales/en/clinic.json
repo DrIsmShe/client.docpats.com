@@ -760,7 +760,9 @@
     "moveDown": "Down",
     "moveUp": "Up",
     "search": "Search",
-    "nothingFound": "Nothing found"
+    "nothingFound": "Nothing found",
+    "change": "Change",
+    "searching": "Searching…"
   },
   "publicPage": {
     "title": "Public page",
@@ -2390,7 +2392,14 @@
         "dateInvalid": "Invalid date/time",
         "fix": "Please fix the errors in the form",
         "generic": "Failed to save the visit"
-      }
+      },
+      "patient": "Patient",
+      "patientSearch": "Surname, phone or email",
+      "patientHint": "Pick a patient and the system will invite them. Without one, only the link above remains — you would have to pass it on yourself.",
+      "patientNotFound": "Nobody found. Create a record under “Patients” and the invitation will be sent automatically.",
+      "patientLinked": "Has an account — the appointment opens right in their portal",
+      "patientWillBeInvited": "No account — an invitation will be emailed",
+      "patientNoContact": "Neither account nor email — there is no way to invite them"
     }
   },
   "notifications": {
