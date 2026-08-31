@@ -2342,5 +2342,11 @@
     "confirmBadText": "The subscription may already be confirmed, or the link was opened twice — it works only once.",
     "toSite": "Go to the site",
     "language": "Newsletter language"
+  },
+  "chunkError": {
+    "title": "The page did not open",
+    "chunkText": "Part of the application failed to load. Refreshing the page usually helps.",
+    "otherText": "An error occurred while rendering the page. No data has been lost.",
+    "reload": "Refresh the page"
   }
 }

@@ -23,6 +23,10 @@
 //   • на любой другой ошибке показывает экран с кнопкой вместо белизны.
 
 import React from "react";
+// i18next напрямую, а не через хук: это классовый компонент, хуки в нём
+// недоступны. Если сломан сам перевод — t вернёт запасное значение, и
+// экран всё равно покажется: он для того и существует.
+import i18n from "i18next";
 
 const RELOAD_FLAG = "dp_chunk_reloaded";
 
@@ -104,12 +108,20 @@ export default class ChunkErrorBoundary extends React.Component {
           ⚠️
         </div>
         <div style={{ fontSize: 19, fontWeight: 700, color: "#0f172a" }}>
-          Страница не открылась
+          {i18n.t("chunkError.title", {
+            defaultValue: "Страница не открылась",
+          })}
         </div>
         <div style={{ fontSize: 15, lineHeight: 1.6, maxWidth: 460, color: "#475569" }}>
           {this.state.chunk
-            ? "Не удалось загрузить часть приложения. Обычно помогает обновление страницы."
-            : "При отрисовке страницы произошла ошибка. Данные не потеряны."}
+            ? i18n.t("chunkError.chunkText", {
+                defaultValue:
+                  "Не удалось загрузить часть приложения. Обычно помогает обновление страницы.",
+              })
+            : i18n.t("chunkError.otherText", {
+                defaultValue:
+                  "При отрисовке страницы произошла ошибка. Данные не потеряны.",
+              })}
         </div>
         <button
           type="button"
@@ -125,7 +137,9 @@ export default class ChunkErrorBoundary extends React.Component {
             cursor: "pointer",
           }}
         >
-          Обновить страницу
+          {i18n.t("chunkError.reload", {
+            defaultValue: "Обновить страницу",
+          })}
         </button>
       </div>
     );

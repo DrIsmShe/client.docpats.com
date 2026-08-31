@@ -2315,5 +2315,11 @@
     "confirmBadText": "Abonelik zaten onaylanmış olabilir veya bağlantı ikinci kez açıldı — tek kullanımlıktır.",
     "toSite": "Ana sayfaya",
     "language": "Bülten dili"
+  },
+  "chunkError": {
+    "title": "Sayfa açılmadı",
+    "chunkText": "Uygulamanın bir bölümü yüklenemedi. Genellikle sayfayı yenilemek yardımcı olur.",
+    "otherText": "Sayfa görüntülenirken bir hata oluştu. Veriler kaybolmadı.",
+    "reload": "Sayfayı yenile"
   }
 }

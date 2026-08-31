@@ -972,7 +972,29 @@
     "themePalette": "Palet",
     "themePresets": "Hazır temalar",
     "confirmDeleteArticle": "“{{title}}” makalesi silinsin mi?",
-    "confirmDeletePage": "“{{title}}” sayfası silinsin mi?"
+    "confirmDeletePage": "“{{title}}” sayfası silinsin mi?",
+    "articleLinks": "Kaynaklar:",
+    "doctorsTitle": "Uzmanlar",
+    "verified": "Profil onaylandı",
+    "experienceYears": "{{count}} yıl deneyim",
+    "doctorPublications": "Doktorun yayınları",
+    "kindScientific": "Bilimsel",
+    "kindOpinion": "Görüş",
+    "doctorReviews": "Yorumlar",
+    "commentsTitle": "Yorumlar",
+    "commentsGateTitle": "Tartışmaya katılın",
+    "commentsGateSubDoctor": "Doktora yorum bırakmak için DocPats hesabınıza giriş yapın.",
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol",
+    "backToDoctor": "Doktora dön",
+    "readTime": "{{count}} dk okuma",
+    "likeNeedsLogin": "Makaleyi değerlendirmek için giriş yapın",
+    "views": "{{count}} görüntülenme",
+    "commentsGateSub": "Yorum bırakmak ve makaleleri değerlendirmek için DocPats hesabınıza giriş yapın.",
+    "categoryArticlesTitle": "Makaleler",
+    "categoryGalleryTitle": "Galeri",
+    "parentArticlesTitle": "Tüm makaleler",
+    "parentNoArticles": "Alt kategorilerde henüz makale yok."
   },
   "layout": {
     "brandName": "DocPats Klinik",
@@ -1432,6 +1454,78 @@
         "deleteFailed": "Silinemedi",
         "loadFailed": "Kayıtlar yüklenemedi",
         "required": "Bu alanı doldurun"
+      }
+    },
+    "fhir": {
+      "hint": "Kaydı başka bir kliniğe, laboratuvara veya kayıt sistemine göndermek için FHIR R4 makine biçimi. Dosya kod olarak açılır — okunacak bir belge değildir; okumak ve yazdırmak için «Kartı yazdır» vardır.",
+      "exporting": "Dışa aktarma hazırlanıyor…",
+      "export": "Başka bir sistem için dışa aktar (FHIR)"
+    },
+    "card": {
+      "printing": "Kart hazırlanıyor…",
+      "print": "Kartı yazdır",
+      "hint": "Tek sayfalık özet: alerjiler, kronik hastalıklar, şu an kullandığı ilaçlar, son muayeneler ve tahlillerdeki sapmalar"
+    },
+    "allergies": {
+      "title": "Alerjiler",
+      "addButton": "+ Alerji Ekle",
+      "emptyText": "Alerji kaydı yok.",
+      "fields": {
+        "content": "Alerji açıklaması"
+      },
+      "placeholders": {
+        "content": "Örneğin: penisilin — ürtiker"
+      }
+    },
+    "chronic": {
+      "title": "Kronik Hastalıklar",
+      "addButton": "+ Hastalık Ekle",
+      "emptyText": "Kronik hastalık kaydı yok.",
+      "fields": {
+        "content": "Hastalık açıklaması"
+      },
+      "placeholders": {
+        "content": "Örneğin: hipertansiyon evre II"
+      }
+    },
+    "operations": {
+      "title": "Geçirilmiş Ameliyatlar",
+      "addButton": "+ Ameliyat Ekle",
+      "emptyText": "Ameliyat kaydı yok.",
+      "fields": {
+        "content": "Ameliyat açıklaması"
+      },
+      "placeholders": {
+        "content": "Örneğin: apendektomi, 2015"
+      }
+    },
+    "family": {
+      "title": "Aile Öyküsü",
+      "addButton": "+ Kayıt Ekle",
+      "emptyText": "Aile öyküsü kaydı yok.",
+      "fields": {
+        "relative": "Akraba",
+        "diseaseName": "Hastalık",
+        "content": "Yorum"
+      },
+      "placeholders": {
+        "relative": "Örneğin: baba",
+        "diseaseName": "Örneğin: koroner arter hastalığı",
+        "content": "Ek detaylar (isteğe bağlı)"
+      }
+    },
+    "immunization": {
+      "title": "Aşılar",
+      "addButton": "+ Aşı Ekle",
+      "emptyText": "Aşı kaydı yok.",
+      "fields": {
+        "vaccineName": "Aşı",
+        "dateGiven": "Uygulama tarihi",
+        "content": "Yorum"
+      },
+      "placeholders": {
+        "vaccineName": "Örneğin: COVID-19 (Pfizer), 3. doz",
+        "content": "Reaksiyon, seri vb. (isteğe bağlı)"
       }
     }
   },
@@ -2398,7 +2492,54 @@
     "nav_gallery": "Galeri",
     "nav_reviews": "Yorumlar",
     "nav_faq": "Sorular",
-    "nav_contacts": "İletişim"
+    "nav_contacts": "İletişim",
+    "loading": "Yükleniyor…",
+    "articleNotFoundTitle": "Makale bulunamadı",
+    "articleNotFoundText": "Makale henüz yayınlanmamış olabilir veya adres yanlış girilmiş olabilir.",
+    "error": "Makale yüklenemedi. Daha sonra tekrar deneyin.",
+    "notFoundTitle": "Klinik bulunamadı",
+    "notFoundText": "Sayfa henüz yayınlanmamış olabilir veya adres yanlış girilmiş olabilir.",
+    "pageNotFoundTitle": "Sayfa bulunamadı",
+    "pageNotFoundText": "Sayfa henüz yayınlanmamış olabilir veya adres yanlış girilmiş olabilir.",
+    "doctorNotFoundTitle": "Doktor bulunamadı",
+    "doctorNotFoundText": "Doktor artık klinikte çalışmıyor olabilir veya adres yanlış girilmiş olabilir.",
+    "doctorError": "Doktor profili yüklenemedi. Daha sonra tekrar deneyin.",
+    "publicationNotFoundTitle": "Yayın bulunamadı",
+    "publicationNotFoundText": "Makale yayından kaldırılmış olabilir veya adres yanlış girilmiş olabilir.",
+    "publicationError": "Yayın yüklenemedi. Daha sonra tekrar deneyin.",
+    "priceFree": "ücretsiz",
+    "priceOnRequest": "talep üzerine",
+    "priceFrom": "başlangıç",
+    "otherServicesTitle": "Hizmetler",
+    "departmentsTitle": "Bölümler ve hizmetler",
+    "leadValidation": "Adınızı ve telefonunuzu belirtin.",
+    "leadError": "Gönderilemedi. Daha sonra tekrar deneyin.",
+    "contactsTitle": "İletişim",
+    "leadFormTitle": "Başvuru bırakın — sizinle iletişime geçeceğiz",
+    "leadSuccess": "Başvuru gönderildi. Yakında sizinle iletişime geçeceğiz.",
+    "leadSuccessMore": "Başka bir başvuru bırak",
+    "leadCallback": "Beni arayın",
+    "leadMessage": "Mesaj yazın",
+    "leadName": "Adınız",
+    "leadPhone": "Telefon",
+    "leadMsg": "Mesajınız",
+    "leadSending": "Gönderiliyor…",
+    "leadSubmit": "Gönder",
+    "ctaTitle": "Randevu alın",
+    "ctaSubtitle": "Kayıt birimine telefon edin — size uygun bir zaman ayarlayalım",
+    "verifiedDoctor": "Onaylı doktor",
+    "specialistsTitle": "Uzmanlar",
+    "doctorsAll": "Tümü",
+    "faqTitle": "Soru ve cevaplar",
+    "footerSections": "Bölümler",
+    "galleryTitle": "Galeri",
+    "verified": "Onaylandı",
+    "navAllDoctors": "Tüm doktorlar →",
+    "navAllArticles": "Tüm makaleler →",
+    "priceListTitle": "Hizmetler ve fiyatlar",
+    "minShort": "dk",
+    "priceEmpty": "Fiyat listesi henüz doldurulmaktadır.",
+    "aboutTitle": "Klinik hakkında"
   },
   "departments": {
     "archive": "Arşivle",
@@ -2542,7 +2683,19 @@
     "noPermission": "Hasta randevusu alma yetkiniz yok",
     "noSlots": "Bu gün boş saat yok. Doktor çalışmıyor olabilir ya da gün tamamen dolu.",
     "reasonPlaceholder": "örn. kontrol, konsültasyon",
-    "subtitle": "Bir doktor ve boş saat seçin, ardından hastayı bulun."
+    "subtitle": "Bir doktor ve boş saat seçin, ardından hastayı bulun.",
+    "slotTaken": "Bu zaman az önce dolduruldu. Başka bir zaman seçin.",
+    "tooMany": "Arka arkaya çok fazla başvuru. Daha sonra tekrar deneyin.",
+    "failed": "Başvuru gönderilemedi. Daha sonra tekrar deneyin.",
+    "doneTitle": "Başvuru gönderildi",
+    "doneText": "Klinik, randevunuzu onaylamak için sizinle iletişime geçecektir. Seçilen saat yalnızca onaydan sonra sabitlenir.",
+    "note": "Uygun bir zaman seçin ve iletişim bilgilerinizi bırakın. Bu bir taleptir: klinik sizi arayacak ve randevuyu onaylayacaktır.",
+    "dayEmpty": "Bu gün randevu bulunmamaktadır",
+    "name": "Adınız",
+    "phone": "Telefon",
+    "message": "Şikayetiniz (isteğe bağlı)",
+    "sending": "Gönderiliyor…",
+    "submit": "Talep gönder"
   },
   "requisites": {
     "title": "Klinik bilgileri",
@@ -2562,5 +2715,169 @@
     "saved": "Kaydedildi",
     "saveFailed": "Kaydedilemedi",
     "loadFailed": "Klinik bilgileri yüklenemedi"
+  },
+  "consentRequestModal": {
+    "subtitleFor": "Hasta: {{name}}",
+    "groups": {
+      "appointments": {
+        "title": "Muayeneler ve Tanılar",
+        "desc": "Ziyaret geçmişi, şikayetler, tanılar, öneriler"
+      },
+      "healthProfile": {
+        "title": "Sağlık Profili",
+        "desc": "Alerjiler, kronik hastalıklar, ameliyatlar, aşılar, aile öyküsü"
+      },
+      "imaging": {
+        "title": "Görüntüler ve Tetkikler",
+        "desc": "BT, MR, USG, röntgen"
+      }
+    }
+  },
+  "pharmacy": {
+    "catalog": {
+      "loadError": "Katalog yüklenemedi",
+      "confirmArchive": "İlaç aktif katalogdan kaldırılsın mı?",
+      "noAccess": "Eczane kataloğuna erişim yok",
+      "title": "İlaç kataloğu",
+      "searchPlaceholder": "Ad, etken madde veya koda göre ara…",
+      "showArchived": "Arşivi göster",
+      "add": "İlaç ekle",
+      "empty": "Katalog boş. İlk ilacı ekleyin.",
+      "count": "Toplam kalem: {{count}}"
+    },
+    "form": {
+      "nameRequired": "İlaç adını belirtiniz",
+      "saveError": "Kaydedilemedi. Alanları kontrol edin.",
+      "editTitle": "İlacı düzenle",
+      "createTitle": "Yeni ilaç",
+      "inn": "Etken madde",
+      "baseUnit": "Birim (dağıtım)",
+      "packUnit": "Satınalma birimi",
+      "unitsPerPack": "Ambalajdaki birim",
+      "minStock": "Min. stok (birim)",
+      "manufacturer": "Üretici",
+      "sku": "Kod / barkod",
+      "isControlled": "Narkotik-madde kaydı (NMK)",
+      "note": "Not"
+    },
+    "col": {
+      "name": "Ad",
+      "form": "Form",
+      "strength": "Doz",
+      "pack": "Ambalaj",
+      "category": "Kategori"
+    },
+    "badge": {
+      "controlled": "NMK",
+      "min": "min."
+    },
+    "action": {
+      "archive": "Arşive taşı",
+      "restore": "Geri yükle"
+    },
+    "dispense": {
+      "genericError": "Dağıtım gerçekleştirilemedi.",
+      "reqLoadError": "Talep yüklenemedi",
+      "lineOk": "Kalem dağıtıldı",
+      "deptOk": "Servise dağıtıldı",
+      "noAccess": "Depodan dağıtım yetkisi yok",
+      "title": "Depodan Çıkış",
+      "tabReq": "Talebe Göre",
+      "tabDept": "Servise",
+      "tabPatient": "Hastaya",
+      "noReq": "Çıkış yapmak için eczane kuyruğundan bir talep açın.",
+      "reqStatus": "Durum",
+      "remaining": "Verilecek Bakiye",
+      "fulfilled": "Verildi",
+      "packs": "kutu",
+      "give": "Ver",
+      "department": "Servis",
+      "selectDept": "— servis seçin —",
+      "drug": "İlaç",
+      "change": "Değiştir",
+      "searchDrug": "İlaç ara…",
+      "patientSoon": "Hastaya çıkış bir sonraki güncellemede gelecek.",
+      "patientNoAccess": "Hastaya çıkış eczacıya açıktır (reçete yetkisi gereklidir)."
+    },
+    "reports": {
+      "loadError": "Rapor yüklenemedi",
+      "pdfError": "PDF oluşturulamadı",
+      "noAccess": "Eczane raporlarına erişim yok",
+      "title": "Çıkış Raporları",
+      "pdf": "PDF İndir",
+      "kpiDispenses": "Toplam Çıkış",
+      "kpiQty": "Verilen Birim",
+      "kpiControlled": "Bunlardan Kontrollü",
+      "dynamics": "Çıkış Dinamiği",
+      "noData": "Dönem için veri yok",
+      "qty": "Birim",
+      "count": "Çıkış",
+      "byTarget": "Çıkış Kanallarına Göre",
+      "byDepartment": "Servislere Göre",
+      "topDrugs": "En Çok Verilen İlaçlar",
+      "drug": "İlaç",
+      "controlled": "Kontrollü İlaç Kayıt Sistemi",
+      "controlledTotals": "Toplam Kontrollü: {{count}} çıkış, {{qty}} birim",
+      "noControlled": "Dönemde kontrollü ilaç çıkışı olmadı"
+    },
+    "req": {
+      "loadError": "Talepler yüklenemedi",
+      "depRequired": "Servis seçin",
+      "itemsRequired": "En az bir kalem ekleyin",
+      "saveError": "Kaydedilemedi. Alanları kontrol edin.",
+      "confirmCancel": "Talep iptal edilsin mi?",
+      "noAccess": "Taleplere erişim yok",
+      "title": "Eczane talepleri",
+      "tabQueue": "Eczane kuyruğu",
+      "tabDept": "Bölüm talepleri",
+      "mineOnly": "Sadece benimkiler",
+      "create": "Yeni talep",
+      "emptyQueue": "Açık talep yok.",
+      "emptyDept": "Talep yok. İlkini oluşturun.",
+      "dispense": "Çıkış yap",
+      "submit": "Gönder",
+      "cancel": "İptal et",
+      "count": "Toplam: {{count}}",
+      "editTitle": "Talebi düzenle",
+      "createTitle": "Yeni talep",
+      "department": "Bölüm",
+      "selectDept": "— bölüm seçin —",
+      "priority": "Öncelik",
+      "items": "Kalemler",
+      "changeDrug": "İlacı değiştir",
+      "searchDrug": "İlaç ara…",
+      "packs": "Kutu",
+      "lineNote": "Kalem notu",
+      "addLine": "Kalem ekle",
+      "note": "Not",
+      "saveDraft": "Taslak kaydet",
+      "saveSubmit": "Kaydet ve gönder"
+    },
+    "suppliers": {
+      "loadError": "Tedarikçiler yüklenemedi",
+      "nameRequired": "Tedarikçi adını belirtin",
+      "saveError": "Kaydedilemedi. Alanları kontrol edin.",
+      "confirmArchive": "Tedarikçi aktif listeden kaldırılsın mı?",
+      "noAccess": "Tedarikçilere erişim yok",
+      "title": "Tedarikçiler",
+      "searchPlaceholder": "Ad, iletişim veya vergi numarasına göre ara…",
+      "showArchived": "Arşivi göster",
+      "add": "Tedarikçi ekle",
+      "empty": "Liste boş. İlk tedarikçiyi ekleyin.",
+      "col": {
+        "name": "Ad",
+        "contact": "İletişim",
+        "phone": "Telefon",
+        "taxId": "Vergi Numarası"
+      },
+      "count": "Toplam tedarikçi: {{count}}",
+      "editTitle": "Tedarikçiyi Düzenle",
+      "createTitle": "Yeni Tedarikçi",
+      "field": {
+        "email": "E-posta",
+        "address": "Adres",
+        "note": "Not"
+      }
+    }
   }
 }

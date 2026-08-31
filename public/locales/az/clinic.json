@@ -972,7 +972,29 @@
     "themePalette": "Palitra",
     "themePresets": "Hazır temalar",
     "confirmDeleteArticle": "«{{title}}» məqaləsi silinsin?",
-    "confirmDeletePage": "«{{title}}» səhifəsi silinsin?"
+    "confirmDeletePage": "«{{title}}» səhifəsi silinsin?",
+    "articleLinks": "Mənbələr:",
+    "doctorsTitle": "Mütəxəssislər",
+    "verified": "Profil təsdiqlənib",
+    "experienceYears": "Təcrübə {{count}} il",
+    "doctorPublications": "Həkimin nəşrləri",
+    "kindScientific": "Elmi",
+    "kindOpinion": "Rəy",
+    "doctorReviews": "Rəylər",
+    "commentsTitle": "Şərhlər",
+    "commentsGateTitle": "Müzakirəyə qoşulun",
+    "commentsGateSubDoctor": "Həkimə şərh yazmaq üçün DocPats hesabınıza daxil olun.",
+    "login": "Daxil ol",
+    "register": "Qeydiyyatdan keç",
+    "backToDoctor": "Həkimə qayıt",
+    "readTime": "{{count}} dəq oxu",
+    "likeNeedsLogin": "Məqaləni qiymətləndirmək üçün daxil olun",
+    "views": "{{count}} baxış",
+    "commentsGateSub": "Şərh yazmaq və məqalələri qiymətləndirmək üçün DocPats hesabınıza daxil olun.",
+    "categoryArticlesTitle": "Məqalələr",
+    "categoryGalleryTitle": "Qalereya",
+    "parentArticlesTitle": "Bütün məqalələr",
+    "parentNoArticles": "Altkateqoriyalarda hələ məqalə yoxdur."
   },
   "layout": {
     "brandName": "DocPats Klinika",
@@ -1432,6 +1454,78 @@
         "deleteFailed": "Silmək mümkün olmadı",
         "loadFailed": "Qeydləri yükləmək alınmadı",
         "required": "Bu sahəni doldurun"
+      }
+    },
+    "fhir": {
+      "hint": "Kartı başqa klinikaya, laboratoriyaya və ya reyestrə ötürmək üçün FHIR R4 maşın formatı. Fayl kod kimi açılır — bu oxumaq üçün sənəd deyil; oxumaq və çap üçün «Kartı çap et» var.",
+      "exporting": "İxrac hazırlanır…",
+      "export": "Başqa sistem üçün ixrac et (FHIR)"
+    },
+    "card": {
+      "printing": "Kart hazırlanır…",
+      "print": "Kartı çap et",
+      "hint": "Bir səhifədə çıxarış: allergiyalar, xroniki xəstəliklər, hazırda qəbul etdikləri, son qəbullar və analizlərdəki kənarlaşmalar"
+    },
+    "allergies": {
+      "title": "Allergiyalar",
+      "addButton": "+ Allergiya əlavə et",
+      "emptyText": "Allergiyalar haqqında qeyd yoxdur.",
+      "fields": {
+        "content": "Allergiyanın təsviri"
+      },
+      "placeholders": {
+        "content": "Məsələn: penisilin — ürtiker"
+      }
+    },
+    "chronic": {
+      "title": "Xroniki xəstəliklər",
+      "addButton": "+ Xəstəlik əlavə et",
+      "emptyText": "Xroniki xəstəliklər haqqında qeyd yoxdur.",
+      "fields": {
+        "content": "Xəstəliyin təsviri"
+      },
+      "placeholders": {
+        "content": "Məsələn: hipertonik xəstəlik II mər."
+      }
+    },
+    "operations": {
+      "title": "Keçirilmiş əməliyyatlar",
+      "addButton": "+ Əməliyyat əlavə et",
+      "emptyText": "Əməliyyatlar haqqında qeyd yoxdur.",
+      "fields": {
+        "content": "Əməliyyatın təsviri"
+      },
+      "placeholders": {
+        "content": "Məsələn: appendektomiya, 2015"
+      }
+    },
+    "family": {
+      "title": "Ailə anamnezi",
+      "addButton": "+ Qeyd əlavə et",
+      "emptyText": "Ailə anamnezi haqqında qeyd yoxdur.",
+      "fields": {
+        "relative": "Qohum",
+        "diseaseName": "Xəstəlik",
+        "content": "Şərh"
+      },
+      "placeholders": {
+        "relative": "Məsələn: ata",
+        "diseaseName": "Məsələn: ürəyin işemik xəstəliyi",
+        "content": "Əlavə təfərrüatlar (məcburi deyil)"
+      }
+    },
+    "immunization": {
+      "title": "Peyvəndlər",
+      "addButton": "+ Peyvənd əlavə et",
+      "emptyText": "Peyvəndlər haqqında qeyd yoxdur.",
+      "fields": {
+        "vaccineName": "Vaksin",
+        "dateGiven": "Verilmə tarixi",
+        "content": "Şərh"
+      },
+      "placeholders": {
+        "vaccineName": "Məsələn: COVID-19 (Pfizer), 3-cü doza",
+        "content": "Reaksiya, seriya və s. (məcburi deyil)"
       }
     }
   },
@@ -2398,7 +2492,54 @@
     "nav_gallery": "Qalereya",
     "nav_reviews": "Rəylər",
     "nav_faq": "Suallar",
-    "nav_contacts": "Əlaqə"
+    "nav_contacts": "Əlaqə",
+    "loading": "Yüklənir…",
+    "articleNotFoundTitle": "Məqalə tapılmadı",
+    "articleNotFoundText": "Ola bilsin ki, məqalə hələ dərc edilməyib və ya ünvan səhv daxil edilib.",
+    "error": "Məqaləni yükləmək mümkün olmadı. Sonra yenidən cəhd edin.",
+    "notFoundTitle": "Klinika tapılmadı",
+    "notFoundText": "Ola bilsin ki, səhifə hələ dərc edilməyib və ya ünvan səhv daxil edilib.",
+    "pageNotFoundTitle": "Səhifə tapılmadı",
+    "pageNotFoundText": "Ola bilsin ki, səhifə hələ dərc edilməyib və ya ünvan səhv daxil edilib.",
+    "doctorNotFoundTitle": "Həkim tapılmadı",
+    "doctorNotFoundText": "Ola bilsin ki, həkim artıq klinikada işləmir və ya ünvan səhv daxil edilib.",
+    "doctorError": "Həkimin profilini yükləmək mümkün olmadı. Sonra yenidən cəhd edin.",
+    "publicationNotFoundTitle": "Nəşr tapılmadı",
+    "publicationNotFoundText": "Ola bilsin ki, məqalə nəşrdən götürülüb və ya ünvan səhv daxil edilib.",
+    "publicationError": "Nəşri yükləmək mümkün olmadı. Sonra yenidən cəhd edin.",
+    "priceFree": "pulsuz",
+    "priceOnRequest": "sorğu əsasında",
+    "priceFrom": "dan",
+    "otherServicesTitle": "Xidmətlər",
+    "departmentsTitle": "Şöbələr və xidmətlər",
+    "leadValidation": "Ad və telefon nömrəsini göstərin.",
+    "leadError": "Göndərilə bilmədi. Sonra yenidən cəhd edin.",
+    "contactsTitle": "Əlaqə",
+    "leadFormTitle": "Müraciət göndərin — sizinlə əlaqə saxlayacağıq",
+    "leadSuccess": "Müraciət göndərildi. Tezliklə sizinlə əlaqə saxlayacağıq.",
+    "leadSuccessMore": "Daha bir müraciət göndərin",
+    "leadCallback": "Mənə zəng edin",
+    "leadMessage": "Mesaj yazmaq",
+    "leadName": "Adınız",
+    "leadPhone": "Telefon",
+    "leadMsg": "Mesajınız",
+    "leadSending": "Göndərilir…",
+    "leadSubmit": "Göndər",
+    "ctaTitle": "Qəbula yazılın",
+    "ctaSubtitle": "Qeydiyyata zəng edin — əlverişli vaxt seçəcəyik",
+    "verifiedDoctor": "Təsdiqlənmiş həkim",
+    "specialistsTitle": "Mütəxəssislər",
+    "doctorsAll": "Hamısı",
+    "faqTitle": "Suallar və cavablar",
+    "footerSections": "Bölmələr",
+    "galleryTitle": "Qalereya",
+    "verified": "Təsdiqlənib",
+    "navAllDoctors": "Bütün həkimlər →",
+    "navAllArticles": "Bütün məqalələr →",
+    "priceListTitle": "Xidmətlər və qiymətlər",
+    "minShort": "dəq",
+    "priceEmpty": "Qiymət siyahısı hələ doldurulur.",
+    "aboutTitle": "Klinika haqqında"
   },
   "departments": {
     "archive": "Arxivə",
@@ -2542,7 +2683,19 @@
     "noPermission": "Pasiyentləri qəbula yazmaq üçün icazə yoxdur",
     "noSlots": "Bu gün boş vaxt yoxdur. Ola bilsin həkim işləmir və ya gün tam doludur.",
     "reasonPlaceholder": "məsələn: təkrar qəbul, konsultasiya",
-    "subtitle": "Həkim və boş vaxt seçin, sonra pasiyenti tapın."
+    "subtitle": "Həkim və boş vaxt seçin, sonra pasiyenti tapın.",
+    "slotTaken": "Bu vaxt indicə tutuldu. Başqa vaxt seçin.",
+    "tooMany": "Çox sayda ardıcıl müraciət. Sonra yenidən cəhd edin.",
+    "failed": "Müraciət göndərilə bilmədi. Sonra yenidən cəhd edin.",
+    "doneTitle": "Müraciət göndərildi",
+    "doneText": "Klinika qeydiyyatı təsdiqləmək üçün sizinlə əlaqə saxlayacaq. Seçilmiş vaxt yalnız təsdiqləmədən sonra təsbit edilir.",
+    "note": "Uyğun vaxtı seçin və əlaqə məlumatlarınızı qeyd edin. Bu müraciətdir: klinika zəng edib qeydiyyatı təsdiqləyəcək.",
+    "dayEmpty": "Bu gün qəbul yoxdur",
+    "name": "Adınız",
+    "phone": "Telefon",
+    "message": "Şikayətləriniz (məcburi deyil)",
+    "sending": "Göndərilir…",
+    "submit": "Müraciət göndər"
   },
   "requisites": {
     "title": "Klinikanın rekvizitləri",
@@ -2562,5 +2715,169 @@
     "saved": "Yadda saxlanıldı",
     "saveFailed": "Yadda saxlamaq mümkün olmadı",
     "loadFailed": "Klinikanın məlumatlarını yükləmək mümkün olmadı"
+  },
+  "consentRequestModal": {
+    "subtitleFor": "Xəstə: {{name}}",
+    "groups": {
+      "appointments": {
+        "title": "Qəbullar və diaqnozlar",
+        "desc": "Vizitlərin tarixi, şikayətlər, diaqnozlar, tövsiyələr"
+      },
+      "healthProfile": {
+        "title": "Sağlamlıq profili",
+        "desc": "Allergiyalar, xroniki xəstəliklər, əməliyyatlar, peyvəndlər, ailə anamnezi"
+      },
+      "imaging": {
+        "title": "Şəkillər və müayinələr",
+        "desc": "KT, MRT, USM, rentgen"
+      }
+    }
+  },
+  "pharmacy": {
+    "catalog": {
+      "loadError": "Kataloqu yükləmək mümkün olmadı",
+      "confirmArchive": "Preparatı aktiv kataloqdan çıxarmaq?",
+      "noAccess": "Əczaxana kataloquna giriş yoxdur",
+      "title": "Preparatlar kataloqu",
+      "searchPlaceholder": "Ad, BAN və ya koda görə axtarış…",
+      "showArchived": "Arxivi göstər",
+      "add": "Preparat əlavə et",
+      "empty": "Kataloq boşdur. İlk preparatı əlavə edin.",
+      "count": "Cəmi mövqe: {{count}}"
+    },
+    "form": {
+      "nameRequired": "Preparatın adını göstərin",
+      "saveError": "Yadda saxlamaq mümkün olmadı. Xanaları yoxlayın.",
+      "editTitle": "Preparatı redaktə et",
+      "createTitle": "Yeni preparat",
+      "inn": "BAN / maddə",
+      "baseUnit": "Uçot vahidi (verilmə)",
+      "packUnit": "Alış vahidi",
+      "unitsPerPack": "Qablaşdırmada vahid",
+      "minStock": "Min. qalıq (vahid)",
+      "manufacturer": "İstehsalçı",
+      "sku": "Kod / barkod",
+      "isControlled": "Predmet-kəmiyyət uçotu (PKU)",
+      "note": "Qeyd"
+    },
+    "col": {
+      "name": "Adı",
+      "form": "Forma",
+      "strength": "Dozalama",
+      "pack": "Qablaşdırma",
+      "category": "Kateqoriya"
+    },
+    "badge": {
+      "controlled": "PKU",
+      "min": "min."
+    },
+    "action": {
+      "archive": "Arxivə",
+      "restore": "Bərpa et"
+    },
+    "dispense": {
+      "genericError": "Verilməni yerinə yetirmək mümkün olmadı.",
+      "reqLoadError": "Sorğunu yükləmək mümkün olmadı",
+      "lineOk": "Mövqe verildi",
+      "deptOk": "Şöbəyə verildi",
+      "noAccess": "Anbardan verilmə hüququ yoxdur",
+      "title": "Anbardan buraxılış",
+      "tabReq": "Sorğu üzrə",
+      "tabDept": "Şöbəyə",
+      "tabPatient": "Xəstəyə",
+      "noReq": "Buraxılış üçün aptek növbəsindən sorğunu açın.",
+      "reqStatus": "Status",
+      "remaining": "Buraxılışa qalıq",
+      "fulfilled": "Buraxılıb",
+      "packs": "qab.",
+      "give": "Buraxmaq",
+      "department": "Şöbə",
+      "selectDept": "— şöbəni seçin —",
+      "drug": "Preparat",
+      "change": "Dəyişmək",
+      "searchDrug": "Preparat axtar…",
+      "patientSoon": "Xəstəyə buraxılış növbəti yeniləmədə əlavə olunacaq.",
+      "patientNoAccess": "Xəstəyə buraxılış əczaçı üçün əlçatandır (reseptlərə hüquq lazımdır)."
+    },
+    "reports": {
+      "loadError": "Hesabatı yükləmək mümkün olmadı",
+      "pdfError": "PDF formalaşdırmaq mümkün olmadı",
+      "noAccess": "Aptek hesabatlarına giriş yoxdur",
+      "title": "Buraxılış hesabatları",
+      "pdf": "PDF yüklə",
+      "kpiDispenses": "Cəmi buraxılışlar",
+      "kpiQty": "Vahid buraxılıb",
+      "kpiControlled": "O cümlədən MKU",
+      "dynamics": "Buraxılışların dinamikası",
+      "noData": "Dövr üzrə məlumat yoxdur",
+      "qty": "Vahid",
+      "count": "Buraxılış",
+      "byTarget": "Buraxılış kanalları üzrə",
+      "byDepartment": "Şöbələr üzrə",
+      "topDrugs": "Top preparatlar",
+      "drug": "Preparat",
+      "controlled": "Maddə-kəmiyyət uçotu (MKU)",
+      "controlledTotals": "Cəmi MKU: {{count}} buraxılış, {{qty}} vahid",
+      "noControlled": "Dövrdə MKU buraxılışları olmayıb"
+    },
+    "req": {
+      "loadError": "Sorğuları yükləmək mümkün olmadı",
+      "depRequired": "Şöbəni seçin",
+      "itemsRequired": "Ən azı bir mövqe əlavə edin",
+      "saveError": "Saxlamaq mümkün olmadı. Sahələri yoxlayın.",
+      "confirmCancel": "Sorğu ləğv edilsin?",
+      "noAccess": "Sorğulara giriş yoxdur",
+      "title": "Aptekə sorğular",
+      "tabQueue": "Aptek növbəsi",
+      "tabDept": "Şöbə sorğuları",
+      "mineOnly": "Yalnız mənim",
+      "create": "Yeni sorğu",
+      "emptyQueue": "Açıq sorğular yoxdur.",
+      "emptyDept": "Sorğular yoxdur. İlkini yaradın.",
+      "dispense": "Vermək",
+      "submit": "Təqdim et",
+      "cancel": "Ləğv et",
+      "count": "Cəmi: {{count}}",
+      "editTitle": "Sorğunu redaktə et",
+      "createTitle": "Yeni sorğu",
+      "department": "Şöbə",
+      "selectDept": "— şöbə seçin —",
+      "priority": "Prioritet",
+      "items": "Mövqelər",
+      "changeDrug": "Dərmanı dəyişdir",
+      "searchDrug": "Dərman axtar…",
+      "packs": "Qablaşdırma",
+      "lineNote": "Mövqeyə qeyd",
+      "addLine": "Mövqe əlavə et",
+      "note": "Qeyd",
+      "saveDraft": "Qaralama kimi saxla",
+      "saveSubmit": "Saxla və təqdim et"
+    },
+    "suppliers": {
+      "loadError": "Tədarükçülər yüklənmədi",
+      "nameRequired": "Tədarükçünün adını göstərin",
+      "saveError": "Saxlanılmadı. Sahələri yoxlayın.",
+      "confirmArchive": "Tədarükçü aktiv siyahıdan çıxarılsın?",
+      "noAccess": "Tədarükçülərə giriş yoxdur",
+      "title": "Tədarükçülər",
+      "searchPlaceholder": "Ad, əlaqə və ya VÖEN üzrə axtarış…",
+      "showArchived": "Arxivi göstər",
+      "add": "Tədarükçü əlavə et",
+      "empty": "Siyahı boşdur. İlk tədarükçünü əlavə edin.",
+      "col": {
+        "name": "Adı",
+        "contact": "Əlaqə",
+        "phone": "Telefon",
+        "taxId": "VÖEN"
+      },
+      "count": "Cəmi təchizatçılar: {{count}}",
+      "editTitle": "Təchizatçını redaktə et",
+      "createTitle": "Yeni təchizatçı",
+      "field": {
+        "email": "E-poçt",
+        "address": "Ünvan",
+        "note": "Qeyd"
+      }
+    }
   }
 }

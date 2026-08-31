@@ -972,7 +972,29 @@
     "themePalette": "Palette",
     "themePresets": "Ready-made themes",
     "confirmDeleteArticle": "Delete the article “{{title}}”?",
-    "confirmDeletePage": "Delete the page “{{title}}”?"
+    "confirmDeletePage": "Delete the page “{{title}}”?",
+    "articleLinks": "Sources:",
+    "doctorsTitle": "Specialists",
+    "verified": "Verified Profile",
+    "experienceYears": "{{count}} years of experience",
+    "doctorPublications": "Doctor's Publications",
+    "kindScientific": "Scientific",
+    "kindOpinion": "Opinion",
+    "doctorReviews": "Reviews",
+    "commentsTitle": "Comments",
+    "commentsGateTitle": "Join the Discussion",
+    "commentsGateSubDoctor": "Log in to your DocPats account to leave a comment for the doctor.",
+    "login": "Log In",
+    "register": "Sign Up",
+    "backToDoctor": "Back to Doctor",
+    "readTime": "{{count}} min read",
+    "likeNeedsLogin": "Log in to rate the article",
+    "views": "{{count}} views",
+    "commentsGateSub": "Log in to your DocPats account to leave comments and rate articles.",
+    "categoryArticlesTitle": "Articles",
+    "categoryGalleryTitle": "Gallery",
+    "parentArticlesTitle": "All articles",
+    "parentNoArticles": "No articles in subcategories yet."
   },
   "layout": {
     "brandName": "DocPats Clinic",
@@ -1432,6 +1454,78 @@
         "deleteFailed": "Failed to delete",
         "loadFailed": "Could not load the records",
         "required": "Fill in this field"
+      }
+    },
+    "fhir": {
+      "hint": "FHIR R4 machine format for sending the record to another clinic, laboratory or registry. The file opens as code — it is not a document to read; for reading and printing use “Print record”.",
+      "exporting": "Preparing the export…",
+      "export": "Export for another system (FHIR)"
+    },
+    "card": {
+      "printing": "Preparing the record…",
+      "print": "Print record",
+      "hint": "A one-page summary: allergies, chronic conditions, current medication, recent encounters and abnormal lab values"
+    },
+    "allergies": {
+      "title": "Allergies",
+      "addButton": "+ Add allergy",
+      "emptyText": "No allergy records.",
+      "fields": {
+        "content": "Allergy description"
+      },
+      "placeholders": {
+        "content": "Example: penicillin — urticaria"
+      }
+    },
+    "chronic": {
+      "title": "Chronic Conditions",
+      "addButton": "+ Add condition",
+      "emptyText": "No chronic condition records.",
+      "fields": {
+        "content": "Condition description"
+      },
+      "placeholders": {
+        "content": "Example: hypertension stage II"
+      }
+    },
+    "operations": {
+      "title": "Past Surgeries",
+      "addButton": "+ Add surgery",
+      "emptyText": "No surgery records.",
+      "fields": {
+        "content": "Surgery description"
+      },
+      "placeholders": {
+        "content": "Example: appendectomy, 2015"
+      }
+    },
+    "family": {
+      "title": "Family History",
+      "addButton": "+ Add entry",
+      "emptyText": "No family history records.",
+      "fields": {
+        "relative": "Relative",
+        "diseaseName": "Condition",
+        "content": "Comment"
+      },
+      "placeholders": {
+        "relative": "Example: father",
+        "diseaseName": "Example: coronary artery disease",
+        "content": "Additional details (optional)"
+      }
+    },
+    "immunization": {
+      "title": "Immunizations",
+      "addButton": "+ Add immunization",
+      "emptyText": "No immunization records.",
+      "fields": {
+        "vaccineName": "Vaccine",
+        "dateGiven": "Date Given",
+        "content": "Comment"
+      },
+      "placeholders": {
+        "vaccineName": "Example: COVID-19 (Pfizer), 3rd dose",
+        "content": "Reaction, lot number, etc. (optional)"
       }
     }
   },
@@ -2398,7 +2492,54 @@
     "nav_gallery": "Gallery",
     "nav_reviews": "Reviews",
     "nav_faq": "Questions",
-    "nav_contacts": "Contacts"
+    "nav_contacts": "Contacts",
+    "loading": "Loading…",
+    "articleNotFoundTitle": "Article Not Found",
+    "articleNotFoundText": "The article may not be published yet or the URL is incorrect.",
+    "error": "Failed to load article. Please try again later.",
+    "notFoundTitle": "Clinic Not Found",
+    "notFoundText": "The page may not be published yet or the URL is incorrect.",
+    "pageNotFoundTitle": "Page Not Found",
+    "pageNotFoundText": "The page may not be published yet or the URL is incorrect.",
+    "doctorNotFoundTitle": "Doctor Not Found",
+    "doctorNotFoundText": "The doctor may no longer work at this clinic or the URL is incorrect.",
+    "doctorError": "Failed to load doctor profile. Please try again later.",
+    "publicationNotFoundTitle": "Publication Not Found",
+    "publicationNotFoundText": "The article may have been unpublished or the URL is incorrect.",
+    "publicationError": "Failed to load publication. Please try again later.",
+    "priceFree": "free",
+    "priceOnRequest": "on request",
+    "priceFrom": "from",
+    "otherServicesTitle": "Services",
+    "departmentsTitle": "Departments and Services",
+    "leadValidation": "Please provide your name and phone number.",
+    "leadError": "Failed to send. Please try again later.",
+    "contactsTitle": "Contacts",
+    "leadFormTitle": "Submit a request — we will contact you",
+    "leadSuccess": "Request submitted. We will contact you soon.",
+    "leadSuccessMore": "Submit another request",
+    "leadCallback": "Call me back",
+    "leadMessage": "Send a message",
+    "leadName": "Your name",
+    "leadPhone": "Phone",
+    "leadMsg": "Your message",
+    "leadSending": "Sending…",
+    "leadSubmit": "Submit",
+    "ctaTitle": "Book an appointment",
+    "ctaSubtitle": "Call reception — we'll find a convenient time",
+    "verifiedDoctor": "Verified doctor",
+    "specialistsTitle": "Specialists",
+    "doctorsAll": "All",
+    "faqTitle": "Questions and Answers",
+    "footerSections": "Sections",
+    "galleryTitle": "Gallery",
+    "verified": "Verified",
+    "navAllDoctors": "All doctors →",
+    "navAllArticles": "All articles →",
+    "priceListTitle": "Services and Prices",
+    "minShort": "min",
+    "priceEmpty": "Price list is being updated.",
+    "aboutTitle": "About the Clinic"
   },
   "departments": {
     "archive": "Archive",
@@ -2542,7 +2683,19 @@
     "noPermission": "No permission to book patients",
     "noSlots": "No free slots on this day. The doctor may not be working, or the day is fully booked.",
     "reasonPlaceholder": "e.g. follow-up, consultation",
-    "subtitle": "Pick a doctor and a free slot, then find the patient."
+    "subtitle": "Pick a doctor and a free slot, then find the patient.",
+    "slotTaken": "This time slot was just taken. Please choose another.",
+    "tooMany": "Too many requests in a row. Please try again later.",
+    "failed": "Failed to submit request. Please try again later.",
+    "doneTitle": "Request submitted",
+    "doneText": "The clinic will contact you to confirm the appointment. The selected time is reserved only after confirmation.",
+    "note": "Choose a convenient time and leave your contact information. This is a request: the clinic will call back and confirm the appointment.",
+    "dayEmpty": "No appointments available on this day",
+    "name": "Your name",
+    "phone": "Phone",
+    "message": "Chief complaint (optional)",
+    "sending": "Sending…",
+    "submit": "Submit request"
   },
   "requisites": {
     "title": "Clinic details",
@@ -2562,5 +2715,169 @@
     "saved": "Saved",
     "saveFailed": "Could not save",
     "loadFailed": "Could not load clinic details"
+  },
+  "consentRequestModal": {
+    "subtitleFor": "Patient: {{name}}",
+    "groups": {
+      "appointments": {
+        "title": "Appointments and Diagnoses",
+        "desc": "Visit history, complaints, diagnoses, recommendations"
+      },
+      "healthProfile": {
+        "title": "Health Profile",
+        "desc": "Allergies, chronic conditions, surgeries, immunizations, family history"
+      },
+      "imaging": {
+        "title": "Imaging and Studies",
+        "desc": "CT, MRI, ultrasound, X-ray"
+      }
+    }
+  },
+  "pharmacy": {
+    "catalog": {
+      "loadError": "Failed to load catalog",
+      "confirmArchive": "Remove drug from active catalog?",
+      "noAccess": "No access to pharmacy catalog",
+      "title": "Drug Catalog",
+      "searchPlaceholder": "Search by name, generic name, or code…",
+      "showArchived": "Show archive",
+      "add": "Add Drug",
+      "empty": "Catalog is empty. Add the first drug.",
+      "count": "Total items: {{count}}"
+    },
+    "form": {
+      "nameRequired": "Enter drug name",
+      "saveError": "Failed to save. Check fields.",
+      "editTitle": "Edit Drug",
+      "createTitle": "New Drug",
+      "inn": "Generic Name / Active Ingredient",
+      "baseUnit": "Dispensing Unit",
+      "packUnit": "Purchase Unit",
+      "unitsPerPack": "Units per Package",
+      "minStock": "Min. Stock (units)",
+      "manufacturer": "Manufacturer",
+      "sku": "Code / Barcode",
+      "isControlled": "Controlled Substance Tracking",
+      "note": "Note"
+    },
+    "col": {
+      "name": "Name",
+      "form": "Form",
+      "strength": "Strength",
+      "pack": "Package",
+      "category": "Category"
+    },
+    "badge": {
+      "controlled": "CTRL",
+      "min": "min."
+    },
+    "action": {
+      "archive": "Archive",
+      "restore": "Restore"
+    },
+    "dispense": {
+      "genericError": "Failed to dispense.",
+      "reqLoadError": "Failed to load request",
+      "lineOk": "Item dispensed",
+      "deptOk": "Dispensed to department",
+      "noAccess": "No dispensing privileges",
+      "title": "Dispense from Stock",
+      "tabReq": "By Request",
+      "tabDept": "To Department",
+      "tabPatient": "To Patient",
+      "noReq": "Open a request from the pharmacy queue to dispense it.",
+      "reqStatus": "Status",
+      "remaining": "Remaining to Dispense",
+      "fulfilled": "Dispensed",
+      "packs": "packs",
+      "give": "Dispense",
+      "department": "Department",
+      "selectDept": "— select department —",
+      "drug": "Drug",
+      "change": "Change",
+      "searchDrug": "Find drug…",
+      "patientSoon": "Dispense to patient will be available in the next update.",
+      "patientNoAccess": "Dispense to patient is available to pharmacist (requires prescription access)."
+    },
+    "reports": {
+      "loadError": "Failed to load report",
+      "pdfError": "Failed to generate PDF",
+      "noAccess": "No access to pharmacy reports",
+      "title": "Dispensing Reports",
+      "pdf": "Download PDF",
+      "kpiDispenses": "Total Dispenses",
+      "kpiQty": "Units Dispensed",
+      "kpiControlled": "Of Which Controlled",
+      "dynamics": "Dispensing Dynamics",
+      "noData": "No data for the period",
+      "qty": "Units",
+      "count": "Dispenses",
+      "byTarget": "By Dispensing Channel",
+      "byDepartment": "By Department",
+      "topDrugs": "Top Drugs",
+      "drug": "Drug",
+      "controlled": "Controlled Substance Accounting",
+      "controlledTotals": "Total Controlled: {{count}} dispenses, {{qty}} units",
+      "noControlled": "No controlled substance dispenses during the period"
+    },
+    "req": {
+      "loadError": "Failed to load requests",
+      "depRequired": "Select department",
+      "itemsRequired": "Add at least one item",
+      "saveError": "Failed to save. Check fields.",
+      "confirmCancel": "Cancel request?",
+      "noAccess": "No access to requests",
+      "title": "Pharmacy Requests",
+      "tabQueue": "Pharmacy Queue",
+      "tabDept": "Department Requests",
+      "mineOnly": "Mine only",
+      "create": "New Request",
+      "emptyQueue": "No open requests.",
+      "emptyDept": "No requests. Create the first one.",
+      "dispense": "Dispense",
+      "submit": "Submit",
+      "cancel": "Cancel",
+      "count": "Total: {{count}}",
+      "editTitle": "Edit Request",
+      "createTitle": "New Request",
+      "department": "Department",
+      "selectDept": "— select department —",
+      "priority": "Priority",
+      "items": "Items",
+      "changeDrug": "Change Drug",
+      "searchDrug": "Search drug…",
+      "packs": "Packs",
+      "lineNote": "Line note",
+      "addLine": "Add Line",
+      "note": "Note",
+      "saveDraft": "Save Draft",
+      "saveSubmit": "Save and Submit"
+    },
+    "suppliers": {
+      "loadError": "Failed to load suppliers",
+      "nameRequired": "Specify supplier name",
+      "saveError": "Failed to save. Check the fields.",
+      "confirmArchive": "Remove supplier from active list?",
+      "noAccess": "No access to suppliers",
+      "title": "Suppliers",
+      "searchPlaceholder": "Search by name, contact or TIN…",
+      "showArchived": "Show Archive",
+      "add": "Add Supplier",
+      "empty": "List is empty. Add the first supplier.",
+      "col": {
+        "name": "Name",
+        "contact": "Contact",
+        "phone": "Phone",
+        "taxId": "Tax ID"
+      },
+      "count": "Total suppliers: {{count}}",
+      "editTitle": "Edit Supplier",
+      "createTitle": "New Supplier",
+      "field": {
+        "email": "Email",
+        "address": "Address",
+        "note": "Note"
+      }
+    }
   }
 }

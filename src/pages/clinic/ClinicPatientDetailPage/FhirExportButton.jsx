@@ -13,9 +13,11 @@
 // «Иванова-карта.json» разглашает факт обращения ещё до открытия файла.
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "../../../axios";
 
 export default function FhirExportButton({ patient }) {
+  const { t } = useTranslation("clinic");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
 
@@ -61,11 +63,16 @@ export default function FhirExportButton({ patient }) {
         className="edu-btn edu-btn--ghost"
         disabled={busy}
         onClick={download}
-        title="Машинный формат FHIR R4 для передачи карты в другую клинику, лабораторию или реестр. Файл открывается кодом — это не документ для чтения; для чтения и печати есть «Печать карты»."
+        title={t("medical.fhir.hint", {
+          defaultValue:
+            "Машинный формат FHIR R4 для передачи карты в другую клинику, лабораторию или реестр. Файл открывается кодом — это не документ для чтения; для чтения и печати есть «Печать карты».",
+        })}
       >
         {busy
-          ? "Готовим выгрузку…"
-          : "Выгрузить для другой системы (FHIR)"}
+          ? t("medical.fhir.exporting", { defaultValue: "Готовим выгрузку…" })
+          : t("medical.fhir.export", {
+              defaultValue: "Выгрузить для другой системы (FHIR)",
+            })}
       </button>
       {error && <span className="med-export__error">{error}</span>}
     </div>

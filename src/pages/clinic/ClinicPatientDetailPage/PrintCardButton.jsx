@@ -13,9 +13,11 @@
 // показался сообщением, а не страницей с JSON.
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "../../../axios";
 
 export default function PrintCardButton({ patient }) {
+  const { t, i18n } = useTranslation("clinic");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);
 
@@ -27,7 +29,10 @@ export default function PrintCardButton({ patient }) {
     setError(null);
     try {
       const res = await axios.get(
-        `/api/v1/clinic/medical/patients/${patientId}/card.pdf`,
+        // Язык бланка — тот, на котором врач сейчас работает. Без этого
+        // сервер печатал по-русски всегда: язык он берёт из параметра, а
+        // параметра никто не передавал.
+        `/api/v1/clinic/medical/patients/${patientId}/card.pdf?lang=${i18n.language || "ru"}`,
         { responseType: "blob" },
       );
       const url = URL.createObjectURL(
@@ -65,9 +70,14 @@ export default function PrintCardButton({ patient }) {
         className="edu-btn edu-btn--ghost"
         disabled={busy}
         onClick={openCard}
-        title="Выписка на одном листе: аллергии, хронические, что принимает сейчас, последние приёмы и отклонения в анализах"
+        title={t("medical.card.hint", {
+          defaultValue:
+            "Выписка на одном листе: аллергии, хронические, что принимает сейчас, последние приёмы и отклонения в анализах",
+        })}
       >
-        {busy ? "Собираем карту…" : "Печать карты"}
+        {busy
+          ? t("medical.card.printing", { defaultValue: "Собираем карту…" })
+          : t("medical.card.print", { defaultValue: "Печать карты" })}
       </button>
       {error && <span className="med-export__error">{error}</span>}
     </div>

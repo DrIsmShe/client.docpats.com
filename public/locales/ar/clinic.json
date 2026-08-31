@@ -972,7 +972,29 @@
     "themePalette": "لوحة الألوان",
     "themePresets": "سمات جاهزة",
     "confirmDeleteArticle": "حذف المقالة «{{title}}»؟",
-    "confirmDeletePage": "حذف الصفحة «{{title}}»؟"
+    "confirmDeletePage": "حذف الصفحة «{{title}}»؟",
+    "articleLinks": "المصادر:",
+    "doctorsTitle": "الأطباء",
+    "verified": "الملف الشخصي موثق",
+    "experienceYears": "الخبرة {{count}} سنة",
+    "doctorPublications": "منشورات الطبيب",
+    "kindScientific": "علمية",
+    "kindOpinion": "رأي",
+    "doctorReviews": "التقييمات",
+    "commentsTitle": "التعليقات",
+    "commentsGateTitle": "انضم إلى النقاش",
+    "commentsGateSubDoctor": "سجل الدخول إلى حساب DocPats لترك تعليق للطبيب.",
+    "login": "تسجيل الدخول",
+    "register": "إنشاء حساب",
+    "backToDoctor": "العودة إلى الطبيب",
+    "readTime": "{{count}} دقيقة قراءة",
+    "likeNeedsLogin": "سجل الدخول لتقييم المقالة",
+    "views": "{{count}} مشاهدة",
+    "commentsGateSub": "سجل الدخول إلى حساب DocPats لترك التعليقات وتقييم المقالات.",
+    "categoryArticlesTitle": "المقالات",
+    "categoryGalleryTitle": "المعرض",
+    "parentArticlesTitle": "جميع المقالات",
+    "parentNoArticles": "لا توجد مقالات في الفئات الفرعية بعد."
   },
   "layout": {
     "brandName": "عيادة DocPats",
@@ -1432,6 +1454,78 @@
         "deleteFailed": "تعذر الحذف",
         "loadFailed": "تعذّر تحميل السجلات",
         "required": "املأ هذا الحقل"
+      }
+    },
+    "fhir": {
+      "hint": "صيغة FHIR R4 الآلية لإرسال البطاقة إلى عيادة أو مختبر أو سجل آخر. يُفتح الملف كشيفرة — وليس مستنداً للقراءة؛ للقراءة والطباعة استخدم «طباعة البطاقة».",
+      "exporting": "جارٍ تجهيز التصدير…",
+      "export": "تصدير إلى نظام آخر (FHIR)"
+    },
+    "card": {
+      "printing": "جارٍ تجهيز البطاقة…",
+      "print": "طباعة البطاقة",
+      "hint": "ملخص في صفحة واحدة: الحساسيات والأمراض المزمنة والأدوية الحالية والزيارات الأخيرة والقيم المخبرية الشاذة"
+    },
+    "allergies": {
+      "title": "الحساسية",
+      "addButton": "+ إضافة حساسية",
+      "emptyText": "لا توجد سجلات للحساسية.",
+      "fields": {
+        "content": "وصف الحساسية"
+      },
+      "placeholders": {
+        "content": "مثال: البنسلين — شرى"
+      }
+    },
+    "chronic": {
+      "title": "الأمراض المزمنة",
+      "addButton": "+ إضافة مرض",
+      "emptyText": "لا توجد سجلات للأمراض المزمنة.",
+      "fields": {
+        "content": "وصف المرض"
+      },
+      "placeholders": {
+        "content": "مثال: ارتفاع ضغط الدم الدرجة الثانية"
+      }
+    },
+    "operations": {
+      "title": "العمليات الجراحية السابقة",
+      "addButton": "+ إضافة عملية",
+      "emptyText": "لا توجد سجلات للعمليات الجراحية.",
+      "fields": {
+        "content": "وصف العملية"
+      },
+      "placeholders": {
+        "content": "مثال: استئصال الزائدة الدودية، 2015"
+      }
+    },
+    "family": {
+      "title": "التاريخ العائلي",
+      "addButton": "+ إضافة سجل",
+      "emptyText": "لا توجد سجلات للتاريخ العائلي.",
+      "fields": {
+        "relative": "القريب",
+        "diseaseName": "المرض",
+        "content": "تعليق"
+      },
+      "placeholders": {
+        "relative": "مثال: الأب",
+        "diseaseName": "مثال: مرض القلب الإقفاري",
+        "content": "تفاصيل إضافية (اختياري)"
+      }
+    },
+    "immunization": {
+      "title": "التطعيمات",
+      "addButton": "+ إضافة تطعيم",
+      "emptyText": "لا توجد سجلات للتطعيمات.",
+      "fields": {
+        "vaccineName": "اللقاح",
+        "dateGiven": "تاريخ الإعطاء",
+        "content": "تعليق"
+      },
+      "placeholders": {
+        "vaccineName": "مثال: COVID-19 (Pfizer)، الجرعة الثالثة",
+        "content": "التفاعل، السلسلة وغيرها (اختياري)"
       }
     }
   },
@@ -2404,7 +2498,54 @@
     "nav_gallery": "المعرض",
     "nav_reviews": "المراجعات",
     "nav_faq": "الأسئلة",
-    "nav_contacts": "جهات الاتصال"
+    "nav_contacts": "جهات الاتصال",
+    "loading": "جارٍ التحميل…",
+    "articleNotFoundTitle": "المقالة غير موجودة",
+    "articleNotFoundText": "ربما لم يتم نشر المقالة بعد أو تم إدخال العنوان بشكل غير صحيح.",
+    "error": "تعذر تحميل المقالة. حاول لاحقاً.",
+    "notFoundTitle": "العيادة غير موجودة",
+    "notFoundText": "ربما لم يتم نشر الصفحة بعد أو تم إدخال العنوان بشكل غير صحيح.",
+    "pageNotFoundTitle": "الصفحة غير موجودة",
+    "pageNotFoundText": "ربما لم يتم نشر الصفحة بعد أو تم إدخال العنوان بشكل غير صحيح.",
+    "doctorNotFoundTitle": "الطبيب غير موجود",
+    "doctorNotFoundText": "ربما لم يعد الطبيب يعمل في العيادة أو تم إدخال العنوان بشكل غير صحيح.",
+    "doctorError": "تعذر تحميل ملف الطبيب الشخصي. حاول لاحقاً.",
+    "publicationNotFoundTitle": "المنشور غير موجود",
+    "publicationNotFoundText": "ربما تم إلغاء نشر المقالة أو تم إدخال العنوان بشكل غير صحيح.",
+    "publicationError": "تعذر تحميل المنشور. حاول لاحقاً.",
+    "priceFree": "مجاناً",
+    "priceOnRequest": "حسب الطلب",
+    "priceFrom": "من",
+    "otherServicesTitle": "الخدمات",
+    "departmentsTitle": "الأقسام والخدمات",
+    "leadValidation": "يرجى إدخال الاسم ورقم الهاتف.",
+    "leadError": "فشل الإرسال. يرجى المحاولة لاحقاً.",
+    "contactsTitle": "جهات الاتصال",
+    "leadFormTitle": "اترك طلباً - سنتواصل معك",
+    "leadSuccess": "تم إرسال الطلب. سنتواصل معك قريباً.",
+    "leadSuccessMore": "ترك طلب آخر",
+    "leadCallback": "اتصل بي",
+    "leadMessage": "كتابة رسالة",
+    "leadName": "اسمك",
+    "leadPhone": "الهاتف",
+    "leadMsg": "رسالتك",
+    "leadSending": "جارٍ الإرسال…",
+    "leadSubmit": "إرسال",
+    "ctaTitle": "احجز موعداً",
+    "ctaSubtitle": "اتصل بالاستقبال - سنختار لك الوقت المناسب",
+    "verifiedDoctor": "طبيب موثق",
+    "specialistsTitle": "الأخصائيون",
+    "doctorsAll": "الكل",
+    "faqTitle": "الأسئلة والأجوبة",
+    "footerSections": "الأقسام",
+    "galleryTitle": "المعرض",
+    "verified": "موثقة",
+    "navAllDoctors": "جميع الأطباء ←",
+    "navAllArticles": "جميع المقالات ←",
+    "priceListTitle": "الخدمات والأسعار",
+    "minShort": "دقيقة",
+    "priceEmpty": "قائمة الأسعار قيد التعبئة.",
+    "aboutTitle": "عن العيادة"
   },
   "departments": {
     "archive": "أرشفة",
@@ -2548,7 +2689,19 @@
     "noPermission": "لا صلاحية لحجز مواعيد للمرضى",
     "noSlots": "لا توجد أوقات متاحة في هذا اليوم. قد لا يعمل الطبيب أو أن اليوم محجوز بالكامل.",
     "reasonPlaceholder": "مثال: مراجعة، استشارة",
-    "subtitle": "اختر طبيبًا ووقتًا متاحًا، ثم ابحث عن المريض."
+    "subtitle": "اختر طبيبًا ووقتًا متاحًا، ثم ابحث عن المريض.",
+    "slotTaken": "تم حجز هذا الموعد للتو. يرجى اختيار موعد آخر.",
+    "tooMany": "عدد كبير جداً من الطلبات المتتالية. يرجى المحاولة لاحقاً.",
+    "failed": "فشل إرسال الطلب. يرجى المحاولة لاحقاً.",
+    "doneTitle": "تم إرسال الطلب",
+    "doneText": "ستتواصل معك العيادة لتأكيد الموعد. الوقت المحدد يُثبت فقط بعد التأكيد.",
+    "note": "اختر الوقت المناسب واترك بياناتك. هذا طلب حجز: ستتصل بك العيادة لتأكيد الموعد.",
+    "dayEmpty": "لا توجد مواعيد متاحة في هذا اليوم",
+    "name": "اسمك",
+    "phone": "رقم الهاتف",
+    "message": "ما الذي يزعجك (اختياري)",
+    "sending": "جارٍ الإرسال…",
+    "submit": "إرسال الطلب"
   },
   "requisites": {
     "title": "بيانات العيادة",
@@ -2568,5 +2721,169 @@
     "saved": "تم الحفظ",
     "saveFailed": "تعذر الحفظ",
     "loadFailed": "تعذر تحميل بيانات العيادة"
+  },
+  "consentRequestModal": {
+    "subtitleFor": "المريض: {{name}}",
+    "groups": {
+      "appointments": {
+        "title": "المواعيد والتشخيصات",
+        "desc": "سجل الزيارات، الشكاوى، التشخيصات، التوصيات"
+      },
+      "healthProfile": {
+        "title": "الملف الصحي",
+        "desc": "الحساسية، الأمراض المزمنة، العمليات الجراحية، التطعيمات، التاريخ العائلي"
+      },
+      "imaging": {
+        "title": "الصور والفحوصات",
+        "desc": "التصوير المقطعي، الرنين المغناطيسي، الموجات فوق الصوتية، الأشعة السينية"
+      }
+    }
+  },
+  "pharmacy": {
+    "catalog": {
+      "loadError": "فشل تحميل الدليل",
+      "confirmArchive": "إزالة الدواء من الدليل النشط؟",
+      "noAccess": "لا يوجد وصول إلى دليل الصيدلية",
+      "title": "دليل الأدوية",
+      "searchPlaceholder": "البحث بالاسم، المادة الفعالة أو الرمز…",
+      "showArchived": "عرض الأرشيف",
+      "add": "إضافة دواء",
+      "empty": "الدليل فارغ. أضف الدواء الأول.",
+      "count": "إجمالي الأصناف: {{count}}"
+    },
+    "form": {
+      "nameRequired": "حدد اسم الدواء",
+      "saveError": "فشل الحفظ. تحقق من الحقول.",
+      "editTitle": "تعديل الدواء",
+      "createTitle": "دواء جديد",
+      "inn": "المادة الفعالة / الاسم العلمي",
+      "baseUnit": "وحدة الصرف",
+      "packUnit": "وحدة الشراء",
+      "unitsPerPack": "الوحدات في العبوة",
+      "minStock": "الحد الأدنى للمخزون (وحدة)",
+      "manufacturer": "الشركة المصنعة",
+      "sku": "الرمز / الباركود",
+      "isControlled": "محكم الرقابة الكمية والنوعية",
+      "note": "ملاحظة"
+    },
+    "col": {
+      "name": "الاسم",
+      "form": "الشكل الصيدلاني",
+      "strength": "الجرعة",
+      "pack": "العبوة",
+      "category": "الفئة"
+    },
+    "badge": {
+      "controlled": "محكم الرقابة",
+      "min": "حد أدنى"
+    },
+    "action": {
+      "archive": "إلى الأرشيف",
+      "restore": "استعادة"
+    },
+    "dispense": {
+      "genericError": "فشل تنفيذ الصرف.",
+      "reqLoadError": "فشل تحميل الطلب",
+      "lineOk": "تم صرف الصنف",
+      "deptOk": "تم الصرف إلى القسم",
+      "noAccess": "لا توجد صلاحيات للصرف من المستودع",
+      "title": "الصرف من المخزن",
+      "tabReq": "حسب الطلب",
+      "tabDept": "إلى القسم",
+      "tabPatient": "للمريض",
+      "noReq": "افتح طلباً من قائمة انتظار الصيدلية للصرف بموجبه.",
+      "reqStatus": "الحالة",
+      "remaining": "الباقي للصرف",
+      "fulfilled": "تم الصرف",
+      "packs": "عبوة",
+      "give": "صرف",
+      "department": "القسم",
+      "selectDept": "— اختر القسم —",
+      "drug": "الدواء",
+      "change": "تغيير",
+      "searchDrug": "البحث عن دواء…",
+      "patientSoon": "سيتوفر الصرف للمريض في التحديث التالي.",
+      "patientNoAccess": "الصرف للمريض متاح للصيدلي (يتطلب صلاحية الوصفات الطبية)."
+    },
+    "reports": {
+      "loadError": "فشل تحميل التقرير",
+      "pdfError": "فشل إنشاء ملف PDF",
+      "noAccess": "لا يوجد وصول إلى تقارير الصيدلية",
+      "title": "تقارير الصرف",
+      "pdf": "تحميل PDF",
+      "kpiDispenses": "إجمالي الصرفات",
+      "kpiQty": "الوحدات المصروفة",
+      "kpiControlled": "منها الأدوية الخاضعة للرقابة",
+      "dynamics": "ديناميكية الصرف",
+      "noData": "لا توجد بيانات للفترة",
+      "qty": "الوحدات",
+      "count": "الصرفات",
+      "byTarget": "حسب قنوات الصرف",
+      "byDepartment": "حسب الأقسام",
+      "topDrugs": "أكثر الأدوية",
+      "drug": "الدواء",
+      "controlled": "المحاسبة الكمية والعينية للأدوية الخاضعة للرقابة",
+      "controlledTotals": "إجمالي الأدوية الخاضعة للرقابة: {{count}} صرفة، {{qty}} وحدة",
+      "noControlled": "لم يكن هناك صرف لأدوية خاضعة للرقابة خلال الفترة"
+    },
+    "req": {
+      "loadError": "فشل تحميل الطلبات",
+      "depRequired": "اختر القسم",
+      "itemsRequired": "أضف عنصراً واحداً على الأقل",
+      "saveError": "فشل الحفظ. تحقق من الحقول.",
+      "confirmCancel": "إلغاء الطلب؟",
+      "noAccess": "لا يوجد وصول إلى الطلبات",
+      "title": "طلبات الصيدلية",
+      "tabQueue": "قائمة انتظار الصيدلية",
+      "tabDept": "طلبات الأقسام",
+      "mineOnly": "طلباتي فقط",
+      "create": "طلب جديد",
+      "emptyQueue": "لا توجد طلبات مفتوحة.",
+      "emptyDept": "لا توجد طلبات. أنشئ الأول.",
+      "dispense": "صرف",
+      "submit": "إرسال",
+      "cancel": "إلغاء",
+      "count": "الإجمالي: {{count}}",
+      "editTitle": "تعديل الطلب",
+      "createTitle": "طلب جديد",
+      "department": "القسم",
+      "selectDept": "— اختر القسم —",
+      "priority": "الأولوية",
+      "items": "الأصناف",
+      "changeDrug": "تغيير الدواء",
+      "searchDrug": "البحث عن دواء…",
+      "packs": "العبوات",
+      "lineNote": "ملاحظة على الصنف",
+      "addLine": "إضافة صنف",
+      "note": "ملاحظة",
+      "saveDraft": "حفظ كمسودة",
+      "saveSubmit": "حفظ وإرسال"
+    },
+    "suppliers": {
+      "loadError": "فشل تحميل الموردين",
+      "nameRequired": "حدد اسم المورد",
+      "saveError": "فشل الحفظ. تحقق من الحقول.",
+      "confirmArchive": "إزالة المورد من القائمة النشطة؟",
+      "noAccess": "لا يوجد وصول إلى الموردين",
+      "title": "الموردون",
+      "searchPlaceholder": "البحث بالاسم أو جهة الاتصال أو الرقم الضريبي…",
+      "showArchived": "عرض الأرشيف",
+      "add": "إضافة مورد",
+      "empty": "القائمة فارغة. أضف أول مورد.",
+      "col": {
+        "name": "الاسم",
+        "contact": "جهة الاتصال",
+        "phone": "الهاتف",
+        "taxId": "الرقم الضريبي"
+      },
+      "count": "إجمالي الموردين: {{count}}",
+      "editTitle": "تعديل المورد",
+      "createTitle": "مورد جديد",
+      "field": {
+        "email": "البريد الإلكتروني",
+        "address": "العنوان",
+        "note": "ملاحظة"
+      }
+    }
   }
 }

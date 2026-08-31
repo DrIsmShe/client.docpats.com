@@ -84,7 +84,19 @@ for (const ns of NAMESPACES) {
     }
 
     const data = flatten(read(lang, ns));
-    const missing = referenceKeys.filter((k) => !(k in data));
+    // Формы множественного числа сравнивать между языками нельзя.
+    //
+    // В русском их три — _one / _few / _many («1 таблетка», «2 таблетки»,
+    // «5 таблеток»), в английском, турецком и азербайджанском две — _one и
+    // _other. Отсутствие русских _few и _many в других языках это не дыра,
+    // а правило самого языка; i18next выбирает нужную форму сам.
+    //
+    // Без этой оговорки проверка выдавала 136 ложных находок и заглушала
+    // собой настоящие расхождения — а ради них она и написана.
+    const PLURAL_ONLY_IN_RU = /_(few|many)$/;
+    const missing = referenceKeys
+      .filter((k) => !(k in data))
+      .filter((k) => !(lang !== "ru" && PLURAL_ONLY_IN_RU.test(k)));
     const extra = Object.keys(data).filter((k) => !(k in reference));
     const empty = Object.entries(data)
       .filter(([, v]) => !String(v).trim())
