@@ -32,9 +32,12 @@ import "./clinicExamTemplatesPage.css";
 
 // Две области применения заготовок. Разделены наглухо и на сервере: блок
 // «жалобы» не может оказаться в протоколе КТ, и наоборот.
+// Ключ перевода, а не готовая подпись: список вычисляется один раз при
+// загрузке модуля, где переводчика ещё нет, а подпись нужна на языке того,
+// кто смотрит.
 const SCOPES = [
-  { key: "examination", label: "Обследования", blocks: TEMPLATE_KINDS },
-  { key: "encounter", label: "История болезни", blocks: ENCOUNTER_BLOCKS },
+  { key: "examination", labelKey: "examTemplates.tabExams", blocks: TEMPLATE_KINDS },
+  { key: "encounter", labelKey: "examTemplates.tabHistory", blocks: ENCOUNTER_BLOCKS },
 ];
 
 export default function ClinicExamTemplatesPage() {
@@ -85,7 +88,7 @@ export default function ClinicExamTemplatesPage() {
       );
     } catch (err) {
       setError(
-        err.response?.data?.error || "Не удалось загрузить шаблоны",
+        err.response?.data?.error || t("examTemplates.loadFailed", { defaultValue: "Не удалось загрузить шаблоны" }),
       );
     } finally {
       setLoading(false);
@@ -130,7 +133,7 @@ export default function ClinicExamTemplatesPage() {
       await deleteExaminationTemplate(tpl._id);
       load();
     } catch (err) {
-      setError(err.response?.data?.error || "Не удалось удалить шаблон");
+      setError(err.response?.data?.error || t("examTemplates.deleteFailed", { defaultValue: "Не удалось удалить шаблон" }));
     }
   }
 
@@ -168,7 +171,7 @@ export default function ClinicExamTemplatesPage() {
             className={`exam-tpl-scope${scope === s.key ? " is-active" : ""}`}
             onClick={() => switchScope(s.key)}
           >
-            {s.label}
+            {t(s.labelKey)}
           </button>
         ))}
       </nav>
@@ -193,7 +196,7 @@ export default function ClinicExamTemplatesPage() {
         )}
 
         <label className="exam-tpl-filter">
-          <span>{isEncounter ? "Раздел записи" : "Блок протокола"}</span>
+          <span>{isEncounter ? t("examTemplates.section", { defaultValue: "Раздел записи" }) : t("examTemplates.block", { defaultValue: "Блок протокола" })}</span>
           <select value={kind} onChange={(e) => setKind(e.target.value)}>
             {currentScope.blocks.map((k) => (
               <option key={k.key} value={k.key}>
@@ -224,7 +227,7 @@ export default function ClinicExamTemplatesPage() {
             ? isEncounter
               ? `В разделе «${kindLabel}» шаблонов пока нет.`
               : `Для «${modalityLabel(modality)}» в блоке «${kindLabel}» шаблонов пока нет.`
-            : "Ничего не найдено"}
+            : t("examTemplates.nothingFound", { defaultValue: "Ничего не найдено" })}
         </div>
       ) : (
         <ul className="exam-tpl-list">
@@ -264,7 +267,7 @@ export default function ClinicExamTemplatesPage() {
       {editing && (
         <ExamTemplateFormModal
           template={editing._id ? editing : null}
-          modalityLabel={isEncounter ? "История болезни" : modalityLabel(modality)}
+          modalityLabel={isEncounter ? t("examTemplates.tabHistory", { defaultValue: "История болезни" }) : modalityLabel(modality)}
           kindLabel={kindLabel}
           onSave={handleSave}
           onClose={() => setEditing(null)}

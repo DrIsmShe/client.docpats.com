@@ -103,11 +103,27 @@ export default function ClinicAnalyticsPage() {
           navigate(loginPath, { replace: true });
           return;
         }
-        setError(err.response?.data?.error || err.message || "Failed to load analytics");
+        // Отказ по тарифу приходит с признаком, а не только текстом:
+        // серверные сообщения не переводятся, и на азербайджанской
+        // странице выскакивала русская фраза. По признаку показываем свой
+        // перевод, текст сервера остаётся запасным.
+        const reason = err.response?.data?.details?.reason;
+        setError(
+          reason === "feature_not_in_plan"
+            ? t("analytics.notInPlan", {
+                defaultValue:
+                  "Аналитика по клинике входит в тарифы Business и Enterprise",
+              })
+            : err.response?.data?.error ||
+              err.message ||
+              t("analytics.loadFailed", {
+                defaultValue: "Не удалось загрузить аналитику",
+              }),
+        );
         setLoading(false);
       }
     },
-    [navigate, loginPath],
+    [navigate, loginPath, t],
   );
 
   useEffect(() => {

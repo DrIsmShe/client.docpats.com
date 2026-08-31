@@ -26,7 +26,7 @@ export default function ExamTemplateFormModal({
   async function handleSubmit(e) {
     e.preventDefault();
     if (!title.trim()) {
-      setError("Заголовок обязателен");
+      setError(t("examTemplates.titleRequired", { defaultValue: "Заголовок обязателен" }));
       return;
     }
     setSaving(true);
@@ -34,7 +34,7 @@ export default function ExamTemplateFormModal({
     try {
       await onSave({ title: title.trim(), body });
     } catch (err) {
-      setError(err.response?.data?.error || "Не удалось сохранить шаблон");
+      setError(err.response?.data?.error || t("examTemplates.saveFailed", { defaultValue: "Не удалось сохранить шаблон" }));
       setSaving(false);
     }
   }
@@ -45,7 +45,7 @@ export default function ExamTemplateFormModal({
         <form onSubmit={handleSubmit}>
           <div className="med-modal-head">
             <h3>
-              {template ? "Изменить шаблон" : "Новый шаблон"}
+              {template ? t("examTemplates.editTitle", { defaultValue: "Изменить шаблон" }) : t("examTemplates.newTitle", { defaultValue: "Новый шаблон" })}
               <span className="exam-tpl-modal-context">
                 {modalityLabel} · {kindLabel}
               </span>
@@ -118,7 +118,7 @@ export default function ExamTemplateFormModal({
               className="staff-page-btn-primary"
               disabled={saving}
             >
-              {saving ? "Сохранение…" : "Сохранить"}
+              {saving ? t("common.submitting", { defaultValue: "Сохранение…" }) : t("common.save", { defaultValue: "Сохранить" })}
             </button>
           </div>
         </form>

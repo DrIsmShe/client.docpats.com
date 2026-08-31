@@ -196,7 +196,21 @@ for (const file of walkFiles(SRC)) {
         node.name?.type === "JSXNamespacedName"
           ? `${node.name.namespace.name}:${node.name.name.name}`
           : node.name?.name;
-      if (!TEXT_ATTRS.has(name)) return;
+      // Белого списка мало.
+      //
+      // Подписи уезжают и в собственные пропсы компонентов: empty=,
+      // emptyText=, heading=. Перечислить их все нельзя — их придумывают
+      // на ходу, — и именно так проверку прошли «Прививки» и «Не
+      // зафиксированы» в сводке карты пациента.
+      //
+      // Поэтому второе правило, по содержимому: кириллица в значении
+      // атрибута это всегда текст для человека. В className, id или
+      // data-* её не пишут, так что ложных срабатываний оно не даёт.
+      const looksHuman =
+        TEXT_ATTRS.has(name) ||
+        (typeof node.value.value === "string" &&
+          /[А-Яа-яЁё]/.test(node.value.value));
+      if (!looksHuman) return;
       if (node.value.type === "StringLiteral") text = node.value.value;
       // placeholder={"..."} — та же строка, просто в скобках.
       else if (

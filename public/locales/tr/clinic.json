@@ -2450,7 +2450,17 @@
     "toClosed": "Kapat",
     "toInProgress": "İşleme al",
     "toNew": "Yenilere geri al",
-    "updateFailed": "Durum güncellenemedi"
+    "updateFailed": "Durum güncellenemedi",
+    "status": {
+      "new": "Yeni",
+      "inProgress": "İşlemde",
+      "closed": "Kapalı"
+    },
+    "type": {
+      "callback": "Geri arama",
+      "message": "Mesaj",
+      "booking": "Randevu talebi"
+    }
   },
   "analytics": {
     "range": {
@@ -2481,7 +2491,9 @@
     "noShowRate": "Gelmeme oranı",
     "subtitle": "Klinik performans özeti",
     "title": "Analitik",
-    "totalAppointments": "Toplam randevu"
+    "totalAppointments": "Toplam randevu",
+    "notInPlan": "Klinik analitiği Business ve Enterprise planlarına dahildir",
+    "loadFailed": "Analitik yüklenemedi"
   },
   "publicClinic": {
     "nav_whyUs": "Hakkımızda",
@@ -2629,7 +2641,18 @@
     "textHint": "Protokol alanına eklenecek metin",
     "emptyTextHint": "Metin boşsa alana başlık eklenir.",
     "pickerSearch": "İfadelerde ara",
-    "pickerEmpty": "Bu blok için henüz şablon yok. “Protokol şablonları” bölümünden oluşturabilirsiniz."
+    "pickerEmpty": "Bu blok için henüz şablon yok. “Protokol şablonları” bölümünden oluşturabilirsiniz.",
+    "tabExams": "Muayeneler",
+    "tabHistory": "Hastalık öyküsü",
+    "block": "Protokol bloğu",
+    "section": "Kayıt bölümü",
+    "loadFailed": "Şablonlar yüklenemedi",
+    "deleteFailed": "Şablon silinemedi",
+    "nothingFound": "Hiçbir şey bulunamadı",
+    "titleRequired": "Başlık zorunludur",
+    "editTitle": "Şablonu düzenle",
+    "newTitle": "Yeni şablon",
+    "saveFailed": "Şablon kaydedilemedi"
   },
   "summary": {
     "loading": "Kayıt derleniyor…",

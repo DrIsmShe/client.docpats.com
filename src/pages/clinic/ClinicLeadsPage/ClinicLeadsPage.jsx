@@ -21,16 +21,18 @@ const STATUS_TABS = [
   { key: "all", labelKey: "leads.tabs.all" },
 ];
 
-const STATUS_LABEL = {
-  new: "\u041D\u043E\u0432\u0430\u044F",
-  in_progress: "\u0412 \u0440\u0430\u0431\u043E\u0442\u0435",
-  closed: "\u0417\u0430\u043A\u0440\u044B\u0442\u0430",
+// Ключи перевода, а не готовые подписи: словарь вычисляется один раз при
+// загрузке модуля, и русский текст в нём остался бы русским на любом языке.
+const STATUS_KEY = {
+  new: "leads.status.new",
+  in_progress: "leads.status.inProgress",
+  closed: "leads.status.closed",
 };
 
-const TYPE_LABEL = {
-  callback: "\u041E\u0431\u0440\u0430\u0442\u043D\u044B\u0439 \u0437\u0432\u043E\u043D\u043E\u043A",
-  message: "\u0421\u043E\u043E\u0431\u0449\u0435\u043D\u0438\u0435",
-  booking: "Запись на приём",
+const TYPE_KEY = {
+  callback: "leads.type.callback",
+  message: "leads.type.message",
+  booking: "leads.type.booking",
 };
 
 /** Желаемое время заявки на запись — в часовом поясе смотрящего. */
@@ -171,7 +173,7 @@ export default function ClinicLeadsPage() {
                 <div className="lead-card-top">
                   <span className="lead-name">{lead.name}</span>
                   <span className={"lead-badge badge-" + lead.status}>
-                    {STATUS_LABEL[lead.status] || lead.status}
+                    {t(STATUS_KEY[lead.status] || "leads.status.new") || lead.status}
                   </span>
                 </div>
 
@@ -180,7 +182,7 @@ export default function ClinicLeadsPage() {
                     {lead.phone}
                   </a>
                   <span className="lead-type">
-                    {TYPE_LABEL[lead.type] || lead.type}
+                    {t(TYPE_KEY[lead.type] || "leads.type.message") || lead.type}
                   </span>
                 </div>
 

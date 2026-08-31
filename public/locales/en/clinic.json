@@ -2450,7 +2450,17 @@
     "toClosed": "Close",
     "toInProgress": "Take in progress",
     "toNew": "Move back to new",
-    "updateFailed": "Could not update the status"
+    "updateFailed": "Could not update the status",
+    "status": {
+      "new": "New",
+      "inProgress": "In progress",
+      "closed": "Closed"
+    },
+    "type": {
+      "callback": "Callback request",
+      "message": "Message",
+      "booking": "Appointment request"
+    }
   },
   "analytics": {
     "range": {
@@ -2481,7 +2491,9 @@
     "noShowRate": "No-show rate",
     "subtitle": "Clinic performance overview",
     "title": "Analytics",
-    "totalAppointments": "Total appointments"
+    "totalAppointments": "Total appointments",
+    "notInPlan": "Clinic analytics is included in the Business and Enterprise plans",
+    "loadFailed": "Could not load analytics"
   },
   "publicClinic": {
     "nav_whyUs": "About us",
@@ -2629,7 +2641,18 @@
     "textHint": "The text that will be inserted into the protocol field",
     "emptyTextHint": "If the text is empty, the heading is inserted instead.",
     "pickerSearch": "Search the wordings",
-    "pickerEmpty": "There are no templates for this block yet. You can create them in “Protocol templates”."
+    "pickerEmpty": "There are no templates for this block yet. You can create them in “Protocol templates”.",
+    "tabExams": "Examinations",
+    "tabHistory": "Medical history",
+    "block": "Protocol block",
+    "section": "Record section",
+    "loadFailed": "Could not load the templates",
+    "deleteFailed": "Could not delete the template",
+    "nothingFound": "Nothing found",
+    "titleRequired": "A title is required",
+    "editTitle": "Edit template",
+    "newTitle": "New template",
+    "saveFailed": "Could not save the template"
   },
   "summary": {
     "loading": "Building the record…",

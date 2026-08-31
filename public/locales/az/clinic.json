@@ -2450,7 +2450,17 @@
     "toClosed": "Bağla",
     "toInProgress": "İşə götür",
     "toNew": "Yenilərə qaytar",
-    "updateFailed": "Statusu yeniləmək alınmadı"
+    "updateFailed": "Statusu yeniləmək alınmadı",
+    "status": {
+      "new": "Yeni",
+      "inProgress": "İşdə",
+      "closed": "Bağlanmış"
+    },
+    "type": {
+      "callback": "Geri zəng",
+      "message": "Mesaj",
+      "booking": "Qəbula yazılma"
+    }
   },
   "analytics": {
     "range": {
@@ -2481,7 +2491,9 @@
     "noShowRate": "Gəlməmə payı",
     "subtitle": "Klinikanın işinə baxış",
     "title": "Analitika",
-    "totalAppointments": "Ümumi qəbullar"
+    "totalAppointments": "Ümumi qəbullar",
+    "notInPlan": "Klinika analitikası Business və Enterprise tariflərinə daxildir",
+    "loadFailed": "Analitikanı yükləmək mümkün olmadı"
   },
   "publicClinic": {
     "nav_whyUs": "Haqqımızda",
@@ -2629,7 +2641,18 @@
     "textHint": "Protokol sahəsinə əlavə olunacaq mətn",
     "emptyTextHint": "Mətn boşdursa, sahəyə başlıq əlavə olunacaq.",
     "pickerSearch": "İfadələr üzrə axtarış",
-    "pickerEmpty": "Bu blok üçün hələ şablon yoxdur. Onları «Protokol şablonları» bölməsində yarada bilərsiniz."
+    "pickerEmpty": "Bu blok üçün hələ şablon yoxdur. Onları «Protokol şablonları» bölməsində yarada bilərsiniz.",
+    "tabExams": "Müayinələr",
+    "tabHistory": "Xəstəlik tarixçəsi",
+    "block": "Protokol bloku",
+    "section": "Qeyd bölməsi",
+    "loadFailed": "Şablonları yükləmək mümkün olmadı",
+    "deleteFailed": "Şablonu silmək mümkün olmadı",
+    "nothingFound": "Heç nə tapılmadı",
+    "titleRequired": "Başlıq mütləqdir",
+    "editTitle": "Şablonu dəyiş",
+    "newTitle": "Yeni şablon",
+    "saveFailed": "Şablonu yadda saxlamaq mümkün olmadı"
   },
   "summary": {
     "loading": "Kart yığılır…",
