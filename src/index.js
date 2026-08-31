@@ -30,6 +30,15 @@ import "./i18n";
 // не тянет библиотеку — импорт внутри initAnalytics динамический.
 import { initAnalytics } from "./lib/analytics";
 
+// Страница без оформления после выката: старая вкладка просит файл стилей
+// по старому имени, получает 404 и рисуется голой. Ошибки при этом нет,
+// поэтому граница ошибок такое не ловит — нужна отдельная защита.
+import { installStaleStyleGuard } from "./lib/staleStyleGuard";
+
+// Ставим ДО отрисовки: файлы стилей страниц запрашиваются сразу за
+// первым переходом, и слушатель должен уже висеть.
+installStaleStyleGuard();
+
 initAnalytics();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
