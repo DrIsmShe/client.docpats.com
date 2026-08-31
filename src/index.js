@@ -14,6 +14,12 @@ import { ThemeProvider } from "./theme/ThemeContext";
 // requests fire — hence importing it at the application root.
 import "./api/provisionalInterceptor";
 
+// Side-effect импорт: вешает на ГЛОБАЛЬНЫЙ axios заголовок с языком врача.
+// Файл подключают лишь 44 модуля из пяти с лишним сотен, поэтому надеяться
+// на транзитную загрузку нельзя — без этой строки сервер не узнает язык на
+// большинстве запросов, и переводить его сообщения будет бессмысленно.
+import "./axios";
+
 // Side-effect импорт: инициализирует i18next и сразу выставляет
 // <html lang>/<html dir> по сохранённому языку. До этого i18n
 // подтягивался транзитом через axios.js — то есть когда повезёт
