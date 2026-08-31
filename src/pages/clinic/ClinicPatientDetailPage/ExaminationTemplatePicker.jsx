@@ -13,7 +13,7 @@
 
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { modalityLabel } from "../examinationModalities";
+import { modalityLabelKey } from "../examinationModalities";
 
 export default function ExaminationTemplatePicker({
   open,
@@ -51,7 +51,7 @@ export default function ExaminationTemplatePicker({
               записи приёма (жалобы, анамнез) его не бывает. */}
           <h3>
             {kindLabel}
-            {modality ? ` — ${modalityLabel(modality)}` : ""}
+            {modality ? ` — ${t(modalityLabelKey(modality))}` : ""}
           </h3>
           <button type="button" className="med-modal-close" onClick={onClose}>
             ×

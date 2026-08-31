@@ -10,6 +10,14 @@
 import React, { useState } from "react";
 
 import { useTranslation } from "react-i18next";
+// Стили модалки, полей и кнопок живут в общих файлах кабинета клиники.
+// Без них форма приезжала голой: подписи слева от полей, системные кнопки,
+// текстовое поле поверх соседей. Родительская страница их не подключает, а
+// класть в неё чужие стили ради дочернего окна неправильно — окно должно
+// быть самодостаточным.
+import "../ClinicPatientDetailPage/medicalRecordsSection.css";
+import "../clinicForm.css";
+import "../clinicPageShell.css";
 export default function ExamTemplateFormModal({
   template,
   modalityLabel,

@@ -2652,7 +2652,10 @@
     "titleRequired": "Başlık zorunludur",
     "editTitle": "Şablonu düzenle",
     "newTitle": "Yeni şablon",
-    "saveFailed": "Şablon kaydedilemedi"
+    "saveFailed": "Şablon kaydedilemedi",
+    "intro": "Muayeneleri ve muayene kayıtlarını doldurmak için hazır ifadeler. Hekim bunları alanın yanındaki «Şablonlar» düğmesiyle seçer. Set tüm klinik için ortaktır.",
+    "emptyInBlock": "«{{block}}» bölümünde henüz şablon yok.",
+    "emptyInStudyBlock": "«{{study}}» için «{{block}}» bloğunda henüz şablon yok."
   },
   "summary": {
     "loading": "Kayıt derleniyor…",
@@ -2913,6 +2916,48 @@
         "address": "Adres",
         "note": "Not"
       }
+    }
+  },
+  "exam": {
+    "modality": {
+      "CT": "BT",
+      "MRI": "MR",
+      "Ultrasound": "Ultrason",
+      "XRay": "Röntgen",
+      "Mammography": "Mamografi",
+      "PET": "PET",
+      "SPECT": "SPECT",
+      "EEG": "EEG",
+      "ECG": "EKG",
+      "EchoECG": "Ekokardiyografi",
+      "Holter": "Holter",
+      "Spirometry": "Spirometri",
+      "Doppler": "Doppler",
+      "Coronography": "Koronografi",
+      "Angiography": "Anjiyografi",
+      "Gastroscopy": "Gastroskopi",
+      "Colonoscopy": "Kolonoskopi",
+      "CapsuleEndoscopy": "Kapsül endoskopi",
+      "Gynecology": "Jinekoloji"
+    },
+    "block": {
+      "nameOfExam": "Muayene adı",
+      "report": "Protokol",
+      "diagnosis": "Sonuç",
+      "recommendation": "Öneriler"
+    },
+    "encounterBlock": {
+      "complaints": "Şikayetler",
+      "anamnesisMorbi": "Anamnesis morbi",
+      "anamnesisVitae": "Anamnesis vitae",
+      "statusPreasens": "Status praesens",
+      "statusLocalis": "Status localis",
+      "additionalDiagnosis": "Ek tanı",
+      "recommendations": "Öneriler",
+      "ctScanResults": "BT sonuçları",
+      "mriResults": "MR sonuçları",
+      "ultrasoundResults": "Ultrason sonuçları",
+      "laboratoryTestResults": "Tahlil sonuçları"
     }
   }
 }

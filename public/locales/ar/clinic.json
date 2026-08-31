@@ -2658,7 +2658,10 @@
     "titleRequired": "العنوان مطلوب",
     "editTitle": "تعديل القالب",
     "newTitle": "قالب جديد",
-    "saveFailed": "تعذر حفظ القالب"
+    "saveFailed": "تعذر حفظ القالب",
+    "intro": "صيغ جاهزة لتعبئة الفحوصات وسجلات الزيارات. يختارها الطبيب بزر «القوالب» بجانب الحقل. المجموعة مشتركة للعيادة كلها.",
+    "emptyInBlock": "لا توجد قوالب في «{{block}}» بعد.",
+    "emptyInStudyBlock": "لا توجد قوالب لـ«{{study}}» في «{{block}}» بعد."
   },
   "summary": {
     "loading": "جارٍ تجميع السجل…",
@@ -2919,6 +2922,48 @@
         "address": "العنوان",
         "note": "ملاحظة"
       }
+    }
+  },
+  "exam": {
+    "modality": {
+      "CT": "تصوير مقطعي",
+      "MRI": "رنين مغناطيسي",
+      "Ultrasound": "تصوير بالموجات",
+      "XRay": "أشعة سينية",
+      "Mammography": "تصوير الثدي",
+      "PET": "تصوير مقطعي بالإصدار البوزيتروني",
+      "SPECT": "تصوير مقطعي بالإصدار المفرد",
+      "EEG": "تخطيط الدماغ",
+      "ECG": "تخطيط القلب",
+      "EchoECG": "تخطيط صدى القلب",
+      "Holter": "هولتر",
+      "Spirometry": "قياس التنفس",
+      "Doppler": "دوبلر",
+      "Coronography": "تصوير الشرايين التاجية",
+      "Angiography": "تصوير الأوعية",
+      "Gastroscopy": "تنظير المعدة",
+      "Colonoscopy": "تنظير القولون",
+      "CapsuleEndoscopy": "التنظير بالكبسولة",
+      "Gynecology": "أمراض النساء"
+    },
+    "block": {
+      "nameOfExam": "اسم الفحص",
+      "report": "البروتوكول",
+      "diagnosis": "الخلاصة",
+      "recommendation": "التوصيات"
+    },
+    "encounterBlock": {
+      "complaints": "الشكاوى",
+      "anamnesisMorbi": "Anamnesis morbi",
+      "anamnesisVitae": "Anamnesis vitae",
+      "statusPreasens": "Status praesens",
+      "statusLocalis": "Status localis",
+      "additionalDiagnosis": "تشخيص إضافي",
+      "recommendations": "التوصيات",
+      "ctScanResults": "نتائج التصوير المقطعي",
+      "mriResults": "نتائج الرنين المغناطيسي",
+      "ultrasoundResults": "نتائج الموجات فوق الصوتية",
+      "laboratoryTestResults": "نتائج التحاليل"
     }
   }
 }

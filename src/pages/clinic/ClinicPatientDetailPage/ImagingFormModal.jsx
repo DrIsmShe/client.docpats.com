@@ -29,7 +29,7 @@ import { listExaminationTemplates } from "../../../api/examinationTemplates";
 import {
   MODALITIES,
   TEMPLATE_KINDS,
-  modalityLabel,
+  modalityLabelKey,
   hasRadiation,
 } from "../examinationModalities";
 import ExaminationTemplatePicker from "./ExaminationTemplatePicker";
@@ -335,7 +335,7 @@ export default function ImagingFormModal({ patient, onClose, onSaved }) {
                 >
                   {STUDY_TYPES.map((type) => (
                     <option key={type} value={type}>
-                      {modalityLabel(type)}
+                      {t(modalityLabelKey(type))}
                     </option>
                   ))}
                 </select>
@@ -538,7 +538,10 @@ export default function ImagingFormModal({ patient, onClose, onSaved }) {
         <ExaminationTemplatePicker
           open={Boolean(pickerKind)}
           kindLabel={
-            TEMPLATE_KINDS.find((k) => k.key === pickerKind)?.label || ""
+            (() => {
+              const kk = TEMPLATE_KINDS.find((k) => k.key === pickerKind)?.labelKey;
+              return kk ? t(kk) : "";
+            })()
           }
           modality={studyType}
           items={templates[pickerKind] || []}

@@ -2652,7 +2652,10 @@
     "titleRequired": "Başlıq mütləqdir",
     "editTitle": "Şablonu dəyiş",
     "newTitle": "Yeni şablon",
-    "saveFailed": "Şablonu yadda saxlamaq mümkün olmadı"
+    "saveFailed": "Şablonu yadda saxlamaq mümkün olmadı",
+    "intro": "Müayinələri və qəbul qeydlərini doldurmaq üçün hazır ifadələr. Həkim onları sahənin yanındakı «Şablonlar» düyməsi ilə seçir. Dəst bütün klinika üçün ümumidir.",
+    "emptyInBlock": "«{{block}}» bölməsində hələ şablon yoxdur.",
+    "emptyInStudyBlock": "«{{study}}» üçün «{{block}}» blokunda hələ şablon yoxdur."
   },
   "summary": {
     "loading": "Kart yığılır…",
@@ -2913,6 +2916,48 @@
         "address": "Ünvan",
         "note": "Qeyd"
       }
+    }
+  },
+  "exam": {
+    "modality": {
+      "CT": "KT",
+      "MRI": "MRT",
+      "Ultrasound": "USM",
+      "XRay": "Rentgen",
+      "Mammography": "Mammoqrafiya",
+      "PET": "PET",
+      "SPECT": "SPECT",
+      "EEG": "EEG",
+      "ECG": "EKQ",
+      "EchoECG": "ExoKQ",
+      "Holter": "Holter",
+      "Spirometry": "Spirometriya",
+      "Doppler": "Doppler",
+      "Coronography": "Koronoqrafiya",
+      "Angiography": "Angioqrafiya",
+      "Gastroscopy": "Qastroskopiya",
+      "Colonoscopy": "Kolonoskopiya",
+      "CapsuleEndoscopy": "Kapsul endoskopiya",
+      "Gynecology": "Ginekologiya"
+    },
+    "block": {
+      "nameOfExam": "Müayinənin adı",
+      "report": "Protokol",
+      "diagnosis": "Rəy",
+      "recommendation": "Tövsiyələr"
+    },
+    "encounterBlock": {
+      "complaints": "Şikayətlər",
+      "anamnesisMorbi": "Anamnesis morbi",
+      "anamnesisVitae": "Anamnesis vitae",
+      "statusPreasens": "Status praesens",
+      "statusLocalis": "Status localis",
+      "additionalDiagnosis": "Əlavə diaqnoz",
+      "recommendations": "Tövsiyələr",
+      "ctScanResults": "KT nəticələri",
+      "mriResults": "MRT nəticələri",
+      "ultrasoundResults": "USM nəticələri",
+      "laboratoryTestResults": "Analiz nəticələri"
     }
   }
 }

@@ -25,7 +25,7 @@ import {
   MODALITIES,
   TEMPLATE_KINDS,
   ENCOUNTER_BLOCKS,
-  modalityLabel,
+  modalityLabelKey,
 } from "../examinationModalities";
 import ExamTemplateFormModal from "./ExamTemplateFormModal";
 import "./clinicExamTemplatesPage.css";
@@ -137,7 +137,8 @@ export default function ClinicExamTemplatesPage() {
     }
   }
 
-  const kindLabel = currentScope.blocks.find((k) => k.key === kind)?.label || "";
+  const kindKey = currentScope.blocks.find((k) => k.key === kind)?.labelKey;
+  const kindLabel = kindKey ? t(kindKey) : "";
 
   return (
     <div className="exam-tpl-page">
@@ -145,9 +146,10 @@ export default function ClinicExamTemplatesPage() {
         <div>
           <h1 className="exam-tpl-title">{t("examTemplates.title")}</h1>
           <p className="exam-tpl-subtitle">
-            Готовые формулировки для заполнения исследований и записей приёма.
-            Врач выбирает их кнопкой «Шаблоны» рядом с полем. Набор общий для
-            всей клиники.
+            {t("examTemplates.intro", {
+              defaultValue:
+                "Готовые формулировки для заполнения исследований и записей приёма. Врач выбирает их кнопкой «Шаблоны» рядом с полем. Набор общий для всей клиники.",
+            })}
           </p>
         </div>
         {canManage && (
@@ -188,7 +190,7 @@ export default function ClinicExamTemplatesPage() {
             >
               {MODALITIES.map((m) => (
                 <option key={m.key} value={m.key}>
-                  {m.label}
+                  {t(m.labelKey)}
                 </option>
               ))}
             </select>
@@ -200,7 +202,7 @@ export default function ClinicExamTemplatesPage() {
           <select value={kind} onChange={(e) => setKind(e.target.value)}>
             {currentScope.blocks.map((k) => (
               <option key={k.key} value={k.key}>
-                {k.label}
+                {t(k.labelKey)}
               </option>
             ))}
           </select>
@@ -225,8 +227,16 @@ export default function ClinicExamTemplatesPage() {
         <div className="exam-tpl-state">
           {items.length === 0
             ? isEncounter
-              ? `В разделе «${kindLabel}» шаблонов пока нет.`
-              : `Для «${modalityLabel(modality)}» в блоке «${kindLabel}» шаблонов пока нет.`
+              ? t("examTemplates.emptyInBlock", {
+                  block: kindLabel,
+                  defaultValue: "В разделе «{{block}}» шаблонов пока нет.",
+                })
+              : t("examTemplates.emptyInStudyBlock", {
+                  study: t(modalityLabelKey(modality)),
+                  block: kindLabel,
+                  defaultValue:
+                    "Для «{{study}}» в блоке «{{block}}» шаблонов пока нет.",
+                })
             : t("examTemplates.nothingFound", { defaultValue: "Ничего не найдено" })}
         </div>
       ) : (
@@ -267,7 +277,7 @@ export default function ClinicExamTemplatesPage() {
       {editing && (
         <ExamTemplateFormModal
           template={editing._id ? editing : null}
-          modalityLabel={isEncounter ? t("examTemplates.tabHistory", { defaultValue: "История болезни" }) : modalityLabel(modality)}
+          modalityLabel={isEncounter ? t("examTemplates.tabHistory", { defaultValue: "История болезни" }) : t(modalityLabelKey(modality))}
           kindLabel={kindLabel}
           onSave={handleSave}
           onClose={() => setEditing(null)}

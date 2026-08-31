@@ -2724,7 +2724,10 @@
     "titleRequired": "Заголовок обязателен",
     "editTitle": "Изменить шаблон",
     "newTitle": "Новый шаблон",
-    "saveFailed": "Не удалось сохранить шаблон"
+    "saveFailed": "Не удалось сохранить шаблон",
+    "intro": "Готовые формулировки для заполнения исследований и записей приёма. Врач выбирает их кнопкой «Шаблоны» рядом с полем. Набор общий для всей клиники.",
+    "emptyInBlock": "В разделе «{{block}}» шаблонов пока нет.",
+    "emptyInStudyBlock": "Для «{{study}}» в блоке «{{block}}» шаблонов пока нет."
   },
   "summary": {
     "loading": "Собираем карту…",
@@ -2947,6 +2950,48 @@
         "address": "Адрес",
         "note": "Примечание"
       }
+    }
+  },
+  "exam": {
+    "modality": {
+      "CT": "КТ",
+      "MRI": "МРТ",
+      "Ultrasound": "УЗИ",
+      "XRay": "Рентген",
+      "Mammography": "Маммография",
+      "PET": "ПЭТ",
+      "SPECT": "ОФЭКТ",
+      "EEG": "ЭЭГ",
+      "ECG": "ЭКГ",
+      "EchoECG": "ЭхоКГ",
+      "Holter": "Холтер",
+      "Spirometry": "Спирометрия",
+      "Doppler": "Допплер",
+      "Coronography": "Коронография",
+      "Angiography": "Ангиография",
+      "Gastroscopy": "Гастроскопия",
+      "Colonoscopy": "Колоноскопия",
+      "CapsuleEndoscopy": "Капсульная эндоскопия",
+      "Gynecology": "Гинекология"
+    },
+    "block": {
+      "nameOfExam": "Название исследования",
+      "report": "Протокол",
+      "diagnosis": "Заключение",
+      "recommendation": "Рекомендации"
+    },
+    "encounterBlock": {
+      "complaints": "Жалобы",
+      "anamnesisMorbi": "Anamnesis morbi",
+      "anamnesisVitae": "Anamnesis vitae",
+      "statusPreasens": "Status praesens",
+      "statusLocalis": "Status localis",
+      "additionalDiagnosis": "Дополнительный диагноз",
+      "recommendations": "Рекомендации",
+      "ctScanResults": "Результаты КТ",
+      "mriResults": "Результаты МРТ",
+      "ultrasoundResults": "Результаты УЗИ",
+      "laboratoryTestResults": "Результаты анализов"
     }
   }
 }

@@ -1,3 +1,9 @@
+// ВНИМАНИЕ: здесь КЛЮЧИ перевода, а не подписи.
+//
+// Списки вычисляются один раз при загрузке файла, когда язык ещё никто не
+// выбирал. Подпись, записанная сюда строкой, останется на языке автора при
+// любом переключении — так на английской странице оставались «КТ» и
+// «Название исследования». Подпись берётся при отрисовке: t(x.labelKey).
 // client/src/pages/clinic/examinationModalities.js
 //
 // Справочник видов исследований и видов заготовок для протокола.
@@ -12,24 +18,24 @@
 // ImagingStudy и со списком VALID_STUDY_TYPES в imaging.service.js.
 
 export const MODALITIES = [
-  { key: "CT", label: "КТ", radiation: true },
-  { key: "MRI", label: "МРТ", radiation: false },
-  { key: "USG", label: "УЗИ", radiation: false },
+  { key: "CT", labelKey: "exam.modality.CT", radiation: true },
+  { key: "MRI", labelKey: "exam.modality.MRI", radiation: false },
+  { key: "USG", labelKey: "exam.modality.USG", radiation: false },
   { key: "X-Ray", label: "Рентген", radiation: true },
-  { key: "PET", label: "ПЭТ", radiation: true },
-  { key: "SPECT", label: "ОФЭКТ", radiation: true },
-  { key: "EEG", label: "ЭЭГ", radiation: false },
-  { key: "ECG", label: "ЭКГ", radiation: false },
-  { key: "EchoECG", label: "ЭхоКГ", radiation: false },
-  { key: "Holter", label: "Холтер", radiation: false },
-  { key: "Spirometry", label: "Спирометрия", radiation: false },
-  { key: "Doppler", label: "Допплер", radiation: false },
-  { key: "Coronography", label: "Коронография", radiation: true },
-  { key: "Angiography", label: "Ангиография", radiation: true },
-  { key: "Gastroscopy", label: "Гастроскопия", radiation: false },
-  { key: "Colonoscopy", label: "Колоноскопия", radiation: false },
-  { key: "CapsuleEndoscopy", label: "Капсульная эндоскопия", radiation: false },
-  { key: "Gynecology", label: "Гинекология", radiation: false },
+  { key: "PET", labelKey: "exam.modality.PET", radiation: true },
+  { key: "SPECT", labelKey: "exam.modality.SPECT", radiation: true },
+  { key: "EEG", labelKey: "exam.modality.EEG", radiation: false },
+  { key: "ECG", labelKey: "exam.modality.ECG", radiation: false },
+  { key: "EchoECG", labelKey: "exam.modality.EchoECG", radiation: false },
+  { key: "Holter", labelKey: "exam.modality.Holter", radiation: false },
+  { key: "Spirometry", labelKey: "exam.modality.Spirometry", radiation: false },
+  { key: "Doppler", labelKey: "exam.modality.Doppler", radiation: false },
+  { key: "Coronography", labelKey: "exam.modality.Coronography", radiation: true },
+  { key: "Angiography", labelKey: "exam.modality.Angiography", radiation: true },
+  { key: "Gastroscopy", labelKey: "exam.modality.Gastroscopy", radiation: false },
+  { key: "Colonoscopy", labelKey: "exam.modality.Colonoscopy", radiation: false },
+  { key: "CapsuleEndoscopy", labelKey: "exam.modality.CapsuleEndoscopy", radiation: false },
+  { key: "Gynecology", labelKey: "exam.modality.Gynecology", radiation: false },
 ];
 
 /**
@@ -38,10 +44,10 @@ export const MODALITIES = [
  * заключение → рекомендации.
  */
 export const TEMPLATE_KINDS = [
-  { key: "nameOfExam", label: "Название исследования", field: "nameOfExam" },
-  { key: "report", label: "Протокол", field: "report" },
-  { key: "diagnosis", label: "Заключение", field: "diagnosis" },
-  { key: "recommendation", label: "Рекомендации", field: "recommendation" },
+  { key: "nameOfExam", labelKey: "exam.block.nameOfExam", field: "nameOfExam" },
+  { key: "report", labelKey: "exam.block.report", field: "report" },
+  { key: "diagnosis", labelKey: "exam.block.diagnosis", field: "diagnosis" },
+  { key: "recommendation", labelKey: "exam.block.recommendation", field: "recommendation" },
 ];
 
 /**
@@ -55,17 +61,17 @@ export const TEMPLATE_KINDS = [
  * значения поля kind в одном справочнике.
  */
 export const ENCOUNTER_BLOCKS = [
-  { key: "complaints", label: "Жалобы" },
-  { key: "anamnesisMorbi", label: "Anamnesis morbi" },
-  { key: "anamnesisVitae", label: "Anamnesis vitae" },
-  { key: "statusPreasens", label: "Status praesens" },
-  { key: "statusLocalis", label: "Status localis" },
-  { key: "additionalDiagnosis", label: "Дополнительный диагноз" },
-  { key: "recommendations", label: "Рекомендации" },
-  { key: "ctScanResults", label: "Результаты КТ" },
-  { key: "mriResults", label: "Результаты МРТ" },
-  { key: "ultrasoundResults", label: "Результаты УЗИ" },
-  { key: "laboratoryTestResults", label: "Результаты анализов" },
+  { key: "complaints", labelKey: "exam.modality.complaints" },
+  { key: "anamnesisMorbi", labelKey: "exam.modality.anamnesisMorbi" },
+  { key: "anamnesisVitae", labelKey: "exam.modality.anamnesisVitae" },
+  { key: "statusPreasens", labelKey: "exam.modality.statusPreasens" },
+  { key: "statusLocalis", labelKey: "exam.modality.statusLocalis" },
+  { key: "additionalDiagnosis", labelKey: "exam.modality.additionalDiagnosis" },
+  { key: "recommendations", labelKey: "exam.modality.recommendations" },
+  { key: "ctScanResults", labelKey: "exam.modality.ctScanResults" },
+  { key: "mriResults", labelKey: "exam.modality.mriResults" },
+  { key: "ultrasoundResults", labelKey: "exam.modality.ultrasoundResults" },
+  { key: "laboratoryTestResults", labelKey: "exam.modality.laboratoryTestResults" },
 ];
 
 /** Подпись блока приёма. */
@@ -73,9 +79,15 @@ export function encounterBlockLabel(key) {
   return ENCOUNTER_BLOCKS.find((b) => b.key === key)?.label || key;
 }
 
-/** Подпись вида исследования; неизвестный ключ показываем как есть. */
-export function modalityLabel(key) {
-  return MODALITIES.find((m) => m.key === key)?.label || key;
+/**
+ * Ключ перевода для вида исследования.
+ *
+ * Возвращает именно ключ, а не подпись: переводчик доступен только внутри
+ * компонента, а этот файл — обычный модуль. Вызывающий делает t(...).
+ * Неизвестный ключ отдаём как есть — лучше показать код, чем пустоту.
+ */
+export function modalityLabelKey(key) {
+  return MODALITIES.find((m) => m.key === key)?.labelKey || key;
 }
 
 /**

@@ -2652,7 +2652,10 @@
     "titleRequired": "A title is required",
     "editTitle": "Edit template",
     "newTitle": "New template",
-    "saveFailed": "Could not save the template"
+    "saveFailed": "Could not save the template",
+    "intro": "Ready-made wordings for filling in examinations and encounter notes. The doctor picks them with the “Templates” button next to the field. The set is shared across the clinic.",
+    "emptyInBlock": "There are no templates in “{{block}}” yet.",
+    "emptyInStudyBlock": "There are no templates for “{{study}}” in “{{block}}” yet."
   },
   "summary": {
     "loading": "Building the record…",
@@ -2913,6 +2916,48 @@
         "address": "Address",
         "note": "Note"
       }
+    }
+  },
+  "exam": {
+    "modality": {
+      "CT": "CT",
+      "MRI": "MRI",
+      "Ultrasound": "Ultrasound",
+      "XRay": "X-ray",
+      "Mammography": "Mammography",
+      "PET": "PET",
+      "SPECT": "SPECT",
+      "EEG": "EEG",
+      "ECG": "ECG",
+      "EchoECG": "Echocardiography",
+      "Holter": "Holter",
+      "Spirometry": "Spirometry",
+      "Doppler": "Doppler",
+      "Coronography": "Coronography",
+      "Angiography": "Angiography",
+      "Gastroscopy": "Gastroscopy",
+      "Colonoscopy": "Colonoscopy",
+      "CapsuleEndoscopy": "Capsule endoscopy",
+      "Gynecology": "Gynaecology"
+    },
+    "block": {
+      "nameOfExam": "Study title",
+      "report": "Protocol",
+      "diagnosis": "Conclusion",
+      "recommendation": "Recommendations"
+    },
+    "encounterBlock": {
+      "complaints": "Complaints",
+      "anamnesisMorbi": "Anamnesis morbi",
+      "anamnesisVitae": "Anamnesis vitae",
+      "statusPreasens": "Status praesens",
+      "statusLocalis": "Status localis",
+      "additionalDiagnosis": "Additional diagnosis",
+      "recommendations": "Recommendations",
+      "ctScanResults": "CT results",
+      "mriResults": "MRI results",
+      "ultrasoundResults": "Ultrasound results",
+      "laboratoryTestResults": "Lab results"
     }
   }
 }
