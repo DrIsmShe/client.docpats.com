@@ -36,8 +36,18 @@ import "./clinicExamTemplatesPage.css";
 // загрузке модуля, где переводчика ещё нет, а подпись нужна на языке того,
 // кто смотрит.
 const SCOPES = [
-  { key: "examination", labelKey: "examTemplates.tabExams", blocks: TEMPLATE_KINDS },
-  { key: "encounter", labelKey: "examTemplates.tabHistory", blocks: ENCOUNTER_BLOCKS },
+  {
+    key: "examination",
+    labelKey: "examTemplates.tabExams",
+    label: "Обследования",
+    blocks: TEMPLATE_KINDS,
+  },
+  {
+    key: "encounter",
+    labelKey: "examTemplates.tabHistory",
+    label: "История болезни",
+    blocks: ENCOUNTER_BLOCKS,
+  },
 ];
 
 export default function ClinicExamTemplatesPage() {
@@ -137,8 +147,10 @@ export default function ClinicExamTemplatesPage() {
     }
   }
 
-  const kindKey = currentScope.blocks.find((k) => k.key === kind)?.labelKey;
-  const kindLabel = kindKey ? t(kindKey) : "";
+  const kindItem = currentScope.blocks.find((k) => k.key === kind);
+  const kindLabel = kindItem
+    ? t(kindItem.labelKey, { defaultValue: kindItem.label })
+    : "";
 
   return (
     <div className="exam-tpl-page">
@@ -173,7 +185,7 @@ export default function ClinicExamTemplatesPage() {
             className={`exam-tpl-scope${scope === s.key ? " is-active" : ""}`}
             onClick={() => switchScope(s.key)}
           >
-            {t(s.labelKey)}
+            {t(s.labelKey, { defaultValue: s.label })}
           </button>
         ))}
       </nav>
@@ -190,7 +202,7 @@ export default function ClinicExamTemplatesPage() {
             >
               {MODALITIES.map((m) => (
                 <option key={m.key} value={m.key}>
-                  {t(m.labelKey)}
+                  {t(m.labelKey, { defaultValue: m.label })}
                 </option>
               ))}
             </select>
@@ -202,7 +214,7 @@ export default function ClinicExamTemplatesPage() {
           <select value={kind} onChange={(e) => setKind(e.target.value)}>
             {currentScope.blocks.map((k) => (
               <option key={k.key} value={k.key}>
-                {t(k.labelKey)}
+                {t(k.labelKey, { defaultValue: k.label })}
               </option>
             ))}
           </select>
@@ -232,7 +244,7 @@ export default function ClinicExamTemplatesPage() {
                   defaultValue: "В разделе «{{block}}» шаблонов пока нет.",
                 })
               : t("examTemplates.emptyInStudyBlock", {
-                  study: t(modalityLabelKey(modality)),
+                  study: t(modalityLabelKey(modality), { defaultValue: modality }),
                   block: kindLabel,
                   defaultValue:
                     "Для «{{study}}» в блоке «{{block}}» шаблонов пока нет.",
@@ -277,7 +289,7 @@ export default function ClinicExamTemplatesPage() {
       {editing && (
         <ExamTemplateFormModal
           template={editing._id ? editing : null}
-          modalityLabel={isEncounter ? t("examTemplates.tabHistory", { defaultValue: "История болезни" }) : t(modalityLabelKey(modality))}
+          modalityLabel={isEncounter ? t("examTemplates.tabHistory", { defaultValue: "История болезни" }) : t(modalityLabelKey(modality), { defaultValue: modality })}
           kindLabel={kindLabel}
           onSave={handleSave}
           onClose={() => setEditing(null)}

@@ -335,7 +335,7 @@ export default function ImagingFormModal({ patient, onClose, onSaved }) {
                 >
                   {STUDY_TYPES.map((type) => (
                     <option key={type} value={type}>
-                      {t(modalityLabelKey(type))}
+                      {t(modalityLabelKey(type), { defaultValue: type })}
                     </option>
                   ))}
                 </select>

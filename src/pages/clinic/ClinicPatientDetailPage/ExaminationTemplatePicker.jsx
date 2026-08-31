@@ -51,7 +51,7 @@ export default function ExaminationTemplatePicker({
               записи приёма (жалобы, анамнез) его не бывает. */}
           <h3>
             {kindLabel}
-            {modality ? ` — ${t(modalityLabelKey(modality))}` : ""}
+            {modality ? ` — ${t(modalityLabelKey(modality), { defaultValue: modality })}` : ""}
           </h3>
           <button type="button" className="med-modal-close" onClick={onClose}>
             ×
