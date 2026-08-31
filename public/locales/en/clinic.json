@@ -2922,7 +2922,6 @@
     "modality": {
       "CT": "CT",
       "MRI": "MRI",
-      "Ultrasound": "Ultrasound",
       "XRay": "X-ray",
       "Mammography": "Mammography",
       "PET": "PET",
@@ -2938,7 +2937,8 @@
       "Gastroscopy": "Gastroscopy",
       "Colonoscopy": "Colonoscopy",
       "CapsuleEndoscopy": "Capsule endoscopy",
-      "Gynecology": "Gynaecology"
+      "Gynecology": "Gynaecology",
+      "USG": "Ultrasound"
     },
     "block": {
       "nameOfExam": "Study title",

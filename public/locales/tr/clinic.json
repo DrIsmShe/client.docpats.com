@@ -2922,7 +2922,6 @@
     "modality": {
       "CT": "BT",
       "MRI": "MR",
-      "Ultrasound": "Ultrason",
       "XRay": "Röntgen",
       "Mammography": "Mamografi",
       "PET": "PET",
@@ -2938,7 +2937,8 @@
       "Gastroscopy": "Gastroskopi",
       "Colonoscopy": "Kolonoskopi",
       "CapsuleEndoscopy": "Kapsül endoskopi",
-      "Gynecology": "Jinekoloji"
+      "Gynecology": "Jinekoloji",
+      "USG": "Ultrason"
     },
     "block": {
       "nameOfExam": "Muayene adı",

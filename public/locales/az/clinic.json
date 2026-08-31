@@ -2922,7 +2922,6 @@
     "modality": {
       "CT": "KT",
       "MRI": "MRT",
-      "Ultrasound": "USM",
       "XRay": "Rentgen",
       "Mammography": "Mammoqrafiya",
       "PET": "PET",
@@ -2938,7 +2937,8 @@
       "Gastroscopy": "Qastroskopiya",
       "Colonoscopy": "Kolonoskopiya",
       "CapsuleEndoscopy": "Kapsul endoskopiya",
-      "Gynecology": "Ginekologiya"
+      "Gynecology": "Ginekologiya",
+      "USG": "USM"
     },
     "block": {
       "nameOfExam": "Müayinənin adı",

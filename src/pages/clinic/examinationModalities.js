@@ -20,7 +20,7 @@
 export const MODALITIES = [
   { key: "CT", labelKey: "exam.modality.CT", radiation: true, label: "КТ" },
   { key: "MRI", labelKey: "exam.modality.MRI", radiation: false, label: "МРТ" },
-  { key: "USG", labelKey: "exam.modality.USG", radiation: false },
+  { key: "USG", labelKey: "exam.modality.USG", radiation: false, label: "УЗИ" },
   { key: "X-Ray", label: "Рентген", radiation: true },
   { key: "PET", labelKey: "exam.modality.PET", radiation: true, label: "ПЭТ" },
   { key: "SPECT", labelKey: "exam.modality.SPECT", radiation: true, label: "ОФЭКТ" },
@@ -61,17 +61,17 @@ export const TEMPLATE_KINDS = [
  * значения поля kind в одном справочнике.
  */
 export const ENCOUNTER_BLOCKS = [
-  { key: "complaints", labelKey: "exam.modality.complaints", label: "Жалобы" },
-  { key: "anamnesisMorbi", labelKey: "exam.modality.anamnesisMorbi", label: "Anamnesis morbi" },
-  { key: "anamnesisVitae", labelKey: "exam.modality.anamnesisVitae", label: "Anamnesis vitae" },
-  { key: "statusPreasens", labelKey: "exam.modality.statusPreasens", label: "Status praesens" },
-  { key: "statusLocalis", labelKey: "exam.modality.statusLocalis", label: "Status localis" },
-  { key: "additionalDiagnosis", labelKey: "exam.modality.additionalDiagnosis", label: "Дополнительный диагноз" },
-  { key: "recommendations", labelKey: "exam.modality.recommendations", label: "Рекомендации" },
-  { key: "ctScanResults", labelKey: "exam.modality.ctScanResults", label: "Результаты КТ" },
-  { key: "mriResults", labelKey: "exam.modality.mriResults", label: "Результаты МРТ" },
-  { key: "ultrasoundResults", labelKey: "exam.modality.ultrasoundResults", label: "Результаты УЗИ" },
-  { key: "laboratoryTestResults", labelKey: "exam.modality.laboratoryTestResults", label: "Результаты анализов" },
+  { key: "complaints", labelKey: "exam.encounterBlock.complaints", label: "Жалобы" },
+  { key: "anamnesisMorbi", labelKey: "exam.encounterBlock.anamnesisMorbi", label: "Anamnesis morbi" },
+  { key: "anamnesisVitae", labelKey: "exam.encounterBlock.anamnesisVitae", label: "Anamnesis vitae" },
+  { key: "statusPreasens", labelKey: "exam.encounterBlock.statusPreasens", label: "Status praesens" },
+  { key: "statusLocalis", labelKey: "exam.encounterBlock.statusLocalis", label: "Status localis" },
+  { key: "additionalDiagnosis", labelKey: "exam.encounterBlock.additionalDiagnosis", label: "Дополнительный диагноз" },
+  { key: "recommendations", labelKey: "exam.encounterBlock.recommendations", label: "Рекомендации" },
+  { key: "ctScanResults", labelKey: "exam.encounterBlock.ctScanResults", label: "Результаты КТ" },
+  { key: "mriResults", labelKey: "exam.encounterBlock.mriResults", label: "Результаты МРТ" },
+  { key: "ultrasoundResults", labelKey: "exam.encounterBlock.ultrasoundResults", label: "Результаты УЗИ" },
+  { key: "laboratoryTestResults", labelKey: "exam.encounterBlock.laboratoryTestResults", label: "Результаты анализов" },
 ];
 
 /** Подпись блока приёма. */

@@ -2956,7 +2956,6 @@
     "modality": {
       "CT": "КТ",
       "MRI": "МРТ",
-      "Ultrasound": "УЗИ",
       "XRay": "Рентген",
       "Mammography": "Маммография",
       "PET": "ПЭТ",
@@ -2972,7 +2971,8 @@
       "Gastroscopy": "Гастроскопия",
       "Colonoscopy": "Колоноскопия",
       "CapsuleEndoscopy": "Капсульная эндоскопия",
-      "Gynecology": "Гинекология"
+      "Gynecology": "Гинекология",
+      "USG": "УЗИ"
     },
     "block": {
       "nameOfExam": "Название исследования",
