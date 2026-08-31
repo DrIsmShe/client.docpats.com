@@ -366,6 +366,31 @@ const styles = `
   }
   .dp-help strong { color: var(--text); }
 
+  /* Найденная медкарта. Зелёный, а не синий: это не подсказка, а награда
+     за то, ради чего человек регистрировался. */
+  .dp-found {
+    text-align: center;
+    padding: 6px 0 4px;
+  }
+  .dp-found-icon {
+    font-size: 44px;
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+  .dp-found-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .dp-found-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 22px;
+    font-family: var(--mono);
+  }
+
   /* ── SECURITY ── */
   .dp-security {
     display: flex;
@@ -400,6 +425,10 @@ export default function ConfirmationRegister() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  // Сколько медкарт подцепилось к аккаунту при подтверждении почты.
+  // Ради этого человек и регистрировался — отдачу надо показать сразу, а
+  // не увести его молча на форму входа.
+  const [linkedCards, setLinkedCards] = useState(0);
 
   const navigate = useNavigate();
   const API_BASE = process.env.REACT_APP_API_URL;
@@ -411,11 +440,15 @@ export default function ConfirmationRegister() {
     setError("");
 
     try {
-      await axios.post(`${API_BASE}/auth/confirmation`, {
+      const { data } = await axios.post(`${API_BASE}/auth/confirmation`, {
         email,
         otpPassword,
       });
 
+      if (data?.linkedClinicCards > 0) {
+        setLinkedCards(data.linkedClinicCards);
+        return;
+      }
       navigate("/login");
     } catch (error) {
       setError(
@@ -504,8 +537,35 @@ export default function ConfirmationRegister() {
             </div>
           )}
 
+          {/* ── МЕДКАРТА НАЙДЕНА ──
+              Показывается вместо формы: код уже принят, вводить нечего.
+              Человек регистрировался ради приёма — он должен увидеть, что
+              получил, до того как его отправят на форму входа. */}
+          {linkedCards > 0 && (
+            <div className="dp-found">
+              <div className="dp-found-icon">🗂️</div>
+              <div className="dp-found-title">
+                {t("ConfirmationRegister.linkedCards.title")}
+              </div>
+              <div className="dp-found-text">
+                {linkedCards === 1
+                  ? t("ConfirmationRegister.linkedCards.one")
+                  : t("ConfirmationRegister.linkedCards.many", {
+                      count: linkedCards,
+                    })}
+              </div>
+              <button
+                type="button"
+                className="dp-btn"
+                onClick={() => navigate("/login")}
+              >
+                {t("ConfirmationRegister.linkedCards.cta")}
+              </button>
+            </div>
+          )}
+
           {/* ── ВЗРОСЛЫЙ ── */}
-          {!isChild && (
+          {linkedCards === 0 && !isChild && (
             <form onSubmit={handleSubmit} noValidate>
               <div className="dp-help">
                 <span>📬</span>
