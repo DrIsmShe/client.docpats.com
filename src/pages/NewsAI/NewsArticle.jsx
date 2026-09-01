@@ -613,14 +613,9 @@ export default function NewsArticle() {
                     <ExternalIcon size={11} style={{ marginInlineStart: 6 }} />
                   </a>
                 </div>
-                <div className="dp-footer-brand">
-                  <span className="dp-footer-logo">
-                    Doc<span>Pats</span>
-                  </span>
-                  <span className="dp-footer-tagline">
-                    {t("footer.tagline")}
-                  </span>
-                </div>
+                {/* Фирменной строки здесь больше нет: сразу под этим
+                    блоком идёт подвал редакции, тоже с именем DocPats.
+                    Два фирменных блока подряд — не подпись, а шум. */}
               </div>
             </footer>
           )}
@@ -874,11 +869,11 @@ const CSS = `
    FOOTER
 ───────────────────────────────────── */
 .dp-footer { border-top: 2px solid var(--ink); background: var(--paper2); width: 100%; overflow: hidden; }
-.dp-footer-inner { max-width: 780px; margin: 0 auto; padding: 0 40px 48px; box-sizing: border-box; width: 100%; }
+.dp-footer-inner { max-width: 780px; margin: 0 auto; padding: 0 40px 28px; box-sizing: border-box; width: 100%; }
 .dp-footer-rule { height: 4px; width: 64px; margin-bottom: 32px; }
 .dp-footer-grid {
   display: flex; align-items: flex-start; justify-content: space-between;
-  gap: 28px; flex-wrap: wrap; padding-bottom: 28px; border-bottom: 1px solid var(--rule);
+  gap: 28px; flex-wrap: wrap; padding-bottom: 4px;
 }
 .dp-footer-left { flex: 1; min-width: 200px; }
 .dp-footer-pub { font-family: var(--sans); font-size: 14px; color: var(--ink2); margin-bottom: 8px; }
@@ -896,18 +891,7 @@ const CSS = `
 }
 .dp-page[dir="rtl"] .dp-footer-btn { letter-spacing: 0; font-family: var(--sans); }
 .dp-footer-btn:hover { background: white; }
-.dp-footer-brand { display: flex; align-items: center; gap: 12px; padding-top: 20px; }
-.dp-footer-logo {
-  font-family: 'Playfair Display', Georgia, serif !important;
-  font-size: 20px; font-weight: 900; letter-spacing: -.02em; color: var(--ink);
-}
-.dp-footer-logo span { color: #b83030; }
-.dp-footer-tagline {
-  font-family: var(--mono); font-size: 10px;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
-}
-.dp-page[dir="rtl"] .dp-footer-tagline { letter-spacing: 0; font-family: var(--sans); }
-
+.dp-page[dir="rtl"] 
 /* ─────────────────────────────────────
    STATE SCREENS
 ───────────────────────────────────── */
@@ -993,8 +977,7 @@ const CSS = `
   .dp-subhead { font-size: 19px; margin: 2.2em 0 .8em; }
   .dp-footer-inner { padding: 0 20px 36px; }
   .dp-footer-grid { flex-direction: column; gap: 20px; }
-  .dp-footer-brand { flex-direction: column; align-items: flex-start; gap: 4px; }
-}
+  }
 
 /* sm: large phones */
 @media (max-width: 639px) and (min-width: 480px) {
@@ -1028,10 +1011,7 @@ const CSS = `
   .dp-footer-pub { font-size: 13px; }
   .dp-footer-note { font-size: 11px; }
   .dp-footer-btn { font-size: 9px; padding: 9px 16px; }
-  .dp-footer-brand { flex-direction: column; align-items: flex-start; gap: 3px; padding-top: 16px; }
-  .dp-footer-logo { font-size: 18px; }
-  .dp-footer-tagline { font-size: 9px; }
-  .dp-404 { font-size: 72px; }
+        .dp-404 { font-size: 72px; }
   .dp-state-text { font-size: 15px; }
 }
 
@@ -1084,11 +1064,7 @@ const CSS = `
   .dp-page[dir="rtl"] .dp-footer-note { line-height: 1.95; }
   .dp-footer-btn { font-size: 8.5px; padding: 8px 14px; letter-spacing: .1em; align-self: flex-start; }
   .dp-page[dir="rtl"] .dp-footer-btn { letter-spacing: 0; }
-  .dp-footer-brand { flex-direction: column; align-items: flex-start; gap: 2px; padding-top: 14px; }
-  .dp-footer-logo { font-size: 16px; }
-  .dp-footer-tagline { font-size: 8px; letter-spacing: .08em; }
-  .dp-page[dir="rtl"] .dp-footer-tagline { letter-spacing: 0; }
-  .dp-state { padding: 0 20px; }
+        .dp-page[dir="rtl"]   .dp-state { padding: 0 20px; }
   .dp-404 { font-size: 60px; }
   .dp-state-text { font-size: 14px; }
   .dp-back-btn { font-size: 9.5px; padding: 8px 16px; }

@@ -4,15 +4,34 @@ import { useTranslation } from "react-i18next";
 export default function FooterAI() {
   const { t } = useTranslation("NewsAiTranslate");
   return (
+    /*
+     * Ширина и отступы — те же, что у блока источника выше
+     * (.dp-footer-inner в pages/newsAI/NewsArticle.jsx): 780 пикселей и
+     * 40 по бокам. Раньше этот блок шёл во всю ширину окна, а статья
+     * была сжата — строки редакции разъезжались шире текста, и подвал
+     * выглядел рыхлым.
+     *
+     * Отступа сверху тоже больше нет: два блока одного цвета, разделённые
+     * пустотой, читались как обрыв вёрстки. Теперь их разделяет тонкая
+     * линия, и подвал читается как одна область.
+     */
     <div
       style={{
-        margin: "40px 0 0",
-        padding: "28px 32px",
+        margin: 0,
+        padding: "28px 0 32px",
         background: "var(--paper2)",
-        borderTop: "3px solid var(--ink)",
+        borderTop: "1px solid var(--rule)",
         borderBottom: "1px solid var(--rule)",
       }}
     >
+      <div
+        style={{
+          maxWidth: 780,
+          margin: "0 auto",
+          padding: "0 40px",
+          boxSizing: "border-box",
+        }}
+      >
       <div
         style={{
           fontFamily: "var(--mono)",
@@ -98,6 +117,7 @@ export default function FooterAI() {
           такую же строку у кнопки «Читать оригинал».
           Теперь оговорка живёт в одном месте: рядом с этой кнопкой
           (pages/newsAI/NewsArticle.jsx), где ей и место. */}
+      </div>
     </div>
   );
 }
