@@ -144,6 +144,7 @@ const AdminVerificationPage = lazy(() => import("./pages/admin/ops/AdminVerifica
 const AdminSecurityPage = lazy(() => import("./pages/admin/ops/AdminSecurityPage.jsx"));
 const AdminReviewsPage = lazy(() => import("./pages/admin/ops/AdminReviewsPage.jsx"));
 const AdminConferencesPage = lazy(() => import("./pages/admin/ops/AdminConferencesPage.jsx"));
+const AdminNewsEnginePage = lazy(() => import("./pages/admin/ops/AdminNewsEnginePage.jsx"));
 const AdminSystemPage = lazy(() => import("./pages/admin/ops/AdminSystemPage.jsx"));
 const AdminFeaturesPage = lazy(() => import("./pages/admin/ops/AdminFeaturesPage.jsx"));
 const AdminDatabasePage = lazy(() => import("./pages/admin/database/AdminDatabasePage.jsx"));
@@ -3080,6 +3081,10 @@ function App() {
               {/* Модерация конференций: карточки лежат в новостном движке,
                   backend ходит туда по внутреннему токену. Публикует человек —
                   автопубликация недопустима, см. страницу. */}
+              {/* Управление фоновыми задачами движка: генерация статей,
+                  перевод, сбор новостей. Раньше выключалось только правкой
+                  .env с перезапуском процесса. */}
+              <Route path="news-engine" element={<AdminNewsEnginePage />} />
               <Route path="conferences" element={<AdminConferencesPage />} />
               <Route path="features" element={<AdminFeaturesPage />} />
               <Route path="system" element={<AdminSystemPage />} />

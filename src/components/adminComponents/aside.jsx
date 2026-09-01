@@ -62,6 +62,15 @@ export default function Aside() {
             </Link>
           </li>
 
+          {/* ─── Движок новостей ─── */}
+          <li className="nav-heading" data-sec="news-engine">Движок новостей</li>
+          <li className="nav-item" data-sec="news-engine">
+            <Link className="nav-link collapsed" to="news-engine">
+              <i className="bi bi-toggles"></i>
+              <span>Генерация и перевод</span>
+            </Link>
+          </li>
+
           {/* ─── Конференции ─── */}
           <li className="nav-heading" data-sec="conferences">Конференции</li>
           <li className="nav-item" data-sec="conferences">
