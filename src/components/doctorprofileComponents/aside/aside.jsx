@@ -28,6 +28,7 @@ import {
   LuBookMarked,
   LuLibraryBig,
   LuCalendarDays,
+  LuClapperboard,
 } from "react-icons/lu";
 import { TbStethoscope } from "react-icons/tb";
 
@@ -518,6 +519,16 @@ export default function Aside() {
               <LuBookMarked />
             </span>
             {t("medical_codes", { defaultValue: "Справочник кодов" })}
+          </NavLink>
+
+          {/* Студия медицинских фильмов (modules/videra). Рядом со
+              справочником кодов: это тоже рабочий инструмент приёма — чем
+              объяснить больному операцию, а не учебный материал. */}
+          <NavLink className={itemClass} to="/doctor/videra">
+            <span className="dp2-icon">
+              <LuClapperboard />
+            </span>
+            {t("videra.menu", { defaultValue: "Снять фильм" })}
           </NavLink>
 
           {/* Доказательная медицина (modules/ebm). Рядом со справочником

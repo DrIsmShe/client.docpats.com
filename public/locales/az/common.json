@@ -2322,5 +2322,15 @@
     "chunkText": "Tətbiqin bir hissəsi yüklənmədi. Adətən səhifəni yeniləmək kömək edir.",
     "otherText": "Səhifə göstərilərkən xəta baş verdi. Məlumatlar itməyib.",
     "reload": "Səhifəni yenilə"
+  },
+  "videra": {
+    "menu": "Film çək",
+    "title": "Tibbi film studiyası",
+    "what": "Qısa izahlı film yığın: nə göstərəcəyinizi seçin — sümük, damar, orqan və ya öz şəkliniz, — sonra kameranın hərəkətini və mətni təyin edin. Studiya onu özü səsləndirir və videonu yığır.",
+    "free": "İlk üç film pulsuzdur, müddət məhdudiyyəti yoxdur.",
+    "open": "Film çək",
+    "opening": "Açılır…",
+    "off": "Studiya hazırda əlçatan deyil. Bundan artıq xəbərimiz var.",
+    "failed": "Studiyanı açmaq alınmadı. Yenidən cəhd edin."
   }
 }

@@ -2321,5 +2321,15 @@
     "chunkText": "Uygulamanın bir bölümü yüklenemedi. Genellikle sayfayı yenilemek yardımcı olur.",
     "otherText": "Sayfa görüntülenirken bir hata oluştu. Veriler kaybolmadı.",
     "reload": "Sayfayı yenile"
+  },
+  "videra": {
+    "menu": "Film çek",
+    "title": "Tıbbi film stüdyosu",
+    "what": "Kısa bir açıklayıcı film hazırlayın: neyi göstereceğinizi seçin — bir kemik, bir damar, bir organ ya da kendi resminiz — sonra kamera hareketini ve metni belirleyin. Stüdyo filmi kendisi seslendirir ve videoyu birleştirir.",
+    "free": "İlk üç film ücretsizdir, süre sınırı yoktur.",
+    "open": "Film çek",
+    "opening": "Açılıyor…",
+    "off": "Stüdyo şu anda kullanılamıyor. Bundan haberimiz var.",
+    "failed": "Stüdyo açılamadı. Lütfen tekrar deneyin."
   }
 }

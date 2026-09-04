@@ -2348,5 +2348,15 @@
     "chunkText": "Part of the application failed to load. Refreshing the page usually helps.",
     "otherText": "An error occurred while rendering the page. No data has been lost.",
     "reload": "Refresh the page"
+  },
+  "videra": {
+    "menu": "Make a film",
+    "title": "Medical film studio",
+    "what": "Put together a short explanatory film: choose what to show — a bone, a vessel, an organ or your own picture — then set the camera movement and the words. The studio narrates it and assembles the video for you.",
+    "free": "The first three films are free, with no time limit.",
+    "open": "Make a film",
+    "opening": "Opening…",
+    "off": "The studio is unavailable right now. We already know about it.",
+    "failed": "Could not open the studio. Please try again."
   }
 }

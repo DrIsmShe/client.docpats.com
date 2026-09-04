@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { GiPostOffice } from "react-icons/gi";
 import { RiHomeOfficeFill } from "react-icons/ri";
 import { GrArticle } from "react-icons/gr";
+import { LuClapperboard } from "react-icons/lu";
 import {
   FaUsers,
   FaFacebookMessenger,
@@ -522,6 +523,14 @@ export default function AsidePatient() {
           to: "/patient/consultation-ai",
           icon: <GrArticle />,
           label: t("ai_medical_consultation"), // ✅ было: "Medical Feed"
+        },
+        // Студия медицинских фильмов. Пациенту она нужна не меньше, чем
+        // врачу: объяснить свою болезнь близким — та же задача, и делать
+        // это готовым фильмом проще, чем словами.
+        {
+          to: "/patient/videra",
+          icon: <LuClapperboard />,
+          label: t("videra.menu", { defaultValue: "Снять фильм" }),
         },
         {
           to: "/patient/invite",
