@@ -71,6 +71,24 @@
   status = 301
   force = true
 
+# Студия медицинских фильмов DP-Videra. Служба живёт на сервере новостей;
+# сквозная передача, а не 301, — адрес в браузере остаётся нашим.
+# Дублируется в public/_redirects, и это не лишнее: Netlify читает тот
+# файл РАНЬШЕ, и без записи там сюда управление не дойдёт — та же
+# причина, что у sitemap выше.
+[[redirects]]
+  from = "/dp-videra/*"
+  to = "https://news-api.docpats.com/videra/:splat"
+  status = 200
+  force = true
+
+# Без косой черты браузер сочтёт app.js соседом папки, а не файлом внутри.
+[[redirects]]
+  from = "/dp-videra"
+  to = "/dp-videra/"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

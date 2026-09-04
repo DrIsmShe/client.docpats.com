@@ -15,6 +15,7 @@ const RESERVED_ROOT = new Set([
   "docs",
   "doctor",
   "dp",
+  "dp-videra",
   "education",
   "login",
   "medical-codes",
