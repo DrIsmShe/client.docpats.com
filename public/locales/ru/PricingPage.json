@@ -57,7 +57,7 @@
     },
     "patient_std": {
       "name": "Plus",
-      "desc": "Для активного использования AI"
+      "desc": "ИИ-помощник по здоровью: вопросы, расшифровка анализов и фильмы"
     },
     "doctor_lite": {
       "name": "Lite",
@@ -144,7 +144,9 @@
     "aiSimulations": "{{count}} AI-симуляций результата операции в месяц",
     "videraFilms": "{{count}} фильма DP-Videra",
     "videraFilmsUnlimited": "Создание фильмов DP-Videra — без лимита",
-    "noAi": "Без функций ИИ"
+    "noAi": "Без функций ИИ",
+    "allFromFree": "Всё из Free, плюс:",
+    "labExplanations": "{{count}} расшифровок анализов в месяц"
   },
   "examAddon": {
     "title": "Подготовка к экзаменам",

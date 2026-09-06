@@ -2327,16 +2327,16 @@
     "menu": "Film çək",
     "title": "Tibbi film studiyası",
     "what": "Qısa izahlı film yığın: nə göstərəcəyinizi seçin — sümük, damar, orqan və ya öz şəkliniz, — sonra kameranın hərəkətini və mətni təyin edin. Studiya onu özü səsləndirir və videonu yığır.",
-    "free": "İlk üç film pulsuzdur, müddət məhdudiyyəti yoxdur.",
+    "free": "İlk filmlər pulsuz",
     "open": "Film çək",
     "opening": "Açılır…",
-    "off": "Studiya hazırda əlçatan deyil. Bundan artıq xəbərimiz var.",
+    "off": "Studiya hazırda əlçatan deyil. Biz artıq bilirik.",
     "failed": "Studiyanı açmaq alınmadı. Yenidən cəhd edin.",
-    "eyebrow": "Tibbi film studiyası",
+    "eyebrow": "Tibbi izahedici filmlər",
     "headline": "Sözlə deyilə bilməyəni göstərin",
-    "lede": "Anatomiyanın hərəkət edib izah etdiyi qısa film yığın — xəstə, tələbə və ya həmkarlar üçün. Səsləndirmə və yığımı studiya öz üzərinə götürür.",
-    "reelNote": "Kitabxanadan hazır strukturlar — bədən sistemləri üzrə 6 500 model.",
-    "stepsTitle": "Üç addım",
+    "lede": "Həkim üçölçülü anatomiyadan qısa film yığır — ürəyin quruluşu, aortanın yolu, yırtığın nə etdiyi. Xəstəyə izah etmək, tələbə ilə təhlil etmək, məruzədə həmkarlara göstərmək üçün. Bədən danışılmır, görünür — və bunun üçün video redaktoru bilmək lazım deyil.",
+    "reelNote": "DP-Videra kitabxanasından hazır strukturlar — bədən sistemləri üzrə 6 500 model.",
+    "stepsTitle": "Boş ekrandan göstərilə bilən filmə qədər",
     "canTitle": "Nə bacarır",
     "f": {
       "heart": "Ürək",
@@ -2352,15 +2352,15 @@
     },
     "step1": {
       "h": "Səhnəni yığın",
-      "p": "Kitabxanadan strukturları seçin, kamera hərəkətini və izah mətnini təyin edin."
+      "p": "Altı yarım min modellik sorğu kitabçasında strukturu tapın, kamera hərəkətini təyin edin, diktorun nə dediyini yazın."
     },
     "step2": {
       "h": "Filmi çəkin",
-      "p": "Kompüterinizdəki proqram videonu saniyələr içində hesablayır və özü səsləndirir."
+      "p": "Proqram videonu səs və altyazılarla sizin video kartınızda hesablayır. Filmin iyirmi saniyəsi — saniyələrlik iş."
     },
     "step3": {
       "h": "Paylaşın",
-      "p": "Hazır film burada görünür — keçid, yerləşdirmə və yükləmə ilə."
+      "p": "Hazır film sayta özü çıxır. Buradan — xəstəyə keçid, yükləmə və ya səhifənizə yerləşdirmə."
     },
     "can1": {
       "h": "6 500 struktur",
@@ -2377,6 +2377,81 @@
     "can4": {
       "h": "Keçid və yerləşdirmə",
       "p": "Filmi bir toxunuşla paylaşın və ya səhifəyə yerləşdirin."
-    }
+    },
+    "note": "DocPats kabinetinizdən açılır — ikinci parol lazım deyil.",
+    "studioOpen": "Studiyanı aç",
+    "howItWorks": "Necə işləyir",
+    "stepsKicker": "Üç addım",
+    "stepsSub": "Nə montaj, nə render fermaları, nə gözləmə. Hər şeyi kompüterinizin video kartı hesablayır — saniyələr içində.",
+    "whoKicker": "Kimə və nə üçün",
+    "whoTitle": "Bir film — çox tətbiq",
+    "whoSub": "Bir dəfə yığdınız — istənilən yerdə göstərirsiniz: kabinetdə, mühazirədə, məqalədə, mesencerdə keçid ilə.",
+    "aud1": {
+      "h": "Xəstəyə",
+      "p": "Diaqnozu izah etmək, əməliyyata hazırlamaq, bədəndə nə baş verdiyini göstərmək. O, anlayır və yadda saxlayır — və gördüyündən daha az qorxur."
+    },
+    "aud2": {
+      "h": "Tələbəyə",
+      "p": "Anatomiyanı, prosesi, təsir mexanizmini təhlil etmək. «Tələbə» səviyyəsi — öz mətni və strukturları, xəstə üçündən daha dərin."
+    },
+    "aud3": {
+      "h": "Mühazirədə və məruzədə",
+      "p": "Filmi təqdimata əlavə edin və ya ekranda açın. Hərəkət edən anatomiya zalı statik slayddan yaxşı saxlayır."
+    },
+    "aud4": {
+      "h": "Məqaləyə və nəşrə",
+      "p": "Filmi materialın içinə bir sətir işarələmə ilə yerləşdirin — oxucu səhifədən çıxmadan baxır."
+    },
+    "aud5": {
+      "h": "Həmkarlara",
+      "p": "Konsiliumda və ya halın təhlilində göstərin: mürəkkəb mənzərəni təsvir etməkdən göstərmək tezdir."
+    },
+    "aud6": {
+      "h": "Klinikada",
+      "p": "Kabinet və ya foyedəki ekranda — xəstə növbə gözləyərkən tez-tez rast gəlinən hallar haqqında qısa filmlər."
+    },
+    "capsKicker": "Nə bacarır",
+    "capsTitle": "İnternetdən şəkillər deyil, əsl anatomiya",
+    "cap1": {
+      "h": "struktur",
+      "p": "Anatomiya, fiziologiya, histologiya, molekullar, hüceyrələr, mikroskopik kəsiklər — və sizin öz şəkilləriniz."
+    },
+    "cap2": {
+      "h": "dil eyni anda",
+      "p": "Rus, ingilis, azərbaycan, türk, ərəb. Bir film — beş tamaşaçı."
+    },
+    "cap3": {
+      "h": "Diktor səsi",
+      "p": "Mətni nitq sintezatoru oxuyur — və ya öz səsinizi yazın. Altyazılar kadrın üzərinə özü düşür."
+    },
+    "cap4": {
+      "h": "Kamera hərəkəti",
+      "p": "Dövrə vurma, yaxınlaşma, toxumaların əriməsi. Mürəkkəb heç bir düz rəsmin göstərə bilmədiyi kimi göstərilir."
+    },
+    "cap5": {
+      "h": "Keçid və yerləşdirmə",
+      "p": "Film xəstədə heç bir giriş olmadan açılır. Və ya birbaşa məqaləyə və kabinetə yerləşdirilir."
+    },
+    "cap6": {
+      "h": "Montaj qurmadan",
+      "p": "Video ilə işləməyi bacarmaq lazım deyil. Yığdınız, basdınız — hazır fayl aldınız."
+    },
+    "getKicker": "Necə əldə etmək",
+    "getTitle": "Proqram dəqiqələrə qurulur",
+    "get1": {
+      "b": "Studiyanı açın",
+      "p": "DocPats kabinetindən — ilk filmi elə brauzerdə yığın."
+    },
+    "get2": {
+      "b": "Proqramı yükləyin",
+      "p": "render üçün — o, filmi kompüterinizin video kartı ilə hesablayır."
+    },
+    "get3": {
+      "b": "Çəkin və paylaşın",
+      "p": "— hazır filmlər bu səhifəyə özləri gəlir."
+    },
+    "finalH": "Danışmaq əvəzinə — göstərin.",
+    "foot1": "DP-Videra · DocPats tərkibində tibbi film studiyası",
+    "foot2": "Modellər: BodyParts3D · Z-Anatomy · HuBMAP — açıq lisenziyalar"
   }
 }

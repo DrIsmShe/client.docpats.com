@@ -2353,16 +2353,16 @@
     "menu": "Make a film",
     "title": "Medical film studio",
     "what": "Put together a short explanatory film: choose what to show — a bone, a vessel, an organ or your own picture — then set the camera movement and the words. The studio narrates it and assembles the video for you.",
-    "free": "The first three films are free, with no time limit.",
+    "free": "First films are free",
     "open": "Make a film",
     "opening": "Opening…",
-    "off": "The studio is unavailable right now. We already know about it.",
-    "failed": "Could not open the studio. Please try again.",
-    "eyebrow": "Medical film studio",
+    "off": "The studio is currently unavailable. We already know.",
+    "failed": "Couldn't open the studio. Please try again.",
+    "eyebrow": "Medical explainer films",
     "headline": "Show what words can't",
-    "lede": "Build a short film where anatomy moves and explains — for a patient, a student, or colleagues. The studio handles the voice-over and assembly.",
-    "reelNote": "Ready structures from the library — 6,500 models by body system.",
-    "stepsTitle": "Three steps",
+    "lede": "The doctor builds a short film from 3D anatomy — how the heart works, where the aorta runs, what a hernia does. To explain to a patient, go through it with a student, show it to colleagues at a talk. The body is seen, not paraphrased — and no video-editing skills are needed.",
+    "reelNote": "Ready structures from the DP-Videra library — 6,500 models by body system.",
+    "stepsTitle": "From a blank screen to a film you can show",
     "canTitle": "What it does",
     "f": {
       "heart": "Heart",
@@ -2378,15 +2378,15 @@
     },
     "step1": {
       "h": "Build the scene",
-      "p": "Pick structures from the library, set the camera motion and the explanation text."
+      "p": "Find a structure in a library of six and a half thousand models, set the camera motion, type what the narrator says."
     },
     "step2": {
       "h": "Render the film",
-      "p": "The program on your computer renders the video in seconds and voices it for you."
+      "p": "The program renders the video with voice and captions on your graphics card. Twenty seconds of film — seconds of work."
     },
     "step3": {
       "h": "Share it",
-      "p": "The finished film shows up here — with a link, embedding and download."
+      "p": "The finished film appears on the site by itself. From here — a link for the patient, download or embed on your page."
     },
     "can1": {
       "h": "6,500 structures",
@@ -2403,6 +2403,81 @@
     "can4": {
       "h": "Link & embed",
       "p": "Share the film in one click or embed it on a page."
-    }
+    },
+    "note": "Opens from your DocPats cabinet — no second password.",
+    "studioOpen": "Open the studio",
+    "howItWorks": "How it works",
+    "stepsKicker": "Three steps",
+    "stepsSub": "No editing, no render farms, no waiting. Your computer's graphics card renders it all — in seconds.",
+    "whoKicker": "Who and what for",
+    "whoTitle": "One film — many uses",
+    "whoSub": "Build it once — show it anywhere: in the office, at a lecture, in an article, by a link in a messenger.",
+    "aud1": {
+      "h": "For the patient",
+      "p": "Explain the diagnosis, prepare for surgery, show what happens in the body. They understand and remember — and fear less what they've seen."
+    },
+    "aud2": {
+      "h": "For the student",
+      "p": "Work through anatomy, a process, a mechanism. The “student” level has its own text and structures, deeper than for a patient."
+    },
+    "aud3": {
+      "h": "At a lecture or talk",
+      "p": "Drop the film into a slide deck or open it on screen. Moving anatomy holds a room better than a static slide."
+    },
+    "aud4": {
+      "h": "In an article or paper",
+      "p": "Embed the film right into the material with one line of markup — the reader watches without leaving the page."
+    },
+    "aud5": {
+      "h": "For colleagues",
+      "p": "Show it at a consult or case review: a complex picture is faster to show than to describe."
+    },
+    "aud6": {
+      "h": "In the clinic",
+      "p": "On a screen in the office or lobby — short films about common conditions while the patient waits."
+    },
+    "capsKicker": "What it does",
+    "capsTitle": "Real anatomy, not pictures off the internet",
+    "cap1": {
+      "h": "structures",
+      "p": "Anatomy, physiology, histology, molecules, cells, microscopic sections — and your own images."
+    },
+    "cap2": {
+      "h": "languages at once",
+      "p": "Russian, English, Azerbaijani, Turkish, Arabic. One film — five audiences."
+    },
+    "cap3": {
+      "h": "Narrator voice",
+      "p": "A speech synthesizer reads the text — or record your own voice. Captions land over the frame by themselves."
+    },
+    "cap4": {
+      "h": "Camera motion",
+      "p": "Orbit, zoom-in, dissolving tissue. The complex is shown as no flat drawing can."
+    },
+    "cap5": {
+      "h": "Link & embed",
+      "p": "The film opens for the patient with no login. Or embed it straight into an article and the cabinet."
+    },
+    "cap6": {
+      "h": "No editing software",
+      "p": "You don't need video skills. Build it, click — get a finished file."
+    },
+    "getKicker": "How to get it",
+    "getTitle": "The program installs in minutes",
+    "get1": {
+      "b": "Open the studio",
+      "p": "from your DocPats cabinet — build your first film right in the browser."
+    },
+    "get2": {
+      "b": "Download the program",
+      "p": "for rendering — it computes the film on your computer's graphics card."
+    },
+    "get3": {
+      "b": "Film and share",
+      "p": "— finished films arrive on this page by themselves."
+    },
+    "finalH": "Show it — instead of telling it.",
+    "foot1": "DP-Videra · medical film studio within DocPats",
+    "foot2": "Models: BodyParts3D · Z-Anatomy · HuBMAP — open licenses"
   }
 }

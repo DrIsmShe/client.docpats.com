@@ -86,6 +86,7 @@ const PATIENT_PLANS = [
       { i18nKey: "features.pLangs" },
       { i18nKey: "features.pInvite" },
       { i18nKey: "features.aiConsultations", vars: { count: 2 } },
+      { i18nKey: "features.labExplanations", vars: { count: 1 } },
       { i18nKey: "features.videraFilms", vars: { count: 3 } },
     ],
   },
@@ -94,22 +95,13 @@ const PATIENT_PLANS = [
     highlight: true,
     cta: "subscribe",
     ctaPath: "/pricing/checkout?plan=patient_std",
+    // «Всё из Free, плюс:» — на витрине не повторяем 14 одинаковых строк, а
+    // сразу показываем ОТЛИЧИЯ. Иначе разница между Free и Plus (ИИ) тонет в
+    // списке общего. Позиционирование — в plans.patient_std.desc.
     features: [
-      { i18nKey: "features.pFullHistory" },
-      { i18nKey: "features.pLabResults" },
-      { i18nKey: "features.pPrescriptions" },
-      { i18nKey: "features.pStudyFiles" },
-      { i18nKey: "features.pBooking" },
-      { i18nKey: "features.pVideoUnlimited" },
-      { i18nKey: "features.pChat" },
-      { i18nKey: "features.pConsent" },
-      { i18nKey: "features.pRevoke" },
-      { i18nKey: "features.pMyDoctors" },
-      { i18nKey: "features.pExport" },
-      { i18nKey: "features.pArticles" },
-      { i18nKey: "features.pLangs" },
-      { i18nKey: "features.pInvite" },
+      { i18nKey: "features.allFromFree", strong: true },
       { i18nKey: "features.aiConsultations", vars: { count: 15 } },
+      { i18nKey: "features.labExplanations", vars: { count: 20 } },
       { i18nKey: "features.videraFilmsUnlimited" },
     ],
   },
@@ -494,7 +486,7 @@ function PlanCard({ plan, period, t, currentPlanKey, paymentsEnabled }) {
                 </span>
                 <span
                   className={f.off ? "text-muted" : ""}
-                  style={{ fontSize: 13, lineHeight: 1.45 }}
+                  style={{ fontSize: 13, lineHeight: 1.45, fontWeight: f.strong ? 700 : 400 }}
                 >
                   {t(f.i18nKey, f.vars || {})}
                 </span>

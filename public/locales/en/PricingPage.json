@@ -57,7 +57,7 @@
     },
     "patient_std": {
       "name": "Plus",
-      "desc": "For active AI usage"
+      "desc": "Your AI health assistant: questions, lab explanations and films"
     },
     "doctor_lite": {
       "name": "Lite",
@@ -144,7 +144,9 @@
     "aiSimulations": "{{count}} AI surgical outcome simulations per month",
     "videraFilms": "{{count}} DP-Videra films",
     "videraFilmsUnlimited": "DP-Videra film creation — unlimited",
-    "noAi": "No AI features"
+    "noAi": "No AI features",
+    "allFromFree": "Everything in Free, plus:",
+    "labExplanations": "{{count}} lab-result explanations per month"
   },
   "examAddon": {
     "title": "Exam preparation",

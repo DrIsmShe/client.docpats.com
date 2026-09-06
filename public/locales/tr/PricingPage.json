@@ -57,7 +57,7 @@
     },
     "patient_std": {
       "name": "Plus",
-      "desc": "Aktif AI kullanımı için"
+      "desc": "Sağlık için yapay zekâ asistanı: sorular, tahlil açıklamaları ve filmler"
     },
     "doctor_lite": {
       "name": "Lite",
@@ -144,7 +144,9 @@
     "aiSimulations": "Ayda {{count}} AI ameliyat sonucu simülasyonu",
     "videraFilms": "{{count}} DP-Videra filmi",
     "videraFilmsUnlimited": "DP-Videra film oluşturma — sınırsız",
-    "noAi": "Yapay zekâ özellikleri yok"
+    "noAi": "Yapay zekâ özellikleri yok",
+    "allFromFree": "Free'deki her şey, ayrıca:",
+    "labExplanations": "Ayda {{count}} tahlil açıklaması"
   },
   "examAddon": {
     "title": "Sınavlara hazırlık",

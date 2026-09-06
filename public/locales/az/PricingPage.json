@@ -57,7 +57,7 @@
     },
     "patient_std": {
       "name": "Plus",
-      "desc": "Aktiv AI istifadəsi üçün"
+      "desc": "Sağlamlıq üzrə süni intellekt köməkçisi: suallar, analiz açıqlamaları və filmlər"
     },
     "doctor_lite": {
       "name": "Lite",
@@ -144,7 +144,9 @@
     "aiSimulations": "Ayda {{count}} AI əməliyyat nəticəsi simulyasiyası",
     "videraFilms": "{{count}} DP-Videra filmi",
     "videraFilmsUnlimited": "DP-Videra film yaratma — limitsiz",
-    "noAi": "Süni intellekt funksiyaları yoxdur"
+    "noAi": "Süni intellekt funksiyaları yoxdur",
+    "allFromFree": "Free-dəki hər şey, üstəlik:",
+    "labExplanations": "Ayda {{count}} analiz açıqlaması"
   },
   "examAddon": {
     "title": "İmtahanlara hazırlıq",

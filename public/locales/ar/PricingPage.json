@@ -57,7 +57,7 @@
     },
     "patient_std": {
       "name": "Plus",
-      "desc": "للاستخدام النشط للذكاء الاصطناعي"
+      "desc": "مساعدك الصحي بالذكاء الاصطناعي: أسئلة وتفسير تحاليل وأفلام"
     },
     "doctor_lite": {
       "name": "Lite",
@@ -144,7 +144,9 @@
     "aiSimulations": "{{count}} محاكاة بالذكاء الاصطناعي لنتيجة العملية شهريًا",
     "videraFilms": "{{count}} أفلام DP-Videra",
     "videraFilmsUnlimited": "إنشاء أفلام DP-Videra — بلا حد",
-    "noAi": "بدون ميزات الذكاء الاصطناعي"
+    "noAi": "بدون ميزات الذكاء الاصطناعي",
+    "allFromFree": "كل ما في Free، بالإضافة إلى:",
+    "labExplanations": "{{count}} تفسيرات تحاليل شهريًا"
   },
   "examAddon": {
     "title": "التحضير للامتحانات",
