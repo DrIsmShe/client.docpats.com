@@ -53,7 +53,7 @@
     "patient_free": {
       "name": "Free",
       "desc": "Qeydiyyatdan sonra daimi əsas giriş",
-      "trialNote": "İlk 3 ay — iki əvəzinə ayda 10 köməkçi konsultasiyası"
+      "trialNote": "Qeydiyyatdan sonra — 14 gün tam giriş, sonra pulsuz tarif"
     },
     "patient_std": {
       "name": "Plus",
@@ -67,7 +67,7 @@
     "doctor_basic": {
       "name": "Start",
       "desc": "Kiçik praktika",
-      "trialNote": "İlk 3 ay pulsuz olaraq məhz bu tarifin imkanları verilir"
+      "trialNote": "Qeydiyyatdan 14 gün — hər şey daxil, sonra süni intellektsiz pulsuz tarif"
     },
     "doctor_super": {
       "name": "Growth",
@@ -91,6 +91,11 @@
       "name": "Enterprise",
       "desc": "Böyük tibbi mərkəzlər üçün",
       "trialNote": "30 gün pulsuz, sonra ödənişli. Ödəniş olmadan pasiyent kartları əlçatan qalır, lakin yeni qeydlər yaradılmır"
+    },
+    "doctor_free": {
+      "name": "Free",
+      "desc": "Həmişə pulsuz — süni intellektdən başqa hər şey",
+      "trialNote": "Qeydiyyatdan sonra — 14 gün hər şey daxil (Pro səviyyəsi), sonra süni intellektsiz pulsuz tarif"
     }
   },
   "features": {
@@ -136,7 +141,10 @@
     "pArticles": "Tibbi məqalələr və xəbərlər",
     "pLangs": "İnterfeys və yazışma beş dildə",
     "pInvite": "Yaxınınızı dəvət edin — o öz hesabını açacaq",
-    "aiSimulations": "Ayda {{count}} AI əməliyyat nəticəsi simulyasiyası"
+    "aiSimulations": "Ayda {{count}} AI əməliyyat nəticəsi simulyasiyası",
+    "videraFilms": "{{count}} DP-Videra filmi",
+    "videraFilmsUnlimited": "DP-Videra film yaratma — limitsiz",
+    "noAi": "Süni intellekt funksiyaları yoxdur"
   },
   "examAddon": {
     "title": "İmtahanlara hazırlıq",

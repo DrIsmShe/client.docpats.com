@@ -53,7 +53,7 @@
     "patient_free": {
       "name": "Free",
       "desc": "Basic access forever after registration",
-      "trialNote": "First 3 months — 10 assistant consultations a month instead of two"
+      "trialNote": "After sign-up — 14 days of full access, then the free plan"
     },
     "patient_std": {
       "name": "Plus",
@@ -67,7 +67,7 @@
     "doctor_basic": {
       "name": "Start",
       "desc": "A small practice",
-      "trialNote": "The capabilities of this plan are what the first 3 months give you for free"
+      "trialNote": "14 days after sign-up — everything included, then the free plan without AI"
     },
     "doctor_super": {
       "name": "Growth",
@@ -91,6 +91,11 @@
       "name": "Enterprise",
       "desc": "For large medical centers",
       "trialNote": "30 days free, then paid. Without payment patient records stay accessible, but no new entries can be created"
+    },
+    "doctor_free": {
+      "name": "Free",
+      "desc": "Free forever — everything except AI",
+      "trialNote": "After sign-up — 14 days everything included (Pro level), then the free plan without AI"
     }
   },
   "features": {
@@ -136,7 +141,10 @@
     "pArticles": "Medical articles and news",
     "pLangs": "Interface and messaging in five languages",
     "pInvite": "Invite a relative — they get their own account",
-    "aiSimulations": "{{count}} AI surgical outcome simulations per month"
+    "aiSimulations": "{{count}} AI surgical outcome simulations per month",
+    "videraFilms": "{{count}} DP-Videra films",
+    "videraFilmsUnlimited": "DP-Videra film creation — unlimited",
+    "noAi": "No AI features"
   },
   "examAddon": {
     "title": "Exam preparation",

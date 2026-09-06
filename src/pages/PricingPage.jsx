@@ -86,6 +86,7 @@ const PATIENT_PLANS = [
       { i18nKey: "features.pLangs" },
       { i18nKey: "features.pInvite" },
       { i18nKey: "features.aiConsultations", vars: { count: 2 } },
+      { i18nKey: "features.videraFilms", vars: { count: 3 } },
     ],
   },
   {
@@ -109,32 +110,33 @@ const PATIENT_PLANS = [
       { i18nKey: "features.pLangs" },
       { i18nKey: "features.pInvite" },
       { i18nKey: "features.aiConsultations", vars: { count: 15 } },
+      { i18nKey: "features.videraFilmsUnlimited" },
     ],
   },
 ];
 
 const DOCTOR_PLANS = [
   {
-    // «Базовый» — вход для врачей: лимиты втрое меньше тарифа Start
-    // (doctor_basic) за $3/мес. Только для врачей (вкладка «Для врачей»).
-    // Триал «первые 6 месяцев как Doctor Growth» перенесён сюда со Start.
-    key: "doctor_lite",
+    // Free (тарифная сетка v5) — бесплатный вход для врачей, заменил платный
+    // Lite. Рабочие не-ИИ функции на уровне бывшего Lite + 3 фильма, но ВЕСЬ
+    // ИИ выключен (жёсткий гейт planHasAI на сервере). Регистрация, не оплата.
+    key: "doctor_free",
+    free: true,
     highlight: false,
-    cta: "subscribe",
-    ctaPath: "/pricing/checkout?plan=doctor_lite",
+    cta: "register",
+    ctaPath: "/registration",
     showTrialNote: true,
     features: [
       { i18nKey: "features.examQuestions", vars: { count: 500 } },
       { i18nKey: "features.doctorProfile" },
-      { i18nKey: "features.aiAnalyses", vars: { count: 5 } },
-      { i18nKey: "features.aiArticles", vars: { count: 1 } },
-      { i18nKey: "features.aiPatientConsultations", vars: { count: 3 } },
       { i18nKey: "features.patientsInOffice", vars: { count: 30 } },
       { i18nKey: "features.storedFiles", vars: { count: 400 } },
       { i18nKey: "features.videoMinutes", vars: { count: 60 } },
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
-      { i18nKey: "features.aiSimulations", vars: { count: 5 } },
+      { i18nKey: "features.videraFilms", vars: { count: 3 } },
+      // Единственная зачёркнутая строка — честная граница тарифа: ИИ здесь нет.
+      { i18nKey: "features.noAi", off: true },
     ],
   },
   {
@@ -160,6 +162,7 @@ const DOCTOR_PLANS = [
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.aiSimulations", vars: { count: 15 } },
+      { i18nKey: "features.videraFilmsUnlimited" },
     ],
   },
   {
@@ -183,6 +186,7 @@ const DOCTOR_PLANS = [
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.aiSimulations", vars: { count: 40 } },
+      { i18nKey: "features.videraFilmsUnlimited" },
     ],
   },
   {
@@ -214,6 +218,7 @@ const DOCTOR_PLANS = [
       },
       { i18nKey: "features.anthropometryTools" },
       { i18nKey: "features.aiSimulations", vars: { count: 100 } },
+      { i18nKey: "features.videraFilmsUnlimited" },
     ],
   },
 ];
@@ -240,6 +245,7 @@ const CLINIC_PLANS = [
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.clinicAnalytics", off: true },
       { i18nKey: "features.aiSimulations", vars: { count: 100 } },
+      { i18nKey: "features.videraFilmsUnlimited" },
     ],
   },
   {
@@ -262,6 +268,7 @@ const CLINIC_PLANS = [
       { i18nKey: "features.directPayments" },
       { i18nKey: "features.clinicAnalytics" },
       { i18nKey: "features.aiSimulations", vars: { count: 250 } },
+      { i18nKey: "features.videraFilmsUnlimited" },
     ],
   },
   {
@@ -289,6 +296,7 @@ const CLINIC_PLANS = [
       { i18nKey: "features.extendedAnalytics" },
       { i18nKey: "features.personalManager" },
       { i18nKey: "features.aiSimulations", vars: { count: 500 } },
+      { i18nKey: "features.videraFilmsUnlimited" },
     ],
   },
 ];

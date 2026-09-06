@@ -53,7 +53,7 @@
     "patient_free": {
       "name": "Free",
       "desc": "Kayıt sonrası kalıcı temel erişim",
-      "trialNote": "İlk 3 ay — iki yerine ayda 10 asistan danışması"
+      "trialNote": "Kayıttan sonra — 14 gün tam erişim, ardından ücretsiz plan"
     },
     "patient_std": {
       "name": "Plus",
@@ -67,7 +67,7 @@
     "doctor_basic": {
       "name": "Start",
       "desc": "Küçük bir muayenehane",
-      "trialNote": "İlk 3 ay ücretsiz verilen, tam olarak bu tarifenin olanaklarıdır"
+      "trialNote": "Kayıttan sonra 14 gün — her şey dahil, ardından yapay zekâsız ücretsiz plan"
     },
     "doctor_super": {
       "name": "Growth",
@@ -91,6 +91,11 @@
       "name": "Enterprise",
       "desc": "Büyük tıp merkezleri için",
       "trialNote": "30 gün ücretsiz, sonrası ücretli. Ödeme olmadan hasta kayıtları erişilebilir kalır, ancak yeni kayıt oluşturulamaz"
+    },
+    "doctor_free": {
+      "name": "Free",
+      "desc": "Sonsuza kadar ücretsiz — yapay zekâ hariç her şey",
+      "trialNote": "Kayıttan sonra — 14 gün her şey dahil (Pro seviyesi), ardından yapay zekâsız ücretsiz plan"
     }
   },
   "features": {
@@ -136,7 +141,10 @@
     "pArticles": "Tıbbi makaleler ve haberler",
     "pLangs": "Arayüz ve yazışma beş dilde",
     "pInvite": "Bir yakınınızı davet edin — kendi hesabını açar",
-    "aiSimulations": "Ayda {{count}} AI ameliyat sonucu simülasyonu"
+    "aiSimulations": "Ayda {{count}} AI ameliyat sonucu simülasyonu",
+    "videraFilms": "{{count}} DP-Videra filmi",
+    "videraFilmsUnlimited": "DP-Videra film oluşturma — sınırsız",
+    "noAi": "Yapay zekâ özellikleri yok"
   },
   "examAddon": {
     "title": "Sınavlara hazırlık",
