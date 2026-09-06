@@ -2357,6 +2357,52 @@
     "open": "Make a film",
     "opening": "Opening…",
     "off": "The studio is unavailable right now. We already know about it.",
-    "failed": "Could not open the studio. Please try again."
+    "failed": "Could not open the studio. Please try again.",
+    "eyebrow": "Medical film studio",
+    "headline": "Show what words can't",
+    "lede": "Build a short film where anatomy moves and explains — for a patient, a student, or colleagues. The studio handles the voice-over and assembly.",
+    "reelNote": "Ready structures from the library — 6,500 models by body system.",
+    "stepsTitle": "Three steps",
+    "canTitle": "What it does",
+    "f": {
+      "heart": "Heart",
+      "brain": "Brain",
+      "lung": "Lungs",
+      "skull": "Skull"
+    },
+    "r": {
+      "cardio": "Cardiovascular system",
+      "nervous": "Nervous system",
+      "resp": "Respiratory system",
+      "skeletal": "Skeleton"
+    },
+    "step1": {
+      "h": "Build the scene",
+      "p": "Pick structures from the library, set the camera motion and the explanation text."
+    },
+    "step2": {
+      "h": "Render the film",
+      "p": "The program on your computer renders the video in seconds and voices it for you."
+    },
+    "step3": {
+      "h": "Share it",
+      "p": "The finished film shows up here — with a link, embedding and download."
+    },
+    "can1": {
+      "h": "6,500 structures",
+      "p": "Bones, vessels, organs and nerves — by body system."
+    },
+    "can2": {
+      "h": "Five languages",
+      "p": "Text and voice-over in Russian, English, Azerbaijani, Turkish and Arabic."
+    },
+    "can3": {
+      "h": "Narrator voice",
+      "p": "The studio reads the explanations aloud — nothing to record."
+    },
+    "can4": {
+      "h": "Link & embed",
+      "p": "Share the film in one click or embed it on a page."
+    }
   }
 }

@@ -2330,6 +2330,52 @@
     "open": "Film çek",
     "opening": "Açılıyor…",
     "off": "Stüdyo şu anda kullanılamıyor. Bundan haberimiz var.",
-    "failed": "Stüdyo açılamadı. Lütfen tekrar deneyin."
+    "failed": "Stüdyo açılamadı. Lütfen tekrar deneyin.",
+    "eyebrow": "Tıbbi film stüdyosu",
+    "headline": "Sözle anlatılamayanı gösterin",
+    "lede": "Anatominin hareket edip açıkladığı kısa bir film oluşturun — hasta, öğrenci ya da meslektaşlar için. Seslendirmeyi ve birleştirmeyi stüdyo üstlenir.",
+    "reelNote": "Kütüphaneden hazır yapılar — vücut sistemlerine göre 6.500 model.",
+    "stepsTitle": "Üç adım",
+    "canTitle": "Neler yapar",
+    "f": {
+      "heart": "Kalp",
+      "brain": "Beyin",
+      "lung": "Akciğerler",
+      "skull": "Kafatası"
+    },
+    "r": {
+      "cardio": "Kardiyovasküler sistem",
+      "nervous": "Sinir sistemi",
+      "resp": "Solunum sistemi",
+      "skeletal": "İskelet"
+    },
+    "step1": {
+      "h": "Sahneyi kurun",
+      "p": "Kütüphaneden yapıları seçin, kamera hareketini ve açıklama metnini belirleyin."
+    },
+    "step2": {
+      "h": "Filmi oluşturun",
+      "p": "Bilgisayarınızdaki program videoyu saniyeler içinde işler ve seslendirir."
+    },
+    "step3": {
+      "h": "Paylaşın",
+      "p": "Bitmiş film burada belirir — bağlantı, gömme ve indirme ile."
+    },
+    "can1": {
+      "h": "6.500 yapı",
+      "p": "Kemikler, damarlar, organlar ve sinirler — vücut sistemlerine göre."
+    },
+    "can2": {
+      "h": "Beş dil",
+      "p": "Metin ve seslendirme Rusça, İngilizce, Azerice, Türkçe ve Arapça."
+    },
+    "can3": {
+      "h": "Anlatıcı sesi",
+      "p": "Stüdyo açıklamaları kendisi sesli okur — kaydetmeye gerek yok."
+    },
+    "can4": {
+      "h": "Bağlantı ve gömme",
+      "p": "Filmi tek dokunuşla paylaşın veya bir sayfaya gömün."
+    }
   }
 }
