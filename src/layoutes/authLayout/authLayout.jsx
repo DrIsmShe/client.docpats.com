@@ -360,6 +360,10 @@ const STYLES = `
 
   /* News link card */
   .dp-news-card-wrap { margin-bottom: 20px; width: 100%; min-width: 0; }
+  /* Список карточек-ссылок — в ДВЕ КОЛОНКИ. Вертикальные отступы держат
+     сами карточки (margin-bottom), между колонками — зазор 20px. На узком
+     экране схлопывается в одну колонку (см. медиазапрос ниже). */
+  .dp-news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; align-items: start; }
   .dp-news-card {
     display: flex; align-items: stretch; text-decoration: none;
     background: rgba(255,255,255,.1);
@@ -762,6 +766,7 @@ const STYLES = `
 
     /* Portal buttons — stack */
     .dp-portal-ctas { flex-direction: column; }
+    .dp-news-grid { grid-template-columns: 1fr; }   /* карточки — в один столбец на узком экране */
     .dp-portal-btn { flex: none; width: 100%; min-width: 0; max-width: 100%; }
     .dp-portal-name { font-size: 13px; }
 
@@ -1313,6 +1318,11 @@ export default function AuthLayout() {
                       </div>
                     </motion.div>
                   )}
+                  {/* Ссылки-карточки — в две колонки (.dp-news-grid). Обёртка
+                      — motion.div с variants={container}: плавную «show» она
+                      наследует от родителя и раздаёт карточкам, иначе они
+                      остались бы скрытыми (item.hidden = opacity 0). */}
+                  <motion.div className="dp-news-grid" variants={container}>
                   {/* Подготовка к экзаменам. Карточка видна всем без
                       регистрации; клик гейтится по роли (см. handleExamPrepClick):
                       врач → /education, остальным — заметка ниже. */}
@@ -1729,6 +1739,7 @@ export default function AuthLayout() {
                       </div>
                     </a>
                   </motion.div>
+                  </motion.div>{/* конец .dp-news-grid — двухколоночного списка */}
 
                   {/* Anthem */}
                   <motion.div variants={item} style={{ marginBottom: 22 }}>
