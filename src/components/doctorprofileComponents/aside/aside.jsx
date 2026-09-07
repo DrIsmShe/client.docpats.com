@@ -531,6 +531,22 @@ export default function Aside() {
             {t("videra.menu", { defaultValue: "Снять фильм" })}
           </NavLink>
 
+          {/* DP-Tube — открытая медиатека готовых фильмов
+              (docpats.com/dp-videra/watch). Это НЕ маршрут React, а отдельная
+              страница студии, поэтому обычная ссылка с полной загрузкой в новой
+              вкладке; вошедший врач узнаётся на ней сам (мост сессии). */}
+          <a
+            className="dp2-item is-chat"
+            href="/dp-videra/watch"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="dp2-icon">
+              <LuLibraryBig />
+            </span>
+            {t("dptube.menu", { defaultValue: "DP-Tube" })}
+          </a>
+
           {/* Доказательная медицина (modules/ebm). Рядом со справочником
               кодов и «Вторым мнением» — это инструмент для решения у постели
               больного, а не учебный материал: врач приходит сюда с конкретным

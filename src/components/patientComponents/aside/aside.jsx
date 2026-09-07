@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { GiPostOffice } from "react-icons/gi";
 import { RiHomeOfficeFill } from "react-icons/ri";
 import { GrArticle } from "react-icons/gr";
-import { LuClapperboard } from "react-icons/lu";
+import { LuClapperboard, LuLibraryBig } from "react-icons/lu";
 import {
   FaUsers,
   FaFacebookMessenger,
@@ -531,6 +531,16 @@ export default function AsidePatient() {
           to: "/patient/videra",
           icon: <LuClapperboard />,
           label: t("videra.menu", { defaultValue: "Снять фильм" }),
+        },
+        // DP-Tube — открытая медиатека готовых фильмов. Внешняя страница
+        // (docpats.com/dp-videra/watch), не маршрут React → external:true,
+        // чтобы браузер открыл её полной загрузкой (в новой вкладке), а не
+        // отдал внутреннему роутеру. Вошедший пациент узнаётся на ней сам.
+        {
+          to: "/dp-videra/watch",
+          external: true,
+          icon: <LuLibraryBig />,
+          label: t("dptube.menu", { defaultValue: "DP-Tube" }),
         },
         {
           to: "/patient/invite",
