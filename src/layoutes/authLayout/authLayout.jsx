@@ -1629,7 +1629,7 @@ export default function AuthLayout() {
                       студии (docpats.com/dp-videra/), а не на маршрут React —
                       поэтому обычный <a href> с полной перезагрузкой. */}
                   <motion.div className="dp-news-card-wrap" variants={item}>
-                    <a href="/dp-videra/" className="dp-news-card">
+                    <a href="/dp-videra/watch" className="dp-news-card">
                       <div
                         className="dp-news-card-accent"
                         style={{ background: "linear-gradient(180deg, #f59e0b, #d9622f)" }}
