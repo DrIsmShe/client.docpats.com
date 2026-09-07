@@ -1611,6 +1611,41 @@ export default function AuthLayout() {
                     </a>
                   </motion.div>
                   {/* News card */}
+                  {/* DP-Videra — студия медицинских фильмов прямо в браузере.
+                      Карточка видна всем без входа и говорит каждому своё:
+                      гостю — «посмотрите примеры», пациенту — «понятное
+                      объяснение диагноза», врачу — «своя студия, соберите
+                      фильм за минуты». Ссылка ведёт на ОТДЕЛЬНУЮ страницу
+                      студии (docpats.com/dp-videra/), а не на маршрут React —
+                      поэтому обычный <a href> с полной перезагрузкой. */}
+                  <motion.div className="dp-news-card-wrap" variants={item}>
+                    <a href="/dp-videra/" className="dp-news-card">
+                      <div
+                        className="dp-news-card-accent"
+                        style={{ background: "linear-gradient(180deg, #f59e0b, #d9622f)" }}
+                      />
+                      <div className="dp-news-card-body">
+                        <div className="dp-news-card-icon">🎬</div>
+                        <div className="dp-news-card-copy">
+                          <div className="dp-news-card-tag">
+                            {t("videraTag", {
+                              defaultValue: "DP-VIDERA · СТУДИЯ МЕДФИЛЬМОВ",
+                            })}
+                          </div>
+                          <div className="dp-news-card-text">
+                            {t("videraText", {
+                              defaultValue:
+                                "Короткие разъяснительные фильмы по анатомии — прямо в браузере, без установки. Гостям — примеры, пациентам — понятное объяснение диагноза, врачам — своя студия: соберите фильм за минуты.",
+                            })}
+                          </div>
+                        </div>
+                        <span className="dp-news-card-arrow">
+                          <Arrow />
+                        </span>
+                      </div>
+                    </a>
+                  </motion.div>
+
                   {/* Конференции. Карточка видна всем без регистрации: список
                       конференций открыт, а программа и условия внутри
                       открываются врачу после входа. Прятать карточку от гостя

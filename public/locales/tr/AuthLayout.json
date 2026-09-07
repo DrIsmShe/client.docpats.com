@@ -180,5 +180,7 @@
   "portalPatientsOnly": "Hasta portalı yalnızca hastalar içindir. Farklı bir rolle giriş yaptınız.",
   "portalGoToCabinet": "Kendi kabinenize gidin",
   "conferencesTag": "DOCPATS · KONGRELER",
-  "conferencesText": "Tıbbi kongreler — program, kayıt son tarihleri, katılım koşulları"
+  "conferencesText": "Tıbbi kongreler — program, kayıt son tarihleri, katılım koşulları",
+  "videraTag": "DP-VIDERA · TIBBİ FİLM STÜDYOSU",
+  "videraText": "Anatomi üzerine kısa açıklayıcı filmler — doğrudan tarayıcıda, kurulum yok. Ziyaretçilere örnekler, hastalara tanının anlaşılır açıklaması, hekimlere kendi stüdyosu: filmi dakikalar içinde kurun."
 }

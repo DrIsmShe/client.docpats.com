@@ -180,5 +180,7 @@
   "portalPatientsOnly": "The Patient Portal is available to patients only. You are signed in with a different role.",
   "portalGoToCabinet": "Go to your cabinet",
   "conferencesTag": "DOCPATS · CONFERENCES",
-  "conferencesText": "Medical conferences — programme, registration deadlines, terms of participation"
+  "conferencesText": "Medical conferences — programme, registration deadlines, terms of participation",
+  "videraTag": "DP-VIDERA · MEDICAL FILM STUDIO",
+  "videraText": "Short explanatory anatomy films — right in the browser, no install. Guests see examples, patients get a clear explanation of the diagnosis, doctors get their own studio: build a film in minutes."
 }
