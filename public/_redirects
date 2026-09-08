@@ -8,6 +8,9 @@
 /sitemap-*         https://backend.docpats.com/sitemap-:splat         200
 /rss.xml           https://backend.docpats.com/rss.xml           200
 /news-sitemap.xml  https://backend.docpats.com/news-sitemap.xml  200
+# Встраивание роликов на чужих сайтах: страницу плеера отдаёт бэкенд —
+# ему нужно снять запрет на фрейм, который для остального сайта обязателен.
+/embed/*           https://backend.docpats.com/api/v1/video/embed/:splat  200
 # ПОЧЕМУ ЗДЕСЬ НЕТ ПРАВИЛ «404 на несуществующий файл».
 #
 # Из-за catch-all ниже промах в имени файла ничем себя не выдаёт: og-image.jpg

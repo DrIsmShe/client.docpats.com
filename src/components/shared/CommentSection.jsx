@@ -33,6 +33,17 @@ export default function CommentSection({
   // отправке упиралась в отказ сервера. Показать обсуждение и не предлагать
   // писать в него — это и был замысел вызывающей стороны.
   readOnly = false,
+  // Заголовок с числом и переключателем порядка. По умолчанию выключен:
+  // компонент стоит под врачами и статьями, и менять там вид обсуждения
+  // ради одной новой страницы нельзя.
+  showHeader = false,
+  // Жалоба на комментарий. Компонент общий, а очередь разбора пока одна —
+  // для обсуждений под роликами; поэтому вызывающий передаёт обработчик
+  // сам, а без него кнопки просто нет.
+  onReport,
+  // Сколько комментариев загрузилось — вызывающему, чтобы он мог написать
+  // «N комментариев» рядом, не запрашивая их второй раз.
+  onCountChange,
 }) {
   const { t } = useTranslation("CommentSection");
 
@@ -47,6 +58,9 @@ export default function CommentSection({
   const [showPicker, setShowPicker] = useState(false);
   const [showReplyPicker, setShowReplyPicker] = useState(false);
   const [currentUserId, setCurrentUserId] = useState(null);
+  // Порядок: сначала новые или сначала обсуждаемые. Хранится здесь, а не
+  // на сервере, — это взгляд читателя, а не свойство обсуждения.
+  const [order, setOrder] = useState("new");
 
   // ================= USER =================
   useEffect(() => {
@@ -79,7 +93,15 @@ export default function CommentSection({
         `${API_BASE}/comments/add-comments/by-ref/${refId}`,
         { withCredentials: true },
       );
-      setComments(res.data.comments || []);
+      const список = res.data.comments || [];
+      setComments(список);
+      // Считаем вместе с ответами: под роликом «80 комментариев» означает
+      // весь разговор, а не только его первые реплики.
+      if (onCountChange) {
+        onCountChange(
+          список.reduce((сумма, к) => сумма + 1 + (к.replies?.length || 0), 0),
+        );
+      }
     } catch (err) {
       console.error("Load error:", err.message);
       setError(t("errors.load"));
@@ -282,6 +304,18 @@ export default function CommentSection({
                 {t("reply")}
               </button>
 
+              {/* На свой комментарий не жалуются: для него рядом есть
+                  «удалить», и это честнее, чем очередь разбора. */}
+              {onReport && String(comment.author?._id) !== String(currentUserId) && (
+                <button
+                  className="btn btn-sm btn-outline-secondary"
+                  onClick={() => onReport(comment._id)}
+                  title={t("report", { defaultValue: "Пожаловаться" })}
+                >
+                  ⚑
+                </button>
+              )}
+
               {String(comment.author?._id) === String(currentUserId) &&
                 canEdit(comment.createdAt) && (
                   <>
@@ -358,9 +392,41 @@ export default function CommentSection({
     if (refId) fetchComments();
   }, [refId]);
 
+  // Копия перед сортировкой: sort меняет массив на месте, а он лежит в
+  // состоянии — правка на месте не вызвала бы перерисовку.
+  const порядокКомментариев =
+    order === "top"
+      ? [...comments].sort(
+          (a, b) => (b.likes?.length || 0) - (a.likes?.length || 0),
+        )
+      : comments;
+
   return (
     <div className="mt-4">
-      <h4 className="mb-3">💬 {t("title")}</h4>
+      {showHeader ? (
+        <div className="d-flex align-items-center gap-3 mb-3">
+          <h4 className="mb-0">
+            {t("countTitle", {
+              count: comments.reduce(
+                (сумма, к) => сумма + 1 + (к.replies?.length || 0),
+                0,
+              ),
+              defaultValue: "{{count}} комментариев",
+            })}
+          </h4>
+          <button
+            type="button"
+            className="btn btn-sm btn-link text-decoration-none p-0"
+            onClick={() => setOrder((п) => (п === "new" ? "top" : "new"))}
+          >
+            {order === "new"
+              ? t("orderNew", { defaultValue: "Сначала новые" })
+              : t("orderTop", { defaultValue: "Сначала обсуждаемые" })}
+          </button>
+        </div>
+      ) : (
+        <h4 className="mb-3">💬 {t("title")}</h4>
+      )}
 
       {!readOnly && (
       <form onSubmit={handleCreateComment} className="mb-4">
@@ -398,7 +464,7 @@ export default function CommentSection({
       {loading && <p>{t("loading")}</p>}
       {error && <p className="text-danger">{error}</p>}
 
-      <div>{renderComments(comments)}</div>
+      <div>{renderComments(порядокКомментариев)}</div>
     </div>
   );
 }

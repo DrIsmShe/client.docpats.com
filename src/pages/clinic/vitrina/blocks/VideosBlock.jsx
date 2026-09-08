@@ -17,8 +17,6 @@ import Section from "../components/Section.jsx";
 import { blockBgStyle } from "../lib/utils.js";
 import { fetchClinicVideos } from "../../../../api/video";
 
-const R2 = process.env.REACT_APP_R2_PUBLIC_URL || "";
-
 const CSS = `
 .vt-vids { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
 .vt-vid { display: block; text-decoration: none; color: inherit; border: 1px solid var(--v-border); border-radius: 12px; overflow: hidden; background: var(--v-surface); transition: box-shadow .2s, transform .2s, border-color .2s; }
@@ -66,9 +64,7 @@ export default function VideosBlock({ clinic, config = {} }) {
         {ролики.map((р) => (
           <Link key={р._id} to={`/videos/${р._id}`} className="vt-vid">
             <div className="vt-vid-thumb">
-              {р.media?.posterKey && R2 && (
-                <img src={`${R2}/${р.media.posterKey}`} alt="" loading="lazy" />
-              )}
+              {р.posterUrl && <img src={р.posterUrl} alt="" loading="lazy" />}
               {р.media?.durationSec > 0 && (
                 <span className="vt-vid-dur">{длительностью(р.media.durationSec)}</span>
               )}

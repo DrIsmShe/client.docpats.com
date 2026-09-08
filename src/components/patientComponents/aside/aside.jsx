@@ -546,16 +546,14 @@ export default function AsidePatient() {
           icon: <LuLibraryBig />,
           label: t("videra.library.menu", { defaultValue: "Мои ролики" }),
         },
-        // DP-Tube — открытая медиатека готовых фильмов. Внешняя страница
-        // (docpats.com/dp-videra/watch), не маршрут React → external:true,
-        // чтобы браузер открыл её полной загрузкой (в новой вкладке), а не
-        // отдал внутреннему роутеру. Вошедший пациент узнаётся на ней сам.
+        // Общая витрина платформы: всё опубликованное всеми авторами.
         {
-          to: "/dp-videra/watch",
-          external: true,
+          to: "/videos",
           icon: <LuLibraryBig />,
-          label: t("dptube.menu", { defaultValue: "DP-Tube" }),
+          label: t("videra.gallery.menu", { defaultValue: "Медицинские ролики" }),
         },
+        // Витрина студии убрана из меню: её заменяет своя лента
+        // «Медицинские ролики» ниже — с правами, лицензиями и поиском.
         {
           to: "/patient/invite",
           icon: <FaGift />,

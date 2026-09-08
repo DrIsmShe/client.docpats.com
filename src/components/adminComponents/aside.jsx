@@ -138,6 +138,44 @@ export default function Aside() {
             </Link>
           </li>
 
+          {/* ─── DP-Tube ───
+              Витрина роликов: каталог, полки и разбор жалоб. Отдельной
+              секцией, а не пунктом в «Обзоре»: это три разных занятия —
+              править материал, раскладывать его по полкам и отвечать на
+              заявления людей, — и делают их в разное время. */}
+          <li className="nav-heading" data-sec="dptube">Управление DP-Tube</li>
+          <li className="nav-item" data-sec="dptube">
+            <Link className="nav-link collapsed" to="videos">
+              <i className="bi bi-collection-play"></i>
+              <span>Каталог роликов</span>
+            </Link>
+          </li>
+          <li className="nav-item" data-sec="dptube">
+            <Link className="nav-link collapsed" to="video-categories">
+              <i className="bi bi-tags"></i>
+              <span>Разделы витрины</span>
+            </Link>
+          </li>
+          <li className="nav-item" data-sec="dptube">
+            <Link className="nav-link collapsed" to="video-reports">
+              <i className="bi bi-flag"></i>
+              <span>Жалобы на материалы</span>
+            </Link>
+          </li>
+          <li className="nav-item" data-sec="dptube">
+            {/* Витрина глазами посетителя — открывается в новой вкладке:
+                уходить из панели разбора ради проверки не нужно. */}
+            <a
+              className="nav-link collapsed"
+              href="/videos"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <i className="bi bi-box-arrow-up-right"></i>
+              <span>Открыть витрину</span>
+            </a>
+          </li>
+
           {/* ─── Тарифы и оплата ─── */}
           <li className="nav-heading" data-sec="billing">Тарифы</li>
           <li className="nav-item" data-sec="billing">

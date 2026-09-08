@@ -206,6 +206,10 @@ const PatientVideoTasksPage = lazy(() =>
 // Telegram-канал, поэтому они лежат в корне, а не в зоне кабинета.
 const PublicVideosPage = lazy(() => import("./pages/videra/PublicVideosPage"));
 const PublicVideoPage = lazy(() => import("./pages/videra/PublicVideoPage"));
+// Управление каталогом роликов администратором платформы.
+const AdminVideosPage = lazy(() => import("./pages/admin/video/AdminVideosPage"));
+const AdminReportsPage = lazy(() => import("./pages/admin/video/AdminReportsPage"));
+const AdminVideoCategories = lazy(() => import("./pages/admin/video/AdminVideoCategories"));
 const HomePatientMainPage = lazy(() => import("./pages/patientProfilePages/home/HomePatientMainPage"));
 const PatientHomePage = lazy(() => import("./pages/patientProfilePages/home/PatientHomePage.jsx"));
 const SingleArticleForPatient = lazy(() => import("./pages/patientProfilePages/shared/articles/singleArticle"));
@@ -3088,6 +3092,13 @@ function App() {
               {/* Лучевая диагностика — авторинг и ревью кейсов чтения снимков. */}
               <Route path="docs" element={<AdminDocsPage />} />
               <Route path="radiology" element={<AdminRadiologyCasesPage />} />
+              {/* Каталог видео: правка, архив и удаление любого ролика. */}
+              <Route path="videos" element={<AdminVideosPage />} />
+              {/* Жалобы на ролики и комментарии: очередь разбора. */}
+              <Route path="video-reports" element={<AdminReportsPage />} />
+              {/* Полки витрины отдельной страницей: тот же блок есть в каталоге,
+                  но разделы меняют отдельно от правки самих роликов. */}
+              <Route path="video-categories" element={<AdminVideoCategories />} />
               {/* Станция «Анализы» — авторинг лабораторных кейсов. */}
               <Route path="labs" element={<AdminLabCasesPage />} />
               {/* «Виртуальный пациент» — авторинг клинических сценариев. */}

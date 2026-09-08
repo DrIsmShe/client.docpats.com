@@ -1223,6 +1223,11 @@ export default function AuthLayout() {
               <Link className="dp-nav-link" to="/conferences">
                 {t("nav.conferences", { defaultValue: "Конференции" })}
               </Link>
+              {/* Витрина роликов — публичная, как и новости: смотреть можно
+                  без входа, и именно поэтому ссылка стоит в общей шапке. */}
+              <Link className="dp-nav-link" to="/videos">
+                {t("nav.videos", { defaultValue: "Видео" })}
+              </Link>
             </div>
 
             {/* Centre logo */}

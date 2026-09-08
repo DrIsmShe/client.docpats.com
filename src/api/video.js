@@ -32,6 +32,22 @@ export async function fetchPublicVideos(params = {}) {
   return data.items ?? [];
 }
 
+/**
+ * Лента «по интересам».
+ *
+ * Гостю сервер отдаст свежее — отдельной ветки в интерфейсе не надо.
+ */
+export async function fetchRecommended(params = {}) {
+  const { data } = await axios.get(`${BASE}/recommended`, { params });
+  return data.items ?? [];
+}
+
+/** Похожие ролики — колонка рядом с проигрывателем. */
+export async function fetchRelated(id, params = {}) {
+  const { data } = await axios.get(`${BASE}/public/${id}/related`, { params });
+  return data.items ?? [];
+}
+
 export async function fetchVideo(id) {
   const { data } = await axios.get(`${BASE}/${id}`);
   return data.video;
@@ -245,6 +261,193 @@ export async function fetchClinicVideos(clinicId) {
   return data.items ?? [];
 }
 
+/* ── Администратор платформы ─────────────────────────────────────── */
+
+/** Весь каталог: чужое, черновики, архив. Только для роли admin. */
+export async function adminFetchVideos(params = {}) {
+  const { data } = await axios.get(`${BASE}/admin`, { params });
+  return data.items ?? [];
+}
+
+export async function adminFetchVideo(id) {
+  const { data } = await axios.get(`${BASE}/admin/${id}`);
+  return data.video;
+}
+
+/** Правка любого ролика, включая видимость: этим админ и снимает с витрины. */
+export async function adminUpdateVideo(id, patch) {
+  const { data } = await axios.patch(`${BASE}/admin/${id}`, patch);
+  return data.video;
+}
+
+/** Архив: ролик исчезает из показа, но остаётся в базе. Причина обязательна. */
+export async function adminArchiveVideo(id, reason) {
+  const { data } = await axios.post(`${BASE}/admin/${id}/archive`, { reason });
+  return data.video;
+}
+
+export async function adminUnarchiveVideo(id) {
+  const { data } = await axios.post(`${BASE}/admin/${id}/unarchive`);
+  return data.video;
+}
+
+/** Удаление необратимо и уносит файл — сервер требует причину. */
+export async function adminDeleteVideo(id, reason) {
+  const { data } = await axios.delete(`${BASE}/admin/${id}`, { data: { reason } });
+  return data;
+}
+
+/* ── Загрузка своего файла ───────────────────────────────────────── */
+
+/**
+ * Заявка на загрузку: сервер проверяет пределы и квоту, заводит черновик и
+ * выдаёт подписанные ссылки на запись в хранилище.
+ */
+export async function prepareUpload(payload) {
+  const { data } = await axios.post(`${BASE}/upload/prepare`, payload);
+  return data;
+}
+
+/**
+ * Файл долит — сервер сверяет реальный размер с хранилищем и открывает
+ * ролик к показу. Без этого шага запись остаётся в состоянии обработки, а
+ * файл со временем заберёт уборщик сирот.
+ */
+export async function completeUpload(videoId) {
+  const { data } = await axios.post(`${BASE}/upload/complete`, { videoId });
+  return data.video;
+}
+
+/* ── Отклик ──────────────────────────────────────────────────────── */
+
+/** Отметка «полезно» — переключателем: сервер сам решает, ставить или снять. */
+export async function toggleVideoLike(id) {
+  const { data } = await axios.post(`${BASE}/${id}/like`);
+  return data;
+}
+
+/**
+ * Отметка «не помогло». Сервер сам снимет противоположную отметку,
+ * поэтому ответ содержит оба состояния сразу — пересчитывать их в
+ * интерфейсе не надо.
+ */
+export async function toggleVideoDislike(id) {
+  const { data } = await axios.post(`${BASE}/${id}/dislike`);
+  return data;
+}
+
+/** Подписаться на канал или отписаться — одно действие. */
+export async function toggleSubscription({ channelType, channelId }) {
+  const { data } = await axios.post(`${BASE}/subscriptions/toggle`, {
+    channelType,
+    channelId,
+  });
+  return data;
+}
+
+/** Код для вставки ролика на чужой сайт. */
+export async function fetchEmbedCode(id) {
+  const { data } = await axios.get(`${BASE}/public/${id}/embed`);
+  return data;
+}
+
+/** Пожаловаться на ролик или комментарий. */
+export async function reportContent(payload) {
+  const { data } = await axios.post(`${BASE}/reports`, payload);
+  return data;
+}
+
+/** Очередь жалоб — администратору площадки. */
+export async function adminFetchReports(params = {}) {
+  const { data } = await axios.get(`${BASE}/admin/reports`, { params });
+  return data.items ?? [];
+}
+
+/** Решение по жалобе. */
+export async function adminResolveReport(id, payload) {
+  const { data } = await axios.post(`${BASE}/admin/reports/${id}/resolve`, payload);
+  return data;
+}
+
+/**
+ * Распознать речь и собрать субтитры.
+ *
+ * Ожидание долгое: файл скачивается, распознаётся и переводится
+ * на каждый выбранный язык — это минуты, а не секунды.
+ */
+export async function transcribeVideo(id, payload = {}) {
+  const { data } = await axios.post(`${BASE}/${id}/transcribe`, payload, {
+    timeout: 600000,
+  });
+  return data;
+}
+
+/** Мои каналы. */
+export async function fetchMySubscriptions() {
+  const { data } = await axios.get(`${BASE}/subscriptions`);
+  return data.items ?? [];
+}
+
+/**
+ * Перенести готовый фильм из студии в каталог.
+ *
+ * Ответа ждём дольше обычного: сервер действительно скачивает файл к
+ * себе, а не запоминает чужую ссылку, которая однажды перестанет отвечать.
+ */
+export async function importFromStudio(payload) {
+  const { data } = await axios.post(`${BASE}/import/studio`, payload, {
+    timeout: 300000,
+  });
+  return data;
+}
+
+/**
+ * Правила публикации и текущая редакция.
+ *
+ * Тянем с сервера, а не держим копию в интерфейсе: два списка в двух местах
+ * разъедутся при первой же правке, а согласие тогда будет дано под текст,
+ * которого сервер не знает.
+ */
+export async function fetchUploadRules() {
+  const { data } = await axios.get(`${BASE}/upload/rules`);
+  return data;
+}
+
+/* ── Разделы витрины ─────────────────────────────────────────────── */
+
+/**
+ * Разделы для ленты. Приходят с сервера, а не заданы в коде: их состав —
+ * решение владельца площадки, и добавление полки не должно требовать
+ * выкатки интерфейса.
+ */
+export async function fetchCategories(lang) {
+  const { data } = await axios.get(`${BASE}/categories`, {
+    params: { lang, counts: "true" },
+  });
+  return data.items ?? [];
+}
+
+export async function adminFetchCategories() {
+  const { data } = await axios.get(`${BASE}/admin/categories`);
+  return data.items ?? [];
+}
+
+export async function adminCreateCategory(payload) {
+  const { data } = await axios.post(`${BASE}/admin/categories`, payload);
+  return data.category;
+}
+
+export async function adminUpdateCategory(id, patch) {
+  const { data } = await axios.patch(`${BASE}/admin/categories/${id}`, patch);
+  return data.category;
+}
+
+/** Удаление снимает полку; ролики остаются и уходят в общую ленту. */
+export async function adminDeleteCategory(id) {
+  const { data } = await axios.delete(`${BASE}/admin/categories/${id}`);
+  return data;
+}
+
 export default {
   fetchMyVideos,
   fetchMyConsents,
@@ -261,11 +464,37 @@ export default {
   setIntroVideo,
   clearIntroVideo,
   fetchPublicVideos,
+  fetchRecommended,
+  fetchRelated,
   fetchPublicVideo,
   fetchPublicPlayback,
   fetchClinicVideos,
+  adminFetchVideos,
+  adminFetchVideo,
+  adminUpdateVideo,
+  adminArchiveVideo,
+  adminUnarchiveVideo,
+  adminDeleteVideo,
   fetchVideo,
   createVideo,
+  prepareUpload,
+  toggleVideoLike,
+  toggleVideoDislike,
+  toggleSubscription,
+  fetchMySubscriptions,
+  fetchEmbedCode,
+  reportContent,
+  adminFetchReports,
+  adminResolveReport,
+  transcribeVideo,
+  importFromStudio,
+  fetchUploadRules,
+  fetchCategories,
+  adminFetchCategories,
+  adminCreateCategory,
+  adminUpdateCategory,
+  adminDeleteCategory,
+  completeUpload,
   updateVideo,
   deleteVideo,
   publishVideo,

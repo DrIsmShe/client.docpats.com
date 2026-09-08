@@ -21,5 +21,9 @@
     "edit": "Error editing",
     "like": "Error liking",
     "loadCommentCount": "Could not load the comment count"
-  }
+  },
+  "countTitle": "{{count}} comments",
+  "orderNew": "Newest first",
+  "orderTop": "Top first",
+  "report": "Report"
 }

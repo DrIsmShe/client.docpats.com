@@ -11,14 +11,19 @@
 // (VideraPage), связь с приёмом появится вместе с фазой привязок.
 
 import React, { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import VideoPlayer from "../../components/video/VideoPlayer";
+import VideoUploader from "../../components/video/VideoUploader";
+import VideoImport from "../../components/video/VideoImport";
+import SubtitlesPanel from "../../components/video/SubtitlesPanel";
 import {
   fetchMyVideos,
   publishVideo,
   unpublishVideo,
   deleteVideo,
+  updateVideo,
+  fetchCategories,
 } from "../../api/video";
 
 const ЦВЕТ_ВИДИМОСТИ = {
@@ -46,11 +51,26 @@ const состояниеТекстом = (t, st) =>
   })[st] || st;
 
 export default function MyVideosPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [ролики, setРолики] = useState(null);
   const [беда, setБеда] = useState("");
   const [открыт, setОткрыт] = useState(null); // id ролика в плеере
+  const [субтитрыДля, setСубтитрыДля] = useState(null); // id ролика с открытой панелью
+  const [разделы, setРазделы] = useState([]);
   const [занят, setЗанят] = useState(null); // id ролика, по которому идёт действие
+  const [грузим, setГрузим] = useState(false);
+  const [переносим, setПереносим] = useState(false);
+
+  // Приём из студии: она открывает /doctor/videos?import=<id фильма>, и
+  // страница сама разворачивает форму переноса с подставленным фильмом.
+  // Студии для этого достаточно обычной ссылки — ей не нужно ни ключей,
+  // ни знания нашего API, а вся работа остаётся на нашей стороне.
+  const [параметры, setПараметры] = useSearchParams();
+  const изСтудии = параметры.get("import") || "";
+
+  useEffect(() => {
+    if (изСтудии) setПереносим(true);
+  }, [изСтудии]);
 
   const загрузить = useCallback(async () => {
     setБеда("");
@@ -69,6 +89,18 @@ export default function MyVideosPage() {
   useEffect(() => {
     загрузить();
   }, [загрузить]);
+
+  // Разделы витрины заводит администратор — список тянем с сервера, а не
+  // держим в коде: новая полка не должна требовать выкатки интерфейса.
+  useEffect(() => {
+    let живо = true;
+    fetchCategories(i18n.language)
+      .then((к) => живо && setРазделы(к))
+      .catch(() => живо && setРазделы([]));
+    return () => {
+      живо = false;
+    };
+  }, [i18n.language]);
 
   /**
    * Действие над роликом. Отказ сервера показываем его же словами: он
@@ -114,14 +146,62 @@ export default function MyVideosPage() {
 
   return (
     <div style={стиль.страница}>
+      {/* Левая колонка — про порядок работы, правая — сами ролики. Так же
+          устроено рабочее место в студии, и человек, пришедший оттуда,
+          не пересобирает картину заново. */}
+      <aside style={стиль.колонка}>
+        <div style={стиль.колонкаИмя}>DP-Videra</div>
+        <p style={стиль.колонкаТекст}>
+          {t("videra.library.aside1", {
+            defaultValue:
+              "Ролики, подключённые к платформе. Их можно показать пациенту, приложить к приёму и опубликовать в каталоге.",
+          })}
+        </p>
+
+        <div style={стиль.колонкаЗаголовок}>
+          {t("videra.library.asideHow", { defaultValue: "Откуда берутся ролики" })}
+        </div>
+        <ol style={стиль.шаги}>
+          <li>
+            {t("videra.library.step1", {
+              defaultValue:
+                "Снимите фильм в студии — она открывается из кабинета, второй пароль не нужен.",
+            })}
+          </li>
+          <li>
+            {t("videra.library.step2", {
+              defaultValue:
+                "Или загрузите готовый файл с компьютера, или перенесите фильм из студии по ссылке.",
+            })}
+          </li>
+          <li>
+            {t("videra.library.step3", {
+              defaultValue:
+                "Дальше — субтитры, показ пациенту и публикация в каталоге DP-Tube.",
+            })}
+          </li>
+        </ol>
+
+        <a
+          href="https://docpats.com/dp-videra/"
+          target="_blank"
+          rel="noreferrer"
+          style={стиль.ссылка}
+        >
+          {t("videra.library.studioLink", { defaultValue: "Открыть студию" })}
+        </a>
+      </aside>
+
+      <main style={стиль.основное}>
       <div style={стиль.шапка}>
         <div>
           <h1 style={стиль.заголовок}>
             {t("videra.library.title", { defaultValue: "Мои ролики" })}
           </h1>
           <p style={стиль.подзаголовок}>
-            {t("videra.library.subtitle", {
-              defaultValue: "Разъяснительные фильмы, снятые в студии DP-Videra.",
+            {t("videra.library.count", {
+              count: ролики.length,
+              defaultValue: "Роликов: {{count}}",
             })}
           </p>
         </div>
@@ -129,6 +209,46 @@ export default function MyVideosPage() {
           {t("videra.library.shoot", { defaultValue: "Снять фильм" })}
         </Link>
       </div>
+
+      {/* Загрузка своего файла — рядом со съёмкой в студии: это два пути
+          к одному и тому же, и выбирать между ними человек должен в одном
+          месте, а не искать по разделам. */}
+      <div style={стиль.загрузка}>
+        <button
+          type="button"
+          onClick={() => setГрузим((v) => !v)}
+          style={стиль.кнопка}
+        >
+          {грузим
+            ? t("videra.upload.hide", { defaultValue: "Скрыть загрузку" })
+            : t("videra.upload.open", { defaultValue: "Загрузить своё видео" })}
+        </button>
+        <button
+          type="button"
+          onClick={() => setПереносим((v) => !v)}
+          style={стиль.кнопка}
+        >
+          {переносим
+            ? t("videra.import.hide", { defaultValue: "Скрыть перенос" })
+            : t("videra.import.open", { defaultValue: "Перенести из студии" })}
+        </button>
+      </div>
+      {грузим && <VideoUploader onDone={загрузить} />}
+
+      {переносим && (
+        <VideoImport
+          начальнаяСсылка={изСтудии}
+          onDone={() => {
+            // Параметр убираем после переноса: перезагрузка страницы иначе
+            // предлагала бы перенести уже перенесённое.
+            if (изСтудии) {
+              параметры.delete("import");
+              setПараметры(параметры, { replace: true });
+            }
+            загрузить();
+          }}
+        />
+      )}
 
       {беда && (
         <div role="alert" style={стиль.ошибка}>
@@ -150,6 +270,36 @@ export default function MyVideosPage() {
             const готов = р.status === "ready";
             return (
               <div key={р._id} style={стиль.карточка}>
+                {/* Кадр решает задачу, с которой не справляется имя: у
+                    роликов бывают названия вроде «ffff», и узнают их по
+                    картинке. Нет превью — показываем это честно, а не
+                    чёрным прямоугольником непонятного происхождения. */}
+                <div
+                  style={стиль.превью}
+                  onClick={() => готов && setОткрыт(открыт === р._id ? null : р._id)}
+                  role={готов ? "button" : undefined}
+                  tabIndex={готов ? 0 : undefined}
+                  onKeyDown={(e) => {
+                    if (готов && (e.key === "Enter" || e.key === " ")) {
+                      setОткрыт(открыт === р._id ? null : р._id);
+                    }
+                  }}
+                >
+                  {р.posterUrl ? (
+                    <img src={р.posterUrl} alt="" style={стиль.превьюКадр} />
+                  ) : (
+                    <span style={стиль.превьюПусто}>
+                      {t("videra.library.noPoster", { defaultValue: "без кадра" })}
+                    </span>
+                  )}
+                  {р.media?.durationSec > 0 && (
+                    <span style={стиль.длительность}>
+                      {Math.floor(р.media.durationSec / 60)}:
+                      {String(Math.round(р.media.durationSec % 60)).padStart(2, "0")}
+                    </span>
+                  )}
+                </div>
+
                 <div style={стиль.строка}>
                   <div style={стиль.описание}>
                     <div style={стиль.название}>{р.title}</div>
@@ -182,6 +332,28 @@ export default function MyVideosPage() {
                       )}
                     </div>
                   </div>
+
+                  {/* Полка витрины. «Без раздела» — обычное состояние, а
+                      не ошибка: ролик просто попадёт в общую ленту. */}
+                  <select
+                    value={р.categoryId || ""}
+                    onChange={(e) =>
+                      действие(р._id, () =>
+                        updateVideo(р._id, { categoryId: e.target.value || null }),
+                      )
+                    }
+                    disabled={занят === р._id}
+                    style={стиль.раздел}
+                  >
+                    <option value="">
+                      {t("videra.library.noCategory", { defaultValue: "Без раздела" })}
+                    </option>
+                    {разделы.map((к) => (
+                      <option key={к._id} value={к._id}>
+                        {к.title}
+                      </option>
+                    ))}
+                  </select>
 
                   <div style={стиль.кнопки}>
                     <button
@@ -227,6 +399,20 @@ export default function MyVideosPage() {
                         })}
                       </button>
                     )}
+                    {/* Субтитры делаются из речи в файле — без готового файла
+                        предлагать их нечего. */}
+                    {готов && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setСубтитрыДля(субтитрыДля === р._id ? null : р._id)
+                        }
+                        style={стиль.кнопка}
+                      >
+                        {t("videra.library.subtitles", { defaultValue: "Субтитры" })}
+                      </button>
+                    )}
+
                     <button
                       type="button"
                       disabled={занят === р._id}
@@ -243,17 +429,59 @@ export default function MyVideosPage() {
                     <VideoPlayer videoId={р._id} autoPlay />
                   </div>
                 )}
+
+                {субтитрыДля === р._id && (
+                  <SubtitlesPanel video={р} onDone={загрузить} />
+                )}
               </div>
             );
           })}
         </div>
       )}
+      </main>
     </div>
   );
 }
 
 const стиль = {
-  страница: { maxWidth: 900, margin: "0 auto", padding: "24px 16px 64px" },
+  страница: {
+    maxWidth: 1400,
+    margin: "0 auto",
+    padding: "24px 16px 64px",
+    display: "grid",
+    // Колонка с порядком работы фиксированной ширины: она читается один
+    // раз, а место нужно карточкам.
+    gridTemplateColumns: "minmax(0, 260px) minmax(0, 1fr)",
+    gap: 28,
+    alignItems: "start",
+  },
+  колонка: {
+    position: "sticky",
+    top: 16,
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+  },
+  колонкаИмя: {
+    fontSize: 12,
+    fontWeight: 800,
+    letterSpacing: ".08em",
+    textTransform: "uppercase",
+    color: "#0e8478",
+  },
+  колонкаТекст: { margin: 0, fontSize: 13, lineHeight: 1.6, color: "#4b5563" },
+  колонкаЗаголовок: { fontSize: 13, fontWeight: 700, marginTop: 6 },
+  шаги: {
+    margin: 0,
+    paddingLeft: 18,
+    fontSize: 13,
+    lineHeight: 1.6,
+    color: "#4b5563",
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  },
+  основное: { minWidth: 0 },
   шапка: {
     display: "flex",
     alignItems: "flex-start",
@@ -263,7 +491,8 @@ const стиль = {
     marginBottom: 20,
   },
   заголовок: { fontSize: 26, fontWeight: 800, margin: 0, letterSpacing: "-.02em" },
-  подзаголовок: { margin: "6px 0 0", color: "#6b7b78", fontSize: 14 },
+  подзаголовок: { margin: "6px 0 0", color: "#6b7b78", fontSize: 14, maxWidth: 620 },
+  ссылка: { color: "#0e8478", fontWeight: 600, textDecoration: "none" },
   кнопкаГлавная: {
     background: "#0e8478",
     color: "#fff",
@@ -274,19 +503,48 @@ const стиль = {
     fontSize: 14,
     whiteSpace: "nowrap",
   },
-  список: { display: "flex", flexDirection: "column", gap: 12 },
+  загрузка: { marginBottom: 12, display: "flex", gap: 8, flexWrap: "wrap" },
+  список: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+    gap: 16,
+  },
   карточка: {
     border: "1px solid #d6dddb",
     borderRadius: 12,
-    padding: 16,
+    padding: 12,
     background: "#fff",
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+  },
+  превью: {
+    position: "relative",
+    aspectRatio: "16 / 9",
+    borderRadius: 10,
+    overflow: "hidden",
+    background: "#111",
+    display: "grid",
+    placeItems: "center",
+    cursor: "pointer",
+  },
+  превьюКадр: { width: "100%", height: "100%", objectFit: "cover", display: "block" },
+  превьюПусто: { color: "#8b9a97", fontSize: 12 },
+  длительность: {
+    position: "absolute",
+    right: 6,
+    bottom: 6,
+    background: "rgba(0,0,0,.75)",
+    color: "#fff",
+    borderRadius: 4,
+    padding: "1px 5px",
+    fontSize: 11,
+    fontWeight: 600,
   },
   строка: {
     display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    gap: 12,
-    flexWrap: "wrap",
+    flexDirection: "column",
+    gap: 10,
   },
   описание: { minWidth: 0, flex: 1 },
   название: { fontWeight: 700, fontSize: 16 },
@@ -300,6 +558,16 @@ const стиль = {
     color: "#6b7b78",
   },
   phi: { color: "#a32c22", fontWeight: 600 },
+  раздел: {
+    border: "1px solid #d6dddb",
+    borderRadius: 8,
+    padding: "6px 8px",
+    font: "inherit",
+    fontSize: 13,
+    width: "100%",
+    boxSizing: "border-box",
+    background: "#fff",
+  },
   кнопки: { display: "flex", gap: 8, flexWrap: "wrap" },
   кнопка: {
     border: "1px solid #d6dddb",

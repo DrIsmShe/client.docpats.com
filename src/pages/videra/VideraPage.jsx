@@ -20,6 +20,8 @@ import axios from "axios";
 const API_BASE = process.env.REACT_APP_API_URL;
 const PUB = process.env.PUBLIC_URL || "";
 const GUIDE = "https://docpats.com/dp-videra/rukovodstvo.html";
+// Корень студии: её собственная медиатека DP-Tube и вход в кабинет автора.
+const СТУДИЯ = "https://docpats.com/dp-videra/";
 
 const FRAMES = [
   { img: "heart.png", n: "videra.f.heart", r: "videra.r.cardio" },
@@ -61,12 +63,24 @@ export default function VideraPage() {
   };
 
   // Кнопка запуска студии. Одна и та же логика во всех местах макета.
+  //
+  // ПОГАСШАЯ КНОПКА ОБЯЗАНА ОБЪЯСНЯТЬСЯ. Раньше причина стояла
+  // отдельной строкой внизу страницы — человек видел мёртвую кнопку
+  // и ничего больше. Теперь объяснение висит на самой кнопке.
   const Studio = ({ ghost }) => (
     <button
       type="button"
       className={"vd-btn " + (ghost ? "vd-btn-ghost" : "vd-btn-main")}
       onClick={открыть}
       disabled={готова !== true || идёт}
+      title={
+        готова === false
+          ? t("videra.offWhy", {
+              defaultValue:
+                "Студия не подключена к этому серверу: не задан пропуск DPVIDERA_SECRET",
+            })
+          : ""
+      }
     >
       {ghost ? "" : "▶ "}
       {идёт
@@ -74,6 +88,16 @@ export default function VideraPage() {
         : t("videra.studioOpen", { defaultValue: "Открыть студию" })}
     </button>
   );
+
+  // Пояснение рядом с кнопкой — там, где человек на неё смотрит.
+  const Почему = () =>
+    готова === false ? (
+      <p className="vd-alert" style={{ marginTop: 10 }}>
+        {t("videra.off", {
+          defaultValue: "Студия сейчас недоступна. Мы уже знаем об этом.",
+        })}
+      </p>
+    ) : null;
 
   const WHO = [
     ["🧑‍⚕️", "aud1", "Пациенту", "Объяснить диагноз, подготовить к операции, показать, что происходит в теле. Он поймёт и запомнит — и меньше боится того, что увидел."],
@@ -131,12 +155,15 @@ export default function VideraPage() {
           </p>
           <div className="vd-cta">
             <Studio />
+            <Почему />
             <a className="vd-btn vd-btn-ghost" href={GUIDE} target="_blank" rel="noreferrer">
               {t("videra.howItWorks", { defaultValue: "Как это работает" })}
             </a>
+            <a className="vd-btn vd-btn-ghost" href={СТУДИЯ} target="_blank" rel="noreferrer">
+              {t("videra.openStudioSite", { defaultValue: "Медиатека DP-Videra" })}
+            </a>
           </div>
           <p className="vd-note">{t("videra.note", { defaultValue: "Открывается из вашего кабинета DocPats — второй пароль не нужен." })}</p>
-          {готова === false && <p className="vd-alert">{t("videra.off", { defaultValue: "Студия сейчас недоступна. Мы уже знаем об этом." })}</p>}
           {беда && <p className="vd-alert">{беда}</p>}
 
           <div className="vd-reel">

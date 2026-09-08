@@ -21,5 +21,9 @@
     "edit": "Redaktə edilərkən xəta baş verdi",
     "like": "Bəyənmə zamanı xəta baş verdi",
     "loadCommentCount": "Şərhlərin sayını yükləmək alınmadı"
-  }
+  },
+  "countTitle": "{{count}} şərh",
+  "orderNew": "Əvvəlcə yenilər",
+  "orderTop": "Əvvəlcə populyarlar",
+  "report": "Şikayət et"
 }
