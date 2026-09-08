@@ -368,6 +368,42 @@ const STYLES = `
   .dp-portal-btn:hover .dp-portal-arrow { opacity: 1; transform: translateX(4px); }
 
   /* News link card */
+  /* Баннер каталога. Тёмная полоса во всю ширину: она не соперничает с
+     карточками за внимание, а отделяет «посмотреть» от «работать». */
+  .dp-tube-banner {
+    display: flex; align-items: center; gap: 22px;
+    padding: 20px 24px; margin-bottom: 20px;
+    border-radius: 18px; text-decoration: none;
+    background: linear-gradient(135deg, #14181c 0%, #23120f 60%, #3a1512 100%);
+    border: 1px solid rgba(255,255,255,.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,.18);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .dp-tube-banner:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0,0,0,.24); }
+  .dp-tube-mark { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+  .dp-tube-play {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 54px; height: 38px; border-radius: 10px;
+    background: #cc0000; color: #fff; font-size: 18px;
+  }
+  .dp-tube-name { color: #fff; font-size: 28px; font-weight: 800; letter-spacing: -.5px; }
+  .dp-tube-copy { min-width: 0; flex: 1; }
+  .dp-tube-title {
+    color: #ff9f7a; font-size: 11px; font-weight: 800;
+    letter-spacing: .12em; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .dp-tube-text { color: rgba(255,255,255,.82); font-size: 14px; line-height: 1.55; }
+  .dp-tube-go {
+    flex: 0 0 auto; background: #fff; color: #14181c;
+    border-radius: 22px; padding: 10px 22px; font-size: 14px; font-weight: 700;
+    white-space: nowrap;
+  }
+  @media (max-width: 860px) {
+    .dp-tube-banner { flex-wrap: wrap; gap: 14px; }
+    .dp-tube-copy { flex: 1 1 100%; order: 3; }
+    .dp-tube-go { margin-left: auto; }
+  }
+
   .dp-news-card-wrap { margin-bottom: 20px; width: 100%; min-width: 0; }
   /* Список карточек-ссылок — в ДВЕ КОЛОНКИ. Отступы (и вертикальные, и
      горизонтальные) держит сама сетка: у обёрток они были разные — 20px у
@@ -1917,6 +1953,33 @@ export default function AuthLayout() {
                     ))}
                   </motion.div>
                 </div>
+
+                {/* DP-TUBE — витрина роликов, открытая без входа.
+                    Отдельной полосой во всю ширину, рядом с лентой цифр:
+                    случайный посетитель видит, чем платформа занимается,
+                    ещё до того, как решит регистрироваться. */}
+                <Link to="/videos" className="dp-tube-banner">
+                  <div className="dp-tube-mark">
+                    <span className="dp-tube-play">▶</span>
+                    <span className="dp-tube-name">DP-Tube</span>
+                  </div>
+                  <div className="dp-tube-copy">
+                    <div className="dp-tube-title">
+                      {t("dptubeTag", {
+                        defaultValue: "DP-TUBE · СМОТРЕТЬ БЕЗ РЕГИСТРАЦИИ",
+                      })}
+                    </div>
+                    <div className="dp-tube-text">
+                      {t("dptubeText", {
+                        defaultValue:
+                          "Медицинские ролики от врачей и клиник: как готовиться к процедуре, что показал снимок, что происходит в теле. Смотрите, ищите по разделам, делитесь ссылкой — вход не нужен.",
+                      })}
+                    </div>
+                  </div>
+                  <span className="dp-tube-go">
+                    {t("dptubeGo", { defaultValue: "Смотреть" })}
+                  </span>
+                </Link>
 
                 {/* Лента со статистикой — под контентом hero, во всю ширину */}
                 <motion.div
