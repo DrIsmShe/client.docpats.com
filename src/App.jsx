@@ -195,6 +195,17 @@ const PatientLayout = lazy(() => import("./layoutes/patientLayout/patientLayout"
 // Студия медицинских фильмов. Одна страница на обе зоны: врач и пациент
 // снимают одно и то же, разницу в тарифе студия читает из пропуска сама.
 const VideraPage = lazy(() => import("./pages/videra/VideraPage"));
+// Библиотека снятых роликов. Отдельная страница, а не вкладка студии:
+// студия живёт на другом сервере, а каталог — наш.
+const MyVideosPage = lazy(() => import("./pages/videra/MyVideosPage"));
+// Задания пациента перед процедурой: согласия и подготовка.
+const PatientVideoTasksPage = lazy(() =>
+  import("./pages/videra/PatientVideoTasksPage"),
+);
+// Публичная витрина роликов: адреса отсюда уходят в sitemap и в
+// Telegram-канал, поэтому они лежат в корне, а не в зоне кабинета.
+const PublicVideosPage = lazy(() => import("./pages/videra/PublicVideosPage"));
+const PublicVideoPage = lazy(() => import("./pages/videra/PublicVideoPage"));
 const HomePatientMainPage = lazy(() => import("./pages/patientProfilePages/home/HomePatientMainPage"));
 const PatientHomePage = lazy(() => import("./pages/patientProfilePages/home/PatientHomePage.jsx"));
 const SingleArticleForPatient = lazy(() => import("./pages/patientProfilePages/shared/articles/singleArticle"));
@@ -777,6 +788,9 @@ function App() {
                 element={<SynthesisArticlePage />}
               />
               <Route path="/news" element={<NewsList />} />
+              {/* Витрина роликов — публичная, без входа. */}
+              <Route path="/videos" element={<PublicVideosPage />} />
+              <Route path="/videos/:id" element={<PublicVideoPage />} />
               <Route path="/news/:slug" element={<NewsArticle />} />
               {/* Конференции. Публично и без авторизации: сюда ведут ссылки
                   из писем врачам, и открываться они должны с телефона, где
@@ -2690,6 +2704,10 @@ function App() {
               {/* Студия фильмов — и пациенту тоже: объяснить болезнь себе
                   и близким ему нужно не меньше, чем врачу — пациенту. */}
               <Route path="videra" element={<VideraPage />} />
+              {/* Библиотека своих роликов — там же, где студия. */}
+              <Route path="videos" element={<MyVideosPage />} />
+              {/* Что клиника просила посмотреть и подписать перед процедурой. */}
+              <Route path="video-tasks" element={<PatientVideoTasksPage />} />
               <Route path="consultation-ai" element={<ConsultationPage />} />
               <Route
                 path="articles-ai-for-patients"
@@ -2873,6 +2891,8 @@ function App() {
                   та же страница открыта пациенту в его зоне, и ограничивать
                   здесь было бы нечего — кто вошёл, решает сервер по сессии. */}
               <Route path="videra" element={<VideraPage />} />
+              {/* Библиотека своих роликов — там же, где студия. */}
+              <Route path="videos" element={<MyVideosPage />} />
               {/* Управление встречами по ссылке — в кабинете врача:
                   создавать их может только он. Сам вход во встречу
                   живёт в корне, туда приходят и пациенты. */}

@@ -16,6 +16,7 @@ import React, { useEffect } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useVitrinaTheme } from "./theme/useVitrinaTheme.js";
+import IntroVideo from "../../../components/video/IntroVideo.jsx";
 import { getBlockComponent } from "./blocks/blockRegistry.js";
 import {
   RTL_LANGS,
@@ -197,6 +198,10 @@ export default function DoctorDetailRenderer({ clinic, doctor }) {
             </div>
 
             {about && <div className="vt-doc-about">{about}</div>}
+            {/* Видео-визитка. Компонент сам ничего не рисует, если ролика
+                нет или он закрыт, — карточка врача без визитки выглядит
+                как раньше. */}
+            <IntroVideo videoId={doctor?.introVideoId} />
           </div>
         </header>
 

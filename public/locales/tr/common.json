@@ -2451,6 +2451,95 @@
     },
     "finalH": "Anlatmak yerine — gösterin.",
     "foot1": "DP-Videra · DocPats bünyesinde tıbbi film stüdyosu",
-    "foot2": "Modeller: BodyParts3D · Z-Anatomy · HuBMAP — açık lisanslar"
+    "foot2": "Modeller: BodyParts3D · Z-Anatomy · HuBMAP — açık lisanslar",
+    "library": {
+      "title": "Videolarım",
+      "subtitle": "DP-Videra stüdyosunda çekilen açıklayıcı filmler.",
+      "shoot": "Film çek",
+      "loading": "Yükleniyor…",
+      "empty": "Henüz video yok. İlkini stüdyoda çekin — burada görünecek.",
+      "listFailed": "Video listesi yüklenemedi",
+      "actionFailed": "İşlem tamamlanamadı",
+      "confirmDelete": "“{{title}}” silinsin mi? Dosya kalıcı olarak silinecek.",
+      "watch": "İzle",
+      "collapse": "Kapat",
+      "publish": "Yayınla",
+      "unpublish": "Erişimi kapat",
+      "delete": "Sil",
+      "notReadyHint": "Dosya henüz hazır değil",
+      "hasPatient": "karede hasta var",
+      "seconds": "{{count}} sn",
+      "visPrivate": "Yalnızca ben",
+      "visClinic": "Klinik",
+      "visLink": "Bağlantıyla",
+      "visPublic": "Yayında",
+      "stDraft": "taslak",
+      "stProcessing": "işleniyor",
+      "stReady": "hazır",
+      "stFailed": "işleme hatası",
+      "menu": "Videolarım"
+    },
+    "player": {
+      "loading": "Video yükleniyor…",
+      "gone": "Video kullanılamıyor",
+      "notReady": "Video hâlâ hazırlanıyor — daha sonra bakın",
+      "openFailed": "Video açılamadı",
+      "loadFailed": "Video yüklenemedi",
+      "retry": "Tekrar dene",
+      "speed": "Hız:"
+    },
+    "logoSub": "stüdyo",
+    "tasks": {
+      "title": "İşlem öncesi",
+      "subtitle": "Sizi nelerin beklediğini anlatan kısa videolar ve onaylamanız gereken rızalar.",
+      "loading": "Yükleniyor…",
+      "loadFailed": "Görevler yüklenemedi",
+      "signFailed": "Onaylanamadı",
+      "empty": "Şu anda izlenecek veya onaylanacak bir şey yok.",
+      "consentsTitle": "Onayınız gerekiyor",
+      "prepTitle": "Hazırlık",
+      "signedTitle": "Onaylandı",
+      "watched": "Video izlendi — onaylayabilirsiniz",
+      "notWatched": "Videoyu sonuna kadar izleyin",
+      "watch": "İzle",
+      "collapse": "Kapat",
+      "sign": "Onaylıyorum",
+      "seconds": "{{count}} sn",
+      "daysLeft": "{{count}} gün kaldı",
+      "procedureOn": "İşlem {{date}}",
+      "progress": "{{total}} videodan {{done}} izlendi",
+      "dueOn": "{{date}} tarihine kadar",
+      "optional": "(isteğe bağlı)",
+      "signedOn": "{{date}} tarihinde onaylandı",
+      "menu": "İşlem öncesi"
+    },
+    "gallery": {
+      "title": "Tıbbi videolar",
+      "subtitle": "DocPats hekimleri ve klinikleri tarafından çekilen kısa açıklayıcı filmler.",
+      "loading": "Yükleniyor…",
+      "failed": "Akış yüklenemedi",
+      "empty": "Henüz hiçbir şey yayınlanmadı."
+    },
+    "public": {
+      "loading": "Yükleniyor…",
+      "gone": "Video kullanılamıyor",
+      "seconds": "{{count}} sn",
+      "views": "{{count}} görüntülenme",
+      "sources": "Kullanılan materyaller",
+      "more": "Diğer videolar"
+    },
+    "attached": {
+      "title": "Gösterilen videolar",
+      "seconds": "{{count}} sn",
+      "watched": "sonuna kadar izlendi",
+      "watch": "İzle",
+      "collapse": "Kapat"
+    },
+    "intro": {
+      "title": "Video tanıtım"
+    }
+  },
+  "dptube": {
+    "menu": "DP-Tube"
   }
 }

@@ -55,6 +55,9 @@ const TEXT_ATTRS = new Set([
 const ALLOWED = new Set([
   "DocPats",
   "DocPats AI",
+  // Название студии фильмов — имя продукта, как и DocPats.
+  "DP-Videra",
+  "DP-Tube",
   "AI",
   "ID",
   "XP",

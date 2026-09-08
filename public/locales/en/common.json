@@ -2478,6 +2478,95 @@
     },
     "finalH": "Show it — instead of telling it.",
     "foot1": "DP-Videra · medical film studio within DocPats",
-    "foot2": "Models: BodyParts3D · Z-Anatomy · HuBMAP — open licenses"
+    "foot2": "Models: BodyParts3D · Z-Anatomy · HuBMAP — open licenses",
+    "library": {
+      "title": "My videos",
+      "subtitle": "Explainer films made in the DP-Videra studio.",
+      "shoot": "Make a film",
+      "loading": "Loading…",
+      "empty": "No videos yet. Make your first one in the studio — it will appear here.",
+      "listFailed": "Could not load your videos",
+      "actionFailed": "Could not complete the action",
+      "confirmDelete": "Delete “{{title}}”? The file will be erased permanently.",
+      "watch": "Watch",
+      "collapse": "Collapse",
+      "publish": "Publish",
+      "unpublish": "Make private",
+      "delete": "Delete",
+      "notReadyHint": "The file is not ready yet",
+      "hasPatient": "patient on screen",
+      "seconds": "{{count}} s",
+      "visPrivate": "Only me",
+      "visClinic": "Clinic",
+      "visLink": "By link",
+      "visPublic": "Published",
+      "stDraft": "draft",
+      "stProcessing": "rendering",
+      "stReady": "ready",
+      "stFailed": "render failed",
+      "menu": "My videos"
+    },
+    "player": {
+      "loading": "Loading the video…",
+      "gone": "Video unavailable",
+      "notReady": "The video is still being prepared — check back later",
+      "openFailed": "Could not open the video",
+      "loadFailed": "Could not load the video",
+      "retry": "Try again",
+      "speed": "Speed:"
+    },
+    "logoSub": "studio",
+    "tasks": {
+      "title": "Before your procedure",
+      "subtitle": "Short videos about what lies ahead, and the consents you need to confirm.",
+      "loading": "Loading…",
+      "loadFailed": "Could not load your tasks",
+      "signFailed": "Could not confirm",
+      "empty": "Nothing to watch or confirm right now.",
+      "consentsTitle": "Needs your confirmation",
+      "prepTitle": "Preparation",
+      "signedTitle": "Confirmed",
+      "watched": "Video watched — you can confirm now",
+      "notWatched": "Watch the video to the end",
+      "watch": "Watch",
+      "collapse": "Collapse",
+      "sign": "I confirm",
+      "seconds": "{{count}} s",
+      "daysLeft": "{{count}} days left",
+      "procedureOn": "Procedure on {{date}}",
+      "progress": "{{done}} of {{total}} watched",
+      "dueOn": "by {{date}}",
+      "optional": "(optional)",
+      "signedOn": "confirmed on {{date}}",
+      "menu": "Before your procedure"
+    },
+    "gallery": {
+      "title": "Medical videos",
+      "subtitle": "Short explainer films made by DocPats doctors and clinics.",
+      "loading": "Loading…",
+      "failed": "Could not load the feed",
+      "empty": "Nothing published yet."
+    },
+    "public": {
+      "loading": "Loading…",
+      "gone": "Video unavailable",
+      "seconds": "{{count}} s",
+      "views": "{{count}} views",
+      "sources": "Materials used",
+      "more": "More videos"
+    },
+    "attached": {
+      "title": "Videos shown",
+      "seconds": "{{count}} s",
+      "watched": "watched in full",
+      "watch": "Watch",
+      "collapse": "Collapse"
+    },
+    "intro": {
+      "title": "Video intro"
+    }
+  },
+  "dptube": {
+    "menu": "DP-Tube"
   }
 }

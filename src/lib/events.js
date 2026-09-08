@@ -164,3 +164,14 @@ export function count(value) {
   const n = Number(value);
   return Number.isFinite(n) ? n : undefined;
 }
+
+// ─── Видео: каталог, просмотры, согласия ───────────────────────
+//
+// Считаем ровно то, по чему судят о пользе: досмотрел ли человек ролик и
+// дошёл ли до подписи. Ни названия ролика, ни процедуры в свойствах нет —
+// это содержание, а наружу уходит только форма (см. правило выше).
+export const VIDEO_WATCH_STARTED = "video_watch_started";
+export const VIDEO_WATCH_COMPLETED = "video_watch_completed";
+export const VIDEO_PUBLISHED = "video_published";
+export const VIDEO_CONSENT_SIGNED = "video_consent_signed";
+export const VIDEO_PREP_STEP_DONE = "video_prep_step_done";

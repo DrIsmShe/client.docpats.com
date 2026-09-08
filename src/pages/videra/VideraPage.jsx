@@ -110,7 +110,10 @@ export default function VideraPage() {
       <style>{CSS}</style>
       <div className="vd-wrap">
         <header className="vd-top">
-          <div className="vd-logo">DP-Videra <span>студия</span></div>
+          <div className="vd-logo">
+            DP-Videra{" "}
+            <span>{t("videra.logoSub", { defaultValue: "студия" })}</span>
+          </div>
           <Studio ghost />
         </header>
       </div>

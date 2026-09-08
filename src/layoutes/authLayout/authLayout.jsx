@@ -248,17 +248,26 @@ const STYLES = `
     clip-path: ellipse(55% 100% at 50% 100%);
   }
 
+  /* Одна колонка: заголовок, карточки-ссылки и плитки со статистикой идут
+     друг под другом во всю ширину контейнера. Раньше справа стоял столбец
+     460px со статистикой — он забирал треть ширины у карточек и вдобавок
+     полностью скрывался на планшете (display:none), то есть на телефоне
+     этих плиток никто не видел вовсе. */
   .dp-hero-inner {
     position: relative; z-index: 2;
     max-width: 1280px; margin: 0 auto;
     padding: 0 40px;
     display: grid;
-    grid-template-columns: 1fr 460px;
-    gap: 80px;
-    align-items: center;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 44px;
+    align-items: start;
     min-width: 0;
     overflow: hidden;
   }
+  /* Длинные строки текста плохо читаются во всю ширину — подзаголовку
+     оставляем комфортную меру, заголовок ограничиваем по смыслу. */
+  .dp-hero-title { max-width: 1000px; }
+  .dp-hero-sub { max-width: 820px; }
 
   .dp-hero-eyebrow {
     display: inline-flex; align-items: center; gap: 9px;
@@ -310,8 +319,8 @@ const STYLES = `
     display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
   }
   .dp-portal-btn {
-    display: flex; align-items: center; gap: 12px;
-    padding: 13px 20px; border-radius: 10px;
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 22px; border-radius: 16px;
     text-decoration: none; cursor: pointer; border: none;
     transition: all .22s; position: relative; overflow: hidden;
     flex: 1; min-width: 0; max-width: 100%;
@@ -334,20 +343,20 @@ const STYLES = `
   }
   .dp-portal-btn.doctor:hover { box-shadow: 0 12px 32px rgba(0,0,0,.18); }
   .dp-portal-icon {
-    width: 38px; height: 38px; border-radius: 9px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center; font-size: 18px;
+    width: 46px; height: 46px; border-radius: 13px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
   }
   .dp-portal-btn.patient .dp-portal-icon { background: rgba(255,255,255,.15); }
   .dp-portal-btn.doctor  .dp-portal-icon { background: var(--teal-pale); }
   .dp-portal-info { flex: 1; text-align: left; min-width: 0; }
   .dp-portal-label {
-    font-size: 9px; font-weight: 700; font-family: var(--font-body);
-    letter-spacing: .12em; text-transform: uppercase; margin-bottom: 2px;
+    font-size: 9.5px; font-weight: 700; font-family: var(--font-body);
+    letter-spacing: .14em; text-transform: uppercase; margin-bottom: 4px;
   }
   .dp-portal-btn.patient .dp-portal-label { color: rgba(255,255,255,.6); }
   .dp-portal-btn.doctor  .dp-portal-label { color: var(--ink3); }
   .dp-portal-name {
-    font-size: 14px; font-weight: 800; letter-spacing: -.01em;
+    font-size: 16px; font-weight: 800; letter-spacing: -.01em;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     font-family: var(--font-body);
   }
@@ -360,47 +369,89 @@ const STYLES = `
 
   /* News link card */
   .dp-news-card-wrap { margin-bottom: 20px; width: 100%; min-width: 0; }
-  /* Список карточек-ссылок — в ДВЕ КОЛОНКИ. Вертикальные отступы держат
-     сами карточки (margin-bottom), между колонками — зазор 20px. На узком
-     экране схлопывается в одну колонку (см. медиазапрос ниже). */
-  .dp-news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; align-items: start; }
+  /* Список карточек-ссылок — в ДВЕ КОЛОНКИ. Отступы (и вертикальные, и
+     горизонтальные) держит сама сетка: у обёрток они были разные — 20px у
+     .dp-news-card-wrap и 12px inline у остальных, отчего строки шли неровно.
+     На узком экране схлопывается в одну колонку (см. медиазапрос ниже). */
+  .dp-news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; align-items: stretch; }
+  /* Обёртка тянется на высоту строки, карточка внутри — на высоту обёртки:
+     соседи по строке получаются одинаковыми, даже если у одного текст в две
+     строки, а у другого в одну. Заметка под карточкой (examNote и т.п.)
+     остаётся под ней и высоту не ломает. */
+  .dp-news-grid > * { margin-bottom: 0 !important; display: flex; flex-direction: column; min-width: 0; }
+  .dp-news-grid > * > .dp-news-card { flex: 1; }
   .dp-news-card {
     display: flex; align-items: stretch; text-decoration: none;
-    background: rgba(255,255,255,.1);
-    border: 1.5px solid rgba(255,255,255,.18);
-    border-radius: 12px; overflow: hidden;
-    backdrop-filter: blur(10px);
-    transition: all .2s;
+    /* Диагональный градиент вместо плоской заливки: карточка перестаёт
+       выглядеть прямоугольником одного тона и «ловит» свет сверху слева. */
+    background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+    border: 1.5px solid rgba(255,255,255,.2);
+    border-radius: 16px; overflow: hidden;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 6px 20px rgba(0,0,0,.14);
+    transition: transform .22s, box-shadow .22s, border-color .22s, background .22s;
     width: 100%; min-width: 0;
+    /* Ровная высота ряда: одно- и двухстрочные карточки не «пляшут». */
+    min-height: 92px;
   }
-  .dp-news-card:hover { background: rgba(255,255,255,.17); border-color: rgba(255,255,255,.35); transform: translateY(-2px); }
+  .dp-news-card:hover {
+    background: linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.1));
+    border-color: rgba(94,234,212,.45);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 34px rgba(0,0,0,.24), 0 0 0 1px rgba(94,234,212,.18);
+  }
   .dp-news-card-accent {
-    width: 4px; min-width: 4px;
+    width: 5px; min-width: 5px;
     background: linear-gradient(180deg, #5eead4, #14b8a6);
     flex-shrink: 0;
   }
   .dp-news-card-body {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px 14px; flex: 1; min-width: 0;
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 18px; flex: 1; min-width: 0;
   }
   .dp-news-card-icon {
-    width: 32px; height: 32px; border-radius: 8px;
-    background: rgba(255,255,255,.15);
+    width: 46px; height: 46px; border-radius: 13px;
+    background: linear-gradient(145deg, rgba(255,255,255,.22), rgba(255,255,255,.08));
+    border: 1px solid rgba(255,255,255,.18);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px; flex-shrink: 0;
+    font-size: 21px; flex-shrink: 0;
+    transition: transform .22s;
   }
+  .dp-news-card:hover .dp-news-card-icon { transform: scale(1.07); }
   .dp-news-card-copy { flex: 1; min-width: 0; overflow: hidden; }
   .dp-news-card-tag {
-    font-family: var(--font-body); font-size: 9px; letter-spacing: .12em;
-    text-transform: uppercase; color: #5eead4; margin-bottom: 2px;
+    font-family: var(--font-body); font-size: 9.5px; font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase; color: #5eead4; margin-bottom: 5px;
+    line-height: 1.3;
+    /* Не больше двух строк: длинные подписи вроде «DocPats · Тесты и
+       экзамены · только для врачей» иначе занимают три и перевешивают
+       сам заголовок карточки. */
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
   }
+  /* Текст переносим в ДВЕ строки, а не режем многоточием в одну: длинные
+     названия («Короткие разъяснительные фильмы по анатомии…») до сих пор
+     обрывались на середине, хотя место в карточке было. */
   .dp-news-card-text {
-    font-size: 13px; font-weight: 700; font-family: var(--font-body);
-    color: white;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    font-size: 14px; font-weight: 700; font-family: var(--font-body);
+    color: white; line-height: 1.35;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
   }
-  .dp-news-card-arrow { color: #5eead4; opacity: .6; flex-shrink: 0; transition: all .2s; margin-left: 4px; }
-  .dp-news-card:hover .dp-news-card-arrow { opacity: 1; transform: translateX(4px); }
+  .dp-news-card-arrow {
+    color: #5eead4; opacity: .65; flex-shrink: 0; transition: all .22s;
+    margin-left: 6px;
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.16);
+  }
+  .dp-news-card:hover .dp-news-card-arrow {
+    opacity: 1; transform: translateX(4px);
+    background: rgba(94,234,212,.18); border-color: rgba(94,234,212,.45);
+  }
 
   /* Trust row */
   .dp-trust-row {
@@ -415,8 +466,14 @@ const STYLES = `
   .dp-trust-badge svg { color: #5eead4; flex-shrink: 0; }
   .dp-trust-sep { width: 1px; height: 14px; background: rgba(255,255,255,.2); }
 
-  /* Right stat cards */
-  .dp-hero-right { display: flex; flex-direction: column; gap: 12px; }
+  /* Плитки со статистикой — горизонтальная лента под контентом hero. */
+  .dp-hero-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    align-items: stretch;
+  }
+  .dp-hero-stats > * { min-width: 0; }
 
   .dp-stat-hero {
     background: rgba(255,255,255,.1);
@@ -434,7 +491,7 @@ const STYLES = `
   .dp-stat-hero.c-teal::before  { background: #5eead4; }
   .dp-stat-hero.c-green::before { background: #86efac; }
   .dp-stat-hero.c-gold::before  { background: #fcd34d; }
-  .dp-stat-hero:hover { background: rgba(255,255,255,.16); transform: translateX(-4px); }
+  .dp-stat-hero:hover { background: rgba(255,255,255,.16); transform: translateY(-3px); }
   .dp-stat-hero-icon {
     width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
@@ -448,7 +505,9 @@ const STYLES = `
     font-family: var(--font-body); font-size: 10px; color: rgba(255,255,255,.5);
     text-transform: uppercase; letter-spacing: .1em;
   }
-  .dp-stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .dp-stat-hero { height: 100%; }
+  .dp-stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; height: 100%; }
+  .dp-stat-mini { display: flex; flex-direction: column; justify-content: center; }
   .dp-stat-mini {
     background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15);
     border-radius: 12px; padding: 14px 16px; backdrop-filter: blur(10px); transition: all .22s;
@@ -719,7 +778,7 @@ const STYLES = `
       gap: 0;
       overflow: hidden;
     }
-    .dp-hero-right { display: none; }
+    .dp-hero-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .dp-compliance-grid { grid-template-columns: 1fr; gap: 32px; }
     .dp-roles-grid { grid-template-columns: 1fr; }
     .dp-metrics-inner { grid-template-columns: repeat(2, 1fr); }
@@ -760,6 +819,7 @@ const STYLES = `
       box-sizing: border-box;
     }
     .dp-hero-inner > * { min-width: 0; max-width: 100%; overflow: hidden; }
+    .dp-hero-stats { grid-template-columns: minmax(0, 1fr); gap: 12px; }
     .dp-hero-eyebrow { font-size: 10px; padding: 5px 12px; }
     .dp-hero-title { font-size: clamp(26px, 7vw, 38px); word-break: break-word; }
     .dp-hero-sub { font-size: 15px; }
@@ -771,7 +831,9 @@ const STYLES = `
     .dp-portal-name { font-size: 13px; }
 
     /* News card */
-    .dp-news-card-text { font-size: 12px; }
+    .dp-news-card-text { font-size: 13px; }
+    .dp-news-card { min-height: 84px; }
+    .dp-news-card-body { padding: 14px 15px; gap: 12px; }
 
     /* Trust row */
     .dp-trust-row { gap: 8px; }
@@ -896,7 +958,7 @@ export default function AuthLayout() {
   ].includes(location.pathname);
 
   const { scrollY } = useScroll();
-  const imageY = useTransform(scrollY, [0, 400], [0, -40]);
+  const imageY = useTransform(scrollY, [0, 400], [0, -16]);
 
   const container = {
     hidden: {},
@@ -1807,12 +1869,12 @@ export default function AuthLayout() {
                   </motion.div>
                 </div>
 
-                {/* Right stat cards */}
+                {/* Лента со статистикой — под контентом hero, во всю ширину */}
                 <motion.div
-                  className="dp-hero-right"
+                  className="dp-hero-stats"
                   style={{ y: imageY }}
-                  initial={{ opacity: 0, x: 40 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   transition={{
                     duration: 0.9,
                     delay: 0.3,

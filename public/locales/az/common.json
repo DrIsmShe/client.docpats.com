@@ -2452,6 +2452,95 @@
     },
     "finalH": "Danışmaq əvəzinə — göstərin.",
     "foot1": "DP-Videra · DocPats tərkibində tibbi film studiyası",
-    "foot2": "Modellər: BodyParts3D · Z-Anatomy · HuBMAP — açıq lisenziyalar"
+    "foot2": "Modellər: BodyParts3D · Z-Anatomy · HuBMAP — açıq lisenziyalar",
+    "library": {
+      "title": "Mənim videolarım",
+      "subtitle": "DP-Videra studiyasında çəkilmiş izahedici filmlər.",
+      "shoot": "Film çək",
+      "loading": "Yüklənir…",
+      "empty": "Hələ video yoxdur. İlkini studiyada çəkin — burada görünəcək.",
+      "listFailed": "Videoların siyahısını yükləmək alınmadı",
+      "actionFailed": "Əməliyyatı yerinə yetirmək alınmadı",
+      "confirmDelete": "«{{title}}» silinsin? Fayl birdəfəlik silinəcək.",
+      "watch": "Bax",
+      "collapse": "Bağla",
+      "publish": "Dərc et",
+      "unpublish": "Girişi bağla",
+      "delete": "Sil",
+      "notReadyHint": "Fayl hələ hazır deyil",
+      "hasPatient": "kadrda pasiyent var",
+      "seconds": "{{count}} san",
+      "visPrivate": "Yalnız mən",
+      "visClinic": "Klinika",
+      "visLink": "Keçidlə",
+      "visPublic": "Dərc olunub",
+      "stDraft": "qaralama",
+      "stProcessing": "renderlənir",
+      "stReady": "hazırdır",
+      "stFailed": "render xətası",
+      "menu": "Mənim videolarım"
+    },
+    "player": {
+      "loading": "Video yüklənir…",
+      "gone": "Video əlçatan deyil",
+      "notReady": "Video hələ hazırlanır — bir az sonra baxın",
+      "openFailed": "Videonu açmaq alınmadı",
+      "loadFailed": "Videonu yükləmək alınmadı",
+      "retry": "Yenidən cəhd et",
+      "speed": "Sürət:"
+    },
+    "logoSub": "studiya",
+    "tasks": {
+      "title": "Prosedurdan əvvəl",
+      "subtitle": "Sizi nə gözlədiyi barədə qısa videolar və təsdiqləməli olduğunuz razılıqlar.",
+      "loading": "Yüklənir…",
+      "loadFailed": "Tapşırıqları yükləmək alınmadı",
+      "signFailed": "Təsdiqləmək alınmadı",
+      "empty": "Hazırda baxmalı və təsdiqləməli bir şey yoxdur.",
+      "consentsTitle": "Təsdiq tələb olunur",
+      "prepTitle": "Hazırlıq",
+      "signedTitle": "Təsdiqlənib",
+      "watched": "Video baxılıb — təsdiqləyə bilərsiniz",
+      "notWatched": "Videonu sona qədər izləyin",
+      "watch": "Bax",
+      "collapse": "Bağla",
+      "sign": "Təsdiqləyirəm",
+      "seconds": "{{count}} san",
+      "daysLeft": "{{count}} gün qalıb",
+      "procedureOn": "Prosedur {{date}}",
+      "progress": "{{total}} videodan {{done}} baxılıb",
+      "dueOn": "{{date}} tarixinədək",
+      "optional": "(istəyə görə)",
+      "signedOn": "{{date}} tarixində təsdiqlənib",
+      "menu": "Prosedurdan əvvəl"
+    },
+    "gallery": {
+      "title": "Tibbi videolar",
+      "subtitle": "DocPats həkimləri və klinikaları tərəfindən çəkilmiş qısa izahedici filmlər.",
+      "loading": "Yüklənir…",
+      "failed": "Lenti yükləmək alınmadı",
+      "empty": "Hələ heç nə dərc olunmayıb."
+    },
+    "public": {
+      "loading": "Yüklənir…",
+      "gone": "Video əlçatan deyil",
+      "seconds": "{{count}} san",
+      "views": "{{count}} baxış",
+      "sources": "İstifadə olunan materiallar",
+      "more": "Digər videolar"
+    },
+    "attached": {
+      "title": "Göstərilən videolar",
+      "seconds": "{{count}} san",
+      "watched": "sona qədər baxılıb",
+      "watch": "Bax",
+      "collapse": "Bağla"
+    },
+    "intro": {
+      "title": "Video vizit kartı"
+    }
+  },
+  "dptube": {
+    "menu": "DP-Tube"
   }
 }

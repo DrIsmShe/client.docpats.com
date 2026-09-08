@@ -2457,6 +2457,95 @@
     },
     "finalH": "اعرض — بدلاً من أن تحكي.",
     "foot1": "DP-Videra · استوديو أفلام طبية ضمن DocPats",
-    "foot2": "النماذج: BodyParts3D · Z-Anatomy · HuBMAP — رخص مفتوحة"
+    "foot2": "النماذج: BodyParts3D · Z-Anatomy · HuBMAP — رخص مفتوحة",
+    "library": {
+      "title": "مقاطعي",
+      "subtitle": "أفلام توضيحية مصوَّرة في استوديو DP-Videra.",
+      "shoot": "تصوير فيلم",
+      "loading": "جارٍ التحميل…",
+      "empty": "لا توجد مقاطع بعد. صوِّر أولها في الاستوديو وسيظهر هنا.",
+      "listFailed": "تعذَّر تحميل قائمة المقاطع",
+      "actionFailed": "تعذَّر تنفيذ الإجراء",
+      "confirmDelete": "حذف «{{title}}»؟ سيُمحى الملف نهائيًا.",
+      "watch": "مشاهدة",
+      "collapse": "طيّ",
+      "publish": "نشر",
+      "unpublish": "إغلاق الوصول",
+      "delete": "حذف",
+      "notReadyHint": "الملف غير جاهز بعد",
+      "hasPatient": "يظهر مريض في اللقطة",
+      "seconds": "{{count}} ث",
+      "visPrivate": "أنا فقط",
+      "visClinic": "العيادة",
+      "visLink": "عبر الرابط",
+      "visPublic": "منشور",
+      "stDraft": "مسودة",
+      "stProcessing": "قيد المعالجة",
+      "stReady": "جاهز",
+      "stFailed": "فشل المعالجة",
+      "menu": "مقاطعي"
+    },
+    "player": {
+      "loading": "جارٍ تحميل المقطع…",
+      "gone": "المقطع غير متاح",
+      "notReady": "المقطع قيد التحضير — عد لاحقًا",
+      "openFailed": "تعذَّر فتح المقطع",
+      "loadFailed": "تعذَّر تحميل الفيديو",
+      "retry": "إعادة المحاولة",
+      "speed": "السرعة:"
+    },
+    "logoSub": "استوديو",
+    "tasks": {
+      "title": "قبل الإجراء",
+      "subtitle": "مقاطع قصيرة عمّا ينتظرك، والموافقات التي عليك تأكيدها.",
+      "loading": "جارٍ التحميل…",
+      "loadFailed": "تعذَّر تحميل المهام",
+      "signFailed": "تعذَّر التأكيد",
+      "empty": "لا شيء لمشاهدته أو تأكيده الآن.",
+      "consentsTitle": "بحاجة إلى تأكيدك",
+      "prepTitle": "التحضير",
+      "signedTitle": "مؤكَّد",
+      "watched": "تمت المشاهدة — يمكنك التأكيد",
+      "notWatched": "شاهد المقطع حتى النهاية",
+      "watch": "مشاهدة",
+      "collapse": "طيّ",
+      "sign": "أؤكّد",
+      "seconds": "{{count}} ث",
+      "daysLeft": "بقي {{count}} يوم",
+      "procedureOn": "الإجراء في {{date}}",
+      "progress": "شوهد {{done}} من {{total}}",
+      "dueOn": "قبل {{date}}",
+      "optional": "(اختياري)",
+      "signedOn": "أُكِّد في {{date}}",
+      "menu": "قبل الإجراء"
+    },
+    "gallery": {
+      "title": "مقاطع طبية",
+      "subtitle": "أفلام توضيحية قصيرة من أطباء وعيادات DocPats.",
+      "loading": "جارٍ التحميل…",
+      "failed": "تعذَّر تحميل القائمة",
+      "empty": "لم يُنشر شيء بعد."
+    },
+    "public": {
+      "loading": "جارٍ التحميل…",
+      "gone": "المقطع غير متاح",
+      "seconds": "{{count}} ث",
+      "views": "{{count}} مشاهدة",
+      "sources": "المواد المستخدمة",
+      "more": "مقاطع أخرى"
+    },
+    "attached": {
+      "title": "المقاطع المعروضة",
+      "seconds": "{{count}} ث",
+      "watched": "شوهد كاملاً",
+      "watch": "مشاهدة",
+      "collapse": "طيّ"
+    },
+    "intro": {
+      "title": "بطاقة فيديو"
+    }
+  },
+  "dptube": {
+    "menu": "DP-Tube"
   }
 }

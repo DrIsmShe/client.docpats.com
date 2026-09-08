@@ -531,6 +531,16 @@ export default function Aside() {
             {t("videra.menu", { defaultValue: "Снять фильм" })}
           </NavLink>
 
+          {/* Свои снятые ролики. Рядом со студией намеренно: снять и
+              посмотреть снятое — одно дело, разнесённое по разным углам
+              меню, ищут дольше, чем делают. */}
+          <NavLink className={itemClass} to="/doctor/videos">
+            <span className="dp2-icon">
+              <LuLibraryBig />
+            </span>
+            {t("videra.library.menu", { defaultValue: "Мои ролики" })}
+          </NavLink>
+
           {/* DP-Tube — открытая медиатека готовых фильмов
               (docpats.com/dp-videra/watch). Это НЕ маршрут React, а отдельная
               страница студии, поэтому обычная ссылка с полной загрузкой в новой

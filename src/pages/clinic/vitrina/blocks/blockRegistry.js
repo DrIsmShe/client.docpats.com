@@ -23,6 +23,7 @@ import HeroBlock from "./HeroBlock.jsx";
 import DoctorsBlock from "./DoctorsBlock.jsx";
 import ReviewsBlock from "./ReviewsBlock.jsx";
 import PublicationsBlock from "./PublicationsBlock.jsx";
+import VideosBlock from "./VideosBlock.jsx";
 import GalleryBlock from "./GalleryBlock.jsx";
 import FooterBlock from "./FooterBlock.jsx";
 import CtaBlock from "./CtaBlock.jsx";
@@ -109,6 +110,7 @@ export const BLOCK_REGISTRY = {
   bento: BentoBlock, // ← реальный (V1)
   reviews: ReviewsBlock, // ← реальный (V1)
   publications: PublicationsBlock, // ← реальный (V1)
+  videos: VideosBlock, // ← ролики клиники из каталога DocPats
   gallery: GalleryBlock, // ← реальный (V1)
   faq: FaqBlock, // ← реальный (V1)
   contacts: ContactsBlock, // ← реальный (V1)

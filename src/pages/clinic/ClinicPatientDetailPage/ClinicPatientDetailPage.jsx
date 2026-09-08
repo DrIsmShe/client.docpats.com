@@ -52,6 +52,7 @@ import "../ClinicPatientsPage/clinicPatientsPage.css";
 import "../clinicPageShell.css";
 import "./clinicPatientDetailPage.css";
 import ClinicConsentsPanel from "./ClinicConsentsPanel.jsx";
+import AttachedVideos from "../../../components/video/AttachedVideos.jsx";
 
 // Pull in the calendar-modal stylesheet so the .ccal-* classes used
 // inside BookFromPatientModal are styled here too.
@@ -1055,6 +1056,13 @@ export default function ClinicPatientDetailPage() {
               refreshSignal={requestsRefresh}
               canRevoke={canWrite}
             />
+          )}
+
+          {/* ─── Что этому пациенту объясняли роликами ───────────────────
+              Блок сам ничего не рисует, если роликов нет: у карт, где видео
+              не использовалось, страница выглядит как прежде. */}
+          {!editing && patient && (
+            <AttachedVideos entityType="clinic-patient" entityId={patient._id} />
           )}
         </>
       )}
