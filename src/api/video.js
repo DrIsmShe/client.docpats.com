@@ -393,6 +393,73 @@ export async function transcribeVideo(id, payload = {}) {
   return data;
 }
 
+/**
+ * Что стало с роликом после публикации: досматривают ли, где бросают.
+ *
+ * Цифры берутся из журнала событий просмотра, а не из витринного
+ * счётчика: тот считает открытия страницы и накручивается перезагрузкой.
+ */
+export async function fetchVideoStats(id, params = {}) {
+  const { data } = await axios.get(`${BASE}/${id}/stats`, { params });
+  return data;
+}
+
+/** Сводка по всем своим роликам — какой проседает. */
+export async function fetchMyStats(params = {}) {
+  const { data } = await axios.get(`${BASE}/stats`, { params });
+  return data;
+}
+
+/**
+ * Запасной путь загрузки: файл идёт через сервер.
+ *
+ * Нужен, когда браузер не может положить файл в хранилище
+ * напрямую — обычно потому, что бакет не разрешает запись с нашего
+ * домена. Медленнее и нагружает сервер, зато работает всегда.
+ */
+export async function directUpload(поля, наПрогресс) {
+  const тело = new FormData();
+  тело.append("file", поля.file);
+  тело.append("title", поля.title);
+  if (поля.description) тело.append("description", поля.description);
+  if (поля.categoryId) тело.append("categoryId", поля.categoryId);
+  тело.append("durationSec", String(поля.durationSec || 0));
+  тело.append("rulesVersion", поля.rulesVersion || "");
+
+  // Кадр прикладываем строкой base64: второй файл в том же запросе
+  // потребовал бы отдельной настройки приёмника ради картинки в 20 КБ.
+  if (поля.poster) {
+    const чтец = new FileReader();
+    const base64 = await new Promise((resolve) => {
+      чтец.onload = () => resolve(чтец.result);
+      чтец.onerror = () => resolve("");
+      чтец.readAsDataURL(поля.poster);
+    });
+    if (base64) тело.append("poster", base64);
+  }
+
+  const { data } = await axios.post(`${BASE}/upload/direct`, тело, {
+    timeout: 1800000,
+    onUploadProgress: (e) => {
+      if (наПрогресс && e.total) {
+        наПрогресс(Math.round((e.loaded / e.total) * 100));
+      }
+    },
+  });
+  return data;
+}
+
+/**
+ * Мои каналы с именами и кадрами — для страницы подписок.
+ *
+ * Список без имён — это список идентификаторов: человек
+ * подписывался на врача, а не на строку в базе.
+ */
+export async function fetchMyChannels() {
+  const { data } = await axios.get(`${BASE}/subscriptions/channels`);
+  return data.items ?? [];
+}
+
 /** Мои каналы. */
 export async function fetchMySubscriptions() {
   const { data } = await axios.get(`${BASE}/subscriptions`);
@@ -494,6 +561,9 @@ export default {
   toggleVideoDislike,
   toggleSubscription,
   fetchMySubscriptions,
+  fetchMyChannels,
+  fetchVideoStats,
+  fetchMyStats,
   fetchEmbedCode,
   reportContent,
   adminFetchReports,
@@ -507,6 +577,7 @@ export default {
   adminUpdateCategory,
   adminDeleteCategory,
   completeUpload,
+  directUpload,
   updateVideo,
   deleteVideo,
   publishVideo,

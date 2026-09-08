@@ -2489,7 +2489,8 @@
       "step3": "Sonra subtitrlər, pasiyentə göstərmə və DP-Tube kataloqunda dərc.",
       "count": "Videolar: {{count}}",
       "noPoster": "kadr yoxdur",
-      "noCategory": "Bölməsiz"
+      "noCategory": "Bölməsiz",
+      "stats": "Necə baxirlar"
     },
     "player": {
       "loading": "Video yüklənir…",
@@ -2551,7 +2552,9 @@
       "yearsAgo": "{{count}} il əvvəl",
       "navSubs": "Abunəliklər",
       "emptySubs": "Abunə olduğunuz kanalların videoları burada görünəcək.",
-      "bell": "Bildirişlər"
+      "bell": "Bildirişlər",
+      "backToChannels": "Bütün kanallar",
+      "channelVideos": "{{count}} video"
     },
     "public": {
       "loading": "Yüklənir…",
@@ -2778,7 +2781,19 @@
         "other": "Digər"
       }
     },
-    "offWhy": "Studiya bu serverlə əlaqələndirilməyib: DPVIDERA_SECRET təyin edilməyib"
+    "offWhy": "Studiya bu serverlə əlaqələndirilməyib: DPVIDERA_SECRET təyin edilməyib",
+    "stats": {
+      "title": "Necə baxirlar",
+      "days": "{{count}} gün ərzində",
+      "completionRate": "sona qədər baxir",
+      "depth": "orta dərinlik",
+      "watches": "hesablanmış baxış",
+      "views": "səhifə açılışı",
+      "dropoff": "Hara qədər baxirlar (videonun beşdə bir hissələri ilə)",
+      "noWatches": "Hələ hesablanmış baxış yoxdur — statistika ilk baxışlardan sonra görünəcək.",
+      "loading": "Hesablanır…",
+      "failed": "Statistika yüklənmədi"
+    }
   },
   "dptube": {
     "menu": "DP-Tube"

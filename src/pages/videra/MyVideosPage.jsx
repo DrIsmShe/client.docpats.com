@@ -17,6 +17,7 @@ import VideoPlayer from "../../components/video/VideoPlayer";
 import VideoUploader from "../../components/video/VideoUploader";
 import VideoImport from "../../components/video/VideoImport";
 import SubtitlesPanel from "../../components/video/SubtitlesPanel";
+import VideoStats from "../../components/video/VideoStats";
 import {
   fetchMyVideos,
   publishVideo,
@@ -56,6 +57,7 @@ export default function MyVideosPage() {
   const [беда, setБеда] = useState("");
   const [открыт, setОткрыт] = useState(null); // id ролика в плеере
   const [субтитрыДля, setСубтитрыДля] = useState(null); // id ролика с открытой панелью
+  const [статистикаДля, setСтатистикаДля] = useState(null);
   const [разделы, setРазделы] = useState([]);
   const [занят, setЗанят] = useState(null); // id ролика, по которому идёт действие
   const [грузим, setГрузим] = useState(false);
@@ -406,6 +408,20 @@ export default function MyVideosPage() {
                     )}
                     {/* Субтитры делаются из речи в файле — без готового файла
                         предлагать их нечего. */}
+                    {/* Статистика — только у опубликованного: у черновика
+                        смотреть нечего, и кнопка обещала бы пустоту. */}
+                    {моё && р.visibility !== "private" && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setСтатистикаДля(статистикаДля === р._id ? null : р._id)
+                        }
+                        style={стиль.кнопка}
+                      >
+                        {t("videra.library.stats", { defaultValue: "Как смотрят" })}
+                      </button>
+                    )}
+
                     {моё && готов && (
                       <button
                         type="button"
@@ -440,6 +456,8 @@ export default function MyVideosPage() {
                 {субтитрыДля === р._id && (
                   <SubtitlesPanel video={р} onDone={загрузить} />
                 )}
+
+                {статистикаДля === р._id && <VideoStats videoId={р._id} />}
               </div>
             );
           })}

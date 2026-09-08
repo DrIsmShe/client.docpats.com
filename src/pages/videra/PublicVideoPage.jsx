@@ -709,4 +709,16 @@ const CSS = `
 .vp-item-title { font-size: 14px; font-weight: 600; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .vp-item-sub { font-size: 12px; color: #606060; margin-top: 2px; }
 @media (max-width: 1100px) { .vp-layout { grid-template-columns: 1fr; } .vp-item-thumb { width: 140px; } }
+
+/* Телефон: отступы меньше, ряд действий переносится. Без этого
+   кнопки выталкивали страницу за край экрана. */
+@media (max-width: 700px) {
+  .vp { padding: 12px 12px 56px; overflow-x: hidden; }
+  .vp-title { font-size: 17px; }
+  .vp-row { align-items: flex-start; }
+  .vp-actions { flex-wrap: wrap; }
+  .vp-sub-btn { margin-left: 0; }
+  .vp-item-thumb { width: 120px; }
+  .vp-top-all { padding: 7px 12px; font-size: 13px; }
+}
 `;

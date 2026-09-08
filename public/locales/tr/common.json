@@ -2488,7 +2488,8 @@
       "step3": "Sonrası altyazı, hastaya gösterme ve DP-Tube kataloğunda yayımlama.",
       "count": "Video: {{count}}",
       "noPoster": "önizleme yok",
-      "noCategory": "Bölümsüz"
+      "noCategory": "Bölümsüz",
+      "stats": "Nasıl izleniyor"
     },
     "player": {
       "loading": "Video yükleniyor…",
@@ -2550,7 +2551,9 @@
       "yearsAgo": "{{count}} yıl önce",
       "navSubs": "Abonelikler",
       "emptySubs": "Abone olduğunuz kanalların videoları burada görünür.",
-      "bell": "Bildirimler"
+      "bell": "Bildirimler",
+      "backToChannels": "Tüm kanallar",
+      "channelVideos": "{{count}} video"
     },
     "public": {
       "loading": "Yükleniyor…",
@@ -2777,7 +2780,19 @@
         "other": "Diğer"
       }
     },
-    "offWhy": "Stüdyo bu sunucuya bağlı değil: DPVIDERA_SECRET tanımlı değil"
+    "offWhy": "Stüdyo bu sunucuya bağlı değil: DPVIDERA_SECRET tanımlı değil",
+    "stats": {
+      "title": "Nasıl izleniyor",
+      "days": "{{count}} günde",
+      "completionRate": "sonuna kadar izliyor",
+      "depth": "ortalama derinlik",
+      "watches": "sayılan izlenme",
+      "views": "sayfa açılışı",
+      "dropoff": "Nereye kadar izliyorlar (videonun beşte birlik dilimleri)",
+      "noWatches": "Henüz sayılan izlenme yok — istatistik ilk izlenmelerden sonra görünür.",
+      "loading": "Hesaplanıyor…",
+      "failed": "İstatistik yüklenemedi"
+    }
   },
   "dptube": {
     "menu": "DP-Tube"

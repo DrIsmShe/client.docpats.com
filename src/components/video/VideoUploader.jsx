@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import {
   prepareUpload,
   completeUpload,
+  directUpload,
   fetchUploadRules,
   fetchCategories,
 } from "../../api/video";
@@ -218,14 +219,36 @@ export default function VideoUploader({ onDone }) {
         termsVersion: правила?.version || "",
       });
 
-      await залить(заявка.uploadUrl, файл, файл.type, setПрогресс);
-      // Превью не критично: ролик без картинки лучше, чем сорванная
-      // загрузка из-за неё.
-      if (мета.poster) {
-        await залить(заявка.posterUrl, мета.poster, "image/jpeg").catch(() => {});
-      }
+      try {
+        await залить(заявка.uploadUrl, файл, файл.type, setПрогресс);
+        // Превью не критично: ролик без картинки лучше, чем сорванная
+        // загрузка из-за неё.
+        if (мета.poster) {
+          await залить(заявка.posterUrl, мета.poster, "image/jpeg").catch(() => {});
+        }
+        await completeUpload(заявка.videoId);
+      } catch (прямая) {
+        // ХРАНИЛИЩЕ НЕ ПРИНЯЛО ФАЙЛ ИЗ БРАУЗЕРА — ИДЁМ ЧЕРЕЗ СЕРВЕР.
+        //
+        // Обычная причина — бакет не разрешает запись с нашего домена, и
+        // тогда браузер даже не доходит до отправки. Человеку об этом
+        // знать незачем: он выбрал файл и ждёт результата.
+        console.warn("[upload] прямой путь не вышел:", прямая?.message);
+        setПрогресс(0);
 
-      await completeUpload(заявка.videoId);
+        await directUpload(
+          {
+            file: файл,
+            poster: мета.poster,
+            title: название.trim(),
+            description: описание.trim(),
+            durationSec: мета.durationSec,
+            categoryId: раздел || undefined,
+            rulesVersion: правила?.version || "",
+          },
+          setПрогресс,
+        );
+      }
       setПрогресс(null);
       setФайл(null);
       setМета(null);

@@ -24,6 +24,7 @@ import {
   fetchPublicVideos,
   fetchRecommended,
   fetchCategories,
+  fetchMyChannels,
 } from "../../api/video";
 
 function длительностью(сек) {
@@ -72,6 +73,14 @@ export default function PublicVideosPage() {
   // Какая лента открыта: весь каталог или только каналы, на которые
   // подписан зритель.
   const [лента, setЛента] = useState("all");
+  // Подборка по интересам — только пока человек ничего не выбрал.
+  // Нажав «Все», он просит весь каталог — и получать в ответ
+  // подборку, где нет уже просмотренного, он не должен: семь
+  // роликов превращались в три, и это выглядело как потеря.
+  const [подборка, setПодборка] = useState(true);
+  // Открытый канал: из списка подписок. Пусто — обычная лента.
+  const [канал, setКанал] = useState(null);
+  const [каналы, setКаналы] = useState([]);
   // Колокольчик: открыт ли список. Уведомления сюда приходят все, какие есть
   // у человека в DocPats, — приёмы, сообщения, согласия, подготовка к
   // процедурам. Своя лента «только про видео» означала бы, что человек
@@ -94,10 +103,20 @@ export default function PublicVideosPage() {
   const загрузить = useCallback(async () => {
     setБеда("");
     try {
-      // Главная без фильтров — подборка по интересам. Как только человек
-      // выбрал раздел или что-то ищет, он задал вопрос сам, и подменять
-      // его ответ подборкой нельзя.
-      const подбирать = лента === "all" && !раздел && !искомое;
+      // Подборка — только первый экран, пока человек ничего не выбрал.
+      // Любой его выбор — раздел, поиск или даже явное «Все» — это
+      // вопрос, и отвечать на него надо каталогом, а не подборкой.
+      const подбирать =
+        подборка && лента === "all" && !раздел && !искомое;
+
+      // Список каналов вместо роликов — на «Подписках», пока не открыт
+      // конкретный канал: человек подписывался на автора и первым делом
+      // хочет видеть, на кого именно.
+      if (лента === "subs" && !канал) {
+        setКаналы(await fetchMyChannels());
+        setРолики([]);
+        return;
+      }
 
       setРолики(
         подбирать
@@ -106,14 +125,16 @@ export default function PublicVideosPage() {
               limit: 48,
               categoryId: раздел || undefined,
               q: искомое || undefined,
-              feed: лента === "subs" ? "subscriptions" : undefined,
+              sort: лента === "popular" ? "popular" : undefined,
+              channelType: канал?.channelType,
+              channelId: канал?.channelId,
             }),
       );
     } catch {
       setБеда(t("videra.gallery.failed", { defaultValue: "Не удалось загрузить ленту" }));
       setРолики([]);
     }
-  }, [раздел, искомое, лента, i18n.language, t]);
+  }, [раздел, искомое, лента, канал, подборка, i18n.language, t]);
 
   useEffect(() => {
     загрузить();
@@ -134,7 +155,10 @@ export default function PublicVideosPage() {
       <aside className="yt-side">
         <button
           type="button"
-          onClick={() => setЛента("all")}
+          onClick={() => {
+            setЛента("all");
+            setКанал(null);
+          }}
           className={`yt-side-item yt-side-btn${лента === "all" ? " is-active" : ""}`}
         >
           <span className="yt-side-ico">🏠</span>
@@ -144,16 +168,27 @@ export default function PublicVideosPage() {
             тот же, сужен до выбранных каналов. */}
         <button
           type="button"
-          onClick={() => setЛента("subs")}
+          onClick={() => {
+            setЛента("subs");
+            setКанал(null);
+          }}
           className={`yt-side-item yt-side-btn${лента === "subs" ? " is-active" : ""}`}
         >
           <span className="yt-side-ico">📺</span>
           {t("videra.gallery.navSubs", { defaultValue: "Подписки" })}
         </button>
-        <Link to="/videos" className="yt-side-item">
+        <button
+          type="button"
+          onClick={() => {
+            setЛента("popular");
+            setКанал(null);
+            setПодборка(false);
+          }}
+          className={`yt-side-item yt-side-btn${лента === "popular" ? " is-active" : ""}`}
+        >
           <span className="yt-side-ico">🔥</span>
           {t("videra.gallery.navPopular", { defaultValue: "Популярное" })}
-        </Link>
+        </button>
 
         <div className="yt-side-sep" />
         <div className="yt-side-head">
@@ -180,7 +215,10 @@ export default function PublicVideosPage() {
           <button
             key={к._id}
             type="button"
-            onClick={() => setРаздел(к._id)}
+            onClick={() => {
+              setРаздел(к._id);
+              setПодборка(false);
+            }}
             className={`yt-side-item yt-side-btn${раздел === к._id ? " is-active" : ""}`}
           >
             <span className="yt-side-ico">▸</span>
@@ -258,8 +296,11 @@ export default function PublicVideosPage() {
         <div className="yt-chips">
           <button
             type="button"
-            onClick={() => setРаздел("")}
-            className={`yt-chip${раздел === "" ? " is-active" : ""}`}
+            onClick={() => {
+              setРаздел("");
+              setПодборка(false);
+            }}
+            className={`yt-chip${раздел === "" && !подборка ? " is-active" : ""}`}
           >
             {t("videra.gallery.all", { defaultValue: "Все" })}
           </button>
@@ -267,7 +308,10 @@ export default function PublicVideosPage() {
             <button
               key={к._id}
               type="button"
-              onClick={() => setРаздел(к._id)}
+              onClick={() => {
+              setРаздел(к._id);
+              setПодборка(false);
+            }}
               className={`yt-chip${раздел === к._id ? " is-active" : ""}`}
             >
               {к.title}
@@ -293,6 +337,59 @@ export default function PublicVideosPage() {
                 })
               : t("videra.gallery.empty", { defaultValue: "Пока ничего не опубликовано." })}
           </div>
+        )}
+
+        {/* Открытый канал: строка возврата, чтобы человек понимал, где он
+            оказался и как выйти обратно к списку. */}
+        {лента === "subs" && канал && (
+          <div className="yt-channel-head">
+            <button type="button" onClick={() => setКанал(null)} className="yt-back">
+              ←{" "}
+              {t("videra.gallery.backToChannels", {
+                defaultValue: "Все каналы",
+              })}
+            </button>
+            <span className="yt-channel-name">{канал.name}</span>
+          </div>
+        )}
+
+        {/* Подписки: сначала каналы, а не их ролики вперемешку. */}
+        {лента === "subs" && !канал && (
+          <>
+            {каналы.length === 0 && (
+              <div className="yt-empty">
+                {t("videra.gallery.emptySubs", {
+                  defaultValue:
+                    "Здесь появятся ролики каналов, на которые вы подпишетесь.",
+                })}
+              </div>
+            )}
+
+            <div className="yt-channels">
+              {каналы.map((к) => (
+                <button
+                  key={`${к.channelType}:${к.channelId}`}
+                  type="button"
+                  onClick={() => setКанал(к)}
+                  className="yt-channel"
+                >
+                  <span className="yt-channel-ava">
+                    {(к.name || "D").trim().charAt(0).toUpperCase()}
+                  </span>
+                  <span className="yt-channel-body">
+                    <span className="yt-channel-title">{к.name}</span>
+                    <span className="yt-channel-sub">
+                      {t("videra.gallery.channelVideos", {
+                        count: к.videos,
+                        defaultValue: "{{count}} роликов",
+                      })}
+                      {к.lastTitle ? ` · ${к.lastTitle}` : ""}
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </>
         )}
 
         <div className="yt-grid">
@@ -379,10 +476,37 @@ const CSS = `
 .yt-author { font-size: 14px; color: #606060; margin-top: 4px; }
 .yt-stats { font-size: 14px; color: #606060; }
 .yt-empty { padding: 60px 0; text-align: center; color: #606060; }
+.yt-channels { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.yt-channel { display: flex; align-items: center; gap: 12px; text-align: left; padding: 12px; border: 1px solid #e5e5e5; border-radius: 12px; background: #fff; cursor: pointer; font: inherit; }
+.yt-channel:hover { background: #f8f8f8; }
+.yt-channel-ava { flex: 0 0 44px; height: 44px; border-radius: 50%; background: #0e8478; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 18px; }
+.yt-channel-body { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.yt-channel-title { font-weight: 600; font-size: 15px; }
+.yt-channel-sub { font-size: 12px; color: #606060; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.yt-channel-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.yt-back { border: none; background: #f2f2f2; border-radius: 16px; padding: 7px 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.yt-back:hover { background: #e5e5e5; }
+.yt-channel-name { font-size: 18px; font-weight: 700; }
 
 @media (max-width: 1000px) {
   .yt { grid-template-columns: 1fr; }
   .yt-side { display: none; }
   .yt-main { padding: 12px 16px 64px; }
+}
+
+/* УЗКИЙ ЭКРАН. Карточка шириной от 300px плюс отступы не
+   помещалась в телефон, и страница ехала вбок: горизонтальная
+   прокрутка на витрине выглядит как поломка, а не как замысел. */
+@media (max-width: 700px) {
+  .yt { overflow-x: hidden; }
+  .yt-main { padding: 10px 12px 56px; }
+  .yt-grid { grid-template-columns: 1fr; gap: 26px 0; }
+  /* Шапка в две строки: имя и колокольчик сверху, поиск под
+     ними во всю ширину — в одну строку они не живут. */
+  .yt-top { flex-wrap: wrap; gap: 10px; }
+  .yt-top .yt-search { order: 3; flex: 1 1 100%; max-width: none; }
+  .yt-bell-wrap { margin-left: auto; }
+  .yt-chips { gap: 8px; margin-bottom: 18px; }
+  .yt-card-body { gap: 10px; }
 }
 `;

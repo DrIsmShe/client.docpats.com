@@ -2515,7 +2515,8 @@
       "step3": "Then subtitles, showing it to a patient and publishing in the DP-Tube catalogue.",
       "count": "Videos: {{count}}",
       "noPoster": "no preview",
-      "noCategory": "No section"
+      "noCategory": "No section",
+      "stats": "How it's watched"
     },
     "player": {
       "loading": "Loading the video…",
@@ -2577,7 +2578,9 @@
       "yearsAgo": "{{count}} years ago",
       "navSubs": "Subscriptions",
       "emptySubs": "Videos from channels you subscribe to will appear here.",
-      "bell": "Notifications"
+      "bell": "Notifications",
+      "backToChannels": "All channels",
+      "channelVideos": "{{count}} videos"
     },
     "public": {
       "loading": "Loading…",
@@ -2804,7 +2807,19 @@
         "other": "Other"
       }
     },
-    "offWhy": "The studio is not connected to this server: DPVIDERA_SECRET is not set"
+    "offWhy": "The studio is not connected to this server: DPVIDERA_SECRET is not set",
+    "stats": {
+      "title": "How it's watched",
+      "days": "over {{count}} days",
+      "completionRate": "watch to the end",
+      "depth": "average depth",
+      "watches": "counted views",
+      "views": "page opens",
+      "dropoff": "How far they watch (by fifths of the video)",
+      "noWatches": "No counted views yet — statistics appear after the first ones.",
+      "loading": "Counting…",
+      "failed": "Could not load statistics"
+    }
   },
   "dptube": {
     "menu": "DP-Tube"
