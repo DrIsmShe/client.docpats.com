@@ -25,5 +25,7 @@
   "countTitle": "{{count}} yorum",
   "orderNew": "Önce yeniler",
   "orderTop": "Önce popülerler",
-  "report": "Şikâyet et"
+  "report": "Şikâyet et",
+  "quote": "Alıntıla",
+  "quoteHint": "Yalnızca bir bölümü alıntılamak için onu seçin"
 }

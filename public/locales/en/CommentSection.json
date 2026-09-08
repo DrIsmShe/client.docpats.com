@@ -25,5 +25,7 @@
   "countTitle": "{{count}} comments",
   "orderNew": "Newest first",
   "orderTop": "Top first",
-  "report": "Report"
+  "report": "Report",
+  "quote": "Quote",
+  "quoteHint": "Select a phrase to quote just that part"
 }

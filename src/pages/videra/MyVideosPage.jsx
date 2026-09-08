@@ -268,6 +268,11 @@ export default function MyVideosPage() {
           {ролики.map((р) => {
             const цвет = ЦВЕТ_ВИДИМОСТИ[р.visibility] || ЦВЕТ_ВИДИМОСТИ.private;
             const готов = р.status === "ready";
+            // Своё или чужое говорит сервер: у интерфейса нет ни ownerId
+            // человека, ни его роли в клинике, и гадание заканчивалось
+            // кнопкой «Удалить» на чужом ролике. Старый ответ без этого
+            // поля считаем своим: до разделения список и был только свой.
+            const моё = р.isOwner !== false;
             return (
               <div key={р._id} style={стиль.карточка}>
                 {/* Кадр решает задачу, с которой не справляется имя: у
@@ -336,13 +341,13 @@ export default function MyVideosPage() {
                   {/* Полка витрины. «Без раздела» — обычное состояние, а
                       не ошибка: ролик просто попадёт в общую ленту. */}
                   <select
+                    disabled={занят === р._id || !моё}
                     value={р.categoryId || ""}
                     onChange={(e) =>
                       действие(р._id, () =>
                         updateVideo(р._id, { categoryId: e.target.value || null }),
                       )
                     }
-                    disabled={занят === р._id}
                     style={стиль.раздел}
                   >
                     <option value="">
@@ -377,7 +382,7 @@ export default function MyVideosPage() {
                     {/* Публикация ролика с пациентом запрещена сервером —
                         кнопку не показываем вовсе, чтобы не предлагать
                         действие, которое заведомо получит отказ. */}
-                    {!р.phi && готов && р.visibility === "private" && (
+                    {моё && !р.phi && готов && р.visibility === "private" && (
                       <button
                         type="button"
                         disabled={занят === р._id}
@@ -387,7 +392,7 @@ export default function MyVideosPage() {
                         {t("videra.library.publish", { defaultValue: "Опубликовать" })}
                       </button>
                     )}
-                    {р.visibility !== "private" && (
+                    {моё && р.visibility !== "private" && (
                       <button
                         type="button"
                         disabled={занят === р._id}
@@ -401,7 +406,7 @@ export default function MyVideosPage() {
                     )}
                     {/* Субтитры делаются из речи в файле — без готового файла
                         предлагать их нечего. */}
-                    {готов && (
+                    {моё && готов && (
                       <button
                         type="button"
                         onClick={() =>
@@ -413,6 +418,7 @@ export default function MyVideosPage() {
                       </button>
                     )}
 
+                    {моё && (
                     <button
                       type="button"
                       disabled={занят === р._id}
@@ -421,6 +427,7 @@ export default function MyVideosPage() {
                     >
                       {t("videra.library.delete", { defaultValue: "Удалить" })}
                     </button>
+                    )}
                   </div>
                 </div>
 

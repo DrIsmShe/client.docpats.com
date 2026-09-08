@@ -25,5 +25,7 @@
   "countTitle": "{{count}} şərh",
   "orderNew": "Əvvəlcə yenilər",
   "orderTop": "Əvvəlcə populyarlar",
-  "report": "Şikayət et"
+  "report": "Şikayət et",
+  "quote": "Sitat",
+  "quoteHint": "Yalnız bir hissəni sitat gətirmək üçün onu seçin"
 }

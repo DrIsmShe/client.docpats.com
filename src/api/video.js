@@ -42,6 +42,17 @@ export async function fetchRecommended(params = {}) {
   return data.items ?? [];
 }
 
+/**
+ * Засчитать просмотр публичного ролика.
+ *
+ * Отдельно от reportWatch: тот пишет в журнал и требует входа, а
+ * здесь всего лишь число на витрине, которое должно расти и у гостя.
+ */
+export async function countPublicView(id) {
+  const { data } = await axios.post(`${BASE}/public/${id}/view`);
+  return data;
+}
+
 /** Похожие ролики — колонка рядом с проигрывателем. */
 export async function fetchRelated(id, params = {}) {
   const { data } = await axios.get(`${BASE}/public/${id}/related`, { params });
@@ -466,6 +477,7 @@ export default {
   fetchPublicVideos,
   fetchRecommended,
   fetchRelated,
+  countPublicView,
   fetchPublicVideo,
   fetchPublicPlayback,
   fetchClinicVideos,

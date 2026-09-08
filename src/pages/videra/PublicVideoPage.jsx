@@ -23,6 +23,7 @@ import {
   fetchPublicVideo,
   fetchPublicPlayback,
   fetchRelated,
+  countPublicView,
   toggleVideoLike,
   toggleVideoDislike,
   toggleSubscription,
@@ -219,6 +220,30 @@ export default function PublicVideoPage() {
   // накручивает сам себе, перестаёт что-либо значить.
   const этоМойКанал =
     канал?.type === "user" && userId && String(канал.id) === String(userId);
+
+  // Просмотр засчитываем после пяти секунд показа, а не при открытии:
+  // человек, закрывший вкладку через секунду, ролик не смотрел. Один
+  // раз на открытие — перемотка и пауза не должны накручивать счётчик.
+  useEffect(() => {
+    if (!ролик) return undefined;
+    let засчитан = false;
+    const таймер = setTimeout(() => {
+      if (засчитан) return;
+      засчитан = true;
+      countPublicView(id)
+        .then((итог) => {
+          if (итог?.views) {
+            setРолик((п) =>
+              п ? { ...п, stats: { ...п.stats, views: итог.views } } : п,
+            );
+          }
+        })
+        .catch(() => {
+          /* счётчик — не то, ради чего прерывают просмотр */
+        });
+    }, 5000);
+    return () => clearTimeout(таймер);
+  }, [id, ролик]);
 
   /** Широкая раскладка. Запись в хранилище может быть запрещена — не беда. */
   const переключитьШирину = () => {

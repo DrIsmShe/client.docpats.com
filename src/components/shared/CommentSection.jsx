@@ -132,6 +132,38 @@ export default function CommentSection({
     }
   };
 
+  /**
+   * Взять текст в цитату и открыть под ним поле ответа.
+   *
+   * Длинную цитату обрезаем: она нужна как указание на фразу, а не как
+   * копия чужого комментария — иначе ответ тонет в цитировании.
+   */
+  const quoteComment = (comment) => {
+    const выделено = String(window.getSelection?.() || "").trim();
+    // Выделение засчитываем, только если оно из этого комментария: иначе
+    // в цитату попадёт случайный текст со страницы.
+    const своё =
+      выделено && String(comment.content || "").includes(выделено) ? выделено : "";
+
+    const исходник = (своё || String(comment.content || "")).trim();
+    const текст = исходник.length > 300 ? исходник.slice(0, 300) + "…" : исходник;
+
+    const имя = [comment.author?.firstName, comment.author?.lastName]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+
+    // Формат цитаты — привычный «>»: он читается и в обычном тексте, и
+    // если однажды здесь появится разметка.
+    const цитата = текст
+      .split("\n")
+      .map((строка) => `> ${строка}`)
+      .join("\n");
+
+    setReplyingTo(comment._id);
+    setReplyContent(`${имя ? `> ${имя}:\n` : ""}${цитата}\n\n`);
+  };
+
   // ================= REPLY =================
   const handleReply = async (parentId) => {
     if (!replyContent.trim()) return;
@@ -302,6 +334,16 @@ export default function CommentSection({
                 onClick={() => setReplyingTo(comment._id)}
               >
                 {t("reply")}
+              </button>
+
+              <button
+                className="btn btn-sm btn-outline-secondary"
+                onClick={() => quoteComment(comment)}
+                title={t("quoteHint", {
+                  defaultValue: "Выделите фразу, чтобы процитировать её",
+                })}
+              >
+                {t("quote", { defaultValue: "Цитировать" })}
               </button>
 
               {/* На свой комментарий не жалуются: для него рядом есть
