@@ -425,6 +425,9 @@ export async function directUpload(поля, наПрогресс) {
   if (поля.categoryId) тело.append("categoryId", поля.categoryId);
   тело.append("durationSec", String(поля.durationSec || 0));
   тело.append("rulesVersion", поля.rulesVersion || "");
+  // Согласие шлётся отдельно от версии: сервер требует обоих — и что
+  // человек согласился, и на какую редакцию правил.
+  тело.append("termsAccepted", "true");
 
   // Кадр прикладываем строкой base64: второй файл в том же запросе
   // потребовал бы отдельной настройки приёмника ради картинки в 20 КБ.
