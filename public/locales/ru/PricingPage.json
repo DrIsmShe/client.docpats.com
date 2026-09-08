@@ -149,7 +149,8 @@
     "labExplanations": "{{count}} расшифровок анализов в месяц",
     "videraMinutes": "{{count}} минут сборки фильмов DP-Videra в месяц",
     "videraStorage": "{{count}} ГБ для хранения роликов",
-    "dptubePublish": "Публикация в каталоге DP-Tube и встраивание на свой сайт"
+    "dptubePublish": "Публикация в каталоге DP-Tube и встраивание на свой сайт",
+    "patientPublications": "До {{count}} своих роликов в разделе «Истории пациентов»"
   },
   "examAddon": {
     "title": "Подготовка к экзаменам",

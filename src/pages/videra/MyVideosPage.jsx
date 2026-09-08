@@ -58,6 +58,8 @@ export default function MyVideosPage() {
   const [открыт, setОткрыт] = useState(null); // id ролика в плеере
   const [субтитрыДля, setСубтитрыДля] = useState(null); // id ролика с открытой панелью
   const [статистикаДля, setСтатистикаДля] = useState(null);
+  // Пациент ли перед нами: у него свои правила публикации.
+  const [яПациент, setЯПациент] = useState(false);
   const [разделы, setРазделы] = useState([]);
   const [занят, setЗанят] = useState(null); // id ролика, по которому идёт действие
   const [грузим, setГрузим] = useState(false);
@@ -92,6 +94,19 @@ export default function MyVideosPage() {
     загрузить();
   }, [загрузить]);
 
+  useEffect(() => {
+    let живо = true;
+    fetch(`${process.env.REACT_APP_API_URL}/common-for-user`, {
+      credentials: "include",
+    })
+      .then((о) => о.json())
+      .then((д) => живо && setЯПациент(д?.user?.role === "patient"))
+      .catch(() => {});
+    return () => {
+      живо = false;
+    };
+  }, []);
+
   // Разделы витрины заводит администратор — список тянем с сервера, а не
   // держим в коде: новая полка не должна требовать выкатки интерфейса.
   useEffect(() => {
@@ -125,6 +140,30 @@ export default function MyVideosPage() {
     } finally {
       setЗанят(null);
     }
+  };
+
+  /**
+   * Публикация. Пациента предупреждаем отдельно.
+   *
+   * Он выкладывает рассказ о своём здоровье в открытый каталог —
+   * это его право, но он должен понимать, что делает. Отговаривать
+   * мы не вправе, промолчать — не должны.
+   */
+  const опубликовать = (р) => {
+    if (яПациент) {
+      const вопрос =
+        t("videra.publish.patientWarn", {
+          defaultValue:
+            "Ролик увидят все и без входа. Если в нём есть сведения о вашем здоровье — вы раскрываете их навсегда.",
+        }) +
+        "\n\n" +
+        t("videra.publish.patientShelf", {
+          defaultValue: "Ваши ролики попадают в раздел «Истории пациентов».",
+        });
+
+      if (!window.confirm(вопрос)) return;
+    }
+    действие(р._id, () => publishVideo(р._id, "public"));
   };
 
   const удалить = (ролик) => {
@@ -234,6 +273,18 @@ export default function MyVideosPage() {
             ? t("videra.import.hide", { defaultValue: "Скрыть перенос" })
             : t("videra.import.open", { defaultValue: "Перенести из студии" })}
         </button>
+
+        {/* Прямой вход в студию. Ссылка есть и в колонке слева, но
+            человек, стоящий у кнопки «Перенести из студии», чаще всего
+            обнаруживает, что переносить ещё нечего — и ему нужно туда. */}
+        <a
+          href="https://docpats.com/dp-videra/"
+          target="_blank"
+          rel="noreferrer"
+          style={стиль.кнопкаСсылка}
+        >
+          {t("videra.library.toStudio", { defaultValue: "Перейти в студию" })}
+        </a>
       </div>
       {грузим && <VideoUploader onDone={загрузить} />}
 
@@ -604,6 +655,19 @@ const стиль = {
     color: "inherit",
   },
   кнопкаОпасная: { borderColor: "rgba(163,44,34,.4)", color: "#a32c22" },
+  // Ссылка рядом с кнопками: выглядит как они, но остаётся ссылкой —
+  // средняя кнопка с href ломает открытие в новой вкладке.
+  кнопкаСсылка: {
+    border: "1px solid #d6dddb",
+    background: "transparent",
+    borderRadius: 8,
+    padding: "6px 12px",
+    fontSize: 13,
+    color: "inherit",
+    textDecoration: "none",
+    display: "inline-flex",
+    alignItems: "center",
+  },
   плеер: { marginTop: 14 },
   пусто: { padding: 40, textAlign: "center", color: "#6b7b78" },
   ошибка: {

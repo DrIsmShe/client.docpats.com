@@ -2490,7 +2490,8 @@
       "count": "Videolar: {{count}}",
       "noPoster": "kadr yoxdur",
       "noCategory": "Bölməsiz",
-      "stats": "Necə baxirlar"
+      "stats": "Necə baxirlar",
+      "toStudio": "Studiyaya keç"
     },
     "player": {
       "loading": "Video yüklənir…",
@@ -2558,7 +2559,9 @@
       "inviteTitle": "Öz videolarınız",
       "inviteText": "Həkim izahı studiyada çəkir və ya hazır fayl yükləyir və burada dərc edir.",
       "inviteSignup": "Başla",
-      "invitePlans": "Tariflər"
+      "invitePlans": "Tariflər",
+      "navHistory": "Tarixçə",
+      "emptyHistory": "Baxdığınız videolar burada görünəcək."
     },
     "public": {
       "loading": "Yüklənir…",
@@ -2797,6 +2800,11 @@
       "noWatches": "Hələ hesablanmış baxış yoxdur — statistika ilk baxışlardan sonra görünəcək.",
       "loading": "Hesablanır…",
       "failed": "Statistika yüklənmədi"
+    },
+    "publish": {
+      "patientLimit": "{{limit}} məhdudiyyətdən {{used}} dərc olunub. Birini geri çəkin və ya tarifi dəyişin.",
+      "patientShelf": "Videolarınız «Pasiyent hekayələri» bölməsinə düşür.",
+      "patientWarn": "Videonu hamı girişsiz görəcək. Əgər orada sağlamlığınızla bağlı məlumat varsa, siz onu həmişəlik açıqlayırsınız."
     }
   },
   "dptube": {

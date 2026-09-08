@@ -2516,7 +2516,8 @@
       "count": "Videos: {{count}}",
       "noPoster": "no preview",
       "noCategory": "No section",
-      "stats": "How it's watched"
+      "stats": "How it's watched",
+      "toStudio": "Go to the studio"
     },
     "player": {
       "loading": "Loading the video…",
@@ -2584,7 +2585,9 @@
       "inviteTitle": "Your own videos",
       "inviteText": "A doctor records an explanation in the studio or uploads a ready file and publishes it here.",
       "inviteSignup": "Get started",
-      "invitePlans": "Plans"
+      "invitePlans": "Plans",
+      "navHistory": "History",
+      "emptyHistory": "Videos you have watched will appear here."
     },
     "public": {
       "loading": "Loading…",
@@ -2823,6 +2826,11 @@
       "noWatches": "No counted views yet — statistics appear after the first ones.",
       "loading": "Counting…",
       "failed": "Could not load statistics"
+    },
+    "publish": {
+      "patientLimit": "Published {{used}} of {{limit}}. Unpublish one or change your plan.",
+      "patientShelf": "Your videos go to the “Patient stories” section.",
+      "patientWarn": "Anyone can watch it without signing in. If it contains information about your health, you are disclosing it permanently."
     }
   },
   "dptube": {

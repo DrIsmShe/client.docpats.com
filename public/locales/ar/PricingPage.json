@@ -149,7 +149,8 @@
     "labExplanations": "{{count}} تفسيرات تحاليل شهريًا",
     "videraMinutes": "{{count}} دقيقة لإنتاج أفلام DP-Videra شهريًا",
     "videraStorage": "{{count}} جيجابايت لتخزين المقاطع",
-    "dptubePublish": "النشر في كتالوج DP-Tube والتضمين في موقعك"
+    "dptubePublish": "النشر في كتالوج DP-Tube والتضمين في موقعك",
+    "patientPublications": "حتى {{count}} من مقاطعك في «قصص المرضى»"
   },
   "examAddon": {
     "title": "التحضير للامتحانات",

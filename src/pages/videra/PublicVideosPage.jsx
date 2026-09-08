@@ -143,6 +143,7 @@ export default function PublicVideosPage() {
               categoryId: раздел || undefined,
               q: искомое || undefined,
               sort: лента === "popular" ? "popular" : undefined,
+              feed: лента === "history" ? "history" : undefined,
               channelType: канал?.channelType,
               channelId: канал?.channelId,
             }),
@@ -207,6 +208,23 @@ export default function PublicVideosPage() {
           {t("videra.gallery.navPopular", { defaultValue: "Популярное" })}
         </button>
 
+        {/* История — только вошедшему: у гостя её нет и быть не
+            может, а пункт, ведущий в пустоту, читается как поломка. */}
+        {свой !== false && (
+          <button
+            type="button"
+            onClick={() => {
+              setЛента("history");
+              setКанал(null);
+              setПодборка(false);
+            }}
+            className={`yt-side-item yt-side-btn${лента === "history" ? " is-active" : ""}`}
+          >
+            <span className="yt-side-ico">🕓</span>
+            {t("videra.gallery.navHistory", { defaultValue: "История" })}
+          </button>
+        )}
+
         <div className="yt-side-sep" />
 
         {/* ГОСТЮ — ПРЕДЛОЖЕНИЕ, А НЕ ССЫЛКИ В ФОРМУ ВХОДА. Раздел «Вы» вёл
@@ -242,18 +260,36 @@ export default function PublicVideosPage() {
         )}
         {свой !== false && (
           <>
-            <Link to="/doctor/videos" className="yt-side-item">
+            {/* Работа с роликами — в соседней вкладке, а не вместо витрины:
+                человек смотрел ленту и вернётся к ней, а найти место, где
+                остановился, после возврата нечем. */}
+            <a
+              href="/doctor/videos"
+              target="_blank"
+              rel="noreferrer"
+              className="yt-side-item"
+            >
               <span className="yt-side-ico">🎬</span>
               {t("videra.library.menu", { defaultValue: "Мои ролики" })}
-            </Link>
-            <Link to="/doctor/videos" className="yt-side-item">
+            </a>
+            <a
+              href="/doctor/videos"
+              target="_blank"
+              rel="noreferrer"
+              className="yt-side-item"
+            >
               <span className="yt-side-ico">⬆️</span>
               {t("videra.upload.open", { defaultValue: "Загрузить своё видео" })}
-            </Link>
-            <Link to="/doctor/videra" className="yt-side-item">
+            </a>
+            <a
+              href="/doctor/videra"
+              target="_blank"
+              rel="noreferrer"
+              className="yt-side-item"
+            >
               <span className="yt-side-ico">🎥</span>
               {t("videra.menu", { defaultValue: "Снять фильм" })}
-            </Link>
+            </a>
           </>
         )}
 
@@ -380,7 +416,12 @@ export default function PublicVideosPage() {
           <div className="yt-empty">
             {/* Пустая лента подписок — не то же, что пустой каталог:
                 человек должен понять, что дело в его подписках, а не в площадке. */}
-            {лента === "subs"
+            {лента === "history"
+              ? t("videra.gallery.emptyHistory", {
+                  defaultValue:
+                    "Здесь появятся ролики, которые вы смотрели.",
+                })
+              : лента === "subs"
               ? t("videra.gallery.emptySubs", {
                   defaultValue:
                     "Здесь появятся ролики каналов, на которые вы подпишетесь.",

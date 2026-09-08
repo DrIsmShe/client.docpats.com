@@ -149,7 +149,8 @@
     "labExplanations": "{{count}} lab-result explanations per month",
     "videraMinutes": "{{count}} minutes of DP-Videra film rendering per month",
     "videraStorage": "{{count}} GB of video storage",
-    "dptubePublish": "Publishing in the DP-Tube catalogue and embedding on your own site"
+    "dptubePublish": "Publishing in the DP-Tube catalogue and embedding on your own site",
+    "patientPublications": "Up to {{count}} of your own videos in “Patient stories”"
   },
   "examAddon": {
     "title": "Exam preparation",

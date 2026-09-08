@@ -149,7 +149,8 @@
     "labExplanations": "Ayda {{count}} tahlil açıklaması",
     "videraMinutes": "Ayda {{count}} dakika DP-Videra film oluşturma",
     "videraStorage": "Videolar için {{count}} GB depolama",
-    "dptubePublish": "DP-Tube kataloğunda yayımlama ve kendi sitenize gömme"
+    "dptubePublish": "DP-Tube kataloğunda yayımlama ve kendi sitenize gömme",
+    "patientPublications": "“Hasta hikâyeleri” bölümünde en fazla {{count}} kendi videonuz"
   },
   "examAddon": {
     "title": "Sınavlara hazırlık",

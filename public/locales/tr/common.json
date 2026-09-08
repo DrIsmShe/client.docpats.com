@@ -2489,7 +2489,8 @@
       "count": "Video: {{count}}",
       "noPoster": "önizleme yok",
       "noCategory": "Bölümsüz",
-      "stats": "Nasıl izleniyor"
+      "stats": "Nasıl izleniyor",
+      "toStudio": "Stüdyoya git"
     },
     "player": {
       "loading": "Video yükleniyor…",
@@ -2557,7 +2558,9 @@
       "inviteTitle": "Kendi videolarınız",
       "inviteText": "Hekim açıklamayı stüdyoda çeker ya da hazır dosya yükler ve burada yayımlar.",
       "inviteSignup": "Başla",
-      "invitePlans": "Planlar"
+      "invitePlans": "Planlar",
+      "navHistory": "Geçmiş",
+      "emptyHistory": "İzlediğiniz videolar burada görünür."
     },
     "public": {
       "loading": "Yükleniyor…",
@@ -2796,6 +2799,11 @@
       "noWatches": "Henüz sayılan izlenme yok — istatistik ilk izlenmelerden sonra görünür.",
       "loading": "Hesaplanıyor…",
       "failed": "İstatistik yüklenemedi"
+    },
+    "publish": {
+      "patientLimit": "{{limit}} sınırından {{used}} yayımlandı. Birini kaldırın ya da planı değiştirin.",
+      "patientShelf": "Videolarınız “Hasta hikâyeleri” bölümüne gider.",
+      "patientWarn": "Videoyu herkes giriş yapmadan izleyebilir. Sağlığınızla ilgili bilgi içeriyorsa, bunu kalıcı olarak açıklamış olursunuz."
     }
   },
   "dptube": {
