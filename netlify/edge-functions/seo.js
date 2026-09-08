@@ -1381,6 +1381,10 @@ export const config = {
     "/public/doctor-profile/article-detail-for-all/*",
     "/public/doctor/article-scientific-detail-for-all/*",
     "/public/doctor-profile/doctor-details/*",
+    // Ролик каталога. Адрес двухсегментный и под "/:slug" не попадает:
+    // без этой строки ветка роликов написана, но не вызывается,
+    // и ссылка в ленте показывает общую заставку платформы.
+    "/videos/*",
     // Витрина по корневому слагу. Односегментный шаблон URLPattern: под него
     // попадает и /login, и /pricing — отсекаются они в RESERVED_ROOT, а всё
     // незнакомое проверяется запросом к публичному API.
