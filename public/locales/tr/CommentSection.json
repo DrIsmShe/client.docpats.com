@@ -27,5 +27,8 @@
   "orderTop": "Önce popülerler",
   "report": "Şikâyet et",
   "quote": "Alıntıla",
-  "quoteHint": "Yalnızca bir bölümü alıntılamak için onu seçin"
+  "quoteHint": "Yalnızca bir bölümü alıntılamak için onu seçin",
+  "guestInvite": "Yorum yazmak için giriş yapın ya da kayıt olun.",
+  "guestSignin": "Giriş yap",
+  "guestSignup": "Kayıt ol"
 }

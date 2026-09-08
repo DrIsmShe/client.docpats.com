@@ -27,5 +27,8 @@
   "orderTop": "Əvvəlcə populyarlar",
   "report": "Şikayət et",
   "quote": "Sitat",
-  "quoteHint": "Yalnız bir hissəni sitat gətirmək üçün onu seçin"
+  "quoteHint": "Yalnız bir hissəni sitat gətirmək üçün onu seçin",
+  "guestInvite": "Şərh yazmaq üçün daxil olun və ya qeydiyyatdan keçin.",
+  "guestSignin": "Daxil ol",
+  "guestSignup": "Qeydiyyat"
 }

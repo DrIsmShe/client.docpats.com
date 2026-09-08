@@ -314,6 +314,18 @@ export default function PublicVideoPage() {
     <div className="vp">
       <style>{CSS}</style>
 
+      {/* Шапка с возвратом в каталог. Сюда попадают по ссылке из
+          мессенджера и из соцсети, минуя витрину, — и без этой строки человек
+          досматривал ролик и не имел куда пойти дальше. */}
+      <div className="vp-top">
+        <Link to="/videos" className="vp-brand">
+          <span className="vp-brand-mark">▶</span> DP-Tube
+        </Link>
+        <Link to="/videos" className="vp-top-all">
+          {t("videra.public.allVideos", { defaultValue: "Все ролики" })}
+        </Link>
+      </div>
+
       <div className={`vp-layout${широко ? " is-wide" : ""}`}>
         <div className="vp-col">
           <div className="vp-player">
@@ -582,6 +594,7 @@ export default function PublicVideoPage() {
               targetType="Video"
               readOnly={!userId}
               showHeader
+              publicUrl={`${process.env.REACT_APP_API_URL}/api/v1/video/public/${id}/comments`}
               onReport={
                 userId
                   ? (commentId) =>
@@ -632,6 +645,11 @@ export default function PublicVideoPage() {
 
 const CSS = `
 .vp { max-width: 1600px; margin: 0 auto; padding: 20px 24px 64px; color: #0f0f0f; }
+.vp-top { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.vp-brand { display: flex; align-items: center; gap: 6px; font-size: 20px; font-weight: 800; letter-spacing: -.5px; color: #0f0f0f; text-decoration: none; }
+.vp-brand-mark { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 19px; background: #cc0000; color: #fff; border-radius: 5px; font-size: 11px; }
+.vp-top-all { margin-left: auto; font-size: 14px; font-weight: 600; color: #0f0f0f; text-decoration: none; background: #f2f2f2; border-radius: 18px; padding: 8px 16px; }
+.vp-top-all:hover { background: #e5e5e5; }
 .vp-empty { padding: 60px; text-align: center; color: #606060; }
 .vp-layout { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 24px; }
 /* Широкий режим: колонка «дальше» уходит под плеер, а не сжимается — на

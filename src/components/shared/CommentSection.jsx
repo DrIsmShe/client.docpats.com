@@ -44,6 +44,11 @@ export default function CommentSection({
   // Сколько комментариев загрузилось — вызывающему, чтобы он мог написать
   // «N комментариев» рядом, не запрашивая их второй раз.
   onCountChange,
+  // Откуда читать обсуждение гостю. Общий маршрут стоит за входом — он
+  // обслуживает комментарии под чем угодно, и открывать его целиком
+  // нельзя. Страница, у которой есть свой открытый вход, передаёт его
+  // сюда; без пропа поведение прежнее.
+  publicUrl,
 }) {
   const { t } = useTranslation("CommentSection");
 
@@ -89,10 +94,14 @@ export default function CommentSection({
   const fetchComments = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(
-        `${API_BASE}/comments/add-comments/by-ref/${refId}`,
-        { withCredentials: true },
-      );
+      // Гостю — открытый вход, если вызывающий его дал: общий маршрут
+      // отвечает 401, и человек видел ошибку вместо обсуждения.
+      const адрес =
+        publicUrl && !currentUserId
+          ? publicUrl
+          : `${API_BASE}/comments/add-comments/by-ref/${refId}`;
+
+      const res = await axios.get(адрес, { withCredentials: true });
       const список = res.data.comments || [];
       setComments(список);
       // Считаем вместе с ответами: под роликом «80 комментариев» означает
@@ -104,7 +113,11 @@ export default function CommentSection({
       }
     } catch (err) {
       console.error("Load error:", err.message);
-      setError(t("errors.load"));
+      setError(
+        t("errors.load", {
+          defaultValue: "Не удалось загрузить комментарии",
+        }),
+      );
     } finally {
       setLoading(false);
     }
@@ -501,6 +514,26 @@ export default function CommentSection({
           </div>
         )}
       </form>
+      )}
+
+      {/* ГОСТЮ — ПРИГЛАШЕНИЕ, А НЕ ПУСТОЕ МЕСТО. Раньше форма просто
+          исчезала: человек видел обсуждение и не понимал, почему ответить
+          нельзя и что для этого сделать. */}
+      {readOnly && (
+        <div className="border rounded p-3 mb-4 bg-light">
+          <div className="mb-2">
+            {t("guestInvite", {
+              defaultValue:
+                "Чтобы оставить комментарий, войдите или зарегистрируйтесь.",
+            })}
+          </div>
+          <a className="btn btn-sm btn-primary me-2" href="/login">
+            {t("guestSignin", { defaultValue: "Войти" })}
+          </a>
+          <a className="btn btn-sm btn-outline-primary" href="/registration">
+            {t("guestSignup", { defaultValue: "Зарегистрироваться" })}
+          </a>
+        </div>
       )}
 
       {loading && <p>{t("loading")}</p>}

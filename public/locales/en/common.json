@@ -2609,7 +2609,8 @@
       "wideOff": "Default view",
       "wideTitle": "Theater mode",
       "cc": "Subtitles",
-      "ccOff": "Off"
+      "ccOff": "Off",
+      "allVideos": "All videos"
     },
     "attached": {
       "title": "Videos shown",

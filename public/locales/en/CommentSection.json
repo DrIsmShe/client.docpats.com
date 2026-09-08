@@ -27,5 +27,8 @@
   "orderTop": "Top first",
   "report": "Report",
   "quote": "Quote",
-  "quoteHint": "Select a phrase to quote just that part"
+  "quoteHint": "Select a phrase to quote just that part",
+  "guestInvite": "Sign in or create an account to leave a comment.",
+  "guestSignin": "Sign in",
+  "guestSignup": "Create account"
 }
