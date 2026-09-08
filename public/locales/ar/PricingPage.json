@@ -146,7 +146,10 @@
     "videraFilmsUnlimited": "إنشاء أفلام DP-Videra — بلا حد",
     "noAi": "بدون ميزات الذكاء الاصطناعي",
     "allFromFree": "كل ما في Free، بالإضافة إلى:",
-    "labExplanations": "{{count}} تفسيرات تحاليل شهريًا"
+    "labExplanations": "{{count}} تفسيرات تحاليل شهريًا",
+    "videraMinutes": "{{count}} دقيقة لإنتاج أفلام DP-Videra شهريًا",
+    "videraStorage": "{{count}} جيجابايت لتخزين المقاطع",
+    "dptubePublish": "النشر في كتالوج DP-Tube والتضمين في موقعك"
   },
   "examAddon": {
     "title": "التحضير للامتحانات",

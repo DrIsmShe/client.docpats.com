@@ -2553,7 +2553,11 @@
       "emptySubs": "Abone olduğunuz kanalların videoları burada görünür.",
       "bell": "Bildirimler",
       "backToChannels": "Tüm kanallar",
-      "channelVideos": "{{count}} video"
+      "channelVideos": "{{count}} video",
+      "inviteTitle": "Kendi videolarınız",
+      "inviteText": "Hekim açıklamayı stüdyoda çeker ya da hazır dosya yükler ve burada yayımlar.",
+      "inviteSignup": "Başla",
+      "invitePlans": "Planlar"
     },
     "public": {
       "loading": "Yükleniyor…",

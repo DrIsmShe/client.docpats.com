@@ -2554,7 +2554,11 @@
       "emptySubs": "Abunə olduğunuz kanalların videoları burada görünəcək.",
       "bell": "Bildirişlər",
       "backToChannels": "Bütün kanallar",
-      "channelVideos": "{{count}} video"
+      "channelVideos": "{{count}} video",
+      "inviteTitle": "Öz videolarınız",
+      "inviteText": "Həkim izahı studiyada çəkir və ya hazır fayl yükləyir və burada dərc edir.",
+      "inviteSignup": "Başla",
+      "invitePlans": "Tariflər"
     },
     "public": {
       "loading": "Yüklənir…",

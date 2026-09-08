@@ -81,6 +81,9 @@ export default function PublicVideosPage() {
   // Открытый канал: из списка подписок. Пусто — обычная лента.
   const [канал, setКанал] = useState(null);
   const [каналы, setКаналы] = useState([]);
+  // Вошёл ли человек. Нужно, чтобы не звать гостя туда, где его встретит
+  // форма входа: «Мои ролики» и «Загрузить» для него — тупик.
+  const [свой, setСвой] = useState(null);
   // Колокольчик: открыт ли список. Уведомления сюда приходят все, какие есть
   // у человека в DocPats, — приёмы, сообщения, согласия, подготовка к
   // процедурам. Своя лента «только про видео» означала бы, что человек
@@ -90,6 +93,20 @@ export default function PublicVideosPage() {
 
   // Разделы приходят с сервера: их состав меняет администратор, и жёсткий
   // список в коде означал бы, что новая полка требует выкатки интерфейса.
+  useEffect(() => {
+    let живо = true;
+    // Спрашиваем в лоб: витрина открыта, и ответ «нет» — обычное дело.
+    fetch(`${process.env.REACT_APP_API_URL}/common-for-user`, {
+      credentials: "include",
+    })
+      .then((о) => о.json())
+      .then((д) => живо && setСвой(Boolean(д?.authenticated)))
+      .catch(() => живо && setСвой(false));
+    return () => {
+      живо = false;
+    };
+  }, []);
+
   useEffect(() => {
     let живо = true;
     fetchCategories(i18n.language)
@@ -191,21 +208,54 @@ export default function PublicVideosPage() {
         </button>
 
         <div className="yt-side-sep" />
-        <div className="yt-side-head">
-          {t("videra.gallery.navYou", { defaultValue: "Вы" })}
-        </div>
-        <Link to="/doctor/videos" className="yt-side-item">
-          <span className="yt-side-ico">🎬</span>
-          {t("videra.library.menu", { defaultValue: "Мои ролики" })}
-        </Link>
-        <Link to="/doctor/videos" className="yt-side-item">
-          <span className="yt-side-ico">⬆️</span>
-          {t("videra.upload.open", { defaultValue: "Загрузить своё видео" })}
-        </Link>
-        <Link to="/doctor/videra" className="yt-side-item">
-          <span className="yt-side-ico">🎥</span>
-          {t("videra.menu", { defaultValue: "Снять фильм" })}
-        </Link>
+
+        {/* ГОСТЮ — ПРЕДЛОЖЕНИЕ, А НЕ ССЫЛКИ В ФОРМУ ВХОДА. Раздел «Вы» вёл
+            его в три места, каждое из которых требует входа. Здесь же
+            сказано, что публиковать может любой врач, и где посмотреть,
+            сколько это даёт. */}
+        {свой === false && (
+          <div className="yt-invite">
+            <div className="yt-invite-title">
+              {t("videra.gallery.inviteTitle", {
+                defaultValue: "Свои ролики",
+              })}
+            </div>
+            <div className="yt-invite-text">
+              {t("videra.gallery.inviteText", {
+                defaultValue:
+                  "Врач снимает объяснение в студии или загружает готовый файл и публикует его здесь.",
+              })}
+            </div>
+            <Link to="/registration" className="yt-invite-go">
+              {t("videra.gallery.inviteSignup", { defaultValue: "Начать" })}
+            </Link>
+            <Link to="/pricing" className="yt-invite-plans">
+              {t("videra.gallery.invitePlans", { defaultValue: "Тарифы" })}
+            </Link>
+          </div>
+        )}
+
+        {свой !== false && (
+          <div className="yt-side-head">
+            {t("videra.gallery.navYou", { defaultValue: "Вы" })}
+          </div>
+        )}
+        {свой !== false && (
+          <>
+            <Link to="/doctor/videos" className="yt-side-item">
+              <span className="yt-side-ico">🎬</span>
+              {t("videra.library.menu", { defaultValue: "Мои ролики" })}
+            </Link>
+            <Link to="/doctor/videos" className="yt-side-item">
+              <span className="yt-side-ico">⬆️</span>
+              {t("videra.upload.open", { defaultValue: "Загрузить своё видео" })}
+            </Link>
+            <Link to="/doctor/videra" className="yt-side-item">
+              <span className="yt-side-ico">🎥</span>
+              {t("videra.menu", { defaultValue: "Снять фильм" })}
+            </Link>
+          </>
+        )}
 
         <div className="yt-side-sep" />
         <div className="yt-side-head">
@@ -451,6 +501,15 @@ const CSS = `
 .yt-side-ico { width: 22px; text-align: center; font-size: 15px; }
 .yt-side-sep { height: 1px; background: #e5e5e5; margin: 12px 8px; }
 .yt-side-head { font-size: 15px; font-weight: 700; padding: 6px 12px; }
+/* Приглашение гостю. Не кричит: человек пришёл смотреть, а
+   не регистрироваться, — но если захочет, путь виден. */
+.yt-invite { padding: 12px; margin: 4px 8px 8px; border: 1px solid #e5e5e5; border-radius: 12px; background: #fafafa; }
+.yt-invite-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.yt-invite-text { font-size: 12px; line-height: 1.5; color: #606060; margin-bottom: 10px; }
+.yt-invite-go { display: inline-block; background: #0f0f0f; color: #fff; border-radius: 16px; padding: 7px 14px; font-size: 13px; font-weight: 700; text-decoration: none; }
+.yt-invite-go:hover { opacity: .85; }
+.yt-invite-plans { display: inline-block; margin-left: 10px; font-size: 13px; font-weight: 600; color: #0e8478; text-decoration: none; }
+.yt-invite-plans:hover { text-decoration: underline; }
 .yt-side-foot { padding: 8px 12px; font-size: 12px; color: #909090; line-height: 1.5; }
 
 .yt-main { padding: 12px 24px 64px; min-width: 0; }

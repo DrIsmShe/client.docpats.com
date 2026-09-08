@@ -146,7 +146,10 @@
     "videraFilmsUnlimited": "DP-Videra film yaratma — limitsiz",
     "noAi": "Süni intellekt funksiyaları yoxdur",
     "allFromFree": "Free-dəki hər şey, üstəlik:",
-    "labExplanations": "Ayda {{count}} analiz açıqlaması"
+    "labExplanations": "Ayda {{count}} analiz açıqlaması",
+    "videraMinutes": "Ayda {{count}} dəqiqə DP-Videra film yığımı",
+    "videraStorage": "Videolar üçün {{count}} GB yaddaş",
+    "dptubePublish": "DP-Tube kataloqunda dərc və öz saytda yerləşdirmə"
   },
   "examAddon": {
     "title": "İmtahanlara hazırlıq",

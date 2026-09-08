@@ -2559,7 +2559,11 @@
       "emptySubs": "ستظهر هنا مقاطع القنوات التي تشترك بها.",
       "bell": "الإشعارات",
       "backToChannels": "كل القنوات",
-      "channelVideos": "{{count}} مقطع"
+      "channelVideos": "{{count}} مقطع",
+      "inviteTitle": "مقاطعك الخاصة",
+      "inviteText": "يسجّل الطبيب الشرح في الاستوديو أو يرفع ملفًا جاهزًا وينشره هنا.",
+      "inviteSignup": "ابدأ",
+      "invitePlans": "الباقات"
     },
     "public": {
       "loading": "جارٍ التحميل…",

@@ -2580,7 +2580,11 @@
       "emptySubs": "Videos from channels you subscribe to will appear here.",
       "bell": "Notifications",
       "backToChannels": "All channels",
-      "channelVideos": "{{count}} videos"
+      "channelVideos": "{{count}} videos",
+      "inviteTitle": "Your own videos",
+      "inviteText": "A doctor records an explanation in the studio or uploads a ready file and publishes it here.",
+      "inviteSignup": "Get started",
+      "invitePlans": "Plans"
     },
     "public": {
       "loading": "Loading…",
