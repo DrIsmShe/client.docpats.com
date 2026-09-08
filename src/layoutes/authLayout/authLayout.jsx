@@ -1688,15 +1688,59 @@ export default function AuthLayout() {
                     </a>
                   </motion.div>
                   {/* News card */}
+                  {/* DP-Tube — каталог медицинских роликов. Открыт без
+                      входа: это единственная часть платформы, которую
+                      случайный посетитель может просто посмотреть, и
+                      потому лучший вход — он видит, чем платформа
+                      занимается, вместо формы регистрации.
+
+                      Маршрут React, поэтому Link, а не <a>: перезагрузка
+                      здесь стоила бы повторной загрузки всего приложения. */}
+                  <motion.div className="dp-news-card-wrap" variants={item}>
+                    <Link to="/videos" className="dp-news-card">
+                      <div
+                        className="dp-news-card-accent"
+                        style={{
+                          background: "linear-gradient(180deg, #ef4444, #b91c1c)",
+                        }}
+                      />
+                      <div className="dp-news-card-body">
+                        <div className="dp-news-card-icon">▶</div>
+                        <div className="dp-news-card-copy">
+                          <div className="dp-news-card-tag">
+                            {t("dptubeTag", {
+                              defaultValue: "DP-TUBE · СМОТРЕТЬ БЕЗ РЕГИСТРАЦИИ",
+                            })}
+                          </div>
+                          <div className="dp-news-card-text">
+                            {t("dptubeText", {
+                              defaultValue:
+                                "Медицинские ролики от врачей и клиник: как готовиться к процедуре, что показал снимок, что происходит в теле. Смотрите, ищите по разделам, делитесь ссылкой — вход не нужен.",
+                            })}
+                          </div>
+                        </div>
+                        <span className="dp-news-card-arrow">
+                          <Arrow />
+                        </span>
+                      </div>
+                    </Link>
+                  </motion.div>
+                  {/* News card */}
                   {/* DP-Videra — студия медицинских фильмов прямо в браузере.
                       Карточка видна всем без входа и говорит каждому своё:
                       гостю — «посмотрите примеры», пациенту — «понятное
                       объяснение диагноза», врачу — «своя студия, соберите
                       фильм за минуты». Ссылка ведёт на ОТДЕЛЬНУЮ страницу
-                      студии (docpats.com/dp-videra/), а не на маршрут React —
-                      поэтому обычный <a href> с полной перезагрузкой. */}
+                      студии, а не на маршрут React — поэтому обычный
+                      <a href> с полной перезагрузкой.
+
+                      Ведёт в САМУ СТУДИЮ, а не на её витрину: готовые ролики
+                      теперь живут в каталоге DP-Tube, и вторая витрина только
+                      делила аудиторию надвое. Здесь обещание именно такое —
+                      «соберите фильм за минуты», и вести оно должно туда, где
+                      фильм собирают. */}
                   <motion.div className="dp-news-card-wrap" variants={item}>
-                    <a href="/dp-videra/watch" className="dp-news-card">
+                    <a href="/dp-videra/labstudio" className="dp-news-card">
                       <div
                         className="dp-news-card-accent"
                         style={{ background: "linear-gradient(180deg, #f59e0b, #d9622f)" }}

@@ -183,5 +183,7 @@
   "conferencesTag": "DOCPATS · CONFERENCES",
   "conferencesText": "Medical conferences — programme, registration deadlines, terms of participation",
   "videraTag": "DP-VIDERA · MEDICAL FILM STUDIO",
-  "videraText": "Short explanatory anatomy films — right in the browser, no install. Guests see examples, patients get a clear explanation of the diagnosis, doctors get their own studio: build a film in minutes."
+  "videraText": "Short explanatory anatomy films — right in the browser, no install. Guests see examples, patients get a clear explanation of the diagnosis, doctors get their own studio: build a film in minutes.",
+  "dptubeTag": "DP-TUBE · WATCH WITHOUT SIGNING UP",
+  "dptubeText": "Medical videos from doctors and clinics: how to prepare for a procedure, what the scan showed, what happens inside the body. Watch, browse by section, share a link — no sign-in needed."
 }

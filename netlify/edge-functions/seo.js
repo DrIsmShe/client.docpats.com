@@ -31,6 +31,11 @@ const RESERVED_ROOT = new Set([
   "terms-consent-page",
   "top-doctors",
   "user-synthesis",
+  // Витрина роликов и страница встраивания. Без них функция
+  // принимала "videos" за слаг клиники и уходила в ветку витрины,
+  // а ссылка на ролик в ленте соцсети показывала общую заставку.
+  "videos",
+  "embed",
   "webinar",
 ]);
 
@@ -827,13 +832,17 @@ export default async function handler(request, context) {
   const doctorProfileMatch = url.pathname.match(
     /^\/public\/doctor-profile\/doctor-details\/([a-f0-9]{24})$/,
   );
+  // Ролик каталога. Ссылку на него шлют пациенту и коллеге в мессенджер,
+  // и там от неё ждут кадр и название, а не общую заставку платформы.
+  const videoMatch = url.pathname.match(/^\/videos\/([a-f0-9]{24})\/?$/);
 
   if (
     !articleMatch &&
     !newsMatch &&
     !doctorArticleMatch &&
     !scientificArticleMatch &&
-    !doctorProfileMatch
+    !doctorProfileMatch &&
+    !videoMatch
   ) {
     return context.next();
   }
@@ -845,6 +854,10 @@ export default async function handler(request, context) {
     // обновлённый материал в выдаче выглядит настолько же старым, как в день
     // публикации. medicalSpecialty — то, по чему врача вообще ищут.
     let modifiedAt, medicalSpecialty;
+    // Ролик: длительность в ISO 8601 и адрес страницы плеера. Плеер нужен,
+    // чтобы Facebook и LinkedIn проигрывали ролик прямо в ленте, а не
+    // уводили по ссылке — половина зрителей по ссылке не идёт.
+    let videoDuration, embedUrl;
     // hreflang в сыром HTML — до того, как отработает JS. Helmet ставит те
     // же теги, но уже после рендера; часть роботов до этого не доходит.
     let alternateLinks = "";
@@ -1012,6 +1025,46 @@ export default async function handler(request, context) {
       }
     }
 
+    if (videoMatch) {
+      const videoId = videoMatch[1];
+      const cookieHeader = request.headers.get("cookie") || "";
+      locale = cookieHeader.match(/locale=([a-z]{2})/)?.[1] || "ru";
+      schemaType = "VideoObject";
+
+      const res = await fetch(
+        `https://backend.docpats.com/api/v1/video/public/${videoId}`,
+      );
+      // Закрытый, снятый с публикации или несуществующий ролик — обычный
+      // путь SPA: она покажет «ролик недоступен», а бот не получит карточку
+      // на то, чего нет.
+      if (!res.ok) return context.next();
+      // Ответ обёрнут: { video: {...} }. Разбираем обе формы — обёртка
+      // дешёвая, а молчаливый промах здесь виден только в чужой ленте.
+      const тело = await res.json();
+      const video = тело?.video || тело;
+      if (!video?.title) return context.next();
+
+      title = String(video.title).replace(/"/g, "&quot;").replace(/\n/g, " ").trim();
+      // Без описания берём название: пустой текст в ленте выглядит как
+      // сломанная карточка, а не как ролик без описания.
+      desc = String(video.description || video.title || "")
+        .replace(/\n/g, " ")
+        .trim()
+        .slice(0, 155)
+        .replace(/"/g, "&quot;");
+      pageUrl = `https://docpats.com/videos/${videoId}`;
+      publishedAt = video.publishedAt;
+      modifiedAt = video.publishedAt;
+      // Кадр ролика собирает сервер: адрес хранилища знает только он.
+      imageUrl = video.posterUrl || "https://docpats.com/og-image.jpg";
+      embedUrl = `https://docpats.com/embed/${videoId}`;
+
+      const сек = Math.round(Number(video.media?.durationSec) || 0);
+      if (сек > 0) {
+        videoDuration = `PT${Math.floor(сек / 60)}M${сек % 60}S`;
+      }
+    }
+
     const response = await context.next();
     let html = await response.text();
 
@@ -1024,21 +1077,61 @@ export default async function handler(request, context) {
     <meta name="description" content="${desc}" data-seo="edge">
     <link rel="canonical" href="${pageUrl}" data-seo="edge">
     ${alternateLinks}
-    <meta data-seo="edge" property="og:type" content="${schemaType === "Physician" ? "profile" : "article"}">
+    <meta data-seo="edge" property="og:type" content="${
+      schemaType === "Physician"
+        ? "profile"
+        : schemaType === "VideoObject"
+          ? "video.other"
+          : "article"
+    }">
     <meta data-seo="edge" property="og:title" content="${title}">
     <meta data-seo="edge" property="og:description" content="${desc}">
     <meta data-seo="edge" property="og:url" content="${pageUrl}">
     <meta data-seo="edge" property="og:image" content="${imageUrl}">
     <meta data-seo="edge" property="og:locale" content="${locale}">
-    <meta data-seo="edge" name="twitter:card" content="summary_large_image">
+    ${
+      schemaType === "VideoObject"
+        ? `<meta data-seo="edge" property="og:video" content="${embedUrl}">
+    <meta data-seo="edge" property="og:video:url" content="${embedUrl}">
+    <meta data-seo="edge" property="og:video:secure_url" content="${embedUrl}">
+    <meta data-seo="edge" property="og:video:type" content="text/html">
+    <meta data-seo="edge" property="og:video:width" content="1280">
+    <meta data-seo="edge" property="og:video:height" content="720">
+    <meta data-seo="edge" property="og:image:width" content="1280">
+    <meta data-seo="edge" property="og:image:height" content="720">`
+        : ""
+    }
+    <meta data-seo="edge" name="twitter:card" content="${
+      schemaType === "VideoObject" ? "player" : "summary_large_image"
+    }">
+    ${
+      schemaType === "VideoObject"
+        ? `<meta data-seo="edge" name="twitter:player" content="${embedUrl}">
+    <meta data-seo="edge" name="twitter:player:width" content="1280">
+    <meta data-seo="edge" name="twitter:player:height" content="720">`
+        : ""
+    }
     <meta data-seo="edge" name="twitter:title" content="${title}">
     <meta data-seo="edge" name="twitter:description" content="${desc}">
     <meta data-seo="edge" name="twitter:image" content="${imageUrl}">
     <script type="application/ld+json" data-seo="edge">${JSON.stringify({
       "@context": "https://schema.org",
       "@type": schemaType,
-      headline: schemaType !== "Physician" ? title : undefined,
-      name: schemaType === "Physician" ? title : undefined,
+      headline:
+        schemaType !== "Physician" && schemaType !== "VideoObject"
+          ? title
+          : undefined,
+      name:
+        schemaType === "Physician" || schemaType === "VideoObject"
+          ? title
+          : undefined,
+      // VideoObject требует своих полей: без thumbnailUrl и uploadDate
+      // Google не берёт ролик в видео-блок выдачи вовсе.
+      thumbnailUrl: schemaType === "VideoObject" ? imageUrl : undefined,
+      uploadDate:
+        schemaType === "VideoObject" ? publishedAt || undefined : undefined,
+      duration: schemaType === "VideoObject" ? videoDuration : undefined,
+      embedUrl: schemaType === "VideoObject" ? embedUrl : undefined,
       description: desc,
       url: pageUrl,
       inLanguage: locale,

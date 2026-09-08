@@ -183,5 +183,7 @@
   "conferencesTag": "DOCPATS · KONGRELER",
   "conferencesText": "Tıbbi kongreler — program, kayıt son tarihleri, katılım koşulları",
   "videraTag": "DP-VIDERA · TIBBİ FİLM STÜDYOSU",
-  "videraText": "Anatomi üzerine kısa açıklayıcı filmler — doğrudan tarayıcıda, kurulum yok. Ziyaretçilere örnekler, hastalara tanının anlaşılır açıklaması, hekimlere kendi stüdyosu: filmi dakikalar içinde kurun."
+  "videraText": "Anatomi üzerine kısa açıklayıcı filmler — doğrudan tarayıcıda, kurulum yok. Ziyaretçilere örnekler, hastalara tanının anlaşılır açıklaması, hekimlere kendi stüdyosu: filmi dakikalar içinde kurun.",
+  "dptubeTag": "DP-TUBE · KAYIT OLMADAN İZLEYİN",
+  "dptubeText": "Hekimlerden ve kliniklerden tıbbi videolar: işleme nasıl hazırlanılır, görüntü ne gösterdi, vücutta ne oluyor. İzleyin, bölümlerde arama yapın, bağlantıyı paylaşın — giriş gerekmez."
 }
