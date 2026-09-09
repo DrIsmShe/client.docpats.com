@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import { сводкаСтатей } from "../../../lib/articleTotals";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -867,16 +868,15 @@ export default function ProfilePatientHomePage() {
   const API_BASE = process.env.REACT_APP_API_URL;
 
   /* ── Базовые счётчики ── */
+  // Те же три источника, что и в кабинете врача: публикации врачей, их
+  // научные разборы и аналитика ИИ. Раньше здесь считался один источник,
+  // и цифра была втрое меньше того, что пациент видит в ленте статей.
   useEffect(() => {
-    axios
-      .get(`${API_BASE}/doctor-profile/api/count-articles-today`)
-      .then((r) => setArticleCount(r.data?.count || 0))
-      .catch(console.error);
-  }, []);
-  useEffect(() => {
-    axios
-      .get(`${API_BASE}/doctor-profile/api/count-all-articles`)
-      .then((r) => setTotalArticles(r.data?.count || 0))
+    сводкаСтатей()
+      .then((с) => {
+        setArticleCount(с.today);
+        setTotalArticles(с.total);
+      })
       .catch(console.error);
   }, []);
   useEffect(() => {

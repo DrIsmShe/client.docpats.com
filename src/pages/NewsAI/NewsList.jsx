@@ -365,10 +365,14 @@ export default function NewsList() {
   const FILTERS = [
     { value: "", label: t("filters.all") },
     { value: "news", label: t("news_ai_news") },
-    { value: "research", label: t("research_ai_news") },
+    // «Научные статьи» — один пункт на два источника: разборы, написанные
+    // врачами, и аналитику, собранную ИИ из научных публикаций. Для
+    // читателя это один жанр — длинный текст со ссылками на источники, — и
+    // делить его по тому, кто держал перо, значит заставлять его открывать
+    // две вкладки вместо одной. Происхождение видно на самой карточке.
+    { value: "science", label: t("science_ai_news") },
     { value: "publications", label: t("publications_ai_news") },
     { value: "doctors", label: t("doctors_ai_news") },
-    { value: "analytics", label: t("news_ai_analitics") },
   ];
   const SORT_OPTIONS = [
     { value: "date_desc", label: t("sort.date_desc") },
@@ -382,11 +386,11 @@ export default function NewsList() {
   const hasSearch = Boolean(appliedSearch);
   const doLoadAI = type === "" || type === "news" || hasSearch;
   const doLoadPub = type === "" || type === "publications" || hasSearch;
-  const doLoadSci = type === "" || type === "research" || hasSearch;
+  // Научные статьи: врачебные разборы и аналитика ИИ грузятся вместе —
+  // это один пункт меню.
+  const doLoadSci = type === "" || type === "science" || hasSearch;
   const doLoadDoctors = type === "" || type === "doctors";
-  // Аналитика грузится и в общей ленте, и на своей вкладке — как остальные
-  // разделы. Раньше вкладка вела на отдельную страницу, и «Всё» её не включало.
-  const doLoadSyn = type === "" || type === "analytics";
+  const doLoadSyn = type === "" || type === "science";
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -717,10 +721,13 @@ export default function NewsList() {
                       <b>{aiTotal}</b> {t("stats.news")}
                     </div>
                   )}
-                  {doLoadSci && sciTotal > 0 && (
+                  {doLoadSci && sciTotal + synTotal > 0 && (
                     <div className="nl-stat-chip">
                       <span className="nl-chip-dot science" />
-                      <b>{sciTotal}</b> {t("stats.scientific")}
+                      {/* Врачебные разборы и аналитика ИИ считаются вместе:
+                          в меню они один пункт, и два числа под одним
+                          названием читались бы как ошибка. */}
+                      <b>{sciTotal + synTotal}</b> {t("stats.scientific")}
                     </div>
                   )}
                   {doLoadPub && pubTotal > 0 && (
@@ -1450,6 +1457,11 @@ const CSS = `
 .nl-root[dir=rtl] .nl-footer-link{letter-spacing:0}
 .nl-footer-link:hover{color:white;background:rgba(255,255,255,.08)}
 @media(max-width:1023px) and (min-width:768px){.nl-nav-inner,.nl-topbar,.nl-hero-inner,.nl-filter-bar-inner,.nl-adv-panel-inner,.nl-content-inner,.nl-footer-inner,.nl-active-tags{padding-left:24px;padding-right:24px}.nl-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.nl-hero-card{grid-template-columns:1fr}.nl-hero-card-img{height:260px}.nl-hero-title{font-size:clamp(22px,3.5vw,32px)}}
+/* Планшет и узкий ноутбук: панель фильтров в две строки. В одну строку
+   шесть вкладок и четыре элемента управления не помещаются, и перенос
+   рвал их в случайных местах — «Моя специальность» уезжала под поиск,
+   а сортировка с кнопкой «Применить» оставались на третьей строке. */
+@media(max-width:1100px){.nl-filter-bar-inner{padding:10px 24px;flex-direction:column;align-items:stretch;gap:10px}.nl-filter-tabs{width:100%;overflow-x:auto;border-inline-end:0;padding-inline-end:0;margin-inline-end:0;border-bottom:1px solid var(--border);padding-bottom:8px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}.nl-filter-tabs::-webkit-scrollbar{height:3px}.nl-filter-right{width:100%;flex-wrap:wrap;gap:8px;align-items:center}.nl-filter-search{flex:1 1 220px;max-width:none}}
 @media(max-width:769px){.nl-topbar{padding:0 20px;font-size:9px}.nl-topbar-date{display:none}.nl-nav-inner{padding:0 20px}.nl-hamburger{display:flex}.nl-nav-links{display:none;position:absolute;top:60px;left:0;right:0;background:linear-gradient(135deg,#0c4a6e 0%,#0f766e 100%);flex-direction:column;align-items:flex-start;padding:8px 0;border-top:1px solid rgba(255,255,255,.1);z-index:300}.nl-nav-links.open{display:flex}.nl-nav-link{width:100%;padding:12px 20px;height:auto;font-size:11px}.nl-nav-link::after{display:none}.nl-nav-logo{font-size:20px}.nl-locale-btn{padding:3px 6px;font-size:9px}.nl-btn-member{display:none}.nl-hero{padding:28px 0 56px}.nl-hero-inner{padding:0 20px}.nl-hero-title{font-size:clamp(20px,6vw,28px)}.nl-filter-bar-inner{padding:0 16px;gap:8px}.nl-filter-tabs{border-inline-end:none;padding-inline-end:0;margin-inline-end:0;border-bottom:1px solid var(--border);padding-bottom:10px;width:100%;overflow-x:auto}.nl-filter-right{width:100%}.nl-filter-search{max-width:100%}.nl-adv-panel-inner{padding:16px 16px}.nl-active-tags{padding:8px 16px}.nl-content-inner{padding:20px 16px 48px}.nl-footer-inner{padding:0 20px}.nl-hero-card{grid-template-columns:1fr}.nl-hero-card-img{height:400px;width:400px}.nl-hero-card-body{padding:20px 18px}.nl-grid{grid-template-columns:1fr;gap:16px}}
 @media(max-width:769px){.nl-topbar{display:none}.nl-nav-inner,.nl-hero-inner,.nl-content-inner,.nl-footer-inner{padding-left:14px;padding-right:14px}.nl-footer-brand{flex-direction:column;gap:2px}.nl-footer-links{flex-wrap:wrap}}
 /* ── Карточка врача: та же типографика и ритм, что у карточек материалов ── */

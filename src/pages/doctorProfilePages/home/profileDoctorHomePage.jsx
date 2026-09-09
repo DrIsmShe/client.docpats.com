@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import { сводкаСтатей } from "../../../lib/articleTotals";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import DoctorAIDashboardWidget from "../../../components/ai/DoctorAIDashboardWidget";
 import {
@@ -1339,30 +1340,14 @@ export default function ProfileDoctorHomePage() {
     const ctrl = new AbortController();
     const cfg = { signal: ctrl.signal };
 
-    Promise.all([
-      axios.get(`${API_BASE}/doctor-profile/api/count-articles-today`, cfg),
-      axios.get(
-        `${API_BASE}/doctor-profile/api/count-scientific-articles-today`,
-        cfg,
-      ),
-    ])
-      .then(([reg, sci]) =>
-        setArticleCount((reg.data?.count || 0) + (sci.data?.count || 0)),
-      )
-      .catch((e) => {
-        if (e.name !== "CanceledError") console.error(e);
-      });
-
-    Promise.all([
-      axios.get(`${API_BASE}/doctor-profile/api/count-all-articles`, cfg),
-      axios.get(
-        `${API_BASE}/doctor-profile/api/count-scientific-all-articles`,
-        cfg,
-      ),
-    ])
-      .then(([reg, sci]) =>
-        setTotalArticles((reg.data?.count || 0) + (sci.data?.count || 0)),
-      )
+    // Статьи считаются по всем трём источникам сразу — публикации врачей,
+    // их научные разборы и аналитика ИИ. Здесь складывались только первые
+    // два, и «Всего статей» расходилось с тем, что человек видит в ленте.
+    сводкаСтатей()
+      .then((с) => {
+        setArticleCount(с.today);
+        setTotalArticles(с.total);
+      })
       .catch((e) => {
         if (e.name !== "CanceledError") console.error(e);
       });

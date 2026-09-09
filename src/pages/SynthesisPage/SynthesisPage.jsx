@@ -1,11 +1,86 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import { loadArticles, resetSynthesis } from "../../slices/synthesisSlice";
 import { useTranslation } from "react-i18next";
 import FooterAI from "../../components/newsAI/footer/footer";
 
 const PAGE_SIZE = 25;
+
+const DOCTOR_API = process.env.REACT_APP_API_URL || "";
+
+/**
+ * Научные статьи, написанные врачами.
+ *
+ * Лежат в другой службе и приходят другим запросом, но для читателя это
+ * тот же жанр, что и аналитика редакции. Ошибка запроса не должна гасить
+ * страницу: аналитика уже загружена, и показать её половину лучше, чем
+ * не показать ничего.
+ */
+async function загрузитьВрачебные({ page = 1, locale = "ru" } = {}) {
+  const п = new URLSearchParams({
+    page,
+    perPage: PAGE_SIZE,
+    sortBy: "date_desc",
+  });
+  try {
+    const { data } = await axios.get(
+      `${DOCTOR_API}/doctor-profile/articles-scientific-all?${п}`,
+      { headers: { "X-Language": locale, "Accept-Language": locale } },
+    );
+    return {
+      items: data?.articles || [],
+      total: data?.total || 0,
+      totalPages: data?.totalPages || 1,
+    };
+  } catch {
+    return { items: [], total: 0, totalPages: 1 };
+  }
+}
+
+/**
+ * Куда ведёт карточка врачебной статьи.
+ *
+ * Адрес зависит от того, кто смотрит: у гостя своя страница, у пациента и
+ * врача — свои, внутри кабинета. Роль берём из localStorage — тем же
+ * способом, что и лента новостей: отдельный запрос ради одной ссылки
+ * задержал бы отрисовку всей страницы.
+ */
+function ссылкаНаВрачебную(id) {
+  let role = "";
+  try {
+    role = JSON.parse(localStorage.getItem("user") || "null")?.role || "";
+  } catch {
+    role = "";
+  }
+  if (role === "patient") return `/patient/article-scientific-detail/${id}`;
+  if (role === "doctor") return `/doctor/article-scientific-detail/${id}`;
+  return `/public/doctor/article-scientific-detail-for-all/${id}`;
+}
+
+/**
+ * Раздел материала. Аналитика называет его specialty, врачебная статья —
+ * specialization или category; для читателя это одна и та же строка над
+ * заголовком, и разбирать её должен код, а не он.
+ */
+const раздел = (м) => м.specialty || м.specialization || м.category || "";
+
+/** Дата материала словами — она же ключ сортировки общей ленты. */
+const датой = (м, locale) => {
+  const t = когда(м);
+  return t
+    ? new Date(t).toLocaleDateString(locale || "ru", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "";
+};
+
+/** Дата материала: у синтеза и у врачебной статьи поля разные. */
+const когда = (м) =>
+  new Date(м.publishedAt || м.createdAt || м.date || 0).getTime();
 
 const SPECIALTY_COLORS = {
   "Инфекционные болезни": "#b7290e",
@@ -284,7 +359,20 @@ export default function SynthesisPage() {
   } = useSelector((s) => s.synthesis ?? {});
 
   const [locale, setLocale] = useState(i18n.language || "ru");
+  // Врачебные научные статьи держим рядом: у них своя пагинация и свой
+  // источник, но общая с аналитикой лента.
+  const [врачебные, setВрачебные] = useState([]);
+  const [врачебныхВсего, setВрачебныхВсего] = useState(0);
+  const [страницаВрачебных, setСтраницаВрачебных] = useState(1);
+  const [страницВрачебных, setСтраницВрачебных] = useState(1);
   const sentinelRef = useRef(null);
+
+  /* Отбор. Пустые значения означают «не отбирать»: лента по умолчанию
+     показывает всё, и это её главное состояние. */
+  const [искомое, setИскомое] = useState("");
+  const [разделОтбора, setРазделОтбора] = useState("");
+  const [видОтбора, setВидОтбора] = useState("");
+  const [порядок, setПорядок] = useState("new");
 
   useEffect(() => {
     setLocale(i18n.language);
@@ -302,23 +390,116 @@ export default function SynthesisPage() {
     );
   }, [dispatch, locale]);
 
+  useEffect(() => {
+    let живо = true;
+    загрузитьВрачебные({ page: 1, locale }).then((о) => {
+      if (!живо) return;
+      setВрачебные(о.items);
+      setВрачебныхВсего(о.total);
+      setСтраницаВрачебных(1);
+      setСтраницВрачебных(о.totalPages);
+    });
+    return () => {
+      живо = false;
+    };
+  }, [locale]);
+
+  /* Одна лента из двух источников, по дате. Порядок — единственное, что
+     их связывает: читателю важно, что нового, а не кто это написал. */
+  const всё = useMemo(() => {
+    const врачебныеСМеткой = врачебные.map((а) => ({ ...а, _врачебная: true }));
+    return [...articles, ...врачебныеСМеткой];
+  }, [articles, врачебные]);
+
+  /* Разделы для отбора собираются из того, что реально пришло: список,
+     заданный в коде, устареет на первой же новой специальности. */
+  const разделы = useMemo(
+    () =>
+      [...new Set(всё.map((м) => раздел(м)).filter(Boolean))].sort((а, б) =>
+        а.localeCompare(б, locale),
+      ),
+    [всё, locale],
+  );
+
+  const материалы = useMemo(() => {
+    const строка = искомое.trim().toLowerCase();
+    const отобранные = всё.filter((м) => {
+      if (разделОтбора && раздел(м) !== разделОтбора) return false;
+      if (видОтбора === "doctor" && !м._врачебная) return false;
+      if (видОтбора === "ai" && м._врачебная) return false;
+      if (!строка) return true;
+      // Ищем по заголовку и по началу текста: искать по всему телу статьи
+      // на клиенте нельзя — оно приходит только на странице материала.
+      const где = `${м.title || ""} ${м.preview || м.summary || ""}`.toLowerCase();
+      return где.includes(строка);
+    });
+
+    return отобранные.sort((а, б) =>
+      порядок === "old" ? когда(а) - когда(б) : когда(б) - когда(а),
+    );
+  }, [всё, искомое, разделОтбора, видОтбора, порядок]);
+
+  const отбираем = Boolean(искомое.trim() || разделОтбора || видОтбора);
+  const всегоМатериалов = отбираем
+    ? материалы.length
+    : (total || articles.length) + врачебныхВсего;
+  const естьЕщё = hasMore || страницаВрачебных < страницВрачебных;
+
   // Догрузка следующей страницы — вызывается при пересечении sentinel
   const loadMore = useCallback(() => {
-    if (!hasMore || loadMoreStatus === "loading" || status === "loading")
+    if (loadMoreStatus === "loading" || status === "loading") return;
+
+    if (hasMore) {
+      dispatch(
+        loadArticles({
+          page: page + 1,
+          limit: PAGE_SIZE,
+          locale: locale !== "ru" ? locale : undefined,
+        }),
+      );
+    }
+
+    // Врачебные догружаются своей чередой: у двух источников разное число
+    // страниц, и связывать их одним счётчиком значило бы обрывать ленту на
+    // том, который кончился первым.
+    if (страницаВрачебных < страницВрачебных) {
+      загрузитьВрачебные({ page: страницаВрачебных + 1, locale }).then((о) => {
+        setВрачебные((прежние) => [...прежние, ...о.items]);
+        setСтраницаВрачебных((н) => н + 1);
+      });
+    }
+  }, [
+    dispatch,
+    hasMore,
+    loadMoreStatus,
+    status,
+    page,
+    locale,
+    страницаВрачебных,
+    страницВрачебных,
+  ]);
+
+  /* Пока идёт отбор, лента подтягивает остальные страницы сама: искать в
+     первой четверти материалов — значит уверенно отвечать «не найдено» о
+     том, что просто ещё не загружено. Предел в десять шагов держит это в
+     рамках: он покрывает весь корпус и не даёт зациклиться, если сервер
+     вдруг начнёт отдавать пустые страницы. */
+  const шаговДогрузки = useRef(0);
+  useEffect(() => {
+    if (!отбираем) {
+      шаговДогрузки.current = 0;
       return;
-    dispatch(
-      loadArticles({
-        page: page + 1,
-        limit: PAGE_SIZE,
-        locale: locale !== "ru" ? locale : undefined,
-      }),
-    );
-  }, [dispatch, hasMore, loadMoreStatus, status, page, locale]);
+    }
+    if (!естьЕщё || шаговДогрузки.current >= 10) return;
+    if (status === "loading" || loadMoreStatus === "loading") return;
+    шаговДогрузки.current += 1;
+    loadMore();
+  }, [отбираем, естьЕщё, status, loadMoreStatus, loadMore, материалы.length]);
 
   // IntersectionObserver — следит за невидимым "маяком" в конце списка
   useEffect(() => {
     const sentinel = sentinelRef.current;
-    if (!sentinel || !hasMore) return;
+    if (!sentinel || !естьЕщё) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -329,7 +510,7 @@ export default function SynthesisPage() {
 
     observer.observe(sentinel);
     return () => observer.disconnect();
-  }, [loadMore, hasMore]);
+  }, [loadMore, естьЕщё]);
 
   return (
     <>
@@ -369,12 +550,71 @@ export default function SynthesisPage() {
             {!["idle", "loading"].includes(status) && (
               <div className="sy-byline">
                 <span className="sy-count">
-                  {t("materials_count", { count: total || articles.length })}
+                  {t("materials_count", { count: всегоМатериалов })}
                 </span>
               </div>
             )}
           </div>
         </header>
+
+        {/* ОТБОР */}
+        <div className="sy-filters">
+          <div className="sy-filters-inner">
+            <input
+              className="sy-search"
+              type="search"
+              value={искомое}
+              onChange={(e) => setИскомое(e.target.value)}
+              placeholder={t("search_placeholder", "Поиск по названию…")}
+              aria-label={t("search_placeholder", "Поиск по названию…")}
+            />
+            <select
+              className="sy-select"
+              value={разделОтбора}
+              onChange={(e) => setРазделОтбора(e.target.value)}
+              aria-label={t("filter_section", "Раздел")}
+            >
+              <option value="">{t("filter_all_sections", "Все разделы")}</option>
+              {разделы.map((р) => (
+                <option key={р} value={р}>
+                  {getSpecialty(р, locale)}
+                </option>
+              ))}
+            </select>
+            <select
+              className="sy-select"
+              value={видОтбора}
+              onChange={(e) => setВидОтбора(e.target.value)}
+              aria-label={t("filter_kind", "Кто написал")}
+            >
+              <option value="">{t("filter_all_kinds", "Все авторы")}</option>
+              <option value="doctor">{t("research_ai_news")}</option>
+              <option value="ai">{t("news_ai_analitics")}</option>
+            </select>
+            <select
+              className="sy-select"
+              value={порядок}
+              onChange={(e) => setПорядок(e.target.value)}
+              aria-label={t("sort.date_desc")}
+            >
+              <option value="new">{t("sort.date_desc")}</option>
+              <option value="old">{t("sort.date_asc")}</option>
+            </select>
+            {отбираем && (
+              <button
+                type="button"
+                className="sy-reset"
+                onClick={() => {
+                  setИскомое("");
+                  setРазделОтбора("");
+                  setВидОтбора("");
+                }}
+              >
+                {t("filter_reset", "Сбросить")}
+              </button>
+            )}
+          </div>
+        </div>
 
         {/* CONTENT */}
         <main className="sy-main">
@@ -392,16 +632,20 @@ export default function SynthesisPage() {
               </div>
             )}
 
-            {status === "success" && articles.length === 0 && (
+            {status === "success" && материалы.length === 0 && (
               <div className="sy-state">
                 <p className="sy-state-text">{t("empty_state")}</p>
               </div>
             )}
 
-            {status === "success" && articles.length > 0 && (
+            {status === "success" && материалы.length > 0 && (
               <>
                 <Link
-                  to={`/articles/${articles[0]._id}`}
+                  to={
+                    материалы[0]._врачебная
+                      ? ссылкаНаВрачебную(материалы[0]._id)
+                      : `/articles/${материалы[0]._id}`
+                  }
                   className="sy-hero-link"
                 >
                   <article className="sy-hero-card">
@@ -409,63 +653,89 @@ export default function SynthesisPage() {
                       <div className="sy-card-meta-row">
                         <span
                           className="sy-specialty"
-                          style={{ color: getColor(articles[0].specialty) }}
+                          style={{ color: getColor(раздел(материалы[0])) }}
                         >
-                          {getSpecialty(articles[0].specialty, locale)}
+                          {getSpecialty(раздел(материалы[0]), locale)}
                         </span>
                       </div>
-                      <h2 className="sy-hero-title">{articles[0].title}</h2>
+                      <h2 className="sy-hero-title">{материалы[0].title}</h2>
                       <div
                         className="sy-hero-rule"
-                        style={{ background: getColor(articles[0].specialty) }}
+                        style={{ background: getColor(раздел(материалы[0])) }}
                       />
-                      <span className="sy-author">{t("author_name")}</span>
+                      {/* Подпись — единственное место, где видно, кто автор:
+                          вёрстка у обоих видов одна, и это сделано намеренно. */}
+                      <span className="sy-author">
+                        {материалы[0]._врачебная
+                          ? материалы[0].author?.name ||
+                            материалы[0].authorName ||
+                            t("research_ai_news")
+                          : t("author_name")}
+                      </span>
                       <div className="sy-card-footer">
-                        <span className="sy-words">
-                          {t("words", { count: articles[0].wordCount || 0 })}
-                        </span>
-                        <span className="sy-dot">·</span>
-                        <span className="sy-words">
-                          {t("sources", {
-                            count: articles[0].sources?.length || 0,
-                          })}
-                        </span>
+                        <span className="sy-words">{датой(материалы[0], locale)}</span>
+                        {материалы[0].wordCount ? (
+                          <>
+                            <span className="sy-dot">·</span>
+                            <span className="sy-words">
+                              {t("words", { count: материалы[0].wordCount })}
+                            </span>
+                          </>
+                        ) : null}
+                        {материалы[0].sources?.length ? (
+                          <>
+                            <span className="sy-dot">·</span>
+                            <span className="sy-words">
+                              {t("sources", { count: материалы[0].sources.length })}
+                            </span>
+                          </>
+                        ) : null}
                       </div>
                     </div>
                   </article>
                 </Link>
 
-                {articles.length > 1 && (
+                {материалы.length > 1 && (
                   <>
                     <div className="sy-section-label">
                       {t("other_materials")}
                     </div>
                     <div className="sy-grid">
-                      {articles.slice(1).map((a) => (
+                      {материалы.slice(1).map((a) => (
                         <Link
                           key={a._id}
-                          to={`/articles/${a._id}`}
+                          to={
+                            a._врачебная
+                              ? ссылкаНаВрачебную(a._id)
+                              : `/articles/${a._id}`
+                          }
                           className="sy-card-link"
                         >
                           <article className="sy-card">
                             <div
                               className="sy-card-accent"
-                              style={{ background: getColor(a.specialty) }}
+                              style={{ background: getColor(раздел(a)) }}
                             />
                             <div className="sy-card-body">
                               <div className="sy-card-meta-row">
                                 <span
                                   className="sy-specialty"
-                                  style={{ color: getColor(a.specialty) }}
+                                  style={{ color: getColor(раздел(a)) }}
                                 >
-                                  {getSpecialty(a.specialty, locale)}
+                                  {getSpecialty(раздел(a), locale)}
                                 </span>
                               </div>
                               <h3 className="sy-card-title">{a.title}</h3>
                               <div className="sy-card-footer">
-                                <span className="sy-words">
-                                  {t("words", { count: a.wordCount || 0 })}
-                                </span>
+                                <span className="sy-words">{датой(a, locale)}</span>
+                                {a.wordCount ? (
+                                  <>
+                                    <span className="sy-dot">·</span>
+                                    <span className="sy-words">
+                                      {t("words", { count: a.wordCount })}
+                                    </span>
+                                  </>
+                                ) : null}
                               </div>
                             </div>
                           </article>
@@ -474,7 +744,7 @@ export default function SynthesisPage() {
                     </div>
 
                     {/* ── LAZY LOAD SENTINEL + индикатор ── */}
-                    {hasMore && (
+                    {естьЕщё && (
                       <div ref={sentinelRef} className="sy-sentinel">
                         {loadMoreStatus === "loading" && (
                           <>
@@ -496,7 +766,7 @@ export default function SynthesisPage() {
                     )}
 
                     {/* Все статьи показаны */}
-                    {!hasMore && articles.length >= PAGE_SIZE && (
+                    {!естьЕщё && материалы.length >= PAGE_SIZE && (
                       <div className="sy-end-marker">
                         <span>{t("all_loaded", "Все материалы показаны")}</span>
                       </div>
@@ -529,6 +799,13 @@ export default function SynthesisPage() {
 }
 
 const CSS = `
+.sy-filters{border-bottom:1px solid var(--sy-rule,#cdc9bc);background:var(--sy-paper2,#ede9e0)}
+.sy-filters-inner{max-width:1100px;margin:0 auto;padding:12px 40px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sy-search{flex:1 1 260px;min-width:0;padding:10px 14px;border:1px solid var(--sy-rule,#cdc9bc);border-radius:8px;background:#fff;font:inherit;font-size:14px;color:#1c1a16}
+.sy-select{padding:10px 12px;border:1px solid var(--sy-rule,#cdc9bc);border-radius:8px;background:#fff;font:inherit;font-size:13px;color:#1c1a16;min-height:42px}
+.sy-reset{padding:10px 14px;border:0;border-radius:8px;background:#1c1a16;color:#fff;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+@media(max-width:769px){.sy-filters-inner{padding:10px 16px;gap:8px}.sy-search{flex:1 1 100%}.sy-select{flex:1 1 45%}}
+
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
 
 .sy-page*,.sy-page *::before,.sy-page *::after{box-sizing:border-box}

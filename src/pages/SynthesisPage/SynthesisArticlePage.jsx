@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { articleStyles } from "../../styles/articlePage";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
@@ -293,12 +294,9 @@ function ReadingProgress({ color }) {
 function renderBody(text) {
   if (!text) return null;
   return text.split("\n").map((line, i) => {
-    if (line.startsWith("# "))
-      return (
-        <h1 key={i} className="sa-h1">
-          {line.slice(2)}
-        </h1>
-      );
+    // Заголовок первого уровня пропускаем: имя статьи уже стоит в шапке,
+    // и повтор через строку читается как сбой вёрстки.
+    if (line.startsWith("# ")) return null;
     if (line.startsWith("## "))
       return (
         <h2 key={i} className="sa-subhead">
@@ -621,7 +619,7 @@ export default function SynthesisArticlePage() {
   if (status === "loading" || !current) {
     return (
       <>
-        <style>{CSS}</style>
+        <style>{articleStyles}</style>
         <div className="sa-page">
           <div className="sa-state">
             <div className="sa-spinner" />
@@ -634,7 +632,7 @@ export default function SynthesisArticlePage() {
 
   return (
     <>
-      <style>{CSS}</style>
+      <style>{articleStyles}</style>
       <ReadingProgress color={color} />
       <Helmet>
         {/* Базовые */}
@@ -695,135 +693,55 @@ export default function SynthesisArticlePage() {
         </script>
       </Helmet>
       <div className="sa-page">
-        <div className="sa-topbar">
-          <span className="sa-topbar-left">{t("topbar.title")}</span>
-          <span className="sa-topbar-date">{dateStr}</span>
+        {/* ШАПКА — та же, что у врачебной статьи: раздел, заголовок,
+            чипы с датой и объёмом. Отдельная газетная полоса с логотипом
+            здесь была своей на всю платформу, и переход из общей ленты
+            читался как уход на другой сайт. */}
+        <div className="sa-hero">
+          <div className="sa-hero-inner">
+            <button
+              type="button"
+              className="sa-hero-btn"
+              style={{ marginBottom: 16 }}
+              onClick={() =>
+                window.history.length > 1 ? navigate(-1) : navigate("/articles")
+              }
+            >
+              ← {t("nav_ai.all_articles")}
+            </button>
+            <div className="sa-category-pill">
+              {t(`specialties.${specialtyKey}`, current.specialty)}
+            </div>
+            <h1 className="sa-title" itemProp="headline">
+              {displayTitle}
+            </h1>
+            <div className="sa-meta-row">
+              <div className="sa-meta-chip">{t("meta_ai.ai_synthesis")}</div>
+              <div className="sa-meta-chip">
+                <time dateTime={current?.createdAt}>{dateStr}</time>
+              </div>
+              <div className="sa-meta-chip">
+                {t("meta_ai.reading_time", { count: readMin })}
+              </div>
+              <div className="sa-meta-chip">
+                {t("meta_ai.words", { count: current.wordCount })}
+              </div>
+              <div className="sa-meta-chip">
+                <FaCommentDots size={13} />
+                {commentCount}
+              </div>
+            </div>
+          </div>
         </div>
-
-        <nav className="sa-nav">
-          <button
-            className="sa-nav-back"
-            onClick={() =>
-              window.history.length > 1
-                ? navigate(-1)
-                : navigate("/articles")
-            }
-          >
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M10 3L5 8l5 5"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            {t("nav_ai.all_articles")}
-          </button>
-          <Link to="/news" className="sa-nav-logo">
-            Doc<span>Pats</span>
-          </Link>
-          <span className="sa-nav-tag">{t("nav_ai.analytics")}</span>
-        </nav>
-        <nav
-          aria-label={t("common:a11y.breadcrumb")}
-          style={{
-            maxWidth: 780,
-            margin: "0 auto",
-            padding: "10px 40px",
-            fontFamily: "IBM Plex Mono, monospace",
-            fontSize: 11,
-            color: "#7a7668",
-            letterSpacing: ".06em",
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-          }}
-        >
-          <Link to="/" style={{ color: "#7a7668", textDecoration: "none" }}>
-            DocPats
-          </Link>
-          <span>›</span>
-          <Link
-            to="/synthesis"
-            style={{ color: "#7a7668", textDecoration: "none" }}
-          >
-            {t("nav_ai.analytics")}
-          </Link>
-          <span>›</span>
-          <span style={{ color: "#3a3830" }}>{current?.specialty}</span>
-        </nav>
-        {/* LANG SWITCHER */}
 
         <article
           className="sa-article"
           itemScope
           itemType="https://schema.org/MedicalWebPage"
         >
-          <header className="sa-header">
-            <div className="sa-header-inner">
-              <div className="sa-meta-row">
-                <span className="sa-specialty" style={{ color }}>
-                  {t(`specialties.${specialtyKey}`, current.specialty)}
-                </span>
-                <span className="sa-sep">·</span>
-                <span className="sa-label">{t("meta_ai.ai_synthesis")}</span>
-              </div>
-              <h1 className="sa-headline" itemProp="headline">
-                {displayTitle}
-              </h1>
-              <div className="sa-rule" style={{ background: color }} />
-              <div className="sa-byline">
-                <div className="sa-byline-left">
-                  <span className="sa-source" style={{ color }}>
-                    DocPats Editorial
-                  </span>
-                  <span className="sa-dot">·</span>
-                  <time className="sa-date" dateTime={current?.createdAt}>
-                    {dateStr}
-                  </time>
-                  <span className="sa-dot">·</span>
-                  <span className="sa-readtime">
-                    {t("meta_ai.reading_time", { count: readMin })}
-                  </span>
-                  <span className="sa-dot">·</span>
-                  <span className="sa-readtime">
-                    {t("meta_ai.words", { count: current.wordCount })}
-                  </span>
-                </div>
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    marginBottom: 16,
-                    fontSize: 11,
-                    fontFamily: "var(--mono)",
-                    letterSpacing: ".1em",
-                    textTransform: "uppercase",
-                    color: "var(--muted)",
-                  }}
-                >
-                  <span
-                    style={{
-                      background: "rgba(184,48,48,.1)",
-                      color: "#b83030",
-                      padding: "3px 10px",
-                      borderRadius: 2,
-                      fontWeight: 500,
-                    }}
-                  >
-                    {t("badges.our_analytics")}
-                  </span>
-                  <span>·</span>
-                  <span className="sy-author">{t("author_name")}</span>
-                </div>
-              </div>
-            </div>
-          </header>
-
-          <div className="sa-body">
-            <div className="sa-body-inner">
+          <div className="sa-layout">
+            <div className="sa-article-card">
+              <div className="sa-article-body">
               {/* ── Баннер "перевод готовится" ─────────────── */}
               {isPending && (
                 <div
@@ -915,46 +833,47 @@ export default function SynthesisArticlePage() {
                   }}
                 />
               )}
+              </div>
             </div>
           </div>
 
           {current.sources?.length > 0 && (
-            <footer className="sa-footer">
-              <div className="sa-footer-inner">
-                <div className="sa-footer-rule" style={{ background: color }} />
-                <p className="sa-footer-pub">
+            <div className="sa-layout">
+              <div className="sa-ai-sources">
+                <div className="sa-ai-sources-label">
                   {t("sources_ai.title")} ·{" "}
-                  <strong style={{ color }}>
-                    {t("sources_ai.materials", {
-                      count: current.sources.length,
-                    })}
-                  </strong>
-                </p>
-                <div className="sa-sources-list">
+                  {t("sources_ai.materials", { count: current.sources.length })}
+                </div>
+                <div>
                   {current.sources.map((s, i) => (
-                    <div key={i} className="sa-source-item">
-                      <span className="sa-source-num">[{i + 1}]</span>
+                    <div key={i} className="sa-ai-source">
+                      <span className="sa-ai-source-num">[{i + 1}]</span>
                       {s.url ? (
                         <a
                           href={s.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="sa-source-link"
+                          className="sa-ai-source-link"
                         >
                           {s.title}
                         </a>
                       ) : (
-                        <span className="sa-source-title">{s.title}</span>
+                        <span className="sa-ai-source-title">{s.title}</span>
                       )}
                       {s.year && (
-                        <span className="sa-source-year"> — {s.year}</span>
+                        <span className="sa-ai-source-year"> — {s.year}</span>
                       )}
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
+          )}
 
-                {/* ── COMMENTS ── */}
-                <div className="sa-comments-card">
+          {/* Комментарии — всегда, а не только у статьи с источниками:
+              обсуждают материал, а не список литературы под ним. */}
+          <div className="sa-layout">
+            <div className="sa-comments-card">
                   <div className="sa-comments-header">
                     <FaCommentDots size={18} color="#0f766e" />
                     <span className="sa-comments-title">
@@ -999,20 +918,9 @@ export default function SynthesisArticlePage() {
                         </div>
                       </div>
                     )}
-                  </div>
-                </div>
-
-                <div className="sa-footer-brand">
-                  <span className="sa-footer-logo">
-                    Doc<span>Pats</span>
-                  </span>
-                  <span className="sa-footer-tagline">
-                    {t("footer_ai.platform")}
-                  </span>
-                </div>
               </div>
-            </footer>
-          )}
+            </div>
+          </div>
 
           <FooterAI />
         </article>
@@ -1021,77 +929,3 @@ export default function SynthesisArticlePage() {
   );
 }
 
-const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
-
-.sa-page*,.sa-page *::before,.sa-page *::after{box-sizing:border-box}
-.sa-page{--paper:#f7f4ee;--paper2:#ede9e0;--ink:#1c1a16;--ink2:#3a3830;--muted:#7a7668;--rule:#cdc9bc;--serif:'Playfair Display',Georgia,serif;--mono:'IBM Plex Mono','Courier New',monospace;--sans:'IBM Plex Sans',-apple-system,sans-serif;background:var(--paper);min-height:100vh;color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
-.sa-topbar{background:var(--ink);color:#7a7668;padding:0 40px;height:32px;display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;}
-.sa-topbar-left{color:#6a6660;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sa-topbar-date{color:#5a5a52;white-space:nowrap;flex-shrink:0}
-.sa-nav{position:sticky;top:0;z-index:200;background:var(--paper);border-bottom:3px double var(--ink);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;gap:16px;}
-.sa-nav-back{display:flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:0;transition:color .15s;white-space:nowrap;}
-.sa-nav-back:hover{color:var(--ink)}
-.sa-nav-logo{font-family:'Playfair Display',Georgia,serif!important;font-size:26px;font-weight:900;letter-spacing:-.02em;color:var(--ink);text-decoration:none;line-height:1;}
-.sa-nav-logo span{color:#b83030}
-.sa-nav-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--rule);padding:4px 12px;white-space:nowrap;}
-.sa-header{background:var(--paper2);border-bottom:2px solid var(--ink);padding:52px 0 0}
-.sa-header-inner{max-width:780px;margin:0 auto;padding:0 40px 44px}
-.sa-meta-row{display:flex;align-items:center;gap:8px;margin-bottom:20px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;}
-.sa-specialty{font-weight:500}.sa-sep{color:var(--rule)}.sa-label{color:var(--muted)}
-.sa-headline{font-family:var(--serif);font-size:clamp(26px,4vw,46px);font-weight:700;letter-spacing:-.025em;line-height:1.12;color:var(--ink);margin:0 0 22px;}
-.sa-rule{height:4px;width:64px;margin-bottom:20px}
-.sa-byline{padding-top:14px;border-top:1px solid var(--rule)}
-.sa-byline-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.sa-source{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.06em}
-.sa-dot{color:var(--rule)}.sa-date,.sa-readtime{font-family:var(--mono);font-size:11px;color:var(--muted)}
-.sa-body{padding:0}
-.sa-body-inner{max-width:680px;margin:0 auto;padding:52px 40px 64px}
-.sa-h1{font-family:var(--serif);font-size:clamp(22px,3vw,36px);font-weight:700;line-height:1.2;letter-spacing:-.02em;color:var(--ink);margin:0 0 24px;}
-.sa-subhead{font-family:var(--serif);font-size:22px;font-weight:700;line-height:1.3;letter-spacing:-.015em;color:var(--ink);margin:2.8em 0 .9em;padding-top:1em;border-top:1px solid var(--rule);}
-.sa-h3{font-family:var(--serif);font-size:18px;font-weight:700;margin:2em 0 .7em;color:var(--ink)}
-.sa-para{font-family:var(--sans);font-size:17px;font-weight:300;line-height:1.85;color:var(--ink2);margin:0 0 1.6em;letter-spacing:.005em;}
-.sa-para:first-of-type{font-family:var(--serif);font-size:19px;font-weight:400;line-height:1.75;color:var(--ink);}
-.sa-ref{font-family:var(--mono);font-size:12px;color:var(--muted);margin:4px 0;line-height:1.6;}
-.sa-footer{border-top:2px solid var(--ink);background:var(--paper2)}
-.sa-footer-inner{max-width:780px;margin:0 auto;padding:0 40px 48px}
-.sa-footer-rule{height:4px;width:64px;margin-bottom:28px}
-.sa-footer-pub{font-family:var(--sans);font-size:14px;color:var(--ink2);margin-bottom:20px}
-.sa-sources-list{display:flex;flex-direction:column;gap:8px;margin-bottom:32px}
-.sa-source-item{display:flex;align-items:baseline;gap:8px;font-size:13px}
-.sa-source-num{font-family:var(--mono);font-size:11px;color:var(--muted);flex-shrink:0}
-.sa-source-link{color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--rule);transition:border-color .15s}
-.sa-source-link:hover{border-color:var(--ink)}
-.sa-source-title{color:var(--ink2)}.sa-source-year{color:var(--muted);font-family:var(--mono);font-size:11px}
-.sa-footer-brand{display:flex;align-items:center;gap:12px;padding-top:20px;border-top:1px solid var(--rule)}
-.sa-footer-logo{font-family:'Playfair Display',Georgia,serif!important;font-size:20px;font-weight:900;letter-spacing:-.02em;color:var(--ink)}
-.sa-footer-logo span{color:#b83030}
-.sa-footer-tagline{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.sa-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:80vh;gap:16px}
-.sa-spinner{width:28px;height:28px;border:2px solid var(--rule);border-top-color:var(--ink);border-radius:50%;animation:sa-spin .7s linear infinite}
-@keyframes sa-spin{to{transform:rotate(360deg)}}
-@keyframes sa-blink{0%,100%{opacity:1}50%{opacity:0}}
-.sa-state-text{font-family:var(--serif);font-size:17px;font-style:italic;color:var(--muted)}
-
-/* ── COMMENTS CARD ── */
-.sa-comments-card{margin:48px 0 32px;border:1px solid var(--rule);background:var(--paper);border-radius:4px;overflow:hidden;}
-.sa-comments-header{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--rule);background:var(--paper2);}
-.sa-comments-title{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);font-weight:500;flex:1;}
-.sa-comments-count{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--paper);border:1px solid var(--rule);padding:2px 10px;border-radius:10px;min-width:28px;text-align:center;}
-.sa-comments-body{padding:20px;}
-
-/* ── AUTH GATE ── */
-.sa-auth-gate{display:flex;flex-direction:column;align-items:center;text-align:center;padding:32px 20px;gap:4px;}
-.sa-auth-gate-icon{font-size:36px;margin-bottom:8px;opacity:.85;}
-.sa-auth-gate-title{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:6px;}
-.sa-auth-gate-sub{font-family:var(--sans);font-size:14px;color:var(--muted);max-width:420px;line-height:1.6;margin-bottom:20px;}
-.sa-auth-gate-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
-.sa-btn-login,.sa-btn-register{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:10px 20px;border-radius:2px;text-decoration:none;transition:all .15s;border:1px solid var(--ink);}
-.sa-btn-login{background:var(--ink);color:var(--paper);}
-.sa-btn-login:hover{background:#2a2822;}
-.sa-btn-register{background:transparent;color:var(--ink);}
-.sa-btn-register:hover{background:var(--ink);color:var(--paper);}
-
-@media(max-width:768px){.sa-topbar{padding:0 20px}.sa-nav{padding:0 20px}.sa-nav-tag{display:none}.sa-header-inner{padding:0 20px 32px}.sa-body-inner{padding:36px 20px 52px}.sa-footer-inner{padding:0 20px 40px}}
-@media(max-width:480px){.sa-topbar{display:none}.sa-nav{padding:0 14px}.sa-nav-logo{font-size:20px}.sa-header-inner{padding:0 14px 24px}.sa-headline{font-size:26px}.sa-body-inner{padding:28px 14px 44px}.sa-para{font-size:15.5px}.sa-footer-inner{padding:0 14px 32px}.sa-comments-header{padding:14px 16px}.sa-comments-body{padding:16px}.sa-auth-gate{padding:24px 12px}.sa-auth-gate-title{font-size:18px}.sa-btn-login,.sa-btn-register{padding:9px 16px;font-size:10px}}
-`;

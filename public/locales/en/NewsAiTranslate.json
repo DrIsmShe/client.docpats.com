@@ -65,10 +65,10 @@
   },
   "topbar_title": "DocPats · Medical Intelligence",
   "nav_news": "News",
-  "nav_tag": "AI · Analytics",
+  "nav_tag": "Science",
   "header_label": "DocPats Editorial Team · AI Synthesis",
-  "headline": "Analytical Articles",
-  "deck": "Deep synthesis of medical and scientific sources, updated daily",
+  "headline": "Scientific articles",
+  "deck": "Physician analyses and AI synthesis of medical and scientific sources — updated daily",
   "materials_count": "{{count}} materials",
   "loading": "Loading materials…",
   "load_error": "Failed to load articles",
@@ -253,5 +253,12 @@
     "doctor": "Doctor"
   },
   "publications_few": "{{count}} publication",
-  "publications_many": "{{count}} publication"
+  "publications_many": "{{count}} publication",
+  "science_ai_news": "Scientific articles",
+  "search_placeholder": "Search by title…",
+  "filter_section": "Section",
+  "filter_all_sections": "All sections",
+  "filter_kind": "Author",
+  "filter_all_kinds": "All authors",
+  "filter_reset": "Reset"
 }

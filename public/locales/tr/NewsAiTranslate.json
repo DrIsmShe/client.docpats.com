@@ -65,10 +65,10 @@
   },
   "topbar_title": "DocPats · Tıbbi Zekâ",
   "nav_news": "Haberler",
-  "nav_tag": "YZ · Analitik",
+  "nav_tag": "Bilim",
   "header_label": "DocPats Editörlüğü · AI Sentezi",
-  "headline": "Analitik Makaleler",
-  "deck": "Tıbbi ve bilimsel kaynakların derin sentezi, her gün güncellenir",
+  "headline": "Bilimsel makaleler",
+  "deck": "Hekim analizleri ve tıbbi-bilimsel kaynakların YZ sentezi — her gün güncellenir",
   "materials_count": "{{count}} içerik",
   "loading": "İçerikler yükleniyor…",
   "load_error": "Makaleler yüklenemedi",
@@ -253,5 +253,12 @@
     "doctor": "Doktor"
   },
   "publications_few": "{{count}} yayın",
-  "publications_many": "{{count}} yayın"
+  "publications_many": "{{count}} yayın",
+  "science_ai_news": "Bilimsel makaleler",
+  "search_placeholder": "Başlıkta ara…",
+  "filter_section": "Bölüm",
+  "filter_all_sections": "Tüm bölümler",
+  "filter_kind": "Yazar",
+  "filter_all_kinds": "Tüm yazarlar",
+  "filter_reset": "Sıfırla"
 }

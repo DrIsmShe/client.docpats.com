@@ -88,10 +88,10 @@
   },
   "topbar_title": "DocPats · Tibbi İntellekt",
   "nav_news": "Xəbərlər",
-  "nav_tag": "AI · Analitika",
+  "nav_tag": "Elm",
   "header_label": "DocPats Redaksiyası · AI Sintezi",
-  "headline": "Analitik Məqalələr",
-  "deck": "Tibbi və elmi mənbələrin dərin sintezi, hər gün yenilənir",
+  "headline": "Elmi məqalələr",
+  "deck": "Həkim təhlilləri və tibbi-elmi mənbələr üzrə Sİ sintezi — hər gün yenilənir",
   "materials_count": "{{count}} material",
   "loading": "Materiallar yüklənir…",
   "load_error": "Məqalələri yükləmək mümkün olmadı",
@@ -253,5 +253,12 @@
     "doctor": "Həkim"
   },
   "publications_few": "{{count}} nəşr",
-  "publications_many": "{{count}} nəşr"
+  "publications_many": "{{count}} nəşr",
+  "science_ai_news": "Elmi məqalələr",
+  "search_placeholder": "Başlıqla axtarış…",
+  "filter_section": "Bölmə",
+  "filter_all_sections": "Bütün bölmələr",
+  "filter_kind": "Müəllif",
+  "filter_all_kinds": "Bütün müəlliflər",
+  "filter_reset": "Sıfırla"
 }
