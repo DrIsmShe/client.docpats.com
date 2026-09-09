@@ -200,6 +200,18 @@ export default function PublicVideosPage() {
       />
 
       <aside className="yt-side" onClick={() => setМенюОткрыто(false)}>
+        {/* Крестик — только на узком экране, где панель выдвижная. Фон
+            тоже закрывает меню, но свободной полосы рядом с панелью
+            семьдесят точек: попасть в неё пальцем на ходу выходит не
+            всегда. */}
+        <button
+          type="button"
+          className="yt-side-close"
+          onClick={() => setМенюОткрыто(false)}
+          aria-label={t("videra.gallery.close", { defaultValue: "Закрыть" })}
+        >
+          ×
+        </button>
         <button
           type="button"
           onClick={() => {
@@ -630,6 +642,7 @@ const CSS = `
 
 /* Кнопка меню и затемнение живут только на узком экране. */
 .yt-burger { display: none; }
+.yt-side-close { display: none; }
 .yt-side-back { display: none; }
 
 @media (max-width: 1000px) {
@@ -657,7 +670,10 @@ const CSS = `
     top: 0;
     bottom: 0;
     inset-inline-start: 0;
-    z-index: 60;
+    /* Поверх шапки сайта: панель, выехавшая ПОД неё, теряет верхние
+       пункты — «Главная» и «Подписки» оказывались закрыты. Пока меню
+       открыто, шапка не нужна. */
+    z-index: 100001;
     width: min(84vw, 320px);
     max-height: none;
     padding: 16px 10px calc(16px + env(safe-area-inset-bottom));
@@ -672,8 +688,21 @@ const CSS = `
     display: block;
     position: fixed;
     inset: 0;
-    z-index: 55;
+    z-index: 100000;
     background: rgba(0, 0, 0, 0.4);
+  }
+  .yt-side-close {
+    display: block;
+    margin: 0 0 8px auto;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: #f2f2f2;
+    font-size: 22px;
+    line-height: 1;
+    color: #0f0f0f;
+    cursor: pointer;
   }
   @media (prefers-reduced-motion: reduce) {
     .yt-side { transition: none; }

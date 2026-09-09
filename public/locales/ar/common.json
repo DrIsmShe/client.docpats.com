@@ -2567,7 +2567,8 @@
       "inviteSignup": "ابدأ",
       "invitePlans": "الباقات",
       "navHistory": "السجل",
-      "emptyHistory": "ستظهر هنا المقاطع التي شاهدتها."
+      "emptyHistory": "ستظهر هنا المقاطع التي شاهدتها.",
+      "close": "إغلاق"
     },
     "public": {
       "loading": "جارٍ التحميل…",

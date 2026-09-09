@@ -2562,7 +2562,8 @@
       "inviteSignup": "Başla",
       "invitePlans": "Tariflər",
       "navHistory": "Tarixçə",
-      "emptyHistory": "Baxdığınız videolar burada görünəcək."
+      "emptyHistory": "Baxdığınız videolar burada görünəcək.",
+      "close": "Bağla"
     },
     "public": {
       "loading": "Yüklənir…",

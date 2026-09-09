@@ -2561,7 +2561,8 @@
       "inviteSignup": "Başla",
       "invitePlans": "Planlar",
       "navHistory": "Geçmiş",
-      "emptyHistory": "İzlediğiniz videolar burada görünür."
+      "emptyHistory": "İzlediğiniz videolar burada görünür.",
+      "close": "Kapat"
     },
     "public": {
       "loading": "Yükleniyor…",

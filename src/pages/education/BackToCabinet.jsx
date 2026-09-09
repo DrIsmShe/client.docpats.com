@@ -20,8 +20,10 @@ import { useTranslation } from "react-i18next";
 import api from "../../axios";
 
 const HOME_BY_ROLE = {
-  doctor: "/doctor",
-  patient: "/patient",
+  // Именно страницы кабинета, а не корни зон: у /doctor и /patient нет
+  // index-маршрута, и ссылка приводила на пустой layout.
+  doctor: "/doctor/home-page",
+  patient: "/patient/home-page",
   admin: "/admin/admin-panel",
 };
 

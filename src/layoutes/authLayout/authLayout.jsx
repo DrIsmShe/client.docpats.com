@@ -107,19 +107,21 @@ const STYLES = `
     pointer-events: none;
   }
   .dp-nav-inner {
-    display: flex;
+    /* Три зоны: ссылки — логотип — кнопки. Логотип центрировался
+       абсолютом, то есть места в раскладке не занимал, и левый блок
+       заезжал под него. Здесь он занимает свою колонку, и наезд
+       невозможен по построению. */
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     height: 100%;
     padding: 0 40px;
     position: relative;
-    gap: 0;
+    gap: 12px;
   }
 
-  /* Logo — centred absolutely */
   .dp-nav-logo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    justify-self: center;
     text-decoration: none;
     display: flex;
     flex-direction: column;
@@ -146,7 +148,15 @@ const STYLES = `
   }
 
   /* Left nav links */
-  .dp-nav-links { display: flex; align-items: center; flex: 1; }
+  .dp-nav-links {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 4px;
+    /* Колонка сетки не обрезает содержимое сама: без этого длинный
+       перевод снова выехал бы на логотип. */
+    overflow: hidden;
+  }
   .dp-nav-link {
     font-family: var(--font-body);
     font-size: 12.5px;
@@ -182,7 +192,7 @@ const STYLES = `
 
   /* Right slot */
   .dp-nav-right {
-    margin-left: auto;
+    justify-self: end;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -834,6 +844,14 @@ const STYLES = `
      RESPONSIVE — Tablet (≤ 1100px)
   ════════════════════════════════════════ */
   @media (max-width: 1100px) {
+    /* Средние ширины: сжимаются ссылки, а не логотип. */
+    .dp-nav-inner { padding: 0 20px; gap: 8px; }
+    .dp-nav-logo-name { font-size: 22px; }
+    .dp-nav-logo-sub { display: none; }
+    .dp-nav-links { gap: 2px; overflow: hidden; }
+    .dp-nav-link { font-size: 11px; letter-spacing: .04em; padding: 8px 5px; }
+    .dp-nav-right { gap: 6px; }
+
     .dp-hero-inner {
       grid-template-columns: 1fr;
       gap: 0;
@@ -863,8 +881,9 @@ const STYLES = `
     /* Navbar */
     .dp-nav { height: 56px; }
     .dp-nav-inner { padding: 0 16px; }
+    .dp-nav-inner { grid-template-columns: auto 1fr; }
     .dp-nav-links { display: none; }
-    .dp-nav-logo { position: static; transform: none; margin-right: auto; }
+    .dp-nav-logo { justify-self: start; }
     .dp-nav-logo-name { font-size: 22px; }
     .dp-nav-logo-sub { display: none; }
     .dp-nav-right { margin-left: 0; gap: 6px; }
@@ -1286,7 +1305,9 @@ export default function AuthLayout() {
             {/* Left links */}
             <div className="dp-nav-links">
               <a className="dp-nav-link" href="/news">
-                {t("nav.newsLink") || "Medical News"}
+                {/* Коротко: в строке меню длинная фраза не помещается и
+                    вылезает на логотип. Что внутри — объяснит страница. */}
+                {t("nav.newsShort", { defaultValue: "Новости" })}
               </a>
               {/* Конференции показываем всем: список — публичный, а вот
                   программа и условия внутри карточки открываются только

@@ -2588,7 +2588,8 @@
       "inviteSignup": "Get started",
       "invitePlans": "Plans",
       "navHistory": "History",
-      "emptyHistory": "Videos you have watched will appear here."
+      "emptyHistory": "Videos you have watched will appear here.",
+      "close": "Close"
     },
     "public": {
       "loading": "Loading…",
