@@ -14,6 +14,7 @@ import { useLocaleAddressable } from "../../../../lib/useLocaleAddressable";
 import { useTranslation } from "react-i18next";
 import DOMPurify from "dompurify";
 import { Helmet } from "react-helmet-async";
+import { categoryName } from "../../../../utils/categoryName";
 import { articleStyles as styles } from "../../../../styles/articlePage";
 
 
@@ -278,7 +279,10 @@ const SingleArticleScientificForAll = () => {
           content={article.imageUrl || "https://docpats.com/og-default.jpg"}
         />
         <meta property="article:published_time" content={article.createdAt} />
-        <meta property="article:section" content={article.category || ""} />
+        <meta
+          property="article:section"
+          content={categoryName(article.category, i18n.language)}
+        />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={article.title} />
         <meta
@@ -310,7 +314,7 @@ const SingleArticleScientificForAll = () => {
               url: "https://docpats.com",
             },
             keywords: article.metaKeywords || "",
-            articleSection: article.category || "",
+            articleSection: categoryName(article.category, i18n.language),
           })}
         </script>
       </Helmet>
@@ -318,7 +322,8 @@ const SingleArticleScientificForAll = () => {
       <div className="sa-hero">
         <div className="sa-hero-inner">
           <div className="sa-category-pill">
-            {article.category || t("article_single.medical_article")}
+            {categoryName(article.category, i18n.language) ||
+              t("article_single.medical_article")}
           </div>
           <h1 className="sa-title">{article.title}</h1>
           {article.isOriginal &&
@@ -535,7 +540,7 @@ const SingleArticleScientificForAll = () => {
                       title: article.title,
                       content: article.content,
                       abstract: article.abstract,
-                      category: article.category,
+                      category: categoryName(article.category, i18n.language),
                       tags: article.tags,
                       metaDescription: article.metaDescription,
                       metaKeywords: article.metaKeywords,
