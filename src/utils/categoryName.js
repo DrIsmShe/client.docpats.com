@@ -19,11 +19,21 @@ const OBJECT_ID = /^[0-9a-f]{24}$/i;
 
 /**
  * @param {unknown} category значение поля article.category
+ * @param {string} [lang] язык читателя
  * @returns {string} название рубрики или пустая строка
  */
-export function categoryName(category) {
+export function categoryName(category, lang = "") {
   if (!category) return "";
   if (typeof category === "object") {
+    // Переводы названия живут в title. Пустой язык означает «перевода
+    // нет» — тогда показываем исходное имя, а не пустоту: рубрика без
+    // подписи хуже рубрики на чужом языке.
+    const переводы = category.title || {};
+    const переведённое =
+      (lang && typeof переводы[lang] === "string" && переводы[lang].trim()) ||
+      (typeof переводы.ru === "string" && переводы.ru.trim()) ||
+      "";
+    if (переведённое) return переведённое;
     return typeof category.name === "string" ? category.name : "";
   }
   if (typeof category !== "string") return "";

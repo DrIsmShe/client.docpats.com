@@ -214,6 +214,10 @@ const FeedbackPage = lazy(() => import("./pages/feedback/FeedbackPage"));
 const AdminFeedbackPage = lazy(() =>
   import("./pages/admin/feedback/AdminFeedbackPage"),
 );
+// Какой моделью работает платформа — одно место на весь проект.
+const AdminAiSettingsPage = lazy(() =>
+  import("./pages/admin/ai/AdminAiSettingsPage"),
+);
 const AdminVideoCategories = lazy(() => import("./pages/admin/video/AdminVideoCategories"));
 const HomePatientMainPage = lazy(() => import("./pages/patientProfilePages/home/HomePatientMainPage"));
 const PatientHomePage = lazy(() => import("./pages/patientProfilePages/home/PatientHomePage.jsx"));
@@ -3112,6 +3116,8 @@ function App() {
               <Route path="video-reports" element={<AdminReportsPage />} />
               {/* Обращения от врачей, пациентов и клиник: очередь ответов. */}
               <Route path="feedback" element={<AdminFeedbackPage />} />
+              {/* Модели ИИ: провайдер по умолчанию и переопределения по частям. */}
+              <Route path="ai" element={<AdminAiSettingsPage />} />
               {/* Полки витрины отдельной страницей: тот же блок есть в каталоге,
                   но разделы меняют отдельно от правки самих роликов. */}
               <Route path="video-categories" element={<AdminVideoCategories />} />

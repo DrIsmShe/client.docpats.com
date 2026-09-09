@@ -179,6 +179,17 @@ export default function Aside() {
           {/* ─── Обратная связь ───
               Отдельной секцией, а не пунктом в «Обзоре»: это ежедневная
               очередь, в которую заходят отвечать, а не смотреть цифры. */}
+          {/* ─── Модели ИИ ───
+              Одно место, где решается, чем платформа думает: провайдер по
+              умолчанию и переопределения по частям проекта. */}
+          <li className="nav-heading" data-sec="ai">Искусственный интеллект</li>
+          <li className="nav-item" data-sec="ai">
+            <Link className="nav-link collapsed" to="ai">
+              <i className="bi bi-cpu"></i>
+              <span>Модели ИИ</span>
+            </Link>
+          </li>
+
           <li className="nav-heading" data-sec="feedback">Обратная связь</li>
           <li className="nav-item" data-sec="feedback">
             <Link className="nav-link collapsed" to="feedback">

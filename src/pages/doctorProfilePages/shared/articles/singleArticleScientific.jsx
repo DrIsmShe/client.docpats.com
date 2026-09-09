@@ -250,7 +250,7 @@ export default function SingleArticleScientific() {
       <div className="sa-hero">
         <div className="sa-hero-inner">
           <div className="sa-category-pill">
-            {categoryName(article.category) || t("article_single.medical_article")}
+            {categoryName(article.category, i18n.language) || t("article_single.medical_article")}
           </div>
           <h1 className="sa-title">{article.title}</h1>
           {article.isOriginal &&
@@ -467,7 +467,7 @@ export default function SingleArticleScientific() {
                       title: article.title,
                       content: article.content,
                       abstract: article.abstract,
-                      category: categoryName(article.category),
+                      category: categoryName(article.category, i18n.language),
                       tags: article.tags,
                       metaDescription: article.metaDescription,
                       metaKeywords: article.metaKeywords,

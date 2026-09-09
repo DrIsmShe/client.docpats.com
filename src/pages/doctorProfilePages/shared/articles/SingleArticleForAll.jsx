@@ -228,7 +228,7 @@ export default function SingleArticleForAll() {
           content={article.imageUrl || "https://docpats.com/og-default.jpg"}
         />
         <meta property="article:published_time" content={article.createdAt} />
-        <meta property="article:section" content={categoryName(article.category)} />
+        <meta property="article:section" content={categoryName(article.category, i18n.language)} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={article.title} />
         <meta
@@ -260,7 +260,7 @@ export default function SingleArticleForAll() {
               url: "https://docpats.com",
             },
             keywords: article.metaKeywords || "",
-            articleSection: categoryName(article.category),
+            articleSection: categoryName(article.category, i18n.language),
           })}
         </script>
       </Helmet>
@@ -268,7 +268,7 @@ export default function SingleArticleForAll() {
       <div className="sa-hero">
         <div className="sa-hero-inner">
           <div className="sa-category-pill">
-            {categoryName(article.category) || t("article_single.medical_article")}
+            {categoryName(article.category, i18n.language) || t("article_single.medical_article")}
           </div>
           <h1 className="sa-title">{article.title}</h1>
           {article.isOriginal &&
@@ -463,7 +463,7 @@ export default function SingleArticleForAll() {
                       title: article.title,
                       content: article.content,
                       abstract: article.abstract,
-                      category: categoryName(article.category),
+                      category: categoryName(article.category, i18n.language),
                       tags: article.tags,
                       metaDescription: article.metaDescription,
                       metaKeywords: article.metaKeywords,
