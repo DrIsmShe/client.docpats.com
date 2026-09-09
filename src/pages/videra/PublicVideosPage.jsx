@@ -158,6 +158,24 @@ export default function PublicVideosPage() {
     загрузить();
   }, [загрузить]);
 
+  // Обновление при возврате на вкладку.
+  //
+  // Список — снимок на момент открытия: число просмотров в карточке
+  // застывало на том, каким было час назад, и человек, посмотревший
+  // ролик и вернувшийся назад, видел прежнюю цифру. Кнопки «обновить»
+  // тут быть не должно — это работа программы, а не читателя.
+  useEffect(() => {
+    const вернулись = () => {
+      if (document.visibilityState === "visible") загрузить();
+    };
+    document.addEventListener("visibilitychange", вернулись);
+    window.addEventListener("pageshow", вернулись);
+    return () => {
+      document.removeEventListener("visibilitychange", вернулись);
+      window.removeEventListener("pageshow", вернулись);
+    };
+  }, [загрузить]);
+
   useEffect(() => {
     const прежний = document.title;
     document.title = "DP-Tube · DocPats";
