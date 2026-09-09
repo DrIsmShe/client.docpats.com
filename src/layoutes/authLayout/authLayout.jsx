@@ -1208,6 +1208,17 @@ export default function AuthLayout() {
     return null;
   };
 
+  /* Тарифы: у страницы три аудитории, и каждый ищет на ней своё. Гостю
+     показываем всю страницу — он ещё не выбрал, кем пришёл. */
+  const pricingPath = (role) => {
+    if (role === "doctor") return "/pricing?tab=doctors";
+    if (role === "patient") return "/pricing?tab=patients";
+    if (role === "clinic_admin" || role === "clinic_staff") {
+      return "/pricing?tab=clinics";
+    }
+    return "/pricing";
+  };
+
   // Кнопки порталов (и герой, и карточки ролей ниже). Раньше они вели на
   // /registration безусловно: вошедший врач с главной падал на форму
   // регистрации, хотя сессия у него есть. Теперь гостя ведём на
@@ -1309,6 +1320,11 @@ export default function AuthLayout() {
                   {t("nav.examPrep", { defaultValue: "Тесты" })}
                 </Link>
               )}
+              {/* Тарифы — на вкладку своей аудитории: врач, пациент и
+                  клиника ищут на этой странице разное. */}
+              <Link to={pricingPath(userRole)} className="dp-nav-link">
+                {t("nav.pricing", { defaultValue: "Тарифы" })}
+              </Link>
               <LanguageSwitcher />
               {isAuthenticated ? (
                 // Раньше здесь было «врач → /doctor, все остальные →

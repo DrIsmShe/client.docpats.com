@@ -27,7 +27,7 @@
 // подпись — назначение видно без наведения и без перевода на язык жестов.
 // Одна и та же разметка на десктопе и на телефоне: меняются только отступы.
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const STORAGE_KEY = "dp-font-scale";
@@ -64,13 +64,66 @@ function applyScale(scale) {
 const STYLES = `
   .dp-fs {
     position: fixed;
-    /* Правый нижний угол: левый низ на всех layout-ах с боковым меню
-       занят сайдбаром и кнопкой помощника «?». Справа постоянных
-       фиксированных элементов нет — тосты приподняты над пилюлей
-       (см. отступ у ToastContainer в App.jsx). */
-    right: 16px;
-    bottom: 16px;
+    /* Верхний правый угол, в линию с шапкой. Нижний угол плашка занимала
+       постоянно и закрывала то, что под ней: кнопки карточек, подписи,
+       край таблиц. Нужна она раз в сеанс — кегль выбирают однажды. */
+    right: 10px;
+    top: 10px;
     z-index: 99998;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  /* Свёрнутый вид — одна буква. Значок «A±» читается без перевода: буква
+     говорит про текст, знак — про то, что его можно менять. */
+  .dp-fs-toggle {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 1px;
+    min-width: 38px;
+    height: 34px;
+    padding: 0 9px;
+    border: 1px solid #c8d6ee;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.96);
+    color: #2d3f5c;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(10, 22, 40, 0.1);
+    backdrop-filter: blur(6px);
+    line-height: 1;
+  }
+  .dp-fs-toggle:hover { background: #eef2ff; color: #1447e6; }
+  .dp-fs-toggle:focus-visible { outline: 2px solid #1447e6; outline-offset: 2px; }
+  .dp-fs-toggle-a { font-size: 17px; font-weight: 700; }
+  .dp-fs-toggle-sign { font-size: 11px; font-weight: 600; }
+  /* Выбранный не по умолчанию кегль виден на самой кнопке: иначе человек
+     забывает, что увеличивал текст, и списывает крупный шрифт на сайт. */
+  .dp-fs-toggle-pct {
+    font-size: 10px;
+    font-weight: 600;
+    color: #1447e6;
+    margin-inline-start: 2px;
+  }
+
+  /* Телефон: шапка кабинета занимает верхнюю полосу целиком — язык,
+     колокольчик, аватар, выход. Кнопка в том же углу легла поверх выхода,
+     поэтому опускаем её под шапку и уменьшаем. */
+  @media (max-width: 900px) {
+    .dp-fs { top: 62px; right: 6px; }
+    .dp-fs-toggle {
+      min-width: 32px;
+      height: 30px;
+      padding: 0 7px;
+      opacity: 0.92;
+    }
+    .dp-fs-toggle-a { font-size: 15px; }
+  }
+
+  .dp-fs-panel {
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -78,11 +131,10 @@ const STYLES = `
     padding: 6px 8px 5px;
     border: 1px solid #c8d6ee;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.96);
+    background: rgba(255, 255, 255, 0.98);
     box-shadow: 0 2px 6px rgba(10, 22, 40, 0.1),
       0 8px 24px rgba(10, 22, 40, 0.08);
     backdrop-filter: blur(6px);
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   }
 
   /* Подпись — то, ради чего плашка перестала быть загадкой. Читается и
@@ -184,6 +236,32 @@ const STYLES = `
 export default function FontSizeControl() {
   const { t } = useTranslation();
   const [index, setIndex] = useState(readSavedIndex);
+  /* Панель раскрыта. Свёрнутый вид — одна буква: кегль выбирают раз в
+     сеанс, и постоянно занятый угол экрана ради этого не оправдан. */
+  const [раскрыт, setРаскрыт] = useState(false);
+  const коробка = useRef(null);
+
+  /* Закрытие по щелчку вне и по Esc — то, чего ждут от всплывающей
+     панели. Без этого она остаётся раскрытой и снова закрывает угол. */
+  useEffect(() => {
+    if (!раскрыт) return undefined;
+
+    const мимо = (e) => {
+      if (коробка.current && !коробка.current.contains(e.target)) {
+        setРаскрыт(false);
+      }
+    };
+    const поEsc = (e) => {
+      if (e.key === "Escape") setРаскрыт(false);
+    };
+
+    document.addEventListener("mousedown", мимо);
+    document.addEventListener("keydown", поEsc);
+    return () => {
+      document.removeEventListener("mousedown", мимо);
+      document.removeEventListener("keydown", поEsc);
+    };
+  }, [раскрыт]);
 
   // Инлайновый скрипт в index.html уже выставил масштаб до отрисовки; здесь
   // синхронизируем состояние React с DOM и сохраняем каждый новый выбор.
@@ -219,7 +297,22 @@ export default function FontSizeControl() {
   return (
     <>
       <style>{STYLES}</style>
-      <div className="dp-fs" role="group" aria-label={label}>
+      <div className="dp-fs" role="group" aria-label={label} ref={коробка}>
+        <button
+          type="button"
+          className="dp-fs-toggle"
+          onClick={() => setРаскрыт((о) => !о)}
+          title={label}
+          aria-label={label}
+          aria-expanded={раскрыт}
+        >
+          <span className="dp-fs-toggle-a">A</span>
+          <span className="dp-fs-toggle-sign">±</span>
+          {!isDefault && <span className="dp-fs-toggle-pct">{percent}%</span>}
+        </button>
+
+        {!раскрыт ? null : (
+        <div className="dp-fs-panel">
         <div className="dp-fs-caption" aria-hidden="true">
           {label}
         </div>
@@ -262,6 +355,8 @@ export default function FontSizeControl() {
             A
           </button>
         </div>
+        </div>
+        )}
       </div>
     </>
   );

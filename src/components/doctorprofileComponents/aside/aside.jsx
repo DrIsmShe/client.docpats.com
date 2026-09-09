@@ -552,6 +552,15 @@ export default function Aside() {
             {t("videra.gallery.menu", { defaultValue: "Медицинские ролики" })}
           </NavLink>
 
+          {/* Тарифы — на вкладку врача. Из кабинета к ним ходят чаще, чем
+              с лендинга: смотрят, что входит в текущий план. */}
+          <NavLink className={itemClass} to="/pricing?tab=doctors">
+            <span className="dp2-icon">
+              <LuCirclePlus />
+            </span>
+            {t("doctorAside.pricing", { defaultValue: "Тарифы" })}
+          </NavLink>
+
           {/* Обратная связь. Врач замечает недостающее раньше всех — он
               работает в системе каждый день; путь «написать нам» должен
               быть в меню, а не в подвале страницы помощи. */}

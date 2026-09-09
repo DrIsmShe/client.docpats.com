@@ -880,7 +880,8 @@
       "myLabResults": "Analizlərim",
       "invite": "Dostu dəvət et",
       "consentRequests": "Giriş sorğuları",
-      "telemed": "Onlayn konsultasiyalar"
+      "telemed": "Onlayn konsultasiyalar",
+      "pricing": "Tariflər"
     },
     "clinicRoles": {
       "owner": "Sahib",
@@ -2867,5 +2868,11 @@
       "mobile": "Telefon, mobil versiya",
       "other": "Digər"
     }
+  },
+  "nav": {
+    "pricing": "Tariflər"
+  },
+  "doctorAside": {
+    "pricing": "Tariflər"
   }
 }

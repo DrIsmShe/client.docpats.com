@@ -186,11 +186,12 @@ export default function MyVideosPage() {
   }
 
   return (
-    <div style={стиль.страница}>
+    <div className="mv-page" style={стиль.страница}>
+      <style>{МОБИЛЬНЫЙ}</style>
       {/* Левая колонка — про порядок работы, правая — сами ролики. Так же
           устроено рабочее место в студии, и человек, пришедший оттуда,
           не пересобирает картину заново. */}
-      <aside style={стиль.колонка}>
+      <aside className="mv-aside" style={стиль.колонка}>
         <div style={стиль.колонкаИмя}>DP-Videra</div>
         <p style={стиль.колонкаТекст}>
           {t("videra.library.aside1", {
@@ -317,7 +318,7 @@ export default function MyVideosPage() {
           })}
         </div>
       ) : (
-        <div style={стиль.список}>
+        <div className="mv-grid" style={стиль.список}>
           {ролики.map((р) => {
             const цвет = ЦВЕТ_ВИДИМОСТИ[р.visibility] || ЦВЕТ_ВИДИМОСТИ.private;
             const готов = р.status === "ready";
@@ -518,6 +519,22 @@ export default function MyVideosPage() {
     </div>
   );
 }
+
+/* Телефон и планшет. Правила живут строкой, потому что раскладка страницы
+   задана inline-объектом: он про ширину экрана ничего не знает, и колонка
+   «как это устроено» оставалась рядом с карточками даже на 380 точках. */
+const МОБИЛЬНЫЙ = `
+@media (max-width: 900px) {
+  .mv-page { display: block !important; padding: 12px 12px 56px !important; }
+  .mv-aside {
+    position: static !important;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #e3e9e8;
+  }
+  .mv-grid { grid-template-columns: 1fr !important; }
+}
+`;
 
 const стиль = {
   страница: {

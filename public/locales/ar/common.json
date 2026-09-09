@@ -881,7 +881,8 @@
       "myLabResults": "تحاليلي",
       "invite": "دعوة صديق",
       "consentRequests": "طلبات الوصول",
-      "telemed": "استشارات عبر الإنترنت"
+      "telemed": "استشارات عبر الإنترنت",
+      "pricing": "الأسعار"
     },
     "clinicRoles": {
       "owner": "المالك",
@@ -2872,5 +2873,11 @@
       "mobile": "الهاتف والنسخة المحمولة",
       "other": "أخرى"
     }
+  },
+  "nav": {
+    "pricing": "الأسعار"
+  },
+  "doctorAside": {
+    "pricing": "الأسعار"
   }
 }

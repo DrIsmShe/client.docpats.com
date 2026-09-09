@@ -860,7 +860,8 @@
       "myLabResults": "My lab results",
       "invite": "Invite a friend",
       "consentRequests": "Access requests",
-      "telemed": "Online consultations"
+      "telemed": "Online consultations",
+      "pricing": "Pricing"
     },
     "clinicRoles": {
       "owner": "Owner",
@@ -2893,5 +2894,11 @@
       "mobile": "Phone, mobile version",
       "other": "Other"
     }
+  },
+  "nav": {
+    "pricing": "Pricing"
+  },
+  "doctorAside": {
+    "pricing": "Pricing"
   }
 }

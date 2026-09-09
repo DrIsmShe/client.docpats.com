@@ -879,7 +879,8 @@
       "myLabResults": "Tahlillerim",
       "invite": "Arkadaş davet et",
       "consentRequests": "Erişim talepleri",
-      "telemed": "Çevrimiçi konsültasyonlar"
+      "telemed": "Çevrimiçi konsültasyonlar",
+      "pricing": "Fiyatlar"
     },
     "clinicRoles": {
       "owner": "Sahip",
@@ -2866,5 +2867,11 @@
       "mobile": "Telefon, mobil sürüm",
       "other": "Diğer"
     }
+  },
+  "nav": {
+    "pricing": "Fiyatlar"
+  },
+  "doctorAside": {
+    "pricing": "Fiyatlar"
   }
 }

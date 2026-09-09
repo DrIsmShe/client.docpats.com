@@ -78,6 +78,9 @@ export default function PublicVideosPage() {
   // подборку, где нет уже просмотренного, он не должен: семь
   // роликов превращались в три, и это выглядело как потеря.
   const [подборка, setПодборка] = useState(true);
+  /* Меню витрины на узком экране. На широком колонка стоит всегда, и это
+     состояние на неё не влияет. */
+  const [менюОткрыто, setМенюОткрыто] = useState(false);
   // Открытый канал: из списка подписок. Пусто — обычная лента.
   const [канал, setКанал] = useState(null);
   const [каналы, setКаналы] = useState([]);
@@ -185,10 +188,18 @@ export default function PublicVideosPage() {
   }, []);
 
   return (
-    <div className="yt">
+    <div className={`yt${менюОткрыто ? " yt-menu-open" : ""}`}>
       <style>{CSS}</style>
 
-      <aside className="yt-side">
+      {/* Затемнение под выдвинутым меню: нажатие по нему закрывает —
+          на телефоне это привычнее крестика в углу. */}
+      <div
+        className="yt-side-back"
+        onClick={() => setМенюОткрыто(false)}
+        aria-hidden="true"
+      />
+
+      <aside className="yt-side" onClick={() => setМенюОткрыто(false)}>
         <button
           type="button"
           onClick={() => {
@@ -341,6 +352,17 @@ export default function PublicVideosPage() {
       <main className="yt-main">
         {/* Верхняя строка витрины: имя, поиск, уведомления. */}
         <div className="yt-top">
+          {/* Кнопка меню — только на узком экране: на широком колонка
+              и так на месте, и кнопка была бы обманом. */}
+          <button
+            type="button"
+            className="yt-burger"
+            onClick={() => setМенюОткрыто((о) => !о)}
+            aria-label={t("videra.gallery.menu", { defaultValue: "Меню" })}
+          >
+            ☰
+          </button>
+
           <Link to="/videos" className="yt-brand">
             <span className="yt-brand-mark">▶</span> DP-Tube
           </Link>
@@ -606,11 +628,62 @@ const CSS = `
 .yt-back:hover { background: #e5e5e5; }
 .yt-channel-name { font-size: 18px; font-weight: 700; }
 
+/* Кнопка меню и затемнение живут только на узком экране. */
+.yt-burger { display: none; }
+.yt-side-back { display: none; }
+
 @media (max-width: 1000px) {
   .yt { grid-template-columns: 1fr; }
-  .yt-side { display: none; }
   .yt-main { padding: 12px 16px 64px; }
+
+  /* Колонка не исчезает, а выезжает: вместе с ней раньше пропадала вся
+     навигация витрины — Главная, Подписки, Популярное, История и разделы. */
+  .yt-burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 auto;
+    border: none;
+    border-radius: 50%;
+    background: #f2f2f2;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .yt-side {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    inset-inline-start: 0;
+    z-index: 60;
+    width: min(84vw, 320px);
+    max-height: none;
+    padding: 16px 10px calc(16px + env(safe-area-inset-bottom));
+    background: #fff;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.18);
+    transform: translateX(-102%);
+    transition: transform 0.22s ease-out;
+    overflow-y: auto;
+  }
+  .yt-menu-open .yt-side { transform: translateX(0); }
+  .yt-menu-open .yt-side-back {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    background: rgba(0, 0, 0, 0.4);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .yt-side { transition: none; }
+  }
 }
+
+/* RTL: панель выезжает справа — там же, где у арабского читателя начало
+   строки. */
+[dir="rtl"] .yt-side { transform: translateX(102%); }
+[dir="rtl"] .yt-menu-open .yt-side { transform: translateX(0); }
 
 /* УЗКИЙ ЭКРАН. Карточка шириной от 300px плюс отступы не
    помещалась в телефон, и страница ехала вбок: горизонтальная
@@ -624,7 +697,9 @@ const CSS = `
   .yt-top { flex-wrap: wrap; gap: 10px; }
   .yt-top .yt-search { order: 3; flex: 1 1 100%; max-width: none; }
   .yt-bell-wrap { margin-left: auto; }
-  .yt-chips { gap: 8px; margin-bottom: 18px; }
+  /* Рубрики переносятся, а не уезжают за край: то, чего не видно, для
+     читателя не существует — а разделов у витрины восемь. */
+  .yt-chips { gap: 8px; margin-bottom: 18px; flex-wrap: wrap; overflow-x: visible; }
   .yt-card-body { gap: 10px; }
 }
 `;
