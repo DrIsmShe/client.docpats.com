@@ -176,6 +176,17 @@ export default function Aside() {
             </a>
           </li>
 
+          {/* ─── Обратная связь ───
+              Отдельной секцией, а не пунктом в «Обзоре»: это ежедневная
+              очередь, в которую заходят отвечать, а не смотреть цифры. */}
+          <li className="nav-heading" data-sec="feedback">Обратная связь</li>
+          <li className="nav-item" data-sec="feedback">
+            <Link className="nav-link collapsed" to="feedback">
+              <i className="bi bi-chat-left-text"></i>
+              <span>Обращения</span>
+            </Link>
+          </li>
+
           {/* ─── Тарифы и оплата ─── */}
           <li className="nav-heading" data-sec="billing">Тарифы</li>
           <li className="nav-item" data-sec="billing">

@@ -508,6 +508,20 @@ export async function fetchCategories(lang) {
   return data.items ?? [];
 }
 
+/**
+ * Разделы, в которые ЭТОТ человек может публиковать.
+ *
+ * fetchCategories отдаёт все полки витрины — по ним ищут. Здесь
+ * выбор публикующего: у пациента он один, и поле fixed говорит
+ * интерфейсу, что список показывать незачем.
+ */
+export async function fetchPublishableCategories(lang) {
+  const { data } = await axios.get(`${BASE}/categories/publishable`, {
+    params: lang ? { lang } : {},
+  });
+  return { items: data.items ?? [], fixed: Boolean(data.fixed) };
+}
+
 export async function adminFetchCategories() {
   const { data } = await axios.get(`${BASE}/admin/categories`);
   return data.items ?? [];
@@ -575,6 +589,7 @@ export default {
   importFromStudio,
   fetchUploadRules,
   fetchCategories,
+  fetchPublishableCategories,
   adminFetchCategories,
   adminCreateCategory,
   adminUpdateCategory,

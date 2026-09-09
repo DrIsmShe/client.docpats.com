@@ -1641,7 +1641,8 @@
       "viewRooms": "Odalar",
       "viewServices": "Hizmetler ve fiyatlar",
       "viewTelemed": "Teletıp",
-      "requisites": "Klinik bilgileri"
+      "requisites": "Klinik bilgileri",
+      "feedback": "Geri bildirim"
     },
     "team": "Ekip",
     "viewAll": "Tümünü gör ({{count}}) →",

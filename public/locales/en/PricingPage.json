@@ -150,7 +150,7 @@
     "videraMinutes": "{{count}} minutes of DP-Videra film rendering per month",
     "videraStorage": "{{count}} GB of video storage",
     "dptubePublish": "Publishing in the DP-Tube catalogue and embedding on your own site",
-    "patientPublications": "Up to {{count}} of your own videos in “Patient stories”"
+    "patientPublications": "Up to {{count}} of your own videos in “Patient opinions”"
   },
   "examAddon": {
     "title": "Exam preparation",

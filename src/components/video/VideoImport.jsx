@@ -13,7 +13,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { importFromStudio, fetchCategories } from "../../api/video";
+import { importFromStudio, fetchPublishableCategories } from "../../api/video";
 
 const СТУДИЯ = "https://docpats.com/dp-videra";
 
@@ -50,8 +50,8 @@ export default function VideoImport({ onDone, начальнаяСсылка = "
 
   useEffect(() => {
     let живо = true;
-    fetchCategories(i18n.language)
-      .then((к) => живо && setРазделы(к))
+    fetchPublishableCategories(i18n.language)
+      .then((о) => живо && setРазделы(о.items))
       .catch(() => живо && setРазделы([]));
     return () => {
       живо = false;

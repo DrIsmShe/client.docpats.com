@@ -24,7 +24,7 @@ import {
   unpublishVideo,
   deleteVideo,
   updateVideo,
-  fetchCategories,
+  fetchPublishableCategories,
 } from "../../api/video";
 
 const ЦВЕТ_ВИДИМОСТИ = {
@@ -111,8 +111,8 @@ export default function MyVideosPage() {
   // держим в коде: новая полка не должна требовать выкатки интерфейса.
   useEffect(() => {
     let живо = true;
-    fetchCategories(i18n.language)
-      .then((к) => живо && setРазделы(к))
+    fetchPublishableCategories(i18n.language)
+      .then((о) => живо && setРазделы(о.items))
       .catch(() => живо && setРазделы([]));
     return () => {
       живо = false;

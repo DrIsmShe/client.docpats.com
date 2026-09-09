@@ -2802,11 +2802,69 @@
     },
     "publish": {
       "patientLimit": "{{limit}} sınırından {{used}} yayımlandı. Birini kaldırın ya da planı değiştirin.",
-      "patientShelf": "Videolarınız “Hasta hikâyeleri” bölümüne gider.",
+      "patientShelf": "Videolarınız “Hasta görüşleri” bölümüne gider.",
       "patientWarn": "Videoyu herkes giriş yapmadan izleyebilir. Sağlığınızla ilgili bilgi içeriyorsa, bunu kalıcı olarak açıklamış olursunuz."
     }
   },
   "dptube": {
     "menu": "DP-Tube"
+  },
+  "feedback": {
+    "menu": "Geri bildirim",
+    "title": "Geri bildirim",
+    "lead": "Neyin eksik olduğunu, neyin iyileştirilmesi gerektiğini veya nerede bir şeyin bozulduğunu yazın. Hepsini okuyor ve burada yanıtlıyoruz.",
+    "formTitle": "Yeni mesaj",
+    "fieldKind": "Konu nedir",
+    "fieldArea": "Bölüm",
+    "fieldSubject": "Kısaca — tek satırda",
+    "subjectHint": "Örneğin: randevu telefonda kaydedilmiyor",
+    "fieldBody": "Ayrıntılı",
+    "bodyHint": "Ne yaptınız, ne beklediniz ve bunun yerine ne gördünüz. Bir fikir için — neden gerekli ve nasıl kullanırdınız.",
+    "fieldUrl": "Sayfa (boş bırakılabilir)",
+    "urlHint": "Yazdığınız sayfayı biz ekleriz",
+    "privacy": "Buraya sağlık bilgilerinizi yazmayın — mesajları doktorlar değil, geliştiriciler okur.",
+    "send": "Gönder",
+    "sending": "Gönderiliyor…",
+    "sent": "Teşekkürler! Mesajınız gönderildi — yanıt buraya ve bildirim olarak gelecek.",
+    "sendFailed": "Mesaj gönderilemedi",
+    "openFailed": "Mesaj açılamadı",
+    "replyFailed": "Yanıt gönderilemedi",
+    "mine": "Mesajlarım",
+    "loading": "Yükleniyor…",
+    "empty": "Henüz boş. İlk mesajınız burada görünecek.",
+    "close": "Kapat",
+    "you": "Siz",
+    "team": "DocPats",
+    "closedNote": "Bu talep kapatıldı. Sorunuz sürüyorsa yeni bir tane oluşturun — mutlaka görülür.",
+    "replyHint": "Mesaj ekleyin",
+    "replySend": "Gönder",
+    "st": {
+      "new": "Alındı",
+      "inReview": "İnceleniyor",
+      "planned": "Planda",
+      "inProgress": "Çalışılıyor",
+      "done": "Tamamlandı",
+      "declined": "Yapmayacağız"
+    },
+    "kind": {
+      "idea": "Fikir — ne eksik",
+      "improvement": "Mevcut olanı iyileştir",
+      "bug": "Hata buldum",
+      "question": "Soru",
+      "other": "Diğer"
+    },
+    "area": {
+      "account": "Profil ve giriş",
+      "appointments": "Randevular",
+      "chat": "Sohbet ve aramalar",
+      "video": "Video, DP-Tube",
+      "clinic": "Klinik",
+      "patients": "Hastalar ve kayıtlar",
+      "documents": "Belgeler",
+      "ai": "Yapay zekâ analizleri",
+      "billing": "Paketler ve ödeme",
+      "mobile": "Telefon, mobil sürüm",
+      "other": "Diğer"
+    }
   }
 }

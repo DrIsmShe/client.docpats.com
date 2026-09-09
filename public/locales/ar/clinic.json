@@ -1641,7 +1641,8 @@
       "viewRooms": "الغرف",
       "viewServices": "الخدمات والأسعار",
       "viewTelemed": "الطب عن بعد",
-      "requisites": "بيانات العيادة"
+      "requisites": "بيانات العيادة",
+      "feedback": "الملاحظات"
     },
     "team": "الفريق",
     "viewAll": "عرض الكل ({{count}}) →",

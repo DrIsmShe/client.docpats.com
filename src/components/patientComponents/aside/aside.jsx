@@ -4,7 +4,12 @@ import React, { useEffect, useState } from "react";
 import { GiPostOffice } from "react-icons/gi";
 import { RiHomeOfficeFill } from "react-icons/ri";
 import { GrArticle } from "react-icons/gr";
-import { LuClapperboard, LuLibraryBig, LuListChecks } from "react-icons/lu";
+import {
+  LuClapperboard,
+  LuLibraryBig,
+  LuListChecks,
+  LuMessageSquarePlus,
+} from "react-icons/lu";
 import {
   FaUsers,
   FaFacebookMessenger,
@@ -558,6 +563,14 @@ export default function AsidePatient() {
           to: "/patient/invite",
           icon: <FaGift />,
           label: t("AsidePatient.menu.invite", "Пригласить друга"),
+        },
+        // Обратная связь: пожелания и найденные ошибки — напрямую нам.
+        // Стоит рядом с приглашением друга: и то и другое — про участие в
+        // проекте, а не про лечение.
+        {
+          to: "/patient/feedback",
+          icon: <LuMessageSquarePlus />,
+          label: t("feedback.menu", { defaultValue: "Обратная связь" }),
         },
       ],
     },

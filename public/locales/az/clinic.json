@@ -1641,7 +1641,8 @@
       "viewRooms": "Otaqlar",
       "viewServices": "Xidmətlər və qiymətlər",
       "viewTelemed": "Telemedisina",
-      "requisites": "Klinikanın rekvizitləri"
+      "requisites": "Klinikanın rekvizitləri",
+      "feedback": "Əks əlaqə"
     },
     "team": "Komanda",
     "viewAll": "Hamısına bax ({{count}}) →",

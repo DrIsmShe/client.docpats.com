@@ -1987,69 +1987,6 @@ export default function AuthLayout() {
                   </span>
                 </Link>
 
-                {/* Лента со статистикой — под контентом hero, во всю ширину */}
-                <motion.div
-                  className="dp-hero-stats"
-                  style={{ y: imageY }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{
-                    duration: 0.9,
-                    delay: 0.3,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                >
-                  <div className="dp-stat-hero c-teal">
-                    <div className="dp-stat-hero-icon">🔒</div>
-                    <div>
-                      <div className="dp-stat-hero-num">HIPAA</div>
-                      <div className="dp-stat-hero-label">
-                        {t("stat.compliant", {
-                          defaultValue: "Безопасность и приватность данных",
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="dp-stat-hero c-green">
-                    <div className="dp-stat-hero-icon">🤖</div>
-                    <div>
-                      <div className="dp-stat-hero-num">AI</div>
-                      <div className="dp-stat-hero-label">
-                        {t("stat.aiCare", {
-                          defaultValue: "Консультации и анализ",
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="dp-stat-row">
-                    <div className="dp-stat-mini">
-                      <div className="dp-stat-mini-num">5</div>
-                      <div className="dp-stat-mini-label">
-                        {t("stat.languages", { defaultValue: "языков" })}
-                      </div>
-                    </div>
-                    <div className="dp-stat-mini">
-                      <div className="dp-stat-mini-num">24/7</div>
-                      <div className="dp-stat-mini-label">
-                        {t("stat.access", { defaultValue: "доступ" })}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="dp-stat-hero c-gold">
-                    <div className="dp-stat-hero-icon">🚀</div>
-                    <div>
-                      <div className="dp-stat-hero-num">
-                        {t("stat.betaNum", { defaultValue: "Бета" })}
-                      </div>
-                      <div className="dp-stat-hero-label">
-                        {t("stat.beta", {
-                          defaultValue:
-                            "Открытый запуск — присоединяйтесь первыми",
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
               </div>
             </motion.section>
 
@@ -2540,6 +2477,73 @@ export default function AuthLayout() {
                 </div>
               </div>
             </motion.section>
+
+            {/* Лента цифр — итог рассказа о работе, перед разделом
+                «Почему DocPats». Под первым экраном она дублировала
+                соседнюю полосу: две одинаковые строки подряд читаются
+                как ошибка вёрстки, а не как повтор для убедительности. */}
+            <motion.div
+              className="dp-hero-stats"
+              style={{ y: imageY }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                duration: 0.9,
+                delay: 0.3,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            >
+              <div className="dp-stat-hero c-teal">
+                <div className="dp-stat-hero-icon">🔒</div>
+                <div>
+                  <div className="dp-stat-hero-num">HIPAA</div>
+                  <div className="dp-stat-hero-label">
+                    {t("stat.compliant", {
+                      defaultValue: "Безопасность и приватность данных",
+                    })}
+                  </div>
+                </div>
+              </div>
+              <div className="dp-stat-hero c-green">
+                <div className="dp-stat-hero-icon">🤖</div>
+                <div>
+                  <div className="dp-stat-hero-num">AI</div>
+                  <div className="dp-stat-hero-label">
+                    {t("stat.aiCare", {
+                      defaultValue: "Консультации и анализ",
+                    })}
+                  </div>
+                </div>
+              </div>
+              <div className="dp-stat-row">
+                <div className="dp-stat-mini">
+                  <div className="dp-stat-mini-num">5</div>
+                  <div className="dp-stat-mini-label">
+                    {t("stat.languages", { defaultValue: "языков" })}
+                  </div>
+                </div>
+                <div className="dp-stat-mini">
+                  <div className="dp-stat-mini-num">24/7</div>
+                  <div className="dp-stat-mini-label">
+                    {t("stat.access", { defaultValue: "доступ" })}
+                  </div>
+                </div>
+              </div>
+              <div className="dp-stat-hero c-gold">
+                <div className="dp-stat-hero-icon">🚀</div>
+                <div>
+                  <div className="dp-stat-hero-num">
+                    {t("stat.betaNum", { defaultValue: "Бета" })}
+                  </div>
+                  <div className="dp-stat-hero-label">
+                    {t("stat.beta", {
+                      defaultValue:
+                        "Открытый запуск — присоединяйтесь первыми",
+                    })}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
 
             {/* ══ SEO ══ */}
             <motion.section className="dp-seo" variants={item}>

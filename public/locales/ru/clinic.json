@@ -1675,7 +1675,8 @@
       "viewRooms": "Кабинеты",
       "viewServices": "Услуги и прайс",
       "viewTelemed": "Телемедицина",
-      "requisites": "Реквизиты клиники"
+      "requisites": "Реквизиты клиники",
+      "feedback": "Обратная связь"
     },
     "team": "Команда",
     "viewAll": "Показать все ({{count}}) →",

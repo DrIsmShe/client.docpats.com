@@ -542,6 +542,18 @@ export default function ClinicDashboardPage() {
               <span className="clinic-dashboard-action-arrow">→</span>
             </Link>
           )}
+          {/* Обратная связь. Без проверки права намеренно: написать нам
+              может любой сотрудник — он и видит то, чего не видит владелец.
+              Свои обращения при этом видит только автор. */}
+          <Link to="/clinic/feedback" className="clinic-dashboard-action">
+            <span className="clinic-dashboard-action-icon">💬</span>
+            <span className="clinic-dashboard-action-label">
+              {t("dashboard.actions.feedback", {
+                defaultValue: "Обратная связь",
+              })}
+            </span>
+            <span className="clinic-dashboard-action-arrow">→</span>
+          </Link>
         </div>
       </section>
 

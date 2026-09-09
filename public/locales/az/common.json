@@ -2803,11 +2803,69 @@
     },
     "publish": {
       "patientLimit": "{{limit}} məhdudiyyətdən {{used}} dərc olunub. Birini geri çəkin və ya tarifi dəyişin.",
-      "patientShelf": "Videolarınız «Pasiyent hekayələri» bölməsinə düşür.",
+      "patientShelf": "Videolarınız «Pasiyent rəyləri» bölməsinə düşür.",
       "patientWarn": "Videonu hamı girişsiz görəcək. Əgər orada sağlamlığınızla bağlı məlumat varsa, siz onu həmişəlik açıqlayırsınız."
     }
   },
   "dptube": {
     "menu": "DP-Tube"
+  },
+  "feedback": {
+    "menu": "Əks əlaqə",
+    "title": "Əks əlaqə",
+    "lead": "Nəyin çatışmadığını, nəyi yaxşılaşdırmaq lazım olduğunu və ya nəyin işləmədiyini yazın. Hamısını oxuyur və elə burada cavablandırırıq.",
+    "formTitle": "Yeni müraciət",
+    "fieldKind": "Nə haqqındadır",
+    "fieldArea": "Bölmə",
+    "fieldSubject": "Qısaca — bir sətirdə",
+    "subjectHint": "Məsələn: qəbul telefonda yadda saxlanmır",
+    "fieldBody": "Ətraflı",
+    "bodyHint": "Nə etdiniz, nə gözlədiniz və əvəzində nə gördünüz. İdeya üçün — niyə lazımdır və ondan necə istifadə edərdiniz.",
+    "fieldUrl": "Səhifə (boş qoymaq olar)",
+    "urlHint": "Yazdığınız səhifəni özümüz əlavə edəcəyik",
+    "privacy": "Burada sağlamlıq məlumatlarını yazmayın — müraciətləri həkimlər yox, tərtibatçılar oxuyur.",
+    "send": "Göndər",
+    "sending": "Göndərilir…",
+    "sent": "Təşəkkürlər! Müraciət göndərildi — cavab elə burada və bildirişlə gələcək.",
+    "sendFailed": "Müraciəti göndərmək alınmadı",
+    "openFailed": "Müraciəti açmaq alınmadı",
+    "replyFailed": "Mesajı göndərmək alınmadı",
+    "mine": "Müraciətlərim",
+    "loading": "Yüklənir…",
+    "empty": "Hələ boşdur. İlk müraciətiniz burada görünəcək.",
+    "close": "Bağla",
+    "you": "Siz",
+    "team": "DocPats",
+    "closedNote": "Müraciət bağlanıb. Sual qalıbsa, yenisini yaradın — onu mütləq görəcəklər.",
+    "replyHint": "Mesaj əlavə edin",
+    "replySend": "Göndər",
+    "st": {
+      "new": "Qəbul olundu",
+      "inReview": "Baxılır",
+      "planned": "Planda",
+      "inProgress": "İşdədir",
+      "done": "Hazırdır",
+      "declined": "Etməyəcəyik"
+    },
+    "kind": {
+      "idea": "İdeya — nə çatışmır",
+      "improvement": "Mövcud olanı yaxşılaşdırmaq",
+      "bug": "Səhv tapdım",
+      "question": "Sual",
+      "other": "Digər"
+    },
+    "area": {
+      "account": "Profil və giriş",
+      "appointments": "Qəbullar",
+      "chat": "Çat və zənglər",
+      "video": "Video, DP-Tube",
+      "clinic": "Klinika",
+      "patients": "Pasiyentlər və kartlar",
+      "documents": "Sənədlər",
+      "ai": "Süni intellekt təhlilləri",
+      "billing": "Tariflər və ödəniş",
+      "mobile": "Telefon, mobil versiya",
+      "other": "Digər"
+    }
   }
 }

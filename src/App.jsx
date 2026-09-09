@@ -209,6 +209,11 @@ const PublicVideoPage = lazy(() => import("./pages/videra/PublicVideoPage"));
 // Управление каталогом роликов администратором платформы.
 const AdminVideosPage = lazy(() => import("./pages/admin/video/AdminVideosPage"));
 const AdminReportsPage = lazy(() => import("./pages/admin/video/AdminReportsPage"));
+// Обратная связь: одна страница на все кабинеты и очередь разбора в панели.
+const FeedbackPage = lazy(() => import("./pages/feedback/FeedbackPage"));
+const AdminFeedbackPage = lazy(() =>
+  import("./pages/admin/feedback/AdminFeedbackPage"),
+);
 const AdminVideoCategories = lazy(() => import("./pages/admin/video/AdminVideoCategories"));
 const HomePatientMainPage = lazy(() => import("./pages/patientProfilePages/home/HomePatientMainPage"));
 const PatientHomePage = lazy(() => import("./pages/patientProfilePages/home/PatientHomePage.jsx"));
@@ -902,6 +907,8 @@ function App() {
             />
             <Route path="/clinic" element={<ClinicLayout />}>
               <Route index element={<ClinicHubPage />} />
+              {/* Обратная связь: пожелания и найденные ошибки — напрямую нам. */}
+              <Route path="feedback" element={<FeedbackPage />} />
               <Route
                 path="public-page"
                 element={<ClinicPublicPageSettings />}
@@ -1018,6 +1025,9 @@ function App() {
             >
               <Route path="vitrina" element={<ClinicPublicPageSettings />} />
               <Route path="marketing" element={<ClinicCustomPagesPage />} />
+              {/* Та же обратная связь: сотрудник видит и пишет своё, а не
+                  обращения владельца — они разделены по автору. */}
+              <Route path="feedback" element={<FeedbackPage />} />
               <Route index element={<EmployeeDashboardPage />} />
               <Route path="patients" element={<ClinicPatientsPage />} />
               <Route path="patients/new" element={<NewPatientPage />} />
@@ -2712,6 +2722,8 @@ function App() {
               <Route path="videos" element={<MyVideosPage />} />
               {/* Что клиника просила посмотреть и подписать перед процедурой. */}
               <Route path="video-tasks" element={<PatientVideoTasksPage />} />
+              {/* Обратная связь: пожелания и найденные ошибки — напрямую нам. */}
+              <Route path="feedback" element={<FeedbackPage />} />
               <Route path="consultation-ai" element={<ConsultationPage />} />
               <Route
                 path="articles-ai-for-patients"
@@ -2897,6 +2909,8 @@ function App() {
               <Route path="videra" element={<VideraPage />} />
               {/* Библиотека своих роликов — там же, где студия. */}
               <Route path="videos" element={<MyVideosPage />} />
+              {/* Обратная связь: пожелания и найденные ошибки — напрямую нам. */}
+              <Route path="feedback" element={<FeedbackPage />} />
               {/* Управление встречами по ссылке — в кабинете врача:
                   создавать их может только он. Сам вход во встречу
                   живёт в корне, туда приходят и пациенты. */}
@@ -3096,6 +3110,8 @@ function App() {
               <Route path="videos" element={<AdminVideosPage />} />
               {/* Жалобы на ролики и комментарии: очередь разбора. */}
               <Route path="video-reports" element={<AdminReportsPage />} />
+              {/* Обращения от врачей, пациентов и клиник: очередь ответов. */}
+              <Route path="feedback" element={<AdminFeedbackPage />} />
               {/* Полки витрины отдельной страницей: тот же блок есть в каталоге,
                   но разделы меняют отдельно от правки самих роликов. */}
               <Route path="video-categories" element={<AdminVideoCategories />} />

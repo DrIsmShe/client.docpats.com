@@ -29,6 +29,7 @@ import {
   LuLibraryBig,
   LuCalendarDays,
   LuClapperboard,
+  LuMessageSquarePlus,
 } from "react-icons/lu";
 import { TbStethoscope } from "react-icons/tb";
 
@@ -549,6 +550,16 @@ export default function Aside() {
               <LuLibraryBig />
             </span>
             {t("videra.gallery.menu", { defaultValue: "Медицинские ролики" })}
+          </NavLink>
+
+          {/* Обратная связь. Врач замечает недостающее раньше всех — он
+              работает в системе каждый день; путь «написать нам» должен
+              быть в меню, а не в подвале страницы помощи. */}
+          <NavLink className={itemClass} to="/doctor/feedback">
+            <span className="dp2-icon">
+              <LuMessageSquarePlus />
+            </span>
+            {t("feedback.menu", { defaultValue: "Обратная связь" })}
           </NavLink>
 
           {/* Витрина студии (dp-videra/watch) из меню убрана: она показывает

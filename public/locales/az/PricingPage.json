@@ -150,7 +150,7 @@
     "videraMinutes": "Ayda {{count}} dəqiqə DP-Videra film yığımı",
     "videraStorage": "Videolar üçün {{count}} GB yaddaş",
     "dptubePublish": "DP-Tube kataloqunda dərc və öz saytda yerləşdirmə",
-    "patientPublications": "«Pasiyent hekayələri» bölməsində {{count}} ədədə qədər öz videonuz"
+    "patientPublications": "«Pasiyent rəyləri» bölməsində {{count}} ədədə qədər öz videonuz"
   },
   "examAddon": {
     "title": "İmtahanlara hazırlıq",

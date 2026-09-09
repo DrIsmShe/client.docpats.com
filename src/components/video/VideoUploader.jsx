@@ -23,7 +23,7 @@ import {
   completeUpload,
   directUpload,
   fetchUploadRules,
-  fetchCategories,
+  fetchPublishableCategories,
 } from "../../api/video";
 
 /** Те же числа, что и на сервере. Расхождение здесь — отказ после загрузки. */
@@ -125,8 +125,8 @@ export default function VideoUploader({ onDone }) {
       .catch(() => живо && setПравила(null));
     // Разделы витрины — те, что настроил администратор. «Без раздела» тоже
     // допустимо: полку можно выбрать позже, в списке своих роликов.
-    fetchCategories()
-      .then((к) => живо && setРазделы(к))
+    fetchPublishableCategories()
+      .then((о) => живо && setРазделы(о.items))
       .catch(() => живо && setРазделы([]));
     return () => {
       живо = false;

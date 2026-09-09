@@ -2829,11 +2829,69 @@
     },
     "publish": {
       "patientLimit": "Published {{used}} of {{limit}}. Unpublish one or change your plan.",
-      "patientShelf": "Your videos go to the “Patient stories” section.",
+      "patientShelf": "Your videos go to the “Patient opinions” section.",
       "patientWarn": "Anyone can watch it without signing in. If it contains information about your health, you are disclosing it permanently."
     }
   },
   "dptube": {
     "menu": "DP-Tube"
+  },
+  "feedback": {
+    "menu": "Feedback",
+    "title": "Feedback",
+    "lead": "Tell us what is missing, what to improve or where something broke. We read everything and reply right here.",
+    "formTitle": "New message",
+    "fieldKind": "What is it about",
+    "fieldArea": "Section",
+    "fieldSubject": "In one line",
+    "subjectHint": "For example: appointment is not saved on the phone",
+    "fieldBody": "In detail",
+    "bodyHint": "What you did, what you expected and what you saw instead. For an idea — why you need it and how you would use it.",
+    "fieldUrl": "Page (optional)",
+    "urlHint": "We will fill in the page you are writing from",
+    "privacy": "Please do not write health information here — developers read these messages, not doctors.",
+    "send": "Send",
+    "sending": "Sending…",
+    "sent": "Thank you! Your message has been sent — the reply will appear here and as a notification.",
+    "sendFailed": "Could not send the message",
+    "openFailed": "Could not open the message",
+    "replyFailed": "Could not send the reply",
+    "mine": "My messages",
+    "loading": "Loading…",
+    "empty": "Nothing yet. Your first message will appear here.",
+    "close": "Close",
+    "you": "You",
+    "team": "DocPats",
+    "closedNote": "This request is closed. If the question remains, create a new one — it will definitely be seen.",
+    "replyHint": "Add a message",
+    "replySend": "Send",
+    "st": {
+      "new": "Received",
+      "inReview": "Under review",
+      "planned": "Planned",
+      "inProgress": "In progress",
+      "done": "Done",
+      "declined": "Will not do"
+    },
+    "kind": {
+      "idea": "Idea — what is missing",
+      "improvement": "Improve what exists",
+      "bug": "Found a bug",
+      "question": "Question",
+      "other": "Other"
+    },
+    "area": {
+      "account": "Profile and sign-in",
+      "appointments": "Appointments",
+      "chat": "Chat and calls",
+      "video": "Video, DP-Tube",
+      "clinic": "Clinic",
+      "patients": "Patients and records",
+      "documents": "Documents",
+      "ai": "AI analysis",
+      "billing": "Plans and payment",
+      "mobile": "Phone, mobile version",
+      "other": "Other"
+    }
   }
 }
