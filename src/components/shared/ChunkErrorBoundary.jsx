@@ -59,6 +59,17 @@ export default class ChunkErrorBoundary extends React.Component {
     // Лог нужен: без него причина белого экрана не восстанавливается.
     console.error("[ChunkErrorBoundary]", error, info?.componentStack);
 
+    // И то же самое — на экран: в боевой сборке консоль пользователя нам
+    // недоступна, а строку с ошибкой он может переслать.
+    const строка = String(error?.message || error || "").slice(0, 300);
+    const место = String(info?.componentStack || "")
+      .split(String.fromCharCode(10))
+      .map((л) => л.trim())
+      .filter(Boolean)[0];
+    this.setState({
+      reason: место ? `${строка} — ${место}` : строка,
+    });
+
     if (!isChunkLoadError(error)) return;
 
     let already = false;
@@ -123,6 +134,22 @@ export default class ChunkErrorBoundary extends React.Component {
                   "При отрисовке страницы произошла ошибка. Данные не потеряны.",
               })}
         </div>
+        {/* Причина — мелким шрифтом под текстом. Не для чтения, а для
+            пересылки: без неё разбор упирается в «у меня не открывается». */}
+        {this.state.reason ? (
+          <code
+            style={{
+              fontSize: 12,
+              lineHeight: 1.5,
+              maxWidth: 560,
+              color: "#94a3b8",
+              wordBreak: "break-word",
+              fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+            }}
+          >
+            {this.state.reason}
+          </code>
+        ) : null}
         <button
           type="button"
           onClick={this.handleReload}
