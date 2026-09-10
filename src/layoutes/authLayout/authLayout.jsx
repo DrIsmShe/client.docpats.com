@@ -1284,8 +1284,22 @@ export default function AuthLayout() {
               ставит edge-функция: Google выполняет JS, и в индекс шла
               именно эта строка — общая формулировка вместо
               позиционирования. */}
-          <title>{t("metaTitle")}</title>
-          <meta name="description" content={t("metaDescription")} />
+          <title>
+            {t("metaTitle", {
+              defaultValue:
+                "DocPats — платформа для клиник: ЛОР-профиль и 3D-объяснения",
+            })}
+          </title>
+          <meta
+            name="description"
+            content={t("metaDescription", {
+              defaultValue:
+                "Ведение пациентов и приёмов, документы и согласия, " +
+                "разъяснительные 3D-фильмы по анатомии и операциям, " +
+                "ИИ-поддержка решений врача. Пять языков, шифрование данных " +
+                "и журнал доступа.",
+            })}
+          />
           <meta property="og:title" content={t("metaTitle")} />
           <meta property="og:type" content="website" />
           <meta property="og:url" content="https://docpats.com/" />
