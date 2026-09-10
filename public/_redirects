@@ -40,4 +40,84 @@
 # неё, и корень программы вычислится неверно.
 /dp-videra    /dp-videra/                                 301
 
-/* /index.html 200
+# >>> ЗОНЫ ПРИЛОЖЕНИЯ — СГЕНЕРИРОВАНО, НЕ ПРАВИТЬ РУКАМИ >>>
+# Источник — netlify/edge-functions/lib/public-routes.js.
+# Обновляется скриптом scripts/generate-redirects.cjs при сборке.
+
+/                      /index.html   200
+/about                 /index.html   200
+/about/*               /index.html   200
+/admin                 /index.html   200
+/admin/*               /index.html   200
+/arena                 /index.html   200
+/arena/*               /index.html   200
+/articles              /index.html   200
+/articles/*            /index.html   200
+/clinic                /index.html   200
+/clinic/*              /index.html   200
+/clinics               /index.html   200
+/clinics/*             /index.html   200
+/complete-registration /index.html   200
+/complete-registration/* /index.html   200
+/conferences           /index.html   200
+/conferences/*         /index.html   200
+/consultation          /index.html   200
+/consultation/*        /index.html   200
+/demo                  /index.html   200
+/demo/*                /index.html   200
+/diagnostics           /index.html   200
+/diagnostics/*         /index.html   200
+/docs                  /index.html   200
+/docs/*                /index.html   200
+/doctor                /index.html   200
+/doctor/*              /index.html   200
+/dp                    /index.html   200
+/dp/*                  /index.html   200
+/education             /index.html   200
+/education/*           /index.html   200
+/login                 /index.html   200
+/login/*               /index.html   200
+/medical-codes         /index.html   200
+/medical-codes/*       /index.html   200
+/news                  /index.html   200
+/news/*                /index.html   200
+/newsletter            /index.html   200
+/newsletter/*          /index.html   200
+/patient               /index.html   200
+/patient/*             /index.html   200
+/pay                   /index.html   200
+/pay/*                 /index.html   200
+/payment               /index.html   200
+/payment/*             /index.html   200
+/previsit              /index.html   200
+/previsit/*            /index.html   200
+/pricing               /index.html   200
+/pricing/*             /index.html   200
+/public                /index.html   200
+/public/*              /index.html   200
+/radiology             /index.html   200
+/radiology/*           /index.html   200
+/registration          /index.html   200
+/registration/*        /index.html   200
+/resetpassword         /index.html   200
+/resetpassword/*       /index.html   200
+/terms-consent-page    /index.html   200
+/terms-consent-page/*  /index.html   200
+/top-doctors           /index.html   200
+/top-doctors/*         /index.html   200
+/user-synthesis        /index.html   200
+/user-synthesis/*      /index.html   200
+/videos                /index.html   200
+/videos/*              /index.html   200
+/webinar               /index.html   200
+/webinar/*             /index.html   200
+
+# Адрес приложению незнаком. Оболочка та же — React покажет свой экран
+# «страница не найдена», — но статус честный: иначе любая опечатка в
+# ссылке становится для поисковика полноценной страницей.
+#
+# Односегментные адреса (/<слаг-клиники>) сюда доходят только если
+# edge-функция не нашла такой витрины: она объявляет "/:slug" и
+# отрабатывает раньше правил этого файла.
+/*                     /index.html   404
+# <<< ЗОНЫ ПРИЛОЖЕНИЯ <<<

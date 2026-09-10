@@ -81,8 +81,15 @@
            • assets/css/bundle.css — Bootstrap 5.3.3 БЕЗ минификации плюс
              swiper и glightbox; Bootstrap уже подключён строкой выше, а
              swiper и glightbox в проекте не встречаются (391 КБ).
-         Оставлены: bootstrap (сетка и компоненты), bootstrap-icons (bi-*,
-         137 вхождений) и remixicon (ri-*, 200 вхождений). -->
+         Оставлены: bootstrap (сетка и компоненты) и bootstrap-icons
+         (bi-*, 131 вхождение).
+
+         remixicon (124 КБ) убран отдельно и по факту: «200 вхождений ri-*»
+         из прежнего счёта — это СВОИ классы (ri-scan-template-report,
+         ri-row, ri-root — префикс модуля радиологии). Все 207 сверены со
+         словарём библиотеки в 2553 имени: совпадений ноль. Таблица
+         грузилась блокирующе на каждой странице и не применяла ни одного
+         правила. -->
     <link
       href="/assets/vendor/bootstrap/css/bootstrap.min.css"
       rel="stylesheet"
@@ -91,7 +98,6 @@
       href="/assets/vendor/bootstrap-icons/bootstrap-icons.css"
       rel="stylesheet"
     />
-    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
 
     <!-- Template Main CSS Files -->
     <link href="/assets/css/style.css" rel="stylesheet" />
