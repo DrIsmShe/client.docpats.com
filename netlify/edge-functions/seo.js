@@ -279,11 +279,70 @@ export default async function handler(request, context) {
       url: pageUrl,
       description: desc,
       inLanguage: "ru",
-      publisher: {
-        "@type": "Organization",
-        name: "DocPats",
-        url: "https://docpats.com",
-      },
+      publisher: { "@id": "https://docpats.com/#organization" },
+    })}</script>
+    <script type="application/ld+json" data-seo="edge">${JSON.stringify({
+      /* Организация отдельным блоком со своим @id, а не вложенной
+         заглушкой внутри WebSite. Заглушка несла два факта — имя и адрес
+         сайта, — и на вопрос «что это за сервис» проверять было нечего.
+         @id позволяет ссылаться на одну и ту же организацию из разметки
+         других страниц, а не описывать её заново на каждой. */
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://docpats.com/#organization",
+      name: "DocPats",
+      alternateName: "DocPats MedConnect",
+      url: "https://docpats.com",
+      logo: "https://docpats.com/logo_docpats_192.png",
+      image: image,
+      description:
+        "Медицинская платформа для клиник и врачей: ведение пациентов и " +
+        "приёмов, электронная медицинская карта, документы и согласия, " +
+        "разъяснительные 3D-фильмы по анатомии и операциям, ИИ-поддержка " +
+        "решений врача. Данные шифруются, доступ к ним журналируется.",
+      knowsLanguage: ["ru", "en", "az", "tr", "ar"],
+      areaServed: "Worldwide",
+    })}</script>
+    <script type="application/ld+json" data-seo="edge">${JSON.stringify({
+      /* Что это за продукт и сколько стоит — машинночитаемо.
+         SoftwareApplication стоял в public/index.html, но stripShellSeo
+         снимает разметку оболочки перед подстановкой своей, и на главной
+         от описания продукта не оставалось ни строчки. Цены — те же, что
+         на /pricing и в server/common/config/aiPlanLimits.js. */
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      name: "DocPats",
+      applicationCategory: "HealthApplication",
+      operatingSystem: "Web",
+      url: "https://docpats.com",
+      publisher: { "@id": "https://docpats.com/#organization" },
+      description:
+        "Рабочее место врача и клиники: приёмы, медкарта, документы, " +
+        "разъяснительные медицинские фильмы и ИИ-поддержка решений.",
+      offers: [
+        { "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD" },
+        { "@type": "Offer", name: "Start", price: "19", priceCurrency: "USD" },
+        { "@type": "Offer", name: "Growth", price: "49", priceCurrency: "USD" },
+        { "@type": "Offer", name: "Pro", price: "99", priceCurrency: "USD" },
+        {
+          "@type": "Offer",
+          name: "Clinic Start",
+          price: "99",
+          priceCurrency: "USD",
+        },
+        {
+          "@type": "Offer",
+          name: "Clinic Business",
+          price: "249",
+          priceCurrency: "USD",
+        },
+        {
+          "@type": "Offer",
+          name: "Clinic Enterprise",
+          price: "499",
+          priceCurrency: "USD",
+        },
+      ],
     })}</script>`;
 
       html = html.replace("</head>", inject + "</head>");
