@@ -137,6 +137,77 @@ export default function AboutPage() {
             </section>
 
             {/* DISCLAIMER */}
+            {/* Визитка: те же сведения, что в разметке страницы, но для
+                человека. Кому писать, где найти, с какого года. */}
+            <section className="ab-section">
+              <h2 className="ab-section-title">{t("card.sectionTitle")}</h2>
+              <div className="ab-card">
+                <div className="ab-card-head">
+                  <img
+                    className="ab-card-logo"
+                    src="/logo_docpats_192.png"
+                    alt="DocPats"
+                    width="64"
+                    height="64"
+                  />
+                  <div>
+                    <div className="ab-card-name">DocPats</div>
+                    <div className="ab-card-alt">DocPats MedConnect</div>
+                  </div>
+                </div>
+
+                <dl className="ab-card-rows">
+                  <div className="ab-card-row">
+                    <dt>{t("card.founded")}</dt>
+                    <dd>2023</dd>
+                  </div>
+                  <div className="ab-card-row">
+                    <dt>{t("card.languages")}</dt>
+                    <dd>{t("card.languagesValue")}</dd>
+                  </div>
+                  <div className="ab-card-row">
+                    <dt>{t("card.site")}</dt>
+                    <dd>
+                      <a href="https://docpats.com">docpats.com</a>
+                    </dd>
+                  </div>
+                  <div className="ab-card-row">
+                    <dt>{t("card.general")}</dt>
+                    <dd>
+                      <a href="mailto:info@docpats.com">info@docpats.com</a>
+                    </dd>
+                  </div>
+                  <div className="ab-card-row">
+                    <dt>{t("card.support")}</dt>
+                    <dd>
+                      <a href="mailto:support@docpats.com">
+                        support@docpats.com
+                      </a>
+                    </dd>
+                  </div>
+                  <div className="ab-card-row">
+                    <dt>{t("card.channels")}</dt>
+                    <dd className="ab-card-links">
+                      <a
+                        href="https://t.me/DocPats_MedConnect"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Telegram
+                      </a>
+                      <a
+                        href="https://www.linkedin.com/company/docpats"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        LinkedIn
+                      </a>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </section>
+
             <section className="ab-disclaimer">
               <div className="ab-disclaimer-icon">⚕</div>
               <div>
@@ -374,6 +445,46 @@ const CSS = `
   font-family:var(--sans);font-size:14px;font-weight:300;
   line-height:1.75;color:var(--ink2);margin:0;
 }
+/* ── Визитка компании ─────────────────────────────────────────────
+   Тот же газетный строй, что у остальной страницы: линейки вместо
+   теней, моноширинный шрифт для подписей, серифный для имени. */
+.ab-card{border:1px solid var(--rule);background:var(--paper2);padding:28px 32px}
+.ab-card-head{
+  display:flex;align-items:center;gap:18px;
+  padding-bottom:20px;margin-bottom:4px;border-bottom:1px solid var(--rule);
+}
+.ab-card-logo{width:64px;height:64px;object-fit:contain;flex-shrink:0}
+.ab-card-name{
+  font-family:var(--serif);font-size:24px;font-weight:900;color:var(--ink);
+}
+.ab-card-alt{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin-top:4px;
+}
+.ab-card-rows{margin:0;display:flex;flex-direction:column}
+.ab-card-row{
+  display:flex;gap:24px;align-items:baseline;
+  padding:14px 0;border-bottom:1px solid var(--rule);
+}
+.ab-card-row:last-child{border-bottom:none}
+.ab-card-row dt{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);
+  flex-shrink:0;width:160px;
+}
+.ab-card-row dd{
+  margin:0;font-family:var(--sans);font-size:15px;font-weight:300;
+  color:var(--ink2);
+}
+.ab-card-row dd a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
+.ab-card-row dd a:hover{border-bottom-color:var(--ink)}
+.ab-card-links{display:flex;gap:20px;flex-wrap:wrap}
+@media(max-width:640px){
+  .ab-card{padding:20px}
+  .ab-card-row{flex-direction:column;gap:6px}
+  .ab-card-row dt{width:auto}
+}
+
 .ab-footer{border-top:2px solid var(--ink);background:var(--paper2);padding:28px 0}
 .ab-footer-inner{
   max-width:860px;margin:0 auto;padding:0 40px;

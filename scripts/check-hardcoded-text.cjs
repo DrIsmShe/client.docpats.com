@@ -55,6 +55,14 @@ const TEXT_ATTRS = new Set([
 const ALLOWED = new Set([
   "DocPats",
   "DocPats AI",
+  // Визитка компании на /about: адрес сайта, почта и названия площадок
+  // одинаковы на всех языках — переводить в них нечего, а обёртка в
+  // t() завела бы пять одинаковых ключей.
+  "docpats.com",
+  "info@docpats.com",
+  "support@docpats.com",
+  "LinkedIn",
+  "Telegram",
   // Название студии фильмов — имя продукта, как и DocPats.
   "DP-Videra",
   "DP-Tube",

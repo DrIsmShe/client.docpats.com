@@ -122,5 +122,15 @@
   "footer": {
     "tag": "Medical Intelligence Platform",
     "link": "Analitika →"
+  },
+  "card": {
+    "sectionTitle": "Vizit kartı",
+    "founded": "Təsis ili",
+    "languages": "İnterfeys dilləri",
+    "languagesValue": "Rus, ingilis, Azərbaycan, türk, ərəb",
+    "site": "Sayt",
+    "general": "Ümumi suallar",
+    "support": "Dəstək",
+    "channels": "Kanallar"
   }
 }

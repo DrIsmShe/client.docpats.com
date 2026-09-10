@@ -122,5 +122,15 @@
   "footer": {
     "tag": "Medical Intelligence Platform",
     "link": "Аналитика →"
+  },
+  "card": {
+    "sectionTitle": "Визитка",
+    "founded": "Год основания",
+    "languages": "Языки интерфейса",
+    "languagesValue": "Русский, английский, азербайджанский, турецкий, арабский",
+    "site": "Сайт",
+    "general": "Общие вопросы",
+    "support": "Поддержка",
+    "channels": "Каналы"
   }
 }

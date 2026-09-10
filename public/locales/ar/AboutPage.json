@@ -122,5 +122,15 @@
   "footer": {
     "tag": "Medical Intelligence Platform",
     "link": "← التحليلات"
+  },
+  "card": {
+    "sectionTitle": "بطاقة الشركة",
+    "founded": "سنة التأسيس",
+    "languages": "لغات الواجهة",
+    "languagesValue": "الروسية والإنجليزية والأذربيجانية والتركية والعربية",
+    "site": "الموقع",
+    "general": "الاستفسارات العامة",
+    "support": "الدعم",
+    "channels": "القنوات"
   }
 }

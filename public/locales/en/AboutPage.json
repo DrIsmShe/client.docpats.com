@@ -122,5 +122,15 @@
   "footer": {
     "tag": "Medical Intelligence Platform",
     "link": "Analytics →"
+  },
+  "card": {
+    "sectionTitle": "Company card",
+    "founded": "Founded",
+    "languages": "Interface languages",
+    "languagesValue": "Russian, English, Azerbaijani, Turkish, Arabic",
+    "site": "Website",
+    "general": "General enquiries",
+    "support": "Support",
+    "channels": "Channels"
   }
 }
