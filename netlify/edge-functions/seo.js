@@ -1048,6 +1048,11 @@ export default async function handler(request, context) {
        полем: у синтеза это markdown, у новости — сводка, у врачебной
        статьи — тело из редактора (только текстом, см. заголовок файла). */
     let bodyText = "";
+    /* Закрыть материал от индексации. Нужно новостям: там лежат полные
+       тексты чужих публикаций и их машинные переводы, а массовая
+       републикация чужого подпадает под правило Google о scaled content
+       abuse — с санкцией на весь домен, включая витрины клиник. */
+    let noIndex = false;
 
     if (articleMatch) {
       const articleId = articleMatch[1];
@@ -1089,6 +1094,8 @@ export default async function handler(request, context) {
         6000,
       );
     } else if (newsMatch) {
+      // Чужой материал: в индекс не отдаём, ссылки со страницы — работают.
+      noIndex = true;
       const slug = newsMatch[1];
       const cookieHeader = request.headers.get("cookie") || "";
       const cookieLocale = cookieHeader.match(/locale=([a-z]{2})/)?.[1];
@@ -1359,6 +1366,20 @@ export default async function handler(request, context) {
             }
           : undefined,
     })}</script>`;
+
+    if (noIndex) {
+      // Свой тег вместо унаследованного «index, follow» из оболочки.
+      html = html.replace(
+        /<meta[^>]+name="robots"[^>]*>/i,
+        '<meta name="robots" content="noindex, follow" data-seo="edge">',
+      );
+      if (!/name="robots"/i.test(html)) {
+        html = html.replace(
+          "</head>",
+          '<meta name="robots" content="noindex, follow" data-seo="edge"></head>',
+        );
+      }
+    }
 
     html = html.replace("</head>", inject + "</head>");
 
