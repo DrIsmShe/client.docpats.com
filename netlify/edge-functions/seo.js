@@ -87,6 +87,32 @@ export default async function handler(request, context) {
     })}</script>`;
 
       html = html.replace("</head>", inject + "</head>");
+
+      /* Содержимое для тех, кто не выполняет JS. Без него у главной в сыром
+         HTML нет ни слова текста и ни одной ссылки: обходить нечего, и граф
+         ссылок не существует до отрисовки. Ссылки здесь — не украшение, а
+         единственный путь робота к витринам, статьям и новостям. */
+      html = injectBody(html, [
+        tag("h1", "DocPats — медицинская платформа для клиник и врачей"),
+        tag(
+          "p",
+          "Клиники ведут пациентов, приёмы и документы; врачи — профили, " +
+            "публикации и разъяснительные фильмы; пациенты получают ответы " +
+            "и записи. Пять языков, HIPAA-совместимая инфраструктура.",
+        ),
+        tag("h2", "Разделы платформы"),
+        list([
+          link("/news", "Лента медицинских новостей"),
+          link("/articles", "Научные статьи и аналитика"),
+          link("/videos", "DP-Tube — медицинские ролики"),
+          link("/conferences", "Медицинские конференции"),
+          link("/education", "Подготовка к экзаменам"),
+          link("/pricing", "Тарифы"),
+          link("/docs/doctor", "Врачу о платформе"),
+          link("/docs/patient", "Пациенту о платформе"),
+        ]),
+      ]);
+
       return new Response(html, {
         headers: { "content-type": "text/html; charset=utf-8" },
       });
@@ -861,6 +887,10 @@ export default async function handler(request, context) {
     // hreflang в сыром HTML — до того, как отработает JS. Helmet ставит те
     // же теги, но уже после рендера; часть роботов до этого не доходит.
     let alternateLinks = "";
+    /* Текст материала для сырого HTML. Заполняется в каждой ветке своим
+       полем: у синтеза это markdown, у новости — сводка, у врачебной
+       статьи — тело из редактора (только текстом, см. заголовок файла). */
+    let bodyText = "";
 
     if (articleMatch) {
       const articleId = articleMatch[1];
@@ -895,6 +925,12 @@ export default async function handler(request, context) {
       publishedAt = article.createdAt;
       modifiedAt = article.updatedAt || article.createdAt;
       imageUrl = "https://docpats.com/og-image.jpg";
+      // Markdown без разметки: заголовки и списки роботу не нужны, а
+      // звёздочки в тексте выглядят как опечатки.
+      bodyText = toText(
+        String(article.body || "").replace(/[#*_>`]/g, " "),
+        6000,
+      );
     } else if (newsMatch) {
       const slug = newsMatch[1];
       const cookieHeader = request.headers.get("cookie") || "";
@@ -929,6 +965,10 @@ export default async function handler(request, context) {
       publishedAt = article.publishedAt;
       modifiedAt = article.updatedAt || article.publishedAt;
       imageUrl = article.imageUrl || "https://docpats.com/og-image.jpg";
+      bodyText = toText(
+        article.aiSummary || article.content || article.summary || "",
+        6000,
+      );
     } else if (doctorArticleMatch) {
       const articleId = doctorArticleMatch[1];
       locale = "ru";
@@ -950,6 +990,8 @@ export default async function handler(request, context) {
       publishedAt = article.createdAt;
       modifiedAt = article.updatedAt || article.createdAt;
       imageUrl = article.imageUrl || "https://docpats.com/og-image.jpg";
+      // Только текстом: HTML из редактора здесь не санитизируется.
+      bodyText = toText(article.abstract || article.content || "", 6000);
     } else if (scientificArticleMatch) {
       const articleId = scientificArticleMatch[1];
       locale = "ru";
@@ -971,6 +1013,11 @@ export default async function handler(request, context) {
       publishedAt = article.createdAt;
       modifiedAt = article.updatedAt || article.createdAt;
       imageUrl = article.imageUrl || "https://docpats.com/og-image.jpg";
+      // Аннотация и тело — текстом: HTML из редактора не санитизируется.
+      bodyText = toText(
+        [article.abstract, article.content].filter(Boolean).join(" "),
+        6000,
+      );
     } else if (doctorProfileMatch) {
       const doctorId = doctorProfileMatch[1];
       locale = "ru";
@@ -1157,6 +1204,17 @@ export default async function handler(request, context) {
     })}</script>`;
 
     html = html.replace("</head>", inject + "</head>");
+
+    /* Содержимое для тех, кто не выполняет JS: заголовок, лид и текст
+       материала. До этого в сыром HTML у статьи не было ни одного слова —
+       краулеры языковых моделей и Bing видели пустой контейнер. */
+    html = injectBody(html, [
+      tag("h1", title),
+      tag("p", desc),
+      bodyText ? tag("div", bodyText) : "",
+      link("/articles", "Все научные статьи"),
+      link("/news", "Лента медицинских новостей"),
+    ]);
 
     return new Response(html, {
       headers: { "content-type": "text/html; charset=utf-8" },
