@@ -39,6 +39,101 @@ const RESERVED_ROOT = new Set([
   "webinar",
 ]);
 
+
+/* ── Разделы-списки ────────────────────────────────────────────────────
+ *
+ * Это входные страницы: по ним ищут «медицинские новости», «научные
+ * статьи», «тарифы». До этого каждая отдавала общий title оболочки и
+ * canonical на главную — то есть объявляла себя копией главной. Текста в
+ * них тоже не было: React рисует список после запроса к API, а робот до
+ * этого не доходит.
+ *
+ * Содержимое здесь намеренно короткое и статичное: список материалов
+ * меняется ежечасно, и вписывать его в HTML значило бы отдавать роботу
+ * снимок, который устареет раньше, чем он до него дойдёт. Задача этой
+ * ветки — объяснить, что за раздел, и дать ссылки вглубь.
+ */
+const SECTIONS = {
+  "/news": {
+    title: "Медицинские новости и исследования — DocPats",
+    desc:
+      "Лента медицинских новостей и разборов исследований: клинические " +
+      "рекомендации, публикации и обзоры для практикующих врачей. Пять языков.",
+    h1: "Лента медицинских новостей",
+    text:
+      "Новости медицины и разборы исследований, отобранные для практикующих " +
+      "врачей: клинические рекомендации, публикации, обзоры доказательной базы.",
+    links: [
+      ["/articles", "Научные статьи и аналитика"],
+      ["/conferences", "Медицинские конференции"],
+    ],
+  },
+  "/articles": {
+    title: "Научные статьи и аналитика — DocPats",
+    desc:
+      "Научные разборы врачей и аналитика по медицинским источникам: " +
+      "доказательная база, методы, клинические выводы. Обновляется ежедневно.",
+    h1: "Научные статьи",
+    text:
+      "Разборы врачей и аналитика по медицинским и научным источникам. " +
+      "Каждая статья содержит перечень источников и разбор доказательной базы.",
+    links: [
+      ["/news", "Лента медицинских новостей"],
+      ["/videos", "Медицинские ролики DP-Tube"],
+    ],
+  },
+  "/videos": {
+    title: "DP-Tube — медицинские ролики от врачей и клиник",
+    desc:
+      "Разъяснительные медицинские фильмы: подготовка к процедурам, разборы " +
+      "снимков и анализов, анатомия и операции. Смотреть можно без регистрации.",
+    h1: "DP-Tube — медицинские ролики",
+    text:
+      "Разъяснительные фильмы, которые врач показывает пациенту: подготовка " +
+      "к процедуре, разбор снимка, ход операции. Смотреть можно без входа.",
+    links: [
+      ["/articles", "Научные статьи"],
+      ["/pricing", "Тарифы для врачей и клиник"],
+    ],
+  },
+  "/pricing": {
+    title: "Тарифы DocPats — для клиник, врачей и пациентов",
+    desc:
+      "Стоимость платформы для клиник, частных врачей и пациентов: что входит " +
+      "в каждый план, лимиты приёмов, документов и ИИ-разборов.",
+    h1: "Тарифы",
+    text:
+      "Планы для клиник, частных врачей и пациентов: ведение пациентов и " +
+      "приёмов, документы, ИИ-разборы, медицинские фильмы.",
+    links: [
+      ["/docs/for-doctors", "Врачу о платформе"],
+      ["/docs/clinic", "Клинике о платформе"],
+    ],
+  },
+  "/conferences": {
+    title: "Медицинские конференции — программы и условия участия",
+    desc:
+      "Календарь медицинских конференций: программа, сроки регистрации, " +
+      "условия участия. Для врачей, планирующих выступления и обучение.",
+    h1: "Медицинские конференции",
+    text:
+      "Календарь конференций с программой, сроками регистрации и условиями " +
+      "участия — для врачей, которые планируют выступления и обучение.",
+    links: [["/news", "Лента медицинских новостей"]],
+  },
+  "/education": {
+    title: "Подготовка к медицинским экзаменам — тесты и разбор ошибок",
+    desc:
+      "Тренировка, пробные экзамены и разбор ошибок для врачей: большие " +
+      "экзамены проходятся блоками, с объяснением каждого ответа.",
+    h1: "Подготовка к экзаменам",
+    text:
+      "Тренировка, пробные экзамены и разбор ошибок. Большие экзамены можно " +
+      "проходить блоками — по частям, а не все вопросы разом.",
+    links: [["/docs/exams", "Как устроена подготовка"]],
+  },
+};
+
 export default async function handler(request, context) {
   const url = new URL(request.url);
 
@@ -46,10 +141,17 @@ export default async function handler(request, context) {
   // SPA-шелл иначе отдаёт боту только статичный <title> без структурных данных.
   if (url.pathname === "/") {
     try {
+      /* Адресат один — клиника. Прежний заголовок звал «врачей,
+         пациентов и клиник» разом, то есть никого, и ставил платформу
+         рядом с MedElement и Doc+ на их поле. Здесь названо то, чего у
+         них нет: разъяснительные 3D-фильмы и ЛОР-профиль, с которого
+         платформа начинается. */
       const title =
-        "DocPats — медицинская платформа для врачей, пациентов и клиник";
+        "DocPats — платформа для клиник: ЛОР-профиль и 3D-объяснения";
       const desc =
-        "DocPats — платформа с приоритетом на приватность данных: профили врачей и пациентов, AI-консультации, защищённый чат и видеозвонки, управление клиникой. 5 языков.";
+        "Ведение пациентов и приёмов, документы и согласия, разъяснительные " +
+        "3D-фильмы по анатомии и операциям, ИИ-поддержка решений врача. " +
+        "Пять языков, шифрование данных и журнал доступа.";
       const pageUrl = "https://docpats.com/";
       const image = "https://docpats.com/og-image.jpg";
 
@@ -93,12 +195,13 @@ export default async function handler(request, context) {
          ссылок не существует до отрисовки. Ссылки здесь — не украшение, а
          единственный путь робота к витринам, статьям и новостям. */
       html = injectBody(html, [
-        tag("h1", "DocPats — медицинская платформа для клиник и врачей"),
+        tag("h1", "DocPats — платформа для клиник и врачей"),
         tag(
           "p",
-          "Клиники ведут пациентов, приёмы и документы; врачи — профили, " +
-            "публикации и разъяснительные фильмы; пациенты получают ответы " +
-            "и записи. Пять языков, HIPAA-совместимая инфраструктура.",
+          "Клиника ведёт пациентов, приёмы и документы; врач объясняет " +
+            "пациенту разъяснительным 3D-фильмом, а не словами на приёме. " +
+            "ЛОР-профиль, ИИ-поддержка решений, пять языков, шифрование " +
+            "данных и журнал доступа.",
         ),
         tag("h2", "Разделы платформы"),
         list([
@@ -108,9 +211,63 @@ export default async function handler(request, context) {
           link("/conferences", "Медицинские конференции"),
           link("/education", "Подготовка к экзаменам"),
           link("/pricing", "Тарифы"),
-          link("/docs/doctor", "Врачу о платформе"),
-          link("/docs/patient", "Пациенту о платформе"),
+          link("/docs/for-doctors", "Врачу о платформе"),
+          link("/docs/for-patients", "Пациенту о платформе"),
         ]),
+      ]);
+
+      return new Response(html, {
+        headers: { "content-type": "text/html; charset=utf-8" },
+      });
+    } catch {
+      return context.next();
+    }
+  }
+
+  // ── Разделы-списки: /news, /articles, /videos, /pricing … ──
+  const section = SECTIONS[url.pathname.replace(/\/$/, "") || "/"];
+  if (section) {
+    try {
+      const pageUrl = `https://docpats.com${url.pathname.replace(/\/$/, "")}`;
+      const image = "https://docpats.com/og-image.jpg";
+
+      const response = await context.next();
+      let html = await response.text();
+      html = stripShellSeo(html);
+      html = withHtmlLang(html, "ru");
+
+      const inject = `
+    <title>${escAttr(section.title)}</title>
+    <meta name="description" content="${escAttr(section.desc)}" data-seo="edge">
+    <link rel="canonical" href="${pageUrl}" data-seo="edge">
+    <meta data-seo="edge" property="og:type" content="website">
+    <meta data-seo="edge" property="og:title" content="${escAttr(section.title)}">
+    <meta data-seo="edge" property="og:description" content="${escAttr(section.desc)}">
+    <meta data-seo="edge" property="og:url" content="${pageUrl}">
+    <meta data-seo="edge" property="og:image" content="${image}">
+    <meta data-seo="edge" name="twitter:card" content="summary_large_image">
+    <meta data-seo="edge" name="twitter:title" content="${escAttr(section.title)}">
+    <meta data-seo="edge" name="twitter:description" content="${escAttr(section.desc)}">
+    <meta data-seo="edge" name="twitter:image" content="${image}">
+    <script type="application/ld+json" data-seo="edge">${JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: section.title,
+      url: pageUrl,
+      description: section.desc,
+      inLanguage: "ru",
+      isPartOf: {
+        "@type": "WebSite",
+        name: "DocPats",
+        url: "https://docpats.com",
+      },
+    })}</script>`;
+
+      html = html.replace("</head>", inject + "</head>");
+      html = injectBody(html, [
+        tag("h1", section.h1),
+        tag("p", section.text),
+        list(section.links.map(([href, label]) => link(href, label))),
       ]);
 
       return new Response(html, {
@@ -1432,6 +1589,14 @@ function descriptionFromMarkdown(md, limit = 160) {
 export const config = {
   path: [
     "/",
+    // Разделы-списки: до них edge не доходила, и каждый отдавал общий
+    // title оболочки с canonical на главную.
+    "/news",
+    "/articles",
+    "/videos",
+    "/pricing",
+    "/conferences",
+    "/education",
     "/docs/*",
     "/articles/*",
     "/news/*",

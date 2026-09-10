@@ -19,7 +19,12 @@
       content="DOCPATS MedConnect is a professional healthcare platform for doctors, patients and clinics. AI medical analysis, CT/MRI reports, telemedicine, secure medical records and clinic management system in one ecosystem."
     />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://docpats.com/" />
+    <!-- canonical здесь НЕ ставим. Он стоял со ссылкой на главную, и его
+         получала каждая страница сайта: раздел новостей, тарифы, витрина
+         клиники — все объявляли каноническим адресом «/». Для поисковика
+         это значит «одна страница, остальные копии», и ни один раздел в
+         индекс попасть не мог. Адрес ставит edge-функция для тех страниц,
+         которые знает, и Helmet — для остальных. -->
     <!-- Автообнаружение фида: по этой строке читалки и агрегаторы находят
          RSS сами, без ручного ввода адреса. Без неё фид существует, но о
          нём знает только тот, кому дали ссылку. -->
