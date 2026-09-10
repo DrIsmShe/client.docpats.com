@@ -467,7 +467,13 @@ export default function SingleArticleScientific() {
                       title: article.title,
                       content: article.content,
                       abstract: article.abstract,
-                      category: categoryName(article.category, i18n.language),
+                      // В форму правки уходит ИДЕНТИФИКАТОР рубрики, а не
+                      // её название: сервер ждёт ObjectId. Название сюда
+                      // попало вместе с исправлением показа рубрики — на
+                      // экране оно верное, но при сохранении статьи
+                      // превращалось в CastError, и правка молча не
+                      // применялась.
+                      category: article.category?._id || article.category,
                       tags: article.tags,
                       metaDescription: article.metaDescription,
                       metaKeywords: article.metaKeywords,

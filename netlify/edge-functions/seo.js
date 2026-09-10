@@ -448,11 +448,7 @@ export default async function handler(request, context) {
       };
 
       const clip = (v) =>
-        String(v || "")
-          .replace(/<[^>]*>/g, " ")
-          .replace(/\s+/g, " ")
-          .trim()
-          .slice(0, 155);
+        краткоеОписание(String(v || "").replace(/<[^>]*>/g, " "));
 
       let title, desc, image, jsonLd, ogType;
 
@@ -620,11 +616,7 @@ export default async function handler(request, context) {
       )}`;
 
       const clip = (v) =>
-        String(v || "")
-          .replace(/<[^>]*>/g, " ")
-          .replace(/\s+/g, " ")
-          .trim()
-          .slice(0, 155);
+        краткоеОписание(String(v || "").replace(/<[^>]*>/g, " "));
 
       // Относительный путь картинки живёт на медиа-домене — это делает
       // resolveUrl на клиенте. Разбираться в этом на превью-карточке некому,
@@ -921,10 +913,9 @@ export default async function handler(request, context) {
           : "";
       const title = escAttr(clinic.name);
       const desc = escAttr(
-        (clinic.description || clinic.slogan || `Клиника ${clinic.name}`)
-          .replace(/\s+/g, " ")
-          .trim()
-          .slice(0, 155),
+        краткоеОписание(
+          clinic.description || clinic.slogan || `Клиника ${clinic.name}`,
+        ),
       );
       const image =
         clinic.coverImage || clinic.logo || "https://docpats.com/og-image.jpg";
@@ -1123,6 +1114,11 @@ export default async function handler(request, context) {
        републикация чужого подпадает под правило Google о scaled content
        abuse — с санкцией на весь домен, включая витрины клиник. */
     let noIndex = false;
+    /* Издатель материала. По умолчанию — мы: своя аналитика, врачебные
+       статьи, ролики действительно наши. Новость переопределяет его на
+       оригинальное издание, и туда же ведёт основаноНа. */
+    let издательМатериала = null;
+    let основаноНа = null;
 
     if (articleMatch) {
       const articleId = articleMatch[1];
@@ -1183,13 +1179,9 @@ export default async function handler(request, context) {
         .replace(/"/g, "&quot;")
         .replace(/\n/g, " ")
         .trim();
-      desc = (
+      desc = краткоеОписание(
         seo.description ||
-        (article.body || "")
-          .replace(/#+\s/g, "")
-          .replace(/\n/g, " ")
-          .trim()
-          .slice(0, 155)
+          String(article.body || "").replace(/#+\s/g, ""),
       ).replace(/"/g, "&quot;");
       /* Канонический адрес — язык, который РЕАЛЬНО отдан. Просили
          локаль без перевода: показан оригинал, и языковой адрес был бы
@@ -1223,9 +1215,38 @@ export default async function handler(request, context) {
       if (!article) return отдать404(context);
 
       title = (article.title || "").replace(/"/g, "&quot;");
-      desc = (article.aiSummaryShort || article.summary || "")
-        .slice(0, 155)
-        .replace(/"/g, "&quot;");
+      desc = краткоеОписание(
+        article.aiSummaryShort || article.summary || "",
+      ).replace(/"/g, "&quot;");
+
+      /* Издатель — ОРИГИНАЛЬНОЕ издание, а не мы.
+         Здесь стояло «publisher: DocPats» на материале STAT News и PLOS:
+         разметка утверждала, что чужую статью опубликовали мы. Ставим
+         настоящее издание и связываем страницу с первоисточником через
+         isBasedOn и sameAs — адрес оригинала лежит в базе движка
+         (canonicalUrl есть у всех записей, проверено выборкой). */
+      const издание = String(article.sourceName || "").trim();
+      const адресОригинала = String(article.canonicalUrl || "").trim();
+      if (издание) {
+        let сайтИздания;
+        try {
+          сайтИздания = адресОригинала
+            ? new URL(адресОригинала).origin
+            : undefined;
+        } catch {
+          сайтИздания = undefined;
+        }
+        издательМатериала = {
+          "@type": "Organization",
+          name: издание,
+          ...(сайтИздания ? { url: сайтИздания } : {}),
+        };
+      }
+      if (адресОригинала) основаноНа = адресОригинала;
+
+      // Язык — тот, на котором материал НАПИСАН. Стояло значение из
+      // запроса, и английский текст объявлялся русским.
+      locale = ЯЗЫК(article.language) || "en";
       // Английская версия живёт на голом адресе; ?locale=en нормализуем в
       // него же, иначе в индекс попадут два адреса с одним содержимым.
       const newsBase = `https://docpats.com/news/${slug}`;
@@ -1273,7 +1294,14 @@ export default async function handler(request, context) {
           : "";
       publishedAt = article.publishedAt;
       modifiedAt = article.updatedAt || article.publishedAt;
-      imageUrl = article.imageUrl || "https://docpats.com/og-image.jpg";
+      /* Картинка — СВОЯ, а не ссылка на сервер издания.
+         Здесь стоял прямой адрес картинки с sciencedaily.com и statnews.com:
+         каждое открытие и каждый шеринг грузили их сервер, а любой их
+         403 превращал превью в пустоту. Своё изображение честнее: превью
+         показывает нашу страницу, а не выдаёт чужую иллюстрацию за нашу.
+         Вернуть картинку издания можно, но не ссылкой — перезаливом в R2,
+         это работа движка, а не отдающего HTML. */
+      imageUrl = "https://docpats.com/og-image.jpg";
       bodyText = toText(
         article.aiSummary || article.content || article.summary || "",
         6000,
@@ -1292,9 +1320,9 @@ export default async function handler(request, context) {
       if (!article) return отдать404(context);
 
       title = (article.title || "").replace(/"/g, "&quot;");
-      desc = (article.metaDescription || article.abstract || "")
-        .slice(0, 155)
-        .replace(/"/g, "&quot;");
+      desc = краткоеОписание(
+        article.metaDescription || article.abstract || "",
+      ).replace(/"/g, "&quot;");
       pageUrl = `https://docpats.com/public/doctor-profile/article-detail-for-all/${articleId}`;
       publishedAt = article.createdAt;
       modifiedAt = article.updatedAt || article.createdAt;
@@ -1315,9 +1343,9 @@ export default async function handler(request, context) {
       if (!article) return отдать404(context);
 
       title = (article.title || "").replace(/"/g, "&quot;");
-      desc = (article.metaDescription || article.abstract || "")
-        .slice(0, 155)
-        .replace(/"/g, "&quot;");
+      desc = краткоеОписание(
+        article.metaDescription || article.abstract || "",
+      ).replace(/"/g, "&quot;");
       pageUrl = `https://docpats.com/public/doctor/article-scientific-detail-for-all/${articleId}`;
       publishedAt = article.createdAt;
       modifiedAt = article.updatedAt || article.createdAt;
@@ -1350,11 +1378,9 @@ export default async function handler(request, context) {
 
       medicalSpecialty = specName || undefined;
       title = `${fullName} — ${specName} | DocPats`.replace(/"/g, "&quot;");
-      desc = (
-        doctor.about || `Профиль врача ${fullName}, специальность: ${specName}`
-      )
-        .slice(0, 155)
-        .replace(/"/g, "&quot;");
+      desc = краткоеОписание(
+        doctor.about || `Профиль врача ${fullName}, специальность: ${specName}`,
+      ).replace(/"/g, "&quot;");
       pageUrl = `https://docpats.com/public/doctor-profile/doctor-details/${doctorId}`;
       publishedAt = null;
       imageUrl = doctor.profileImage || "https://docpats.com/og-image.jpg";
@@ -1403,11 +1429,10 @@ export default async function handler(request, context) {
       title = String(video.title).replace(/"/g, "&quot;").replace(/\n/g, " ").trim();
       // Без описания берём название: пустой текст в ленте выглядит как
       // сломанная карточка, а не как ролик без описания.
-      desc = String(video.description || video.title || "")
-        .replace(/\n/g, " ")
-        .trim()
-        .slice(0, 155)
-        .replace(/"/g, "&quot;");
+      desc = краткоеОписание(video.description || video.title || "").replace(
+        /"/g,
+        "&quot;",
+      );
       pageUrl = `https://docpats.com/videos/${videoId}`;
       publishedAt = video.publishedAt;
       modifiedAt = video.publishedAt;
@@ -1503,13 +1528,18 @@ export default async function handler(request, context) {
       aggregateRating:
         schemaType === "Physician" ? aggregateRating : undefined,
       publisher:
-        schemaType !== "Physician"
-          ? {
+        schemaType === "Physician"
+          ? undefined
+          : издательМатериала || {
               "@type": "Organization",
               name: "DocPats",
               url: "https://docpats.com",
-            }
-          : undefined,
+            },
+      /* Связь с первоисточником. isBasedOn — «сделано на основе», sameAs —
+         «то же самое в другом месте»: вместе они говорят поисковику, что
+         оригинал вон там, и наша страница на его место не претендует. */
+      isBasedOn: основаноНа || undefined,
+      sameAs: основаноНа || undefined,
     })}</script>`;
 
     if (noIndex) {
@@ -1630,6 +1660,32 @@ async function отдать404(context) {
     status: 404,
     headers: { "content-type": "text/html; charset=utf-8" },
   });
+}
+
+/**
+ * Описание для сниппета: обрезаем по границе предложения, а не по счётчику
+ * символов.
+ *
+ * Резать ровно на 155-м знаке — значит регулярно обрывать слово посередине:
+ * «including» превращается в «inclu» и в таком виде уходит в выдачу и в
+ * превью мессенджера. Ищем конец предложения в последней трети отрезка,
+ * иначе — последний пробел; многоточие ставим только там, где текст
+ * действительно оборван.
+ */
+function краткоеОписание(текст, предел = 160) {
+  const t = String(текст || "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (t.length <= предел) return t;
+
+  const кусок = t.slice(0, предел);
+
+  // Конец предложения: точка, «!», «?» — с пробелом или в самом конце.
+  const предложение = кусок.search(/[.!?](?=\s|$)(?![\s\S]*[.!?](?=\s|$))/);
+  if (предложение >= предел * 0.6) return кусок.slice(0, предложение + 1);
+
+  const пробел = кусок.lastIndexOf(" ");
+  return (пробел > 0 ? кусок.slice(0, пробел) : кусок).replace(/[,;:]$/, "") + "…";
 }
 
 /** Код языка платформы — или null, если это не он. */

@@ -29,7 +29,9 @@ export default function EditMyArticleScientificDoctor() {
     metaDescription,
     metaKeywords,
     isPublished,
-    category: initialCategory,
+    // Рубрика может прийти объектом (populate) или названием — сюда
+    // кладём то, что понимает сервер: идентификатор.
+    category: initialCategory?._id || initialCategory,
     image: null,
     imageUrl: location.state?.imageUrl || null,
   });
@@ -55,6 +57,23 @@ export default function EditMyArticleScientificDoctor() {
 
     fetchCategories();
   }, [API_BASE, t]);
+
+  /* Рубрика из состояния перехода может прийти НАЗВАНИЕМ, а не
+     идентификатором: так делали ссылки «править» до исправления, и так же
+     ведёт себя старая сборка, оставшаяся у человека в кэше. Сервер ждёт
+     ObjectId, и название превращалось в CastError — правка молча не
+     применялась. Как только список рубрик загружен, находим её по имени. */
+  useEffect(() => {
+    const текущая = articleData.category;
+    if (!текущая || /^[a-f0-9]{24}$/i.test(текущая) || !categories.length) return;
+
+    const найдена = categories.find(
+      (c) =>
+        c.name === текущая ||
+        Object.values(c.title || {}).some((v) => v && v === текущая),
+    );
+    setArticleData((prev) => ({ ...prev, category: найдена?._id || "" }));
+  }, [categories, articleData.category]);
 
   /* ---------------------- Handle Input Change ---------------------- */
   const handleInputChange = (e) => {
