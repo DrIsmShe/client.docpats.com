@@ -63,8 +63,13 @@
          display=swap: без него текст невидим, пока шрифт не скачался. -->
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+    <!-- css2, а не css: у старого API один файл на шрифт со ВСЕМИ
+         алфавитами разом (кириллица, греческий, вьетнамский) — по 96 КиБ
+         на начертание, 435 КиБ за три семейства. css2 отдаёт те же шрифты
+         разрезанными по unicode-range, и браузер скачивает только те
+         куски, которые реально нужны странице. -->
     <link
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Nunito:300,400,600,700|Poppins:300,400,500,600,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Open+Sans:wght@300;400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
 

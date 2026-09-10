@@ -1976,9 +1976,14 @@ export default function AuthLayout() {
                         </span>
                       </div>
                     </button>
-                    <audio ref={audioRef}>
+                    {/* preload="none": без него браузер скачивал трек
+                        целиком при открытии лендинга — 14,7 МБ из 15,8 МБ
+                        всего веса страницы. Музыку включают единицы,
+                        платили за неё все. И mp3 вместо wav: тот же трек
+                        втрое легче, а type здесь и так объявлял mpeg. */}
+                    <audio ref={audioRef} preload="none">
                       <source
-                        src="/audio/nadiwijaya-cinematic-epic-orchestral-259560.wav"
+                        src="/audio/nadiwijaya-cinematic-epic-orchestral-259560.mp3"
                         type="audio/mpeg"
                       />
                     </audio>
