@@ -302,6 +302,21 @@ export default async function handler(request, context) {
         "решений врача. Данные шифруются, доступ к ним журналируется.",
       knowsLanguage: ["ru", "en", "az", "tr", "ar"],
       areaServed: "Worldwide",
+      email: "info@docpats.com",
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          contactType: "customer support",
+          email: "support@docpats.com",
+          availableLanguage: ["ru", "en", "az", "tr", "ar"],
+        },
+        {
+          "@type": "ContactPoint",
+          contactType: "sales",
+          email: "info@docpats.com",
+          availableLanguage: ["ru", "en", "az", "tr", "ar"],
+        },
+      ],
     })}</script>
     <script type="application/ld+json" data-seo="edge">${JSON.stringify({
       /* Что это за продукт и сколько стоит — машинночитаемо.
