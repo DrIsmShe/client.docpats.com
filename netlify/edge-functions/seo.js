@@ -307,7 +307,10 @@ export default async function handler(request, context) {
          Пока их нет, единственный источник сведений о компании — она
          сама, и проверить её утверждения нечем. Добавляем по мере
          появления: канал, страница компании, видеоканал. */
-      sameAs: ["https://t.me/DocPats_MedConnect"],
+      sameAs: [
+        "https://t.me/DocPats_MedConnect",
+        "https://www.linkedin.com/company/docpats",
+      ],
       contactPoint: [
         {
           "@type": "ContactPoint",
