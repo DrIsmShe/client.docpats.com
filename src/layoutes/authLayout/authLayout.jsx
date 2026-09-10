@@ -1279,7 +1279,12 @@ export default function AuthLayout() {
       <style>{STYLES}</style>
       <div className="dp-auth-body">
         <Helmet>
-          <title>DocPats MedConnect · World-Class Medical Platform</title>
+          {/* Заголовок из словаря, а не строкой в разметке. Зашитый
+              здесь «World-Class Medical Platform» перезаписывал то, что
+              ставит edge-функция: Google выполняет JS, и в индекс шла
+              именно эта строка — общая формулировка вместо
+              позиционирования. */}
+          <title>{t("metaTitle")}</title>
           <meta name="description" content={t("metaDescription")} />
           <meta property="og:title" content={t("metaTitle")} />
           <meta property="og:type" content="website" />
