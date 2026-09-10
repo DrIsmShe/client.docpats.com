@@ -1106,7 +1106,7 @@ export default function DoctorDetailsForAll() {
           content={
             doctorProfile.profileImage
               ? getProfileImageUrl(doctorProfile.profileImage)
-              : "https://docpats.com/og-default.jpg"
+              : "https://docpats.com/og-image.jpg"
           }
         />
         <meta name="twitter:card" content="summary_large_image" />
@@ -1126,7 +1126,7 @@ export default function DoctorDetailsForAll() {
           content={
             doctorProfile.profileImage
               ? getProfileImageUrl(doctorProfile.profileImage)
-              : "https://docpats.com/og-default.jpg"
+              : "https://docpats.com/og-image.jpg"
           }
         />
         <script type="application/ld+json">

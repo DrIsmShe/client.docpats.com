@@ -612,7 +612,7 @@ export default function SynthesisArticlePage() {
   const canonical = `https://docpats.com${адресЯзыка(
     доступныеЯзыки.includes(locale) ? locale : оригинал,
   )}`;
-  const ogImage = `https://docpats.com/og-default.jpg`;
+  const ogImage = `https://docpats.com/og-image.jpg`;
   const langCode = localeMap[locale] || "ru-RU";
 
   const structuredData = {

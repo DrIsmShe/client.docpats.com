@@ -276,7 +276,7 @@ const SingleArticleScientificForAll = () => {
         />
         <meta
           property="og:image"
-          content={article.imageUrl || "https://docpats.com/og-default.jpg"}
+          content={article.imageUrl || "https://docpats.com/og-image.jpg"}
         />
         <meta property="article:published_time" content={article.createdAt} />
         <meta
@@ -293,7 +293,7 @@ const SingleArticleScientificForAll = () => {
         />
         <meta
           name="twitter:image"
-          content={article.imageUrl || "https://docpats.com/og-default.jpg"}
+          content={article.imageUrl || "https://docpats.com/og-image.jpg"}
         />
         <script type="application/ld+json">
           {JSON.stringify({
@@ -303,7 +303,7 @@ const SingleArticleScientificForAll = () => {
             description: article.metaDescription || article.abstract || "",
             url: `https://docpats.com/public/doctor/article-scientific-detail-for-all/${id}`,
             datePublished: article.createdAt,
-            image: article.imageUrl || "https://docpats.com/og-default.jpg",
+            image: article.imageUrl || "https://docpats.com/og-image.jpg",
             author: {
               "@type": "Person",
               name: `Dr. ${authorFirstName} ${authorLastName}`.trim(),

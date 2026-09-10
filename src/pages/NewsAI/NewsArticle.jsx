@@ -332,7 +332,7 @@ export default function NewsArticle() {
         />
         <meta
           property="og:image"
-          content={article.imageUrl || "https://docpats.com/og-default.jpg"}
+          content={article.imageUrl || "https://docpats.com/og-image.jpg"}
         />
         <meta property="og:locale" content={locale} />
         <meta property="article:published_time" content={article.publishedAt} />
@@ -345,7 +345,7 @@ export default function NewsArticle() {
         />
         <meta
           name="twitter:image"
-          content={article.imageUrl || "https://docpats.com/og-default.jpg"}
+          content={article.imageUrl || "https://docpats.com/og-image.jpg"}
         />
         <script type="application/ld+json">
           {JSON.stringify({
@@ -355,7 +355,7 @@ export default function NewsArticle() {
             description: article.aiSummaryShort || article.summary || "",
             url: pageUrl,
             datePublished: article.publishedAt,
-            image: article.imageUrl || "https://docpats.com/og-default.jpg",
+            image: article.imageUrl || "https://docpats.com/og-image.jpg",
             publisher: {
               "@type": "Organization",
               name: "DocPats",
