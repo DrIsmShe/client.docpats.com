@@ -938,13 +938,13 @@ export default function SynthesisArticlePage() {
                         </div>
                         <div className="sa-auth-gate-actions">
                           <Link
-                            to={`/login?redirect=/articles/${id}/${locale}`}
+                            to={`/login?redirect=${адресЯзыка(locale)}`}
                             className="sa-btn-login"
                           >
                             {t("article_single.login_btn", "Войти")}
                           </Link>
                           <Link
-                            to={`/registration?redirect=/articles/${id}/${locale}`}
+                            to={`/registration?redirect=${адресЯзыка(locale)}`}
                             className="sa-btn-register"
                           >
                             {t(
