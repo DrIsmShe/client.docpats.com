@@ -1493,7 +1493,23 @@ export default async function handler(request, context) {
  */
 async function отдать404(context) {
   const response = await context.next();
-  const html = await response.text();
+  let html = await response.text();
+
+  /* Оболочка объявляет себя индексируемой — на несуществующем адресе это
+     противоречит статусу. Статус робот слушает, но оставлять в теле
+     «index, follow» незачем: заодно меняем заголовок вкладки, иначе
+     человек видит в ней название платформы вместо ответа на вопрос,
+     куда он попал. */
+  html = html
+    .replace(
+      /<meta\s+name="robots"[^>]*>/i,
+      '<meta name="robots" content="noindex, follow" data-seo="edge">',
+    )
+    .replace(
+      /<title>[\s\S]*?<\/title>/i,
+      "<title>Страница не найдена — DocPats</title>",
+    );
+
   return new Response(html, {
     status: 404,
     headers: { "content-type": "text/html; charset=utf-8" },
