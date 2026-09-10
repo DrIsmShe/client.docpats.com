@@ -284,20 +284,37 @@ export default async function handler(request, context) {
     try {
       const section = docsMatch[1];
 
+      /* Прежние адреса разделов. Они попали в HTML главной и могли
+         разойтись по переписке; отправлять человека на 404 из-за нашей
+         же опечатки незачем. */
+      const ПЕРЕЕХАЛИ = { doctor: "for-doctors", patient: "for-patients" };
+      if (ПЕРЕЕХАЛИ[section]) {
+        return new Response(null, {
+          status: 301,
+          headers: { location: `/docs/${ПЕРЕЕХАЛИ[section]}` },
+        });
+      }
+
       // Русский — язык оригинала корпуса. Все языки живут по одному адресу,
       // поэтому в индекс попадает одна версия; отдельные адреса на язык и
       // hreflang — следующий шаг, если раздел начнёт приводить трафик.
+      /* Раздела нет — отвечаем 404, а не оболочкой со статусом 200.
+         «Мягкий 404» стоит дважды: поисковик тратит на него обход и
+         считает такие адреса дублями, а человек видит платформу вместо
+         текста, за которым пришёл. */
+      const нетРаздела = () => отдать404(context);
+
       const mdRes = await fetch(`${url.origin}/docs/${section}/ru.md`);
-      if (!mdRes.ok) return context.next();
+      if (!mdRes.ok) return нетРаздела();
 
       const md = await mdRes.text();
       // Netlify отдаёт index.html со статусом 200 на несуществующий путь,
       // поэтому ok здесь ничего не доказывает.
-      if (md.trimStart().startsWith("<")) return context.next();
+      if (md.trimStart().startsWith("<")) return нетРаздела();
 
       const heading = titleFromMarkdown(md);
       const desc = descriptionFromMarkdown(md);
-      if (!heading || !desc) return context.next();
+      if (!heading || !desc) return нетРаздела();
 
       const title = `${heading} — DocPats`;
       const pageUrl = `https://docpats.com/docs/${section}`;
@@ -1433,6 +1450,22 @@ export default async function handler(request, context) {
 // через DOMPurify, здесь такой обработки нет, а вставка сырого тела статьи в
 // нашу страницу означала бы исполнение чужих скриптов у каждого посетителя.
 // Поэтому тело статьи идёт текстом: теги вырезаны, содержимое экранировано.
+
+/**
+ * Ответ «страницы нет» — со статусом 404 и оболочкой приложения.
+ *
+ * Отдаём именно оболочку, а не голый текст: человек должен попасть на
+ * привычную страницу с шапкой и навигацией, а не в тупик. Статус при этом
+ * честный — по нему поисковик выбрасывает адрес из очереди обхода.
+ */
+async function отдать404(context) {
+  const response = await context.next();
+  const html = await response.text();
+  return new Response(html, {
+    status: 404,
+    headers: { "content-type": "text/html; charset=utf-8" },
+  });
+}
 
 function escHtml(v) {
   return String(v ?? "")
