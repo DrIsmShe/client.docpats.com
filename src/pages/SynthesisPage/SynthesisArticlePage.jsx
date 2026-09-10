@@ -324,6 +324,9 @@ function renderBody(text) {
   });
 }
 
+/** Языки платформы. Порядок значения не имеет — важен состав. */
+const ЯЗЫКИ = ["ru", "en", "az", "ar", "tr"];
+
 export default function SynthesisArticlePage() {
   const { t, i18n } = useTranslation("NewsAiTranslate");
   const { id, lang } = useParams();
@@ -355,13 +358,31 @@ export default function SynthesisArticlePage() {
   // Счётчик комментариев — тот же хук, что и в SingleArticle.jsx
   const commentCount = useCommentCount(id);
 
+  /* Язык берём из адреса: сначала ?locale=, потом старая форма пути
+     (/articles/:id/:lang) — она отвечает 301 на edge, но по внутренней
+     ссылке до сервера дело не доходит, и обрабатывать её всё равно надо. */
+  const языкИзАдреса = (() => {
+    const параметр = new URLSearchParams(window.location.search).get("locale");
+    const кандидат = параметр || lang;
+    return ЯЗЫКИ.includes(кандидат) ? кандидат : null;
+  })();
+
   const [locale, setLocale] = useState(() => {
-    const fromUrl =
-      lang && ["en", "ru", "az", "ar", "tr"].includes(lang) ? lang : null;
-    const result = fromUrl || i18n.language || "ru";
+    const result = языкИзАдреса || i18n.language || "ru";
     document.cookie = `locale=${result};path=/;max-age=31536000`;
     return result;
   });
+
+  /* Адрес выигрывает у настройки — один раз, при открытии. Без этого
+     эффект ниже немедленно возвращал язык из localStorage, и ссылка,
+     присланная коллеге, открывалась на языке ЕГО последнего визита. */
+  useEffect(() => {
+    if (языкИзАдреса && языкИзАдреса !== i18n.language) {
+      i18n.changeLanguage(языкИзАдреса);
+    }
+    // Только при открытии страницы: дальше язык меняет человек.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     setLocale(i18n.language);
@@ -384,8 +405,10 @@ export default function SynthesisArticlePage() {
     localStorage.setItem("locale", code);
     i18n.changeLanguage(code);
     document.cookie = `locale=${code};path=/;max-age=31536000`;
-    // Меняем URL — Google увидит отдельную страницу для каждого языка
-    window.history.replaceState(null, "", `/articles/${id}/${code}`);
+    /* Язык в адресе — параметром, одной схемой со всем проектом. Здесь
+       он писался сегментом пути, и статья оказывалась доступна по двум
+       адресам сразу. */
+    window.history.replaceState(null, "", адресЯзыка(code));
   };
 
   const navigate = useNavigate();
@@ -394,6 +417,28 @@ export default function SynthesisArticlePage() {
   const synthesis = useSelector((s) => s.synthesis ?? {});
   const current = synthesis.current;
   const status = synthesis.status || "idle";
+
+  /* Языковые версии статьи — только СУЩЕСТВУЮЩИЕ.
+     Здесь стояли пять hreflang и x-default, выписанные вручную, без
+     единой проверки. Перевод у синтез-статьи делается по требованию и
+     появляется в Synthesis.translations; движок отдаёт готовые списком
+     translatedLocales. Пока перевода нет, объявлять языковую версию
+     нельзя: обещание, что по адресу тот же материал на другом языке, там
+     не выполняется, и поисковик получает несколько почти одинаковых
+     страниц вместо одной. */
+  const оригинал = ЯЗЫКИ.includes(current?.language) ? current.language : "ru";
+  const доступныеЯзыки = [
+    оригинал,
+    ...(Array.isArray(current?.translatedLocales)
+      ? current.translatedLocales
+      : []
+    ).filter((l) => ЯЗЫКИ.includes(l) && l !== оригинал),
+  ];
+  /* Оригинал живёт на голом адресе, перевод — на адресе с параметром.
+     Одна схема на весь проект: у новостей, врачебных статей и витрин
+     язык тоже параметром. */
+  const адресЯзыка = (code) =>
+    code === оригинал ? `/articles/${id}` : `/articles/${id}?locale=${code}`;
 
   const currentId = current?._id;
   const currentBody = current?.body;
@@ -561,7 +606,12 @@ export default function SynthesisArticlePage() {
   const pageDesc =
     seoForLocale?.description ||
     (current?.body || "").replace(/#+\s/g, "").slice(0, 155);
-  const canonical = `https://docpats.com/articles/${id}/${locale}`;
+  /* Канонический адрес — язык, который РЕАЛЬНО показан. Просили перевод,
+     которого ещё нет: на экране оригинал, и адрес с параметром был бы
+     вторым адресом того же текста. */
+  const canonical = `https://docpats.com${адресЯзыка(
+    доступныеЯзыки.includes(locale) ? locale : оригинал,
+  )}`;
   const ogImage = `https://docpats.com/og-default.jpg`;
   const langCode = localeMap[locale] || "ru-RU";
 
@@ -640,36 +690,23 @@ export default function SynthesisArticlePage() {
         <meta name="description" content={pageDesc} />
         <link rel="canonical" href={canonical} />
         <html lang={locale} />
-        <link
-          rel="alternate"
-          hreflang="ru"
-          href={`https://docpats.com/articles/${id}/ru`}
-        />
-        <link
-          rel="alternate"
-          hreflang="en"
-          href={`https://docpats.com/articles/${id}/en`}
-        />
-        <link
-          rel="alternate"
-          hreflang="az"
-          href={`https://docpats.com/articles/${id}/az`}
-        />
-        <link
-          rel="alternate"
-          hreflang="ar"
-          href={`https://docpats.com/articles/${id}/ar`}
-        />
-        <link
-          rel="alternate"
-          hreflang="tr"
-          href={`https://docpats.com/articles/${id}/tr`}
-        />
-        <link
-          rel="alternate"
-          hreflang="x-default"
-          href={`https://docpats.com/articles/${id}/ru`}
-        />
+        {доступныеЯзыки.length > 1
+          ? доступныеЯзыки.map((код) => (
+              <link
+                key={код}
+                rel="alternate"
+                hreflang={код}
+                href={`https://docpats.com${адресЯзыка(код)}`}
+              />
+            ))
+          : null}
+        {доступныеЯзыки.length > 1 ? (
+          <link
+            rel="alternate"
+            hreflang="x-default"
+            href={`https://docpats.com/articles/${id}`}
+          />
+        ) : null}
         {/* Open Graph */}
         <meta property="og:type" content="article" />
         <meta property="og:title" content={pageTitle} />

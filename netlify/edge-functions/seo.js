@@ -1061,6 +1061,20 @@ export default async function handler(request, context) {
   const articleMatch = url.pathname.match(
     /^\/articles\/([a-f0-9]{24})(?:\/([a-z]{2}))?$/,
   );
+
+  /* Старая форма языкового адреса синтез-статьи: /articles/<id>/<язык>.
+     Язык в проекте передаётся параметром — одна схема на все материалы,
+     иначе каждая страница доступна по двум адресам сразу. Отвечаем 301, а
+     не молча рендерим: адреса этой формы полгода лежали в карте сайта, и
+     склеить их с новыми должен поисковик, а не мы задним числом. */
+  if (articleMatch?.[2] && ЯЗЫК(articleMatch[2])) {
+    return new Response(null, {
+      status: 301,
+      headers: {
+        location: `/articles/${articleMatch[1]}?locale=${ЯЗЫК(articleMatch[2])}`,
+      },
+    });
+  }
   const newsMatch = url.pathname.match(/^\/news\/([^/]+)$/);
   const doctorArticleMatch = url.pathname.match(
     /^\/public\/doctor-profile\/article-detail-for-all\/([a-f0-9]{24})$/,
@@ -1112,7 +1126,7 @@ export default async function handler(request, context) {
 
     if (articleMatch) {
       const articleId = articleMatch[1];
-      const urlLocale = articleMatch[2];
+      const urlLocale = ЯЗЫК(url.searchParams.get("locale"));
       const cookieHeader = request.headers.get("cookie") || "";
       const cookieLocale = cookieHeader.match(/locale=([a-z]{2})/)?.[1];
       locale = urlLocale || cookieLocale || "ru";
@@ -1143,8 +1157,13 @@ export default async function handler(request, context) {
         ...переводы.filter((l) => l !== оригинал),
       ];
       const базаСтатьи = `https://docpats.com/articles/${articleId}`;
+      /* Язык — параметром, как у новостей, врачебных статей и витрин.
+         Сегментом пути он стоял только здесь; две схемы разом означают,
+         что каждая страница доступна по двум адресам. Старая форма
+         отвечает 301 (см. выше), поэтому проиндексированные /articles/
+         <id>/en склеятся с новыми, а не останутся дублями. */
       const адресЯзыка = (l) =>
-        l === оригинал ? базаСтатьи : `${базаСтатьи}/${l}`;
+        l === оригинал ? базаСтатьи : `${базаСтатьи}?locale=${l}`;
 
       // Отданный язык, а не запрошенный: перевода нет — показан оригинал.
       locale = ЯЗЫК(article.servedLocale) || оригинал;
