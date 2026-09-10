@@ -22,7 +22,7 @@ const path = require("path");
 
 const КОРЕНЬ = path.join(__dirname, "..");
 const APP = path.join(КОРЕНЬ, "src", "App.jsx");
-const СПИСОК = path.join(КОРЕНЬ, "netlify", "edge-functions", "public-routes.js");
+const СПИСОК = path.join(КОРЕНЬ, "netlify", "edge-functions", "lib", "public-routes.js");
 
 /** Первые сегменты всех маршрутов App.jsx, объявленных от корня. */
 function корниИзПриложения() {
