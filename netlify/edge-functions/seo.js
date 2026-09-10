@@ -303,6 +303,11 @@ export default async function handler(request, context) {
       knowsLanguage: ["ru", "en", "az", "tr", "ar"],
       areaServed: "Worldwide",
       email: "info@docpats.com",
+      /* Внешние профили: чем сайт подтверждает себя за своими пределами.
+         Пока их нет, единственный источник сведений о компании — она
+         сама, и проверить её утверждения нечем. Добавляем по мере
+         появления: канал, страница компании, видеоканал. */
+      sameAs: ["https://t.me/DocPats_MedConnect"],
       contactPoint: [
         {
           "@type": "ContactPoint",
