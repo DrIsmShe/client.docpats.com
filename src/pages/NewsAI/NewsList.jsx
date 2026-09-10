@@ -362,7 +362,15 @@ export default function NewsList() {
   const isRTL = RTL_LOCALES.has(locale);
   const dir = isRTL ? "rtl" : "ltr";
 
-  const FILTERS = [
+  /* Две кнопки вместо пяти: материалы и врачи. Всё остальное — это виды
+     материала, и они ушли в селектор ниже. */
+  const ВКЛАДКИ = [
+    { value: "", label: t("filters.allArticles", { defaultValue: "Все статьи" }) },
+    { value: "doctors", label: t("doctors_ai_news") },
+  ];
+
+  /* Вид материала. Пустое значение — все виды разом. */
+  const ВИДЫ = [
     { value: "", label: t("filters.all") },
     { value: "news", label: t("news_ai_news") },
     // «Научные статьи» — один пункт на два источника: разборы, написанные
@@ -372,7 +380,6 @@ export default function NewsList() {
     // две вкладки вместо одной. Происхождение видно на самой карточке.
     { value: "science", label: t("science_ai_news") },
     { value: "publications", label: t("publications_ai_news") },
-    { value: "doctors", label: t("doctors_ai_news") },
   ];
   const SORT_OPTIONS = [
     { value: "date_desc", label: t("sort.date_desc") },
@@ -389,7 +396,11 @@ export default function NewsList() {
   // Научные статьи: врачебные разборы и аналитика ИИ грузятся вместе —
   // это один пункт меню.
   const doLoadSci = type === "" || type === "science" || hasSearch;
-  const doLoadDoctors = type === "" || type === "doctors";
+  /* Только своя рубрика — в общей ленте карточек врачей нет.
+     Врач и статья — разные сущности: одна отвечает «что почитать»,
+     другая «к кому пойти». В общем потоке визитка вставала между
+     научными статьями и сбивала чтение. */
+  const doLoadDoctors = type === "doctors";
   const doLoadSyn = type === "" || type === "science";
 
   useEffect(() => {
@@ -661,7 +672,7 @@ export default function NewsList() {
       {t("search_label")} <em>"{appliedSearch}"</em>{" "}
     </>
   ) : type ? (
-    FILTERS.find((f) => f.value === type)?.label
+    [...ВКЛАДКИ, ...ВИДЫ].find((f) => f.value === type)?.label
   ) : (
     t("hero.title")
   );
@@ -755,15 +766,38 @@ export default function NewsList() {
               {/* Аналитика теперь такая же вкладка, как остальные: раньше она
                   уводила на отдельную страницу, и лента обрывалась. Отдельная
                   страница осталась и открывается ссылкой с главной. */}
-              {FILTERS.map((f) => (
+              {ВКЛАДКИ.map((f) => (
                 <button
                   key={f.value}
-                  className={`nl-filter-tab${type === f.value ? " active" : ""}`}
+                  className={`nl-filter-tab${
+                    (f.value === "doctors") === (type === "doctors")
+                      ? " active"
+                      : ""
+                  }`}
                   onClick={() => setType(f.value)}
                 >
                   {f.label}
                 </button>
               ))}
+              {/* Вид материала. Прячем на вкладке врачей: карточка врача
+                  не бывает «научной статьёй», и выбор там ничего не менял
+                  бы, только предлагал бы несуществующее. */}
+              {type !== "doctors" && (
+                <select
+                  className="nl-filter-kind"
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                  aria-label={t("filters.kind", {
+                    defaultValue: "Вид материала",
+                  })}
+                >
+                  {ВИДЫ.map((v) => (
+                    <option key={v.value} value={v.value}>
+                      {v.label}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
 
             {/* Своя специальность или вся лента.
@@ -1083,7 +1117,7 @@ export default function NewsList() {
               <span className="nl-footer-tagline">{t("footer.tagline")}</span>
             </div>
             <div className="nl-footer-links">
-              {FILTERS.map((f) => (
+              {[...ВИДЫ, ВКЛАДКИ[1]].map((f) => (
                 <button
                   key={f.value}
                   onClick={() => setType(f.value)}
@@ -1364,7 +1398,12 @@ const CSS = `
 .nl-mine{display:flex;gap:4px;flex-shrink:0;margin-inline-end:8px}
 .nl-mine-btn{font:inherit;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:5px 12px;border:1px solid var(--border);background:#fff;color:#6b7280;border-radius:999px;cursor:pointer;white-space:nowrap}
 .nl-mine-btn.active{background:#0f766e;border-color:#0f766e;color:#fff}
-.nl-filter-tabs{display:flex;align-items:center;gap:4px;flex-shrink:0;border-inline-end:1px solid var(--border);padding-inline-end:16px;margin-inline-end:4px}
+.nl-filter-tabs{display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap;border-inline-end:1px solid var(--border);padding-inline-end:16px;margin-inline-end:4px}
+/* Селектор вида материала: тот же рост и та же рамка, что у соседних
+   полей строки фильтров, — иначе он читается как чужеродный элемент. */
+.nl-filter-kind{font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--ink2);background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:7px 12px;cursor:pointer;outline:none;transition:all .15s;max-width:220px}
+.nl-filter-kind:hover{border-color:var(--border2)}
+.nl-filter-kind:focus{border-color:var(--teal)}
 .nl-filter-tab{font-family:var(--font-body);font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);background:transparent;border:1.5px solid transparent;border-radius:8px;padding:7px 14px;cursor:pointer;transition:all .15s;white-space:nowrap}
 .nl-root[dir=rtl] .nl-filter-tab{letter-spacing:0}
 .nl-filter-tab:hover{background:var(--cream2);color:var(--ink2);border-color:var(--border)}

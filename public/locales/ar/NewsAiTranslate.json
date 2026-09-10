@@ -185,7 +185,9 @@
     "news": "أخبار",
     "research": "أبحاث",
     "publications": "منشورات",
-    "searchPlaceholder": "ابحث في المواد…"
+    "searchPlaceholder": "ابحث في المواد…",
+    "allArticles": "كل المقالات",
+    "kind": "نوع المادة"
   },
   "list": {
     "articles": "مقال",

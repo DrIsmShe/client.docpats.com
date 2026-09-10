@@ -6,19 +6,27 @@ toplanmıştır. Bunun için bir kliniğe gerek yoktur: kendi adınıza çalış
 ileride bir kliniğiniz olursa aynı hesap içinde etkinleştirilir, veri aktarımına
 gerek kalmaz.
 
-**Kayıttan sonraki ilk 3 ay ücretsizdir; Start tarifesinin limitleriyle:**
-kabinede 100 hasta, ayda 15 değerlendirme ve 15 epikriz, 240 dakika video.
-Kısıtlanmış bir deneme sürümü değil, tarife listesinde 19 $ olan tarifenin
-kendisidir. Deneme dönemi için ödeme bilgisi gerekmez.
+**Kayıttan sonraki ilk 14 gün ücretsizdir; her şey dahil, en üst Pro
+tarifesinin limitleriyle:** kabinede 2000 hasta, ayda 100 değerlendirme ve 100
+epikriz, 60 yapay zekâ konsültasyonu, 1200 dakika video. Kısıtlanmış bir deneme
+sürümü değil, tarife listesinde 99 $ olan tarifenin kendisidir. Deneme dönemi
+için ödeme bilgisi gerekmez.
 
-Üç ay dolduğunda, siz başka bir seçim yapmadıysanız hesap en ucuz tarife olan
-**Lite — ayda 9 $** tarifesine geçer. Hiç kimse en alt basamaktan daha pahalı bir
-şeye kaydedilmez: tarife seçimi size aittir.
+Üç ay yerine iki hafta olması bilinçlidir: bu süre ürünü yarım değil, bütün
+olarak görmeye yeter.
 
-Lite tarifesindeki limitler daha mütevazıdır: 30 hastaya kadar, ayda 5
-değerlendirme ve 5 epikriz, 60 dakika video. **Halihazırda kayıtlı hastalarınız
-kaybolmaz** — kısıtlama yalnızca yeni hasta eklemeyi kapsar. Pratiğiniz Lite
-tarifesini aştıysa Start, Growth veya Pro tarifelerini seçebilirsiniz.
+Deneme dönemi bittiğinde hesap ücretli tarifeye değil, **ücretsiz tarifeye —
+0 $** geçer. Sizin onayınız olmadan tahsilat yapılmaz: ödeme bilgisi istemiyoruz
+ve kimseyi ücretli tarifeye kaydetmiyoruz.
+
+Ücretsiz tarifede yapay zekâsız çalışan bir pratik kalır: 30 hastaya kadar, 60
+dakika video, stüdyoda 3 film, soru bankası ve hekim profili. **Halihazırda
+kayıtlı hastalarınız kaybolmaz** — kısıtlama yalnızca yeni hasta eklemeyi
+kapsar. Yapay zekâ işlevleri (değerlendirmeler, epikrizler, konsültasyonlar)
+ücretsiz tarifede kapalıdır: modele yapılan her istek para demektir.
+
+Ücretli basamaklar: **Start — 19 $**, **Growth — 49 $**, **Pro — 99 $** aylık.
+Yıllık ödeme on aylık ödemeye eşittir: iki ay hediye.
 
 **Platform, muayenelerinizden pay almaz.** Hasta ne ödediyse tamamı size kalır:
 ödeme doğrudan sizinle hasta arasında gerçekleşir, DocPats bu sürece dahil olmaz
@@ -153,13 +161,14 @@ herkese açık vitrin, yorumlar, hizmetler ve talep kabulü ile birlikte.
 **Platform yalnızca abonelikten kazanç sağlar.** Hiçbir tarifede muayenelerden pay
 alınmaz: hasta ne ödediyse tamamı size kalır.
 
-**Deneme dönemi, 3 ay — ücretsiz.** Tüm yeni hekimlere, Start tarifesinin
-limitleriyle. Süre dolduğunda, başka bir seçim yapmadıysanız hesap en ucuz tarife
-olan Lite'a geçer. Deneme dönemi için ödeme bilgisi gerekmez ve sizin onayınız
+**Deneme dönemi, 14 gün — ücretsiz.** Tüm yeni hekimlere, en üst Pro
+tarifesinin limitleriyle. Süre dolduğunda hesap ücretli tarifeye değil, ücretsiz
+tarifeye geçer. Deneme dönemi için ödeme bilgisi gerekmez ve sizin onayınız
 olmadan herhangi bir tahsilat yapılmaz.
 
-- **Lite — ayda 9 $** (yılda 90 $). Basit bir başlangıç: kabinede 30 hastaya
-  kadar, ayda 5 değerlendirme ve 5 epikriz, 60 dakika video.
+- **Ücretsiz — 0 $.** Süresiz. Yapay zekâsız pratik: 30 hastaya kadar, 60 dakika
+  video, stüdyoda 3 film, soru bankası ve hekim profili. Değerlendirmeler,
+  epikrizler ve yapay zekâ konsültasyonları kapalıdır.
 - **Start — ayda 19 $** (yılda 190 $). Küçük ölçekli pratik: 100 hastaya kadar,
   15 değerlendirme ve 15 epikriz, 240 dakika video.
 - **Growth — ayda 49 $** (yılda 490 $). Sürekli hasta akışı: 600 hastaya kadar,
@@ -190,7 +199,7 @@ herkese açıktır ve soru sayısı sınırlandırılmaz. Ücretli olan, sınav�
   dağılımına göre içerik, süre, nihai rapor.
 
 Growth ve Pro tarifelerinde her iki mod da zaten dahildir — ek satın alma
-gerekmez. Eklenti, deneme döneminde, Lite ve Start tarifelerinde gereklidir; ayrıca
+gerekmez. Eklenti, ücretsiz tarifede ve Start tarifesinde gereklidir; ayrıca
 yalnızca testlere ihtiyaç duyan, platformun geri kalanına ihtiyaç duymayan
 öğrenciler ve asistan hekimler için tasarlanmıştır.
 

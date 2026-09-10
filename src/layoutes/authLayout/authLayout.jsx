@@ -1340,6 +1340,13 @@ export default function AuthLayout() {
               <Link className="dp-nav-link" to="/videos">
                 {t("nav.videos", { defaultValue: "Видео" })}
               </Link>
+              {/* Врачи — публичный список: специальность, страна, оценки,
+                  профиль открывается без входа. Страница существовала и
+                  лежала в карте сайта, но с главной на неё не вело ни
+                  одной ссылки, и гость до неё не доходил. */}
+              <Link className="dp-nav-link" to="/top-doctors">
+                {t("nav.doctors", { defaultValue: "Врачи" })}
+              </Link>
             </div>
 
             {/* Centre logo */}

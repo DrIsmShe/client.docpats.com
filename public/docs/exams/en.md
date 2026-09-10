@@ -78,9 +78,10 @@ full coverage — and this is apparent immediately, rather than becoming clear a
 
 ## How Many Questions Are Available
 
-- **Lite** — 500 questions per month.
-- **Trial period and the Start plan** — 1500 questions per month.
-- **Growth and Pro** — unlimited.
+- **Free** — 500 questions per month. The bank is our own and answering
+  makes no model calls, so questions are available without a subscription.
+- **Start** — 1500 questions per month.
+- **Growth, Pro and the first 14 days after registration** — unlimited.
 
 Questions are the one item that costs the platform nothing to provide:
 the bank is our own, and no language model calls are made during a session. For this reason the

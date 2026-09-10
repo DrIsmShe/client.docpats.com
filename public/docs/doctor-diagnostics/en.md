@@ -67,10 +67,10 @@ later.
 
 ## How many reviews are available
 
-- **Lite** — 5 reviews per month.
-- **Trial period and the Start plan** — 15 per month.
+- **Free** — no reviews: AI is switched off entirely on this plan.
+- **Start** — 15 per month.
 - **Growth** — 40 per month.
-- **Pro** — 100 per month.
+- **Pro and the first 14 days after registration** — 100 per month.
 
 Counting is based on a rolling 30-day window rather than a calendar month: the quota
 is released gradually rather than reset on the first of the month.

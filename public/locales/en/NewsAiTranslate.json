@@ -143,7 +143,9 @@
     "news": "News",
     "research": "Research",
     "publications": "Publications",
-    "searchPlaceholder": "Search materials…"
+    "searchPlaceholder": "Search materials…",
+    "allArticles": "All articles",
+    "kind": "Material type"
   },
   "list": {
     "articles": "article",

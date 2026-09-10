@@ -183,7 +183,9 @@
   "filters": {
     "specialty": "Специальность:",
     "all": "Все",
-    "searchPlaceholder": "Поиск по материалам…"
+    "searchPlaceholder": "Поиск по материалам…",
+    "allArticles": "Все статьи",
+    "kind": "Вид материала"
   },
   "list": {
     "articles": "статья",

@@ -80,9 +80,10 @@ görülür.
 
 ## Kaç soru kullanılabilir
 
-- **Lite** — ayda 500 soru.
-- **Deneme süresi ve Start tarifesi** — ayda 1500 soru.
-- **Growth ve Pro** — sınırsız.
+- **Ücretsiz tarife** — ayda 500 soru. Soru bankası bize ait ve çözüm
+  sırasında modele istek gitmiyor; bu yüzden sorular abonelik olmadan da açık.
+- **Start** — ayda 1500 soru.
+- **Growth, Pro ve kayıttan sonraki ilk 14 gün** — sınırsız.
 
 Sorular, platformun sunması hiçbir maliyet doğurmayan tek kalemdir: banka
 platforma aittir ve çözüm sırasında dil modeline herhangi bir başvuru yapılmaz.

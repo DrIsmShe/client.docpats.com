@@ -187,7 +187,9 @@
     "news": "Xəbərlər",
     "research": "Tədqiqatlar",
     "publications": "Nəşrlər",
-    "searchPlaceholder": "Materiallarda axtarış…"
+    "searchPlaceholder": "Materiallarda axtarış…",
+    "allArticles": "Bütün məqalələr",
+    "kind": "Material növü"
   },
   "list": {
     "articles": "məqalə",

@@ -98,12 +98,12 @@ kadar süreceğine hekim ve siz karar verirsiniz.
 hakkında konuşabileceğiniz.
 
 - **Free — 0 $.** Süresiz. Ayda 2 asistan konsültasyonu.
-  **Kayıttan sonraki ilk 3 ay — 10.**
+  **Kayıttan sonraki ilk 14 gün — 10.**
 - **Plus — ayda 9 $** (yılda 90 $). 15 konsültasyon.
 
 Yıllık ödeme on aylık ödemeye eşittir: iki ay hediye.
 
-Üç ay sona erdiğinde hesap ücretli tarifeye değil, **ücretsiz tarifeye geçer**.
+Deneme süresinin iki haftası dolduğunda hesap ücretli tarifeye değil, **ücretsiz tarifeye geçer**.
 Sizin bilginiz dışında tahsilat yapılmaz: ödeme bilgilerinizi talep etmiyor ve
 kimseyi ücretli tarifeye kaydetmiyoruz — bunu kullanıcılar kendileri seçer.
 

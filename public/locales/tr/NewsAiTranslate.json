@@ -181,7 +181,9 @@
     "news": "Haberler",
     "research": "Araştırmalar",
     "publications": "Yayınlar",
-    "searchPlaceholder": "Materyallerde ara…"
+    "searchPlaceholder": "Materyallerde ara…",
+    "allArticles": "Tüm makaleler",
+    "kind": "İçerik türü"
   },
   "list": {
     "articles": "makale",

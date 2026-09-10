@@ -2,13 +2,17 @@
 
 DocPats — həkimin iş yeridir: xəstə qəbulu, onların kartları, materialın təhlilində süni intellektin köməyi və peşəkar hazırlıq bir hesabda. Bunun üçün klinika lazım deyil: siz öz hesabınıza işləyirsiniz, klinikanız yaranarsa — o, məlumatları köçürmədən elə həmin hesabda aktivləşir.
 
-**Qeydiyyatdan sonrakı ilk 3 ay — pulsuz, Start tarifinin limitləri ilə:**
-kabinetdə 100 xəstə, ayda 15 təhlil və 15 epikriz, 240 dəqiqə video.
-Bu, məhdudlaşdırılmış demo-versiya deyil, tarif xəttində 19 $ dəyərində olan həmin tarifdir. Sınaq dövrü üçün ödəniş məlumatları tələb olunmur.
+**Qeydiyyatdan sonrakı ilk 14 gün — pulsuz, hər şey daxil olmaqla, ən yüksək Pro tarifinin limitləri ilə:**
+kabinetdə 2000 xəstə, ayda 100 təhlil və 100 epikriz, 60 süni intellekt konsultasiyası, 1200 dəqiqə video.
+Bu, məhdudlaşdırılmış demo-versiya deyil, tarif xəttində 99 $ dəyərində olan həmin tarifdir. Sınaq dövrü üçün ödəniş məlumatları tələb olunmur.
 
-Üç ay başa çatdıqda, əgər siz özünüz başqa tarif seçməsəniz, hesab **Lite — ayda 9 $** tarifinə, ən ucuz tarifə keçir. Heç kim ən aşağı pillədən baha olan bir şeyə yazılmır: tarif seçimi sizin ixtiyarınızdadır.
+Üç ay yox, iki həftə — bu, qəsdəndir: bu müddət məhsulu yarımçıq deyil, bütövlükdə görməyə bəs edir.
 
-Lite-da limitlər daha məhduddur: 30 xəstəyədək, ayda 5 təhlil və 5 epikriz, 60 dəqiqə video. **Artıq əlavə edilmiş xəstələr heç yerə itmir** — məhdudiyyət yalnız yeni xəstələrin əlavə edilməsinə aiddir. Praktikanız Lite-ı üstələyibsə, Start, Growth və ya Pro seçin.
+Sınaq dövrü bitdikdə hesab ödənişliyə deyil, **pulsuz tarifə — 0 $** keçir. Sizin iştirakınız olmadan heç bir məbləğ çıxılmır: ödəniş məlumatlarını soruşmuruq və heç kimi ödənişli tarifə yazmırıq.
+
+Pulsuz tarifdə süni intellektsiz iş praktikası qalır: 30 xəstəyədək, 60 dəqiqə video, studiyada 3 film, sual bankı və həkim profili. **Artıq əlavə edilmiş xəstələr heç yerə itmir** — məhdudiyyət yalnız yeni xəstələrin əlavə edilməsinə aiddir. Süni intellekt funksiyaları (təhlillər, epikrizlər, konsultasiyalar) pulsuz tarifdə söndürülüb: modelə hər müraciət pul tələb edir.
+
+Ödənişli pillələr: **Start — 19 $**, **Growth — 49 $**, **Pro — 99 $** aylıq. İllik ödəniş on aylıq ödənişə bərabərdir: iki ay hədiyyə.
 
 **Platforma sizin qəbullarınızdan faiz götürmür.** Xəstə nə qədər ödəyibsə — siz o qədər alırsınız: hesablaşma birbaşa sizinlə xəstə arasında gedir, DocPats bunda iştirak etmir və yalnız abunədən qazanır.
 
@@ -102,9 +106,9 @@ Klinika elə həmin hesabda aktivləşir: doqquz rolu və ayrıca bölmə səviy
 
 **Platforma yalnız abunədən qazanır.** Heç bir tarifdə qəbullardan faiz yoxdur: xəstə nə qədər ödəyibsə — siz o qədər alırsınız.
 
-**Sınaq dövrü, 3 ay — pulsuz.** Bütün yeni həkimlərə, Start tarifinin limitləri ilə. Bitdikdən sonra, əgər siz başqasını seçməsəniz, hesab Lite tarifinə — ən ucuz tarifə — keçir. Sınaq dövrü üçün ödəniş məlumatları tələb olunmur və sizin iştirakınız olmadan heç bir məbləğ çıxılmayacaq.
+**Sınaq dövrü, 14 gün — pulsuz.** Bütün yeni həkimlərə, ən yüksək Pro tarifinin limitləri ilə. Bitdikdən sonra hesab ödənişliyə deyil, pulsuz tarifə keçir. Sınaq dövrü üçün ödəniş məlumatları tələb olunmur və sizin iştirakınız olmadan heç bir məbləğ çıxılmayacaq.
 
-- **Lite — ayda 9 $** (ildə 90 $). Sadə giriş: kabinetdə 30 xəstəyədək, ayda 5 təhlil və 5 epikriz, 60 dəqiqə video.
+- **Pulsuz — 0 $.** Müddətsiz. Süni intellektsiz praktika: 30 xəstəyədək, 60 dəqiqə video, studiyada 3 film, sual bankı və həkim profili. Təhlillər, epikrizlər və süni intellekt konsultasiyaları söndürülüb.
 - **Start — ayda 19 $** (ildə 190 $). Kiçik praktika: 100 xəstəyədək, 15 təhlil və 15 epikriz, 240 dəqiqə video.
 - **Growth — ayda 49 $** (ildə 490 $). Daimi xəstə axını: 600 xəstəyədək, 40 təhlil və 40 epikriz, 600 dəqiqə video.
 - **Pro — ayda 99 $** (ildə 990 $). Böyük praktika: 2000 xəstəyədək, 100 təhlil və 100 epikriz, 1200 dəqiqə video.
@@ -122,7 +126,7 @@ Təhlillər və epikrizlər aylıq hesablanır və bu, formallıq deyil: onları
 - **Exam Prep Plus — ayda 7 $** (ildə 70 $). Vaxta qarşı keçidi əlavə edir.
 - **Exam Prep Unlimited — ayda 15 $** (ildə 150 $). Tam simulyasiyanı əlavə edir: tərkib imtahanın bölgüsü üzrə, taymer, yekun hesabat.
 
-Growth və Pro tariflərində hər iki rejim artıq daxildir — əlavə almağa ehtiyac yoxdur. Əlavə paket sınaq dövründə, Lite və Start tariflərində lazımdır, həmçinin yalnız testlərə ehtiyacı olan, platformanın qalan hissəsinə isə ehtiyac duymayan tələbələr və ordinatorlar üçün nəzərdə tutulub.
+Growth və Pro tariflərində hər iki rejim artıq daxildir — əlavə almağa ehtiyac yoxdur. Əlavə paket pulsuz tarifdə və Start tarifində lazımdır, həmçinin yalnız testlərə ehtiyacı olan, platformanın qalan hissəsinə isə ehtiyac duymayan tələbələr və ordinatorlar üçün nəzərdə tutulub.
 
 İllik ödəniş on aylıq ödənişə bərabərdir: iki ay hədiyyə. Aktual şərtlər həmişə [tariflər səhifəsindədir](/pricing).
 

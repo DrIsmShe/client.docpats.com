@@ -2,14 +2,28 @@
 
 DocPats is the physician's workplace: patient consultations, patient charts, AI assistance in reviewing clinical material, and professional training in a single account. No clinic is required: you work for yourself, and if you eventually open a clinic, it can be activated within the same account, with no data migration.
 
-**The first 3 months after registration are free, on the limits of the Start plan:**
-100 patients in your practice, 15 case reviews and 15 discharge summaries per month, 240 minutes of video.
-This is not a stripped-down demo, but the very same plan that costs $19 in the lineup.
-No payment details are required for the trial period.
+**The first 14 days after registration are free, with everything included, on
+the limits of the top Pro plan:** 2000 patients in your practice, 100 case
+reviews and 100 discharge summaries per month, 60 AI consultations, 1200 minutes
+of video. This is not a stripped-down demo, but the very same plan that costs
+$99 in the lineup. No payment details are required for the trial period.
 
-When the three months end, the account switches to **Lite — $9 per month**, the least expensive plan, unless you choose a different one yourself. No one is enrolled in anything above the entry tier: the choice of plan remains yours.
+Two weeks rather than three months is deliberate: that is enough to see the
+whole product rather than half of it.
 
-The Lite limits are more modest: up to 30 patients, 5 case reviews and 5 discharge summaries per month, 60 minutes of video. **Patients already entered will not disappear** — the restriction applies only to adding new ones. If your practice has outgrown Lite, choose Start, Growth, or Pro.
+When the trial ends, the account switches to the **free plan — $0**, not to a
+paid one. No charge occurs without your involvement: we do not ask for payment
+details and we enrol no one in a paid plan.
+
+The free plan keeps a working practice without AI: up to 30 patients, 60 minutes
+of video, 3 films in the studio, the question bank and your physician profile.
+**Patients already entered will not disappear** — the restriction applies only to
+adding new ones. AI features (case reviews, discharge summaries, consultations)
+are switched off on the free plan: every model call costs money, and there is
+nothing to fund them with for free.
+
+Paid tiers: **Start — $19**, **Growth — $49**, **Pro — $99** per month. Annual
+payment equals ten monthly payments: two months free.
 
 **The platform does not take a percentage of your consultations.** Whatever the patient paid is what you receive: settlement occurs directly between you and the patient; DocPats takes no part in it and earns only from the subscription.
 
@@ -103,9 +117,15 @@ Two sections are already built and open; they simply do not yet contain much con
 
 **The platform earns only from subscriptions.** There is no percentage taken from consultations on any plan: whatever the patient paid is what you receive.
 
-**Trial period, 3 months — free.** For all new physicians, on the limits of the Start plan. At its conclusion, the account switches to Lite — the least expensive plan — unless you choose a different one. No payment details are required for the trial period, and no charge will occur without your involvement.
+**Trial period, 14 days — free.** For all new physicians, on the limits of the
+top Pro plan. At its conclusion, the account switches to the free plan, not to a
+paid one. No payment details are required for the trial period, and no charge
+will occur without your involvement.
 
-- **Lite — $9 per month** ($90 per year). A simple entry point: up to 30 patients in your practice, 5 case reviews and 5 discharge summaries per month, 60 minutes of video.
+- **Free — $0.** Indefinitely. A practice without AI: up to 30 patients, 60
+  minutes of video, 3 films in the studio, the question bank and your physician
+  profile. Case reviews, discharge summaries and AI consultations are switched
+  off.
 - **Start — $19 per month** ($190 per year). A small practice: up to 100 patients, 15 case reviews and 15 discharge summaries, 240 minutes of video.
 - **Growth — $49 per month** ($490 per year). A steady patient flow: up to 600 patients, 40 case reviews and 40 discharge summaries, 600 minutes of video.
 - **Pro — $99 per month** ($990 per year). A large practice: up to 2000 patients, 100 case reviews and 100 discharge summaries, 1200 minutes of video.
@@ -123,7 +143,7 @@ Case reviews and discharge summaries are counted monthly, and this is not a form
 - **Exam Prep Plus — $7 per month** ($70 per year). Adds timed testing.
 - **Exam Prep Unlimited — $15 per month** ($150 per year). Adds full simulation: question set according to the exam blueprint, timer, final report.
 
-On Growth and Pro, both modes are already included — there is nothing to purchase. The add-on is needed on the trial period, Lite, and Start, and it is also intended for students and residents who need only the tests and not the rest of the platform.
+On Growth and Pro, both modes are already included — there is nothing to purchase. The add-on is needed on the free plan and on Start, and it is also intended for students and residents who need only the tests and not the rest of the platform.
 
 Annual payment equals ten monthly payments: two months free. Current terms are always on the [pricing page](/pricing).
 

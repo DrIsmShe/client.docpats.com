@@ -79,9 +79,10 @@ Buna görə də mövzuların üçdə biri əhatə olunduqda 80 % hazırlıq tam 
 
 ## Neçə sual mövcuddur
 
-- **Lite** — ayda 500 sual.
-- **Sınaq dövrü və Start tarifi** — ayda 1500 sual.
-- **Growth və Pro** — məhdudiyyətsiz.
+- **Pulsuz tarif** — ayda 500 sual. Bank bizimdir və cavablandırma zamanı
+  modelə müraciət olunmur, ona görə suallar abunəsiz də əlçatandır.
+- **Start** — ayda 1500 sual.
+- **Growth, Pro və qeydiyyatdan sonrakı ilk 14 gün** — məhdudiyyətsiz.
 
 Suallar platformaya heç bir xərcə başa gəlməyən yeganə mövqedir:
 bank özümüzündür, keçid zamanı dil modelinə müraciət yoxdur. Buna görə də burada

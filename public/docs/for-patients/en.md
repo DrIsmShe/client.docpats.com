@@ -93,12 +93,12 @@ Only one thing is paid: how many times per month you can talk with
 the AI assistant about your health.
 
 - **Free — 0 $.** Unlimited duration. 2 assistant consultations per month.
-  **The first 3 months after registration — 10.**
+  **The first 14 days after registration — 10.**
 - **Plus — 9 $ per month** (90 $ per year). 15 consultations.
 
 Annual payment equals ten monthly payments: two months free.
 
-When the three months end, the account **reverts to free**, not
+When the two trial weeks end, the account **reverts to free**, not
 to paid. Charges never occur without your involvement: we do not request payment
 details and do not enroll anyone in a paid plan — users choose it themselves.
 

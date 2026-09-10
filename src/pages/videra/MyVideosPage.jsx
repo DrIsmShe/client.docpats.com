@@ -11,6 +11,7 @@
 // (VideraPage), связь с приёмом появится вместе с фазой привязок.
 
 import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import VideoPlayer from "../../components/video/VideoPlayer";
@@ -64,6 +65,28 @@ export default function MyVideosPage() {
   const [занят, setЗанят] = useState(null); // id ролика, по которому идёт действие
   const [грузим, setГрузим] = useState(false);
   const [переносим, setПереносим] = useState(false);
+
+  /* Открыть студию с пропуском.
+     Прямая ссылка на /dp-videra/ не годится: студия живёт на другом
+     сервере и сессии DocPats не видит — встречает гостя и разворачивает
+     на главную. Пропуск заказываем в момент нажатия: он живёт пять
+     минут, заготовленный заранее протух бы. */
+  const открытьСтудию = async (событие) => {
+    событие.preventDefault();
+    try {
+      const о = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/v1/videra/link`,
+        { withCredentials: true },
+      );
+      window.open(о.data.url, "_blank", "noopener,noreferrer");
+    } catch {
+      alert(
+        t("videra.failed", {
+          defaultValue: "Не удалось открыть студию. Попробуйте ещё раз.",
+        }),
+      );
+    }
+  };
 
   // Приём из студии: она открывает /doctor/videos?import=<id фильма>, и
   // страница сама разворачивает форму переноса с подставленным фильмом.
@@ -226,6 +249,7 @@ export default function MyVideosPage() {
 
         <a
           href="https://docpats.com/dp-videra/"
+          onClick={открытьСтудию}
           target="_blank"
           rel="noreferrer"
           style={стиль.ссылка}
@@ -280,6 +304,7 @@ export default function MyVideosPage() {
             обнаруживает, что переносить ещё нечего — и ему нужно туда. */}
         <a
           href="https://docpats.com/dp-videra/"
+          onClick={открытьСтудию}
           target="_blank"
           rel="noreferrer"
           style={стиль.кнопкаСсылка}

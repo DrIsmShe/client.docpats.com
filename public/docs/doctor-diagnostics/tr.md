@@ -69,10 +69,10 @@ etiketlemenizdir.
 
 ## Kaç analiz hakkı vardır
 
-- **Lite** — ayda 5 analiz.
-- **Deneme süresi ve Start tarifesi** — ayda 15.
+- **Ücretsiz tarife** — analiz yok: bu tarifede yapay zekâ tümüyle kapalıdır.
+- **Start** — ayda 15.
 - **Growth** — ayda 40.
-- **Pro** — ayda 100.
+- **Pro ve kayıttan sonraki ilk 14 gün** — ayda 100.
 
 Sayım, takvim ayına göre değil, 30 günlük kayan pencereye göre yapılır: kota
 ayın birinde sıfırlanmaz, kademeli olarak serbest kalır.

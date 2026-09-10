@@ -67,10 +67,10 @@ Verdikt formallıq deyil. O, eyni anda iki iş görür: bu, həm təhlilə əks
 
 ## Neçə təhlil əlçatandır
 
-- **Lite** — ayda 5 təhlil.
-- **Sınaq dövrü və Start tarifi** — ayda 15.
+- **Pulsuz tarif** — təhlil yoxdur: bu tarifdə süni intellekt tamamilə söndürülüb.
+- **Start** — ayda 15.
 - **Growth** — ayda 40.
-- **Pro** — ayda 100.
+- **Pro və qeydiyyatdan sonrakı ilk 14 gün** — ayda 100.
 
 Hesablama təqvim ayı üzrə deyil, 30 günlük sürüşən pəncərə üzrə aparılır: kvota
 ayın birində sıfırlanmır, tədricən boşalır.

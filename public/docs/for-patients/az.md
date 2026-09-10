@@ -93,12 +93,12 @@ qəbulun nə qədər davam edəcəyinə həkim və siz qərar verirsiniz.
 sağlamlığınız barədə danışa bilməniz.
 
 - **Free — 0 $.** Müddətsiz. Ayda köməkçi ilə 2 konsultasiya.
-  **Qeydiyyatdan sonrakı ilk 3 ay — 10.**
+  **Qeydiyyatdan sonrakı ilk 14 gün — 10.**
 - **Plus — ayda 9 $** (ildə 90 $). 15 konsultasiya.
 
 İllik ödəniş on aylıq ödənişə bərabərdir: iki ay hədiyyə.
 
-Üç ay bitdikdə hesab ödənişliyə deyil, **pulsuz tarifə keçir**. Sizin
+Sınaq iki həftəsi bitdikdə hesab ödənişliyə deyil, **pulsuz tarifə keçir**. Sizin
 iştirakınız olmadan heç bir məbləğ silinmir: ödəniş məlumatlarını tələb
 etmirik və heç kimi ödənişli tarifə yazmırıq — onu istifadəçilər özləri seçir.
 
