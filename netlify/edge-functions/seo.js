@@ -424,10 +424,10 @@ export default async function handler(request, context) {
           clinicSlug,
         )}/${segment}/${entityId}`,
       );
-      if (!res.ok) return context.next();
+      if (!res.ok) return нетМатериала(res, context);
       const data = await res.json();
       if (!data || (isDoctor ? !data.name : !data.title)) {
-        return context.next();
+        return отдать404(context);
       }
 
       const clinicName = data.clinic?.name || "";
@@ -640,9 +640,9 @@ export default async function handler(request, context) {
       if (sectionMatch) {
         const section = sectionMatch[2].toLowerCase();
         const res = await fetch(api);
-        if (!res.ok) return context.next();
+        if (!res.ok) return нетМатериала(res, context);
         const clinic = await res.json();
-        if (!clinic?.name) return context.next();
+        if (!clinic?.name) return отдать404(context);
 
         bodyDoctors = Array.isArray(clinic.doctors) ? clinic.doctors : null;
         bodyClinicName = clinic.name || "";
@@ -693,9 +693,9 @@ export default async function handler(request, context) {
             articleSlug,
           )}`,
         );
-        if (!res.ok) return context.next();
+        if (!res.ok) return нетМатериала(res, context);
         const article = await res.json();
-        if (!article?.title) return context.next();
+        if (!article?.title) return отдать404(context);
 
         const clinicName = article.clinic?.name || "";
         bodyClinicName = clinicName;
@@ -734,9 +734,9 @@ export default async function handler(request, context) {
       } else {
         const pageSlug = dpPageMatch[2];
         const res = await fetch(`${api}/pages/${encodeURIComponent(pageSlug)}`);
-        if (!res.ok) return context.next();
+        if (!res.ok) return нетМатериала(res, context);
         const page = await res.json();
-        if (!page?.title) return context.next();
+        if (!page?.title) return отдать404(context);
 
         const clinicName = page.clinic?.name || "";
         bodyClinicName = clinicName;
@@ -861,8 +861,13 @@ export default async function handler(request, context) {
       /* Клиники с таким слагом нет — значит адреса нет вовсе, если он не
          принадлежит самому приложению (/login, /pricing и прочие
          односегментные зоны проверяются списком). */
+      /* Оговорка про знакомый корень нужна только КОРНЕВОЙ форме
+         /<слаг>: под неё попадают и зоны приложения. У /clinics/<слаг>
+         двусмысленности нет — нет клиники, нет страницы. */
       const нетТакого = () =>
-        знакомыйКорень(url.pathname) ? context.next() : отдать404(context);
+        !clinicMatch && знакомыйКорень(url.pathname)
+          ? context.next()
+          : отдать404(context);
 
       const res = await fetch(
         `https://backend.docpats.com/api/v1/public/clinics/${encodeURIComponent(slug)}${localeQuery}`,
@@ -1108,10 +1113,10 @@ export default async function handler(request, context) {
       const res = await fetch(
         `https://news-api.docpats.com/api/synthesis/${articleId}`,
       );
-      if (!res.ok) return context.next();
+      if (!res.ok) return нетМатериала(res, context);
       const data = await res.json();
       const article = data?.article;
-      if (!article) return context.next();
+      if (!article) return отдать404(context);
 
       const seo = article.seo?.[locale] || article.seo?.ru || {};
       title = (seo.title || article.title || "")
@@ -1149,10 +1154,10 @@ export default async function handler(request, context) {
       const res = await fetch(
         `https://news-api.docpats.com/api/news/${slug}?locale=${locale}`,
       );
-      if (!res.ok) return context.next();
+      if (!res.ok) return нетМатериала(res, context);
       const data = await res.json();
       const article = data?.data;
-      if (!article) return context.next();
+      if (!article) return отдать404(context);
 
       title = (article.title || "").replace(/"/g, "&quot;");
       desc = (article.aiSummaryShort || article.summary || "")
@@ -1184,10 +1189,10 @@ export default async function handler(request, context) {
       const res = await fetch(
         `https://backend.docpats.com/doctor-profile/my-article-single/${articleId}`,
       );
-      if (!res.ok) return context.next();
+      if (!res.ok) return нетМатериала(res, context);
       const data = await res.json();
       const article = data?.data;
-      if (!article) return context.next();
+      if (!article) return отдать404(context);
 
       title = (article.title || "").replace(/"/g, "&quot;");
       desc = (article.metaDescription || article.abstract || "")
@@ -1207,10 +1212,10 @@ export default async function handler(request, context) {
       const res = await fetch(
         `https://backend.docpats.com/doctor-profile/my-article-scientific-single/${articleId}`,
       );
-      if (!res.ok) return context.next();
+      if (!res.ok) return нетМатериала(res, context);
       const data = await res.json();
       const article = data?.data;
-      if (!article) return context.next();
+      if (!article) return отдать404(context);
 
       title = (article.title || "").replace(/"/g, "&quot;");
       desc = (article.metaDescription || article.abstract || "")
@@ -1233,10 +1238,10 @@ export default async function handler(request, context) {
       const res = await fetch(
         `https://backend.docpats.com/doctor-profile/doctor-detail/${doctorId}`,
       );
-      if (!res.ok) return context.next();
+      if (!res.ok) return нетМатериала(res, context);
       const data = await res.json();
       const doctor = data;
-      if (!doctor) return context.next();
+      if (!doctor) return отдать404(context);
 
       const firstName = doctor.user?.firstName || "";
       const lastName = doctor.user?.lastName || "";
@@ -1291,12 +1296,12 @@ export default async function handler(request, context) {
       // Закрытый, снятый с публикации или несуществующий ролик — обычный
       // путь SPA: она покажет «ролик недоступен», а бот не получит карточку
       // на то, чего нет.
-      if (!res.ok) return context.next();
+      if (!res.ok) return нетМатериала(res, context);
       // Ответ обёрнут: { video: {...} }. Разбираем обе формы — обёртка
       // дешёвая, а молчаливый промах здесь виден только в чужой ленте.
       const тело = await res.json();
       const video = тело?.video || тело;
-      if (!video?.title) return context.next();
+      if (!video?.title) return отдать404(context);
 
       title = String(video.title).replace(/"/g, "&quot;").replace(/\n/g, " ").trim();
       // Без описания берём название: пустой текст в ленте выглядит как
@@ -1491,6 +1496,20 @@ export default async function handler(request, context) {
  * привычную страницу с шапкой и навигацией, а не в тупик. Статус при этом
  * честный — по нему поисковик выбрасывает адрес из очереди обхода.
  */
+/* Материал не отдался — отвечаем по причине отказа.
+ *
+ * API сказал «нет такого» (404/410) — страницы нет, и это 404. API не
+ * ответил или сломался — страница, возможно, жива, и объявлять её
+ * удалённой из-за чужого сбоя нельзя: за время аварии поисковик выбросит
+ * из индекса работающий раздел. Тогда прежний проход: приложение
+ * отрисует что сможет.
+ */
+function нетМатериала(res, context) {
+  return res.status === 404 || res.status === 410
+    ? отдать404(context)
+    : context.next();
+}
+
 async function отдать404(context) {
   const response = await context.next();
   let html = await response.text();
