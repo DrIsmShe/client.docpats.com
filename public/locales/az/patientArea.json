@@ -79,7 +79,12 @@
     "sortOldest": "Əvvəlcə köhnələr",
     "sorting": "Sıralama",
     "specialty": "İxtisas",
-    "title": "Məqalələr"
+    "title": "Məqalələr",
+    "kicker": "Həkimin nəşrləri",
+    "kindScientific": "Elmi məqalə",
+    "kindOpinion": "Həkimin rəyi",
+    "count": "Materiallar: {{count}}",
+    "loadFailed": "Nəşrləri yükləmək mümkün olmadı"
   },
   "common": {
     "actions": "Əməliyyatlar",

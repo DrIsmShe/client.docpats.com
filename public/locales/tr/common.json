@@ -2766,7 +2766,8 @@
       "partly": "Aktarılmadı: {{count}} ({{list}})",
       "progress": "Aktarılıyor: {{done}} / {{total}}…",
       "hide": "Aktarımı gizle",
-      "open": "Stüdyodan aktar"
+      "open": "Stüdyodan aktar",
+      "redirecting": "Video kitaplığınız açılıyor…"
     },
     "report": {
       "headVideo": "Videoyu şikâyet et",

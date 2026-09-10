@@ -2767,7 +2767,8 @@
       "partly": "Köçürülmədi: {{count}} ({{list}})",
       "progress": "Köçürülür: {{done}} / {{total}}…",
       "hide": "Köçürməni gizlət",
-      "open": "Studiyadan köçür"
+      "open": "Studiyadan köçür",
+      "redirecting": "Video kitabxananızı açırıq…"
     },
     "report": {
       "headVideo": "Videodan şikayət et",

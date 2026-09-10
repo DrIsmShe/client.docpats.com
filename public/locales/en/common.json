@@ -2793,7 +2793,8 @@
       "partly": "Not imported: {{count}} ({{list}})",
       "progress": "Importing {{done}} of {{total}}…",
       "hide": "Hide import",
-      "open": "Import from studio"
+      "open": "Import from studio",
+      "redirecting": "Opening your video library…"
     },
     "report": {
       "headVideo": "Report this video",

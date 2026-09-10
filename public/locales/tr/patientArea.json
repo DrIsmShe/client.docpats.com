@@ -79,7 +79,12 @@
     "sortOldest": "Önce eskiler",
     "sorting": "Sıralama",
     "specialty": "Uzmanlık",
-    "title": "Makaleler"
+    "title": "Makaleler",
+    "kicker": "Hekimin yayınları",
+    "kindScientific": "Bilimsel makale",
+    "kindOpinion": "Hekim görüşü",
+    "count": "Materyaller: {{count}}",
+    "loadFailed": "Yayınlar yüklenemedi"
   },
   "common": {
     "actions": "İşlemler",

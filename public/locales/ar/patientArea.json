@@ -79,7 +79,12 @@
     "sortOldest": "الأقدم أولًا",
     "sorting": "الترتيب",
     "specialty": "التخصص",
-    "title": "المقالات"
+    "title": "المقالات",
+    "kicker": "منشورات الطبيب",
+    "kindScientific": "مقال علمي",
+    "kindOpinion": "رأي الطبيب",
+    "count": "المواد: {{count}}",
+    "loadFailed": "تعذّر تحميل المنشورات"
   },
   "common": {
     "actions": "الإجراءات",

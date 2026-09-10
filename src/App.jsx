@@ -206,6 +206,7 @@ const PatientVideoTasksPage = lazy(() =>
 // Telegram-канал, поэтому они лежат в корне, а не в зоне кабинета.
 const PublicVideosPage = lazy(() => import("./pages/videra/PublicVideosPage"));
 const PublicVideoPage = lazy(() => import("./pages/videra/PublicVideoPage"));
+const StudioImportRedirect = lazy(() => import("./pages/videra/StudioImportRedirect"));
 // Управление каталогом роликов администратором платформы.
 const AdminVideosPage = lazy(() => import("./pages/admin/video/AdminVideosPage"));
 const AdminReportsPage = lazy(() => import("./pages/admin/video/AdminReportsPage"));
@@ -803,6 +804,12 @@ function App() {
               <Route path="/news" element={<NewsList />} />
               {/* Витрина роликов — публичная, без входа. */}
               <Route path="/videos" element={<PublicVideosPage />} />
+              {/* Перенос фильма из студии. Объявлен ДО "/videos/:id":
+                  иначе «import» был бы принят за идентификатор ролика.
+                  Студия ведёт сюда, а по кабинетам разводит платформа —
+                  она знает роль из сессии, а студия только со слов
+                  пропуска, который у человека может быть старым. */}
+              <Route path="/videos/import" element={<StudioImportRedirect />} />
               <Route path="/videos/:id" element={<PublicVideoPage />} />
               <Route path="/news/:slug" element={<NewsArticle />} />
               {/* Конференции. Публично и без авторизации: сюда ведут ссылки

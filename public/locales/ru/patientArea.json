@@ -79,7 +79,12 @@
     "sortOldest": "Сначала старые",
     "sorting": "Сортировка",
     "specialty": "Специализация",
-    "title": "Статьи"
+    "title": "Статьи",
+    "kicker": "Публикации врача",
+    "kindScientific": "Научная статья",
+    "kindOpinion": "Мнение врача",
+    "count": "Материалов: {{count}}",
+    "loadFailed": "Не удалось загрузить публикации"
   },
   "common": {
     "actions": "Действия",

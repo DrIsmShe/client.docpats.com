@@ -79,7 +79,12 @@
     "sortOldest": "Oldest first",
     "sorting": "Sorting",
     "specialty": "Specialty",
-    "title": "Articles"
+    "title": "Articles",
+    "kicker": "Physician's publications",
+    "kindScientific": "Research article",
+    "kindOpinion": "Physician's opinion",
+    "count": "Materials: {{count}}",
+    "loadFailed": "Could not load the publications"
   },
   "common": {
     "actions": "Actions",
