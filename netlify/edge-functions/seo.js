@@ -1226,7 +1226,25 @@ export default async function handler(request, context) {
          isBasedOn и sameAs — адрес оригинала лежит в базе движка
          (canonicalUrl есть у всех записей, проверено выборкой). */
       const издание = String(article.sourceName || "").trim();
-      const адресОригинала = String(article.canonicalUrl || "").trim();
+      /* Метки рассылки в адресе оригинала убираем: движок берёт адрес из
+         RSS, и там он приходит с utm_campaign. Со ссылкой на оригинал это
+         значит «оригинал вон по тому адресу с нашей меткой» — а метка
+         делает адрес другим, и указание на первоисточник промахивается. */
+      const адресОригинала = (() => {
+        const сырой = String(article.canonicalUrl || "").trim();
+        if (!сырой) return "";
+        try {
+          const u = new URL(сырой);
+          for (const имя of [...u.searchParams.keys()]) {
+            if (/^(utm_|fbclid|gclid|yclid|ref$)/i.test(имя)) {
+              u.searchParams.delete(имя);
+            }
+          }
+          return u.toString().replace(/\?$/, "");
+        } catch {
+          return сырой;
+        }
+      })();
       if (издание) {
         let сайтИздания;
         try {
