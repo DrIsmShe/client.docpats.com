@@ -1118,13 +1118,46 @@ export default async function handler(request, context) {
       locale = urlLocale || cookieLocale || "ru";
       schemaType = "MedicalWebPage";
 
+      /* Просим язык у API. Он отдаёт перевод, если тот УЖЕ готов в кэше,
+         и оригинал, если нет; заказывать перевод GET не станет — заказ
+         стоит денег, а GET дёргают роботы. До этого сюда всегда приезжал
+         оригинал, и по адресу /articles/<id>/en робот видел русский
+         текст под английским заголовком. */
       const res = await fetch(
-        `https://news-api.docpats.com/api/synthesis/${articleId}`,
+        `https://news-api.docpats.com/api/synthesis/${articleId}?locale=${locale}`,
       );
       if (!res.ok) return нетМатериала(res, context);
       const data = await res.json();
       const article = data?.article;
       if (!article) return отдать404(context);
+
+      /* Языковые версии — только существующие. translatedLocales приходит
+         из движка и перечисляет языки с ГОТОВЫМ переводом; статья без
+         переводов языковых адресов не заводит вовсе. */
+      const оригинал = ЯЗЫК(article.language) || "ru";
+      const переводы = Array.isArray(article.translatedLocales)
+        ? article.translatedLocales.map(ЯЗЫК).filter(Boolean)
+        : [];
+      const языки = [
+        оригинал,
+        ...переводы.filter((l) => l !== оригинал),
+      ];
+      const базаСтатьи = `https://docpats.com/articles/${articleId}`;
+      const адресЯзыка = (l) =>
+        l === оригинал ? базаСтатьи : `${базаСтатьи}/${l}`;
+
+      // Отданный язык, а не запрошенный: перевода нет — показан оригинал.
+      locale = ЯЗЫК(article.servedLocale) || оригинал;
+
+      if (языки.length > 1) {
+        alternateLinks = [
+          `<link data-seo="edge" rel="alternate" hreflang="x-default" href="${базаСтатьи}">`,
+          ...языки.map(
+            (l) =>
+              `<link data-seo="edge" rel="alternate" hreflang="${l}" href="${адресЯзыка(l)}">`,
+          ),
+        ].join("\n    ");
+      }
 
       const seo = article.seo?.[locale] || article.seo?.ru || {};
       title = (seo.title || article.title || "")
@@ -1139,7 +1172,10 @@ export default async function handler(request, context) {
           .trim()
           .slice(0, 155)
       ).replace(/"/g, "&quot;");
-      pageUrl = `https://docpats.com/articles/${articleId}${urlLocale ? "/" + urlLocale : ""}`;
+      /* Канонический адрес — язык, который РЕАЛЬНО отдан. Просили
+         локаль без перевода: показан оригинал, и языковой адрес был бы
+         вторым адресом того же текста. */
+      pageUrl = адресЯзыка(locale);
       publishedAt = article.createdAt;
       modifiedAt = article.updatedAt || article.createdAt;
       imageUrl = "https://docpats.com/og-image.jpg";
@@ -1174,14 +1210,48 @@ export default async function handler(request, context) {
       // Английская версия живёт на голом адресе; ?locale=en нормализуем в
       // него же, иначе в индекс попадут два адреса с одним содержимым.
       const newsBase = `https://docpats.com/news/${slug}`;
-      const localeHref = (c) => (c === "en" ? newsBase : `${newsBase}?locale=${c}`);
-      pageUrl = urlLocale ? localeHref(urlLocale) : newsBase;
-      alternateLinks = [
-        `<link data-seo="edge" rel="alternate" hreflang="x-default" href="${newsBase}">`,
-        ...["ru", "en", "az", "tr", "ar"].map(
-          (c) => `<link data-seo="edge" rel="alternate" hreflang="${c}" href="${localeHref(c)}">`,
-        ),
-      ].join("\n    ");
+      const оригинал = ЯЗЫК(article.language) || "en";
+      const localeHref = (c) =>
+        c === оригинал ? newsBase : `${newsBase}?locale=${c}`;
+
+      /* Языки, у которых ЕСТЬ собственный текст: оригинал плюс готовые
+         переводы. Здесь стоял зашитый список из пяти локалей, а переводов
+         новостей в системе нет ни одного — у всех записей
+         translationStatus: pending и пустое translations (проверено
+         выборкой: 20 из 20, оригинал английский у всех). Пять объявленных
+         версий вели на один и тот же английский текст: поисковик получал
+         пять почти одинаковых страниц вместо одной, а человек приходил по
+         русскому запросу на английскую статью. Объявить перевод, которого
+         нет, хуже, чем не объявлять ничего.
+
+         Появятся переводы — разметка появится сама: движок кладёт их в то
+         же поле translations. */
+      const переводы =
+        article.translations && typeof article.translations === "object"
+          ? Object.keys(article.translations).filter(
+              (c) => ЯЗЫК(c) && article.translations[c],
+            )
+          : [];
+      const языки = [...new Set([оригинал, ...переводы])];
+
+      /* Канонический адрес — язык, который РЕАЛЬНО отдан. Просят локаль
+         без перевода, сервер возвращает оригинал, и адрес с ?locale= для
+         него был бы вторым адресом того же самого текста. */
+      pageUrl =
+        urlLocale && языки.includes(urlLocale)
+          ? localeHref(urlLocale)
+          : newsBase;
+
+      alternateLinks =
+        языки.length > 1
+          ? [
+              `<link data-seo="edge" rel="alternate" hreflang="x-default" href="${newsBase}">`,
+              ...языки.map(
+                (c) =>
+                  `<link data-seo="edge" rel="alternate" hreflang="${c}" href="${localeHref(c)}">`,
+              ),
+            ].join("\n    ")
+          : "";
       publishedAt = article.publishedAt;
       modifiedAt = article.updatedAt || article.publishedAt;
       imageUrl = article.imageUrl || "https://docpats.com/og-image.jpg";
@@ -1541,6 +1611,14 @@ async function отдать404(context) {
     status: 404,
     headers: { "content-type": "text/html; charset=utf-8" },
   });
+}
+
+/** Код языка платформы — или null, если это не он. */
+function ЯЗЫК(код) {
+  const c = String(код || "")
+    .slice(0, 2)
+    .toLowerCase();
+  return ["ru", "en", "az", "tr", "ar"].includes(c) ? c : null;
 }
 
 function escHtml(v) {
