@@ -138,6 +138,45 @@ export const searchNews = async ({
 
 /*
 ========================
+ДАЙДЖЕСТ ИССЛЕДОВАНИЙ
+
+Наше короткое изложение чужой публикации со ссылкой на источник. Живёт в
+отдельной коллекции движка новостей — там физически нет полных текстов
+изданий, поэтому отсюда их нельзя получить даже по ошибке.
+========================
+*/
+
+export const fetchDigest = async ({
+  page = 1,
+  limit = 20,
+  specialty = "",
+  q = "",
+  locale = "ru",
+} = {}) => {
+  const params = new URLSearchParams();
+  params.append("page", page);
+  params.append("limit", limit);
+  params.append("locale", locale);
+  if (specialty) params.append("specialty", specialty);
+  if (q) params.append("q", q);
+  const res = await API_NEWS_AI.get(`/api/digest?${params.toString()}`);
+  return res.data;
+};
+
+export const fetchDigestCategories = async () => {
+  const res = await API_NEWS_AI.get("/api/digest/categories");
+  return res.data;
+};
+
+export const fetchDigestItem = async (slug, locale = "ru") => {
+  const res = await API_NEWS_AI.get(
+    `/api/digest/${encodeURIComponent(slug)}?locale=${locale}`,
+  );
+  return res.data;
+};
+
+/*
+========================
 SYNTHESIS
 ========================
 */

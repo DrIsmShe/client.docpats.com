@@ -585,7 +585,8 @@ const EmptyChat = lazy(() => import("./pages/communication/components/EmptyChat.
 const NewsList = lazy(() => import("./pages/NewsAI/NewsList.jsx"));
 const ConferencesList = lazy(() => import("./pages/Conferences/ConferencesList.jsx"));
 const ConferencePage = lazy(() => import("./pages/Conferences/ConferencePage.jsx"));
-const NewsArticle = lazy(() => import("./pages/NewsAI/NewsArticle"));
+const DigestList = lazy(() => import("./pages/digest/DigestList.jsx"));
+const DigestArticle = lazy(() => import("./pages/digest/DigestArticle.jsx"));
 const SynthesisPage = lazy(() => import("./pages/SynthesisPage/SynthesisPage.jsx"));
 const SynthesisArticlePage = lazy(() => import("./pages/SynthesisPage/SynthesisArticlePage.jsx"));
 const DoctorDetailsForAll = lazy(() => import("./pages/doctorProfilePages/shared/doctors/doctorDetailForAll.jsx"));
@@ -811,7 +812,17 @@ function App() {
                   пропуска, который у человека может быть старым. */}
               <Route path="/videos/import" element={<StudioImportRedirect />} />
               <Route path="/videos/:id" element={<PublicVideoPage />} />
-              <Route path="/news/:slug" element={<NewsArticle />} />
+              {/* Дайджест исследований: НАШЕ изложение чужой публикации со
+                  ссылкой на первоисточник. Пришёл на смену странице новости,
+                  которая показывала полный текст издания как свой. */}
+              <Route path="/digest" element={<DigestList />} />
+              <Route path="/digest/:slug" element={<DigestArticle />} />
+              {/* Старый адрес материала. Оставлен работающим, а не удалён:
+                  таких ссылок тысячи в индексе и в чужих подборках. Ведёт на
+                  ту же запись дайджеста — слаг у них общий. Постоянный
+                  редирект ставит edge-функция, здесь — переход внутри
+                  приложения, без перезагрузки. */}
+              <Route path="/news/:slug" element={<DigestArticle />} />
               {/* Конференции. Публично и без авторизации: сюда ведут ссылки
                   из писем врачам, и открываться они должны с телефона, где
                   сессии может не быть. */}

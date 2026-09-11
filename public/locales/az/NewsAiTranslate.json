@@ -14,7 +14,7 @@
       "news": "Xəbərlər",
       "research": "Tədqiqat"
     },
-    "newsShort": "Tibbi xəbərlər"
+    "newsShort": "Materiallar lenti"
   },
   "role": {
     "doctor": "Həkim",
@@ -171,9 +171,9 @@
   },
   "hero": {
     "breadcrumbHome": "Ana Səhifə",
-    "breadcrumbFeed": "Tibbi Xəbər Lenti",
-    "title": "Tibbi Xəbər Lenti",
-    "subtitle": "DocPats-dən tibbi tədqiqatlar, klinik xəbərlər və AI-analitika",
+    "breadcrumbFeed": "Materiallar lenti",
+    "title": "Həkim materialları və elmi analitika",
+    "subtitle": "Praktik həkimlərin təhlilləri və rəyləri, elmi məqalələr və DocPats analitikası",
     "searchTitle": "Axtarış:",
     "searchPlaceholder": "Məqalə, xəstəlik, müalicə axtar…",
     "searchBtn": "Axtar",
@@ -262,5 +262,25 @@
   "filter_all_sections": "Bütün bölmələr",
   "filter_kind": "Müəllif",
   "filter_all_kinds": "Bütün müəlliflər",
-  "filter_reset": "Sıfırla"
+  "filter_reset": "Sıfırla",
+  "digest": {
+    "kicker": "Dicest",
+    "title": "Tədqiqat dicesti",
+    "lede": "Yeni elmi nəşrlər haqqında qısaca: nə öyrənilib, kimlərdə və nə alınıb. Tam mətn naşirin saytındadır.",
+    "searchPlaceholder": "Dicestdə axtar…",
+    "searchGo": "Axtar",
+    "count": "Material sayı: {{count}}",
+    "evidence": {
+      "high": "Yüksək sübutluluq",
+      "moderate": "Orta sübutluluq",
+      "low": "Aşağı sübutluluq"
+    },
+    "readAtSource": "Mənbədə oxu — {{source}}",
+    "backToList": "← Dicestə qayıt",
+    "sourceHeading": "İlkin mənbə",
+    "disclaimer": "Xülasə açıq nəşr əsasında DocPats tərəfindən hazırlanıb. Tam mətn və ona olan hüquqlar naşirə aiddir.",
+    "notYetSummarized": "Bu material üçün xülasə hələ hazır deyil. Hələlik ilkin mənbəyə keçid mövcuddur.",
+    "languages": "Dillər:",
+    "backToFeed": "← Materiallar lentinə qayıt"
+  }
 }

@@ -212,17 +212,24 @@ function getItemLink(item, { isAuthenticated, userRole } = {}) {
 
 const DOCTOR_API = process.env.REACT_APP_API_URL || "";
 
+/* Мнения врачей.
+ *
+ * specialization — специальность АВТОРА, cat — тема статьи. Это разные
+ * вещи, и сервер их различает: кардиолог пишет и о диабете. Кнопка «Моя
+ * специальность» спрашивает первое, выпадающий список тем — второе. */
 async function fetchArticles({
   page = 1,
   perPage = 20,
   qTitle = "",
   sortBy = "date_desc",
   cat = "",
+  specialization = "",
   locale = "en",
 } = {}) {
   const p = new URLSearchParams({ page, perPage, sortBy });
   if (qTitle) p.set("qTitle", qTitle);
   if (cat) p.set("cat", cat);
+  if (specialization) p.set("specialization", specialization);
   return (
     await axios.get(`${DOCTOR_API}/doctor-profile/articles-all?${p}`, {
       headers: { "X-Language": locale, "Accept-Language": locale },
@@ -236,11 +243,13 @@ async function fetchScientificArticles({
   qTitle = "",
   sortBy = "date_desc",
   cat = "",
+  specialization = "",
   locale = "en",
 } = {}) {
   const p = new URLSearchParams({ page, perPage, sortBy });
   if (qTitle) p.set("qTitle", qTitle);
   if (cat) p.set("cat", cat);
+  if (specialization) p.set("specialization", specialization);
   return (
     await axios.get(
       `${DOCTOR_API}/doctor-profile/articles-scientific-all?${p}`,
@@ -299,9 +308,18 @@ export default function NewsList() {
     apiInstance
       .get("/api/me/specialty")
       .then(({ data }) => {
-        if (cancelled || !data?.feedSection) return;
-        setMySection(data.feedSection);
+        if (cancelled) return;
+        /* Раздел ленты и название специальности — РАЗНЫЕ вещи, и нужны
+           они разным источникам. Название («Кардиолог») спрашивают
+           статьи врачей: там фильтр идёт по специальности автора. Ключ
+           раздела («cardiology») спрашивает аналитика движка новостей.
+           Раньше при пустом feedSection выходили сразу, и название тоже
+           терялось — у врача без своего раздела ленты кнопка «Моя
+           специальность» не появлялась вовсе, хотя статьи коллег по
+           специальности в ленте есть. */
         setMySpecName(data.specialization || "");
+        if (!data.feedSection) return;
+        setMySection(data.feedSection);
         // Врач заходит сюда за своей темой — включаем её сразу. Общая лента
         // остаётся в одном клике, а разбирать восемь с половиной тысяч чужих
         // материалов, чтобы добраться до своих, никто не станет.
@@ -354,11 +372,15 @@ export default function NewsList() {
   const [synTotal, setSynTotal] = useState(0);
   const [doctorTotal, setDoctorTotal] = useState(0);
   const [categoryList, setCategoryList] = useState([]);
-  const [aiCategories, setAiCategories] = useState([]);
+  /* Полный словарь тем. Приходит в meta.categories обоих эндпоинтов
+     статей и считается по ВСЕМ опубликованным материалам, а не по
+     показанной странице. Раньше список собирался из двадцати карточек на
+     экране: выбрав тему, посетитель получал список из одной темы — той,
+     что уже выбрана, — и вернуться к другой было нечем. */
+  const [serverCategories, setServerCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
 
-  const API_BASE = process.env.REACT_APP_NEWS_API;
   const isRTL = RTL_LOCALES.has(locale);
   const dir = isRTL ? "rtl" : "ltr";
 
@@ -372,7 +394,6 @@ export default function NewsList() {
   /* Вид материала. Пустое значение — все виды разом. */
   const ВИДЫ = [
     { value: "", label: t("filters.all") },
-    { value: "news", label: t("news_ai_news") },
     // «Научные статьи» — один пункт на два источника: разборы, написанные
     // врачами, и аналитику, собранную ИИ из научных публикаций. Для
     // читателя это один жанр — длинный текст со ссылками на источники, — и
@@ -391,7 +412,18 @@ export default function NewsList() {
   ];
 
   const hasSearch = Boolean(appliedSearch);
-  const doLoadAI = type === "" || type === "news" || hasSearch;
+  /* НОВОСТЕЙ ИЗ ИЗДАНИЙ В ЭТОЙ ЛЕНТЕ БОЛЬШЕ НЕТ.
+   *
+   * Здесь показывается только СВОЁ: разборы и мнения врачей, их научные
+   * статьи и аналитика, собранная ИИ из научных публикаций. Чужие работы
+   * переехали в «Дайджест исследований» (/digest) — там на карточке наше
+   * изложение в три-четыре предложения и ссылка на издание, а не
+   * перепечатанный текст, выданный за наш материал.
+   *
+   * Флаг оставлен, а не выкорчеван: он читается ещё в пяти местах —
+   * пагинация, «загрузить ещё», счётчики. Ложь в одном месте понятнее
+   * пяти правок, каждая из которых может разойтись с остальными. */
+  const doLoadAI = false;
   const doLoadPub = type === "" || type === "publications" || hasSearch;
   // Научные статьи: врачебные разборы и аналитика ИИ грузятся вместе —
   // это один пункт меню.
@@ -420,18 +452,19 @@ export default function NewsList() {
     checkAuthentication();
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(`${API_BASE}/api/news/categories`)
-      .then((res) => setAiCategories(res.data?.categories || []))
-      .catch(console.error);
-  }, []);
+  /* Темы из показанных карточек — добавка к серверному словарю: так в
+     список попадают специальности аналитики движка («cardiology»), у
+     которой своего meta нет.
 
+     Специальность АВТОРА сюда больше не попадает. «Otolaryngologist» —
+     это не тема статьи, а профессия того, кто её написал; в списке тем
+     она стояла рядом с «Гастроэнтерология» и выбиралась как тема, после
+     чего фильтр по теме не находил ничего. Специальность спрашивают
+     кнопкой «Моя специальность». */
   useEffect(() => {
     if (feed.length === 0) return;
     const cats = new Set();
     feed.forEach((item) => {
-      if (item.specialization) cats.add(item.specialization);
       (item.categories || []).forEach((c) => {
         if (c) cats.add(c);
       });
@@ -443,13 +476,25 @@ export default function NewsList() {
     async (pageNum = 1) => {
       setLoading(true);
       const q = appliedSearch;
+      /* Фильтры теперь относятся к СВОИМ материалам — мнениям врачей,
+         их научным статьям и аналитике движка. Раньше и «Моя
+         специальность», и список тем уходили только в запрос новостей:
+         новости из ленты ушли, и обе кнопки перестали что-либо менять. */
+      const мояСпец = onlyMine && mySpecName ? mySpecName : "";
       const docParams = {
         page: pageNum,
         perPage: 20,
         qTitle: q,
         cat: appliedCategory,
+        specialization: мояСпец,
         sortBy: appliedSort,
       };
+      /* Аналитика живёт в движке новостей и знает специальность ключом
+         («cardiology»), а не названием. Выбранная тема передаётся туда же:
+         совпадёт — сузит выборку, не совпадёт — аналитики в выдаче не
+         будет, и это честное поведение фильтра, а не пропуск. */
+      const синтезСпец =
+        appliedCategory || (onlyMine && mySection ? mySection : "");
       try {
         const [aiRes, pubRes, sciRes, docRes, synRes] = await Promise.allSettled([
           doLoadAI
@@ -478,7 +523,12 @@ export default function NewsList() {
             : Promise.resolve(null),
           doLoadDoctors ? fetchDoctors() : Promise.resolve(null),
           doLoadSyn
-            ? fetchSynthesisArticles({ page: pageNum, limit: 20, locale })
+            ? fetchSynthesisArticles({
+                page: pageNum,
+                limit: 20,
+                locale,
+                specialty: синтезСпец,
+              })
             : Promise.resolve(null),
         ]);
 
@@ -498,6 +548,18 @@ export default function NewsList() {
           setAiTotal(0);
           setAiPage(1);
           setAiTotalPages(1);
+        }
+
+        const темыСервера = new Set();
+        for (const r of [pubRes, sciRes]) {
+          if (r.status === "fulfilled" && Array.isArray(r.value?.meta?.categories)) {
+            r.value.meta.categories.forEach((c) => c && темыСервера.add(c));
+          }
+        }
+        if (темыСервера.size) {
+          setServerCategories((прежние) =>
+            [...new Set([...прежние, ...темыСервера])].sort(),
+          );
         }
 
         if (pubRes.status === "fulfilled" && pubRes.value) {
@@ -561,12 +623,31 @@ export default function NewsList() {
         setLoading(false);
       }
     },
-    [type, locale, appliedSearch, appliedCategory, appliedSort, onlyMine, mySection],
+    [
+      type,
+      locale,
+      appliedSearch,
+      appliedCategory,
+      appliedSort,
+      onlyMine,
+      mySection,
+      mySpecName,
+    ],
   );
 
   useEffect(() => {
     loadAll(1);
-  }, [type, locale, appliedSearch, appliedCategory, appliedSort, onlyMine, mySection, loadAll]);
+  }, [
+    type,
+    locale,
+    appliedSearch,
+    appliedCategory,
+    appliedSort,
+    onlyMine,
+    mySection,
+    mySpecName,
+    loadAll,
+  ]);
 
   const hasMore =
     (doLoadAI && aiPage < aiTotalPages) ||
@@ -576,10 +657,14 @@ export default function NewsList() {
 
   const handleLoadMore = async () => {
     setLoadingMore(true);
+    const мояСпец = onlyMine && mySpecName ? mySpecName : "";
+    const синтезСпец =
+      appliedCategory || (onlyMine && mySection ? mySection : "");
     const docParams = {
       perPage: 20,
       qTitle: appliedSearch,
       cat: appliedCategory,
+      specialization: мояСпец,
       sortBy: appliedSort,
     };
     try {
@@ -608,7 +693,12 @@ export default function NewsList() {
           ? fetchScientificArticles({ ...docParams, page: sciPage + 1, locale })
           : Promise.resolve(null),
         doLoadSyn && synPage < synTotalPages
-          ? fetchSynthesisArticles({ page: synPage + 1, limit: 20, locale })
+          ? fetchSynthesisArticles({
+              page: synPage + 1,
+              limit: 20,
+              locale,
+              specialty: синтезСпец,
+            })
           : Promise.resolve(null),
       ]);
       let ai = [],
@@ -684,8 +774,11 @@ export default function NewsList() {
     return () => clearTimeout(delay);
   }, [searchInput]);
 
+  /* Рубрики собираются из того, что в ленте действительно есть. Раньше
+     список приходил из коллекции новостей — теперь их здесь нет, и фильтр
+     предлагал бы специальности, по которым не нашлось бы ни одной карточки. */
   const allCategories = [
-    ...new Set([...aiCategories.map((c) => c._id), ...categoryList]),
+    ...new Set([...serverCategories, ...categoryList]),
   ].sort();
 
   return (
@@ -762,6 +855,24 @@ export default function NewsList() {
         {/* FILTER BAR */}
         <div className="nl-filter-bar">
           <div className="nl-filter-bar-inner">
+            {/* Дорога в дайджест. Здесь, а не в шапке: шапку намеренно
+                свели к одной кнопке, а посетитель этой страницы как раз
+                и есть тот, кому дайджест нужен — он пришёл читать.
+
+                Открывается В НОВОЙ ВКЛАДКЕ: лента к этому моменту уже
+                пролистана, отфильтрована и догружена кнопкой «ещё», и
+                уход из неё стоил бы всей этой работы — возврат показал бы
+                первые двадцать карточек с начала. Обратная ссылка на
+                странице дайджеста есть на случай, если вкладка всё-таки
+                одна. */}
+            <a
+              className="nl-digest-link"
+              href="/digest"
+              target="_blank"
+              rel="noopener"
+            >
+              {t("digest.title")}
+            </a>
             <div className="nl-filter-tabs">
               {/* Аналитика теперь такая же вкладка, как остальные: раньше она
                   уводила на отдельную страницу, и лента обрывалась. Отдельная
@@ -804,7 +915,7 @@ export default function NewsList() {
                 Показывается только врачу, у которого специальность указана и
                 для неё есть раздел: обещать «моя специальность» терапевту, у
                 которого своего раздела нет, — значит показать ему пустоту. */}
-            {mySection && (
+            {(mySection || mySpecName) && (
               <div className="nl-mine">
                 <button
                   className={`nl-mine-btn${onlyMine ? " active" : ""}`}
@@ -1398,6 +1509,11 @@ const CSS = `
 .nl-mine{display:flex;gap:4px;flex-shrink:0;margin-inline-end:8px}
 .nl-mine-btn{font:inherit;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:5px 12px;border:1px solid var(--border);background:#fff;color:#6b7280;border-radius:999px;cursor:pointer;white-space:nowrap}
 .nl-mine-btn.active{background:#0f766e;border-color:#0f766e;color:#fff}
+.nl-digest-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;
+  letter-spacing:.02em;color:var(--teal,#0f766e);background:rgba(15,118,110,.08);
+  border:1.5px solid rgba(15,118,110,.25);border-radius:8px;padding:7px 13px;
+  text-decoration:none;white-space:nowrap;transition:background .15s}
+.nl-digest-link:hover{background:rgba(15,118,110,.15)}
 .nl-filter-tabs{display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap;border-inline-end:1px solid var(--border);padding-inline-end:16px;margin-inline-end:4px}
 /* Селектор вида материала: тот же рост и та же рамка, что у соседних
    полей строки фильтров, — иначе он читается как чужеродный элемент. */

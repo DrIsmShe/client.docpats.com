@@ -102,7 +102,7 @@
     },
     "myProfile": "My profile",
     "signOut": "Sign out",
-    "newsShort": "Medical news"
+    "newsShort": "Materials feed"
   },
   "welcome": "Welcome",
   "role": {
@@ -127,9 +127,9 @@
   },
   "hero": {
     "breadcrumbHome": "Home",
-    "breadcrumbFeed": "Medical News Feed",
-    "title": "Medical News Feed",
-    "subtitle": "Medical research, clinical news and AI-powered insights from DocPats",
+    "breadcrumbFeed": "Materials feed",
+    "title": "Doctors' materials and research analysis",
+    "subtitle": "Reviews and opinions from practising doctors, scientific papers and DocPats analysis",
     "searchTitle": "Search:",
     "searchPlaceholder": "Search articles, conditions, treatments…",
     "searchBtn": "Search",
@@ -262,5 +262,25 @@
   "filter_all_sections": "All sections",
   "filter_kind": "Author",
   "filter_all_kinds": "All authors",
-  "filter_reset": "Reset"
+  "filter_reset": "Reset",
+  "digest": {
+    "kicker": "Digest",
+    "title": "Research digest",
+    "lede": "Short takes on recent research: what was studied, in whom, and what came out. The full text stays with the publisher.",
+    "searchPlaceholder": "Search the digest…",
+    "searchGo": "Search",
+    "count": "{{count}} items",
+    "evidence": {
+      "high": "High-quality evidence",
+      "moderate": "Moderate evidence",
+      "low": "Low-level evidence"
+    },
+    "readAtSource": "Read at the source — {{source}}",
+    "backToList": "← Back to the digest",
+    "sourceHeading": "Original publication",
+    "disclaimer": "Summary written by DocPats from an openly available publication. The full text and its rights belong to the publisher.",
+    "notYetSummarized": "A summary for this item is not ready yet. For now, the link to the original is below.",
+    "languages": "Languages:",
+    "backToFeed": "← Back to the feed"
+  }
 }

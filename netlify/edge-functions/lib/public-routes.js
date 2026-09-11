@@ -35,6 +35,7 @@ export const ROOT_SEGMENTS = new Set([
   "consultation",
   "demo",
   "diagnostics",
+  "digest",
   "docs",
   "doctor",
   "dp",

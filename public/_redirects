@@ -67,6 +67,8 @@
 /demo/*                /index.html   200
 /diagnostics           /index.html   200
 /diagnostics/*         /index.html   200
+/digest                /index.html   200
+/digest/*              /index.html   200
 /docs                  /index.html   200
 /docs/*                /index.html   200
 /doctor                /index.html   200

@@ -60,16 +60,32 @@ const RESERVED_ROOT = new Set([
  * ветки — объяснить, что за раздел, и дать ссылки вглубь.
  */
 const SECTIONS = {
-  "/news": {
-    title: "Медицинские новости и исследования — DocPats",
+  "/digest": {
+    title: "Дайджест исследований — DocPats",
     desc:
-      "Лента медицинских новостей и разборов исследований: клинические " +
-      "рекомендации, публикации и обзоры для практикующих врачей. Пять языков.",
-    h1: "Лента медицинских новостей",
+      "Коротко о свежих научных публикациях: что изучали, на ком и что " +
+      "получилось. Изложение DocPats и ссылка на первоисточник. Пять языков.",
+    h1: "Дайджест исследований",
     text:
-      "Новости медицины и разборы исследований, отобранные для практикующих " +
-      "врачей: клинические рекомендации, публикации, обзоры доказательной базы.",
+      "Короткие изложения свежих научных публикаций: дизайн исследования, " +
+      "выборка, результат и что он значит для практики. Каждая запись ведёт " +
+      "к оригиналу на сайте издания.",
     links: [
+      ["/articles", "Научные статьи и аналитика"],
+      ["/news", "Лента материалов врачей"],
+    ],
+  },
+  "/news": {
+    title: "Материалы врачей и научная аналитика — DocPats",
+    desc:
+      "Разборы и мнения практикующих врачей, их научные статьи и аналитика " +
+      "по медицинским источникам. Пять языков, обновляется ежедневно.",
+    h1: "Лента материалов",
+    text:
+      "Разборы и мнения практикующих врачей, научные статьи и аналитика по " +
+      "медицинским источникам. Обзоры чужих публикаций вынесены в дайджест.",
+    links: [
+      ["/digest", "Дайджест исследований"],
       ["/articles", "Научные статьи и аналитика"],
       ["/conferences", "Медицинские конференции"],
     ],
@@ -84,7 +100,7 @@ const SECTIONS = {
       "Разборы врачей и аналитика по медицинским и научным источникам. " +
       "Каждая статья содержит перечень источников и разбор доказательной базы.",
     links: [
-      ["/news", "Лента медицинских новостей"],
+      ["/news", "Лента материалов врачей"],
       ["/videos", "Медицинские ролики DP-Tube"],
     ],
   },
@@ -125,7 +141,10 @@ const SECTIONS = {
     text:
       "Календарь конференций с программой, сроками регистрации и условиями " +
       "участия — для врачей, которые планируют выступления и обучение.",
-    links: [["/news", "Лента медицинских новостей"]],
+    links: [
+      ["/news", "Лента материалов врачей"],
+      ["/digest", "Дайджест исследований"],
+    ],
   },
   "/about": {
     title: "О платформе DocPats — кто её делает и для кого",
@@ -392,7 +411,8 @@ export default async function handler(request, context) {
         ),
         tag("h2", "Разделы платформы"),
         list([
-          link("/news", "Лента медицинских новостей"),
+          link("/news", "Лента материалов врачей"),
+          link("/digest", "Дайджест исследований"),
           link("/articles", "Научные статьи и аналитика"),
           link("/videos", "DP-Tube — медицинские ролики"),
           link("/conferences", "Медицинские конференции"),
@@ -1284,7 +1304,28 @@ export default async function handler(request, context) {
       },
     });
   }
-  const newsMatch = url.pathname.match(/^\/news\/([^/]+)$/);
+  /* Старый адрес материала: /news/<слаг> → /digest/<слаг>.
+   *
+   * Страница новости показывала полный текст чужого издания как свой;
+   * взамен есть дайджест — НАШЕ изложение в три-четыре предложения и
+   * ссылка на оригинал. Слаг у записей общий, так что адрес переносится
+   * один в один.
+   *
+   * 301, а не рендер по-старому: таких адресов тысячи в индексе, и
+   * склеить их с новыми должен поисковик. Язык переносим — иначе читатель,
+   * пришедший по арабской ссылке, попадёт на русскую версию. */
+  const старыйАдресНовости = url.pathname.match(/^\/news\/([^/]+)$/);
+  if (старыйАдресНовости) {
+    const язык = ЯЗЫК(url.searchParams.get("locale"));
+    return new Response(null, {
+      status: 301,
+      headers: {
+        location: `/digest/${старыйАдресНовости[1]}${язык ? `?locale=${язык}` : ""}`,
+      },
+    });
+  }
+
+  const digestMatch = url.pathname.match(/^\/digest\/([^/]+)$/);
   const doctorArticleMatch = url.pathname.match(
     /^\/public\/doctor-profile\/article-detail-for-all\/([a-f0-9]{24})$/,
   );
@@ -1300,7 +1341,7 @@ export default async function handler(request, context) {
 
   if (
     !articleMatch &&
-    !newsMatch &&
+    !digestMatch &&
     !doctorArticleMatch &&
     !scientificArticleMatch &&
     !doctorProfileMatch &&
@@ -1414,42 +1455,46 @@ export default async function handler(request, context) {
         String(article.body || "").replace(/[#*_>`]/g, " "),
         6000,
       );
-    } else if (newsMatch) {
-      // Чужой материал: в индекс не отдаём, ссылки со страницы — работают.
-      noIndex = true;
-      const slug = newsMatch[1];
+    } else if (digestMatch) {
+      /* ЗАПИСЬ ДАЙДЖЕСТА.
+       *
+       * Это НАШ текст, поэтому страница индексируется. Прежняя страница
+       * новости стояла под noindex — и правильно: там лежал полный текст
+       * чужого издания, и просить поисковик его индексировать значило бы
+       * заявлять на него права. Здесь три-четыре предложения, написанные
+       * нами от фактов, и ссылка на первоисточник.
+       *
+       * Издателем объявлены МЫ — изложение действительно наше. Связь с
+       * оригиналом идёт через isBasedOn: «это изложение вон той работы».
+       * Ровно те же два поля, что и раньше, но развёрнутые правильной
+       * стороной.
+       */
+      const slug = digestMatch[1];
+      const запрошен = ЯЗЫК(url.searchParams.get("locale"));
       const cookieHeader = request.headers.get("cookie") || "";
-      const cookieLocale = cookieHeader.match(/locale=([a-z]{2})/)?.[1];
-      const urlLocale = url.searchParams.get("locale");
-      locale = urlLocale || cookieLocale || "en";
-      schemaType = "NewsArticle";
+      const cookieLocale = ЯЗЫК(cookieHeader.match(/locale=([a-z]{2})/)?.[1]);
+      locale = запрошен || cookieLocale || "ru";
+      schemaType = "ScholarlyArticle";
 
       const res = await fetch(
-        `https://news-api.docpats.com/api/news/${slug}?locale=${locale}`,
+        `https://news-api.docpats.com/api/digest/${slug}?locale=${locale}`,
       );
       if (!res.ok) return нетМатериала(res, context);
       const data = await res.json();
-      const article = data?.data;
-      if (!article) return отдать404(context);
+      const item = data?.data;
+      if (!item) return отдать404(context);
 
-      title = (article.title || "").replace(/"/g, "&quot;");
-      desc = краткоеОписание(
-        article.aiSummaryShort || article.summary || "",
-      ).replace(/"/g, "&quot;");
+      title = (item.title || item.originalTitle || "").replace(/"/g, "&quot;");
+      desc = краткоеОписание(item.intro || "").replace(/"/g, "&quot;");
 
-      /* Издатель — ОРИГИНАЛЬНОЕ издание, а не мы.
-         Здесь стояло «publisher: DocPats» на материале STAT News и PLOS:
-         разметка утверждала, что чужую статью опубликовали мы. Ставим
-         настоящее издание и связываем страницу с первоисточником через
-         isBasedOn и sameAs — адрес оригинала лежит в базе движка
-         (canonicalUrl есть у всех записей, проверено выборкой). */
-      const издание = String(article.sourceName || "").trim();
-      /* Метки рассылки в адресе оригинала убираем: движок берёт адрес из
-         RSS, и там он приходит с utm_campaign. Со ссылкой на оригинал это
-         значит «оригинал вон по тому адресу с нашей меткой» — а метка
-         делает адрес другим, и указание на первоисточник промахивается. */
+      /* Язык — тот, что РЕАЛЬНО отдан, а не тот, что попросили. Если
+         изложения на запрошенном языке нет, сервер возвращает русское, и
+         объявлять такую страницу арабской значит врать и разметке, и
+         читателю. */
+      locale = ЯЗЫК(item.lang) || "ru";
+
       const адресОригинала = (() => {
-        const сырой = String(article.canonicalUrl || "").trim();
+        const сырой = String(item.canonicalUrl || "").trim();
         if (!сырой) return "";
         try {
           const u = new URL(сырой);
@@ -1463,88 +1508,43 @@ export default async function handler(request, context) {
           return сырой;
         }
       })();
-      if (издание) {
-        let сайтИздания;
-        try {
-          сайтИздания = адресОригинала
-            ? new URL(адресОригинала).origin
-            : undefined;
-        } catch {
-          сайтИздания = undefined;
-        }
-        издательМатериала = {
-          "@type": "Organization",
-          name: издание,
-          ...(сайтИздания ? { url: сайтИздания } : {}),
-        };
-      }
       if (адресОригинала) основаноНа = адресОригинала;
 
-      // Язык — тот, на котором материал НАПИСАН. Стояло значение из
-      // запроса, и английский текст объявлялся русским.
-      locale = ЯЗЫК(article.language) || "en";
-      // Английская версия живёт на голом адресе; ?locale=en нормализуем в
-      // него же, иначе в индекс попадут два адреса с одним содержимым.
-      const newsBase = `https://docpats.com/news/${slug}`;
-      const оригинал = ЯЗЫК(article.language) || "en";
+      /* Русский живёт на голом адресе — он же язык оригинала изложения,
+         остальные четыре получаются переводом в том же вызове модели. */
+      const ОРИГИНАЛ = "ru";
+      const digestBase = `https://docpats.com/digest/${slug}`;
       const localeHref = (c) =>
-        c === оригинал ? newsBase : `${newsBase}?locale=${c}`;
+        c === ОРИГИНАЛ ? digestBase : `${digestBase}?locale=${c}`;
 
-      /* Языки, у которых ЕСТЬ собственный текст: оригинал плюс готовые
-         переводы. Здесь стоял зашитый список из пяти локалей, а переводов
-         новостей в системе нет ни одного — у всех записей
-         translationStatus: pending и пустое translations (проверено
-         выборкой: 20 из 20, оригинал английский у всех). Пять объявленных
-         версий вели на один и тот же английский текст: поисковик получал
-         пять почти одинаковых страниц вместо одной, а человек приходил по
-         русскому запросу на английскую статью. Объявить перевод, которого
-         нет, хуже, чем не объявлять ничего.
+      /* Объявляем только те языки, на которых изложение действительно
+         написано: список приходит с сервера (availableLangs), а не зашит
+         здесь пятёркой. Пять hreflang на два существующих перевода —
+         заявка на страницы, которых нет. */
+      const языки = Array.isArray(item.availableLangs)
+        ? item.availableLangs.filter((c) => ЯЗЫК(c))
+        : [locale];
 
-         Появятся переводы — разметка появится сама: движок кладёт их в то
-         же поле translations. */
-      const переводы =
-        article.translations && typeof article.translations === "object"
-          ? Object.keys(article.translations).filter(
-              (c) => ЯЗЫК(c) && article.translations[c],
-            )
-          : [];
-      const языки = [...new Set([оригинал, ...переводы])];
-
-      /* Канонический адрес — язык, который РЕАЛЬНО отдан. Просят локаль
-         без перевода, сервер возвращает оригинал, и адрес с ?locale= для
-         него был бы вторым адресом того же самого текста. */
-      pageUrl =
-        urlLocale && языки.includes(urlLocale)
-          ? localeHref(urlLocale)
-          : newsBase;
+      pageUrl = языки.includes(locale) ? localeHref(locale) : digestBase;
 
       alternateLinks =
         языки.length > 1
           ? [
-              `<link data-seo="edge" rel="alternate" hreflang="x-default" href="${newsBase}">`,
+              `<link data-seo="edge" rel="alternate" hreflang="x-default" href="${digestBase}">`,
               ...языки.map(
                 (c) =>
                   `<link data-seo="edge" rel="alternate" hreflang="${c}" href="${localeHref(c)}">`,
               ),
             ].join("\n    ")
           : "";
-      publishedAt = article.publishedAt;
-      modifiedAt = article.updatedAt || article.publishedAt;
-      /* Картинка — СВОЯ, а не ссылка на сервер издания.
-         Здесь стоял прямой адрес картинки с sciencedaily.com и statnews.com:
-         каждое открытие и каждый шеринг грузили их сервер, а любой их
-         403 превращал превью в пустоту. Своё изображение честнее: превью
-         показывает нашу страницу, а не выдаёт чужую иллюстрацию за нашу.
-         Вернуть картинку издания можно, но не ссылкой — перезаливом в R2,
-         это работа движка, а не отдающего HTML. */
+
+      publishedAt = item.publishedAt;
+      modifiedAt = item.publishedAt;
       imageUrl = "https://docpats.com/og-image.jpg";
-      /* Только сводка, без поля content.
-         В content лежит ПОЛНЫЙ текст чужой публикации, и вставлять его в
-         наш HTML не было смысла: новости закрыты noindex, поисковик сюда
-         не придёт. Оставалось одно следствие — чужая статья лежала в
-         исходном коде нашей страницы и доставалась каждому, кто noindex
-         игнорирует. Сводку пишет движок, она наша. */
-      bodyText = toText(article.aiSummaryShort || article.summary || "", 1200);
+      /* В HTML уходит ровно то, что показано человеку: наше изложение.
+         Полного текста издания в этой коллекции нет вовсе, так что
+         попасть сюда ему неоткуда даже по недосмотру. */
+      bodyText = toText(item.intro || "", 1200);
     } else if (doctorArticleMatch) {
       const articleId = doctorArticleMatch[1];
       locale = "ru";
@@ -1805,7 +1805,8 @@ export default async function handler(request, context) {
       tag("p", desc),
       bodyText ? tag("div", bodyText) : "",
       link("/articles", "Все научные статьи"),
-      link("/news", "Лента медицинских новостей"),
+      link("/digest", "Дайджест исследований"),
+      link("/news", "Лента материалов врачей"),
     ]);
 
     return new Response(html, {
@@ -2116,6 +2117,9 @@ export const config = {
     // Разделы-списки: до них edge не доходила, и каждый отдавал общий
     // title оболочки с canonical на главную.
     "/news",
+    // Дайджест исследований: наше изложение чужой публикации. Индексируемый
+    // раздел — в отличие от прежней страницы новости, где лежал чужой текст.
+    "/digest",
     "/articles",
     "/videos",
     "/pricing",
@@ -2129,7 +2133,10 @@ export const config = {
     "/docs",
     "/docs/*",
     "/articles/*",
+    // "/news/*" оставлен: по нему идёт 301 на /digest/* для тысяч
+    // проиндексированных адресов. Уберём — и все они станут мягкими 404.
     "/news/*",
+    "/digest/*",
     "/clinics/*",
     "/public/doctor-profile/article-detail-for-all/*",
     "/public/doctor/article-scientific-detail-for-all/*",

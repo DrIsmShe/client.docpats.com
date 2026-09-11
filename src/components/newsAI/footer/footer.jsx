@@ -6,7 +6,7 @@ export default function FooterAI() {
   return (
     /*
      * Ширина и отступы — те же, что у блока источника выше
-     * (.dp-footer-inner в pages/newsAI/NewsArticle.jsx): 780 пикселей и
+     * (.dp-footer-inner в pages/digest/DigestArticle.jsx): 780 пикселей и
      * 40 по бокам. Раньше этот блок шёл во всю ширину окна, а статья
      * была сжата — строки редакции разъезжались шире текста, и подвал
      * выглядел рыхлым.
@@ -116,7 +116,7 @@ export default function FooterAI() {
           просто неверной. А на странице новости она вдобавок дублировала
           такую же строку у кнопки «Читать оригинал».
           Теперь оговорка живёт в одном месте: рядом с этой кнопкой
-          (pages/newsAI/NewsArticle.jsx), где ей и место. */}
+          (pages/digest/DigestArticle.jsx), где ей и место. */}
       </div>
     </div>
   );

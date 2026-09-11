@@ -141,7 +141,7 @@
       "news": "Haberler",
       "research": "Araştırma"
     },
-    "newsShort": "Tıbbi haberler"
+    "newsShort": "İçerik akışı"
   },
   "role": {
     "doctor": "Doktor",
@@ -165,9 +165,9 @@
   },
   "hero": {
     "breadcrumbHome": "Ana Sayfa",
-    "breadcrumbFeed": "Tıbbi Haber Akışı",
-    "title": "Tıbbi Haber Akışı",
-    "subtitle": "DocPats'ten tıbbi araştırmalar, klinik haberler ve yapay zeka destekli analizler",
+    "breadcrumbFeed": "İçerik akışı",
+    "title": "Hekim içerikleri ve bilimsel analiz",
+    "subtitle": "Pratisyen hekimlerin değerlendirmeleri ve görüşleri, bilimsel makaleler ve DocPats analizi",
     "searchTitle": "Arama:",
     "searchPlaceholder": "Makale, hastalık, tedavi ara…",
     "searchBtn": "Ara",
@@ -262,5 +262,25 @@
   "filter_all_sections": "Tüm bölümler",
   "filter_kind": "Yazar",
   "filter_all_kinds": "Tüm yazarlar",
-  "filter_reset": "Sıfırla"
+  "filter_reset": "Sıfırla",
+  "digest": {
+    "kicker": "Özet",
+    "title": "Araştırma özetleri",
+    "lede": "Yeni bilimsel yayınlara kısa bakış: ne çalışıldı, kimde ve ne çıktı. Tam metin yayıncının sitesinde.",
+    "searchPlaceholder": "Özetlerde ara…",
+    "searchGo": "Ara",
+    "count": "{{count}} içerik",
+    "evidence": {
+      "high": "Yüksek kanıt düzeyi",
+      "moderate": "Orta kanıt düzeyi",
+      "low": "Düşük kanıt düzeyi"
+    },
+    "readAtSource": "Kaynağında oku — {{source}}",
+    "backToList": "← Özetlere dön",
+    "sourceHeading": "Birincil kaynak",
+    "disclaimer": "Bu özet, açık erişimli bir yayından yola çıkılarak DocPats tarafından hazırlanmıştır. Tam metin ve hakları yayıncıya aittir.",
+    "notYetSummarized": "Bu içerik için özet henüz hazır değil. Şimdilik birincil kaynağa bağlantı mevcut.",
+    "languages": "Diller:",
+    "backToFeed": "← İçerik akışına dön"
+  }
 }
