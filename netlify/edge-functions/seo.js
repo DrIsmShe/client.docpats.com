@@ -758,7 +758,7 @@ export default async function handler(request, context) {
           ? [
               tag("h1", data.name),
               tag("p", data.specialization),
-              tag("p", data.about),
+              tag("p", безРазметки(data.about)),
               link(clinicUrl, clinicName),
               Array.isArray(data.publications) && data.publications.length
                 ? tag("h2", "Публикации врача") +
@@ -1639,7 +1639,8 @@ export default async function handler(request, context) {
       medicalSpecialty = specName || undefined;
       title = `${fullName} — ${specName} | DocPats`.replace(/"/g, "&quot;");
       desc = краткоеОписание(
-        doctor.about || `Профиль врача ${fullName}, специальность: ${specName}`,
+        безРазметки(doctor.about) ||
+          `Профиль врача ${fullName}, специальность: ${specName}`,
       ).replace(/"/g, "&quot;");
       pageUrl = `https://docpats.com/public/doctor-profile/doctor-details/${doctorId}`;
       publishedAt = null;
@@ -1975,6 +1976,21 @@ function toText(html, limit = 4000) {
     .replace(/\s+/g, " ")
     .trim();
   return plain.length > limit ? plain.slice(0, limit) + "…" : plain;
+}
+
+/**
+ * Текст из того, что могло быть разметкой.
+ *
+ * Биографию врача пишут в редакторе, и в ней теперь есть теги. В
+ * мета-описании и в JSON-LD теги — мусор, а в теле страницы ещё и чужая
+ * разметка в нашем HTML. Снимаем их в одном месте: пробел вместо тега,
+ * иначе «...практике.<p>Специализация» склеилось бы в «практике.Специализация».
+ */
+function безРазметки(значение) {
+  return String(значение || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function tag(name, value) {

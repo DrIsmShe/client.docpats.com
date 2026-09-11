@@ -9,6 +9,7 @@ import React, {
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { shRich } from "../../../../lib/sanitizeHtml";
 import CommentSection from "../../../../components/shared/CommentSection";
 import DoctorReviews from "../../../../components/shared/DoctorReviews";
 import DoctorTrustStats from "../../../../components/shared/DoctorTrustStats";
@@ -1561,11 +1562,25 @@ export default function DoctorDetail() {
                 <IconAbout />
                 {t("doctorDetail.about.title")}
               </h4>
-              <p
-                className={`dd-about-text ${!doctorProfile?.about ? "empty" : ""}`}
-              >
-                {doctorProfile?.about || t("doctorDetail.about.empty")}
-              </p>
+              {/* Биографию врач пишет в редакторе, и приходит она
+                  разметкой. Голый вывод показывал бы теги как текст.
+                  shRich разбирается и со старыми биографиями, набитыми
+                  переводами строк: их в базе большинство.
+                  <div>, а не <p>: внутри бывают списки и заголовки, а
+                  вкладывать их в абзац нельзя — браузер разорвёт его, и
+                  вёрстка поедет. */}
+              {doctorProfile?.about ? (
+                <div
+                  className="dd-about-text"
+                  dangerouslySetInnerHTML={{
+                    __html: shRich(doctorProfile.about),
+                  }}
+                />
+              ) : (
+                <p className="dd-about-text empty">
+                  {t("doctorDetail.about.empty")}
+                </p>
+              )}
             </div>
           </div>
 

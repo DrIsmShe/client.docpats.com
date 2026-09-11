@@ -6,8 +6,12 @@ import "react-phone-input-2/lib/style.css";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import { useTranslation } from "react-i18next";
 
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 import { COUNTRIES, COUNTRY_ISO } from "../../../constants/countries";
 import TrainingVisibilityToggle from "../../../components/shared/TrainingVisibilityToggle";
+import { shRich } from "../../../lib/sanitizeHtml";
 /* ─────────────────────────── STYLES ─────────────────────────── */
 const styles = `
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
@@ -228,6 +232,31 @@ const styles = `
   color:var(--ink); transition:var(--tr); outline:none; box-sizing:border-box;
 }
 .hmp-input::placeholder,.hmp-textarea::placeholder { color:var(--ink3); }
+/* Редактор биографии. Рамку и скругление задаём сами: у CKEditor свои
+   границы, и без этого поле выбивалось из ряда остальных — все соседние
+   поля формы в одной рамке, а оно в другой. */
+.hmp-editor .ck.ck-editor__main > .ck-editor__editable {
+  border:1.5px solid var(--border); border-top:0;
+  border-bottom-left-radius:10px; border-bottom-right-radius:10px;
+  min-height:220px;
+}
+.hmp-editor .ck.ck-toolbar {
+  border:1.5px solid var(--border);
+  border-top-left-radius:10px; border-top-right-radius:10px;
+}
+.hmp-editor .ck-editor__editable.ck-focused { box-shadow:none; }
+/* Разметка в просмотре биографии: без этого списки теряют маркеры, а
+   заголовки — вес, потому что сброс страницы их обнуляет. */
+.hmp-about-text ul,.hmp-about-text ol { margin:8px 0 8px 22px; padding:0; }
+.hmp-about-text li { margin:2px 0; }
+.hmp-about-text h2,.hmp-about-text h3,.hmp-about-text h4 {
+  margin:14px 0 6px; font-weight:700; line-height:1.3;
+}
+.hmp-about-text h2 { font-size:19px; }
+.hmp-about-text h3 { font-size:17px; }
+.hmp-about-text h4 { font-size:15px; }
+.hmp-about-text p { margin:0 0 8px; }
+.hmp-about-text a { color:var(--teal,#0f766e); }
 .hmp-input:focus,.hmp-select:focus,.hmp-textarea:focus {
   border-color:var(--teal-mid); background:white; box-shadow:0 0 0 3px rgba(15,118,110,.1);
 }
@@ -418,7 +447,7 @@ const styles = `
 
 /* ─────────────────────────── COMPONENT ─────────────────────────── */
 export default function HomeMainPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [company, setCompany] = useState("");
   const [speciality, setSpeciality] = useState({ name: "Неизвестно" });
@@ -1177,14 +1206,16 @@ export default function HomeMainPage() {
                 </h5>
                 {doctorProfile ? (
                   doctorProfile.about ? (
-                    <div className="hmp-about-text">
-                      {doctorProfile.about.split("\n").map((p, i) => (
-                        <span key={i}>
-                          {p}
-                          <br />
-                        </span>
-                      ))}
-                    </div>
+                    /* shRich, а не sh: в базе лежат и старые биографии
+                       обычным текстом с переводами строк, и новые —
+                       разметкой из редактора. Переписывать старое незачем,
+                       одна проверка решает оба случая. */
+                    <div
+                      className="hmp-about-text"
+                      dangerouslySetInnerHTML={{
+                        __html: shRich(doctorProfile.about),
+                      }}
+                    />
                   ) : (
                     <p style={{ color: "var(--ink3)", fontStyle: "italic" }}>
                       {t("values.notSpecified")}
@@ -1268,13 +1299,36 @@ export default function HomeMainPage() {
 
                   <div className="hmp-row">
                     <label className="hmp-lbl">{t("fields.about")}</label>
-                    <div className="hmp-field">
-                      <textarea
-                        className="hmp-textarea"
-                        id="about"
-                        value={about}
-                        onChange={(e) => setAbout(e.target.value)}
-                        placeholder={t("fields.about")}
+                    {/* «О себе» — ТОТ ЖЕ редактор, что у статей.
+                        Биография врача — самый читаемый его текст: с неё
+                        начинают и пациент, и коллега. Голая textarea не
+                        давала ни заголовков, ни списков, ни ссылок, и врачи
+                        набивали абзацы переводами строк, теряя всё
+                        остальное. Набор кнопок тот же, что в создании
+                        статьи, минус загрузка картинок и таблицы:
+                        биография — это текст, а не публикация. */}
+                    <div className="hmp-field hmp-editor">
+                      <CKEditor
+                        editor={ClassicEditor}
+                        data={about}
+                        config={{
+                          language: i18n.language || "ru",
+                          placeholder: t("fields.about"),
+                          toolbar: [
+                            "heading",
+                            "|",
+                            "bold",
+                            "italic",
+                            "link",
+                            "|",
+                            "bulletedList",
+                            "numberedList",
+                            "|",
+                            "undo",
+                            "redo",
+                          ],
+                        }}
+                        onChange={(event, editor) => setAbout(editor.getData())}
                       />
                     </div>
                   </div>
