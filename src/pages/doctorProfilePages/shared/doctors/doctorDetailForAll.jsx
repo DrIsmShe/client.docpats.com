@@ -10,6 +10,7 @@ import { AiFillLike } from "react-icons/ai";
 import ShareMenu from "../../../../components/shared/ShareMenu";
 import DoctorEndorseItem from "./DoctorEndorseItem";
 import { Trans, useTranslation } from "react-i18next";
+import { shRich, безТегов } from "../../../../lib/sanitizeHtml";
 import { specialityName } from "../../../../utils/specialityName";
 import { useMemo } from "react";
 import { getOrCreateDialogWithUser } from "../../../communication/api/communicationApi";
@@ -1077,7 +1078,7 @@ export default function DoctorDetailsForAll() {
         <meta
           name="description"
           content={
-            doctorProfile.about?.slice(0, 155) ||
+            безТегов(doctorProfile.about).slice(0, 155) ||
             `Профиль врача ${fullName}, специальность: ${specName}. DocPats — медицинская платформа.`
           }
         />
@@ -1093,7 +1094,7 @@ export default function DoctorDetailsForAll() {
         <meta
           property="og:description"
           content={
-            doctorProfile.about?.slice(0, 155) ||
+            безТегов(doctorProfile.about).slice(0, 155) ||
             `Профиль врача ${fullName} на платформе DocPats`
           }
         />
@@ -1117,7 +1118,7 @@ export default function DoctorDetailsForAll() {
         <meta
           name="twitter:description"
           content={
-            doctorProfile.about?.slice(0, 155) ||
+            безТегов(doctorProfile.about).slice(0, 155) ||
             `Профиль врача ${fullName} на платформе DocPats`
           }
         />
@@ -1134,7 +1135,7 @@ export default function DoctorDetailsForAll() {
             "@context": "https://schema.org",
             "@type": "Physician",
             name: `Dr. ${fullName}`,
-            description: doctorProfile.about || "",
+            description: безТегов(doctorProfile.about),
             medicalSpecialty: specName,
             url: `https://docpats.com/public/doctor-profile/doctor-details/${id}`,
             image: doctorProfile.profileImage
@@ -1387,14 +1388,16 @@ export default function DoctorDetailsForAll() {
                       margin: "0 0 18px",
                     }}
                   />
-                  <div className="dd-about-text">
-                    {doctorProfile.about.split("\n").map((line, i) => (
-                      <span key={i}>
-                        {line}
-                        <br />
-                      </span>
-                    ))}
-                  </div>
+                  {/* Биография пишется в редакторе и приходит
+                      разметкой — голый вывод показывал бы теги как
+                      текст. shRich разбирается и со старыми
+                      биографиями, набитыми переводами строк. */}
+                  <div
+                    className="dd-about-text"
+                    dangerouslySetInnerHTML={{
+                      __html: shRich(doctorProfile.about),
+                    }}
+                  />
                 </>
               )}
             </div>

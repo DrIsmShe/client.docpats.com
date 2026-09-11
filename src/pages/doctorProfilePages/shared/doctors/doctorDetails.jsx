@@ -10,6 +10,7 @@ import { AiFillLike } from "react-icons/ai";
 import ShareMenu from "../../../../components/shared/ShareMenu";
 import DoctorEndorseItem from "./DoctorEndorseItem";
 import { useTranslation } from "react-i18next";
+import { shRich } from "../../../../lib/sanitizeHtml";
 import { useMemo } from "react";
 import { getOrCreateDialogWithUser } from "../../../communication/api/communicationApi";
 import { sh } from "../../../../lib/sanitizeHtml";
@@ -1271,14 +1272,16 @@ export default function DoctorDetails() {
                       margin: "0 0 18px",
                     }}
                   />
-                  <div className="dd-about-text">
-                    {doctorProfile.about.split("\n").map((line, i) => (
-                      <span key={i}>
-                        {line}
-                        <br />
-                      </span>
-                    ))}
-                  </div>
+                  {/* Биография пишется в редакторе и приходит
+                      разметкой — голый вывод показывал бы теги как
+                      текст. shRich разбирается и со старыми
+                      биографиями, набитыми переводами строк. */}
+                  <div
+                    className="dd-about-text"
+                    dangerouslySetInnerHTML={{
+                      __html: shRich(doctorProfile.about),
+                    }}
+                  />
                 </>
               )}
             </div>

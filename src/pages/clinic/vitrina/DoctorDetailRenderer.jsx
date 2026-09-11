@@ -13,6 +13,7 @@
 // витрины, а не уводят обратно на платформу.
 
 import React, { useEffect } from "react";
+import { безТегов, shRich } from "../../../lib/sanitizeHtml";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useVitrinaTheme } from "./theme/useVitrinaTheme.js";
@@ -48,7 +49,13 @@ const DOC_CSS = `
 .vt-doc-role { font-size: 17px; color: var(--v-text-muted); margin: 0 0 18px; }
 .vt-doc-facts { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
 .vt-doc-fact { font-size: 13px; font-weight: 600; color: var(--v-text); background: var(--v-surface-alt); border: 1px solid var(--v-border); border-radius: 100px; padding: 7px 15px; }
-.vt-doc-about { font-size: 16px; line-height: 1.7; white-space: pre-line; }
+/* white-space: pre-line убран: он держал переводы строк у обычного
+   текста, а у разметки лишний — абзацы даёт сама разметка, и
+   pre-line добавлял бы к ним ещё по пустой строке. */
+.vt-doc-about { font-size: 16px; line-height: 1.7; }
+.vt-doc-about p { margin: 0 0 10px; }
+.vt-doc-about ul, .vt-doc-about ol { margin: 8px 0 8px 22px; padding: 0; }
+.vt-doc-about h2, .vt-doc-about h3, .vt-doc-about h4 { margin: 14px 0 6px; font-weight: 700; }
 
 .vt-doc-pubs { margin-top: 8px; }
 .vt-doc-pubs-title { font-family: var(--v-font-heading); font-size: 26px; font-weight: 700; margin: 0 0 20px; }
@@ -98,7 +105,9 @@ export default function DoctorDetailRenderer({ clinic, doctor }) {
     if (name) {
       document.title = clinicName ? `${name} — ${clinicName}` : name;
     }
-    const desc = about.replace(/\s+/g, " ").trim().slice(0, 155);
+    /* Биография приходит разметкой из редактора: в мета-описании теги
+       не к месту, там нужен текст. */
+    const desc = безТегов(about).slice(0, 155);
     if (desc) {
       let m = document.querySelector('meta[name="description"]');
       if (!m) {
@@ -197,7 +206,14 @@ export default function DoctorDetailRenderer({ clinic, doctor }) {
               )}
             </div>
 
-            {about && <div className="vt-doc-about">{about}</div>}
+            {/* Биография из редактора — разметка. Голый вывод показывал
+                бы теги как текст. */}
+            {about && (
+              <div
+                className="vt-doc-about"
+                dangerouslySetInnerHTML={{ __html: shRich(about) }}
+              />
+            )}
             {/* Видео-визитка. Компонент сам ничего не рисует, если ролика
                 нет или он закрыт, — карточка врача без визитки выглядит
                 как раньше. */}
