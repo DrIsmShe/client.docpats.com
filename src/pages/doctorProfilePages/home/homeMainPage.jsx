@@ -11,7 +11,7 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 import { COUNTRIES, COUNTRY_ISO } from "../../../constants/countries";
 import TrainingVisibilityToggle from "../../../components/shared/TrainingVisibilityToggle";
-import { shRich } from "../../../lib/sanitizeHtml";
+import { shRich, текстВРазметку } from "../../../lib/sanitizeHtml";
 /* ─────────────────────────── STYLES ─────────────────────────── */
 const styles = `
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
@@ -516,7 +516,13 @@ export default function HomeMainPage() {
     setAddress(doctorProfile.address || "");
     setPhone(doctorProfile.phoneNumber?.replace(/^\+/, "") || "");
     setClinic(doctorProfile.clinic || "");
-    setAbout(doctorProfile.about || "");
+    /* Биография приходит из базы либо разметкой (написана в редакторе),
+       либо обычным текстом с переводами строк (написана до него). Редактор
+       принимает только разметку, и обычный текст в нём схлопывался в
+       сплошную стену: перевод строки в HTML — это пробел. Преобразуем
+       один раз при загрузке — дальше и в редакторе, и в базе лежит
+       разметка. */
+    setAbout(текстВРазметку(doctorProfile.about));
     setLicenseNumber(doctorProfile.licenseNumber || "");
     setCountry(doctorProfile.country || "");
     setTwitter(doctorProfile.twitter || "");
