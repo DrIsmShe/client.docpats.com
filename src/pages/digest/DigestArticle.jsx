@@ -30,6 +30,11 @@ const RTL = new Set(["ar"]);
 const ЯЗЫКИ = new Set(["ru", "en", "az", "tr", "ar"]);
 const САЙТ = "https://docpats.com";
 
+/* Уровни доказательности, которые предлагаются поисковику. Совпадает с
+   УРОВНИ_В_КАРТЕ на сервере и со списком в netlify/edge-functions/seo.js:
+   три места, и они обязаны говорить одно и то же. */
+const ИНДЕКСИРУЕМЫЕ_УРОВНИ = new Set(["high", "moderate"]);
+
 const УРОВЕНЬ = {
   high: { color: "#0f766e", bg: "rgba(15,118,110,.1)" },
   moderate: { color: "#8a6a00", bg: "rgba(138,106,0,.1)" },
@@ -187,6 +192,14 @@ export default function DigestArticle() {
 
       <Helmet>
         <title>{`${заголовок} — DocPats`}</title>
+        {/* Тот же отбор, что на edge и в карте сайта: в индекс идут
+            материалы с распознанным дизайном исследования. Остальное
+            работает, но поисковику не предлагается — тридцать три тысячи
+            страниц по три предложения подпадают под правило о массовом
+            производстве независимо от авторства текста. */}
+        {!ИНДЕКСИРУЕМЫЕ_УРОВНИ.has(данные.evidenceLevel) && (
+          <meta name="robots" content="noindex, follow" />
+        )}
         {изложение && <meta name="description" content={изложение.slice(0, 200)} />}
         <link rel="canonical" href={адрес} />
         {альтернативы.map((а) => (

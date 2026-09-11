@@ -3591,6 +3591,15 @@ body[data-theme="dark"] {
 .sidebar-nav [data-sec="users"]     { --sec: #16a34a; --sec-ink: #15803d; --sec-bg: #f1fdf4; }
 .sidebar-nav [data-sec="security"]  { --sec: #dc2626; --sec-ink: #b91c1c; --sec-bg: #fef3f2; }
 .sidebar-nav [data-sec="data"]      { --sec: #c026d3; --sec-ink: #a21caf; --sec-bg: #fdf4ff; }
+/* Пять разделов не имели своего цвета вовсе: var(--sec) не разрешался, и
+   полоска перед заголовком получалась прозрачной, а сам заголовок терял
+   цвет. В меню это читалось как «эти разделы чем-то не такие» — на
+   снимке у «Движка новостей» и «Конференций» полоски просто нет. */
+.sidebar-nav [data-sec="news-engine"] { --sec: #4f46e5; --sec-ink: #4338ca; --sec-bg: #f2f2ff; }
+.sidebar-nav [data-sec="conferences"] { --sec: #2563eb; --sec-ink: #1d4ed8; --sec-bg: #eff5ff; }
+.sidebar-nav [data-sec="dptube"]      { --sec: #e11d48; --sec-ink: #be123c; --sec-bg: #fff1f4; }
+.sidebar-nav [data-sec="ai"]          { --sec: #0891b2; --sec-ink: #0e7490; --sec-bg: #ecfbfe; }
+.sidebar-nav [data-sec="feedback"]    { --sec: #65a30d; --sec-ink: #4d7c0f; --sec-bg: #f5fbe9; }
 
 /* Заголовок раздела: засечный шрифт, крупный кегль, цвет раздела и разделитель
  * сверху — чтобы блоки читались как блоки, а не как продолжение списка.

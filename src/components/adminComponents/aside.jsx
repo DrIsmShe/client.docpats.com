@@ -1,15 +1,172 @@
-import React from "react";
-import { Link } from "react-router-dom";
+// client/src/components/adminComponents/aside.jsx
+//
+// Боковое меню админки. Разделы складываются по щелчку на заголовке.
+//
+// ЗАЧЕМ. Пунктов в меню под сорок, в тринадцати разделах, и список не
+// помещается на экран целиком: до «Данных» внизу нужно прокрутить всё
+// остальное. Свернув ненужное, администратор видит то, чем занят.
+//
+// ПОЧЕМУ НЕ ПЕРЕПИСАНО В МАССИВ. Разметка ниже — плоский список из
+// заголовков и пунктов, и у каждого стоит data-sec с именем раздела.
+// Этого достаточно: складывание делается ОБХОДОМ детей, а сама разметка
+// остаётся такой, какой была, — с комментариями, объясняющими, почему
+// тот или иной пункт вынесен отдельным разделом. Перевод в массив
+// объектов стоил бы этих комментариев и породил бы 400 строк разницы
+// там, где нужно тринадцать состояний.
+//
+// ЧТО ЗАПОМИНАЕТСЯ. Список ЗАКРЫТЫХ разделов, а не открытых: раздел,
+// добавленный завтра, должен быть виден сразу, а не оказаться свёрнутым
+// у всех, кто открывал меню раньше. Хранится в localStorage — это
+// удобство одного человека на одном браузере, а не состояние, которое
+// кому-то ещё нужно знать.
+//
+// РАЗДЕЛ С ТЕКУЩЕЙ СТРАНИЦЕЙ ОТКРЫТ ВСЕГДА. Иначе, перейдя по прямой
+// ссылке в свёрнутый раздел, администратор видел бы меню без единого
+// признака того, где он находится.
+
+import React, { useCallback, useMemo, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+const ПАМЯТЬ = "docpats.admin.aside.closed";
+
+/* Чтение памяти не должно ронять меню: приватное окно, запрет на
+   хранилище, чужая строка в ключе — всё это возвращает «ничего не
+   свёрнуто», а не белый экран. */
+function прочитатьЗакрытые() {
+  try {
+    const сырое = window.localStorage.getItem(ПАМЯТЬ);
+    const список = сырое ? JSON.parse(сырое) : [];
+    return new Set(Array.isArray(список) ? список : []);
+  } catch {
+    return new Set();
+  }
+}
+
+const СТИЛИ = `
+/* flex:1, а не width:100%: заголовок раздела сам по себе флекс-строка с
+   цветной полоской через ::before, и кнопка шириной во все сто процентов
+   выдавила бы полоску за край. min-width:0 нужен, чтобы длинное название
+   переносилось, а не растягивало меню. */
+.adm-sec-head{display:flex;align-items:center;gap:8px;flex:1;min-width:0;cursor:pointer;
+  user-select:none;background:none;border:0;text-align:inherit;font:inherit;color:inherit;
+  padding:0}
+.adm-sec-head:focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:4px}
+.adm-sec-caret{margin-inline-start:auto;flex:none;transition:transform .15s;opacity:.65;
+  font-size:11px;line-height:1}
+/* Страховка на случай, если тема однажды задаст display пунктам меню:
+   тогда встроенный смысл hidden перестал бы работать молча, и свёрнутый
+   раздел остался бы на экране. */
+.sidebar-nav li[hidden]{display:none!important}
+.adm-sec-head[aria-expanded="false"] .adm-sec-caret{transform:rotate(-90deg)}
+[dir="rtl"] .adm-sec-head[aria-expanded="false"] .adm-sec-caret{transform:rotate(90deg)}
+`;
+
+/**
+ * Обход плоского списка: заголовки становятся переключателями, пункты
+ * закрытых разделов скрываются.
+ *
+ * Работает по data-sec, который уже стоит у каждого <li>. Элемент без
+ * data-sec проходит насквозь нетронутым — так ведут себя разделители и
+ * всё, что появится здесь позже и не будет частью раздела.
+ */
+function Разделы({ children, закрытые, переключить, сегмент }) {
+  /* Первый проход — найти раздел, в котором лежит открытая страница.
+     Второй проход рисует; разделить их обязательно, потому что заголовок
+     раздела идёт ПЕРЕД своими пунктами, и на момент его отрисовки ещё
+     неизвестно, есть ли среди них текущая страница. */
+  let активный = null;
+  React.Children.forEach(children, (ребёнок) => {
+    if (активный || !React.isValidElement(ребёнок)) return;
+    const раздел = ребёнок.props["data-sec"];
+    if (!раздел) return;
+    const ссылка = React.Children.toArray(ребёнок.props.children).find(
+      (в) => React.isValidElement(в) && typeof в.props?.to === "string",
+    );
+    if (!ссылка) return;
+    const адрес = ссылка.props.to.replace(/^\/+|\/+$/g, "");
+    if (адрес && адрес === сегмент) активный = раздел;
+  });
+
+  return React.Children.map(children, (ребёнок) => {
+    if (!React.isValidElement(ребёнок)) return ребёнок;
+
+    const раздел = ребёнок.props["data-sec"];
+    if (!раздел) return ребёнок;
+
+    const классы = String(ребёнок.props.className || "");
+    // Раздел с текущей страницей не сворачиваем, даже если он в памяти
+    // помечен закрытым: иначе переход по прямой ссылке оставил бы меню
+    // без единого признака того, где человек находится.
+    const открыт = !закрытые.has(раздел) || раздел === активный;
+
+    if (классы.includes("nav-heading")) {
+      return React.cloneElement(ребёнок, {
+        children: (
+          <button
+            type="button"
+            className="adm-sec-head"
+            aria-expanded={открыт}
+            onClick={() => переключить(раздел)}
+          >
+            <span>{ребёнок.props.children}</span>
+            <span className="adm-sec-caret" aria-hidden="true">
+              ▾
+            </span>
+          </button>
+        ),
+      });
+    }
+
+    /* hidden, а не отсутствие в дереве: пункт остаётся смонтированным, и
+       раскрытие не пересобирает половину меню. Атрибут же убирает его и
+       из показа, и из обхода с клавиатуры. */
+    return открыт ? ребёнок : React.cloneElement(ребёнок, { hidden: true });
+  });
+}
+
 export default function Aside() {
   const isOpen = useSelector((state) => state.menu.isOpen);
+  const location = useLocation();
+  const [закрытые, setЗакрытые] = useState(прочитатьЗакрытые);
+
+  /* Последний сегмент адреса — по нему ищется ссылка на текущую
+     страницу. Таблицы «адрес → раздел» нет намеренно: она была бы
+     четвёртым местом, где перечислены все пункты меню, и разъехалась бы
+     с разметкой при первом же переименовании маршрута. */
+  const текущийСегмент = useMemo(
+    () => location.pathname.split("/").filter(Boolean).pop() || "",
+    [location.pathname],
+  );
+
+  const переключить = useCallback((раздел) => {
+    setЗакрытые((прежние) => {
+      const следующие = new Set(прежние);
+      if (следующие.has(раздел)) следующие.delete(раздел);
+      else следующие.add(раздел);
+      try {
+        window.localStorage.setItem(ПАМЯТЬ, JSON.stringify([...следующие]));
+      } catch {
+        /* Записать не удалось — складывание всё равно работает, просто не
+           переживёт перезагрузку. Это не повод ломать щелчок. */
+      }
+      return следующие;
+    });
+  }, []);
+
   return (
     <div>
+      <style>{СТИЛИ}</style>
       <aside
         id={isOpen ? "sidebar-hidden open" : "sidebar-hidden"}
         className={isOpen ? "sidebar open" : "sidebar"}
       >
         <ul id="sidebar-nav" className="sidebar-nav">
+          <Разделы
+            закрытые={закрытые}
+            переключить={переключить}
+            сегмент={текущийСегмент}
+          >
           {/* ─── Обзор ─── */}
           <li className="nav-heading" data-sec="overview">Обзор</li>
           <li className="nav-item" data-sec="overview">
@@ -383,6 +540,7 @@ export default function Aside() {
               <span>DP-Tube</span>
             </Link>
           </li> */}
+          </Разделы>
         </ul>
         {/* <div className="patients">
           <Link to="/polyclinic" target="blank">
