@@ -767,6 +767,23 @@ export default function HomeMainPage() {
 
   const [verificationFile, setVerificationFile] = useState(null);
   const [verificationType, setVerificationType] = useState("license");
+  /* Что написано В САМОМ документе. Врач переписывает это с бумаги, а
+     администратор потом сверяет с изображением и подтверждает — до
+     подтверждения дата на срок допуска не влияет.
+
+     Почему вручную, а не распознаванием: дата окончания решает, когда
+     закроется выписка рецептов, и ошибка распознавания в ней стоит
+     дороже, чем минута работы врача.
+
+     Все поля необязательны: у диплома срока нет, у документа из страны
+     без реестра может не быть номера. */
+  const [verificationMeta, setVerificationMeta] = useState({
+    documentNumber: "",
+    issuingAuthority: "",
+    jurisdictionCode: "",
+    issuedAt: "",
+    expiresAt: "",
+  });
   const [verificationMessage, setVerificationMessage] = useState("");
   const [verificationLoading, setVerificationLoading] = useState(false);
 
@@ -782,6 +799,9 @@ export default function HomeMainPage() {
       const formData = new FormData();
       formData.append("file", verificationFile);
       formData.append("documentType", verificationType);
+      for (const [ключ, значение] of Object.entries(verificationMeta)) {
+        if (значение) formData.append(ключ, значение);
+      }
       const response = await axios.post(
         `${API_BASE}/doctor-profile/add-verification/documents`,
         formData,
@@ -792,6 +812,13 @@ export default function HomeMainPage() {
       );
       setVerificationDocuments((prev) => [response.data.document, ...prev]);
       setVerificationFile(null);
+      setVerificationMeta({
+        documentNumber: "",
+        issuingAuthority: "",
+        jurisdictionCode: "",
+        issuedAt: "",
+        expiresAt: "",
+      });
     } catch (error) {
       setVerificationMessage(error.response?.data?.message || "Upload error");
     } finally {
@@ -1787,6 +1814,13 @@ export default function HomeMainPage() {
                           <option value="diploma">
                             {t("documentTypes.diploma")}
                           </option>
+                          {/* Подтверждение специализации — обязательный
+                              документ, и до сих пор его негде было выбрать:
+                              врачи клали его в «сертификат», который значит
+                              что угодно, включая свидетельство о курсах. */}
+                          <option value="specialization">
+                            {t("documentTypes.specialization")}
+                          </option>
                           <option value="certificate">
                             {t("documentTypes.certificate")}
                           </option>
@@ -1802,6 +1836,109 @@ export default function HomeMainPage() {
                         </select>
                       </div>
                     </div>
+                    {/* Реквизиты документа. Заполняет врач, глядя на свою
+                        бумагу; администратор потом сверяет с изображением.
+                        Необязательны все: у диплома нет срока, у документа
+                        из страны без реестра может не быть номера. */}
+                    <div className="hmp-row">
+                      <label className="hmp-lbl">
+                        {t("verification.number")}
+                      </label>
+                      <div className="hmp-field">
+                        <input
+                          className="hmp-input"
+                          value={verificationMeta.documentNumber}
+                          onChange={(e) =>
+                            setVerificationMeta((p) => ({
+                              ...p,
+                              documentNumber: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="hmp-row">
+                      <label className="hmp-lbl">
+                        {t("verification.authority")}
+                      </label>
+                      <div className="hmp-field">
+                        <input
+                          className="hmp-input"
+                          value={verificationMeta.issuingAuthority}
+                          onChange={(e) =>
+                            setVerificationMeta((p) => ({
+                              ...p,
+                              issuingAuthority: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="hmp-row">
+                      <label className="hmp-lbl">
+                        {t("verification.jurisdiction")}
+                      </label>
+                      <div className="hmp-field">
+                        <input
+                          className="hmp-input"
+                          maxLength={5}
+                          value={verificationMeta.jurisdictionCode}
+                          onChange={(e) =>
+                            setVerificationMeta((p) => ({
+                              ...p,
+                              jurisdictionCode: e.target.value.toUpperCase(),
+                            }))
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="hmp-row">
+                      <label className="hmp-lbl">
+                        {t("verification.issuedAt")}
+                      </label>
+                      <div className="hmp-field">
+                        <input
+                          type="date"
+                          className="hmp-input"
+                          value={verificationMeta.issuedAt}
+                          onChange={(e) =>
+                            setVerificationMeta((p) => ({
+                              ...p,
+                              issuedAt: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="hmp-row">
+                      <label className="hmp-lbl">
+                        {t("verification.expiresAt")}
+                      </label>
+                      <div className="hmp-field">
+                        <input
+                          type="date"
+                          className="hmp-input"
+                          value={verificationMeta.expiresAt}
+                          onChange={(e) =>
+                            setVerificationMeta((p) => ({
+                              ...p,
+                              expiresAt: e.target.value,
+                            }))
+                          }
+                        />
+                        <div
+                          style={{
+                            fontSize: 12,
+                            color: "#64748b",
+                            marginTop: 6,
+                            lineHeight: 1.5,
+                          }}
+                        >
+                          {t("verification.optionalHint")}
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="hmp-row">
                       <label className="hmp-lbl">
                         {t("verification.uploadFile")}

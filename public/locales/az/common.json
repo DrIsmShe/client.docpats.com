@@ -521,7 +521,14 @@
     "openNewTab": "Yeni tabda aç",
     "close": "Bağla",
     "enterCodeFromEmail": "Məktubdakı kodu daxil edin",
-    "documentPreview": "Sənədə baxış"
+    "documentPreview": "Sənədə baxış",
+    "number": "Sənədin nömrəsi",
+    "authority": "Kim tərəfindən verilib",
+    "jurisdiction": "Verildiyi ölkə (kod)",
+    "issuedAt": "Verilmə tarixi",
+    "expiresAt": "Etibarlıdır",
+    "optionalHint": "Öz sənədinizdən köçürün. Bitmə tarixi sizi əvvəlcədən xəbərdar etmək üçün lazımdır: bir ay, bir həftə və bir gün qalmış. Sənəddə müddət yoxdursa, boş buraxın.",
+    "required": "Məcburi sənədlər: lisenziya, diplom, ixtisas təsdiqi və şəxsiyyət sənədi."
   },
   "documentTypes": {
     "license": "Tibbi lisenziya",
@@ -529,7 +536,8 @@
     "certificate": "Sertifikat",
     "passport": "Pasport",
     "id_card": "Şəxsiyyət vəsiqəsi",
-    "other": "Digər"
+    "other": "Digər",
+    "specialization": "İxtisas təsdiqi"
   },
   "statuses": {
     "approved": "Təsdiqlənib",

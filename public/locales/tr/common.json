@@ -520,7 +520,14 @@
     "openNewTab": "Yeni sekmede aç",
     "close": "Kapat",
     "enterCodeFromEmail": "E-postadaki kodu girin",
-    "documentPreview": "Belge önizleme"
+    "documentPreview": "Belge önizleme",
+    "number": "Belge numarası",
+    "authority": "Veren kurum",
+    "jurisdiction": "Veriliş ülkesi (kod)",
+    "issuedAt": "Veriliş tarihi",
+    "expiresAt": "Geçerlilik sonu",
+    "optionalHint": "Kendi belgenizden aktarın. Geçerlilik tarihi sizi önceden uyarmak için gerekli: bir ay, bir hafta ve bir gün kala. Belgede süre yoksa boş bırakın.",
+    "required": "Zorunlu belgeler: lisans, diploma, uzmanlık belgesi ve kimlik."
   },
   "documentTypes": {
     "license": "Tıbbi Lisans",
@@ -528,7 +535,8 @@
     "certificate": "Sertifika",
     "passport": "Pasaport",
     "id_card": "Kimlik Kartı",
-    "other": "Diğer"
+    "other": "Diğer",
+    "specialization": "Uzmanlık belgesi"
   },
   "statuses": {
     "approved": "Onaylandı",

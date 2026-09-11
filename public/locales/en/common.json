@@ -482,7 +482,14 @@
     "openNewTab": "Open in new tab",
     "close": "Close",
     "enterCodeFromEmail": "Enter the code from the email",
-    "documentPreview": "Document preview"
+    "documentPreview": "Document preview",
+    "number": "Document number",
+    "authority": "Issued by",
+    "jurisdiction": "Country of issue (code)",
+    "issuedAt": "Issue date",
+    "expiresAt": "Valid until",
+    "optionalHint": "Copy this from your document. The expiry date lets us warn you in advance — a month, a week and a day before it runs out. If the document has no expiry, leave it empty.",
+    "required": "Required documents: licence, diploma, specialist certificate and proof of identity."
   },
   "documentTypes": {
     "license": "Medical License",
@@ -490,7 +497,8 @@
     "certificate": "Certificate",
     "passport": "Passport",
     "id_card": "ID Card",
-    "other": "Other"
+    "other": "Other",
+    "specialization": "Specialist certificate"
   },
   "statuses": {
     "approved": "Approved",
