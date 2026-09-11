@@ -2092,9 +2092,11 @@ function descriptionFromMarkdown(md, limit = 160) {
     .replace(/\s+/g, " ")
     .trim();
 
-  if (plain.length <= limit) return plain;
-  const cut = plain.slice(0, limit - 1);
-  return cut.slice(0, cut.lastIndexOf(" ")).trim() + "…";
+  /* Обрезку отдаём общему помощнику: он ищет конец предложения и
+     отступает к границе слова, только если предложения рядом нет. Своя
+     обрезка резала по слову всегда, и описание кончалось предлогом —
+     «…Клиника для этого не…». */
+  return краткоеОписание(plain, limit);
 }
 
 // ЕДИНСТВЕННОЕ место, где объявляются адреса этой функции.
