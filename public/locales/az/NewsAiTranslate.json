@@ -231,7 +231,8 @@
   },
   "feed": {
     "mySpecialty": "İxtisasım",
-    "allTopics": "Bütün mövzular"
+    "allTopics": "Bütün mövzular",
+    "noneInMySpecialty": "«{{specialty}}» ixtisası üzrə hələ material yoxdur"
   },
   "search_label": "Axtarış:",
   "nothing_found": "Heç nə tapılmadı",

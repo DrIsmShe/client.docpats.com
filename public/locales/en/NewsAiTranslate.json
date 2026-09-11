@@ -231,7 +231,8 @@
   },
   "feed": {
     "mySpecialty": "My specialty",
-    "allTopics": "All topics"
+    "allTopics": "All topics",
+    "noneInMySpecialty": "No materials in “{{specialty}}” yet"
   },
   "search_label": "Search:",
   "nothing_found": "Nothing found",

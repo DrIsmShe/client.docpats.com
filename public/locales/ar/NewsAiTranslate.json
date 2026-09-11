@@ -229,7 +229,8 @@
   },
   "feed": {
     "mySpecialty": "تخصصي",
-    "allTopics": "كل المواضيع"
+    "allTopics": "كل المواضيع",
+    "noneInMySpecialty": "لا توجد مواد في تخصص «{{specialty}}» بعد"
   },
   "search_label": "بحث:",
   "nothing_found": "لم يتم العثور على شيء",

@@ -231,7 +231,8 @@
   },
   "feed": {
     "mySpecialty": "Uzmanlığım",
-    "allTopics": "Tüm konular"
+    "allTopics": "Tüm konular",
+    "noneInMySpecialty": "“{{specialty}}” alanında henüz içerik yok"
   },
   "search_label": "Arama:",
   "nothing_found": "Hiçbir şey bulunamadı",

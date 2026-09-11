@@ -227,7 +227,8 @@
   },
   "feed": {
     "mySpecialty": "Моя специальность",
-    "allTopics": "Все темы"
+    "allTopics": "Все темы",
+    "noneInMySpecialty": "По специальности «{{specialty}}» материалов пока нет"
   },
   "search_label": "Поиск:",
   "nothing_found": "Ничего не найдено",
