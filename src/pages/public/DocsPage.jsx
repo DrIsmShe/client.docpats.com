@@ -12,7 +12,7 @@
 // оригинал, это лучше пустой страницы.
 
 import { useEffect, useMemo, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ReactMarkdown from "react-markdown";
 import styles from "./DocsPage.module.css";
@@ -135,10 +135,21 @@ export default function DocsPage() {
   const [markdown, setMarkdown] = useState("");
   const [state, setState] = useState("loading"); // loading | ready | missing
 
+  const [параметры] = useSearchParams();
+
+  /* Язык из адреса главнее настройки читателя.
+     Раньше он брался только из i18n, и ссылку на раздел нельзя было
+     переслать: турецкий коллега открывал её на том языке, который сам
+     выбирал последним, а не на том, который ему прислали. Схема ?locale=
+     — та же, что у новостей, статей и витрин клиник. */
   const lang = useMemo(() => {
+    const изАдреса = String(параметры.get("locale") || "")
+      .slice(0, 2)
+      .toLowerCase();
+    if (LANGS.includes(изАдреса)) return изАдреса;
     const code = String(i18n.language || FALLBACK).slice(0, 2).toLowerCase();
     return LANGS.includes(code) ? code : FALLBACK;
-  }, [i18n.language]);
+  }, [параметры, i18n.language]);
 
   // Раздел приходит из URL — в путь к файлу пускаем только безопасное имя.
   const safeSection = useMemo(

@@ -482,41 +482,83 @@ export default async function handler(request, context) {
         });
       }
 
-      // Русский — язык оригинала корпуса. Все языки живут по одному адресу,
-      // поэтому в индекс попадает одна версия; отдельные адреса на язык и
-      // hreflang — следующий шаг, если раздел начнёт приводить трафик.
       /* Раздела нет — отвечаем 404, а не оболочкой со статусом 200.
          «Мягкий 404» стоит дважды: поисковик тратит на него обход и
          считает такие адреса дублями, а человек видит платформу вместо
          текста, за которым пришёл. */
       const нетРаздела = () => отдать404(context);
 
-      const mdRes = await fetch(`${url.origin}/docs/${section}/ru.md`);
-      if (!mdRes.ok) return нетРаздела();
+      /* Язык раздела берём из адреса. Корпус переведён целиком: у всех
+         тринадцати разделов лежат ru/en/az/tr/ar, — но edge читала только
+         ru.md, и для поиска платформа выглядела одноязычной. Схема та же,
+         что у новостей, статей и витрин: оригинал на голом адресе,
+         перевод на адресе с ?locale=. */
+      const ОРИГИНАЛ_КОРПУСА = "ru";
+      const ЯЗЫКИ_КОРПУСА = ["ru", "en", "az", "tr", "ar"];
+      const запрошен = ЯЗЫК(url.searchParams.get("locale"));
 
-      const md = await mdRes.text();
-      // Netlify отдаёт index.html со статусом 200 на несуществующий путь,
-      // поэтому ok здесь ничего не доказывает.
-      if (md.trimStart().startsWith("<")) return нетРаздела();
+      const взятьТекст = async (язык) => {
+        const ответ = await fetch(`${url.origin}/docs/${section}/${язык}.md`);
+        if (!ответ.ok) return null;
+        const текст = await ответ.text();
+        // Netlify отдаёт оболочку со статусом 200 на несуществующий путь,
+        // поэтому ok здесь ничего не доказывает.
+        return текст.trimStart().startsWith("<") ? null : текст;
+      };
+
+      /* Просили язык, которого у раздела нет, — показываем оригинал, а не
+         404: раздел существует, просто перевода к нему нет. */
+      let язык = запрошен || ОРИГИНАЛ_КОРПУСА;
+      let md = await взятьТекст(язык);
+      if (!md && язык !== ОРИГИНАЛ_КОРПУСА) {
+        язык = ОРИГИНАЛ_КОРПУСА;
+        md = await взятьТекст(язык);
+      }
+      if (!md) return нетРаздела();
 
       const heading = titleFromMarkdown(md);
-      const desc = descriptionFromMarkdown(md);
-      if (!heading || !desc) return нетРаздела();
+      const описание = descriptionFromMarkdown(md);
+      if (!heading || !описание) return нетРаздела();
 
-      const title = `${heading} — DocPats`;
-      const pageUrl = `https://docpats.com/docs/${section}`;
+      /* Обрезаем по границе предложения. Раньше описание резалось по
+         счётчику символов и обрывалось на предлоге: «Клиника для этого
+         не…» — и в таком виде уходило в сниппет выдачи. */
+      const desc = краткоеОписание(описание);
+
+      /* Суффикс не добавляем, если бренд уже в заголовке: выходило
+         «DocPats для врача — DocPats». Лишнее повторение съедает символы
+         из тех шестидесяти, что помещаются в выдачу. */
+      const title = /docpats/i.test(heading) ? heading : `${heading} — DocPats`;
+
+      const базаРаздела = `https://docpats.com/docs/${section}`;
+      const адресЯзыка = (к) =>
+        к === ОРИГИНАЛ_КОРПУСА ? базаРаздела : `${базаРаздела}?locale=${к}`;
+      const pageUrl = адресЯзыка(язык);
       const image = "https://docpats.com/og-image.jpg";
+
+      /* hreflang перечисляет все пять языков, потому что они существуют:
+         файлы лежат рядом, у каждого раздела полный набор. Это не тот
+         случай, когда пять адресов ведут на один и тот же текст. */
+      const альтернативы = [
+        `<link data-seo="edge" rel="alternate" hreflang="x-default" href="${базаРаздела}">`,
+        ...ЯЗЫКИ_КОРПУСА.map(
+          (к) =>
+            `<link data-seo="edge" rel="alternate" hreflang="${к}" href="${адресЯзыка(к)}">`,
+        ),
+      ].join("\n    ");
 
       const response = await context.next();
       let html = await response.text();
       html = stripShellSeo(html);
-      // Документация: разделы написаны по-русски.
-      html = withHtmlLang(html, "ru");
+      // Язык тот, что реально отдан: просили перевод, которого нет, —
+      // показан оригинал, и объявлять чужой язык было бы враньём.
+      html = withHtmlLang(html, язык);
 
       const inject = `
     <title>${escAttr(title)}</title>
     <meta name="description" content="${escAttr(desc)}" data-seo="edge">
     <link rel="canonical" href="${pageUrl}" data-seo="edge">
+    ${альтернативы}
     <meta data-seo="edge" property="og:type" content="article">
     <meta data-seo="edge" property="og:title" content="${escAttr(title)}">
     <meta data-seo="edge" property="og:description" content="${escAttr(desc)}">
@@ -532,7 +574,7 @@ export default async function handler(request, context) {
       name: heading,
       description: desc,
       url: pageUrl,
-      inLanguage: "ru",
+      inLanguage: язык,
       isPartOf: {
         "@type": "WebSite",
         name: "DocPats",
@@ -1212,6 +1254,23 @@ export default async function handler(request, context) {
     /^\/articles\/([a-f0-9]{24})(?:\/([a-z]{2}))?$/,
   );
 
+  /* Языковой суффикс у врачебных статей — тоже в параметр.
+     Адрес вида /public/doctor-profile/article-detail-for-all/<id>/az
+     отдавал 200: маршрут его не знает, а оболочка возвращается на любой
+     путь под известным корнем. Получался второй адрес одной страницы —
+     ровно то смешение схем, от которого мы ушли у синтез-статей. */
+  const врачебнаяСЯзыком = url.pathname.match(
+    /^\/public\/(doctor-profile\/article-detail-for-all|doctor\/article-scientific-detail-for-all)\/([a-f0-9]{24})\/([a-z]{2})$/,
+  );
+  if (врачебнаяСЯзыком && ЯЗЫК(врачебнаяСЯзыком[3])) {
+    return new Response(null, {
+      status: 301,
+      headers: {
+        location: `/public/${врачебнаяСЯзыком[1]}/${врачебнаяСЯзыком[2]}?locale=${ЯЗЫК(врачебнаяСЯзыком[3])}`,
+      },
+    });
+  }
+
   /* Старая форма языкового адреса синтез-статьи: /articles/<id>/<язык>.
      Язык в проекте передаётся параметром — одна схема на все материалы,
      иначе каждая страница доступна по двум адресам сразу. Отвечаем 301, а
@@ -1479,10 +1538,13 @@ export default async function handler(request, context) {
          Вернуть картинку издания можно, но не ссылкой — перезаливом в R2,
          это работа движка, а не отдающего HTML. */
       imageUrl = "https://docpats.com/og-image.jpg";
-      bodyText = toText(
-        article.aiSummary || article.content || article.summary || "",
-        6000,
-      );
+      /* Только сводка, без поля content.
+         В content лежит ПОЛНЫЙ текст чужой публикации, и вставлять его в
+         наш HTML не было смысла: новости закрыты noindex, поисковик сюда
+         не придёт. Оставалось одно следствие — чужая статья лежала в
+         исходном коде нашей страницы и доставалась каждому, кто noindex
+         игнорирует. Сводку пишет движок, она наша. */
+      bodyText = toText(article.aiSummaryShort || article.summary || "", 1200);
     } else if (doctorArticleMatch) {
       const articleId = doctorArticleMatch[1];
       locale = "ru";
