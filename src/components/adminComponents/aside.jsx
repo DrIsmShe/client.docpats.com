@@ -30,6 +30,32 @@ import { useSelector } from "react-redux";
 
 const ПАМЯТЬ = "docpats.admin.aside.closed";
 
+/* Иконка раздела.
+ *
+ * Была цветная полоска перед названием — и читалась она как тире, а не
+ * как метка. Иконка говорит о разделе до того, как прочитан текст, и
+ * берётся из того же набора bi-*, что и значки пунктов: заголовок и его
+ * пункты должны выглядеть одной семьёй, а не двумя языками значков.
+ *
+ * Раздел без записи здесь получит общий значок папки — это лучше, чем
+ * пустое место, сбивающее выравнивание всей строки. */
+const ЗНАЧКИ = {
+  overview: "bi-speedometer2",
+  clinics: "bi-hospital",
+  "news-engine": "bi-newspaper",
+  conferences: "bi-calendar-event",
+  education: "bi-mortarboard",
+  radiology: "bi-lungs",
+  dptube: "bi-play-btn",
+  ai: "bi-cpu",
+  feedback: "bi-chat-dots",
+  billing: "bi-credit-card",
+  users: "bi-people",
+  security: "bi-shield-lock",
+  data: "bi-database",
+};
+const ЗНАЧОК_ПО_УМОЛЧАНИЮ = "bi-folder2";
+
 /* Чтение памяти не должно ронять меню: приватное окно, запрет на
    хранилище, чужая строка в ключе — всё это возвращает «ничего не
    свёрнуто», а не белый экран. */
@@ -50,10 +76,22 @@ const СТИЛИ = `
    переносилось, а не растягивало меню. */
 .adm-sec-head{display:flex;align-items:center;gap:8px;flex:1;min-width:0;cursor:pointer;
   user-select:none;background:none;border:0;text-align:inherit;font:inherit;color:inherit;
-  padding:0}
-.adm-sec-head:focus-visible{outline:2px solid currentColor;outline-offset:2px;border-radius:4px}
-.adm-sec-caret{margin-inline-start:auto;flex:none;transition:transform .15s;opacity:.65;
-  font-size:11px;line-height:1}
+  padding:4px 6px;margin:-4px -6px;border-radius:8px;transition:background-color .15s}
+.adm-sec-head:hover{background:var(--sec-bg,#f1f5f9)}
+.adm-sec-head:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+
+/* ПОЧЕМУ ГАЛОЧКА ЗАМЕТНАЯ.
+   Первый заход дал 11 пикселей при прозрачности 0.65 у дальнего края
+   меню — и владелец, глядя на готовую страницу, сказал «меню не
+   изменилось». Он был прав: складывание работало, но ничего об этом не
+   сообщало. Значок, который надо искать, — это значок, которого нет.
+   Теперь он в цвете раздела, в кружке и разворачивается на 180°, а вся
+   строка подсвечивается при наведении. */
+.adm-sec-caret{margin-inline-start:auto;flex:none;display:inline-flex;
+  align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;
+  font-size:12px;line-height:1;color:var(--sec,#64748b);background:var(--sec-bg,#f1f5f9);
+  transition:transform .18s}
+.adm-sec-head:hover .adm-sec-caret{background:#fff}
 /* Страховка на случай, если тема однажды задаст display пунктам меню:
    тогда встроенный смысл hidden перестал бы работать молча, и свёрнутый
    раздел остался бы на экране. */
@@ -109,6 +147,10 @@ function Разделы({ children, закрытые, переключить, с
             aria-expanded={открыт}
             onClick={() => переключить(раздел)}
           >
+            <i
+              className={`bi ${ЗНАЧКИ[раздел] || ЗНАЧОК_ПО_УМОЛЧАНИЮ} adm-sec-icon`}
+              aria-hidden="true"
+            />
             <span>{ребёнок.props.children}</span>
             <span className="adm-sec-caret" aria-hidden="true">
               ▾

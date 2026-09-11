@@ -383,6 +383,7 @@
   "src/pages/admin/clinics/AdminClinicsPage.jsx → Тариф",
   "src/pages/admin/clinics/AdminClinicsPage.jsx → Удалить",
   "src/pages/admin/clinics/AdminClinicsPage.jsx → из",
+  "src/pages/admin/components/AdminExportCollection.jsx → В этой базе нет коллекций.",
   "src/pages/admin/components/AdminExportCollection.jsx → Документов",
   "src/pages/admin/components/AdminExportCollection.jsx → Коллекция",
   "src/pages/admin/components/AdminExportCollection.jsx → Объём",
