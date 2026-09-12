@@ -9,6 +9,7 @@ import {
   LuLibraryBig,
   LuListChecks,
   LuMessageSquarePlus,
+  LuChevronDown,
 } from "react-icons/lu";
 import {
   FaUsers,
@@ -125,14 +126,121 @@ const S = `
   .ap-nav::-webkit-scrollbar { width: 4px; }
   .ap-nav::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
 
-  .ap-section-label {
-    font-size: 9px;
+  /* ── РУБРИКИ ──
+     Заголовок раздела — карточка-кнопка, а не подпись мелким шрифтом:
+     он раскрывает раздел, поэтому должен читаться как орган управления
+     и быть заметнее пунктов внутри. Раскрыт всегда один раздел. */
+  .ap-sec { margin-bottom: 2px; }
+
+  .ap-gbtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 10px 12px;
+    margin: 7px 0 3px;
+    border-radius: 13px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    font-family: 'Outfit', system-ui, sans-serif;
+    font-size: 14.5px;
     font-weight: 600;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: #94a3b8;
-    padding: 10px 12px 4px;
-    margin-top: 4px;
+    color: #0f172a;
+    cursor: pointer;
+    text-align: left;
+    text-decoration: none !important;
+    transition: background .18s, border-color .18s, transform .18s, box-shadow .18s, color .18s;
+  }
+  .ap-gbtn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+  }
+  .ap-gbtn[aria-expanded="true"],
+  .ap-gbtn.is-active {
+    background: linear-gradient(135deg, rgba(14,165,233,.12), rgba(13,148,136,.06));
+    border-color: rgba(14,165,233,.35);
+    box-shadow: 0 3px 14px rgba(14,165,233,.12);
+    color: #0369a1;
+  }
+  .ap-gbtn:focus-visible { outline: 2px solid #0ea5e9; outline-offset: 2px; }
+
+  .ap-gicon {
+    width: 30px; height: 30px;
+    border-radius: 10px;
+    background: #eef2f6;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    color: #64748b;
+    flex-shrink: 0;
+    transition: all .18s;
+  }
+  .ap-gbtn:hover .ap-gicon { background: rgba(14,165,233,.12); color: #0ea5e9; }
+  .ap-gbtn[aria-expanded="true"] .ap-gicon,
+  .ap-gbtn.is-active .ap-gicon { background: rgba(14,165,233,.18); color: #0ea5e9; }
+
+  .ap-glabel {
+    flex: 1; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  /* Сколько пунктов внутри — видно, не раскрывая раздел. */
+  .ap-gcount { font-size: 11.5px; font-weight: 600; color: #94a3b8; flex-shrink: 0; }
+  /* Точка на свёрнутом разделе: открытая сейчас страница лежит внутри него. */
+  .ap-gdot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #0ea5e9; box-shadow: 0 0 0 3px rgba(14,165,233,.15);
+    flex-shrink: 0;
+  }
+  .ap-gchev { font-size: 15px; color: #94a3b8; flex-shrink: 0; transition: transform .18s; }
+  .ap-gbtn[aria-expanded="true"] .ap-gchev { color: #0ea5e9; }
+  /* Стрелка смотрит вниз у раскрытого раздела и в сторону начала строки
+     у свёрнутого — поэтому в RTL поворот зеркальный. */
+  .ap-gbtn[aria-expanded="false"] .ap-gchev { transform: rotate(-90deg); }
+  [dir="rtl"] .ap-gbtn[aria-expanded="false"] .ap-gchev { transform: rotate(90deg); }
+
+  /* Рубрика без вложенных пунктов — сама ссылка (главная, чат, запросы
+     доступа, клиника). Раскрывать нечего: заголовок и есть переход. */
+  .ap-gbtn.is-chat { color: #0d9488; }
+  .ap-gbtn.is-chat .ap-gicon { background: rgba(13,148,136,.1); color: #0d9488; }
+  .ap-gbtn.is-chat:hover { background: rgba(13,148,136,.07); border-color: rgba(13,148,136,.3); }
+  .ap-gbtn.is-chat:hover .ap-gicon { background: rgba(13,148,136,.18); color: #0d9488; }
+  .ap-gbtn.is-chat.is-active {
+    background: linear-gradient(135deg, rgba(13,148,136,.14), rgba(14,165,233,.05));
+    border-color: rgba(13,148,136,.38);
+    color: #0d9488;
+  }
+  .ap-gbtn.is-chat.is-active .ap-gicon { background: rgba(13,148,136,.2); color: #0d9488; }
+
+  /* Клиника — фиолетовый акцент: рабочая зона, а не пациентская. */
+  .ap-gbtn.is-clinic { color: #7c3aed; }
+  .ap-gbtn.is-clinic .ap-gicon { background: rgba(124,58,237,.1); color: #7c3aed; }
+  .ap-gbtn.is-clinic:hover { background: rgba(124,58,237,.07); border-color: rgba(124,58,237,.3); }
+  .ap-gbtn.is-clinic:hover .ap-gicon { background: rgba(124,58,237,.18); color: #7c3aed; }
+  .ap-gbtn.is-clinic.is-active {
+    background: linear-gradient(135deg, rgba(124,58,237,.14), rgba(14,165,233,.05));
+    border-color: rgba(124,58,237,.38);
+    color: #7c3aed;
+  }
+  .ap-gbtn.is-clinic.is-active .ap-gicon { background: rgba(124,58,237,.2); color: #7c3aed; }
+
+  /* Пункты раздела — с отступом и направляющей линией: видно, что они
+     принадлежат раскрытому заголовку, а не висят сами по себе. */
+  .ap-sub {
+    display: flex;
+    flex-direction: column;
+    margin: 2px 0 8px;
+    margin-inline-start: 15px;
+    padding-inline-start: 10px;
+    border-inline-start: 1px solid #e2e8f0;
+    animation: ap-in .16s ease;
+  }
+  @keyframes ap-in {
+    from { opacity: 0; transform: translateY(-3px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ap-sub { animation: none; }
+    .ap-gbtn, .ap-gchev, .ap-gicon, .ap-link { transition: none; }
   }
 
   .ap-link {
@@ -204,6 +312,12 @@ const S = `
     border-radius: 6px;
     line-height: 1.4;
     flex-shrink: 0;
+  }
+
+  .ap-link-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .ap-icon {
@@ -457,33 +571,24 @@ export default function AsidePatient() {
     ? `${user.firstName}${user.lastName ? " " + user.lastName : ""}`
     : user?.name || user?.fullName || t("AsidePatient.menu.home");
 
-  const navItems = [
+  // Рубрики собраны по тому, ЧТО ДЕЛАЕТ ПАЦИЕНТ, а не по тому, каким
+  // модулем это сделано. Раньше заголовок «Контент» стоял в меню дважды,
+  // а под ним вместе лежали ИИ-консультация, студия фильмов, тарифы и
+  // обратная связь. Раскрыт всегда один раздел; «Главная», «Чат»,
+  // «Запросы доступа» и «Клиника» — рубрики-ссылки: раскрывать в них
+  // нечего, заголовок и есть переход.
+  const NAV = [
     {
-      section: null,
-      items: [
-        {
-          to: "/patient/home-page",
-          icon: <RiHomeOfficeFill />,
-          label: t("AsidePatient.menu.home"),
-        },
-        {
-          to: myOfficeHref,
-          icon: <GiPostOffice />,
-          label: t("AsidePatient.menu.myOffice"),
-        },
-      ],
+      id: "home",
+      solo: true,
+      label: t("AsidePatient.menu.home"),
+      icon: <RiHomeOfficeFill />,
+      items: [{ to: "/patient/home-page" }],
     },
-    // Раздел «Digest AI» (генератор обзоров user-synthesis) из кабинета
-    // пациента убран. Генератор пишет образовательные статьи по ОБЩИМ
-    // медицинским темам и намеренно отказывает пациенту в личном вопросе:
-    // «у меня болит спина» он не разберёт, а предложит записаться к врачу.
-    // То есть на единственный вопрос, с которым пациент туда придёт, он
-    // отвечать не станет — а пункт меню обещал обратное.
-    // Инструмент остаётся у врача (aside врачебного кабинета) и на
-    // публичной странице.
-    // ──────────────────────────────────────────────────────────
     {
-      section: t("AsidePatient.sections.medicine"), // ✅ было: "Медицина"
+      id: "health",
+      label: t("AsidePatient.sections.health", "Моё здоровье"),
+      icon: <GoFileSubmodule />,
       items: [
         {
           to: "/patient/get-patients-files",
@@ -499,8 +604,6 @@ export default function AsidePatient() {
         },
         {
           to: "/patient/my-prescriptions",
-          // Иконки не было вовсе — пункт висел с пустым местом слева и в ряду
-          // выглядел подпунктом соседнего.
           icon: <FaPrescriptionBottleMedical />,
           label: t("AsidePatient.menu.myPrescriptions", "Мои рецепты"),
         },
@@ -512,26 +615,59 @@ export default function AsidePatient() {
       ],
     },
     {
-      section: t("AsidePatient.sections.content"), // ✅ было: "Контент"
+      // Врачи и всё, что с ними связано: найти, записаться, выйти на связь.
+      // Раньше в этом разделе вместе с врачами лежали запросы доступа и чат.
+      id: "care",
+      label: t("AsidePatient.sections.care", "Врачи и приём"),
+      icon: <FaUserMd />,
       items: [
         {
-          to: "/patient/news",
-          icon: <GrArticle />,
-          label: t("AsidePatient.menu.articles"), // ✅ было: "Medical Feed"
+          to: "/patient/doctors",
+          icon: <FaUserMd />,
+          label: t("AsidePatient.menu.allDoctors"),
+        },
+        {
+          to: "/patient/my-doctors",
+          icon: <FaUserFriends />,
+          label: t("AsidePatient.menu.myDoctors"),
+        },
+        {
+          to: "/patient/appointments-info",
+          icon: <FaCalendarCheck />,
+          label: t("AsidePatient.menu.appointments"),
+        },
+        {
+          // Телемед — онлайн-консультации пациента (Jitsi)
+          to: "/patient/telemed",
+          icon: <FaVideo />,
+          label: t("AsidePatient.menu.telemed", "Онлайн-консультации"),
+        },
+        {
+          to: "/patient/my-clinics",
+          icon: <GiPostOffice />,
+          label: t("AsidePatient.menu.myClinics"),
         },
       ],
     },
     {
-      section: t("AsidePatient.sections.content"), // ✅ было: "Контент"
+      // Переписка — отдельный канал связи, а не пункт внутри раздела
+      // «Врачи»: сюда заходят каждый день и не ради поиска врача.
+      id: "chat",
+      solo: true,
+      accent: "chat",
+      label: t("chat"),
+      icon: <FaComments />,
+      items: [{ to: "/patient/communication" }],
+    },
+    {
+      // Видео — самостоятельный сервис: студия, задания от клиники,
+      // свои ролики и общая витрина платформы.
+      id: "video",
+      label: t("AsidePatient.sections.video", "Видео"),
+      icon: <LuClapperboard />,
       items: [
-        {
-          to: "/patient/consultation-ai",
-          icon: <GrArticle />,
-          label: t("ai_medical_consultation"), // ✅ было: "Medical Feed"
-        },
         // Студия медицинских фильмов. Пациенту она нужна не меньше, чем
-        // врачу: объяснить свою болезнь близким — та же задача, и делать
-        // это готовым фильмом проще, чем словами.
+        // врачу: объяснить свою болезнь близким — та же задача.
         {
           to: "/patient/videra",
           icon: <LuClapperboard />,
@@ -545,82 +681,76 @@ export default function AsidePatient() {
           icon: <LuListChecks />,
           label: t("videra.tasks.menu", { defaultValue: "Перед процедурой" }),
         },
-        // Свои снятые ролики.
         {
           to: "/patient/videos",
           icon: <LuLibraryBig />,
           label: t("videra.library.menu", { defaultValue: "Мои ролики" }),
         },
-        // Общая витрина платформы: всё опубликованное всеми авторами.
         {
           to: "/videos",
           icon: <LuLibraryBig />,
-          label: t("videra.gallery.menu", { defaultValue: "Медицинские ролики" }),
+          label: t("videra.gallery.menu", {
+            defaultValue: "Медицинские ролики",
+          }),
         },
-        // Витрина студии убрана из меню: её заменяет своя лента
-        // «Медицинские ролики» ниже — с правами, лицензиями и поиском.
+      ],
+    },
+    {
+      // Кто просит доступ к карте — отдельной строкой со счётчиком:
+      // это решение о своих медицинских данных, его нельзя прятать
+      // внутрь свёрнутого раздела.
+      id: "access",
+      solo: true,
+      label: t("AsidePatient.menu.consentRequests", "Запросы доступа"),
+      icon: <MdOutlineNotificationsActive />,
+      badge: pendingConsentRequests,
+      items: [{ to: "/patient/consent-requests" }],
+    },
+    {
+      id: "knowledge",
+      label: t("AsidePatient.sections.knowledge", "Консультация и статьи"),
+      icon: <GrArticle />,
+      items: [
+        {
+          to: "/patient/consultation-ai",
+          icon: <FaCommentMedical />,
+          label: t("ai_medical_consultation"),
+        },
+        {
+          to: "/patient/news",
+          icon: <GrArticle />,
+          label: t("AsidePatient.menu.articles"),
+        },
+      ],
+    },
+    {
+      // Всё про самого пациента и его подписку. Тарифы, приглашение и
+      // обратная связь лежали среди медицинских разделов и мешали их читать.
+      id: "account",
+      label: t("AsidePatient.sections.account", "Аккаунт"),
+      icon: <GiPostOffice />,
+      items: [
+        {
+          to: myOfficeHref,
+          icon: <GiPostOffice />,
+          label: t("AsidePatient.menu.myOffice"),
+        },
+        {
+          // Сразу на вкладку пациента: искать себя среди трёх аудиторий
+          // человеку, который уже вошёл, незачем.
+          to: "/pricing?tab=patients",
+          icon: <FaGift />,
+          label: t("AsidePatient.menu.pricing", "Тарифы"),
+        },
         {
           to: "/patient/invite",
           icon: <FaGift />,
           label: t("AsidePatient.menu.invite", "Пригласить друга"),
         },
-        // Тарифы. Сразу на вкладку пациента: искать себя среди трёх
-        // аудиторий человеку, который уже вошёл, незачем.
-        {
-          to: "/pricing?tab=patients",
-          icon: <FaGift />,
-          label: t("AsidePatient.menu.pricing", "Тарифы"),
-        },
-        // Обратная связь: пожелания и найденные ошибки — напрямую нам.
-        // Стоит рядом с приглашением друга: и то и другое — про участие в
-        // проекте, а не про лечение.
         {
           to: "/patient/feedback",
           icon: <LuMessageSquarePlus />,
           label: t("feedback.menu", { defaultValue: "Обратная связь" }),
-        },
-      ],
-    },
-    {
-      section: t("AsidePatient.sections.doctors"), // ✅ было: "Врачи"
-      items: [
-        {
-          to: "/patient/doctors",
-          icon: <FaUserMd />,
-          label: t("AsidePatient.menu.allDoctors"),
-        },
-        {
-          to: "/patient/my-doctors",
-          icon: <FaUserFriends />,
-          label: t("AsidePatient.menu.myDoctors"),
-        },
-        {
-          to: "/patient/my-clinics",
-          icon: <GiPostOffice />,
-          label: t("AsidePatient.menu.myClinics"),
-        },
-        // Sprint 3.2 — Pull Consent: clinic-initiated access requests
-        {
-          to: "/patient/consent-requests",
-          icon: <MdOutlineNotificationsActive />,
-          label: t("AsidePatient.menu.consentRequests", "Запросы доступа"),
-          badge: pendingConsentRequests,
-        },
-        {
-          to: "/patient/appointments-info",
-          icon: <FaCalendarCheck />,
-          label: t("AsidePatient.menu.appointments"),
-        },
-        // Телемед — онлайн-консультации пациента (Jitsi)
-        {
-          to: "/patient/telemed",
-          icon: <FaVideo />,
-          label: t("AsidePatient.menu.telemed", "Онлайн-консультации"),
-        },
-        {
-          to: "/patient/communication",
-          icon: <FaComments />,
-          label: t("chat"),
         },
       ],
     },
@@ -630,20 +760,51 @@ export default function AsidePatient() {
   // Появляется только если пользователь состоит в клинике (ClinicMembership).
   // Переход в /clinic/dashboard — ClinicLayout сам разрулит роль и права.
   if (clinicMembership) {
-    navItems.push({
-      section: t("AsidePatient.sections.clinic", "Клиника"),
-      items: [
-        {
-          to: "/clinic/dashboard",
-          icon: <RiHomeOfficeFill />,
-          label: clinicMembership.name,
-          accent: "clinic",
-          roleLabel: clinicRoleLabel(clinicMembership.role, t),
-        },
-      ],
+    NAV.push({
+      id: "clinic",
+      solo: true,
+      accent: "clinic",
+      label: clinicMembership.name,
+      icon: <RiHomeOfficeFill />,
+      roleLabel: clinicRoleLabel(clinicMembership.role, t),
+      items: [{ to: "/clinic/dashboard" }],
     });
   }
   // ───────────────────────────────────────────────────────────
+
+  // Раздел, внутри которого лежит открытая страница: по нему меню
+  // раскрывается само. Рубрики-ссылки в расчёте не участвуют — переход
+  // в чат не должен схлопывать раздел, в котором пациент работал.
+  const activeGroupId =
+    NAV.find(
+      (group) =>
+        !group.solo &&
+        group.items.some((item) => isActive(item.to.split("?")[0])),
+    )?.id || null;
+
+  const [openGroup, setOpenGroup] = useState(() => {
+    try {
+      return localStorage.getItem("ap:navGroup") || "health";
+    } catch (e) {
+      return "health";
+    }
+  });
+
+  useEffect(() => {
+    if (activeGroupId) setOpenGroup(activeGroupId);
+  }, [activeGroupId]);
+
+  const toggleGroup = (id) => {
+    setOpenGroup((current) => {
+      const next = current === id ? null : id;
+      try {
+        if (next) localStorage.setItem("ap:navGroup", next);
+      } catch (e) {
+        /* приватный режим браузера — выбор не переживёт перезагрузку */
+      }
+      return next;
+    });
+  };
 
   if (!isAuthenticated) return null;
 
@@ -680,49 +841,76 @@ export default function AsidePatient() {
 
         {/* Nav */}
         <nav className="ap-nav">
-          {navItems.map((group, gi) => (
-            <React.Fragment key={gi}>
-              {group.section && (
-                <div className="ap-section-label">{group.section}</div>
-              )}
-              {group.items.map((item, ii) => {
-                const cls =
-                  `ap-link` +
-                  (isActive(item.to) ? " active" : "") +
-                  (item.accent === "ai" ? " is-ai" : "") +
-                  (item.accent === "clinic" ? " is-clinic" : "");
-                return (
-                  <Link
-                    key={ii}
-                    to={item.to}
-                    target={item.external ? "_blank" : undefined}
-                    rel={item.external ? "noopener noreferrer" : undefined}
-                    className={cls}
-                    title={item.label}
-                  >
-                    <span className="ap-icon">{item.icon}</span>
-                    <span
-                      style={{
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {item.label}
-                    </span>
-                    {/* Роль в клинике (Клиника-секция) */}
-                    {item.roleLabel && (
-                      <span className="ap-clinic-role">{item.roleLabel}</span>
-                    )}
-                    {/* Sprint 3.2 — badge for pending consent requests */}
-                    {typeof item.badge === "number" && item.badge > 0 && (
-                      <span className="ap-link-badge">{item.badge}</span>
-                    )}
-                  </Link>
-                );
-              })}
-            </React.Fragment>
-          ))}
+          {NAV.map((group) => {
+            const open = openGroup === group.id;
+            const hasActive = group.id === activeGroupId;
+
+            // Рубрика-ссылка: раскрывать нечего, заголовок ведёт на страницу.
+            if (group.solo) {
+              const only = group.items[0];
+              const cls =
+                "ap-gbtn" +
+                (group.accent === "chat" ? " is-chat" : "") +
+                (group.accent === "clinic" ? " is-clinic" : "") +
+                (isActive(only.to) ? " is-active" : "");
+              return (
+                <Link
+                  key={group.id}
+                  to={only.to}
+                  className={cls}
+                  title={group.label}
+                >
+                  <span className="ap-gicon">{group.icon}</span>
+                  <span className="ap-glabel">{group.label}</span>
+                  {group.roleLabel ? (
+                    <span className="ap-clinic-role">{group.roleLabel}</span>
+                  ) : null}
+                  {typeof group.badge === "number" && group.badge > 0 ? (
+                    <span className="ap-link-badge">{group.badge}</span>
+                  ) : null}
+                </Link>
+              );
+            }
+
+            return (
+              <div className="ap-sec" key={group.id}>
+                <button
+                  type="button"
+                  className="ap-gbtn"
+                  aria-expanded={open}
+                  aria-controls={`ap-sub-${group.id}`}
+                  onClick={() => toggleGroup(group.id)}
+                >
+                  <span className="ap-gicon">{group.icon}</span>
+                  <span className="ap-glabel">{group.label}</span>
+                  {!open && hasActive ? <span className="ap-gdot" /> : null}
+                  {!open ? (
+                    <span className="ap-gcount">{group.items.length}</span>
+                  ) : null}
+                  <LuChevronDown className="ap-gchev" />
+                </button>
+
+                {open ? (
+                  <div className="ap-sub" id={`ap-sub-${group.id}`}>
+                    {group.items.map((item) => (
+                      <Link
+                        key={item.to}
+                        to={item.to}
+                        className={
+                          "ap-link" +
+                          (isActive(item.to.split("?")[0]) ? " active" : "")
+                        }
+                        title={item.label}
+                      >
+                        <span className="ap-icon">{item.icon}</span>
+                        <span className="ap-link-text">{item.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
         </nav>
 
         {/* Logout */}

@@ -909,7 +909,12 @@
       "medicine": "Медицина",
       "content": "Контент",
       "doctors": "Врачи",
-      "clinic": "Клиника"
+      "clinic": "Клиника",
+      "health": "Моё здоровье",
+      "care": "Врачи и приём",
+      "video": "Видео",
+      "knowledge": "Консультация и статьи",
+      "account": "Аккаунт"
     },
     "menu": {
       "myPrescriptions": "Мои рецепты",
@@ -2883,5 +2888,14 @@
   },
   "doctorAside": {
     "pricing": "Тарифы"
+  },
+  "doctorNav": {
+    "work": "Приём",
+    "support": "Помощь в решении",
+    "video": "Видео",
+    "knowledge": "Знания и новости",
+    "publications": "Публикации",
+    "clinic": "Клиника",
+    "account": "Аккаунт"
   }
 }

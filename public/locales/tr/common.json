@@ -869,7 +869,12 @@
       "medicine": "Tıp",
       "content": "İçerik",
       "doctors": "Doktorlar",
-      "clinic": "Klinik"
+      "clinic": "Klinik",
+      "health": "Sağlığım",
+      "care": "Doktorlar ve randevular",
+      "video": "Video",
+      "knowledge": "Danışma ve makaleler",
+      "account": "Hesap"
     },
     "menu": {
       "myPrescriptions": "Reçetelerim",
@@ -2883,5 +2888,14 @@
   },
   "doctorAside": {
     "pricing": "Fiyatlar"
+  },
+  "doctorNav": {
+    "work": "Muayene",
+    "support": "Karar desteği",
+    "video": "Video",
+    "knowledge": "Bilgi ve haberler",
+    "publications": "Yayınlar",
+    "clinic": "Klinik",
+    "account": "Hesap"
   }
 }

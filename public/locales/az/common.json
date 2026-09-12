@@ -870,7 +870,12 @@
       "medicine": "Tibb",
       "content": "Məzmun",
       "doctors": "Həkimlər",
-      "clinic": "Klinika"
+      "clinic": "Klinika",
+      "health": "Sağlamlığım",
+      "care": "Həkimlər və qəbul",
+      "video": "Video",
+      "knowledge": "Məsləhət və məqalələr",
+      "account": "Hesab"
     },
     "menu": {
       "myPrescriptions": "Reseptlərim",
@@ -2884,5 +2889,14 @@
   },
   "doctorAside": {
     "pricing": "Tariflər"
+  },
+  "doctorNav": {
+    "work": "Qəbul",
+    "support": "Qərar dəstəyi",
+    "video": "Video",
+    "knowledge": "Bilik və xəbərlər",
+    "publications": "Nəşrlər",
+    "clinic": "Klinika",
+    "account": "Hesab"
   }
 }

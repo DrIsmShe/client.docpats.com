@@ -850,7 +850,12 @@
       "medicine": "Medicine",
       "content": "Content",
       "doctors": "Doctors",
-      "clinic": "Clinic"
+      "clinic": "Clinic",
+      "health": "My health",
+      "care": "Doctors & visits",
+      "video": "Video",
+      "knowledge": "Advice & articles",
+      "account": "Account"
     },
     "menu": {
       "myPrescriptions": "My prescriptions",
@@ -2910,5 +2915,14 @@
   },
   "doctorAside": {
     "pricing": "Pricing"
+  },
+  "doctorNav": {
+    "work": "Appointments",
+    "support": "Decision support",
+    "video": "Video",
+    "knowledge": "Knowledge & news",
+    "publications": "Publications",
+    "clinic": "Clinic",
+    "account": "Account"
   }
 }

@@ -871,7 +871,12 @@
       "medicine": "الطب",
       "content": "المحتوى",
       "doctors": "الأطباء",
-      "clinic": "العيادة"
+      "clinic": "العيادة",
+      "health": "صحتي",
+      "care": "الأطباء والمواعيد",
+      "video": "الفيديو",
+      "knowledge": "الاستشارة والمقالات",
+      "account": "الحساب"
     },
     "menu": {
       "myPrescriptions": "وصفاتي الطبية",
@@ -2889,5 +2894,14 @@
   },
   "doctorAside": {
     "pricing": "الأسعار"
+  },
+  "doctorNav": {
+    "work": "المواعيد",
+    "support": "دعم القرار",
+    "video": "الفيديو",
+    "knowledge": "المعرفة والأخبار",
+    "publications": "المنشورات",
+    "clinic": "العيادة",
+    "account": "الحساب"
   }
 }

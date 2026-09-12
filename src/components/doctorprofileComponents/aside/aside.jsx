@@ -30,6 +30,7 @@ import {
   LuCalendarDays,
   LuClapperboard,
   LuMessageSquarePlus,
+  LuChevronDown,
 } from "react-icons/lu";
 import { TbStethoscope } from "react-icons/tb";
 
@@ -161,15 +162,112 @@ const S = `
   .dp2-scroll::-webkit-scrollbar { width:3px; }
   .dp2-scroll::-webkit-scrollbar-thumb { background:#1e2d42; border-radius:3px; }
 
-  .dp2-group {
-    padding: 14px 10px 5px;
-    font-size: 9px; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--c-muted);
-    font-weight: 500;
-    display: flex; align-items: center; gap: 8px;
+  /* Заголовок раздела — теперь кнопка: разделов девять, раскрыт один.
+     Плоский список из 28 пунктов заставлял читать всё меню целиком,
+     чтобы найти один пункт. */
+  .dp2-sec { margin-bottom: 2px; }
+
+  /* Заголовок — карточка, а не подпись мелким шрифтом: раз он стал
+     органом управления (нажал — раскрылось), он должен читаться как
+     кнопка и быть заметнее пунктов внутри. Размер пунктов при этом не
+     уменьшен: меню читают в том числе врачи, которым мелкий шрифт
+     неудобен, поэтому заголовок выигрывает весом, цветом и фоном. */
+  .dp2-gbtn {
+    width: 100%;
+    display: flex; align-items: center; gap: 11px;
+    padding: 10px 12px;
+    margin: 7px 0 3px;
+    border-radius: 13px;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid var(--c-border);
+    font-family: var(--f-body);
+    font-size: 16px; font-weight: 600; letter-spacing: 0.005em;
+    color: var(--c-text);
+    cursor: pointer; text-align: start;
+    text-decoration: none !important;
+    transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
   }
-  .dp2-group::after {
-    content:''; flex:1; height:1px; background: var(--c-border);
+  .dp2-gbtn:hover {
+    background: var(--c-hover);
+    border-color: rgba(56,189,248,0.24);
+    transform: translateY(-1px);
+  }
+  .dp2-gbtn[aria-expanded="true"], .dp2-gbtn.is-active {
+    background: linear-gradient(135deg, rgba(14,165,233,0.17), rgba(45,212,191,0.10));
+    border-color: rgba(56,189,248,0.34);
+    box-shadow: 0 4px 18px rgba(56,189,248,0.10);
+  }
+  .dp2-gbtn:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+
+  .dp2-gicon {
+    width: 30px; height: 30px; border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; color: var(--c-sub); flex-shrink: 0;
+    transition: all 0.18s ease;
+  }
+  .dp2-gicon svg { width: 1em; height: 1em; }
+  .dp2-gbtn:hover .dp2-gicon { color: var(--c-accent); background: rgba(56,189,248,0.14); }
+  .dp2-gbtn[aria-expanded="true"] .dp2-gicon, .dp2-gbtn.is-active .dp2-gicon {
+    background: rgba(56,189,248,0.22);
+    color: var(--c-accent);
+    box-shadow: 0 0 12px rgba(56,189,248,0.25);
+  }
+  .dp2-glabel { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* Сколько пунктов внутри — видно, не раскрывая раздел. */
+  .dp2-gcount {
+    font-size: 11.5px; font-weight: 500; color: var(--c-muted);
+    font-variant-numeric: tabular-nums; flex-shrink: 0;
+  }
+  /* Точка на свёрнутом разделе: открытая сейчас страница лежит внутри него. */
+  .dp2-gdot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--c-accent); box-shadow: 0 0 7px var(--c-accent);
+    flex-shrink: 0;
+  }
+  .dp2-gchev { font-size: 15px; color: var(--c-muted); flex-shrink: 0; transition: transform 0.18s ease; }
+  .dp2-gbtn[aria-expanded="true"] .dp2-gchev { color: var(--c-accent); }
+  /* Стрелка смотрит вниз у раскрытого раздела и в сторону начала строки
+     у свёрнутого — поэтому в RTL поворот зеркальный. */
+  .dp2-gbtn[aria-expanded="false"] .dp2-gchev { transform: rotate(-90deg); }
+  [dir="rtl"] .dp2-gbtn[aria-expanded="false"] .dp2-gchev { transform: rotate(90deg); }
+
+  /* Рубрика без вложенных пунктов — сама ссылка (чат). Бирюзовая:
+     переписка с пациентом — не инструмент приёма, а отдельный канал. */
+  .dp2-gbtn.is-solo { color: var(--c-teal); }
+  .dp2-gbtn.is-solo .dp2-gicon { background: rgba(45,212,191,0.12); color: var(--c-teal); }
+  .dp2-gbtn.is-solo:hover {
+    background: rgba(45,212,191,0.08);
+    border-color: rgba(45,212,191,0.26);
+  }
+  .dp2-gbtn.is-solo:hover .dp2-gicon { background: rgba(45,212,191,0.2); color: var(--c-teal); }
+  .dp2-gbtn.is-solo.is-active {
+    background: linear-gradient(135deg, rgba(45,212,191,0.18), rgba(14,165,233,0.08));
+    border-color: rgba(45,212,191,0.36);
+    box-shadow: 0 4px 18px rgba(45,212,191,0.10);
+  }
+  .dp2-gbtn.is-solo.is-active .dp2-gicon {
+    background: rgba(45,212,191,0.24); color: var(--c-teal);
+    box-shadow: 0 0 12px rgba(45,212,191,0.28);
+  }
+
+  /* Пункты раздела — с отступом и направляющей линией: видно, что они
+     принадлежат раскрытому заголовку, а не висят сами по себе. */
+  .dp2-sub {
+    display: flex; flex-direction: column;
+    margin: 2px 0 8px;
+    margin-inline-start: 15px;
+    padding-inline-start: 10px;
+    border-inline-start: 1px solid var(--c-border);
+    animation: dp2in 0.16s ease;
+  }
+  @keyframes dp2in {
+    from { opacity: 0; transform: translateY(-3px); }
+    to   { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dp2-sub { animation: none; }
+    .dp2-gchev, .dp2-item, .dp2-item::before { transition: none; }
   }
 
   .dp2-item {
@@ -386,6 +484,309 @@ export default function Aside() {
     }
   };
 
+  // Разделы меню собраны по тому, ЧТО ДЕЛАЕТ ВРАЧ, а не по тому, каким
+  // модулем это реализовано. Сверху ежедневный приём, ниже — то, к чему
+  // обращаются реже; аккаунт и выход в самом низу. Раньше тринадцать
+  // разнородных пунктов — от ИИ-консультации до тарифов и обратной связи —
+  // лежали под одним заголовком «AI-Дайджест», а приём пациента, главное
+  // ежедневное действие, был в конце списка.
+  const NAV = React.useMemo(
+    () => [
+      {
+        id: "work",
+        label: t("doctorNav.work", { defaultValue: "Приём" }),
+        icon: <LuCalendarClock />,
+        items: [
+          {
+            to: "/doctor/doctor-dashboard-main",
+            icon: <LuCalendarClock />,
+            label: t("appointments_dashboard"),
+          },
+          {
+            to: "/doctor/book-patient",
+            icon: <LuCalendarPlus />,
+            label: t("book_patient_menu", { defaultValue: "Записать на приём" }),
+          },
+          {
+            // Операция и обследование — отдельная сущность, а не режим
+            // записи на приём: другая длительность и подготовка.
+            to: "/doctor/book-procedure",
+            icon: <LuCalendarPlus />,
+            label: t("book_procedure_menu", {
+              defaultValue: "Записать на операцию",
+            }),
+          },
+          {
+            to: "/doctor/procedures",
+            icon: <LuCalendarClock />,
+            label: t("procedures_journal_menu", {
+              defaultValue: "Журнал вмешательств",
+            }),
+          },
+        ],
+      },
+      {
+        // Чат — рубрика сама по себе, без вложенных пунктов: переписка с
+        // пациентами и коллегами это отдельный канал связи, а не один из
+        // инструментов приёма. Заголовок здесь и есть ссылка.
+        id: "chat",
+        solo: true,
+        label: t("chat"),
+        icon: <LuMessagesSquare />,
+        items: [{ to: "/doctor/communication" }],
+      },
+      {
+        // Инструменты решения у постели больного: сюда приходят с вопросом
+        // по КОНКРЕТНОМУ пациенту. Тренажёр диагностики намеренно не здесь,
+        // а в «Обучении» — разбор своего пациента нельзя путать с учебным.
+        id: "support",
+        label: t("doctorNav.support", { defaultValue: "Помощь в решении" }),
+        icon: <LuStethoscope />,
+        items: [
+          {
+            to: "/doctor/consultation-ai",
+            icon: <TbStethoscope />,
+            label: t("ai_medical_consultation"),
+          },
+          {
+            to: "/diagnostics",
+            icon: <LuStethoscope />,
+            label: t("diagnostics_second_opinion", {
+              defaultValue: "Второе мнение",
+            }),
+          },
+          {
+            to: "/doctor/evidence",
+            icon: <LuLibraryBig />,
+            label: t("evidence_based", {
+              defaultValue: "Доказательная медицина",
+            }),
+          },
+          {
+            to: "/doctor/medical-codes",
+            icon: <LuBookMarked />,
+            label: t("medical_codes", { defaultValue: "Справочник кодов" }),
+          },
+        ],
+      },
+      {
+        // Видео — отдельная рубрика, а не функция приёма: студия DP-Videra
+        // плюс два хранилища роликов (свои и общая витрина платформы) это
+        // самостоятельный видеосервис со своими правами и публикацией.
+        id: "video",
+        label: t("doctorNav.video", { defaultValue: "Видео" }),
+        icon: <LuClapperboard />,
+        items: [
+          {
+            to: "/doctor/videra",
+            icon: <LuClapperboard />,
+            label: t("videra.menu", { defaultValue: "Снять фильм" }),
+          },
+          {
+            to: "/doctor/videos",
+            icon: <LuLibraryBig />,
+            label: t("videra.library.menu", { defaultValue: "Мои ролики" }),
+          },
+          {
+            to: "/videos",
+            icon: <LuLibraryBig />,
+            label: t("videra.gallery.menu", {
+              defaultValue: "Медицинские ролики",
+            }),
+          },
+        ],
+      },
+      {
+        id: "knowledge",
+        label: t("doctorNav.knowledge", { defaultValue: "Знания и новости" }),
+        icon: <LuNewspaper />,
+        items: [
+          {
+            to: "/doctor/news",
+            icon: <LuNewspaper />,
+            label: t("medical_feed"),
+          },
+          {
+            to: "/public/user-synthesis",
+            icon: <HiOutlineSparkles />,
+            label: t("aiSynthesis"),
+            external: true,
+          },
+          {
+            // Страница публичная (её же открывают ссылки из писем),
+            // поэтому адрес без префикса /doctor.
+            to: "/conferences",
+            icon: <LuCalendarDays />,
+            label: t("conferences_menu", { defaultValue: "Конференции" }),
+          },
+        ],
+      },
+      {
+        id: "education",
+        label: t("education", { defaultValue: "Обучение" }),
+        icon: <LuGraduationCap />,
+        items: [
+          {
+            to: "/education",
+            icon: <LuGraduationCap />,
+            label: t("education_prep", {
+              defaultValue: "Подготовка к экзаменам",
+            }),
+          },
+          {
+            to: "/arena",
+            icon: "🎯",
+            label: t("arena_trainer", { defaultValue: "Тренажёр диагностики" }),
+          },
+        ],
+      },
+      {
+        // Обычные и научные статьи объединены: это одно занятие — писать
+        // и вести свои публикации, а два раздела по два пункта только
+        // удлиняли меню.
+        id: "publications",
+        label: t("doctorNav.publications", { defaultValue: "Публикации" }),
+        icon: <LuPencilLine />,
+        items: [
+          {
+            to: "/doctor/create-my-articles",
+            icon: <LuPencilLine />,
+            label: t("create_article"),
+          },
+          {
+            to: "/doctor/my-articles",
+            icon: <LuFileText />,
+            label: t("my_articles"),
+          },
+          {
+            to: "/doctor/create-my-articles-scientific",
+            icon: <LuFlaskConical />,
+            label: t("create_scientific_article"),
+          },
+          {
+            to: "/doctor/my-articles-scientific",
+            icon: <LuGraduationCap />,
+            label: t("my_scientific_articles"),
+          },
+        ],
+      },
+      {
+        id: "colleagues",
+        label: t("colleagues", { defaultValue: "Коллеги" }),
+        icon: <LuUsers />,
+        items: [
+          {
+            to: "/doctor/all-doctors",
+            icon: <LuUsers />,
+            label: t("colleagues"),
+          },
+          {
+            to: "/doctor/my-friends-doctors",
+            icon: <LuUserCheck />,
+            label: t("my_friends_colleagues"),
+          },
+        ],
+      },
+      {
+        id: "clinic",
+        label: t("doctorNav.clinic", { defaultValue: "Клиника" }),
+        icon: <LuHospital />,
+        items: [
+          {
+            to: "/dp/polyclinic",
+            icon: <LuHospital />,
+            label: t("my_clinic"),
+          },
+          {
+            to: "/doctor/my-clinics",
+            icon: <LuBuilding2 />,
+            label: t("my_clinics", { defaultValue: "Мои клиники" }),
+          },
+          {
+            to: "/clinic",
+            icon: <LuCirclePlus />,
+            label: t("create_clinic", { defaultValue: "Создать клинику" }),
+          },
+        ],
+      },
+      {
+        // Всё про самого врача и его подписку — в одном месте внизу.
+        // «Тарифы», «Пригласить» и «Обратная связь» лежали среди
+        // клинических инструментов и мешали их читать.
+        id: "account",
+        label: t("doctorNav.account", { defaultValue: "Аккаунт" }),
+        icon: <LuSquareUserRound />,
+        items: [
+          {
+            to: `/doctor/doctor-profile/${userId}`,
+            match: "/doctor/doctor-profile",
+            icon: <LuSquareUserRound />,
+            label: t("profile"),
+          },
+          {
+            to: "/pricing?tab=doctors",
+            icon: <LuCirclePlus />,
+            label: t("doctorAside.pricing", { defaultValue: "Тарифы" }),
+          },
+          {
+            to: "/doctor/invite",
+            icon: "🎁",
+            label: t("referral.nav", { defaultValue: "Пригласить (+бонус)" }),
+          },
+          {
+            // Врач замечает недостающее раньше всех — путь «написать нам»
+            // должен быть в меню, а не в подвале страницы помощи.
+            to: "/doctor/feedback",
+            icon: <LuMessageSquarePlus />,
+            label: t("feedback.menu", { defaultValue: "Обратная связь" }),
+          },
+        ],
+      },
+    ],
+    [t, userId],
+  );
+
+  // Раздел, внутри которого лежит открытая страница. По нему меню
+  // раскрывается само — после перезагрузки и после перехода по ссылке
+  // врач видит, где он находится, а не пустые заголовки.
+  // Рубрики-ссылки (чат) в расчёте не участвуют: у них нечего раскрывать,
+  // и переход в чат не должен схлопывать раздел, в котором врач работал.
+  const activeGroupId = React.useMemo(() => {
+    const hit = NAV.filter((group) => !group.solo).find((group) =>
+      group.items.some((item) => {
+        const base = item.match || item.to.split("?")[0];
+        return (
+          location.pathname === base || location.pathname.startsWith(base + "/")
+        );
+      }),
+    );
+    return hit ? hit.id : null;
+  }, [NAV, location.pathname]);
+
+  const [openGroup, setOpenGroup] = useState(() => {
+    try {
+      return localStorage.getItem("dp2:navGroup") || "work";
+    } catch (e) {
+      return "work";
+    }
+  });
+
+  useEffect(() => {
+    if (activeGroupId) setOpenGroup(activeGroupId);
+  }, [activeGroupId]);
+
+  const toggleGroup = (id) => {
+    setOpenGroup((current) => {
+      const next = current === id ? null : id;
+      try {
+        if (next) localStorage.setItem("dp2:navGroup", next);
+      } catch (e) {
+        /* приватный режим браузера — состояние просто не переживёт перезагрузку */
+      }
+      return next;
+    });
+  };
+
   if (!isAuthenticated) return null;
 
   return (
@@ -448,291 +849,64 @@ export default function Aside() {
         </Link>
         <TrialBanner />
         <div className="dp2-scroll">
-          <div className="dp2-group">{t("profile") || "Личное"}</div>
-          <NavLink
-            className={itemClass}
-            to={`/doctor/doctor-profile/${userId}`}
-          >
-            <span className="dp2-icon">
-              <LuSquareUserRound />
-            </span>
-            {t("profile")}
-          </NavLink>
+          {NAV.map((group) => {
+            const open = openGroup === group.id;
+            const hasActive = group.id === activeGroupId;
 
-          <div className="dp2-group">{t("digestAi")}</div>
-          <NavLink
-            className={itemClass}
-            to="/public/user-synthesis"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="dp2-icon">
-              <HiOutlineSparkles />
-            </span>
-            {t("aiSynthesis")}
-          </NavLink>
-          <NavLink className={itemClass} to="/doctor/invite">
-            <span className="dp2-icon">🎁</span>
-            {t("referral.nav", { defaultValue: "Пригласить (+бонус)" })}
-          </NavLink>
-          <NavLink className={itemClass} to="/doctor/news">
-            <span className="dp2-icon">
-              <LuNewspaper />
-            </span>
-            {t("medical_feed")}
-          </NavLink>
+            // Рубрика-ссылка: раскрывать нечего, заголовок ведёт на страницу.
+            if (group.solo) {
+              return (
+                <NavLink
+                  key={group.id}
+                  to={group.items[0].to}
+                  className={({ isActive }) =>
+                    "dp2-gbtn is-solo" + (isActive ? " is-active" : "")
+                  }
+                >
+                  <span className="dp2-gicon">{group.icon}</span>
+                  <span className="dp2-glabel">{group.label}</span>
+                </NavLink>
+              );
+            }
 
-          {/* Конференции. Страница публичная (её же открывают ссылки из
-              писем), поэтому адрес без префикса /doctor. */}
-          <NavLink className={itemClass} to="/conferences">
-            <span className="dp2-icon">
-              <LuCalendarDays />
-            </span>
-            {t("conferences_menu", { defaultValue: "Конференции" })}
-          </NavLink>
+            return (
+              <div className="dp2-sec" key={group.id}>
+                <button
+                  type="button"
+                  className={"dp2-gbtn" + (hasActive ? " has-active" : "")}
+                  aria-expanded={open}
+                  aria-controls={`dp2-sub-${group.id}`}
+                  onClick={() => toggleGroup(group.id)}
+                >
+                  <span className="dp2-gicon">{group.icon}</span>
+                  <span className="dp2-glabel">{group.label}</span>
+                  {!open && hasActive ? <span className="dp2-gdot" /> : null}
+                  {!open ? (
+                    <span className="dp2-gcount">{group.items.length}</span>
+                  ) : null}
+                  <LuChevronDown className="dp2-gchev" />
+                </button>
 
-          <NavLink className={itemClass} to="/doctor/consultation-ai">
-            <span className="dp2-icon">
-              <TbStethoscope />
-            </span>
-            {t("ai_medical_consultation")}
-          </NavLink>
-
-          {/* Второе мнение — работа с материалами РЕАЛЬНОГО пациента
-              (modules/diagnostics). Стоит рядом с ИИ-консультацией, то есть
-              среди клинических инструментов, и намеренно НЕ в группе
-              «Обучение»: врач не должен путать разбор своего пациента с
-              тренажёром. По той же причине названия разведены по смыслу —
-              «Второе мнение» против «Тренажёра диагностики». */}
-          <NavLink className={itemClass} to="/diagnostics">
-            <span className="dp2-icon">
-              <LuStethoscope />
-            </span>
-            {t("diagnostics_second_opinion", { defaultValue: "Второе мнение" })}
-          </NavLink>
-
-          {/* Справочник кодов МКБ (modules/medicalCodes). Стоит среди
-              клинических инструментов, а не в «Обучении»: это рабочий
-              справочник для заполнения карты и направлений, а не учебный
-              материал. */}
-          <NavLink className={itemClass} to="/doctor/medical-codes">
-            <span className="dp2-icon">
-              <LuBookMarked />
-            </span>
-            {t("medical_codes", { defaultValue: "Справочник кодов" })}
-          </NavLink>
-
-          {/* Студия медицинских фильмов (modules/videra). Рядом со
-              справочником кодов: это тоже рабочий инструмент приёма — чем
-              объяснить больному операцию, а не учебный материал. */}
-          <NavLink className={itemClass} to="/doctor/videra">
-            <span className="dp2-icon">
-              <LuClapperboard />
-            </span>
-            {t("videra.menu", { defaultValue: "Снять фильм" })}
-          </NavLink>
-
-          {/* Свои снятые ролики. Рядом со студией намеренно: снять и
-              посмотреть снятое — одно дело, разнесённое по разным углам
-              меню, ищут дольше, чем делают. */}
-          <NavLink className={itemClass} to="/doctor/videos">
-            <span className="dp2-icon">
-              <LuLibraryBig />
-            </span>
-            {t("videra.library.menu", { defaultValue: "Мои ролики" })}
-          </NavLink>
-
-          {/* Общая витрина: всё, что опубликовали врачи и клиники. Это не
-              маршрут кабинета, а публичная страница платформы — обычная
-              ссылка, чтобы работала и из зоны врача, и из зоны пациента. */}
-          <NavLink className={itemClass} to="/videos">
-            <span className="dp2-icon">
-              <LuLibraryBig />
-            </span>
-            {t("videra.gallery.menu", { defaultValue: "Медицинские ролики" })}
-          </NavLink>
-
-          {/* Тарифы — на вкладку врача. Из кабинета к ним ходят чаще, чем
-              с лендинга: смотрят, что входит в текущий план. */}
-          <NavLink className={itemClass} to="/pricing?tab=doctors">
-            <span className="dp2-icon">
-              <LuCirclePlus />
-            </span>
-            {t("doctorAside.pricing", { defaultValue: "Тарифы" })}
-          </NavLink>
-
-          {/* Обратная связь. Врач замечает недостающее раньше всех — он
-              работает в системе каждый день; путь «написать нам» должен
-              быть в меню, а не в подвале страницы помощи. */}
-          <NavLink className={itemClass} to="/doctor/feedback">
-            <span className="dp2-icon">
-              <LuMessageSquarePlus />
-            </span>
-            {t("feedback.menu", { defaultValue: "Обратная связь" })}
-          </NavLink>
-
-          {/* Витрина студии (dp-videra/watch) из меню убрана: она показывает
-              те же фильмы, но без прав, привязок к приёму, лицензий на
-              странице и поисковой разметки. Две витрины с одним содержимым
-              означали бы, что автор не понимает, где его ролик, а в выдаче
-              страницы конкурируют друг с другом. Ссылка на студию осталась
-              там, где она по делу, — на странице «Мои ролики» и в самой
-              студии: за съёмкой и черновиками. */}
-
-          {/* Доказательная медицина (modules/ebm). Рядом со справочником
-              кодов и «Вторым мнением» — это инструмент для решения у постели
-              больного, а не учебный материал: врач приходит сюда с конкретным
-              вопросом по конкретному пациенту. */}
-          <NavLink className={itemClass} to="/doctor/evidence">
-            <span className="dp2-icon">
-              <LuLibraryBig />
-            </span>
-            {t("evidence_based", { defaultValue: "Доказательная медицина" })}
-          </NavLink>
-
-          <div className="dp2-group">
-            {t("education", { defaultValue: "Обучение" })}
-          </div>
-          <NavLink className={itemClass} to="/education">
-            <span className="dp2-icon">
-              <LuGraduationCap />
-            </span>
-            {t("education_prep", { defaultValue: "Подготовка к экзаменам" })}
-          </NavLink>
-          <NavLink className={itemClass} to="/arena">
-            <span className="dp2-icon">🎯</span>
-            {t("arena_trainer", { defaultValue: "Тренажёр диагностики" })}
-          </NavLink>
-
-          <div className="dp2-group">{t("articles") || "Статьи"}</div>
-          <NavLink className={itemClass} to="/doctor/create-my-articles">
-            <span className="dp2-icon">
-              <LuPencilLine />
-            </span>
-            {t("create_article")}
-          </NavLink>
-          <NavLink className={itemClass} to="/doctor/my-articles">
-            <span className="dp2-icon">
-              <LuFileText />
-            </span>
-            {t("my_articles")}
-          </NavLink>
-          {/* <NavLink className={itemClass} to="/doctor/all-articles-here">
-            <span className="dp2-icon">
-              <GrArticle />
-            </span>
-            {t("articles")}
-          </NavLink> */}
-
-          <div className="dp2-group">{t("scientific_articles")}</div>
-
-          <NavLink
-            className={itemClass}
-            to="/doctor/create-my-articles-scientific"
-          >
-            <span className="dp2-icon">
-              <LuFlaskConical />
-            </span>
-            {t("create_scientific_article")}
-          </NavLink>
-
-          <NavLink
-            className={itemClass}
-            to="/doctor/my-articles-scientific"
-          >
-            <span className="dp2-icon">
-              <LuGraduationCap />
-            </span>
-            {t("my_scientific_articles")}
-          </NavLink>
-
-          {/* <NavLink
-            className={itemClass}
-            to="/doctor/all-articles-scientific-here"
-          >
-            <span className="dp2-icon">
-              <GrArticle />
-            </span>
-            {t("scientific_articles")}
-          </NavLink> */}
-
-          <div className="dp2-group">{t("colleagues") || "Коллеги"}</div>
-          <NavLink className={itemClass} to="/doctor/all-doctors">
-            <span className="dp2-icon">
-              <LuUsers />
-            </span>
-            {t("colleagues")}
-          </NavLink>
-          <NavLink className={itemClass} to="/doctor/my-friends-doctors">
-            <span className="dp2-icon">
-              <LuUserCheck />
-            </span>
-            {t("my_friends_colleagues")}
-          </NavLink>
-
-          <div className="dp2-group">{t("my_clinic") || "Клиника"}</div>
-          <NavLink className={itemClass} to="/dp/polyclinic">
-            <span className="dp2-icon">
-              <LuHospital />
-            </span>
-            {t("my_clinic")}
-          </NavLink>
-          <NavLink className={itemClass} to="/doctor/my-clinics">
-            <span className="dp2-icon">
-              <LuBuilding2 />
-            </span>
-            {t("my_clinics", { defaultValue: "Мои клиники" })}
-          </NavLink>
-          <NavLink className={itemClass} to="/clinic">
-            <span className="dp2-icon">
-              <LuCirclePlus />
-            </span>
-            {t("create_clinic", { defaultValue: "Создать клинику" })}
-          </NavLink>
-          {/* Запись пациента — регистратурное действие, к нему ходят чаще
-              всего остального в этом разделе, поэтому отдельным пунктом, а не
-              вглубь журнала приёмов. */}
-          <NavLink className={itemClass} to="/doctor/book-patient">
-            <span className="dp2-icon">
-              <LuCalendarPlus />
-            </span>
-            {t("book_patient_menu", {
-              defaultValue: "Записать на приём",
-            })}
-          </NavLink>
-          {/* Операции и обследования — рядом с записью на приём и
-              отдельным пунктом: это другая сущность, а не режим той же формы. */}
-          <NavLink className={itemClass} to="/doctor/book-procedure">
-            <span className="dp2-icon">
-              <LuCalendarPlus />
-            </span>
-            {t("book_procedure_menu", {
-              defaultValue: "Записать на операцию",
-            })}
-          </NavLink>
-          <NavLink className={itemClass} to="/doctor/procedures">
-            <span className="dp2-icon">
-              <LuCalendarClock />
-            </span>
-            {t("procedures_journal_menu", {
-              defaultValue: "Журнал вмешательств",
-            })}
-          </NavLink>
-          <div
-            className="dp2-item is-chat"
-            onClick={() => navigate("doctor-dashboard-main")}
-          >
-            <span className="dp2-icon">
-              <LuCalendarClock />
-            </span>
-            {t("appointments_dashboard")}
-          </div>
-          <NavLink className={itemClass} to="/doctor/communication">
-            <span className="dp2-icon">
-              <LuMessagesSquare />
-            </span>
-            {t("chat")}
-          </NavLink>
+                {open ? (
+                  <div className="dp2-sub" id={`dp2-sub-${group.id}`}>
+                    {group.items.map((item) => (
+                      <NavLink
+                        key={item.to}
+                        className={itemClass}
+                        to={item.to}
+                        {...(item.external
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : null)}
+                      >
+                        <span className="dp2-icon">{item.icon}</span>
+                        {item.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
 
           <div className="dp2-item is-logout" onClick={handleLogout}>
             <span className="dp2-icon">
